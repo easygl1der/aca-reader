@@ -29,6 +29,17 @@ user-invocable: true
 2. 更新进度仪表盘
 3. 保存问答历史
 
+## 子模块调用
+
+作为 Orchestrator，本 skill 协调以下子模块：
+
+- **pdf-reader**: 加载和解析 PDF 文件
+- **reading-progress**: 管理阅读进度和状态
+- **latex-notes**: 生成和更新 LaTeX 讲义
+- **interactive-qa**: 处理用户问答
+
+当需要时，使用 Agent 工具调用相应的子 skill。
+
 ## 使用方式
 
 - "帮我加载这个 PDF"
