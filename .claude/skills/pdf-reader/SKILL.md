@@ -30,3 +30,34 @@ user-invocable: true
 - 使用 OCR 或 PDF 解析工具读取内容
 - 提取标题作为章节标记
 - 识别数学定理和定义（通常有编号如 Theorem 1.1, Definition 2.3）
+
+## 实现
+
+使用 Python 脚本进行 PDF 解析：
+
+### 安装依赖
+
+```bash
+pip install pymupdf  # 推荐
+# 或
+pip install pdfplumber
+```
+
+### 使用方法
+
+```bash
+python src/pdf_parser.py <pdf_file>
+```
+
+### 输出格式
+
+```json
+{
+  "pdf_path": "book.pdf",
+  "structure": [
+    {"type": "chapter", "number": "1", "title": "Introduction"},
+    {"type": "section", "number": "1.1", "title": "Basic Concepts"},
+    {"type": "theorem", "theorem_type": "Theorem", "number": "1.1"}
+  ]
+}
+```
