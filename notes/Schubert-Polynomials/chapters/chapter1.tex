@@ -5,10 +5,115 @@
 \chapter{Graham Positivity of Triple Schubert Calculus}
 \label{chap:TriplePositivity}
 
+\section{预备知识}
+\label{sec:Preliminaries}
+
+在本节中，我们介绍本文所需的基本定义。
+
+\subsection{旗流形}
+
+\begin{Definition}[旗流形]
+\label{def:FlagVariety}
+设 $V$ 为 $n$ 维复向量空间。旗流形 $Fl_n(\mathbb{C})$ 是 $V$ 中所有 flags 的集合，其中一个 flag 是如下的一系列子空间：
+\begin{equation}
+0 = V_0 \subset V_1 \subset V_2 \subset \cdots \subset V_n = V
+\end{equation}
+其中 $\dim V_i = i$。旗流形是一个光滑的复代数簇，维度为 $\binom{n}{2}$。
+\end{Definition}
+
+旗流形是 Schubert 理论的舞台。Schubert 胞腔是旗流形的重要子簇。
+
+\subsection{对称群与排列}
+
+\begin{Definition}[对称群]
+\label{def:SymmetricGroup}
+$n$ 阶对称群 $S_n$ 是 $\{1, 2, \ldots, n\}$ 的所有置换构成的群。一个置换 $w$ 可以记为一维数组 $w = (w(1), w(2), \ldots, w(n))$。
+
+排列 $w$ 的逆序数 $\ell(w)$ 定义为满足 $1 \leq i < j \leq n$ 且 $w(i) > w(j)$ 的对 $(i, j)$ 的个数，也称为 $w$ 的长度。
+\end{Definition}
+
+\begin{Definition}[Schubert 多项式]
+\label{def:SchubertPolynomial}
+Schubert 多项式 $\{S_w(x_1, \ldots, x_n) \mid w \in S_n\}$ 是旗流形上 Schubert 类的多项式代表元，由 Lascoux 和 Schützenberger 引入。它们满足：
+\begin{equation}
+S_w(x_1, \ldots, x_n) = x_1^{c_1} x_2^{c_2} \cdots + \text{更低次的项}
+\end{equation}
+其中 $c_i = \#\{j > i : w(j) < w(i)\}$。
+\end{Definition}
+
+\subsection{双重 Schubert 多项式}
+
+\begin{Definition}[双重 Schubert 多项式]
+\label{def:DoubleSchubertPolynomial}
+双重 Schubert 多项式 $S_w(x; y)$ 是 Schubert 多项式的双变量推广，其中引入了第二组变量 $y = (y_1, \ldots, y_n)$。它们定义为：
+\begin{equation}
+S_w(x; y) = \sum_{u \leq w} (-1)^{\ell(w)-\ell(u)} \mathfrak{S}_u(x) \cdot \prod_{i=1}^n (x_i - y_{w(i)})
+\end{equation}
+其中 $\mathfrak{S}_u(x)$ 是 Schubert 多项式，求和取遍所有满足 $u \leq w$（Bruhat 序）的置换。
+
+双重 Schubert 多项式满足：
+\begin{itemize}
+\item $S_{w_0}(x; y) = \prod_{i=1}^n (x_i - y_i)$，其中 $w_0$ 是最长置换
+\item 当 $y = 0$ 时，$S_w(x; 0) = S_w(x)$ 退化为经典 Schubert 多项式
+\end{itemize}
+\end{Definition}
+
+双重 Schubert 多项式是旗流形 $Fl_n(\mathbb{C})$ 的等变量子上同调类的 Lascoux-Schützenberger 型代表元。
+
+\subsection{等变量子上同调}
+
+\begin{Definition}[等变量子上同调]
+\label{def:EquivariantCohomology}
+设 $T \cong (\mathbb{C}^\times)^n$ 为一个 torus。空间 $X$ 上的 $T$-等变量子上同调定义为：
+\begin{equation}
+H_T^*(X) = H^*(X \times_T ET)
+\end{equation}
+其中 $ET$ 是 $T$ 的分类空间。
+
+对于旗流形 $Fl_n(\mathbb{C})$，其 $T$-等变量子上同调环 $H_T^*(Fl_n(\mathbb{C}))$ 具有由 Schubert 类生成的自由 $\mathbb{Z}[y_1, \ldots, y_n]$-模结构。
+\end{Definition}
+
+等变量子上同调将传统的上同调与 torus 的作用相结合，产生了丰富的代数结构。
+
+\subsection{Grassmannian 与 Grassmannian 排列}
+
+\begin{Definition}[Grassmannian]
+\label{def:Grassmannian}
+Grassmannian $Gr(k, n)$ 是 $n$ 维复向量空间中所有 $k$ 维子空间的集合。它是旗流形的特例，满足 $V_1 \subset V_2 \subset \cdots \subset V_k$ 的 flags。
+\end{Definition}
+
+\begin{Definition}[Grassmannian 排列]
+\label{def:GrassmannianPermutation}
+称置换 $w \in S_n$ 为 $k$-Grassmannian 排列，如果 $w$ 的逆序数满足：
+\begin{equation}
+w(1) < w(2) < \cdots < w(k) \quad \text{且} \quad w(k+1) > w(k+2) > \cdots > w(n)
+\end{equation}
+即前 $k$ 个位置递增，后 $n-k$ 个位置递减。
+
+$k$-Grassmannian 排列与 $Gr(k, n)$ 中的 Schubert 胞腔一一对应。
+\end{Definition}
+
+Grassmannian 排列是 Graham 原始 positivity 定理研究的对象。
+
+\subsection{除差算子}
+
+\begin{Definition}[除差算子]
+\label{def:DividedDifference}
+对于 $i = 1, \ldots, n-1$，除差算子 $\partial_i$ 定义为：
+\begin{equation}
+\partial_i(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldots, x_{i+1}, x_i, \ldots, x_n)}{x_i - x_{i+1}}
+\end{equation}
+更一般地，对于置换 $w$，定义其对应的除差算子 $\partial_w$ 为适当组合的 $\partial_i$。
+\end{Definition}
+
+除差算子是定义和研究 Schubert 多项式的重要工具。
+
+Skew 除差算子 $\partial_{w/v}$ 是上述定义的推广，用于计算 Schubert 结构常数。
+
 \section{引言}
 \label{sec:Introduction}
 
-双重 Schubert 多项式 $\{S_w(x; y) \mid w \in S_n\}$ 是旗流形 $Fl_n(\mathbb{C})$ 的等变量子上同调类 $\{[\mathcal{X}(w)]_T\}$ 的 Lascoux-Schützenberger 型代表元。其中 $x = (x_1, \ldots, x_n)$ 和 $y = (y_1, \ldots, y_n)$ 是两组变量序列。
+我们在\cref{def:DoubleSchubertPolynomial}中已经定义了\textbf{双重 Schubert 多项式} $\{S_w(x; y) \mid w \in S_n\}$，它是\textbf{旗流形} $Fl_n(\mathbb{C})$ 的\textbf{等变量子上同调}类 $\{[\mathcal{X}(w)]_T\}$ 的 Lascoux-Schützenberger 型代表元。其中 $x = (x_1, \ldots, x_n)$ 和 $y = (y_1, \ldots, y_n)$ 是两组变量序列。
 
 我们研究以下展开系数：
 \begin{equation}
@@ -18,7 +123,7 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 
 当 $y = t = 0$ 时，$c^w_{u,v} := c^w_{u,v}(0, 0) \in \mathbb{N}$ 是经典的 Schubert 结构常数，与 Hilbert 第十五问题密切相关。寻找这些系数${c^w_{u,v}}$的组合模型一直是代数组合和代数几何领域的核心问题。
 
-当 $u$ 和 $v$ 是 $k$-Grassmannian 排列时，Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem）：
+当 $u$ 和 $v$ 是 $k$-\textbf{Grassmannian 排列}时，Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem）：
 
 \begin{Theorem}[Graham Positivity Theorem]
 \label{def:GrahamPositivity}
