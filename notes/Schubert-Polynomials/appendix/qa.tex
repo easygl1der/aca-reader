@@ -22,6 +22,29 @@ $$\partial_i(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldot
 
 \textbf{例子}：设 $f = x_1$，则 $\partial_1(x_1) = \frac{x_1 - x_2}{x_1 - x_2} = 1$。
 
+\textbf{$n=3$ 的例子}：$S_3$ 中的置换可以用一维数组表示，如 $123$ 表示恒等置换，$321$ 表示最长置换 $w_0$。
+\begin{enumerate}
+\item $\partial_1(x_1) = 1$，因为 $\partial_1$ 交换 $x_1$ 和 $x_2$ 后相减得 $x_1 - x_2$，除以 $x_1 - x_2$ 得 $1$。
+\item $\partial_1(x_2) = -1$，因为 $\partial_1(x_2) = \frac{x_2 - x_1}{x_1 - x_2} = -1$。
+\item $\partial_1(x_1^2) = \frac{x_1^2 - x_2^2}{x_1 - x_2} = x_1 + x_2$。
+\item $\partial_1(x_1 x_2) = \frac{x_1 x_2 - x_2 x_1}{x_1 - x_2} = 0$。
+\item $\partial_2(x_2) = 1$（类似地，$\partial_2$ 交换 $x_2$ 和 $x_3$）。
+\item $\partial_1 \partial_2 (x_1)$：先作用 $\partial_2$，由于 $x_1$ 不依赖于 $x_2, x_3$，$\partial_2(x_1) = x_1$；再作用 $\partial_1$，得 $\partial_1(x_1) = 1$。
+\item $\partial_1 \partial_2 (x_1 x_3) = \partial_1(x_1 x_3) = x_1 + x_2$。
+\end{enumerate}
+
+\textbf{$n=4$ 的例子}：$S_4$ 中有 $4! = 24$ 个置换。设 $w = 3412$ 表示排列 $(1,2,3,4) \mapsto (3,4,1,2)$，可分解为 $w = s_1 s_2 s_1 s_3$（从右往左读）。
+\begin{enumerate}
+\item $\partial_1(x_1^2 x_3) = (x_1 + x_2) x_3$。
+\item $\partial_2 \partial_1 (x_3) = \partial_2(x_3) = x_3$（因为 $\partial_1$ 不改变不含 $x_1, x_2$ 的项）。
+\item 对于 $w = s_1 s_2$，有 $\partial_{s_1 s_2} = \partial_1 \partial_2$。计算 $\partial_1 \partial_2 (x_1)$：
+    $$\partial_2(x_1) = x_1, \quad \partial_1(x_1) = 1$$
+    所以 $\partial_{s_1 s_2}(x_1) = 1$。
+\item 对于置换 $w = 4321 = s_1 s_2 s_3 s_1 s_2 s_1$（最长置换 $w_0$），有
+    $$\partial_{w_0} = \partial_1 \partial_2 \partial_3 \partial_1 \partial_2 \partial_1$$
+    作用在单项式上会得到对称多项式。
+\end{enumerate}
+
 \textbf{置换对应的除差算子 $\partial_w$}：对于任意置换 $w \in S_n$，定义 $\partial_w$ 为适当组合的基本除差算子。例如，$w = s_i s_j$ 时，$\partial_w = \partial_i \partial_j$。
 
 \textbf{Skew 除差算子 $\partial_{w/v}$}：定义为两个除差算子的"商"：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$。可以更具体地理解为把 $f$ 先用 $v$ "向下"作用，再用 $w$ "向上"作用的结果。
