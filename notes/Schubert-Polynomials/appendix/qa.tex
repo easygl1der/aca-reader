@@ -16,9 +16,18 @@
 
 除差算子（divided difference operators）是 Schubert calculus 的核心工具，用于递归定义 Schubert 多项式。Skew 除差算子可以理解为两个除差算子的"商"，在展开系数计算中很重要。
 
-\textbf{基本的除差算子 $\partial_i$}：对于 $i = 1, \ldots, n-1$，定义为
-$$\partial_i(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldots, x_{i+1}, x_i, \ldots, x_n)}{x_i - x_{i+1}}$$
-其作用是交换相邻变量 $x_i$ 和 $x_{i+1}$ 后取差商。
+首先需要明确两个基本概念：
+
+\textbf{1. 基本置换 $s_i$}：在对称群 $S_n$ 中，$s_i$（$i = 1, \ldots, n-1$）表示交换位置 $i$ 和 $i+1$ 的基本置换。例如：
+\begin{itemize}
+\item 在 $S_3$ 中：$s_1 = (12)$ 表示交换 $1$ 和 $2$，即 $123 \mapsto 213$；$s_2 = (23)$ 表示交换 $2$ 和 $3$，即 $123 \mapsto 132$。
+\item 在 $S_4$ 中：$s_1 = (12)$，$s_2 = (23)$，$s_3 = (34)$。
+\end{itemize}
+任意置换 $w$ 都可以分解为基本置换的乘积 $w = s_{i_1} s_{i_2} \cdots s_{i_k}$。
+
+\textbf{2. 基本除差算子 $\partial_i = \partial_{s_i}$}：对于 $i = 1, \ldots, n-1$，$\partial_i$（也记作 $\partial_{s_i}$）定义为
+$$\partial_i(f) = \partial_{s_i}(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldots, x_{i+1}, x_i, \ldots, x_n)}{x_i - x_{i+1}}$$
+其作用是：先把函数中的 $x_i$ 和 $x_{i+1}$ 交换，再与原函数相减，最后除以 $x_i - x_{i+1}$。
 
 \textbf{例子}：设 $f = x_1$，则 $\partial_1(x_1) = \frac{x_1 - x_2}{x_1 - x_2} = 1$。
 
@@ -47,6 +56,108 @@ $$\partial_i(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldot
 
 \textbf{置换对应的除差算子 $\partial_w$}：对于任意置换 $w \in S_n$，定义 $\partial_w$ 为适当组合的基本除差算子。例如，$w = s_i s_j$ 时，$\partial_w = \partial_i \partial_j$。
 
-\textbf{Skew 除差算子 $\partial_{w/v}$}：定义为两个除差算子的"商"：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$。可以更具体地理解为把 $f$ 先用 $v$ "向下"作用，再用 $w$ "向上"作用的结果。
+\textbf{Skew 除差算子 $\partial_{w/v}$}：定义为 $\partial_{w/v} = \partial_w \circ \partial_v^{-1}$，其中 $\partial_v^{-1}$ 是 $\partial_v$ 的逆算子，$\circ$ 表示算子复合。这不是简单的函数除法，而是先对函数用 $\partial_v$ 的逆运算，再用 $\partial_w$ 作用。
 
-\textbf{例子}：设 $w = w_0$（最长置换），$v = s_i$，则 $\partial_{w_0/s_i} = \partial_{w_0} \circ \partial_{s_i}^{-1}$。在论文中，Skew 除差算子用于计算展开系数 $c^w_{u,v}$，其正性是 Kirillov 猜想的核心问题。
+\textbf{为什么这样定义？} 这个定义源于 Schubert calculus 中展开系数的表示。当我们想将某个多项式展开为 Schubert 多项式的线性组合时，Skew 除差算子提供了一种系统的计算方法。具体来说，如果 $S_w$ 是 Schubert 多项式，那么 $\partial_{w/v}(S_u)$ 给出了组合系数 $c^w_{u,v}$。
+
+\textbf{$n=3$ 中的 Skew 除差算子例子}：
+\begin{enumerate}
+\item $\partial_{s_1 / s_1} = \partial_{e}$：因为 $\partial_{s_1} \circ \partial_{s_1}^{-1} = \partial_{e}$（恒等算子）。
+\item $\partial_{s_1 s_2 / s_2} = \partial_{s_1} \circ \partial_{s_2}^{-1}$：先作用 $\partial_{s_2}^{-1}$（$\partial_{s_2}$ 的逆），再作用 $\partial_{s_1}$。
+\item 计算 $\partial_{s_1 s_2 / s_2}(x_1)$：
+    \begin{itemize}
+    \item $\partial_{s_2}(x_1) = x_1$（因为 $x_1$ 不依赖 $x_2, x_3$）
+    \item 所以 $\partial_{s_2}^{-1}(x_1) = x_1$
+    \item 再作用 $\partial_{s_1}$：$\partial_{s_1}(x_1) = 1$
+    \end{itemize}
+    因此 $\partial_{s_1 s_2 / s_2}(x_1) = 1$。
+\item 对于 $w = w_0 = 321$，$v = s_1 = (12)$，有 $\partial_{w_0 / s_1} = \partial_{w_0} \circ \partial_{s_1}^{-1}$。
+\end{enumerate}
+
+在论文中，Skew 除差算子用于计算展开系数 $c^w_{u,v}$，其正性是 Kirillov 猜想的核心问题。
+
+\section{逆除差算子的定义}
+\label{sec:InverseDividedDifference}
+
+\subsection{问题}
+逆除差算子是如何定义的？
+
+\subsection{回答}
+
+逆除差算子 $\partial_i^{-1}$ 是 $\partial_i$ 的逆算子，即满足 $\partial_i \circ \partial_i^{-1} = \partial_i^{-1} \circ \partial_i = \text{id}$（恒等算子）。
+
+\textbf{如何定义 $\partial_i^{-1}$？} 由于 $\partial_i$ 不是双射，其逆算子需要通过其他方式定义。在实际计算中，我们通常用以下方式理解：
+
+\textbf{方式一：作为算子的形式逆}
+将 $\partial_i^{-1}$ 视为一个形式算子，其满足 $\partial_i \partial_i^{-1} = 1$。这在组合数学中常用于生成函数的计算。
+
+\textbf{方式二：通过多项式商环}
+在多项式环 $\mathbb{Z}[x_1, \ldots, x_n]$ 中，$\partial_i$ 的像包含所有对称多项式，因此 $\partial_i^{-1}$ 可以理解为在商环中的逆。
+
+\textbf{$n=3$ 中的例子}：
+\begin{enumerate}
+\item $\partial_1(x_1) = 1$，所以 $\partial_1^{-1}(1) = x_1$（形式上）。
+\item $\partial_1(x_1^2) = x_1 + x_2$，所以 $\partial_1^{-1}(x_1 + x_2) = x_1^2$。
+\item 更一般地，$\partial_1^{-1}(x_1^k) = x_1^{k+1}$（形式上，因为 $\partial_1(x_1^{k+1}) = x_1^k + x_1^{k-1}x_2 + \cdots + x_2^{k+1}$）。
+\item $\partial_1 \partial_1^{-1}(f) = f$ 对所有多项式 $f$ 成立。
+\item $\partial_1^{-1} \partial_1(f)$ 不一定等于 $f$，因为 $\partial_1$ 不是满射。
+\end{enumerate}
+
+\textbf{在 Skew 除差算子中的作用}：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$ 中的 $\partial_v^{-1}$ 就是逆除差算子。它允许我们"撤销"一个除差算子的作用，从而定义更一般的组合。
+
+\section{等变量子上同调类的定义}
+\label{sec:EquivariantCohomologyClass}
+
+\subsection{问题}
+等变量子上同调类是如何定义的？
+
+\subsection{回答}
+
+等变量子上同调是结合了群作用的上同调理论。其核心思想是将空间的拓扑信息与群作用的不变量结合起来。
+
+\textbf{1. 定义}：设 $T \cong (\mathbb{C}^\times)^n$ 为一个 torus（即 $n$ 维复环面）。空间 $X$ 上的 $T$-等变量子上同调定义为：
+$$H_T^*(X) = H^*(X \times_T ET)$$
+其中 $ET$ 是 $T$ 的分类空间，$X \times_T ET$ 是 $X$ 与 $ET$ 的纤维积。
+
+\textbf{2. 几何直观}：$ET$ 是一个无穷维的复流形，满足 $T$ 在 $ET$ 上的作用是自由的。$X \times_T ET$ 可以理解为把每条轨道 $T \cdot x$ 压缩成一点。
+
+\textbf{3. Schubert 类}：在旗流形 $Fl_n(\mathbb{C})$ 中，每个 Schubert 胞腔 $\mathcal{X}(w)$ 对应一个同调类 $[\mathcal{X}(w)]$。其等变量子类 $[\mathcal{X}(w)]_T \in H_T^*(Fl_n(\mathbb{C}))$ 包含了更多关于 torus 作用的信息。
+
+\textbf{4. 双重 Schubert 多项式的来源}：$[\mathcal{X}(w)]_T$ 作为多项式代表元就是双重 Schubert 多项式 $S_w(x; y)$，其中：
+\begin{itemize}
+\item $x = (x_1, \ldots, x_n)$ 来自旗流形的基础类
+\item $y = (y_1, \ldots, y_n)$ 来自 torus $T$ 的作用
+\end{itemize}
+
+\textbf{5. 例子}：在 $Fl_n(\mathbb{C})$ 中，最长置换 $w_0$ 对应的 Schubert 类为：
+$$S_{w_0}(x; y) = \prod_{i=1}^n (x_i - y_i)$$
+这是因为 $S_{w_0}(x; 0) = x_1^{n-1} x_2^{n-2} \cdots x_{n-1}$ 是旗流形的基本类，而 $y$ 变量捕获了 torus 作用的修正。
+
+\section{Lascoux-Schützenberger 型代表元}
+\label{sec:LascouxSchutzenberger}
+
+\subsection{问题}
+Lascoux-Schützenberger 型代表元是如何定义的？
+
+\subsection{回答}
+
+Lascoux-Schützenberger 型代表元是旗流形上 Schubert 类的一种特殊的多项式代表元，由法国数学家 Alain Lascoux 和 Marcel-Paul Schützenberger 在 1980 年代引入。
+
+\textbf{1. 递归定义}： Schubert 多项式 $S_w(x_1, \ldots, x_n)$ 递归定义为：
+\begin{itemize}
+\item $S_{w_0}(x) = x_1^{n-1} x_2^{n-2} \cdots x_{n-1}$，其中 $w_0$ 是最长置换
+\item 如果 $w$ 不是最长置换，设 $i$ 是 $w$ 的最后一个 descent，则 $S_w = \partial_i(S_{w s_i})$
+\end{itemize}
+
+\textbf{2. 双重 Schubert 多项式}：引入第二组变量 $y = (y_1, \ldots, y_n)$ 后，双重 Schubert 多项式 $S_w(x; y)$ 定义为：
+$$S_w(x; y) = \sum_{u \leq w} (-1)^{\ell(w)-\ell(u)} \mathfrak{S}_u(x) \cdot \prod_{i=1}^n (x_i - y_{w(i)})$$
+其中求和取遍 Bruhat 序 $u \leq w$。
+
+\textbf{3. 性质}：Lascoux-Schützenberger 型代表元满足：
+\begin{itemize}
+\item $S_w(x; y)$ 是 $x$ 和 $y$ 的多项式
+\item 首项是 $x_1^{c_1} x_2^{c_2} \cdots$，其中 $c_i = \#\{j > i : w(j) < w(i)\}$
+\item 当 $y = 0$ 时，$S_w(x; 0) = S_w(x)$ 退化为经典 Schubert 多项式
+\end{itemize}
+
+\textbf{4. 为什么需要双重版本？} 等变量子上同调类 $[\mathcal{X}(w)]_T$ 需要额外的参数来编码 torus 作用的信息，这些信息由 $y$ 变量捕获。
