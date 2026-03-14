@@ -1,0 +1,120 @@
+% Chapter 2: Potential Outcomes
+% A First Course in Causal Inference - Peng Ding
+
+\chapter{潜在结果框架}
+
+\section{为什么需要潜在结果？}
+
+上一章我们看到了相关性与因果性的区别，以及 Yule-Simpson 悖论警告我们不要轻易从关联推断因果。
+
+现在我们要问：\textbf{有没有一种方法可以清晰地定义因果效应？}
+
+答案是肯定的，这就是\textbf{潜在结果框架（Potential Outcomes Framework）}，也被称为\textbf{Neyman-Rubin 因果模型}。
+
+这个框架的核心思想其实很简单：我们需要比较同一个个体在接受治疗和不接受治疗时的不同结果。
+
+\section{基本定义}
+
+考虑一个最简单的场景：我们想研究某种治疗（treatment）對 outcome 的因果效应。
+
+\begin{itemize}
+  \item 对于每个个体 $i$，我们有一个二元治疗变量 $T_i$:
+    \begin{itemize}
+      \item $T_i = 1$: 接受治疗（treatment group）
+      \item $T_i = 0$: 未接受治疗（control group）
+    \end{itemize}
+  \item $Y_i$: 观察到的结果（observed outcome）
+\end{itemize}
+
+关键概念是\textbf{潜在结果（Potential Outcomes）}：
+
+\begin{itemize}
+  \item $Y_i(1)$: 如果个体 $i$ 接受治疗，会观察到的结果
+  \item $Y_i(0)$: 如果个体 $i$ 未接受治疗，会观察到的结果
+\end{itemize}
+
+注意：对于每个个体，我们只能观察到一种情况下的结果，另一种是潜在的（potential）而非现实的。
+
+\section{个体因果效应}
+
+对于个体 $i$，\textbf{个体因果效应（Individual Treatment Effect, ITE）}定义为：
+
+\[
+\tau_i = Y_i(1) - Y_i(0)
+\]
+
+这衡量了治疗对这一个体的效果。
+
+但是，这里有一个根本性的困难——\textbf{因果推断的根本问题（Fundamental Problem of Causal Inference）}：
+
+\begin{center}
+\textit{我们无法同时观察到同一个体的 $Y_i(1)$ 和 $Y_i(0)$。}
+\end{center}
+
+\section{平均因果效应}
+
+由于我们无法观察到个体因果效应，我们退而求其次，关注\textbf{平均因果效应（Average Causal Effect, ACE）}：
+
+\[
+\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]
+\]
+
+这是所有个体因果效应的期望值。
+
+类似地，我们还可以定义：
+\begin{itemize}
+  \item \textbf{治疗组的平均因果效应}（Average Treatment Effect on the Treated, ATT）
+  \item \textbf{对照组的平均因果效应}（Average Treatment Effect on the Control, ATC）
+\end{itemize}
+
+\section{为什么要定义"潜在"结果？}
+
+也许你会问：为什么不直接定义"实际发生的结果"？
+
+原因是：\textbf{因果效应本质上是一个反事实（counterfactual）概念}。
+
+当我们问"这种药是否有效"时，我们实际上是在问："如果这个患者吃了药，结果会怎样？"但现实是，这个患者可能没有吃药，所以我们只能想象（counterfactual）另一种情况。
+
+这种潜在结果的思维方式，帮助我们澄清了因果效应的本质。
+
+\section{稳定单位治疗值假设（SUTVA）}
+
+使用潜在结果框架需要一些假设，其中最重要的是 SUTVA（Stable Unit Treatment Value Assumption）：
+
+\begin{Theorem}[SUTVA]
+  \begin{enumerate}
+    \item \textbf{一致性（Consistency）}: 对于每个个体，观察到的结果等于其对应治疗下的潜在结果：
+      \[
+      Y_i = T_i \cdot Y_i(1) + (1 - T_i) \cdot Y_i(0)
+      \]
+    \item \textbf{互不干扰（No interference）}: 一个个体的潜在结果不受其他个体治疗分配的影响：
+      \[
+      Y_i(t_1, \ldots, t_n) = Y_i(t_i) \quad \text{对所有 } t_1, \ldots, t_n
+      \]
+  \end{enumerate}
+\end{Theorem}
+
+简单来说，SUTVA 假设：
+\begin{itemize}
+  \item 治疗效果是稳定的
+  \item 你的结果不受他人治疗的影响
+\end{itemize}
+
+这些假设在很多实际场景中可能不成立（例如，疫苗的群体免疫效应就违反了互不干扰假设），我们需要根据具体情况判断是否适用。
+
+\section{本章小结}
+
+本章我们建立了因果推断的数学基础：
+
+\begin{enumerate}
+  \item \textbf{潜在结果框架}：为每个个体定义 $Y_i(1)$ 和 $Y_i(0)$
+  \item \textbf{个体因果效应}：$\tau_i = Y_i(1) - Y_i(0)$
+  \item \textbf{平均因果效应}：$\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]$
+  \item \textbf{根本问题}：我们无法同时观察到两种潜在结果
+  \item \textbf{SUTVA 假设}：保证潜在结果框架的有效性
+\end{enumerate}
+
+下一章我们将学习\textbf{随机实验（Randomized Experiments）}——在某些情况下，我们可以绕过因果推断的根本问题，直接识别因果效应。
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)

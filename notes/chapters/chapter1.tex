@@ -1,0 +1,92 @@
+% Chapter 1: Correlation, Association, and the Yule–Simpson Paradox
+% A First Course in Causal Inference - Peng Ding
+
+\chapter{相关性、关联与 Yule-Simpson 悖论}
+
+\section{本章导论}
+
+本章我们要回答一个看似简单却至关重要的问题：\textbf{相关性能否直接告诉我们因果关系？}
+
+在日常生活中，我们经常听到这样的话：
+\begin{itemize}
+  \item "吸烟会导致肺癌"
+  \item "教育水平越高，收入越高"
+  \item "经常锻炼的人更长寿"
+\end{itemize}
+
+这些陈述都试图建立因果关系。但我们是如何得出这些结论的？仅仅因为我们观察到了相关性（correlation）就足够了么？
+
+\section{为什么这个问题很重要}
+
+想象一下以下场景：
+
+\begin{Example}
+一家公司想要知道某种新药是否有效。他们给一组患者服用新药，另一组服用安慰剂。结果显示服药组的康复率更高。这能否说明药物有效？
+\end{Example}
+
+直觉告诉我们，这似乎能说明问题。但仔细想想，还有很多其他因素可能影响结果：
+\begin{itemize}
+  \item 也许服药组的患者本身就更健康
+  \item 也许医生在给药时，无意中对服药组患者更加关照
+  \item 也许这只是随机波动
+\end{itemize}
+
+这就是因果推断（causal inference）的核心挑战：\textbf{我们观察到的关联（association），并不等于因果关系（causal relationship）}。
+
+\section{相关性与因果性的区别}
+
+统计学中，我们用不同的术语来区分这些概念：
+
+\begin{itemize}
+  \item \textbf{相关性（Correlation）}: 两个变量共同变化的趋势
+  \item \textbf{关联（Association）}: 统计学意义上的依赖关系
+  \item \textbf{因果性（Causation）}: 一个变量的变化直接导致另一个变量变化
+\end{itemize}
+
+关键洞察：\textit{相关性可以是因果的，也可以是非因果的。}
+
+\section{Yule-Simpson 悖论}
+
+悖论的核心思想：在总体中观察到的关联方向，可能与分层后各组中的关联方向相反。
+
+\begin{Example}[经典的 Yule-Simpson 悖论例子]
+考虑一个大学录取数据：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+院系 & 男生录取率 & 女生录取率 \\
+\hline
+A & 62\% (341/550) & 82\% (137/167) \\
+B & 63\% (28/44) & 68\% (24/35) \\
+\hline
+\textbf{总体} & \textbf{45\% (369/816)} & \textbf{30\% (161/525)} \\
+\hline
+\end{tabular}
+\end{center}
+
+有趣的现象：
+\begin{itemize}
+  \item 在 A 院系，男女生录取率分别是 62\% 和 82\%
+  \item 在 B 院系，男女生录取率分别是 63\% 和 68\%
+  \item 但总体来看，男生的录取率反而更高！
+\end{itemize}
+
+这就是 Yule-Simpson 悖论：\textbf{在每个分层中都有利的因素，在总体中可能不利}。
+\end{Example}
+
+这个例子揭示了一个深刻的问题：\textit{如果我们不控制混杂因素（confounding factors），就可能得出完全错误的因果结论}。
+
+\section{本章小结与下节预告}
+
+本章的核心要点：
+\begin{enumerate}
+  \item \textbf{相关性 $\neq$ 因果性}：观察到的关联可能是由于混杂因素造成的
+  \item \textbf{Yule-Simpson 悖论}：总体关联可能与分层关联方向相反
+  \item \textbf{因果推断的必要性}：我们需要系统性的方法来区分真实的因果效应
+\end{enumerate}
+
+下一章我们将学习因果推断的基石——\textbf{潜在结果框架（Potential Outcomes Framework）}，这将为我们的因果分析提供坚实的数学基础。
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)

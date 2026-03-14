@@ -31,14 +31,100 @@ user-invocable: true
 ## 文件结构
 
 ```
-main.tex
-├── chapters/chapter1/
-│   ├── section1.tex
-│   ├── section2.tex
-│   └── ...
-├── chapters/chapter2/
-│   └── ...
-└── appendix/qa.tex
+notes/
+├── main.tex              % 主文件
+├── chapters/
+│   ├── chapter1.tex
+│   ├── chapter2.tex
+│   └── chapter3.tex
+└── appendix/
+    └── qa.tex
+```
+
+## LaTeX 格式规范（必须遵守）
+
+### main.tex 必要包
+
+```latex
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}           % 图片
+\usepackage{hyperref}           % 超链接
+\usepackage{geometry}           % 页面布局
+
+% Theorem 环境定义（使用 amsthm）
+\theoremstyle{plain}
+\newtheorem{Definition}{定义}[chapter]
+\newtheorem{Theorem}[Definition]{定理}
+\newtheorem{Lemma}[Definition]{引理}
+\newtheorem{Corollary}[Definition]{推论}
+\newtheorem{Proposition}[Definition]{命题}
+\newtheorem{Example}{例}[chapter]
+\newtheorem{Remark}{注}[chapter]
+```
+
+### 定义/定理环境使用规则
+
+**【重要】禁止在 Definition/Theorem 环境中使用 itemize！**
+
+错误示例：
+```latex
+\begin{Definition}
+\begin{itemize}
+  \item 条件1
+  \item 条件2
+\end{itemize}
+\end{Definition}
+```
+
+正确示例（使用 enumerate 或 description）：
+```latex
+\begin{Definition}[完全随机实验]
+设有 $n$ 个样本，其中 $n_1$ 个被分配到治疗组。完全随机实验满足以下条件：
+\begin{enumerate}
+  \item 每个个体被分配到治疗组的概率为 $n_1/n$；
+  \item 治疗组总人数固定为 $n_1$；
+  \item 个体之间相互独立。
+\end{enumerate}
+\end{Definition}
+```
+
+或者使用 description：
+```latex
+\begin{Definition}
+完全随机实验（Completely Randomized Experiment）满足：
+\begin{description}
+  \item[概率] 每个个体被分配到治疗组的概率为 $n_1/n$；
+  \item[人数] 治疗组总人数固定为 $n_1$；
+  \item[独立性] 个体之间相互独立。
+\end{description}
+\end{Definition}
+```
+
+### 图片使用
+
+```latex
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/chapter3/example.pdf}
+  \caption{图示说明}
+  \label{fig:example}
+\end{figure}
+```
+
+### 用户注解格式
+
+使用自定义命令：
+
+```latex
+\newcommand{\userannotation}[2]{%
+  \begin{trivlist}
+    \item[\textbf{用户注解:}] #1
+    \textit{#2}
+  \end{trivlist}
+}
+
+% 使用方式
+\userannotation{为什么需要学生化统计量？}{当治疗组和对照组的方差差异较大时...}
 ```
 
 ## 用户注解格式
@@ -50,3 +136,5 @@ main.tex
 % 解答：...
 % 关联：与第2章的XX定理有关联
 % ===
+
+或者使用 \userannotation 命令。

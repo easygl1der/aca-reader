@@ -1,0 +1,257 @@
+% Chapter 3: Randomized Experiments
+% A First Course in Causal Inference - Peng Ding
+
+\chapter{完全随机实验与 FRT}
+
+\section{为什么需要随机实验？}
+
+在上一章中，我们学习了潜在结果框架，知道了因果效应的定义：
+\[
+\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]
+\]
+
+但我们也认识到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，无法同时观察到 $Y_i(1)$ 和 $Y_i(0)$。
+
+那么，如何解决这个问题？如何才能识别（identify）因果效应？
+
+\textbf{答案就是：随机实验。}
+
+\section{随机实验的基本思想}
+
+随机实验的核心思想非常简单但极其强大：
+
+\begin{center}
+\textbf{通过随机分配治疗，使得治疗组和对照组在平均意义上是"可比"的。}
+\end{center}
+
+当我们随机分配治疗时，治疗分配 $T_i$ 与潜在结果 $Y_i(0), Y_i(1)$ 是独立的：
+\[
+T_i \perp Y_i(0), Y_i(1)
+\]
+
+这意味着，随机分配能够自动平衡两组之间的所有混杂因素（无论是我们已知的还是未知的）。
+
+\section{完全随机实验的定义}
+
+\begin{Definition}[完全随机实验]
+设有 $n$ 个样本，其中 $n_1$ 个被分配到治疗组，$n_0 = n - n_1$ 个被分配到对照组。完全随机实验（Completely Randomized Experiment）满足以下条件：
+\begin{enumerate}
+  \item 每个个体被分配到治疗组的概率为 $n_1/n$；
+  \item 治疗组总人数固定为 $n_1$；
+  \item 个体之间相互独立。
+\end{enumerate}
+\end{Definition}
+
+在完全随机实验下，我们可以证明：
+\[
+\mathbb{E}[\bar{Y}(1) - \bar{Y}(0)] = \tau_{ATE}
+\]
+
+也就是说，\textbf{观察到的组间差异就是平均因果效应的无偏估计}！这正是随机实验的魔力所在。
+
+\section{费舍尔随机化检验（FRT）}
+
+虽然随机实验可以估计因果效应，但我们还需要统计检验来判断观察到的效应是否是真实的，而不是随机波动造成的。
+
+\textbf{费舍尔（Ronald Fisher）} 提出了一个优雅的解决方案——费舍尔随机化检验（Fisher's Randomization Test, FRT）。
+
+\subsection{为什么需要 FRT？}
+
+传统统计方法依赖于"正态分布假设"——假设数据来自正态分布。但在因果推断中，我们的"总体"是有限的（finite population），而且我们关心的是特定处理分配的随机性，而不是从某个分布中抽样。
+
+FRT 的核心思想是：\textbf{在零假设下，所有可能的治疗分配都是等可能的}。因此，我们可以精确计算检验的 p 值，而不需要任何分布假设。
+
+\subsection{零假设}
+
+FRT 的零假设是：
+\[
+H_0: Y_i(0) = Y_i(1) \quad \text{对所有 } i
+\]
+也就是说，治疗没有任何效果（所有个体的潜在结果都相等）。
+
+在这个零假设下，观察到的结果 $Y_i$ 就等于 $Y_i(0) = Y_i(1)$，与治疗分配无关。
+
+\section{检验统计量的选择}
+
+在 FRT 框架下，我们可以选择不同的检验统计量。不同的统计量对不同的备择假设有不同的功效（power）。
+
+\subsection{差值均值（Difference-in-means）}
+
+最直观的统计量是差值均值：
+\[
+\hat{\tau} = \bar{Y}(1) - \bar{Y}(0)
+\]
+
+在零假设下，$\hat{\tau}$ 的期望为 0，方差为：
+\[
+\text{Var}(\hat{\tau}) = \frac{s^2}{n_1 n_0}
+\]
+其中 $s^2$ 是合并的样本方差。
+
+利用有限总体中心极限定理（Finite Population CLT），我们可以得到：
+\[
+\frac{\hat{\tau}}{\sqrt{s^2/(n_1 n_0)}} \xrightarrow{d} N(0, 1)
+\]
+
+有趣的是，这个统计量与经典的方差相等的 t 检验统计量非常接近！
+
+\subsection{学生化统计量（Studentized statistic）}
+
+差值均值假设两组方差相等。如果两组方差不相等（异方差），我们需要使用学生化统计量：
+\[
+t = \frac{\bar{Y}(1) - \bar{Y}(0)}{\sqrt{\hat{S}^2(1)/n_1 + \hat{S}^2(0)/n_0}}
+\]
+
+这个统计量与方差不等的 t 检验统计量（\texttt{t.test(var.equal = FALSE)}）渐近等价。
+
+\userannotation{为什么需要学生化统计量？}{当治疗组和对照组的方差差异较大时，差值均值的检验可能失效。学生化统计量通过分别估计两组的方差，能够更好地处理这种异方差情况。}
+
+\subsection{Wilcoxon 秩和统计量}
+
+差值均值和学生化统计量都使用原始观测值，因此对异常值（outliers）敏感。一个更稳健的选择是 Wilcoxon 秩和统计量：
+
+\[
+W = \sum_{i=1}^n Z_i R_i
+\]
+
+其中 $R_i$ 是 $Y_i$ 在合并样本中的秩。
+
+Wilcoxon 秩和统计量的优点是：
+\begin{itemize}
+  \item 对异常值稳健
+  \item 只依赖于数据的秩次信息
+  \item 在许多备择假设下都有较好的功效
+\end{itemize}
+
+\subsection{Kolmogorov-Smirnov 统计量}
+
+上述统计量主要关注均值差异。但治疗效应可能以其他方式体现（例如改变分布的形状）。KS 统计量衡量两个分布之间的最大差距：
+\[
+D = \max_y |\hat{F}_1(y) - \hat{F}_0(y)|
+\]
+
+这个统计量能够检测分布形状的差异，而不仅仅是均值差异。
+
+\section{LaLonde 实验数据案例}
+
+LaLonde (1986) 的实验数据是因果推断领域的经典案例。
+
+\subsection{背景}
+
+LaLonde 研究了一项职业培训项目（National Supported Work Demonstration）对参与者收入的影响。实验将参与者随机分配到治疗组（接受培训）或对照组（不接受培训），观察他们在 1978 年的真实收入（re78）。
+
+\subsection{R 语言分析基础}
+
+本案例使用 R 语言的 \texttt{Matching} 包进行 FRT 分析。数据可以直接从 R 中加载：
+
+\begin{verbatim}
+> library(Matching)
+> data(lalonde)
+> z <- lalonde\$treat
+> y <- lalonde\$re78
+\end{verbatim}
+
+其中：
+\begin{itemize}
+  \item \texttt{z}: 二元治疗向量（1 = 治疗组，0 = 对照组）
+  \item \texttt{y}: 1978 年真实收入（outcome）
+\end{itemize}
+
+\subsection{数据分析}
+
+使用 R 语言进行 FRT 分析的结果：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+统计量 & 观测值 & 描述 \\
+\hline
+$\hat{\tau}$ & 2.84 & 差值均值 \\
+$t$ & 2.67 & 学生化统计量 \\
+$W$ & 27402.5 & Wilcoxon 秩和 \\
+$D$ & 0.132 & KS 统计量 \\
+\hline
+\end{tabular}
+\end{center}
+
+通过随机置换治疗向量 $10{,}000$ 次，我们可以得到这些统计量的随机化分布，进而计算精确 p 值。
+
+\section{FRT 与传统 t 检验的关系}
+
+一个非常重要的洞察是：
+
+\begin{center}
+\textbf{FRT 为传统 t 检验提供了理论依据！}
+\end{center}
+
+传统 t 检验基于"数据来自正态分布"的假设。但在 FRT 框架下，即使数据不服从正态分布，只要有限总体中心极限定理成立，t 检验程序仍然可以使用！
+
+这是因为 FRT 的渐近性质只依赖于有限总体 CLT，而 CLT 对很多分布都是成立的。
+
+\userannotation{FRT 的意义是什么？}{FRT 证明了传统统计方法在因果推断中的合理性。我们不需要担心正态性假设是否满足，只需要关注随机化分配是否正确执行。}
+
+\subsection{FRT 与 t 检验的对比}
+
+在实际应用中，我们需要理解两者在什么情况下相同、什么情况下不同。
+
+\textbf{相同的时候：}
+\begin{enumerate}
+  \item \textbf{大样本下渐近等价}：当样本量足够大时，差值均值 $\hat{\tau}$ 与方差相等的 t 检验渐近等价；学生化统计量 $t$ 与方差不等的 t 检验渐近等价。
+  \item \textbf{零假设 $H_0: Y_i(0) = Y_i(1)$ 时}：两者都检验"治疗没有任何效果"。
+\end{enumerate}
+
+\textbf{不同的时候：}
+\begin{enumerate}
+  \item \textbf{理论基础不同}：t 检验假设数据来自正态分布（无限总体），而 FRT 基于治疗分配的随机性（有限总体）。
+  \item \textbf{小样本时}：FRT 可以给出精确的有限样本 p 值，而 t 检验依赖正态性假设，在小样本时可能不准确。
+  \item \textbf{异方差情况下}：当两组方差不相等时，FRT 的功效可能低于方差不等的 t 检验。
+\end{enumerate}
+
+\textbf{实际选择建议：}
+\begin{itemize}
+  \item 大样本、正态/近似正态：两者皆可，结果相近；
+  \item 小样本、非正态：FRT 更可靠；
+  \item 已知两组方差不等：t 检验（\texttt{var.equal=FALSE}）可能更有效；
+  \item 需要精确 p 值：优先使用 FRT。
+\end{itemize}
+
+\section{3.6 讨论}
+
+\subsection{其他 Sharp Null 假设与置信区间}
+
+除了之前讨论的 sharp null 假设 $H_0: Y_i(0) = Y_i(1)$（所有个体的治疗效应为零），FRT 框架还可以应用于其他假设。
+
+例如，我们可以检验弱 null 假设 $H_0: \tau_{ATE} = 0$（平均因果效应为零，但个体效应可能不为零）。在这种情况下，我们需要更多假设来构建置信区间。
+
+\subsection{FRT 的优势与局限}
+
+\textbf{优势：}
+\begin{itemize}
+  \item 不需要任何分布假设；
+  \item 提供精确的有限样本 p 值；
+  \item 理论基础稳固——完全基于随机化设计。
+\end{itemize}
+
+\textbf{局限：}
+\begin{itemize}
+  \item 计算复杂度高（当样本量大时）；
+  \item 只能检验 sharp null 假设；
+  \item 对于连续型结果，精确检验可能功效较低。
+\end{itemize}
+
+\section{本章小结}
+
+本章我们学习了因果推断的"金标准"——随机实验：
+
+\begin{enumerate}
+  \item \textbf{随机实验}：通过随机分配平衡混杂因素，使得观察到的组间差异可以直接解释为因果效应
+  \item \textbf{费舍尔随机化检验（FRT）}：基于治疗分配随机性的精确检验方法
+  \item \textbf{多种检验统计量}：差值均值、学生化统计量、Wilcoxon 秩和、KS 统计量
+  \item \textbf{LaLonde 案例}：经典的实际应用示例
+  \item \textbf{理论意义}：FRT 为传统 t 检验提供了更坚实的基础
+\end{enumerate}
+
+下一章我们将学习如何在观察性研究（observational study）中估计因果效应——这需要更多的假设和方法。
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)
