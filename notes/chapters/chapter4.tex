@@ -1,0 +1,348 @@
+% Chapter 4: Completely Randomized Experiment and Neymanian Inference
+% A First Course in Causal Inference - Peng Ding
+
+\chapter{完全随机实验与 Neymanian 推断}
+
+\section{为什么需要 Neymanian 推断？}
+
+在上一章中，我们学习了费舍尔随机化检验（FRT）。FRT 的核心思想是基于治疗分配的随机性，在零假设下我们可以精确计算 p 值。
+
+但是，FRT 也有一些局限：
+\begin{itemize}
+  \item 只能检验 sharp null 假设（所有个体因果效应为零）
+  \item 对于构建置信区间，需要额外的假设
+  \item 当样本量很大时，计算所有可能置换变得不可行
+\end{itemize}
+
+\textbf{Neymanian 推断} 提供了一种互补的方法：它基于\textbf{渐近正态分布}，可以更方便地构建置信区间和进行假设检验。
+
+\section{Neymanian 框架的基本思想}
+
+Neymanian 推断的核心是利用有限总体中心极限定理（Finite Population CLT）。
+
+与 FRT 不同，Neymanian 推断不需要检验特定的 null 假设，而是直接对因果效应进行统计推断。
+
+\userannotation{为什么需要两种方法？}{FRT 适用于小样本精确推断，Neymanian 适用于大样本渐近推断。两者互为补充。}
+
+\subsection{有限总体量（4.1节定义）}
+
+\textbf{有限总体量（不带 hat）}是固定的真值：
+
+\begin{itemize}
+  \item $n$：总样本量，$n_1$：处理组样本量，$n_0$：对照组样本量
+  \item $\bar{Y}(1) = n^{-1}\sum_{i=1}^n Y_i(1)$：处理组的有限总体均值
+  \item $\bar{Y}(0) = n^{-1}\sum_{i=1}^n Y_i(0)$：对照组的有限总体均值
+  \item $S^2(1) = (n-1)^{-1}\sum_{i=1}^n (Y_i(1)-\bar{Y}(1))^2$：处理组的有限总体方差
+  \item $S^2(0) = (n-1)^{-1}\sum_{i=1}^n (Y_i(0)-\bar{Y}(0))^2$：对照组的有限总体方差
+  \item $S(1,0) = (n-1)^{-1}\sum_{i=1}^n (Y_i(1)-\bar{Y}(1))(Y_i(0)-\bar{Y}(0))$：有限总体协方差
+  \item $S^2(\tau) = (n-1)^{-1}\sum_{i=1}^n (\tau_i - \bar{\tau})^2$：个体因果效应 $\tau_i = Y_i(1)-Y_i(0)$ 的方差
+  \item $\tau = \bar{Y}(1) - \bar{Y}(0)$：平均处理效应（ACE）的真值
+\end{itemize}
+
+\userannotation{为什么需要协方差？}{因为潜在结果 Y(1) 和 Y(0) 之间可能有相关性，这会影响估计量的方差。}
+
+\begin{Lemma}[Lemma 4.1]\label{lemm:4.1}
+有限总体协方差与方差之间的关系：
+\[
+2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)
+\]
+其中 $\tau_i = Y_i(1) - Y_i(0)$ 是个体因果效应。
+\end{Lemma}
+
+\section{点估计与方差估计}
+
+\subsection{点估计}
+
+与 FRT 相同，Neymanian 推断使用差值均值作为平均因果效应的估计。样本均值定义为：
+
+\[
+\hat{\bar{Y}}(1) = \frac{1}{n_1}\sum_{i=1}^n Z_i Y_i, \quad \hat{\bar{Y}}(0) = \frac{1}{n_0}\sum_{i=1}^n (1-Z_i) Y_i
+\]
+
+则点估计为：
+\[
+\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)
+\]
+
+这是一个\textbf{无偏估计}：$\mathbb{E}[\hat{\tau}] = \tau$。
+
+\subsection{方差估计}
+
+Neymanian 框架下的方差估计是：
+
+\[
+\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}
+\]
+
+其中样本方差（用 $n_1-1$ 或 $n_0-1$ 作为除数）是有限总体方差的估计：
+\begin{itemize}
+  \item $\hat{S}^2(1) = \frac{1}{n_1 - 1} \sum_{i=1}^n Z_i (Y_i - \hat{\bar{Y}}(1))^2$
+  \item $\hat{S}^2(0) = \frac{1}{n_0 - 1} \sum_{i=1}^n (1-Z_i) (Y_i - \hat{\bar{Y}}(0))^2$
+\end{itemize}
+
+\begin{Theorem}[Neyman's Theorem (Theorem 4.1)]\label{neyman_theorem}
+在完全随机实验下，估计量 $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$ 的\textbf{方差}为：
+\[
+\text{Var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}
+\]
+其中 $S^2(1), S^2(0), S^2(\tau)$ 是4.1节定义的有限总体方差。
+
+由于我们不知道 $S^2(\tau)$，实际使用的是 Neymanian 方差估计（用样本方差代替总体方差）：
+\[
+\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}
+\]
+其中样本均值（带 hat）和样本方差（带 hat）的定义来自4.2节：
+\begin{itemize}
+  \item $\hat{\bar{Y}}(1) = n_1^{-1}\sum_{i=1}^n Z_i Y_i$：处理组的样本均值
+  \item $\hat{\bar{Y}}(0) = n_0^{-1}\sum_{i=1}^n (1-Z_i) Y_i$：对照组的样本均值
+  \item $\hat{S}^2(1) = (n_1-1)^{-1}\sum_{i=1}^n Z_i \{Y_i - \hat{\bar{Y}}(1)\}^2$：处理组的样本方差
+  \item $\hat{S}^2(0) = (n_0-1)^{-1}\sum_{i=1}^n (1-Z_i)\{Y_i - \hat{\bar{Y}}(0)\}^2$：对照组的样本方差
+\end{itemize}
+
+由于 $S^2(\tau) \geq 0$（方差非负），我们得到：
+\[
+\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0} \geq \text{Var}(\hat{\tau})
+\]
+即 Neymanian 方差估计 $\hat{V}$ 是真实方差的上界，是\textbf{保守的}（conservative）。
+\end{Theorem}
+
+\userannotation{为什么叫保守估计？}{因为我们用 $\hat{V}$ 代替真实方差时，会高估方差。这会导致更宽的置信区间，虽然不够精确，但不会过度自信，不会错误地拒绝真的零假设。}
+
+\subsection{\cref{neyman_theorem} 的证明（4.3节）}
+
+\textbf{证明：}
+
+\textbf{（1）无偏性证明}
+
+由定义，
+\[
+\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) = \frac{1}{n_1}\sum_{i=1}^n Z_i Y_i - \frac{1}{n_0}\sum_{i=1}^n (1-Z_i)Y_i
+\]
+
+将 $Y_i$ 替换为潜在结果 $Y_i(1)$ 和 $Y_i(0)$：
+\[
+\hat{\tau} = \frac{1}{n_1}\sum_{i=1}^n Z_i Y_i(1) - \frac{1}{n_0}\sum_{i=1}^n (1-Z_i)Y_i(0)
+\]
+
+取期望（注意：潜在结果是固定值，只有 $Z_i$ 是随机的）：
+\[
+\begin{aligned}
+\mathbb{E}[\hat{\tau}] &= \frac{1}{n_1}\sum_{i=1}^n \mathbb{E}[Z_i]Y_i(1) - \frac{1}{n_0}\sum_{i=1}^n \mathbb{E}[1-Z_i]Y_i(0) \\
+&= \frac{1}{n_1}\sum_{i=1}^n \frac{n_1}{n}Y_i(1) - \frac{1}{n_0}\sum_{i=1}^n \frac{n_0}{n}Y_i(0) \\
+&= \frac{1}{n}\sum_{i=1}^n Y_i(1) - \frac{1}{n}\sum_{i=1}^n Y_i(0) \\
+&= \bar{Y}(1) - \bar{Y}(0) = \tau
+\end{aligned}
+\]
+其中用到 $\mathbb{E}[Z_i] = n_1/n$（见 \cref{def:cre} 完全随机实验的性质）。
+
+\textbf{（2）方差公式证明}
+
+将 $\hat{\tau}$ 重新整理为：
+\[
+\hat{\tau} = \frac{1}{n}\sum_{i=1}^n \left( \frac{Y_i(1)}{n_1/n} - \frac{Y_i(0)}{n_0/n} \right) Z_i - \bar{Y}(0)
+\]
+
+使用简单随机抽样的方差公式（见教材 Lemma C.2），得：
+\[
+\text{Var}(\hat{\tau}) = \frac{n_0^2}{n_1 n} S^2(1) + \frac{n_1^2}{n_0 n} S^2(0) + \frac{2}{n} S(1,0)
+\]
+
+利用 \cref{lemm:4.1}：$2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)$，化简得：
+\[
+\text{Var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}
+\]
+
+\textbf{（3）方差估计的无偏性}
+
+因为处理组是从 $n$ 个单位中简单随机抽取的 $n_1$ 个单位，样本方差是总体方差的无偏估计：
+\[
+\mathbb{E}[\hat{S}^2(1)] = S^2(1), \quad \mathbb{E}[\hat{S}^2(0)] = S^2(0)
+\]
+
+因此：
+\[
+\mathbb{E}[\hat{V}] = \mathbb{E}\left[\frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}\right] = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0}
+\]
+
+即 $\hat{V}$ 对公式 (4.1) 的前两项是无偏的，但无法估计第三项 $S^2(\tau)/n$，因此是保守估计。
+
+\userannotation{为什么 \cref{lemm:4.1} 有用？}{它建立了协方差与三个方差之间的关系，使得方差公式可以写成两种等价形式，方便理解和应用。}
+
+\section{置信区间}
+
+利用有限总体中心极限定理，我们可以构建置信区间：
+
+\[
+\hat{\tau} \pm z_{\alpha/2} \sqrt{\hat{V}}
+\]
+
+其中 $z_{\alpha/2}$ 是标准正态分布的分位数。
+
+\userannotation{保守意味着什么？}{保守的方差估计会导致更宽的置信区间。这意味着我们的推断更"安全"——不会过度自信。}
+
+\section{Neymanian 推断与 OLS 的关系}
+
+在实际应用中，很多研究者使用 OLS（普通最小二乘法）来估计因果效应。
+
+\subsection{OLS 估计}
+
+对于二元处理变量，OLS 估计量与差值均值估计量是等价的：
+
+\[
+\hat{\tau}_{OLS} = \bar{Y}(1) - \bar{Y}(0) = \hat{\tau}
+\]
+
+\subsection{标准误的比较}
+
+然而，OLS 的默认标准误与 Neymanian 标准误有所不同：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+估计方法 & 点估计 & 标准误 \\
+\hline
+Neymanian & 1794.34 & 670.99 \\
+OLS (默认) & 1794.34 & 632.85 \\
+OLS (HC2 稳健) & 1794.34 & 670.99 \\
+\hline
+\end{tabular}
+\end{center}
+
+可以看到，OLS 默认的标准误偏小，而使用 EHW（异方差稳健）标准误后与 Neymanian 估计一致！
+
+这就是为什么在因果推断中使用稳健标准误非常重要。
+
+\section{模拟验证（4.5.1节）}
+
+为了验证 Neymanian 推断的理论性质，我们进行模拟实验。
+
+\subsection{实验设置}
+
+设定样本量 $n = 100$，其中 $n_1 = 60$ 接受处理，$n_0 = 40$ 为对照组。
+
+我们考虑三种潜在结果的相关结构：
+\begin{enumerate}
+  \item \textbf{恒定因果效应}：$\tau_i = 1$ 对所有单位
+  \item \textbf{负相关}：处理组潜在结果与对照组负相关
+  \item \textbf{独立}：两组潜在结果独立生成
+\end{enumerate}
+
+注意：在这三种情况下，边缘分布相同，但相关性不同。
+
+\subsection{模拟结果}
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+ & 恒定效应 & 负相关 & 独立 \\
+\hline
+真实方差 & 0.036 & 0.007 & 0.020 \\
+估计方差 & 0.036 & 0.036 & 0.036 \\
+95\% CI 覆盖率 & 94.7\% & 100\% & 98.9\% \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{关键发现：}
+\begin{itemize}
+  \item 真实方差依赖于潜在结果之间的相关性
+  \item 正相关 $\Rightarrow$ 更大的抽样方差
+  \item 估计方差在三种情况下几乎相同（只依赖于边缘分布）
+  \item 只有在恒定因果效应下，估计方差 = 真实方差
+\end{itemize}
+
+这验证了 \cref{neyman_theorem} 的公式：$\text{Var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$
+
+\userannotation{为什么相关性影响方差？}{当潜在结果正相关时，处理组恰好选中较大的潜在结果时，对照组也恰好选中较大的潜在结果（但我们没观察到），导致估计的因果效应偏大。这种"运气"差异增加了估计的不确定性。}
+
+\section{重尾分布与正态近似的失效（4.5.2节）}
+
+Theorem 4.2 的渐近正态性依赖于一些正则条件。当潜在结果服从重尾分布（如 Cauchy 分布）时，这些条件可能被违反。
+
+\subsection{模拟实验}
+
+将潜在结果中按 10\%, 30\%, 50\% 的概率混入 Cauchy 分布：
+
+\begin{verbatim}
+eps = rbinom(n, 1, 0.1)
+y0 = rexp(n)
+y0[eps == 1] = rcauchy(sum(eps))
+y1 = y0 + 1
+\end{verbatim}
+
+\subsection{结果}
+
+当污染概率增加时：
+\begin{itemize}
+  \item 正态近似变得越来越不准确
+  \item 置信区间的覆盖率显著低于标称的 95\%
+  \item CLT 的条件：$\max_i |Y_i - \bar{Y}|^2 / n \to 0$ 不再满足
+\end{itemize}
+
+这提醒我们：在实际应用中，需要检查数据的分布特征，确保满足正态近似的条件。
+
+\userannotation{实际应用启示}{如果数据存在重尾或极端值，考虑：1) 数据变换；2) 使用稳健推断方法；3) 使用 bootstrap。}
+
+\section{LaLonde 数据案例}
+
+使用 LaLonde 数据演示 Neymanian 推断：
+
+\begin{verbatim}
+> library(Matching)
+> data(lalonde)
+> z <- lalonde\$treat
+> y <- lalonde\$re78
+> n1 <- sum(z)
+> n0 <- length(z) - n1
+> tauhat <- mean(y[z==1]) - mean(y[z==0])
+> vhat <- var(y[z==1])/n1 + var(y[z==0])/n0
+> sehat <- sqrt(vhat)
+> tauhat
+[1] 1794.343
+> sehat
+[1] 670.9967
+\end{verbatim}
+
+95\% 置信区间：
+\[
+1794.34 \pm 1.96 \times 670.99 = (478.6, 3110.1)
+\]
+
+由于置信区间不包含零，我们可以拒绝"因果效应为零"的零假设。
+
+\section{与 FRT 的比较}
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+ & Fisherian (FRT) & Neymanian \\
+\hline
+理论基础 & 精确（有限样本） & 渐近（正态近似） \\
+零假设 & Sharp null & - \\
+置信区间 & 需额外假设 & 基于 CLT \\
+适用场景 & 小样本 & 大样本 \\
+\hline
+\end{tabular}
+\end{center}
+
+两者是互补的关系：
+- 当 $n$ 小时，用 FRT
+- 当 $n$ 大时，用 Neymanian
+- 两者结果应该相近
+
+\section{本章小结}
+
+本章我们学习了 Neymanian 推断：
+
+\begin{enumerate}
+  \item \textbf{点估计}：$\hat{\tau} = \bar{Y}(1) - \bar{Y}(0)$，无偏估计
+  \item \textbf{方差估计}：$\hat{V} = S^2(1)/n_1 + S^2(0)/n_0$，保守估计
+  \item \textbf{置信区间}：基于渐近正态分布
+  \item \textbf{与 OLS 的关系}：使用稳健标准误后等价
+  \item \textbf{与 FRT 互补}：小样本用 FRT，大样本用 Neymanian
+\end{enumerate}
+
+下一章我们将学习\textbf{分层随机实验}——通过分层来提高估计精度。
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)
