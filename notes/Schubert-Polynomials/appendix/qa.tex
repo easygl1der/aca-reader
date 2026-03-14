@@ -5,3 +5,25 @@
 \label{app:qa}
 
 问答记录将在这里。
+
+\section{Skew 除差算子与除差算子的关系}
+\label{sec:SkewVsDivided}
+
+\subsection{问题}
+那 Skew 除差算子和除差算子有什么关联和区别吗，可以举一些例子吗？
+
+\subsection{回答}
+
+除差算子（divided difference operators）是 Schubert calculus 的核心工具，用于递归定义 Schubert 多项式。Skew 除差算子可以理解为两个除差算子的"商"，在展开系数计算中很重要。
+
+\textbf{基本的除差算子 $\partial_i$}：对于 $i = 1, \ldots, n-1$，定义为
+$$\partial_i(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldots, x_{i+1}, x_i, \ldots, x_n)}{x_i - x_{i+1}}$$
+其作用是交换相邻变量 $x_i$ 和 $x_{i+1}$ 后取差商。
+
+\textbf{例子}：设 $f = x_1$，则 $\partial_1(x_1) = \frac{x_1 - x_2}{x_1 - x_2} = 1$。
+
+\textbf{置换对应的除差算子 $\partial_w$}：对于任意置换 $w \in S_n$，定义 $\partial_w$ 为适当组合的基本除差算子。例如，$w = s_i s_j$ 时，$\partial_w = \partial_i \partial_j$。
+
+\textbf{Skew 除差算子 $\partial_{w/v}$}：定义为两个除差算子的"商"：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$。可以更具体地理解为把 $f$ 先用 $v$ "向下"作用，再用 $w$ "向上"作用的结果。
+
+\textbf{例子}：设 $w = w_0$（最长置换），$v = s_i$，则 $\partial_{w_0/s_i} = \partial_{w_0} \circ \partial_{s_i}^{-1}$。在论文中，Skew 除差算子用于计算展开系数 $c^w_{u,v}$，其正性是 Kirillov 猜想的核心问题。
