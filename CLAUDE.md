@@ -46,6 +46,17 @@ When creating labels:
 - Lemma: `\label{name}`
 - Definition: `\label{name}`
 - Reference: `\cref{name}` (requires cleveref package)
+
+**IMPORTANT: All references must use `\cref{}` format!** This includes:
+- Sections: `\cref{sec:SectionName}`
+- Subsections: `\cref{sec:SubsectionName}`
+- Theorems: `\cref{def:TheoremName}`
+- Lemmas: `\cref{def:LemmaName}`
+- Definitions: `\cref{def:DefinitionName}`
+- Conjectures: `\cref{conj:ConjectureName}`
+- Equations: `\cref{eq:EquationName}`
+
+Never write plain text like "see the theorem above" or "as shown in section 2". Always use `\cref{}` with proper labels.
 - Specific commands for building, testing, and running
 - Technology stack details
 - Any project-specific conventions
