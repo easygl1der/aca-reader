@@ -1,0 +1,94 @@
+% Chapter 1: Probability and inference
+% Bayesian Data Analysis - Gelman et al.
+
+\chapter{概率与推断}
+
+\section{本章导论}
+
+贝叶斯数据分析的核心是用\textbf{概率}来量化不确定性。在本章中，我们将介绍贝叶斯数据分析的三个基本步骤，这是整本书的基础框架。
+
+\section{贝叶斯数据分析的三步骤}
+
+贝叶斯数据分析的过程可以理想化地分为以下三个步骤：
+
+\begin{enumerate}
+  \item \textbf{建立完整的概率模型}：对问题中所有可观测和不可观测的量建立一个联合概率分布。模型应与底层科学问题和数据收集过程的知识相一致。
+
+  \item \textbf{基于观测数据进行分析}：计算并解释适当的后验分布——即在给定观测数据的条件下，关于不可观测量的条件概率分布。
+
+  \item \textbf{评估模型的拟合度和后验分布的含义}：
+  \begin{itemize}
+    \item 模型对数据的拟合程度如何？
+    \item 实质性结论是否合理？
+    \item 结果对第一步中建模假设的敏感性如何？
+  \end{itemize}
+  作为回应，可以修改或扩展模型并重复这三个步骤。
+\end{enumerate}
+
+\begin{Remark}
+  第三个步骤涉及计算方法论和微妙的技术与判断平衡，由问题的应用背景指导。第一步仍然是许多贝叶斯分析的主要障碍：我们的模型从何而来？如何构建适当的概率规范？
+\end{Remark}
+
+\section{概率与不确定性的度量}
+
+贝叶斯思维的主要动机是它便于对统计结论进行常识性解释。例如，一个未知量的贝叶斯（概率）区间可以直接被认为是"该未知量有很高概率包含在其中"，这与频率主义（置信区间）的解释形成对比。
+
+\section{概率论基础回顾}
+
+\subsection{条件概率}
+
+假设如果 $\theta = 1$，则 $y$ 服从均值为 $\theta$、方差为 1 的正态分布。那么条件概率密度为：
+\[
+p(y \mid \theta) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{(y-\theta)^2}{2}\right)
+\]
+
+\subsection{贝叶斯定理}
+
+贝叶斯定理是贝叶斯推断的核心：
+\[
+p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)}
+\]
+其中：
+\begin{itemize}
+  \item $p(\theta \mid y)$ 是后验分布
+  \item $p(y \mid \theta)$ 是似然函数
+  \item $p(\theta)$ 是先验分布
+  \item $p(y) = \int p(y \mid \theta) p(\theta) \, d\theta$ 是边际似然
+\end{itemize}
+
+\section{离散概率例子}
+
+\subsection{遗传学例子}
+
+考虑一个经典的遗传学问题：某种疾病的遗传模式。
+
+\begin{Example}
+  假设某种疾病由隐性等位基因引起。如果父母都是携带者（异形合子），每个孩子有 25\% 的概率患病，50\% 的概率是携带者，25\% 的概率是正常。
+\end{Example}
+
+\section{概率作为不确定性的度量}
+
+概率可以通过多种方式理解：
+\begin{itemize}
+  \item \textbf{对称性/可交换性论证}
+  \item \textbf{频率论证}：概率 = 长期序列中的相对频率
+  \item \textbf{类比论证}：物理随机性诱导不确定性
+  \item \textbf{公理化/规范性论证}
+  \item \textbf{博彩一致性}
+\end{itemize}
+
+\section{本章小结}
+
+本章我们学习了：
+\begin{enumerate}
+  \item 贝叶斯数据分析的三个基本步骤
+  \item 概率作为不确定性度量的多种解释
+  \item 贝叶斯定理及其组成部分
+  \item 条件概率、期望和方差的基本公式
+\end{enumerate}
+
+\section{下节预告}
+
+下一章我们将学习单参数模型，包括从二项数据估计概率的经典例子。
+
+\endinput

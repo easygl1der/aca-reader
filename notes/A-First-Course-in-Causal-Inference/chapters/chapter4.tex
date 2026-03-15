@@ -192,6 +192,33 @@ Neymanian 框架下的方差估计是：
 \hat{\tau}_{OLS} = \bar{Y}(1) - \bar{Y}(0) = \hat{\tau}
 \]
 
+运行 OLS 回归：
+\[
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{a,b} \sum_{i=1}^n (Y_i - a - b Z_i)^2
+\]
+
+其中 $\hat{\beta}$ 就是平均因果效应的估计。
+
+\subsection{OLS 方差估计与 Neymanian 的比较}
+
+OLS 的默认方差估计（来自 R 的 \texttt{lm} 函数输出）为：
+
+\[
+\hat{V}_{OLS} = \frac{n(n_1-1)\hat{S}^2(1) + n(n_0-1)\hat{S}^2(0)}{(n-2)n_1 n_0} \approx \frac{\hat{S}^2(1)}{n_0} + \frac{\hat{S}^2(0)}{n_1}
+\]
+
+这个估计与 Neymanian 方差估计 $\hat{V}$ 即使在大样本下也略有不同。
+
+幸运的是，Eicker-Huber-White (EHW) 异方差稳健方差估计量与 $\hat{V}$ 非常接近：
+
+\[
+\hat{V}_{EHW} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0} \approx \hat{V}
+\]
+
+更进一步，EHW 的 HC2 变体与 $\hat{V}$\textbf{完全等价}！
+
+\userannotation{实际应用启示}{在因果推断中使用 OLS 时，务必使用稳健标准误（如 HC2 或 HC3），否则会低估标准误，导致置信区间过窄，增加假阳性风险。}
+
 \subsection{标准误的比较}
 
 然而，OLS 的默认标准误与 Neymanian 标准误有所不同：
