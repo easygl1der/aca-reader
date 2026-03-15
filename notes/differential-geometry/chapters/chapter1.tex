@@ -45,10 +45,10 @@
 称为\textbf{圆柱螺旋线}（cylindrical helix），其中 $a > 0$ 是半径，$b \neq 0$ 是螺距参数。
 \end{Example}
 
-★ Insight ─────────────────────────────────────
-- 正则曲线要求导数非零，这保证了曲线是"光滑"的，没有尖点
+% ★ Insight
+% - 正则曲线要求导数非零，这保证了曲线是"光滑"的，没有尖点
 - 平面曲线与空间曲线的区别在于是否存在挠率：平面曲线的挠率恒为零
-─────────────────────────────────────────────────
+% ------------------------------------------------------------
 
 % ==================== Section 1.2: Arc Length ====================
 \section{Arc Length}\label{sec:arc-length}
@@ -77,27 +77,25 @@ s(t) = \int_a^t \|\alpha'(u)\| \, du.
 如果 $\|\alpha'(t)\| = 1$ 对所有 $t$ 成立，则称 $\alpha$ 为\textbf{单位速度曲线}（unit speed curve）或\textbf{弧长参数化曲线}。
 \end{Definition}
 
-\begin{Theorem}\label_thm:reparametrization-by-arc-length}
+\begin{Theorem}[弧长参数化]\label{th:reparametrization-by-arc-length}
 每条正则曲线都可以重新参数化为单位速度曲线。
 \end{Theorem}
 
-\begin{Proof}
-设 $\alpha: I \to \mathbb{R}^3$ 是正则曲线，定义
+\noindent\textbf{证明：} 设 $\alpha: I \to \mathbb{R}^3$ 是正则曲线，定义
 \[
 s(t) = \int_{t_0}^t \|\alpha'(u)\| \, du,
 \]
 其中 $t_0 \in I$ 是固定点。由于 $\alpha$ 是正则的，$s'(t) = \|\alpha'(t)\| > 0$，所以 $s$ 是单调递增的，
-我们可以取其逆函数 $t(s)$。则 $\beta(s) = \alpha(t(s))$ 是单位速度曲线。
-\end{Proof}
+我们可以取其逆函数 $t(s)$。则 $\beta(s) = \alpha(t(s))$ 是单位速度曲线。\hfill $\square$
 
 \begin{Remark}
 从现在开始，除非特别说明，我们将使用弧长 $s$ 作为参数，即 $\alpha(s)$ 是单位速度曲线。
 \end{Remark}
 
-★ Insight ─────────────────────────────────────
+% Insight
 - 弧长是曲线的内在不变量，与参数化无关
 - 弧长参数化后，速度向量恒为1，这是最自然的参数化方式
-─────────────────────────────────────────────────
+% ------------------------------------------------------------
 
 % ==================== Section 1.3: Curvature and Torsion ====================
 \section{Curvature and Torsion}\label{sec:curvature-torsion}
@@ -150,11 +148,11 @@ k(s) = \|\alpha''(s)\|.
 两者均为常数。这解释了为什么螺旋线看起来均匀地"扭曲"。
 \end{Example}
 
-★ Insight ─────────────────────────────────────
+% Insight
 - 曲率是曲线"弯曲"的程度，挠率是曲线"扭曲"的程度
 - 平面曲线：曲率可能非零，但挠率恒为零
 - 空间曲线：曲率和挠率都可能非零
-─────────────────────────────────────────────────
+% ------------------------------------------------------------
 
 \subsection{The Frenet-Serret Formulas}
 
@@ -172,16 +170,18 @@ $\{\mathbf{t}, \mathbf{n}, \mathbf{b}\}$ 称为\textbf{Frenet 标架}（Frenet f
 
 \begin{Remark}
 $\{\mathbf{t}, \mathbf{n}, \mathbf{b}\}$ 在每一点构成 $\mathbb{R}^3$ 的标准正交基。
-- $\mathbf{t}$ 指向曲线前进方向
-- $\mathbf{n}$ 指向曲线弯曲方向
-- $\mathbf{b}$ 垂直于密切平面
+\begin{itemize}
+\item $\mathbf{t}$ 指向曲线前进方向
+\item $\mathbf{n}$ 指向曲线弯曲方向
+\item $\mathbf{b}$ 垂直于密切平面
+\end{itemize}
 \end{Remark}
 
 \begin{Definition}[密切平面]\label{def:osculating-plane}
 由 $\mathbf{t}(s)$ 和 $\mathbf{n}(s)$ 张成的平面称为\textbf{密切平面}（osculating plane）。
 \end{Definition}
 
-\begin{Theorem}[Frenet-Serret 公式]\label_thm:frenet-serret}
+\begin{Theorem}[Frenet-Serret 公式]\label{th:frenet-serret}
 设 $\alpha(s)$ 是单位速度曲线，$k(s) > 0$，挠率为 $\tau(s)$。则
 \[
 \begin{cases}
@@ -204,23 +204,23 @@ k = \|\mathbf{t}'\|, \quad \tau = -\langle \mathbf{b}', \mathbf{n} \rangle.
 \]
 \end{Corollary}
 
-\begin{Theorem}[曲线存在唯一性]\label_thm:curve-existence-uniqueness}
+\begin{Theorem}[曲线存在唯一性]\label{th:curve-existence-uniqueness}
 给定两个连续函数 $k(s) > 0$ 和 $\tau(s)$，以及 $\mathbb{R}^3$ 中一组正交标架，
 存在唯一一条单位速度曲线 $\alpha(s)$，使得其曲率为 $k(s)$、挠率为 $\tau(s)$，且 Frenet 标架为给定的标架。
 \end{Theorem}
 
-★ Insight ─────────────────────────────────────
+% Insight
 - Frenet-Serret 公式是曲线的"运动方程"
 - 曲率 $k$ 和挠率 $\tau$ 完全决定了曲线的局部几何性质
 - 这类似于：给定加速度和角速度，就确定了刚体的运动
-─────────────────────────────────────────────────
+% ------------------------------------------------------------
 
 % ==================== Section 1.4: Global Properties ====================
 \section{Global Properties of Curves}\label{sec:global-properties}
 
 前面我们讨论的是曲线的局部性质。现在我们讨论曲线的整体（全局）性质。
 
-\begin{Theorem}[四顶点定理]\label_thm:four-vertex-theorem}
+\begin{Theorem}[四顶点定理]\label{th:four-vertex-theorem}
 设 $C$ 是平面上一条简单闭曲线，曲率恒为正。则 $C$ 上至少有四个曲率极值点（顶点）。
 \end{Theorem}
 
@@ -229,7 +229,7 @@ k = \|\mathbf{t}'\|, \quad \tau = -\langle \mathbf{b}', \mathbf{n} \rangle.
 例如，椭圆有四个顶点（长轴和短轴的端点）。
 \end{Remark}
 
-\begin{Theorem}[Fenchel 定理]\label_thm:fenchel-theorem}
+\begin{Theorem}[Fenchel 定理]\label{th:fenchel-theorem}
 设 $\alpha: [0,L] \to \mathbb{R}^3$ 是一条简单闭曲线。则其全曲率
 \[
 \int_0^L k(s) \, ds \geq 2\pi,
@@ -249,15 +249,15 @@ k = \|\mathbf{t}'\|, \quad \tau = -\langle \mathbf{b}', \mathbf{n} \rangle.
 任何简单闭曲线的全曲率至少为 $2\pi$。
 \end{Corollary}
 
-\begin{Theorem][Fary-Milnor 定理]\label_thm:fary-milnor}
+\begin{Theorem}[Fary-Milnor 定理]\label{th:fary-milnor}
 如果 $\alpha$ 是一条简单闭曲线的全曲率小于 $4\pi$，则该曲线是未打结的（unknotted）。
 \end{Theorem}
 
-★ Insight ─────────────────────────────────────
+% Insight
 - 四顶点定理是平面曲线的整体性质：曲线的弯曲程度必须"平衡"
 - Fenchel 定理说明：闭合曲线的"总弯曲量"至少是 $2\pi$
 - 这些定理连接了曲线的局部几何（曲率）和全局拓扑性质
-─────────────────────────────────────────────────
+% ------------------------------------------------------------
 
 \section{本章总结}\label{sec:chapter1-summary}
 
