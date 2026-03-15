@@ -57,6 +57,28 @@ When creating labels:
 - Equations: `\cref{eq:EquationName}`
 
 Never write plain text like "see the theorem above" or "as shown in section 2". Always use `\cref{}` with proper labels.
-- Specific commands for building, testing, and running
-- Technology stack details
-- Any project-specific conventions
+## LaTeX Notes Conventions
+
+### compile.sh Script
+Every notes folder must include a `compile.sh` script for building the PDF. The script should:
+- Default to compiling 3 times (for proper cross-references)
+- Use xelatex
+- Optionally open the PDF in Skim
+
+Example:
+```bash
+#!/bin/bash
+FILE="main"
+
+for i in 1 2 3; do
+    xelatex -interaction=nonstopmode "$FILE.tex" > /dev/null 2>&1
+done
+
+open -a Skim "$FILE.pdf"
+```
+
+### Main File Naming
+- LaTeX 主文件必须命名为 `<主题>-notes.tex`，禁止使用 `main.tex`
+
+### Theorem Style
+- 使用 `\theoremstyle{definition}` 使关键词加粗左对齐

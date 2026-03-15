@@ -145,10 +145,18 @@ LaLonde 研究了一项职业培训项目（National Supported Work Demonstratio
 本案例使用 R 语言的 \texttt{Matching} 包进行 FRT 分析。数据可以直接从 R 中加载：
 
 \begin{verbatim}
-> library(Matching)
-> data(lalonde)
-> z <- lalonde\$treat
-> y <- lalonde\$re78
+# 加载必要的包
+library(Matching)
+library(ggplot2)
+library(dplyr)
+
+# 加载数据
+data(lalonde)
+
+# 查看数据基本信息
+str(lalonde)
+head(lalonde)
+dim(lalonde)  # 样本量
 \end{verbatim}
 
 其中：
@@ -157,7 +165,106 @@ LaLonde 研究了一项职业培训项目（National Supported Work Demonstratio
   \item \texttt{y}: 1978 年真实收入（outcome）
 \end{itemize}
 
-\subsection{数据分析}
+提取处理变量和结果变量：
+
+\begin{verbatim}
+# 提取变量
+z <- lalonde\$treat    # 处理变量
+y <- lalonde\$re78     # 结果变量（1978年真实收入）
+
+# 检查样本量
+n <- length(z)
+n1 <- sum(z)           # 处理组样本量
+n0 <- n - n1           # 对照组样本量
+
+cat("总样本量:", n, "\n")
+cat("处理组样本量:", n1, "\n")
+cat("对照组样本量:", n0, "\n")
+\end{verbatim}
+
+\subsection{FRT 检验统计量计算}
+
+\begin{verbatim}
+# 计算各种检验统计量
+
+# 1. 差值均值 (Difference-in-means)
+tauhat <- mean(y[z == 1]) - mean(y[z == 0])
+cat("差值均值 tauhat:", tauhat, "\n")
+
+# 2. 学生化统计量 (Studentized statistic)
+# t = (Ybar_1 - Ybar_0) / sqrt(S^2(1)/n1 + S^2(0)/n0)
+s1_sq <- var(y[z == 1])
+s0_sq <- var(y[z == 0])
+t_stat <- tauhat / sqrt(s1_sq / n1 + s0_sq / n0)
+cat("学生化统计量 t:", t_stat, "\n")
+
+# 3. Wilcoxon 秩和统计量
+# W = sum of ranks in treatment group
+ranks <- rank(y)
+W <- sum(ranks[z == 1])
+cat("Wilcoxon 秩和 W:", W, "\n")
+
+# 4. Kolmogorov-Smirnov 统计量
+# D = max|F_1(y) - F_0(y)|
+treatment_y <- y[z == 1]
+control_y <- y[z == 0]
+
+# 使用 ks.test 计算
+ks_result <- ks.test(treatment_y, control_y)
+D <- ks_result\$statistic
+cat("KS 统计量 D:", D, "\n")
+\end{verbatim}
+
+\subsection{FRT 置换检验}
+
+\begin{verbatim}
+# FRT 置换检验（精确推断）
+# 在零假设下，所有可能的治疗分配都是等可能的
+
+# 设置随机种子
+set.seed(42)
+
+# 置换次数
+B <- 10000
+
+# 存储置换后的统计量
+perm_tauhat <- numeric(B)
+
+# 置换检验
+for (b in 1:B) {
+  # 随机置换治疗分配
+  z_perm <- sample(z)
+
+  # 计算置换后的差值均值
+  perm_tauhat[b] <- mean(y[z_perm == 1]) - mean(y[z_perm == 0])
+}
+
+# 计算 p 值（双侧检验）
+p_value <- mean(abs(perm_tauhat) >= abs(tauhat))
+
+cat("观测到的 tauhat:", tauhat, "\n")
+cat("置换检验 p 值:", p_value, "\n")
+
+# 可视化置换分布
+hist(perm_tauhat, breaks = 50,
+     main = "FRT 置换分布",
+     xlab = "置换后的差值均值")
+abline(v = tauhat, col = "red", lwd = 2)
+abline(v = -tauhat, col = "red", lwd = 2, lty = 2)
+legend("topright", c("观测值"), col = "red", lty = 1)
+\end{verbatim}
+
+实际运行结果：
+\begin{verbatim}
+=== 4. FRT 检验统计量 ===
+差值均值 tauhat: 1794.343
+学生化统计量 t: 2.674146
+Wilcoxon 秩和 W: 44607.5
+KS 统计量 D: 0.1321206
+
+=== 5. FRT 置换检验 ===
+置换检验 p 值 (双侧): 0.0046
+\end{verbatim}
 
 使用 R 语言进行 FRT 分析的结果：
 
@@ -166,15 +273,45 @@ LaLonde 研究了一项职业培训项目（National Supported Work Demonstratio
 \hline
 统计量 & 观测值 & 描述 \\
 \hline
-$\hat{\tau}$ & 2.84 & 差值均值 \\
+$\hat{\tau}$ & 1794.34 & 差值均值 \\
 $t$ & 2.67 & 学生化统计量 \\
-$W$ & 27402.5 & Wilcoxon 秩和 \\
+$W$ & 44607.5 & Wilcoxon 秩和 \\
 $D$ & 0.132 & KS 统计量 \\
 \hline
 \end{tabular}
 \end{center}
 
 通过随机置换治疗向量 $10{,}000$ 次，我们可以得到这些统计量的随机化分布，进而计算精确 p 值。
+
+\subsection{可视化分析}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{R/figures/03_permutation_distribution.png}
+  \caption{FRT 置换分布：展示了在零假设下，差值均值的随机分布。红色实线表示观测到的处理效应，红色虚线表示其相反数}
+  \label{fig:permutation_distribution}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{R/figures/04_cdf_comparison.png}
+  \caption{累积分布函数 (CDF) 比较：展示了处理组与对照组的累积分布差异，KS 统计量衡量两条 CDF 曲线的最大垂直距离}
+  \label{fig:cdf_comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{R/figures/05_density_comparison.png}
+  \caption{核密度估计：处理组与对照组收入的概率密度函数比较}
+  \label{fig:density_comparison}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{R/figures/06_qq_comparison.png}
+  \caption{Q-Q 图：检验处理组与对照组收入分布的正态性假设}
+  \label{fig:qq_comparison}
+\end{figure}
 
 \section{FRT 与传统 t 检验的关系}
 

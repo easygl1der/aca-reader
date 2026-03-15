@@ -1,203 +1,388 @@
-\chapter{信息几何文献概述}\label{chap:introduction}
+\chapter*{引言：文献概述}\label{chap:introduction}
+\addcontentsline{toc}{chapter}{引言：文献概述}
 
-信息几何（Information Geometry）是利用微分几何方法研究概率分布空间的几何结构的学科。它为统计学、机器学习、热力学和量子力学等领域提供了统一的数学框架。
+本学习资料旨在系统研究信息几何（Information Geometry）领域。信息几何是利用微分几何方法研究概率分布空间的几何结构的学科，为统计学、机器学习、热力学和量子力学等领域提供了统一的数学框架。
 
-\section{什么是信息几何}
+\section{总述}
 
-信息几何的核心思想是将概率分布族视为一个黎曼流形，利用几何方法来研究统计推断问题。这种观点使得我们能够：
+信息几何的核心思想是将概率分布族视为一个黎曼流形，利用几何方法来研究统计推断问题。这种观点起源于 Fisher 信息的研究，后来由 Rao、Cox、Amari 等学者发展为系统的几何理论。
 
+本学习资料涵盖 24 篇文献，包括：
 \begin{itemize}
-    \item 理解最大似然估计的几何意义
-    \item 研究统计不变量和充分统计量
-    \item 建立不同统计方法之间的联系
-    \item 将信息论、统计学和微分几何有机结合
+    \item 核心教材：Amari 的经典著作、Ay 等人的数学基础
+    \item 非参数信息几何：Pistone 开创性工作
+    \item Orlicz 空间理论：处理非参数情况的重要工具
+    \item 应用方向：进化博弈、热力学、量子信息等
 \end{itemize}
 
-\section{核心概念}
+\section{文献摘要总结}\label{sec:literature-summary}
 
-\subsection{Fisher信息度量}
+本节按主题分类概述所有文献。
 
-给定参数化概率分布族 $\{p(x;\theta)\}_{\theta \in \Theta}$，Fisher信息矩阵定义为
-
-\begin{equation}
-    g_{ij}(\theta) = \mathbb{E}\left[\frac{\partial \log p(X;\theta)}{\partial \theta_i} \cdot \frac{\partial \log p(X;\theta)}{\partial \theta_j}\right]
-\end{equation}
-
-Fisher信息度量是概率分布空间上的自然黎曼度量，具有统计学意义下的唯一性（Cramér-Rao定理）。
-
-\subsection{对偶联络}
-
-信息几何中的一个核心概念是对偶联络（dual connections）。对于Fisher度量 $g$，存在唯一的一对对偶联络 $(\nabla, \nabla^*)$ 满足
-
-\begin{equation}
-    Xg(Y,Z) = g(\nabla_X Y, Z) + g(Y, \nabla_X^* Z)
-\end{equation}
-
-这对偶联络对应于指数联络和混合联络，是信息几何许多理论的基础。
-
-\section{文献目录}\label{sec:literature}
-
-本学习资料涵盖以下文献，按主题分类：
-
-\subsection{核心教材}
+\subsection{一、核心教材}
 
 \begin{enumerate}
-    \item \textbf{\textit{Information Geometry and Its Applications}} — Shun-ichi Amari
-
-    这是信息几何领域的奠基之作，由该领域创始人编写。内容涵盖：
-    \begin{itemize}
-        \item 概率分布空间的几何结构
-        \item Fisher信息与Cramér-Rao下界
-        \item $\alpha$-联络与对偶平坦结构
-        \item 指数族与混合族
-        \item 统计学习中的几何方法
-        \item 神经网络的自然梯度下降
-        \item 信息几何在机器学习中的应用
-    \end{itemize}
-
-    \item \textbf{\textit{Information Geometry}} — Nihat Ay, Jürgen Jost, Hông Vân Lê, Lorenz Schwachhofer
-
-    侧重于信息几何的数学基础，涵盖：
-    \begin{itemize}
-        \item 非参数统计流形
-        \item 函数空间几何
-        \item 进化博弈论中的应用
-        \item 信息几何的泛函分析基础
-    \end{itemize}
-
-    \item \textbf{\textit{Elements of Information Theory}} (GTM 134) — Cover \& Thomas
-
-    信息论经典教材，为理解信息几何中的KL散度等概念提供坚实基础：
-    \begin{itemize}
-        \item 熵与互信息
-        \item KL散度与信息论不等式
-        \item 信源编码与信道编码
-        \item 信息论与统计推断的关系
-    \end{itemize}
-
-    \item \textbf{\textit{信息论基础}} — Cover \& Thomas（中文版）
-
-    中文翻译版，便于参考。
+    \item \textbf{作者:} Shun-ichi Amari
+    \item \textbf{链接:} \url{https://link.springer.com/book/978-4-431-55978-8}
+    \item \textbf{年份:} 2016
+    \item \textbf{篇幅:} 376页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 建立信息几何的完整理论框架
+            \item 提出 $\alpha$-联络族理论
+            \item 发展自然梯度下降在神经网络中的应用
+            \item 系统阐述指数族与混合族的几何结构
+        \end{itemize}
+    \item \textbf{摘要:} 这是信息几何领域的奠基之作，由该领域创始人编写。内容涵盖概率分布空间的几何结构、Fisher 信息与 Cramér-Rao 下界、对偶平坦结构、统计学习中的几何方法等。
+    \item \textbf{关键词:} Information Geometry；Fisher Information；$\alpha$-Connections；Exponential Family；Natural Gradient
 \end{enumerate}
-
-\subsection{非参数信息几何}
 
 \begin{enumerate}
-    \item \textbf{\textit{Nonparametric Information Geometry}} — Giovanni Pistone (arXiv:1306.0480)
-
-    介绍了非参数统计流形的微分几何结构，是该领域的开创性工作。
-
-    \item \textbf{\textit{A Lecture About the Use of Orlicz Spaces in Information Geometry}} — Giovanni Pistone (arXiv:2012.03376)
-
-    2020年Les Houches暑期学校的讲义，介绍Orlicz空间在信息几何中的应用。
-
-    \item \textbf{\textit{Connections on Non-Parametric Statistical Manifolds by Orlicz Space Geometry}} — Paolo Gibilisco \& Giovanni Pistone
-
-    早期工作，利用Orlicz空间几何研究非参数统计流形上的联络。
+    \item \textbf{作者:} Nihat Ay, Jürgen Jost, Hông Vân Lê, Lorenz Schwachhofer
+    \item \textbf{链接:} \url{https://link.springer.com/book/978-3-319-56478-4}
+    \item \textbf{年份:} 2017
+    \item \textbf{篇幅:} 300页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提供信息几何的严格数学基础
+            \item 研究非参数统计流形的几何结构
+            \item 探讨函数空间几何在信息几何中的应用
+        \end{itemize}
+    \item \textbf{摘要:} 侧重于信息几何的数学基础，是该领域重要的理论参考文献。
+    \item \textbf{关键词:} Information Geometry；Statistical Manifold；Differential Geometry；Nonparametric
 \end{enumerate}
-
-\subsection{Orlicz空间理论}
-
-Orlicz空间是信息几何中处理非参数情况的重要工具：
 
 \begin{enumerate}
-    \item \textbf{\textit{Quantum Orlicz Spaces in Information Geometry}} — R.F. Streater (arXiv:math-ph/0407046)
-
-    量子版本的Orlicz空间，用于量子信息几何。
-
-    \item \textbf{\textit{On Musielak–Orlicz Function Spaces and Applications to Information Geometry}} — Rui Facundo Vigelis (PhD Thesis)
-
-    博士学位论文，系统研究Musielak-Orlicz函数空间及其在信息几何中的应用。
-
-    \item \textbf{\textit{New Results on Mixture and Exponential Models by Orlicz Spaces}} — Santacroce, Siri, Trivellato (arXiv:1603.05465)
-
-    利用Orlicz空间方法研究混合模型和指数模型。
-
-    \item \textbf{\textit{On Kōthe Duals of Orlicz-Lorentz Spaces}} — Kamińska \& Tag (arXiv:2404.07368)
-
-    最新研究Orlicz-Lorentz空间的对偶性质。
-
-    \item \textbf{\textit{When and Where the Orlicz and Luxemburg (quasi-) Norms are Equivalent?}} — del Campo et al.
-
-    讨论Orlicz范数与Luxemburg范数的等价性条件。
-
-    \item \textbf{\textit{Applications of Orlicz Spaces}} — M.M. Rao \& Z.D. Ren
-
-    Orlicz空间的综合参考文献。
-
-    \item \textbf{\textit{Topological Duals of Locally Convex Function Spaces}} — Pennanen \& Perkkiö (arXiv:2008.08934)
-
-    研究局部凸函数空间的拓扑对偶，为信息几何提供泛函分析基础。
+    \item \textbf{作者:} Thomas M. Cover, Joy A. Thomas
+    \item \textbf{链接:} \url{https://onlinelibrary.wiley.com/book/10.1002/047174882X}
+    \item \textbf{年份:} 2006 (第二版)
+    \item \textbf{篇幅:} 748页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 建立信息论的完整理论体系
+            \item 系统阐述熵、KL 散度、互信息等核心概念
+            \item 为信息几何提供坚实的信息论基础
+        \end{itemize}
+    \item \textbf{摘要:} 信息论经典教材（GTM 134），为理解信息几何中的 KL 散度等概念提供背景知识。
+    \item \textbf{关键词:} Information Theory；Entropy；KL Divergence；Mutual Information
+\end{enumerate}
 \end{enumerate}
 
-\subsection{统计流形与几何结构}
+\subsection{二、非参数信息几何}
 
 \begin{enumerate}
-    \item \textbf{\textit{Statistical Manifold as an Affine Space: A Functional Equation Approach}} — Zhang \& Hästö
-
-    将统计流形视为仿射空间，利用函数方程方法研究其几何性质。
-
-    \item \textbf{\textit{A Brief Introduction to Finsler Geometry}} — Matias Dahl
-
-    Finsler几何简介，为理解信息几何中的更一般度量提供背景。
+    \item \textbf{作者:} Giovanni Pistone
+    \item \textbf{链接:} \url{https://arxiv.org/abs/1306.0480}
+    \item \textbf{年份:} 2013
+    \item \textbf{篇幅:} 25页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 开创非参数统计流形的微分几何结构研究
+            \item 引入统计 bundle 概念
+            \item 建立非参数情况下的几何理论框架
+        \end{itemize}
+    \item \textbf{摘要:} 本文研究了给定测度空间上正密度集合的微分几何结构，奠定了非参数信息几何的基础。
+    \item \textbf{关键词:} Nonparametric Information Geometry；Statistical Bundle；Exponential Orlicz Space
 \end{enumerate}
-
-\subsection{应用方向}
 
 \begin{enumerate}
-    \item \textbf{\textit{Information Geometry and Evolutionary Game Theory}} — Marc Harper (arXiv:0911.1383)
-
-    进化博弈论中的Shahshahani几何与信息几何的关系。
-
-    \item \textbf{\textit{Measuring Thermodynamic Length}} — Gavin E. Crooks
-
-    热力学长度的信息几何视角，连接信息论与热力学。
-
-    \item \textbf{\textit{Possible Generalization of Boltzmann-Gibbs Statistics}} — Constantino Tsallis
-
-    Tsallis统计（广义Boltzmann-Gibbs统计）的原始论文，是非广延统计力学的基础。
-
-    \item \textbf{\textit{Logit Standardization in Knowledge Distillation}} — Sun et al. (arXiv:2403.01427)
-
-    信息几何在知识蒸馏中的应用。
-
-    \item \textbf{\textit{Maximum Likelihood Estimation for the $\lambda$-exponential Family}} — Nielsen \& Barbaresco
-
-    $\lambda$-指数族的最大似然估计，几何结构在统计推断中的应用。
+    \item \textbf{作者:} Giovanni Pistone
+    \item \textbf{链接:} \url{https://arxiv.org/abs/2012.03376}
+    \item \textbf{年份:} 2020
+    \item \textbf{篇幅:} 18页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 介绍 Orlicz 空间在信息几何中的应用
+            \item 涵盖指数 Orlicz 空间和 Gaussian Orlicz-Sobolev 空间
+            \item 是 2020 年 Les Houches 暑期学校讲义
+        \end{itemize}
+    \item \textbf{摘要:} 本教程介绍了 Orlicz 空间在非参数信息几何中的应用，包括统计 bundle、指数 Orlicz 空间等概念。
+    \item \textbf{关键词:} Orlicz Spaces；Information Geometry；Nonparametric
 \end{enumerate}
-
-\subsection{高级主题}
 
 \begin{enumerate}
-    \item \textbf{\textit{Towards a Category-theoretic Foundation of Classical and Quantum Information Geometry}} — Ciaglia et al. (arXiv:2509.10262)
-
-    信息几何的范畴论基础，最新的基础性工作。
-
-    \item \textbf{\textit{On Reproducing Kernel Banach Spaces: Generic Definitions and Unified Framework of Constructions}} — Lin, Zhang, Zhang
-
-    再生核Banach空间的统一构造框架，在信息几何中的应用潜力。
+    \item \textbf{作者:} Paolo Gibilisco, Giovanni Pistone
+    \item \textbf{链接:} \url{https://arxiv.org/abs/math/9801015}
+    \item \textbf{年份:} 1998
+    \item \textbf{篇幅:} 23页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 利用 Orlicz 空间几何研究非参数统计流形上的联络
+            \item 建立非参数信息几何的早期理论框架
+        \end{itemize}
+    \item \textbf{摘要:} 早期经典工作，研究非参数统计流形上的联络结构。
+    \item \textbf{关键词:} Nonparametric Statistical Manifold；Orlicz Space；Connections
+\end{enumerate}
 \end{enumerate}
 
-\section{预备知识}
+\subsection{三、Orlicz 空间理论}
+
+\begin{enumerate}
+    \item \textbf{作者:} R.F. Streater
+    \item \textbf{链接:} \url{https://arxiv.org/abs/math-ph/0407046}
+    \item \textbf{年份:} 2004
+    \item \textbf{篇幅:} 14页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 建立量子 Orlicz 空间理论
+            \item 将 Orlicz 空间概念推广到量子情况
+        \end{itemize}
+    \item \textbf{摘要:} 研究自伴算子与量子 Orlicz 空间在量子信息几何中的应用。
+    \item \textbf{关键词:} Quantum Information Geometry；Orlicz Space；Selfadjoint Operator
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Rui Facundo Vigelio
+    \item \textbf{链接:} 无（博士学位论文）
+    \item \textbf{年份:} 2013
+    \item \textbf{篇幅:} 150页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 系统研究 Musielak-Orlicz 函数空间
+            \item 建立其在信息几何中的理论应用
+        \end{itemize}
+    \item \textbf{摘要:} 博士学位论文，全面研究 Musielak-Orlicz 函数空间及其在信息几何中的应用。
+    \item \textbf{关键词:} Musielak-Orlicz Space；Information Geometry；Function Spaces
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Marina Santacroce, Paola Siri, Barbara Trivellato
+    \item \textbf{链接:} \url{https://arxiv.org/abs/1603.05465}
+    \item \textbf{年份:} 2016
+    \item \textbf{篇幅:} 17页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 利用 Orlicz 空间方法研究混合模型和指数模型
+            \item 给出新的几何结构分析
+        \end{itemize}
+    \item \textbf{摘要:} 研究混合模型和指数模型的 Orlicz 空间方法。
+    \item \textbf{关键词:} Mixture Models；Exponential Models；Orlicz Spaces
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Anna Kamińska, Hyung-Joon Tag
+    \item \textbf{链接:} \url{https://arxiv.org/abs/2404.07368}
+    \item \textbf{年份:} 2024
+    \item \textbf{篇幅:} 28页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 研究 Orlicz-Lorentz 空间的 Kothe 对偶
+            \item 给出可分性的特征刻画
+        \end{itemize}
+    \item \textbf{摘要:} 最新研究 Orlicz-Lorentz 空间的对偶性质。
+    \item \textbf{关键词:} Orlicz-Lorentz Space；Kothe Dual；Separability
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Ricardo del Campo, Antonio Fernández, et al.
+    \item \textbf{链接:} \url{https://www.sciencedirect.com/science/article/pii/S0022247X20304649}
+    \item \textbf{年份:} 2020
+    \item \textbf{篇幅:} 18页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 讨论 Orlicz 范数与 Luxemburg 范数的等价性条件
+        \item 给出等价性成立的充分必要条件
+        \end{itemize}
+    \item \textbf{摘要:} 研究 Orlicz 和 Luxemburg 拟范数何时等价。
+    \item \textbf{关键词:} Orlicz Norm；Luxemburg Norm；Equivalence
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} M.M. Rao, Z.D. Ren
+    \item \textbf{链接:} \url{https://link.springer.com/book/978-0-8247-1329-2}
+    \item \textbf{年份:} 2002
+    \item \textbf{篇幅:} 400页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提供 Orlicz 空间的综合参考文献
+            \item 系统阐述 Orlicz 空间理论
+        \end{itemize}
+    \item \textbf{摘要:} Orlicz 空间的标准参考文献。
+    \item \textbf{关键词:} Orlicz Space；Banach Space；Function Space
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Teemu Pennanen, Ari-Pekka Perkkiö
+    \item \textbf{链接:} \url{https://arxiv.org/abs/2008.08934}
+    \item \textbf{年份:} 2020
+    \item \textbf{篇幅:} 22页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 研究局部凸函数空间的拓扑对偶
+            \item 为信息几何提供泛函分析基础
+        \end{itemize}
+    \item \textbf{摘要:} 研究局部凸函数空间的拓扑对偶性质。
+    \item \textbf{关键词:} Topological Dual；Locally Convex Function Space；Orlicz Space
+\end{enumerate}
+\end{enumerate}
+
+\subsection{四、统计流形与几何结构}
+
+\begin{enumerate}
+    \item \textbf{作者:} Jun Zhang, Peter Hästö
+    \item \textbf{链接:} \url{https://www.sciencedirect.com/science/article/pii/S0022247X05004139}
+    \item \textbf{年份:} 2006
+    \item \textbf{篇幅:} 6页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 将统计流形视为仿射空间
+            \item 利用函数方程方法研究几何性质
+        \end{itemize}
+    \item \textbf{摘要:} 利用函数方程方法研究统计流形作为仿射空间的几何结构。
+    \item \textbf{关键词:} Statistical Manifold；Affine Space；Functional Equation
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Matias Dahl
+    \item \textbf{链接:} \url{https://arxiv.org/abs/math/0607030}
+    \item \textbf{年份:} 2006
+    \item \textbf{篇幅:} 20页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提供 Finsler 几何的简介
+            \item 重点讨论 Legendre 变换与辛几何的联系
+        \end{itemize}
+    \item \textbf{摘要:} Finsler 几何的入门教程。
+    \item \textbf{关键词:} Finsler Geometry；Legendre Transform；Symplectic Geometry
+\end{enumerate}
+\end{enumerate}
+
+\subsection{五、应用方向}
+
+\begin{enumerate}
+    \item \textbf{作者:} Marc Harper
+    \item \textbf{链接:} \url{https://arxiv.org/abs/0911.1383}
+    \item \textbf{年份:} 2009
+    \item \textbf{篇幅:} 12页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 建立进化博弈论中 Shahshahani 几何与信息几何的关系
+            \item 为进化动力学提供几何框架
+        \end{itemize}
+    \item \textbf{摘要:} 将信息几何方法应用于进化博弈论。
+    \item \textbf{关键词:} Evolutionary Game Theory；Shahshahani Geometry；Information Geometry
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Gavin E. Crooks
+    \item \textbf{链接:} \url{https://arxiv.org/abs/0706.0559}
+    \item \textbf{年份:} 2007
+    \item \textbf{篇幅:} 15页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提出热力学长度的信息几何定义
+            \item 连接信息论与热力学
+        \end{itemize}
+    \item \textbf{摘要:} 利用信息几何方法测量热力学长度。
+    \item \textbf{关键词:} Thermodynamic Length；Information Geometry；Statistical Mechanics
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Constantino Tsallis
+    \item \textbf{链接:} \url{https://journals.aps.org/jstat/abstract/10.1088/1742-5468/2008/06/P06013}
+    \item \textbf{年份:} 1988
+    \item \textbf{篇幅:} 19页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提出 Tsallis 熵（广义 Boltzmann-Gibbs 统计）
+            \item 开创非广延统计力学
+        \end{itemize}
+    \item \textbf{摘要:} 广义 Boltzmann-Gibbs 统计的原始论文，是非广延统计力学的基础。
+    \item \textbf{关键词:} Tsallis Entropy；Generalized Statistics；Non-extensive
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Shangquan Sun, Wenqi Ren, et al.
+    \item \textbf{链接:} \url{https://arxiv.org/abs/2403.01427}
+    \item \textbf{年份:} 2024
+    \item \textbf{篇幅:} 15页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 将信息几何方法应用于知识蒸馏
+            \item 提出 Logit 标准化方法
+        \end{itemize}
+    \item \textbf{摘要:} 研究信息几何在知识蒸馏中的应用。
+    \item \textbf{关键词:} Knowledge Distillation；Logit Standardization；Information Geometry
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Frank Nielsen, Frédéric Barbaresco (Eds.)
+    \item \textbf{链接:} \url{https://link.springer.com/book/978-3-031-47869-4}
+    \item \textbf{年份:} 2025
+    \item \textbf{篇幅:} 500+页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 探讨 $\lambda$-指数族的最大似然估计
+            \item 研究几何结构在统计推断中的应用
+        \end{itemize}
+    \item \textbf{摘要:} GSI 2025 会议论文集的一部分。
+    \item \textbf{关键词:} $\lambda$-exponential Family；MLE；Geometric Science of Information
+\end{enumerate}
+\end{enumerate}
+
+\subsection{六、高级主题}
+
+\begin{enumerate}
+    \item \textbf{作者:} F.M. Ciaglia, F. Di Cosmo, L. González-Bravo
+    \item \textbf{链接:} \url{https://arxiv.org/abs/2509.10262}
+    \item \textbf{年份:} 2025
+    \item \textbf{篇幅:} 42页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 建立经典和量子信息几何的范畴论基础
+            \item 提供统一的数学框架
+        \end{itemize}
+    \item \textbf{摘要:} 最新基础性工作，利用范畴论为信息几何提供新的理论基础。
+    \item \textbf{关键词:} Category Theory；Information Geometry；Quantum Geometry
+\end{enumerate}
+
+\begin{enumerate}
+    \item \textbf{作者:} Rongrong Lin, Haizhang Zhang, Jun Zhang
+    \item \textbf{链接:} \url{https://arxiv.org/abs/1901.01002}
+    \item \textbf{年份:} 2019
+    \item \textbf{篇幅:} 28页
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item 提出再生核 Banach 空间的统一构造框架
+            \item 为信息几何中的函数空间提供新工具
+        \end{itemize}
+    \item \textbf{摘要:} 研究再生核 Banach 空间的统一构造。
+    \item \textbf{关键词:} Reproducing Kernel Banach Space；RKBS；Function Space
+\end{enumerate}
+\end{enumerate}
+
+\section{补充参考资料}
+
+除上述文献外，以下资料可作为补充学习资源：
+
+\begin{itemize}
+    \item \textbf{\textit{Coding and Information Theory}} — Cover \& Thomas (GTM 134)
+    \item \textbf{\textit{信息论基础}} — Cover \& Thomas（中文翻译版）
+    \item \textbf{\textit{Applications of Orlicz Spaces}} — Rao \& Ren
+\end{itemize}
+
+\section{学习路径与前置基础知识}
 
 学习信息几何需要以下基础知识：
 
 \begin{enumerate}
     \item \textbf{微分几何}：流形、切空间、协变导数、联络、黎曼几何
     \item \textbf{概率论}：概率分布、期望、方差、条件概率、极限定理
-    \item \textbf{信息论}：熵、KL散度、互信息
-    \item \textbf{统计学}：最大似然估计、充分统计量、Cramér-Rao下界
-    \item \textbf{泛函分析}（高级主题）：Banach空间、Orlicz空间、函数空间几何
-\end{itemize}
+    \item \textbf{信息论}：熵、KL 散度、互信息
+    \item \textbf{统计学}：最大似然估计、充分统计量、Cramér-Rao 下界
+    \item \textbf{泛函分析}（高级主题）：Banach 空间、Orlicz 空间、函数空间几何
+\end{enumerate}
 
-\section{学习路径建议}
+\section{最终目标}
 
-建议按以下顺序学习：
+通过本学习资料，期望达到以下目标：
 
 \begin{enumerate}
-    \item \textbf{入门}：Cover \& Thomas（信息论基础）$\rightarrow$ Amari（核心教材）
-    \item \textbf{进阶}：Ay et al.（数学基础）$\rightarrow$ Pistone（非参数IG）
-    \item \textbf{专题}：根据兴趣选择应用方向（进化博弈、热力学、量子IG等）
+    \item 掌握信息几何的核心概念：Fisher 信息度量、对偶联络、$\alpha$-联络族
+    \item 理解非参数信息几何的基本理论
+    \item 了解信息几何在统计学、机器学习、热力学等领域的应用
+    \item 能够阅读和理解该领域的前沿论文
+    \item 为进一步研究打下坚实基础
 \end{enumerate}
 
 \begin{Remark}

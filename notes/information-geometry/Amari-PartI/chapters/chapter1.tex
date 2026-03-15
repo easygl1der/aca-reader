@@ -1,0 +1,201 @@
+\chapter{信息几何基础：散度与对偶平坦结构}\label{chap:ig-basics}
+
+本章介绍信息几何的核心概念：散度函数、对偶平坦结构，以及它们与贝叶斯分析的内在联系。
+
+\section{背景与动机}\label{sec:motivation}
+
+信息几何的核心思想是将概率分布族视为一个黎曼流形，利用几何方法来研究统计推断问题。这种观点起源于 Fisher 信息的研究，后来由 Rao、Cox、Amari 等学者发展为系统的几何理论。
+
+一个关键的洞察是：**散度（Divergence）取代了传统几何中的距离概念**，因为概率分布之间的"差异"往往不是对称的。这为贝叶斯分析提供了统一的几何框架。
+
+\section{核心定义}\label{sec:definitions}
+
+\subsection{Divergence（散度）}\label{def:divergence}
+
+\begin{Definition}[散度]\label{def:divergence}
+    给定流形 $M$ 上的两点 $P$ 和 $Q$，其坐标分别为 $\xi_P$ 和 $\xi_Q$。散度 $D[P:Q]$ 是满足以下条件的函数：
+    \begin{enumerate}
+        \item $D[P:Q] \geq 0$
+        \item $D[P:Q] = 0$ 当且仅当 $P = Q$
+        \item 当 $P$ 和 $Q$ 充分接近时，$D[P:Q]$ 可微
+    \end{enumerate}
+\end{Definition}
+
+散度不是距离，因为它不满足对称性：$D[P:Q] \neq D[Q:P]$。这种非对称性正是信息几何的核心特征。
+
+\subsection{Bregman 散度}\label{def:bregman}
+
+\begin{Definition}[Bregman 散度]\label{def:bregman-divergence}
+    给定凸函数 $\psi(\xi)$，由其诱导的 Bregman 散度定义为：
+    \begin{equation}
+        D[\xi:\xi'] = \psi(\xi') - \psi(\xi) - \nabla\psi(\xi) \cdot (\xi' - \xi)
+    \end{equation}
+\end{Definition}
+
+Bregman 散度的重要性质：当 $\psi$ 是严格凸的可微函数时，它自动满足散度的定义。
+
+\subsection{指数族与混合族}\label{def:families}
+
+\begin{Definition}[指数族]\label{def:exponential-family}
+    指数族分布具有以下形式：
+    \begin{equation}
+        p(x|\theta) = \exp\left(\theta \cdot u(x) - \psi(\theta)\right)
+    \end{equation}
+    其中 $\theta$ 是自然参数，$\psi(\theta)$ 是累积量函数（确保归一化）。
+\end{Definition}
+
+\begin{Definition}[混合族]\label{def:mixture-family}
+    混合族分布具有以下形式：
+    \begin{equation}
+        p(x|\pi) = \sum_i \pi_i p_i(x), \quad \sum_i \pi_i = 1, \quad \pi_i \geq 0
+    \end{equation}
+    其中 $\pi = (\pi_1, \ldots, \pi_k)$ 是混合权重。
+\end{Definition}
+
+指数族和混合族在信息几何中具有特殊地位：它们分别是对偶平坦空间中 e-平坦和 m-平坦的子流形。
+
+\section{Fisher 信息与不变性}\label{sec:fisher}
+
+\begin{Definition}[Fisher 信息矩阵]\label{def:fisher-information}
+    给定参数化概率分布族 $\{p(x;\theta)\}_{\theta \in \Theta}$，Fisher 信息矩阵定义为：
+    \begin{equation}
+        g_{ij}(\theta) = \mathbb{E}\left[\frac{\partial \log p(X;\theta)}{\partial \theta_i} \cdot \frac{\partial \log p(X;\theta)}{\partial \theta_j}\right]
+    \end{equation}
+\end{Definition}
+
+Fisher 信息具有重要的**不变性**：在充分统计量下保持不变。这使其成为概率分布空间上的"自然"黎曼度量。
+
+\begin{Proposition}[Fisher 信息的唯一性]\label{prop:fisher-unique}
+    在概率分布的变换群下，唯一不变且满足某些合理条件的度量就是 Fisher 信息度量。
+\end{Proposition}
+
+这意味着：\textbf{Fisher 信息是概率分布空间的几何不变量}。
+
+\section{对偶平坦结构}\label{sec:dually-flat}
+
+当散度由凸函数通过 Bregman 形式诱导时，流形获得一种**对偶平坦结构**：
+
+\begin{enumerate}
+    \item 由 $\psi$ 诱导一组**仿射坐标** $\theta$（自然参数）
+    \item 由 Legendre 变换 $\psi^*$ 诱导**对偶仿射坐标** $\eta$：
+        \begin{equation}
+            \eta = \nabla \psi(\theta), \quad \theta = \nabla \psi^*(\eta)
+        \end{equation}
+    \item 这两组坐标通过 **Legendre 变换** 相互联系
+\end{enumerate}
+
+这种结构称为 \textbf{dually flat}（对偶平坦），是信息几何的核心结构。
+
+\begin{Theorem}[广义勾股定理]\label_thm:pythagorean}
+    在对偶平坦空间中，对于三点 $P, Q, R$，若 $Q$ 是 $P$ 在 m-子流形上的投影，则：
+    \begin{equation}
+        D[P:R] = D[P:Q] + D[Q:R]
+    \end{equation}
+\end{Theorem}
+
+这个定理是欧几里得空间中勾股定理的推广，在优化算法（如 EM 算法）中发挥重要作用。
+
+\section{与贝叶斯分析的关联}\label{sec:bayes-connection}
+
+信息几何与贝叶斯分析有着深刻的内在联系。下面我们系统阐述这种联系。
+
+\subsection{KL 散度与贝叶斯推断}\label{sec:kl-bayes}
+
+KL 散度（Kullback-Leibler Divergence）是信息几何中最重要的散度：
+
+\begin{equation}
+    D_{KL}[P:Q] = \int p(x) \log \frac{p(x)}{q(x)} \, dx
+\end{equation}
+
+在贝叶斯分析中，KL 散度出现在多个关键位置：
+
+\begin{enumerate}
+    \item \textbf{后验与先验的差异}：
+    \begin{equation}
+        D_{KL}[p(\theta|x) : p(\theta)]
+    \end{equation}
+    衡量从先验到后验的信息增益。
+
+    \item \textbf{Bayes Factor}：
+    \begin{equation}
+        BF_{12} = \frac{p(x|M_1)}{p(x|M_2)} = \exp\left(-D_{KL}[p(\theta|x,M_1) : p(\theta|x,M_2)]\right)
+    \end{equation}
+    模型 $M_1$ 相对于 $M_2$ 的后验 odds 与先验 odds 的比值。
+
+    \item \textbf{后验预测分布}：
+    \begin{equation}
+        p(x) = \int p(x|\theta) p(\theta|x) \, d\theta
+    \end{equation}
+    的几何性质由信息几何刻画。
+\end{enumerate}
+
+\noteinfo{
+    KL 散度的非对称性在此有深刻含义：$D_{KL}[p:q]$ 衡量用 $q$ 近似 $p$ 时丢失的信息。在贝叶斯语境下，这对应于"用简单分布近似复杂后验"的损失。
+}
+
+\subsection{指数族与共轭先验}\label{sec:exp-fam-conjugate}
+
+指数族与贝叶斯分析的另一个深层联系是**共轭先验**：
+
+\begin{Theorem}[指数族的共轭性]\label_thm:conjugate-prior}
+    若似然函数来自指数族：
+    \begin{equation}
+        p(x|\theta) = \exp(\theta \cdot u(x) - \psi(\theta))
+    \end{equation}
+    则共轭先验具有形式：
+    \begin{equation}
+        p(\theta|\alpha, \beta) \propto \exp(\alpha \cdot \theta - \beta \psi(\theta))
+    \end{equation}
+    其中 $\alpha, \beta$ 是超参数。
+\end{Theorem}
+
+这解释了为什么 Beta 分布是二项分布的共轭先验，Dirichlet 是 Multinomial 的共轭先验——它们都是指数族！
+
+\noteinfo{
+    从几何角度看，指数族的共轭先验保持在其对应的"平坦子流形"内，这使得贝叶斯后验计算可以在封闭形式下完成。
+}
+
+%\subsection{Fisher 信息与 Cramér-Rao 下界}\label{sec:fisher-crb}
+%
+%Fisher 信息与经典统计推断的 Cramér-Rao 下界直接相关：
+%\begin{equation}
+%\text{Var}(\hat{\theta}) \geq \frac{1}{n I(\theta)}
+%\end{equation}
+%在贝叶斯语境下，Jeffreys 提出使用 $p(\theta) \propto \sqrt{\det I(\theta)}$ 作为无信息先验，它具有不变性。
+
+%\subsection{变分推断与散度最小化}\label{sec:variational}
+%
+%现代贝叶斯计算中的变分推断（Variational Inference）本质上是散度最小化：
+%\begin{equation}
+%q^* = \arg\min_{q \in \mathcal{Q}} D_{KL}[q(\theta) : p(\theta|x)]
+%\end{equation}
+%这正是信息几何中的**投影定理**在计算中的应用。
+
+\section{关键概念一览}\label{sec:summary}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        \textbf{信息几何概念} & \textbf{贝叶斯分析对应} \\
+        \hline
+        KL 散度 & 后验-先验差异；Bayes Factor \\
+        指数族 & 共轭先验分布族 \\
+        Fisher 信息 & Jeffreys 先验；Cramér-Rao 下界 \\
+        Bregman 散度 & ELBO（变分推断） \\
+        混合族 & 混合模型（Mixture Model） \\
+        充分统计量 & 信息几何不变性 \\
+        EM 算法 & 散度最小化的迭代优化 \\
+        \hline
+    \end{tabular}
+    \caption{信息几何与贝叶斯分析的对应关系}
+    \label{tab:ig-bayes}
+\end{table}
+
+\noteinfo{
+    本章建立了信息几何的基本框架，并阐释明其与贝叶斯分析的内在联系。核心洞见是：\textbf{散度最小化统一了贝叶斯推断、变分推断和统计学习}。
+}
+
+\begin{Remark}
+    本章内容对应 Amari 《Information Geometry and Its Applications》Part I (Chapter 1-4)。
+\end{Remark}

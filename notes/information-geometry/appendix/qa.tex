@@ -1,0 +1,198 @@
+\appendix
+\chapter{问答与讨论}
+
+\section{Part I 核心概念与贝叶斯关联}
+
+本节记录学习 Amari 《Information Geometry and Its Applications》Part I (Chapter 1-4) 过程中的问答与思考。
+
+\subsection{什么是散度？它与距离有何不同？}
+
+\userannotation{
+    散度（Divergence）与距离的核心区别是什么？
+}{
+    散度不是距离，因为它不满足对称性：$D[P:Q] \neq D[Q:P]$。这反映了概率分布之间的"方向性"差异——从分布 $P$ 到 $Q$ 的信息损失与从 $Q$ 到 $P$ 是不同的。
+
+    在贝叶斯分析中，这对应于 $D_{KL}[p(\theta|x):p(\theta)]$ 衡量的是"给定数据后"相对于"先验"的信息增益，是有方向的。
+}
+
+\userannotation{
+    为什么要用散度而不是距离？
+}{
+    因为概率分布之间的比较往往需要考虑方向性。例如，用简单分布近似复杂分布时，近似的"损失"取决于我们用哪个分布作为参考。
+
+    这正是贝叶斯推断的核心：后验分布 $p(\theta|x)$ 是对先验 $p(\theta)$ 的"更新"，这个更新过程天然是非对称的。
+}
+
+\subsection{指数族与贝叶斯分析}
+
+\userannotation{
+    指数族为什么在贝叶斯分析中如此重要？
+}{
+    指数族的重要性源于两点：
+
+    1. \textbf{共轭性}：指数族的共轭先验保持在其族内，这意味着后验计算有封闭形式。
+
+    2. \textbf{充分统计量}：指数族的分布可以表示为 $p(x|\theta) = \exp(\theta \cdot u(x) - \psi(\theta))$，其中 $u(x)$ 是充分统计量。这使得贝叶斯更新只需要更新 $\theta$ 参数。
+
+    从几何角度看，指数族是信息几何中"平坦子流形"的典型例子，其上的推断具有简洁的几何结构。
+}
+
+\userannotation{
+    混合族和指数族有什么联系？
+}{
+    混合族和指数族是对偶的：
+
+    \begin{itemize}
+        \item 指数族是 \textbf{e-平坦}（exponential-flat）的
+        \item 混合族是 \textbf{m-平坦}（mixture-flat）的
+    \end{itemize}
+
+    这种对偶性通过 Legendre 变换相联系。在贝叶斯分析中，混合模型（如高斯混合模型）是重要的非参数/半参数模型。
+}
+
+\userannotation{
+    指数族的例子有哪些？
+}{
+    常见指数族包括：
+
+    \begin{enumerate}
+        \item \textbf{正态分布} $N(\mu, \sigma^2)$：$\theta = (\mu/\sigma^2, -1/(2\sigma^2))$
+        \item \textbf{二项分布} $Bin(n, p)$：$\theta = \log(p/(1-p))$
+        \item \textbf{Poisson 分布} $Pois(\lambda)$：$\theta = \log \lambda$
+        \item \textbf{Dirichlet 分布}：多参数指数族
+    \end{enumerate}
+
+    它们的共轭先验分别是：Normal-Inverse-Gamma、Beta、Beta、Dirichlet。
+}
+
+\userannotation{
+    指数族的几何意义是什么？
+}{
+    从几何角度看，指数族在参数空间中是平坦的（欧几里得几何）。这意味着：
+    \begin{itemize}
+        \item 任意两点之间的最短路径（测地线）是直线
+        \item 充分统计量提供了坐标系统
+        \item 最大似然估计有封闭形式
+    \end{itemize}
+
+    在贝叶斯分析中，这意味着我们可以几何地理解后验分布在指数族中的演化。
+}
+
+\userannotation{
+    贝叶斯推断中，Jeffreys 先验与 Fisher 信息是什么关系？
+}{
+    Jeffreys 先验定义为：
+    \begin{equation}
+        p(\theta) \propto \sqrt{\det I(\theta)}
+    \end{equation}
+
+    其中 $I(\theta)$ 是 Fisher 信息矩阵。这个先验具有重要性质：
+    \begin{enumerate}
+        \item \textbf{不变性}：参数变换下形式保持不变
+        \item \textbf{信息几何意义}：它是 Fisher 信息度量诱导的"无信息"先验
+    \end{enumerate}
+
+    从信息几何视角看，Jeffreys 先验是在 Fisher 几何意义下的"均匀"分布。
+}
+
+\userannotation{
+    KL 散度在贝叶斯分析中的具体应用有哪些？
+}{
+    KL 散度在贝叶斯分析中有广泛应用：
+
+    \begin{enumerate}
+        \item \textbf{Bayes Factor}：
+        \begin{equation}
+        BF_{12} = \exp\left(-D_{KL}[p(\theta|x,M_1) : p(\theta|x,M_2)]\right)
+        \end{equation}
+
+        \item \textbf{后验预测检验}：比较观测数据与后验预测分布
+
+        \item \textbf{变分推断}：
+        \begin{equation}
+        q^* = \arg\min_{q} D_{KL}[q(\theta) : p(\theta|x)]
+        \end{equation}
+
+        \item \textbf{信息增益}：$D_{KL}[p(\theta|x) : p(\theta)]$ 衡量数据的价值
+    \end{enumerate}
+}
+
+\userannotation{
+    EM 算法与信息几何是什么关系？
+}{
+    EM 算法是对偶平坦空间中的**交替最小化**算法的典型例子：
+
+    \begin{enumerate}
+        \item \textbf{E 步}：在当前参数下，计算隐变量的后验分布
+        \item \textbf{M 步}：最大化期望完整数据对数似然
+
+        这等价于在两个对偶平坦子流形之间交替投影，每次投影使 KL 散度下降。
+    \end{enumerate}
+
+    广义勾股定理保证了这种交替优化的收敛性。
+}
+
+\userannotation{
+    变分推断如何从信息几何角度理解？
+}{
+    变分推断（VI）的核心是散度最小化：
+
+    \begin{equation}
+    q^* = \arg\min_{q \in \mathcal{Q}} D_{KL}[q(\theta) : p(\theta|x)]
+    \end{equation}
+
+    从几何角度看：
+    \begin{itemize}
+        \item $\mathcal{Q}$ 是一个参数化的近似分布族（通常是指数族）
+        \item 目标是在 $\mathcal{Q}$ 中找到 $p(\theta|x)$ 的"最近"近似
+        \item 这就是投影定理在变分推断中的应用
+    \end{itemize}
+
+    ELBO（Evidence Lower Bound）最大化与 KL 散度最小化是等价的。
+}
+
+\userannotation{
+    信息几何对贝叶斯模型选择有什么启示？
+}{
+    从信息几何角度看，模型选择本质上是在不同的子流形之间进行选择：
+
+    \begin{enumerate}
+        \item 每个模型对应一个子流形 $\mathcal{M}$
+        \item 数据分布 $p_{data}$ 在流形上的投影是最佳拟合
+        \item 模型复杂度由子流形的"曲率"刻画
+        \item Bayes Factor 实际上是比较不同子流形上的投影差异
+    \end{enumerate}
+
+    这提供了理解偏差-方差权衡、模型复杂度的几何框架。
+}
+
+\userannotation{
+    为什么 Fisher 信息是唯一的？
+}{
+    Fisher 信息具有独特的不变性：
+
+    \begin{enumerate}
+        \item \textbf{充分统计量下不变}：若 $T(X)$ 是充分统计量，则 $I(\theta) = I(T, \theta)$
+        \item \textbf{参数变换下协变}：在参数变换下以正确的方式变换
+    \end{enumerate}
+
+    信息几何的一个核心定理证明：在满足合理条件下（正定、不变、局部性），唯一满足这些条件的度量就是 Fisher 信息。
+
+    这使得 Fisher 信息成为概率分布空间的"自然"几何结构。
+}
+
+\userannotation{
+    信息几何视角下的贝叶斯核心思想是什么？
+}{
+    综合以上讨论，信息几何为贝叶斯分析提供了统一的几何框架：
+
+    \begin{enumerate}
+        \item \textbf{概率分布 $\rightarrow$ 流形上的点}
+        \item \textbf{推断 $\rightarrow$ 流形上的投影（散度最小化）}
+        \item \textbf{先验 $\rightarrow$ 流形上的参考点}
+        \item \textbf{后验 $\rightarrow$ 数据驱动的点移动}
+        \item \textbf{模型 $\rightarrow$ 子流形}
+    \end{enumerate}
+
+    核心洞见是：\textbf{贝叶斯推断就是概率分布空间中的几何运动}。
+}
