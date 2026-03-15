@@ -29,66 +29,127 @@
   第三个步骤涉及计算方法论和微妙的技术与判断平衡，由问题的应用背景指导。第一步仍然是许多贝叶斯分析的主要障碍：我们的模型从何而来？如何构建适当的概率规范？
 \end{Remark}
 
-\section{概率与不确定性的度量}
-
 贝叶斯思维的主要动机是它便于对统计结论进行常识性解释。例如，一个未知量的贝叶斯（概率）区间可以直接被认为是"该未知量有很高概率包含在其中"，这与频率主义（置信区间）的解释形成对比。
 
-\section{概率论基础回顾}
+\section{统计推断的一般符号}
 
-\subsection{条件概率}
+在贝叶斯统计中，我们使用以下符号：
 
-假设如果 $\theta = 1$，则 $y$ 服从均值为 $\theta$、方差为 1 的正态分布。那么条件概率密度为：
-\[
-p(y \mid \theta) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{(y-\theta)^2}{2}\right)
-\]
+\begin{itemize}
+  \item $\theta$：不可观测的向量值或总体参数（如临床试验中每种治疗方案的生存概率）
+
+  \item $y$：观测数据（如每组中的存活和死亡人数）
+
+  \item $\tilde{y}$：未知但潜在可观测的量（如其他治疗方案下患者的结果，或与试验中患者相似的新患者的结果）
+
+  \item $x$：解释变量或协变量（如患者的年龄和先前健康状况）
+\end{itemize}
+
+\section{贝叶斯推断}
+
+贝叶斯推断的核心思想是：关于参数 $\theta$ 或未观测数据 $\tilde{y}$ 的统计结论，都以概率陈述的形式给出。
+
+这些概率陈述以观测值 $y$ 为条件，在我们的记号中简单记为 $p(\theta|y)$ 或 $p(\tilde{y}|y)$。
 
 \subsection{贝叶斯定理}
 
-贝叶斯定理是贝叶斯推断的核心：
+为了对给定 $y$ 的 $\theta$ 做出概率陈述，我们必须首先建立一个提供 $\theta$ 和 $y$ 联合概率分布的模型。
+
+联合概率质量（或密度）函数可以写成两个密度的乘积，通常称为先验分布 $p(\theta)$ 和采样分布（或数据分布）$p(y|\theta)$：
 \[
-p(\theta \mid y) = \frac{p(y \mid \theta) p(\theta)}{p(y)}
+p(\theta, y) = p(\theta) \times p(y|\theta)
 \]
-其中：
-\begin{itemize}
-  \item $p(\theta \mid y)$ 是后验分布
-  \item $p(y \mid \theta)$ 是似然函数
-  \item $p(\theta)$ 是先验分布
-  \item $p(y) = \int p(y \mid \theta) p(\theta) \, d\theta$ 是边际似然
-\end{itemize}
 
-\section{离散概率例子}
+使用条件概率的基本性质（贝叶斯定理），得到后验密度：
+\[
+p(\theta|y) = \frac{p(\theta) \times p(y|\theta)}{p(y)}
+\]
+其中
+\[
+p(y) = \int p(\theta) \times p(y|\theta) \, d\theta
+\]
 
-\subsection{遗传学例子}
+一个等价的形式省略了不依赖于 $\theta$ 的因子 $p(y)$，给出非归一化后验密度：
+\[
+p(\theta|y) \propto p(\theta) \times p(y|\theta)
+\]
 
-考虑一个经典的遗传学问题：某种疾病的遗传模式。
+\begin{Remark}
+  注意：$p(y|\theta)$ 被视为 $\theta$ 的函数（固定 $y$），而不是 $y$ 的函数。这被称为似然函数。
+\end{Remark}
 
-\begin{Example}
-  假设某种疾病由隐性等位基因引起。如果父母都是携带者（异形合子），每个孩子有 25\% 的概率患病，50\% 的概率是携带者，25\% 的概率是正常。
-\end{Example}
+\subsection{预测}
+
+在数据 $y$ 被观测之前，未知但可观测的 $\tilde{y}$ 的分布是边际分布：
+\[
+p(y) = \int p(y|\theta) \times p(\theta) \, d\theta
+\]
+这被称为先验预测分布（prior predictive distribution）。
+
+在观测到数据 $y$ 之后，预测 $\tilde{y}$ 的分布是后验预测分布（posterior predictive distribution）：
+\[
+p(\tilde{y}|y) = \int p(\tilde{y}|\theta) \times p(\theta|y) \, d\theta
+\]
+
+后验预测分布可以解释为在 $\theta$ 的后验分布上对条件预测进行平均。
+
+\section{似然与优势比}
+
+使用贝叶斯定理与选定的概率模型意味着数据 $y$ 只通过 $p(y|\theta)$ 影响后验推断，当固定 $y$ 将其视为 $\theta$ 的函数时，称为\textbf{似然函数}。
+
+这样，贝叶斯推断服从所谓的似然原理：对于给定的数据样本，任何具有相同似然函数的概率模型 $p(y|\theta)$ 对 $\theta$ 产生相同的推断。
+
+后验密度 $p(\theta|y)$ 在 $\theta_1$ 和 $\theta_2$ 处取值的比率称为后验优势比。优势比提供了一个概率的替代表示，并且具有贝叶斯定理用优势比表示特别简单的形式：
+\[
+\frac{p(\theta_1|y)}{p(\theta_2|y)} = \frac{p(\theta_1)}{p(\theta_2)} \times \frac{p(y|\theta_1)}{p(y|\theta_2)}
+\]
+
+即：\textbf{后验优势比 = 先验优势比 × 似然比}。
 
 \section{概率作为不确定性的度量}
 
-概率可以通过多种方式理解：
-\begin{itemize}
-  \item \textbf{对称性/可交换性论证}
-  \item \textbf{频率论证}：概率 = 长期序列中的相对频率
-  \item \textbf{类比论证}：物理随机性诱导不确定性
-  \item \textbf{公理化/规范性论证}
-  \item \textbf{博彩一致性}
-\end{itemize}
+在贝叶斯统计中，概率被用作不确定性的基本度量。在这个范式下，讨论明天降雨的概率或巴西队赢得世界杯的概率与讨论硬币抛掷正面朝上的概率同样合法。
+
+\subsection{两种经典论证}
+
+\textbf{对称性/可交换性论证}：
+\[
+\text{概率} = \frac{\text{有利情况数}}{\text{可能情况数}}
+\]
+
+\textbf{频率论证}：
+\[
+\text{概率} = \text{在长期重复序列中得到的相对频率}
+\]
+
+\subsection{博彩一致性原理}
+
+将你对事件 $E$ 赋予的概率 $p$（$p \in [0, 1]$）定义为：你愿意以此比例下注\$p 来换取如果 $E$ 发生则获得\$1 的回报。
+
+一致性原则要求：你对所有可能事件的概率赋值不应该让对方有可能从你这里确定获利。
+
+\section{主观性与客观性}
+
+所有使用概率的统计方法在某种意义上都是主观的，因为它们依赖于对世界的数学理想化。
+
+贝叶斯方法有时被认为特别主观，因为它们依赖于先验分布。但在大多数问题中，科学判断对于指定似然和先验分布都是必要的。
+
+一个普遍原则是：每当存在复制时（即观察到许多可交换的单位），就有机会从数据中估计概率分布的特征，从而使分析更加客观。
 
 \section{本章小结}
 
 本章我们学习了：
 \begin{enumerate}
   \item 贝叶斯数据分析的三个基本步骤
+  \item 统计推断的一般符号 ($\theta, y, \tilde{y}, x$)
+  \item 贝叶斯定理及其组成部分（先验、似然、后验、边际似然）
+  \item 预测分布：先验预测分布与后验预测分布
   \item 概率作为不确定性度量的多种解释
-  \item 贝叶斯定理及其组成部分
-  \item 条件概率、期望和方差的基本公式
+  \item 似然原理和优势比
 \end{enumerate}
 
 \section{下节预告}
 
-下一章我们将学习单参数模型，包括从二项数据估计概率的经典例子。
+下一章我们将学习单参数模型，包括从二项数据估计概率的经典例子——这是贝叶斯推断最经典的入门案例。
 
 \endinput
