@@ -30,6 +30,34 @@
 $n$ 阶对称群 $S_n$ 是 $\{1, 2, \ldots, n\}$ 的所有置换构成的群. 一个置换 $w$ 可以记为一维数组 $w = (w(1), w(2), \ldots, w(n))$.
 
 排列 $w$ 的逆序数 $\ell(w)$ 定义为满足 $1 \leq i < j \leq n$ 且 $w(i) > w(j)$ 的对 $(i, j)$ 的个数，也称为 $w$ 的长度.
+
+在 $S_n$ 中，长度最大的置换称为最长置换，记为 $w_0$. 它将 $\{1,2,\ldots,n\}$ 逆序排列：
+$$w_0 = (n, n-1, \ldots, 2, 1)$$
+其长度为 $\ell(w_0) = \binom{n}{2}$.
+\end{Definition}
+
+\begin{Definition}[Bruhat 序]
+\label{def:BruhatOrder}
+设 $u, v \in S_n$，称 $u \leq v$（在 Bruhat 序下），如果 $u$ 可以通过一系列基本置换（交换相邻元素）的乘积得到 $v$，且这些基本置换对应的指标序列是 $v$ 的某个约化表示的子序列.
+
+等价的组合描述：$u \leq v$ 当且仅当对所有 $1 \leq k \leq n$，有
+$$\#\{i \leq k : u(i) \leq j\} \leq \#\{i \leq k : v(i) \leq j\}$$
+对所有 $j$ 成立.
+\end{Definition}
+
+\begin{Example}[Bruhat 序的例子]
+在 $S_3$ 中，$123$ 是最小元，$321$ 是最大元：
+$$123 < 213 < 231 < 312 < 132 < 321$$
+例如：$213 < 321$（因为 $213$ 通过基本置换可以变为 $321$），但 $312 \nless 231$.
+\end{Example}
+
+\begin{Definition}[Descents（下降点）]
+\label{def:Descents}
+置换 $w \in S_n$ 的 descents 集合定义为：
+$$\mathrm{Des}(w) = \{i \in \{1, \ldots, n-1\} : w(i) > w(i+1)\}$$
+即满足 $w(i) > w(i+1)$ 的位置 $i$ 的集合. 每个 descent 将置换分为若干块.
+
+例如：$w = 35142$（即 $(3,5,1,4,2)$），有 $w(1)=3 > w(2)=5$ 不成立，$w(2)=5 > w(3)=1$ 成立，$w(3)=1 > w(4)=4$ 不成立，$w(4)=4 > w(5)=2$ 成立，故 $\mathrm{Des}(w) = \{2, 4\}$.
 \end{Definition}
 
 \begin{Definition}[Schubert 多项式]
@@ -40,6 +68,17 @@ S_w(x_1, \ldots, x_n) = x_1^{c_1} x_2^{c_2} \cdots + \text{更低次的项}
 \end{equation}
 其中 $c_i = \#\{j > i : w(j) < w(i)\}$.
 \end{Definition}
+
+\begin{Example}[Schubert 多项式的例子]
+\label{ex:SchubertPolynomial}
+在 $S_3$ 中：
+\begin{itemize}
+\item $w = 123$（恒等置换），$c_1 = c_2 = c_3 = 0$，故 $S_{123} = 1$。
+\item $w = 321$（最长置换 $w_0$），$c_1 = 2, c_2 = 1, c_3 = 0$，故 $S_{321} = x_1^2 x_2$（首项）。
+\item $w = 213$（交换 1 和 2），计算得 $c_1 = 1, c_2 = 0, c_3 = 0$，$S_{213} = x_1$。
+\item $w = 231$，计算逆序：$(2,3,1)$ 中 $2<3$ 无逆序，$2>1$ 和 $3>1$ 有两个逆序，故 $\ell(w)=2$，$S_{231} = x_1 x_2$。
+\end{itemize}
+\end{Example}
 
 \subsection{双重 Schubert 多项式}
 
@@ -57,6 +96,19 @@ S_w(x; y) = \sum_{u \leq w} (-1)^{\ell(w)-\ell(u)} \mathfrak{S}_u(x) \cdot \prod
 \item 当 $y = 0$ 时，$S_w(x; 0) = S_w(x)$ 退化为经典 Schubert 多项式
 \end{itemize}
 \end{Definition}
+
+\begin{Example}[双重 Schubert 多项式的例子]
+\label{ex:DoubleSchubert}
+在 $S_2$ 中：
+\begin{itemize}
+\item $w_0 = 21$（最长置换），$S_{21}(x; y) = (x_1 - y_1)(x_2 - y_2)$。
+\item $w = 12$（恒等置换），$S_{12}(x; y) = 1$。
+\item $w = 21$，展开：$S_{21}(x; y) = x_1 x_2 - x_1 y_2 - x_2 y_1 + y_1 y_2$。
+\end{itemize}
+在 $S_3$ 中，取 $w_0 = 321$：
+$$S_{321}(x; y) = (x_1 - y_1)(x_2 - y_2)(x_3 - y_3)$$
+这对应于旗流形的基本类。
+\end{Example}
 
 \subsection{等变量子上同调}
 
@@ -91,6 +143,19 @@ w(1) < w(2) < \cdots < w(k) \quad \text{且} \quad w(k+1) > w(k+2) > \cdots > w(
 $k$-Grassmannian 排列与 $Gr(k, n)$ 中的 Schubert 胞腔一一对应.
 \end{Definition}
 
+\begin{Example}[Grassmannian 排列的例子]
+\label{ex:GrassmannianPermutation}
+在 $S_4$ 中：
+\begin{itemize}
+\item $k=2$，$w = (1,3,4,2)$：前2位 $1<3$ 递增，后2位 $4>2$ 递减，故是 2-Grassmannian。
+\item $k=2$，$w = (2,4,3,1)$：前2位 $2<4$ 递增，后2位 $3>1$ 递减，故是 2-Grassmannian。
+\item $w = (1,2,3,4)$（恒等置换）：是 $k=4$ 的 Grassmannian（所有位置都递增）。
+\item $w = (4,3,2,1)$（最长置换）：是 $k=0$ 的 Grassmannian（所有位置都递减）。
+\item $w = (1,4,3,2)$：前2位 $1<4$ 递增，但后2位 $3$ 不大于 $2$，故不是 Grassmannian。
+\end{itemize}
+Grassmannian 排列编码了 Grassmannian 流形 $Gr(k, n)$ 中 Schubert 胞腔的位置信息.
+\end{Example}
+
 Grassmannian 排列是 Graham 原始 positivity 定理研究的对象.
 
 \subsection{除差算子}
@@ -103,6 +168,21 @@ Grassmannian 排列是 Graham 原始 positivity 定理研究的对象.
 \end{equation}
 更一般地，对于置换 $w$，定义其对应的除差算子 $\partial_w$ 为适当组合的 $\partial_i$.
 \end{Definition}
+
+\begin{Example}[除差算子的例子]
+\label{ex:DividedDifference}
+在 $S_3$ 中（变量为 $x_1, x_2, x_3$）：
+\begin{itemize}
+\item $\partial_1(x_1) = \frac{x_1 - x_2}{x_1 - x_2} = 1$。
+\item $\partial_1(x_2) = \frac{x_2 - x_1}{x_1 - x_2} = -1$。
+\item $\partial_1(x_1^2) = \frac{x_1^2 - x_2^2}{x_1 - x_2} = x_1 + x_2$。
+\item $\partial_1(x_1 x_2) = \frac{x_1 x_2 - x_2 x_1}{x_1 - x_2} = 0$。
+\item $\partial_1(x_2^2) = x_2 + x_1$。
+\item $\partial_1 \partial_2(x_1) = \partial_2(1) = 1$（因为 $\partial_1$ 作用于常数得 0）。
+\item $\partial_2(x_2) = 1$（$\partial_2$ 交换 $x_2$ 和 $x_3$）。
+\end{itemize}
+除差算子的作用是取对称化：$\partial_i$ 将多项式变为关于 $x_i, x_{i+1}$ 的对称多项式。
+\end{Example}
 
 \begin{Definition}[Skew 除差算子]
 \label{def:SkewDividedDifference}
@@ -192,7 +272,7 @@ $$c^w_{u,v}(y, t) = \sum_{\alpha} a_{u,v}^\alpha \cdot p_\alpha(y) \cdot q_\alph
 
 \begin{Lemma}[Lemma 2.2]
 \label{def:Lemma22}
-在上述条件下，系数 $a_{u,v}^\alpha$ 是非负整数.
+在 \cref{def:RefinedGraham} 中定义的 descents 条件下，系数 $a_{u,v}^\alpha$ 是非负整数.
 \end{Lemma}
 
 \begin{Lemma}[Lemma 2.3]
@@ -213,7 +293,7 @@ Billey 公式表明，展开系数 $c^w_{u,v}(y)$ 可以通过特定的 Schubert
 $$c^w_{u,v}(y) = \sum_{b \in B(u,v,w)} \prod_{i=1}^{\ell(w)} y_i^{m_i(b)}$$
 其中 $B(u,v,w)$ 是某个特定的胞腔集合，$m_i(b)$ 是非负整数. 本文给出了这一几何解释的新证明.
 
-\subsection{Theorem 1.2 的证明：应用到 Triple Schubert Calculus}
+\subsection{\cref{def:Theorem12} 的证明：应用到 Triple Schubert Calculus}
 \label{sec:TripleSchubertProof}
 
 本文的第二个主要结果是证明了 Samuel 猜想（\cref{conj:Samuel}），即在三重变量集情形下的 Graham positivity.
@@ -237,17 +317,17 @@ $$S_v(x; t) = \sum_{v' \leq v} c^{v'}_v(t) \cdot S_{v'}(x)$$
 将两式相乘并展开，我们得到：
 $$S_u(x; y) \cdot S_v(x; t) = \sum_{u' \leq u, v' \leq v} c^{u'}_u(y) \cdot c^{v'}_v(t) \cdot S_{u'}(x) \cdot S_{v'}(x)$$
 
-应用 Theorem 1.1 于乘积 $S_{u'}(x) \cdot S_{v'}(x)$，我们得到：
+应用 \cref{def:RefinedGraham} 于乘积 $S_{u'}(x) \cdot S_{v'}(x)$，我们得到：
 $$S_{u'}(x) \cdot S_{v'}(x) = \sum_w c^w_{u',v'}(0, t) \cdot S_w(x; t)$$
 
 结合以上各式，我们得到：
 $$S_u(x; y) \cdot S_v(x; t) = \sum_w \left( \sum_{u' \leq u, v' \leq v} c^{u'}_u(y) \cdot c^{v'}_v(t) \cdot c^w_{u',v'}(0, t) \right) \cdot S_w(x; t)$$
 
-注意到 $c^{u'}_u(y)$ 和 $c^{v'}_v(t)$ 是 $y$ 和 $t$ 的正系数多项式（由双重 Schubert 多项式的定义可直接验证），而 $c^w_{u',v'}(0, t)$ 由 Theorem 1.1 是 $t$ 的正系数多项式. 因此内层求和给出的是 $y$ 和 $t$ 的正系数多项式.
+注意到 $c^{u'}_u(y)$ 和 $c^{v'}_v(t)$ 是 $y$ 和 $t$ 的正系数多项式（由双重 Schubert 多项式的定义可直接验证），而 $c^w_{u',v'}(0, t)$ 由 \cref{def:RefinedGraham} 是 $t$ 的正系数多项式. 因此内层求和给出的是 $y$ 和 $t$ 的正系数多项式.
 
 这就完成了 \cref{def:Theorem12} 的证明.
 
-\subsection{Theorem 1.3 的证明：Grothendieck 多项式的 Positivity 猜想}
+\subsection{\cref{def:Theorem13} 的证明：Grothendieck 多项式的 Positivity 猜想}
 \label{sec:GrothendieckProof}
 
 作为应用，我们证明了 Kirillov 关于 skew 除差算子的正性猜想.
@@ -262,14 +342,14 @@ $$S_u(x; y) \cdot S_v(x; t) = \sum_w \left( \sum_{u' \leq u, v' \leq v} c^{u'}_u
 根据 skew 除差算子的定义（见\cref{def:SkewDividedDifference}），我们有：
 $$\partial_{w/v}(S_u(x)) = \sum_{w'} c^{w'}_{u,v} \cdot S_{w'}(x)$$
 
-另一方面，由 Theorem 1.2 的特殊情形（取 $y = 0$），我们可以将系数 $c^{w'}_{u,v}$ 表示为某些正系数的组合.
+另一方面，由 \cref{def:Theorem12} 的特殊情形（取 $y = 0$），我们可以将系数 $c^{w'}_{u,v}$ 表示为某些正系数的组合.
 
 具体来说，设 $u = w$ 且 $v = w_0 / w$（其中 $w_0$ 是最长置换），则：
 $$\partial_{w/w_0/w}(S_{w_0}(x)) = \partial_{w/v}(S_{w_0}(x))$$
 
 由于 $S_{w_0}(x) = x_1^{n-1} x_2^{n-2} \cdots x_{n-1}$ 是某个特定的单项式，我们可以利用 Billey 公式的展开来计算.
 
-由 Theorem 1.1 和 Billey 公式的性质，我们可以证明所有出现的系数都是非负整数.
+由 \cref{def:RefinedGraham} 和 Billey 公式的性质，我们可以证明所有出现的系数都是非负整数.
 
 这就完成了 \cref{def:Theorem13} 的证明.
 

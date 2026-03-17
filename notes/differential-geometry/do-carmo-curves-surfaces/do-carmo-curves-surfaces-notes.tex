@@ -6,6 +6,9 @@
 \usepackage{cleveref}
 \usepackage{geometry}
 \usepackage{graphicx}
+\usepackage{float} % 支持 H 选项
+\usepackage{subcaption}
+\graphicspath{{figures/}}
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
 \geometry{margin=1in}
@@ -21,12 +24,21 @@
 \newtheorem{Remark}{注}[chapter]
 \newtheorem{Exercise}{练习}[chapter]
 
+% 原文教材习题环境
+\newenvironment{exercise}[1]{%
+  \begin{trivlist}
+  \item[\hskip\labelsep \textbf{练习 #1}]
+}{\end{trivlist}}
+
 % User annotation command
 \newcommand{\userannotation}[2]{%
   \begin{Remark}
     \textbf{#1:} #2
   \end{Remark}
 }
+
+% Hyperbolic functions
+\DeclareMathOperator{\sech}{sech}
 
 % Title
 \title{Differential Geometry of Curves and Surfaces}
@@ -35,12 +47,15 @@
 
 \begin{document}
 
+% 如果没有被主文件包含，则显示标题页和目录
+\ifdefined\mainfile\else
 \maketitle
+% \maketableofcontents
 \tableofcontents
+\fi
 
 % Include chapters
 \include{chapters/chapter1}
-\include{chapters/chapter2}
 
 % Appendix
 \appendix

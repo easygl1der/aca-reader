@@ -1,0 +1,321 @@
+\chapter{一些特殊分布}\label{chap:special-distributions}
+
+\section{引言}\label{sec:intro-special-distributions}
+
+本章介绍统计学中重要的特殊分布，包括离散分布和连续分布。这些分布在统计推断中有着广泛的应用。
+
+\section{离散分布}\label{sec:discrete-distributions-ch3}
+
+\subsection{伯努利分布}\label{sub:bernoulli}
+
+\begin{Definition}[伯努利分布]\label{def:bernoulli}
+随机变量 $X$ 服从参数为 $p$ 的伯努利分布（Bernoulli distribution），记作 $X \sim \operatorname{Bernoulli}(p)$，若
+\[
+P(X = 1) = p, \quad P(X = 0) = 1-p, \quad 0 < p < 1.
+\]
+\end{Definition}
+
+性质：
+\[
+E[X] = p, \quad \operatorname{Var}(X) = p(1-p).
+\]
+
+伯努利分布是最简单的离散分布，用于描述一次试验的成功与失败。
+
+\subsection{二项分布}\label{sub:binomial}
+
+\begin{Definition}[二项分布]\label{def:binomial}
+设 $n$ 次独立试验，每次试验成功概率为 $p$，记成功次数为 $X$，则 $X$ 服从参数为 $(n, p)$ 的二项分布（binomial distribution），记作 $X \sim \operatorname{Bin}(n, p)$，其 pmf 为
+\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n,
+\]
+其中 $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ 为二项系数。
+\end{Definition}
+
+性质：
+\begin{itemize}
+    \item $E[X] = np$；
+    \item $\operatorname{Var}(X) = np(1-p)$；
+    \item 若 $X_1 \sim \operatorname{Bin}(n_1, p)$ 与 $X_2 \sim \operatorname{Bin}(n_2, p)$ 独立，则 $X_1 + X_2 \sim \operatorname{Bin}(n_1 + n_2, p)$。
+\end{itemize}
+
+二项分布可视为 $n$ 个独立伯努利随机变量的和：$X = \sum_{i=1}^n X_i$，其中 $X_i \sim \operatorname{Bernoulli}(p)$。
+
+\subsection{超几何分布}\label{sub:hypergeometric}
+
+\begin{Definition}[超几何分布]\label{def:hypergeometric}
+设总体有 $N$ 个元素，其中 $M$ 个属于某一类（成功），$N-M$ 个属于另一类（失败）。从中无放回抽取 $n$ 个，记抽中的成功元素数为 $X$，则 $X$ 服从参数为 $(N, M, n)$ 的超几何分布（hypergeometric distribution），记作 $X \sim \operatorname{Hyper}(N, M, n)$，其 pmf 为
+\[
+P(X = k) = \frac{\binom{M}{k} \binom{N-M}{n-k}}{\binom{N}{n}},
+\]
+其中 $k = \max(0, n-(N-M)), \ldots, \min(n, M)$。
+\end{Definition}
+
+性质：
+\[
+E[X] = n \cdot \frac{M}{N}, \quad \operatorname{Var}(X) = n \cdot \frac{M}{N} \cdot \left(1 - \frac{M}{N}\right) \cdot \frac{N-n}{N-1}.
+\]
+
+当 $N \to \infty$ 时，超几何分布趋近于二项分布（抽样无限大，有放回等于无放回）。
+
+\subsection{负二项分布}\label{sub:negative-binomial}
+
+\begin{Definition}[负二项分布]\label{def:negative-binomial}
+设独立试验每次成功概率为 $p$，记录获得 $r$ 次成功所需的试验次数 $X$，则 $X$ 服从参数为 $(r, p)$ 的负二项分布（negative binomial distribution），记作 $X \sim \operatorname{NB}(r, p)$，其 pmf 为
+\[
+P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}, \quad k = r, r+1, \ldots.
+\]
+\end{Definition}
+
+性质：
+\[
+E[X] = \frac{r}{p}, \quad \operatorname{Var}(X) = \frac{r(1-p)}{p^2}.
+\]
+
+负二项分布也可定义为获得 $r$ 次成功前的失败次数。
+
+\subsection{几何分布}\label{sub:geometric}
+
+\begin{Definition}[几何分布]\label{def:geometric}
+几何分布（geometric distribution）是负二项分布当 $r=1$ 的特例。记首次成功前的试验次数 $X \sim \operatorname{Geom}(p)$，则
+\[
+P(X = k) = (1-p)^{k-1} p, \quad k = 1, 2, \ldots.
+\]
+\end{Definition}
+
+性质：
+\[
+E[X] = \frac{1}{p}, \quad \operatorname{Var}(X) = \frac{1-p}{p^2}.
+\]
+
+几何分布具有无记忆性：$P(X > m + n \mid X > m) = P(X > n)$。
+
+\subsection{泊松分布}\label{sub:poisson}
+
+\begin{Definition}[泊松分布]\label{def:poisson}
+随机变量 $X$ 服从参数为 $\lambda > 0$ 的泊松分布（Poisson distribution），记作 $X \sim \operatorname{Poisson}(\lambda)$，其 pmf 为
+\[
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots.
+\]
+\end{Definition}
+
+性质：
+\[
+E[X] = \lambda, \quad \operatorname{Var}(X) = \lambda.
+\]
+
+泊松分布是稀有事件在单位时间/空间内发生次数的模型。重要极限性质：若 $X_n \sim \operatorname{Bin}(n, p_n)$ 且 $np_n \to \lambda$，则 $X_n \xrightarrow{d} \operatorname{Poisson}(\lambda)$。
+
+\section{连续分布}\label{sec:continuous-distributions-ch3}
+
+\subsection{正态分布}\label{sub:normal-ch3}
+
+正态分布（normal distribution）是统计学中最重要的分布。
+
+\begin{Definition}[正态分布]\label{def:normal}
+随机变量 $X$ 服从参数为 $(\mu, \sigma^2)$ 的正态分布（normal distribution），记作 $X \sim N(\mu, \sigma^2)$，其 pdf 为
+\[
+f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad -\infty < x < \infty,
+\]
+其中 $\mu \in \mathbb{R}$ 为均值，$\sigma^2 > 0$ 为方差。
+\end{Definition}
+
+性质：
+\begin{itemize}
+    \item $E[X] = \mu$；
+    \item $\operatorname{Var}(X) = \sigma^2$；
+    \item 峰度（kurtosis）为 3；
+    \item 线性变换：若 $X \sim N(\mu, \sigma^2)$，则 $aX + b \sim N(a\mu + b, a^2\sigma^2)$。
+\end{itemize}
+
+\begin{Definition}[标准正态分布]\label{def:standard-normal}
+$\mu = 0$，$\sigma^2 = 1$ 的正态分布称为标准正态分布（standard normal distribution），记作 $Z \sim N(0, 1)$，其 pdf 为
+\[
+\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}.
+\]
+\end{Definition}
+
+任意正态变量可标准化：若 $X \sim N(\mu, \sigma^2)$，则 $Z = \frac{X-\mu}{\sigma} \sim N(0, 1)$。
+
+标准正态的 cdf 记作 $\Phi(z) = P(Z \leq z)$，其值可查表或用软件计算。
+
+\subsection{Gamma 分布}\label{sub:gamma}
+
+\begin{Definition}[Gamma 分布]\label{def:gamma}
+随机变量 $X$ 服从参数为 $(\alpha, \beta)$ 的 Gamma 分布（Gamma distribution），记作 $X \sim \Gamma(\alpha, \beta)$，其 pdf 为
+\[
+f(x) = \frac{1}{\Gamma(\alpha) \beta^\alpha} x^{\alpha-1} e^{-x/\beta}, \quad x > 0,
+\]
+其中 $\alpha > 0$ 为形状参数（shape parameter），$\beta > 0$ 为尺度参数（scale parameter），$\Gamma(\alpha) = \int_0^\infty t^{\alpha-1} e^{-t} \, dt$ 为 Gamma 函数。
+\end{Definition}
+
+性质：
+\[
+E[X] = \alpha\beta, \quad \operatorname{Var}(X) = \alpha\beta^2.
+\]
+
+Gamma 分布的特例：
+\begin{itemize}
+    \item 当 $\alpha = 1$ 时，$\Gamma(1, \beta) = \operatorname{Exp}(1/\beta)$（指数分布）；
+    \item 当 $\alpha = n/2$，$\beta = 2$ 时，$\Gamma(n/2, 2) = \chi^2(n)$（卡方分布）。
+\end{itemize}
+
+Gamma 分布的和：若 $X_1 \sim \Gamma(\alpha_1, \beta)$ 与 $X_2 \sim \Gamma(\alpha_2, \beta)$ 独立，则 $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$。
+
+\subsection{指数分布}\label{sub:exponential}
+
+\begin{Definition}[指数分布]\label{def:exponential}
+指数分布（exponential distribution）是 Gamma 分布当 $\alpha = 1$ 的特例。记作 $X \sim \operatorname{Exp}(\lambda)$，参数 $\lambda > 0$ 为率参数，其 pdf 为
+\[
+f(x) = \lambda e^{-\lambda x}, \quad x > 0.
+\]
+\end{Definition}
+
+性质：
+\[
+E[X] = \frac{1}{\lambda}, \quad \operatorname{Var}(X) = \frac{1}{\lambda^2}.
+\]
+
+指数分布具有无记忆性：$P(X > s + t \mid X > s) = P(X > t)$。
+
+指数分布与泊松过程相关：泊松过程的等待时间服从指数分布。
+
+\subsection{卡方分布}\label{sub:chi-square}
+
+\begin{Definition}[卡方分布]\label{def:chi-square}
+卡方分布（chi-square distribution）是 Gamma 分布的重要特例。设 $Z_1, \ldots, Z_n \stackrel{i.i.d}{\sim} N(0, 1)$，则 $X = \sum_{i=1}^n Z_i^2 \sim \chi^2(n)$，称为自由度为 $n$ 的卡方分布。
+\end{Definition}
+
+卡方分布即 $\Gamma(n/2, 2)$，性质：
+\[
+E[X] = n, \quad \operatorname{Var}(X) = 2n.
+\]
+
+卡方分布在方差分析和拟合优度检验中非常重要。
+
+卡方分布的可加性：若 $X_1 \sim \chi^2(n_1)$ 与 $X_2 \sim \chi^2(n_2)$ 独立，则 $X_1 + X_2 \sim \chi^2(n_1 + n_2)$。
+
+\subsection{Beta 分布}\label{sub:beta}
+
+\begin{Definition}[Beta 分布]\label{def:beta}
+随机变量 $X$ 服从参数为 $(\alpha, \beta)$ 的 Beta 分布（Beta distribution），记作 $X \sim \operatorname{Beta}(\alpha, \beta)$，其 pdf 为
+\[
+f(x) = \frac{1}{B(\alpha, \beta)} x^{\alpha-1} (1-x)^{\beta-1}, \quad 0 < x < 1,
+\]
+其中 $\alpha > 0$，$\beta > 0$，$B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$ 为 Beta 函数。
+\end{Definition}
+
+性质：
+\[
+E[X] = \frac{\alpha}{\alpha+\beta}, \quad \operatorname{Var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
+\]
+
+Beta 分布定义在 $(0, 1)$ 区间，常用于建模比例或概率。
+
+特殊值：
+\begin{itemize}
+    \item $\operatorname{Beta}(1, 1) = \operatorname{Uniform}(0, 1)$；
+    \item 当 $\alpha > 1$，$\beta > 1$ 时，分布为单峰。
+\end{itemize}
+
+\subsection{t 分布}\label{sub:t-distribution}
+
+\begin{Definition}[t 分布]\label{def:t-distribution}
+设 $Z \sim N(0, 1)$ 与 $X \sim \chi^2(n)$ 独立，则
+\[
+T = \frac{Z}{\sqrt{X/n}} \sim t(n),
+\]
+称为自由度为 $n$ 的 t 分布（t-distribution）。
+\end{Definition}
+
+t 分布的 pdf 为
+\[
+f(t) = \frac{\Gamma((n+1)/2)}{\sqrt{n\pi} \, \Gamma(n/2)} \left(1 + \frac{t^2}{n}\right)^{-(n+1)/2}, \quad -\infty < t < \infty.
+\]
+
+性质：
+\begin{itemize}
+    \item $E[T] = 0$（$n > 1$）；
+    \item $\operatorname{Var}(T) = \frac{n}{n-2}$（$n > 2$）；
+    \item 当 $n \to \infty$ 时，$t(n) \xrightarrow{d} N(0, 1)$；
+    \item 当 $n = 1$ 时，$t(1)$ 为柯西分布。
+\end{itemize}
+
+t 分布在均值估计中很重要，特别是小样本或方差未知时。
+
+\subsection{F 分布}\label{sub:f-distribution}
+
+\begin{Definition}[F 分布]\label{def:f-distribution}
+设 $X_1 \sim \chi^2(m)$ 与 $X_2 \sim \chi^2(n)$ 独立，则
+\[
+F = \frac{X_1/m}{X_2/n} \sim F(m, n),
+\]
+称为自由度为 $(m, n)$ 的 F 分布（F-distribution）。
+\end{Definition}
+
+F 分布的 pdf 为
+\[
+f(x) = \frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)} \left(\frac{m}{n}\right)^{m/2} x^{m/2-1} \left(1 + \frac{mx}{n}\right)^{-(m+n)/2}, \quad x > 0.
+\]
+
+性质：
+\[
+E[F] = \frac{n}{n-2} \quad (n > 2), \quad \operatorname{Var}(F) = \frac{2n^2(m+n-2)}{m(n-2)^2(n-4)} \quad (n > 4).
+\]
+
+F 分布在方差分析和回归分析中非常重要。
+
+注意：若 $F \sim F(m, n)$，则 $1/F \sim F(n, m)$。
+
+\section{分布之间的关系}\label{sec:distribution-relationships}
+
+各分布之间的关系总结：
+
+\begin{enumerate}
+    \item \textbf{二项与泊松}：二项分布 $B(n, p)$ 当 $n \to \infty$、$np \to \lambda$ 时趋近于 $\operatorname{Poisson}(\lambda)$；
+    \item \textbf{超几何与二项}：超几何分布当 $N \to \infty$（总体无限）时趋近于二项分布；
+    \item \textbf{正态与卡方}：若 $Z \sim N(0, 1)$，则 $Z^2 \sim \chi^2(1)$；
+    \item \textbf{t 分布}：$t(n)$ 当 $n \to \infty$ 时趋近于 $N(0, 1)$；
+    \item \textbf{Gamma 家族}：指数分布是 $\Gamma(1, \beta)$，卡方分布是 $\Gamma(n/2, 2)$。
+\end{enumerate}
+
+\userannotation{本章需掌握各种分布的定义、性质和适用场景。重点关注正态分布、Gamma分布、t分布和F分布，这些在后续统计推断中非常重要。}
+
+\section{课后习题}\label{sec:chapter3-exercises}
+
+\begin{exercise}{}
+设 $X \sim \operatorname{Bin}(10, 0.3)$，求 $P(X \leq 3)$ 和 $E[X]$。
+\end{exercise}
+
+\begin{exercise}{}
+设总体有 100 个元素，其中 30 个为成功。求从中抽取 10 个恰好得到 3 个成功的概率（无放回）。
+\end{exercise}
+
+\begin{exercise}{}
+设 $X \sim \operatorname{Poisson}(4)$，求 $P(X = 2)$ 和 $P(X \geq 5)$。
+\end{exercise}
+
+\begin{exercise}{}
+设 $X \sim N(100, 225)$（即 $\sigma = 15$），求：
+\begin{enumerate}
+    \item $P(X < 85)$；
+    \item $P(90 < X < 115)$；
+    \item $P(X > 120)$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{}
+设 $X \sim \Gamma(3, 2)$，求 $E[X]$ 和 $\operatorname{Var}(X)$。
+\end{exercise}
+
+\begin{exercise}{}
+证明：若 $X_1 \sim \chi^2(m)$ 与 $X_2 \sim \chi^2(n)$ 独立，则 $X_1 + X_2 \sim \chi^2(m+n)$。
+\end{exercise}
+
+\begin{exercise}{}
+设 $T \sim t(10)$，求 $P(|T| > 2.228)$。
+\end{exercise}
+
+\begin{exercise}{}
+设 $F \sim F(5, 10)$，求 $E[F]$（若存在）。
+\end{exercise}

@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Important Rules
+
+**When user says "记住" (remember), always write to MEMORY.md, not just remember in conversation.**
+
 ## Project Status
 
 This is an empty project directory. No code has been initialized yet.
@@ -82,3 +86,31 @@ open -a Skim "$FILE.pdf"
 
 ### Theorem Style
 - 使用 `\theoremstyle{definition}` 使关键词加粗左对齐
+
+---
+
+# Skill: Smart Figure Extractor (智能图表提取)
+
+当用户要求你"裁剪图片"、"提取图表"、"切除白边"或"分开并排图片"时：
+
+1. **绝对不要**使用视觉模型（如 Gemini）去盲猜坐标
+2. 你必须使用 `figure_extractor.py` 脚本执行精确提取
+3. 脚本采用 OpenCV 像素投影算法，自动完成：
+   - Y轴多图分离
+   - 智能吸附图注
+   - X轴切除左右白边
+   - 自动劈开并排的多张图
+
+## 使用方法
+
+```bash
+python figure_extractor.py <图片路径> -o <输出目录>
+```
+
+## 示例
+
+```
+python figure_extractor.py page.png -o figures/
+```
+
+脚本会在终端输出每个提取的图的路径和精确坐标。

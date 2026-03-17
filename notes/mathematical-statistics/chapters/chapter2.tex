@@ -1,0 +1,276 @@
+\chapter{多元分布}\label{chap:multivariate-distributions}
+
+\section{引言}\label{sec:intro-multivariate}
+
+本章将一元随机变量推广到多元情形，介绍多元随机变量及其分布理论。多元分布在统计学中非常重要，因为实际问题往往涉及多个随机变量。
+
+\section{二元离散分布}\label{sec:bivariate-discrete}
+
+\subsection{联合分布与边缘分布}\label{sub:joint-marginal-discrete}
+
+\begin{Definition}[联合概率质量函数]\label{def:joint-pmf-bivariate}
+设 $X$ 和 $Y$ 为两个离散随机变量，其联合概率质量函数（joint pmf）定义为
+\[
+p_{X,Y}(x, y) = P(X = x, Y = y).
+\]
+\end{Definition}
+
+联合 pmf 满足：$p_{X,Y}(x, y) \geq 0$ 且 $\sum_x \sum_y p_{X,Y}(x, y) = 1$。
+
+\begin{Definition}[边缘概率质量函数]\label{def:marginal-pmf-bivariate}
+从联合分布可以得到边缘 pmf（marginal pmf）：
+\[
+p_X(x) = \sum_y p_{X,Y}(x, y), \quad p_Y(y) = \sum_x p_{X,Y}(x, y).
+\]
+\end{Definition}
+
+\subsection{条件分布}\label{sub:conditional-discrete}
+
+\begin{Definition}[条件分布]\label{def:conditional-pmf-bivariate}
+给定 $X = x$ 时，$Y$ 的条件 pmf 为
+\[
+p_{Y|X}(y \mid x) = P(Y = y \mid X = x) = \frac{p_{X,Y}(x, y)}{p_X(x)}, \quad p_X(x) > 0.
+\]
+\end{Definition}
+
+条件 pmf 也满足非负性和求和为1的性质。
+
+\begin{Definition}[条件期望]\label{def:conditional-expectation-bivariate}
+给定 $X = x$ 时，$Y$ 的条件期望（conditional expectation）为
+\[
+E[Y \mid X = x] = \sum_y y \cdot p_{Y|X}(y \mid x).
+\]
+\end{Definition}
+
+\begin{Theorem}[全期望公式]\label{def:total-expectation}
+\[
+E[Y] = E[E[Y \mid X]] = \sum_x E[Y \mid X = x] \cdot p_X(x).
+\]
+\end{Theorem}
+
+\section{二元连续分布}\label{sec:bivariate-continuous}
+
+\subsection{联合分布与密度}\label{sub:joint-density-continuous}
+
+\begin{Definition}[联合概率密度函数]\label{def:joint-pdf-bivariate}
+设 $(X, Y)$ 为二元连续随机变量，其联合概率密度函数（joint pdf）$f_{X,Y}(x, y)$ 满足
+\[
+P(a < X < b, c < Y < d) = \int_a^b \int_c^d f_{X,Y}(x, y) \, dy \, dx.
+\]
+\end{Definition}
+
+联合 pdf 满足：$f_{X,Y}(x, y) \geq 0$ 且 $\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x, y) \, dx \, dy = 1$。
+
+\begin{Definition}[边缘密度函数]\label{def:marginal-pdf-bivariate}
+\[
+f_X(x) = \int_{-\infty}^{\infty} f_{X,Y}(x, y) \, dy, \quad f_Y(y) = \int_{-\infty}^{\infty} f_{X,Y}(x, y) \, dx.
+\]
+\end{Definition}
+
+\begin{Definition}[条件密度函数]\label{def:conditional-pdf-bivariate}
+给定 $X = x$ 时，$Y$ 的条件密度为
+\[
+f_{Y|X}(y \mid x) = \frac{f_{X,Y}(x, y)}{f_X(x)}, \quad f_X(x) > 0.
+\]
+\end{Definition}
+
+\begin{Definition}[条件期望]\label{def:conditional-expectation-continuous}
+\[
+E[Y \mid X = x] = \int_{-\infty}^{\infty} y \cdot f_{Y|X}(y \mid x) \, dy.
+\]
+\end{Definition}
+
+\section{独立随机变量}\label{sec:independent-rv}
+
+\begin{Definition}[独立性]\label{def:independence-bivariate}
+若对所有 $x, y$，有
+\[
+P(X \leq x, Y \leq y) = P(X \leq x) \cdot P(Y \leq y),
+\]
+或等价地，
+\[
+f_{X,Y}(x, y) = f_X(x) \cdot f_Y(y) \quad \text{（对连续型）},
+\]
+或
+\[
+p_{X,Y}(x, y) = p_X(x) \cdot p_Y(y) \quad \text{（对离散型）},
+\]
+则称 $X$ 与 $Y$ 相互独立，记作 $X \perp\!\!\!\perp Y$。
+\end{Definition}
+
+\begin{Theorem}[独立随机变量的性质]\label{def:independence-properties-bivariate}
+若 $X \perp\!\!\!\perp Y$，则对任意函数 $g, h$：
+\[
+E[g(X)h(Y)] = E[g(X)] \cdot E[h(Y)].
+\]
+特别地，$\operatorname{Cov}(X, Y) = 0$（不相关），但反之不一定成立。
+\end{Theorem}
+
+\begin{Corollary}[独立时的方差]\label{cor:variance-independent}
+若 $X \perp\!\!\!\perp Y$，则
+\[
+\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y).
+\]
+\end{Corollary}
+
+\begin{Theorem}[独立性和条件分布]\label{def:independence-conditional}
+若 $X \perp\!\!\!\perp Y$，则条件分布等于边缘分布：
+\[
+f_{Y|X}(y \mid x) = f_Y(y).
+\]
+\end{Theorem}
+
+\section{二元正态分布}\label{sec:bivariate-normal}
+
+二元正态分布（bivariate normal distribution）是最重要的多元分布之一。
+
+\begin{Definition}[二元正态分布]\label{def:bivariate-normal}
+称 $(X, Y)$ 服从二元正态分布，记作 $(X, Y) \sim N(\mu_X, \mu_Y, \sigma_X^2, \sigma_Y^2, \rho)$，若其联合 pdf 为
+\[
+f(x, y) = \frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}} \exp\left\{-\frac{1}{2(1-\rho^2)}\left[\frac{(x-\mu_X)^2}{\sigma_X^2} - 2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y} + \frac{(y-\mu_Y)^2}{\sigma_Y^2}\right]\right\},
+\]
+其中 $\mu_X, \mu_Y$ 为均值，$\sigma_X^2, \sigma_Y^2$ 为方差，$\rho$ 为相关系数（$-1 < \rho < 1$）。
+\end{Definition}
+
+\begin{Theorem}[二元正态的性质]\label{def:bivariate-normal-properties}
+若 $(X, Y) \sim N(\mu_X, \mu_Y, \sigma_X^2, \sigma_Y^2, \rho)$，则：
+\begin{enumerate}
+    \item 边缘分布：$X \sim N(\mu_X, \sigma_X^2)$，$Y \sim N(\mu_Y, \sigma_Y^2)$；
+    \item 条件分布：$X \mid Y = y \sim N\left(\mu_X + \rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y), \sigma_X^2(1-\rho^2)\right)$；
+    \item $X$ 与 $Y$ 独立当且仅当 $\rho = 0$；
+    \item $X + Y$ 也服从正态分布。
+\end{enumerate}
+\end{Theorem}
+
+\begin{Theorem}[二元正态的特征]\label{def:bivariate-normal-characterization}
+$X$ 与 $Y$ 服从二元正态分布当且仅当任意线性组合 $aX + bY$ 服从一元正态分布。
+\end{Theorem}
+
+\section{协方差与相关系数}\label{sec:covariance-correlation}
+
+\subsection{协方差}\label{sub:covariance-bivariate}
+
+\begin{Definition}[协方差]\label{def:covariance-bivariate}
+\[
+\operatorname{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X]E[Y].
+\]
+\end{Definition}
+
+协方差的性质：
+\begin{enumerate}
+    \item $\operatorname{Cov}(X, X) = \operatorname{Var}(X)$；
+    \item $\operatorname{Cov}(X, Y) = \operatorname{Cov}(Y, X)$；
+    \item $\operatorname{Cov}(aX, Y) = a \operatorname{Cov}(X, Y)$；
+    \item $\operatorname{Cov}(X_1 + X_2, Y) = \operatorname{Cov}(X_1, Y) + \operatorname{Cov}(X_2, Y)$；
+    \item $\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2\operatorname{Cov}(X, Y)$；
+    \item 若 $X \perp\!\!\!\perp Y$，则 $\operatorname{Cov}(X, Y) = 0$。
+\end{enumerate}
+
+注意：$\operatorname{Cov}(X, Y) = 0$ 并不意味着独立（除非是二元正态分布）。
+
+\subsection{相关系数}\label{sub:correlation-bivariate}
+
+\begin{Definition}[相关系数]\label{def:correlation-bivariate}
+\[
+\rho_{XY} = \operatorname{Corr}(X, Y) = \frac{\operatorname{Cov}(X, Y)}{\sigma_X \sigma_Y}.
+\]
+\end{Definition}
+
+相关系数的性质：
+\begin{enumerate}
+    \item $-1 \leq \rho_{XY} \leq 1$；
+    \item $|\rho_{XY}| = 1$ 当且仅当 $X$ 与 $Y$ 存在线性关系 $Y = aX + b$（$a > 0$ 时 $\rho = 1$，$a < 0$ 时 $\rho = -1$）；
+    \item $\rho_{XY} = 0$ 表示不相关（uncorrelated），但不一定独立。
+\end{enumerate}
+
+\section{多元随机变量}\label{sec:multivariate-rv}
+
+\subsection{多元正态分布}\label{sub:multivariate-normal}
+
+\begin{Definition}[多元正态分布]\label{def:multivariate-normal}
+设 $\mathbf{X} = (X_1, \ldots, X_n)^T$ 为 $n$ 维随机向量，若 $\mathbf{X}$ 服从多元正态分布，记作 $\mathbf{X} \sim N_n(\boldsymbol{\mu}, \boldsymbol{\Sigma})$，则其联合 pdf 为
+\[
+f(\mathbf{x}) = \frac{1}{(2\pi)^{n/2} |\boldsymbol{\Sigma}|^{1/2}} \exp\left\{-\frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} - \boldsymbol{\mu})\right\},
+\]
+其中 $\boldsymbol{\mu} = E[\mathbf{X}]$ 为均值向量，$\boldsymbol{\Sigma} = \operatorname{Cov}(\mathbf{X})$ 为协方差矩阵（$n \times n$ 对称正定矩阵）。
+\end{Definition}
+
+\begin{Theorem}[多元正态的性质]\label{def:multivariate-normal-properties}
+若 $\mathbf{X} \sim N_n(\boldsymbol{\mu}, \boldsymbol{\Sigma})$，则：
+\begin{enumerate}
+    \item 任意边缘分布为正态分布；
+    \item 任意线性组合 $a^T \mathbf{X}$ 服从正态分布；
+    \item 分量之间相互独立当且仅当 $\boldsymbol{\Sigma}$ 为对角矩阵；
+    \item 条件分布仍为正态分布。
+\end{enumerate}
+\end{Theorem}
+
+\subsection{协方差矩阵}\label{sub: covariance-matrix}
+
+协方差矩阵（covariance matrix）$\boldsymbol{\Sigma}$ 定义为
+\[
+\boldsymbol{\Sigma} = \begin{pmatrix}
+\operatorname{Var}(X_1) & \operatorname{Cov}(X_1, X_2) & \cdots & \operatorname{Cov}(X_1, X_n) \\
+\operatorname{Cov}(X_2, X_1) & \operatorname{Var}(X_2) & \cdots & \operatorname{Cov}(X_2, X_n) \\
+\vdots & \vdots & \ddots & \vdots \\
+\operatorname{Cov}(X_n, X_1) & \operatorname{Cov}(X_n, X_2) & \cdots & \operatorname{Var}(X_n)
+\end{pmatrix}.
+\]
+
+协方差矩阵是对称正定矩阵，其对角线元素为各变量的方差，非对角线元素为协方差。
+
+\section{随机变量的变换}\label{sec:transformation-multivariate}
+
+设 $(X, Y)$ 为随机变量，$(U, V) = g(X, Y)$ 为其变换。
+
+\begin{Theorem}[二元变换]\label{def:bivariate-transformation}
+设 $(X, Y)$ 的联合 pdf 为 $f_{X,Y}(x, y)$，变换 $(U, V) = g(X, Y)$ 满足：
+\begin{enumerate}
+    \item 存在逆变换 $(x, y) = h(u, v)$；
+    \item $g$ 连续可微，Jacobian 行列式 $J = \frac{\partial(x, y)}{\partial(u, v)} \neq 0$。
+\end{enumerate}
+则 $(U, V)$ 的联合 pdf 为
+\[
+f_{U,V}(u, v) = f_{X,Y}(h_1(u, v), h_2(u, v)) \cdot |J|.
+\]
+\end{Theorem}
+
+\begin{Example}[Box-Muller 变换]\label{ex:box-muller}
+设 $U_1, U_2 \sim \text{Uniform}(0, 1)$ 独立，令
+\[
+X = \sqrt{-2\ln U_1} \cos(2\pi U_2), \quad Y = \sqrt{-2\ln U_1} \sin(2\pi U_2),
+\]
+则 $X$ 与 $Y$ 独立且均服从 $N(0, 1)$。这就是生成标准正态随机数的 Box-Muller 方法。
+\end{Example}
+
+\begin{Theorem}[独立同分布和]\label{def:iid-sum}
+设 $X_1, \ldots, X_n$ 独立同分布（iid），则其和 $S_n = X_1 + \cdots + X_n$ 的分布称为卷积（convolution）：
+\[
+f_{S_n}(s) = (f_{X_1} * f_{X_2} * \cdots * f_{X_n})(s).
+\]
+若 $X_i \sim N(\mu, \sigma^2)$，则 $S_n \sim N(n\mu, n\sigma^2)$。
+\end{Theorem}
+
+\userannotation{本章重点掌握：条件分布与条件期望、二元正态分布性质、协方差与相关系数、随机变量变换。}
+
+\section{课后习题}\label{sec:chapter2-exercises}
+
+\begin{exercise}{}
+设 $(X, Y)$ 的联合 pmf 为 $P(X = 0, Y = 0) = P(X = 1, Y = 1) = 1/2$。求边缘分布并判断 $X$ 与 $Y$ 是否独立。
+\end{exercise}
+
+\begin{exercise}{}
+设 $X \sim \text{Uniform}(0, 1)$，$Y \mid X = x \sim \text{Uniform}(0, x)$。求 $E[Y]$ 和 $\operatorname{Var}(Y)$。
+\end{exercise}
+
+\begin{exercise}{}
+设 $(X, Y) \sim N(0, 0, 1, 1, \rho)$，求条件分布 $X \mid Y = y$。
+\end{exercise}
+
+\begin{exercise}{}
+证明：若 $X \perp\!\!\!\perp Y$，则 $E[XY] = E[X]E[Y]$。
+\end{exercise}
+
+\begin{exercise}{}
+设 $X_1, \ldots, X_n$ 独立同分布，$E[X_i] = \mu$，$\operatorname{Var}(X_i) = \sigma^2$。求 $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$ 的期望和方差。
+\end{exercise}

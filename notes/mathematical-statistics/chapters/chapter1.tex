@@ -1,0 +1,423 @@
+\chapter{概率与分布}\label{chap:probability-distribution}
+
+\section{引言}\label{sec:intro-probability}
+
+本章介绍概率论的基本概念和随机变量分布理论。概率论是统计学的基础，为统计推断提供理论基础。
+
+\section{集合}\label{sec:sets}
+
+\subsection{样本空间与事件}\label{sub:sample-space}
+
+统计学研究的是不确定性现象。进行一次随机试验（experiment），观察其结果。
+
+\begin{Definition}[样本空间]\label{def:sample-space}
+样本空间（sample space）记为 $\mathcal{S}$，是所有可能实验结果的集合。
+\end{Definition}
+
+\begin{Definition}[事件]\label{def:event}
+事件（event）是样本空间 $\mathcal{S}$ 的子集。
+\end{Definition}
+
+\subsection{集合运算}\label{sub:set-operations}
+
+设 $A$ 和 $B$ 为两个事件：
+
+\begin{itemize}
+    \item 并（union）: $A \cup B = \{x: x \in A \text{ 或 } x \in B\}$
+    \item 交（intersection）: $A \cap B = \{x: x \in A \text{ 且 } x \in B\}$
+    \item 补（complement）: $A^c = \{x: x \notin A\}$
+    \item 差（difference）: $A - B = A \cap B^c$
+\end{itemize}
+
+若 $A \cap B = \emptyset$，则称 $A$ 与 $B$ 互不相交（mutually disjoint）。
+
+若 $\bigcup_{i=1}^{\infty} A_i = \mathcal{S}$ 且 $A_i \cap A_j = \emptyset$（$i \neq j$），则称 $\{A_i\}$ 为 $\mathcal{S}$ 的一个划分（partition）。
+
+德摩根定律（De Morgan's laws）:
+\[
+\left(\bigcup_{i=1}^{\infty} A_i\right)^c = \bigcap_{i=1}^{\infty} A_i^c, \quad \left(\bigcap_{i=1}^{\infty} A_i\right)^c = \bigcup_{i=1}^{\infty} A_i^c.
+\]
+
+\section{概率集函数}\label{sec:probability-set-functions}
+
+\subsection{概率公理}\label{sub:probability-axioms}
+
+\begin{Definition}[概率函数]\label{def:probability-function}
+设 $\mathcal{C}$ 为样本空间 $\mathcal{S}$ 的某些子集组成的 $\sigma$ 域。函数 $P$ 满足以下条件则称为概率函数（probability set function）或概率测度（probability measure）:
+\begin{enumerate}
+    \item 对任意事件 $A \in \mathcal{C}$，有 $P(A) \geq 0$；
+    \item $P(\mathcal{S}) = 1$；
+    \item 若 $\{A_i\}$ 为两两不相交的可数事件序列，则
+    \[
+    P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i).
+    \]
+\end{enumerate}
+\end{Definition}
+
+由概率公理可以推出以下性质：
+
+\begin{Proposition}[概率的基本性质]\label{prop:probability-basic}
+设 $P$ 为定义在 $\mathcal{C}$ 上的概率函数，则：
+\begin{enumerate}
+    \item $P(\emptyset) = 0$；
+    \item 对任意有限不相交事件序列 $\{A_1, \ldots, A_n\}$，有
+    \[
+    P\left(\bigcup_{i=1}^{n} A_i\right) = \sum_{i=1}^{n} P(A_i);
+    \]
+    \item 对任意事件 $A$，有 $P(A^c) = 1 - P(A)$；
+    \item 若 $A \subset B$，则 $P(A) \leq P(B)$（单调性）；
+    \item 对任意事件 $A, B$，有 $P(A \cup B) = P(A) + P(B) - P(A \cap B)$（容斥原理）。
+\end{enumerate}
+\end{Proposition}
+
+\begin{Proof}
+性质1-5的证明见原文。
+\end{Proof}
+
+\section{条件概率}\label{sec:conditional-probability}
+
+\subsection{条件概率定义}\label{sub:conditional-probability-def}
+
+\begin{Definition}[条件概率]\label{def:conditional-probability}
+设 $P(A) > 0$，在事件 $A$ 已发生的条件下，事件 $B$ 的条件概率（conditional probability）定义为
+\[
+P(B \mid A) = \frac{P(A \cap B)}{P(A)}.
+\]
+\end{Definition}
+
+条件概率也满足概率公理：
+\begin{enumerate}
+    \item $P(B \mid A) \geq 0$；
+    \item $P(\mathcal{S} \mid A) = 1$；
+    \item 对不相交事件序列 $\{B_i\}$，有 $P(\bigcup_i B_i \mid A) = \sum_i P(B_i \mid A)$。
+\end{enumerate}
+
+\subsection{乘法法则}\label{sub:multiplication-rule}
+
+由条件概率定义可得乘法法则（multiplication rule）：
+\[
+P(A \cap B) = P(A) \cdot P(B \mid A) = P(B) \cdot P(A \mid B).
+\]
+
+更一般地，对 $n$ 个事件 $A_1, \ldots, A_n$：
+\[
+P\left(\bigcap_{i=1}^{n} A_i\right) = P(A_1) \cdot P(A_2 \mid A_1) \cdot P(A_3 \mid A_1 \cap A_2) \cdots P\left(A_n \mid \bigcap_{i=1}^{n-1} A_i\right).
+\]
+
+\subsection{全概率公式}\label{sub:total-probability}
+
+设 $\{A_i\}$ 为样本空间 $\mathcal{S}$ 的一个划分，且 $P(A_i) > 0$，则对任意事件 $B$：
+\[
+P(B) = \sum_{i} P(A_i \cap B) = \sum_{i} P(A_i) \cdot P(B \mid A_i).
+\]
+
+\subsection{贝叶斯公式}\label{sub:bayes-formula}
+
+贝叶斯公式（Bayes' theorem）是统计学中最重要的公式之一：
+
+\begin{Theorem}[贝叶斯公式]\label{def:bayes-theorem}
+设 $\{A_i\}$ 为样本空间 $\mathcal{S}$ 的一个划分，且 $P(A_i) > 0$，则
+\[
+P(A_j \mid B) = \frac{P(A_j \cap B)}{P(B)} = \frac{P(A_j) \cdot P(B \mid A_j)}{\sum_{i} P(A_i) \cdot P(B \mid A_i)}.
+\]
+其中 $P(A_j)$ 称为先验概率（prior probability），$P(A_j \mid B)$ 称为后验概率（posterior probability）。
+\end{Theorem}
+
+贝叶斯公式在统计推断中有广泛应用，用于根据新数据更新对参数的信念。
+
+\section{独立性}\label{sec:independence}
+
+\subsection{两个事件的独立性}\label{sub:two-event-independence}
+
+\begin{Definition}[独立性]\label{def:independence-two}
+若 $P(A \cap B) = P(A) \cdot P(B)$，则称事件 $A$ 与 $B$ 相互独立（independent），记作 $A \perp\!\!\!\perp B$。
+\end{Definition}
+
+当 $P(A) > 0$ 且 $P(B) > 0$ 时，独立性等价于 $P(B \mid A) = P(B)$ 或 $P(A \mid B) = P(A)$。
+
+\begin{Proposition}[独立性的性质]\label{prop:independence-properties}
+若 $A$ 与 $B$ 独立，则以下也成立：
+\begin{enumerate}
+    \item $A$ 与 $B^c$ 独立；
+    \item $A^c$ 与 $B$ 独立；
+    \item $A^c$ 与 $B^c$ 独立。
+\end{enumerate}
+\end{Proposition}
+
+\subsection{多个事件的独立性}\label{sub:multiple-independence}
+
+\begin{Definition}[相互独立]\label{def:mutual-independence}
+事件序列 $\{A_i : i \in I\}$ 称为相互独立（mutually independent），若对任意有限子集 $\{i_1, \ldots, i_k\} \subset I$，
+\[
+P\left(\bigcap_{j=1}^{k} A_{i_j}\right) = \prod_{j=1}^{k} P(A_{i_j}).
+\]
+\end{Definition}
+
+注意：两两独立（pairwise independent）不一定意味着相互独立。
+
+\section{随机变量}\label{sec:random-variables}
+
+\subsection{随机变量的定义}\label{sub:random-variable-def}
+
+\begin{Definition}[随机变量]\label{def:random-variable}
+随机变量（random variable）是从样本空间 $\mathcal{S}$ 到实数集合的函数，即 $X: \mathcal{S} \to \mathbb{R}$。
+\end{Definition}
+
+通常用大写字母 $X, Y, Z$ 表示随机变量，用小写字母 $x, y, z$ 表示具体取值。
+
+随机变量可分为：
+\begin{itemize}
+    \item 离散随机变量（discrete）：取值可数；
+    \item 连续随机变量（continuous）：取值不可数；
+    \item 混合型。
+\end{itemize}
+
+\subsection{离散随机变量}\label{sub:discrete-rv}
+
+\begin{Definition}[概率质量函数]\label{def:pmf}
+设 $X$ 为离散随机变量，$p_X(x) = P(X = x)$ 称为概率质量函数（probability mass function, pmf）。
+\end{Definition}
+
+$p_X(x)$ 满足：
+\begin{enumerate}
+    \item $p_X(x) \geq 0$；
+    \item $\sum_{x} p_X(x) = 1$。
+\end{enumerate}
+
+\subsection{连续随机变量}\label{sub:continuous-rv}
+
+\begin{Definition}[概率密度函数]\label{def:pdf}
+设 $X$ 为连续随机变量，若存在非负函数 $f_X(x)$ 使得
+\[
+P(a < X < b) = \int_a^b f_X(x) \, dx
+\]
+对任意 $a < b$ 成立，则称 $f_X(x)$ 为概率密度函数（probability density function, pdf）。
+\end{Definition}
+
+$f_X(x)$ 满足：
+\begin{enumerate}
+    \item $f_X(x) \geq 0$；
+    \item $\int_{-\infty}^{\infty} f_X(x) \, dx = 1$。
+\end{enumerate}
+
+注意：对连续随机变量，$P(X = x) = 0$，但密度函数在一点的值可以大于1。
+
+\subsection{分布函数}\label{def:cdf}
+
+\begin{Definition}[累积分布函数]\label{def:cdf}
+随机变量 $X$ 的累积分布函数（cumulative distribution function, cdf）定义为
+\[
+F_X(x) = P(X \leq x).
+\]
+\end{Definition}
+
+cdf 的性质：
+\begin{enumerate}
+    \item 单调非减；
+    \item 右连续：$\lim_{x \to a^+} F_X(x) = F_X(a)$；
+    \item $\lim_{x \to -\infty} F_X(x) = 0$，$\lim_{x \to \infty} F_X(x) = 1$；
+    \item 对离散变量：$F_X(x) = \sum_{t \leq x} p_X(t)$；
+    \item 对连续变量：$F_X(x) = \int_{-\infty}^{x} f_X(t) \, dt$，$f_X(x) = F_X'(x)$。
+\end{enumerate}
+
+\section{期望}\label{sec:expectation}
+
+\subsection{数学期望}\label{sub:expectation-def}
+
+\begin{Definition}[期望]\label{def:expectation}
+随机变量 $X$ 的数学期望（expected value）定义为：
+\begin{itemize}
+    \item 若 $X$ 为离散型，$E[X] = \sum_{x} x \cdot p_X(x)$（前提是级数绝对收敛）；
+    \item 若 $X$ 为连续型，$E[X] = \int_{-\infty}^{\infty} x \cdot f_X(x) \, dx$（前提是积分绝对收敛）。
+\end{itemize}
+\end{Definition}
+
+期望是随机变量取值按概率的加权平均。
+
+\begin{Theorem}[期望的线性性]\label{def:expectation-linearity}
+对任意随机变量 $X, Y$ 和常数 $a, b$：
+\[
+E[aX + bY] = aE[X] + bE[Y].
+\]
+注意：该性质无需 $X, Y$ 相互独立。
+\end{Theorem}
+
+\subsection{方差}\label{sub:variance}
+
+\begin{Definition}[方差]\label{def:variance}
+随机变量 $X$ 的方差（variance）定义为
+\[
+\operatorname{Var}(X) = E[(X - \mu)^2] = E[X^2] - (E[X])^2,
+\]
+其中 $\mu = E[X]$。方差的平方根 $\sigma = \sqrt{\operatorname{Var}(X)}$ 称为标准差（standard deviation）。
+\end{Definition}
+
+\begin{Theorem}[方差的性质]\label{def:variance-properties}
+\begin{enumerate}
+    \item $\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$；
+    \item 若 $X_1, \ldots, X_n$ 相互独立，则
+    \[
+    \operatorname{Var}\left(\sum_{i=1}^{n} X_i\right) = \sum_{i=1}^{n} \operatorname{Var}(X_i).
+    \]
+\end{enumerate}
+\end{Theorem}
+
+\subsection{矩}\label{sub:moments}
+
+\begin{Definition}[矩]\label{def:moment}
+随机变量 $X$ 的 $k$ 阶原点矩（$k$-th moment）定义为 $m_k' = E[X^k]$；$k$ 阶中心矩（$k$-th central moment）定义为 $m_k = E[(X - \mu)^k]$。
+\end{Definition}
+
+其中，一阶原点矩即期望 $E[X]$，二阶中心矩即方差 $\operatorname{Var}(X)$。
+
+\section{特殊期望}\label{sec:special-expectations}
+
+\subsection{协方差}\label{sub:covariance}
+
+\begin{Definition}[协方差]\label{def:covariance}
+两个随机变量 $X$ 和 $Y$ 的协方差（covariance）定义为
+\[
+\operatorname{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X] \cdot E[Y].
+\]
+\end{Definition}
+
+协方差的性质：
+\begin{enumerate}
+    \item $\operatorname{Cov}(X, X) = \operatorname{Var}(X)$；
+    \item $\operatorname{Cov}(X, Y) = \operatorname{Cov}(Y, X)$；
+    \item $\operatorname{Cov}(aX + b, Y) = a \operatorname{Cov}(X, Y)$；
+    \item $\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2\operatorname{Cov}(X, Y)$；
+    \item 若 $X$ 与 $Y$ 独立，则 $\operatorname{Cov}(X, Y) = 0$。
+\end{enumerate}
+
+\begin{Theorem}[协方差相加法则]\label{def:covariance-addition}
+对随机变量 $X_1, \ldots, X_n, Y_1, \ldots, Y_m$：
+\[
+\operatorname{Cov}\left(\sum_{i=1}^{n} X_i, \sum_{j=1}^{m} Y_j\right) = \sum_{i=1}^{n} \sum_{j=1}^{m} \operatorname{Cov}(X_i, Y_j).
+\]
+\end{Theorem}
+
+\begin{Corollary}[方差的一般公式]\label{cor:variance-sum}
+\[
+\operatorname{Var}\left(\sum_{i=1}^{n} X_i\right) = \sum_{i=1}^{n} \operatorname{Var}(X_i) + 2\sum_{i<j} \operatorname{Cov}(X_i, X_j).
+\]
+\end{Corollary}
+
+相关系数（correlation coefficient）：
+\[
+\rho_{XY} = \operatorname{Corr}(X, Y) = \frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{Var}(X) \cdot \operatorname{Var}(Y)}}.
+\]
+
+$-1 \leq \rho_{XY} \leq 1$，且 $|\rho_{XY}| = 1$ 当且仅当 $X$ 与 $Y$ 存在线性关系。
+
+\section{重要分布}\label{sec:important-distributions}
+
+本节介绍书中第1章涉及的一些重要分布。
+
+\subsection{离散分布}\label{sub:discrete-distributions}
+
+\begin{enumerate}
+    \item \textbf{伯努利分布} $X \sim \operatorname{Bernoulli}(p)$:
+    \[
+    P(X = 1) = p, \quad P(X = 0) = 1-p, \quad E[X] = p, \quad \operatorname{Var}(X) = p(1-p).
+    \]
+
+    \item \textbf{二项分布} $X \sim \operatorname{Bin}(n, p)$:
+    \[
+    P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n.
+    \]
+
+    \item \textbf{泊松分布} $X \sim \operatorname{Poisson}(\lambda)$:
+    \[
+    P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots.
+    \]
+    泊松分布是二项分布当 $n \to \infty$、$p \to 0$、$np = \lambda$ 固定时的极限分布。
+\end{enumerate}
+
+\subsection{连续分布}\label{sub:continuous-distributions}
+
+\begin{enumerate}
+    \item \textbf{正态分布} $X \sim N(\mu, \sigma^2)$:
+    \[
+    f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad -\infty < x < \infty.
+    \]
+    $E[X] = \mu$，$\operatorname{Var}(X) = \sigma^2$。
+
+    \item \textbf{标准正态分布} $Z \sim N(0, 1)$:
+    \[
+    \phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}.
+    \]
+    任何正态变量可通过 $Z = (X - \mu) / \sigma$ 标准化。
+
+    \item \textbf{指数分布} $X \sim \operatorname{Exp}(\lambda)$:
+    \[
+    f(x) = \lambda e^{-\lambda x}, \quad x > 0.
+    \]
+    $E[X] = 1/\lambda$，$\operatorname{Var}(X) = 1/\lambda^2$。
+\end{enumerate}
+
+\section{变换}\label{sec:transformation}
+
+设 $X$ 为随机变量，$Y = g(X)$ 为其变换。
+
+\begin{Theorem}[随机变量变换]\label{def:transformation}
+\begin{enumerate}
+    \item \textbf{离散情形}：$p_Y(y) = P(Y = y) = P(g(X) = y) = \sum_{x: g(x)=y} p_X(x)$。
+
+    \item \textbf{连续情形}：若 $y = g(x)$ 严格单调且可导，则
+    \[
+    f_Y(y) = f_X(h(y)) \cdot |h'(y)|,
+    \]
+    其中 $x = h(y)$ 是 $y = g(x)$ 的反函数。若 $g$ 非单调，则需对所有满足 $g(x) = y$ 的 $x$ 求和。
+\end{enumerate}
+\end{Theorem}
+
+\userannotation{本章为概率论基础，重点掌握条件概率、贝叶斯公式、独立性、期望与方差的计算。}
+
+\section{课后习题}\label{sec:chapter1-exercises}
+
+\begin{exercise}{(Exercise 1.1.1)}
+设 $A, B, C$ 为三个事件。试用 $A, B, C$ 的集合运算表示以下事件：
+\begin{enumerate}
+    \item 至少有一个事件发生；
+    \item 恰好有一个事件发生；
+    \item 恰好有两个事件发生；
+    \item 没有事件发生；
+    \item 至多有两个事件发生。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.1.2)}
+证明：若 $A \subset B$，则 $P(A) \leq P(B)$。
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.3.1)}
+设 $P(A) = 0.3$，$P(B) = 0.4$，$P(A \cap B) = 0.1$。求：
+\begin{enumerate}
+    \item $P(A \cup B)$；
+    \item $P(A \mid B)$；
+    \item $P(B \mid A)$；
+    \item $P(A^c \cup B^c)$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.4.1)}
+某箱中有5个红球和3个白球。无放回地抽取3个球。求恰好抽到2个红球的概率。
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.5.1)}
+设 $P(A) = 0.5$，$P(B) = 0.6$，$P(A \cup B) = 0.8$。判断 $A$ 与 $B$ 是否独立。
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.6.1)}
+设 $X$ 的 pmf 为 $P(X = -1) = 0.2$，$P(X = 0) = 0.5$，$P(X = 1) = 0.3$。求 $E[X]$ 和 $\operatorname{Var}(X)$。
+\end{exercise}
+
+\begin{exercise}{(Exercise 1.7.1)}
+设 $X \sim N(100, 225)$（即 $\mu = 100$，$\sigma^2 = 225$）。求：
+\begin{enumerate}
+    \item $P(X < 95)$；
+    \item $P(90 < X < 110)$；
+    \item $P(X > 115)$。
+\end{enumerate}
+\end{exercise}

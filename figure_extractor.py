@@ -407,8 +407,13 @@ def extract_figures(image_path, output_dir, use_gemini=True):
     crop_positions = []
     for i, row in enumerate(cv_results):
         if row["cv_keep"] and (not use_gemini or (i < len(gemini_results) and gemini_results[i].get("gemini_result") == "HAS_FIGURE")):
+            # 确定 figure 编号
+            if row.get("figure_num"):
+                fig_num = row["figure_num"]
+            else:
+                fig_num = f"{len(crop_positions) + 1:03d}"
             crop_positions.append({
-                "figure_num": row.get("figure_num", f"{final_results[len([r for r in crop_positions if r.get('output')]):03d}"),
+                "figure_num": fig_num,
                 "left": row["left"],
                 "right": row["right"],
                 "top": row["top"],
