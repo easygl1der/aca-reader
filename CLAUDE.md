@@ -76,12 +76,63 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ## Git 提交习惯
 
-**原则**: 每次更新了能跑通的内容就 commit + push
+**原则**: 每次更新了能跑通的内容就 commit
 
-- **LaTeX 笔记**: 编译成功后就 commit + push
-- **规范文档**: 更新了 docs/ 就 commit + push
+- **LaTeX 笔记**: 编译成功后就 commit
+- **规范文档**: 更新了 docs/ 就 commit
 - **commit 风格**: 简洁，说明改了啥
-- **⚠️ 重要**: commit 后必须立即 push，避免本地积累导致大文件风险
+
+### Git Worktree 安全规则
+
+**当遇到以下情况时，必须使用 git worktree 隔离操作**：
+- 处理大文件（>50MB）
+- 执行破坏性操作（如 `filter-repo`、`rebase`、`reset --hard`）
+- 不确定操作是否安全
+- 任何可能影响主分支的操作
+
+**使用方法**：
+```bash
+# 创建隔离的 worktree
+git worktree add ../workspace-backup -b backup-branch
+
+# 在 worktree 中操作
+cd ../workspace-backup
+# 执行危险操作...
+
+# 确认安全后，合并回主分支
+git merge backup-branch
+
+# 不安全则直接删除 worktree
+git worktree remove ../workspace-backup
+git worktree prune
+```
+
+---
+
+## LaTeX 编译规范
+
+**重要**: 每个笔记目录都有专属的编译脚本，编译时必须使用：
+
+- `notes/Schubert-Polynomials/compile.sh` → xelatex, 3次
+- 其他目录类似
+
+禁止直接使用 `latexmk` 或 `xelatex` 命令。
+
+---
+
+## 经验教训
+
+**详细记录**: `docs/lessons/` 目录下按时间或主题分类
+
+每次用户纠正我的错误时，自动记录到 `docs/lessons/` 并更新 CLAUDE.md 中的摘要
+
+- **2025-03-14**: 混淆符号导致定理错误 → 直接读原文对照
+- **2026-03-15**: 未先读目录页导致章节编号错误 → 先读 Table of Contents
+- **2026-03-15**: R 中文乱码 → 用英文标签
+- **2026-03-15**: LaTeX 图片位置 → 使用 [H] 强制固定（需 float 宏包）
+- **2026-03-16**: 1998年前论文无 arXiv → 用 DOI
+- **2026-03-18**: LaTeX 笔记中避免口语化表达（如"这里错了"、"让我重新计算"），直接给出正确推导即可
+- **2026-03-19**: 遇到文献中省略证明的定理，如果找不到证明或没有可行思路，必须使用 /gemini-browser-chat 询问 Gemini Pro/Thinking
 
 ---
 
@@ -146,21 +197,6 @@ This file provides guidance to Claude Code when working with this literature stu
 - 喜欢 "Roadmap of This Lecture" / "Big Picture Thread" 结构
 - 结论用 "This gives us...", "This provides..." 连接
 - 喜欢对比不同情况（"Dirichlet vs. Neumann"）
-
----
-
-## 经验教训
-
-**详细记录**: `docs/lessons/` 目录下按时间或主题分类
-
-每次用户纠正我的错误时，自动记录到 `docs/lessons/` 并更新 CLAUDE.md 中的摘要
-
-- **2025-03-14**: 混淆符号导致定理错误 → 直接读原文对照
-- **2026-03-15**: 未先读目录页导致章节编号错误 → 先读 Table of Contents
-- **2026-03-15**: R 中文乱码 → 用英文标签
-- **2026-03-15**: LaTeX 图片位置 → 使用 [H] 强制固定（需 float 宏包）
-- **2026-03-16**: 1998年前论文无 arXiv → 用 DOI
-- **2026-03-19**: ⚠️ git filter-repo/lfs 处理大文件导致 Stein 系列 PDF 永久丢失！详见下方警告
 
 ---
 
