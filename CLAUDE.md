@@ -28,7 +28,7 @@ This file provides guidance to Claude Code when working with this literature stu
   - 例如：potential outcomes（潜在结果）、causal effect（因果效应）
 
 ### 内容风格
-**必须模仿 Stein《傅里叶分析》《复分析》的 motivation 风格**（参考 `docs/plans/2026-03-05-literature-reading-workflow-design.md`）：
+**必须模仿 Stein《傅里叶分析》《复分析》的 motivation 风格**（详细指南见 `docs/stein-writing-style.md`）：
 
 - **动机优先**: 每个概念/定理引入前，先解释"为什么需要它"和"它从哪里来"
 - **历史脉络**: 注重概念的起源和发展历史
@@ -76,11 +76,12 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ## Git 提交习惯
 
-**原则**: 每次更新了能跑通的内容就 commit
+**原则**: 每次更新了能跑通的内容就 commit + push
 
-- **LaTeX 笔记**: 编译成功后就 commit
-- **规范文档**: 更新了 docs/ 就 commit
+- **LaTeX 笔记**: 编译成功后就 commit + push
+- **规范文档**: 更新了 docs/ 就 commit + push
 - **commit 风格**: 简洁，说明改了啥
+- **⚠️ 重要**: commit 后必须立即 push，避免本地积累导致大文件风险
 
 ---
 
