@@ -20,6 +20,24 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ---
 
+## 写作风格
+
+### 语言风格
+- **英文文献**：尽量保持英文原文叙述（用语、习惯、单词层面）
+- **中文叙述**：专业名词保持用英文，加括号标注原文
+  - 例如：potential outcomes（潜在结果）、causal effect（因果效应）
+
+### 内容风格
+**必须模仿 Stein《傅里叶分析》《复分析》的 motivation 风格**（参考 `docs/plans/2026-03-05-literature-reading-workflow-design.md`）：
+
+- **动机优先**: 每个概念/定理引入前，先解释"为什么需要它"和"它从哪里来"
+- **历史脉络**: 注重概念的起源和发展历史
+- **有机联系**: 强调不同数学领域之间的相互关联
+- **叙事流畅**: 定义→命题→证明之间有连贯的叙述，避免干巴巴的罗列
+- **循序渐进**: 从简单到复杂，不过早引入技术细节
+
+---
+
 ## 快速参考
 
 ### Label 和引用
@@ -72,6 +90,7 @@ This file provides guidance to Claude Code when working with this literature stu
 
 基于 2025-summer（大二下学期）笔记分析：
 
+### 技术习惯
 - **工具链**: Obsidian → LaTeX → PDF
 - **格式**: Markdown + LaTeX（行内 `$...$`，单独 `$$...$$`）
 - **图片**: `![[filename]]` Obsidian 内部链接
@@ -82,6 +101,27 @@ This file provides guidance to Claude Code when working with this literature stu
   3. 编译为 PDF（xelatex/latexmk）
 - **定理环境**: amsart + 自定义 theorem/lemma/definition 等
 - **文件命名**: kebab-case（如 `differential-manifold.md`）
+
+### 写作风格（内容层面）
+
+**用词习惯**：
+- 思考性句式: "We wonder if...", "You are right to...", "We want to show that..."
+- 解释性短语: "This essentially means that...", "The key insight is...", "This is where... comes in"
+- 连接词: "Clearly,", "In fact,", "Therefore,", "Thus,", "Then,"
+
+**概念引入方式**：
+- 先形式化定义，再解释直观含义（"This means..."）
+- 喜欢追问 "为什么"，解释动机和条件的作用
+- 注重几何直观，用例子阐明抽象概念
+- 喜欢用 "Why/What/How" 问题式标题
+
+**组织语言**：
+- 用 bullet points 列举要点，用表格做 Summary
+- 证明风格：开头 "We need to show that..."，结尾 "We are done!"
+- 喜欢把新概念和已知概念建立联系，强调对偶性
+- 喜欢 "Roadmap of This Lecture" / "Big Picture Thread" 结构
+- 结论用 "This gives us...", "This provides..." 连接
+- 喜欢对比不同情况（"Dirichlet vs. Neumann"）
 
 ---
 
