@@ -244,6 +244,56 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 
 本节我们介绍本文主要定理的证明思路.
 
+\subsection{代数群与旗流形的基本设置}
+\label{sec:AlgebraicGroupSetup}
+
+为了理解本文证明的核心思想，我们首先介绍代数群与旗流形的基本设置.
+
+设 $G$ 为连通复约化代数群，$B \subset G$ 为 Borel 子群，$B^-$ 为其相反 Borel 子群，$T = B \cap B^-$ 为极大环面，$N$（分别 $N^-$）为 $B$（分别 $B^-$）的幂幺根基.
+
+\bigskip
+\noindent\textbf{李代数基础}：每个代数群 $G$ 对应一个李代数 $\mathfrak{g} = \mathrm{Lie}(G)$，它是群在单位元处的切空间. 对于 $G = \mathrm{GL}_n(\mathbb{C})$，其李代数 $\mathfrak{gl}_n(\mathbb{C})$ 由所有 $n \times n$ 矩阵组成，李括号为 $[X, Y] = XY - YX$.
+
+Cartan 子代数 $\mathfrak{h}$ 是 $\mathfrak{g}$ 中的一个极大阿贝尔子代数. 对于 $G = \mathrm{GL}_n(\mathbb{C})$，可以取所有对角矩阵构成的子代数作为 Cartan 子代数. 根系（root system）$\Phi$ 是 $\mathfrak{h}^*$ 中的有限子集，描述了 $\mathfrak{g}$ 作为 $\mathfrak{h}$-模的分解. 每个根 $\alpha \in \Phi$ 对应一个一维根空间 $\mathfrak{g}_\alpha$，且有分解 $\mathfrak{g} = \mathfrak{h} \oplus \bigoplus_{\alpha \in \Phi} \mathfrak{g}_\alpha$.
+
+反射（reflection）$s_\alpha$ 是 $\mathfrak{h}^*$ 上关于超平面 $\ker(\alpha)$ 的线性变换. 由所有根生成的有限群称为 Weyl 群.
+
+\begin{Definition}[Weyl 群]
+ Weyl 群是由根系 $\Phi$ 中的所有反射生成的有限群. 设 $\Delta = \{\alpha_1, \ldots, \alpha_r\}$ 为单根集合，每个单根 $\alpha_i$ 对应一个基本反射 $s_i = s_{\alpha_i}$，这些基本反射满足特定的 Coxeter 关系.
+
+Weyl 群也可以表示为 $W = N_G(T)/T$，其中 $T$ 是极大环面，$N_G(T)$ 是其在 $G$ 中的正规化子.
+\end{Definition}
+
+对于 $\alpha \in \Phi$，记 $s_\alpha$ 为对应的反射，简记 $s_i = s_{\alpha_i}$.
+
+\begin{Definition}[排列的逆序集与非逆序集]
+\label{def:InversionSet}
+对于 $w \in W$，其（左）逆序集定义为：
+$$I(w) := \{\alpha \in \Phi^+ \mid w^{-1}\alpha \in \Phi^-\}$$
+其非逆序集定义为：
+$$J(w) := \{\alpha \in \Phi^+ \mid w^{-1}\alpha \in \Phi^+\} = I(ww_0)$$
+其中 $w_0$ 是 $W$ 中的最长元.
+\end{Definition}
+
+\begin{Definition}[子群 $N^-(w)$ 与 $B^-(w)$]
+\label{def:NMinusW}
+对于 $w \in W$，定义：
+$$N^-(w) := N^- \cap wN^-w^{-1}$$
+和
+$$B^-(w) := T \cdot N^-(w)$$
+\end{Definition}
+
+根据 Humphreys \cite[Section 28]{humphreys1975}，作为簇，$N^-(w)$ 同构于 Schubert 胞腔 $B^-wB/B \cong \mathbb{C}^{\ell(w_0) - \ell(w)}$，通过 $x \mapsto xwB/B$. 特别地，$N^-(w)$ 是连通的. 其 Lie 代数为：
+$$\mathfrak{n}^-(w) = \mathrm{span}\{F_\alpha \mid \alpha \in J(w)\} \subseteq \mathfrak{g} := \mathrm{Lie} G$$
+其中 $F_\alpha$ 是权为 $-\alpha$ 的根向量.
+
+\begin{Lemma}[Lemma 2.2]
+\label{def:Lemma22}
+若 $ws_i > w$，则 $N^-(ws_i)$ 是 $N^-(w)$ 的正规子群.
+
+\textbf{证明：} 回忆 $[F_\alpha, F_\beta] \in \mathbb{C}^\times F_{\alpha+\beta}$ 如果 $\alpha + \beta$ 是根，否则为 $0$. 因为 $ws_i > w$，有 $J(w) = J(ws_i) \cup \{w\alpha_i\}$，因此 $\mathfrak{n}^-(ws_i) \subset \mathfrak{n}^-(w)$. 由 Humphreys \cite[Theor em 13.1]{humphreys1975}，$N^-(ws_i)$ 是 $N^-(w)$ 的闭子群. 实际上，$\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想. 为验证这一点，取 $\alpha \in J(ws_i)$ 和 $\beta \in J(w)$，只需证明 $[F_\alpha, F_\beta] \in \mathfrak{n}^-(ws_i)$. 若 $\alpha + \beta \notin \Phi$，则 $[F_\alpha, F_\beta] = 0$. 因此考虑 $\gamma = \alpha + \beta \in \Phi^+$. 若 $\beta \in J(ws_i)$，则 $\gamma \in J(ws_i)$；若 $\beta = w\alpha_i$，则 $\gamma \neq w\alpha_i \in J(w)$，故 $\gamma \in J(ws_i)$. 确实，$\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想，且由 Humphreys \cite[Theor em 13.3]{humphreys1975}，$N^-(ws_i)$ 是 $N^-(w)$ 的正规子群.
+\end{Lemma}
+
 \subsection{Refined Graham Positivity 的证明}
 \label{sec:RefinedGrahamProof}
 

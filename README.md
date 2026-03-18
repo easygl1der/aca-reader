@@ -23,13 +23,47 @@
 4. 查看生成的 LaTeX 讲义
 5. 导出 PDF
 
+## 大文件规则
+
+**超过 100MB 的文件不提交到 Git**
+
+由于 Git 不适合存储大文件（如 PDF、视频等），本项目设置以下规则：
+
+- 超过 100MB 的文件不会提交
+- `.git/hooks/pre-commit` 已配置 pre-commit hook 检查文件大小
+- 请将大文件本地保存，或使用外部存储（如 Google Drive）
+- `.gitignore` 已配置忽略常见大文件类型
+
 ## 项目结构
 
 ```
 ├── README.md
-├── docs/
-│   └── plans/
-├── src/
-│   └── skills/
-└── config/
+├── CLAUDE.md              # Claude Code 工作指引
+├── docs/                  # 规范文档
+│   ├── latex-style.md     # LaTeX 格式规范
+│   ├── label-reference.md  # Label 引用规范
+│   ├── structure.md        # 目录结构规范
+│   ├── lessons/            # 经验教训
+│   └── plans/              # 工作流设计文档
+├── notes/                 # 笔记目录
+│   ├── A-First-Course-in-Causal-Inference/
+│   ├── differential-geometry/
+│   ├── Schubert-Polynomials/
+│   ├── bayesian/
+│   └── information-geometry/
+├── reading-progress/       # 阅读进度记录
+├── PDFs/                   # PDF 文献库
+│   └── causal-inference/
+│   └── differential-geometry/
+└── skills/                # Claude Code skills
 ```
+
+## 主题进度
+
+| 主题 | 书籍 | 状态 |
+|------|------|------|
+| 因果推断 | A First Course in Causal Inference (Peng Ding) | 1-4章 ✅ |
+| 微分几何 | Do Carmo - Differential Geometry | Chapter 1-2 ✅ |
+| Schubert 多项式 | Schubert Positivity | 进行中 |
+| 贝叶斯统计 | Bayesian Data Analysis (Gelman et al.) | 进行中 |
+| 信息几何 | Information Geometry (Amari) | 进行中 |

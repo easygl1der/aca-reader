@@ -1,0 +1,6049 @@
+[
+    {
+        "type": "text",
+        "text": "HIERARCHICAL MODELS ",
+        "text_level": 1,
+        "bbox": [
+            281,
+            319,
+            715,
+            371
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "CHAPTER 5 ",
+        "text_level": 1,
+        "bbox": [
+            414,
+            408,
+            580,
+            452
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_number",
+        "text": "1/113 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "HIERARCHICAL MODELS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            444,
+            136
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Many statistical applications involve multiple parameters that can be regarded as related or connected in some way by the structure of the problem, implying that a joint probability model for these parameters should reflect their dependence. ",
+        "bbox": [
+            19,
+            272,
+            977,
+            514
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "For example, in a study of the effectiveness of cardiac treatments, with the patients in hospital $j$ having survival probability $\\theta_{j}$ , it might be reasonable to expect that estimates of the $\\theta_{j}$ 's, which represent a sample of hospitals, should be related to each other. ",
+        "bbox": [
+            19,
+            613,
+            975,
+            860
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "2/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "We shall see that this is achieved in a natural way if we use a prior distribution in which the $\\theta_{j}$ 's are viewed as a sample from a common population distribution. ",
+        "bbox": [
+            19,
+            220,
+            969,
+            393
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "A key feature of such applications is that the observed data, $y_{ij}$ , with units indexed by $i$ within groups indexed by $j$ , can be used to estimate aspects of the population distribution of the $\\theta_j$ 's even though the values of $\\theta_j$ are not themselves observed. ",
+        "bbox": [
+            19,
+            496,
+            975,
+            735
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "3/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "It is natural to model such a problem hierarchically, with observable outcomes modeled conditionally on certain parameters, which themselves are given a probabilistic specification in terms of further parameters, known as hyperparameters. ",
+        "bbox": [
+            19,
+            242,
+            977,
+            488
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Such hierarchical thinking helps in understanding multiparameter problems and also plays an important role in developing computational strategies. ",
+        "bbox": [
+            19,
+            584,
+            972,
+            702
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "4/113 ",
+        "bbox": [
+            928,
+            966,
+            986,
+            992
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Perhaps even more important in practice is that simple nonhierarchical models are usually inappropriate for hierarchical data: with few parameters, they generally cannot fit large data sets accurately, whereas with many parameters, they tend to overfit such data in the sense of producing models that fit the existing data well but lead to inferior predictions for new data. ",
+        "bbox": [
+            22,
+            191,
+            972,
+            496
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "In contrast, hierarchical models can have enough parameters to fit the data well, while using a population distribution to structure some dependence into the parameters, thereby avoiding problems of overfitting. ",
+        "bbox": [
+            22,
+            599,
+            969,
+            775
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "5/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            977
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "6/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "ANALYZING A SINGLE EXPERIMENT IN THE CONTEXT OF HISTORICAL DATA ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            966,
+            220
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "To begin our description of hierarchical models, we consider the problem of estimating a parameter $\\theta$ using data from a small experiment and a prior distribution constructed from similar previous (or historical) experiments. ",
+        "bbox": [
+            19,
+            382,
+            977,
+            562
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Mathematically, we will consider the current and historical experiments to be a random sample from a common population. ",
+        "bbox": [
+            19,
+            661,
+            972,
+            775
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "7/113 ",
+        "bbox": [
+            928,
+            966,
+            986,
+            992
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "EXAMPLE: ESTIMATING THE RISK OF TUMOR IN A GROUP OF RATS",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            919,
+            220
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "In the evaluation of drugs for possible clinical application, studies are routinely performed on rodents. ",
+        "bbox": [
+            19,
+            356,
+            969,
+            466
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "For a particular study drawn from the statistical literature, suppose the immediate aim is to estimate $\\theta$ , the probability of tumor in a population of female laboratory rats of type F344 that receive a zero dose of the drug (a control group). ",
+        "bbox": [
+            19,
+            566,
+            977,
+            816
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "8/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "The data show that 4 out of 14 rats developed endometrial stromal polyps (a kind of tumor). ",
+        "bbox": [
+            22,
+            150,
+            969,
+            264
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "It is natural to assume a binomial model for the number of tumors, given $\\theta$ . ",
+        "bbox": [
+            22,
+            360,
+            969,
+            408
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "For convenience, we select a prior distribution for $\\theta$ from the conjugate family, $\\theta \\sim \\mathrm{Beta}(\\alpha, \\beta)$ . ",
+        "bbox": [
+            22,
+            511,
+            969,
+            625
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Then, assuming a $\\operatorname{Beta}(\\alpha, \\beta)$ prior distribution for $\\theta$ yields a $\\operatorname{Beta}(\\alpha + 4, \\beta + 10)$ posterior distribution for $\\theta$ . ",
+        "bbox": [
+            22,
+            720,
+            969,
+            834
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "9/113 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "ANALYSIS WITH A FIXED PRIOR DISTRIBUTION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            842,
+            139
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "From historical data, suppose we knew that the tumor probabilities $\\theta$ among groups of female lab rats of type F344 follow an approximate beta distribution, with known mean and standard deviation. ",
+        "bbox": [
+            19,
+            345,
+            977,
+            525
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "The tumor probabilities $\\theta$ vary because of differences in rats and experimental conditions among the experiments. ",
+        "bbox": [
+            19,
+            625,
+            972,
+            738
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "10/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Referring to the expressions for the mean and variance of the beta distribution, we could find values for $\\alpha$ , $\\beta$ that correspond to the given values for the mean and standard deviation. ",
+        "bbox": [
+            19,
+            194,
+            969,
+            371
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "NOTE ",
+        "text_level": 1,
+        "bbox": [
+            22,
+            477,
+            110,
+            514
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "For $\\theta \\sim \\mathrm{Beta}(\\alpha, \\beta)$ , ",
+        "bbox": [
+            22,
+            533,
+            276,
+            584
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathsf {E} (\\theta) = \\frac {\\alpha}{\\alpha + \\beta}, \\quad \\mathsf {V a r} (\\theta) = \\frac {\\alpha \\beta}{(\\alpha + \\beta) ^ {2} (\\alpha + \\beta + 1)}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            179,
+            639,
+            812,
+            742
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "11/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "APPROXIMATE ESTIMATE OF THE POPULATION DISTRIBUTION USING THE HISTORICAL DATA ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            850,
+            220
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Typically, the mean and standard deviation of underlying tumor risks are not available. ",
+        "bbox": [
+            22,
+            319,
+            972,
+            430
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Rather, historical data are available on previous experiments on similar groups of rats. ",
+        "bbox": [
+            22,
+            533,
+            972,
+            647
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "In the rat tumor example, the historical data were in fact a set of observations of tumor incidence in 70 groups of rats (Table 5.1). ",
+        "bbox": [
+            22,
+            746,
+            969,
+            863
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "12/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "table",
+        "img_path": "images/397330c5de39eca5f2f7e8940b1b8dfae96d41ffd577b825be6c0df7d1218a64.jpg",
+        "table_caption": [
+            "Previous experiments: ",
+            "Current experiment: ",
+            "4/14 "
+        ],
+        "table_footnote": [],
+        "table_body": "<table><tr><td>0/20</td><td>0/20</td><td>0/20</td><td>0/20</td><td>0/20</td><td>0/20</td><td>0/20</td><td>0/19</td><td>0/19</td><td>0/19</td></tr><tr><td>0/19</td><td>0/18</td><td>0/18</td><td>0/17</td><td>1/20</td><td>1/20</td><td>1/20</td><td>1/20</td><td>1/19</td><td>1/19</td></tr><tr><td>1/18</td><td>1/18</td><td>2/25</td><td>2/24</td><td>2/23</td><td>2/20</td><td>2/20</td><td>2/20</td><td>2/20</td><td>2/20</td></tr><tr><td>2/20</td><td>1/10</td><td>5/49</td><td>2/19</td><td>5/46</td><td>3/27</td><td>2/17</td><td>7/49</td><td>7/47</td><td>3/20</td></tr><tr><td>3/20</td><td>2/13</td><td>9/48</td><td>10/50</td><td>4/20</td><td>4/20</td><td>4/20</td><td>4/20</td><td>4/20</td><td>4/20</td></tr><tr><td>4/20</td><td>10/48</td><td>4/19</td><td>4/19</td><td>4/19</td><td>5/22</td><td>11/46</td><td>12/49</td><td>5/20</td><td>5/20</td></tr><tr><td>6/23</td><td>5/19</td><td>6/22</td><td>6/20</td><td>6/20</td><td>6/20</td><td>16/52</td><td>15/47</td><td>15/46</td><td>9/24</td></tr></table>",
+        "bbox": [
+            135,
+            194,
+            947,
+            466
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "TABLE: Tumor incidence in historical control groups and current group of rats, from Tarone (1982). The table displays the values of $y_{j} / n_{j}$ : (number of rats with tumors)/(total number of rats). ",
+        "bbox": [
+            19,
+            625,
+            969,
+            786
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "13/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "In the $j$ th historical experiment, let the number of rats with tumors be $y_{j}$ and the total number of rats be $n_{j}$ . ",
+        "bbox": [
+            19,
+            154,
+            969,
+            272
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "We model the $y_{j}$ 's as independent binomial data, given sample sizes $n_{j}$ and study-specific means $\\theta_{j}$ . ",
+        "bbox": [
+            19,
+            367,
+            969,
+            485
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Assuming that the beta prior distribution with parameters $(\\alpha, \\beta)$ is a good description of the population distribution of the $\\theta_j$ 's in the historical experiments, we can display the hierarchical model schematically as in Figure 5.1, with $\\theta_{71}$ and $y_{71}$ corresponding to the current experiment. ",
+        "bbox": [
+            19,
+            580,
+            969,
+            823
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "14/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "image",
+        "img_path": "images/de561cf69f2e65440fc13fbe95e74f8fadf72d3ca912263eda0afb5de6834c08.jpg",
+        "image_caption": [
+            "FIGURE: Structure of the hierarchical model for the rat tumor example. "
+        ],
+        "image_footnote": [],
+        "bbox": [
+            157,
+            95,
+            842,
+            757
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "15/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "The observed sample mean and standard deviation of the 70 values $y_{j} / n_{j}$ are 0.136 and 0.103. ",
+        "bbox": [
+            22,
+            143,
+            969,
+            253
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "If we set the mean and standard deviation of the population distribution to these values, we can solve for $\\alpha$ and $\\beta$ . The resulting estimate for $(\\alpha, \\beta)$ is (1.4, 8.6). ",
+        "bbox": [
+            22,
+            356,
+            969,
+            533
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "NOTE ",
+        "text_level": 1,
+        "bbox": [
+            22,
+            647,
+            110,
+            687
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "This is NOT a Bayesian calculation because it is not based on any specified full probability model. ",
+        "bbox": [
+            22,
+            702,
+            969,
+            819
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "16/113 ",
+        "bbox": [
+            919,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "We present a better, fully Bayesian approach to estimating $(\\alpha, \\beta)$ for this example in Section 5.3. ",
+        "bbox": [
+            19,
+            290,
+            969,
+            404
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "The estimate (1.4, 8.6) is simply a starting point from which we can explore the idea of estimating the parameters of the population distribution. ",
+        "bbox": [
+            19,
+            503,
+            972,
+            621
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "page_number",
+        "text": "17/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "Using the simple estimate of the historical population distribution as a prior distribution for the current experiment yields a Beta(5.4, 18.6) posterior distribution for $\\theta_{71}$ : the posterior mean is 0.223, and the standard deviation is 0.083. ",
+        "bbox": [
+            19,
+            187,
+            977,
+            430
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "The prior information has resulted in a posterior mean substantially lower than the crude proportion, $4 / 14 = 0.286$ , because the weight of experience indicates that the number of tumors in the current experiment is unusually high. ",
+        "bbox": [
+            19,
+            529,
+            977,
+            783
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "page_number",
+        "text": "18/113 ",
+        "bbox": [
+            919,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "These analyses require that the current tumor risk, $\\theta_{71}$ , and the 70 historical tumor risks, $\\theta_{1},\\ldots ,\\theta_{70}$ , be considered a random sample from a common distribution. ",
+        "bbox": [
+            19,
+            161,
+            969,
+            330
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "An assumption that would be invalidated, for example, if it were known that the historical experiments were all done in laboratory A but the current data were gathered in laboratory B, or if time trends were relevant. ",
+        "bbox": [
+            19,
+            437,
+            969,
+            613
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "In practice, a simple, although arbitrary, way of accounting for differences between the current and historical data is to inflate the historical variance. ",
+        "bbox": [
+            19,
+            716,
+            969,
+            823
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "page_number",
+        "text": "19/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "For the Beta distribution model, inflating the historical variance means decreasing $(\\alpha + \\beta)$ while holding $\\alpha / \\beta$ constant. ",
+        "bbox": [
+            22,
+            154,
+            969,
+            272
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Other systematic differences, such as a time trend in tumor risks, can be incorporated in a more extensive model. ",
+        "bbox": [
+            22,
+            371,
+            969,
+            481
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Having used the 70 historical experiments to form a prior distribution for $\\theta_{71}$ , we might now like also to use this same prior distribution to obtain Bayesian inferences for the tumor probabilities in the first 70 experiments, $\\theta_1,\\ldots ,\\theta_{70}$ . ",
+        "bbox": [
+            22,
+            584,
+            972,
+            827
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "page_number",
+        "text": "20/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "There are several logical and practical problems with the approach of directly estimating a prior distribution from existing data: ",
+        "bbox": [
+            22,
+            220,
+            969,
+            330
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "- If we wanted to use the estimated prior distribution for inference about the first 70 experiments, then the data would be used twice: first, all the results together are used to estimate the prior distribution, and then each experiment's results are used to estimate its $\\theta$ . This would seem to cause us to overestimate our precision. ",
+        "bbox": [
+            49,
+            411,
+            972,
+            720
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "page_number",
+        "text": "21/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "- The point estimate for $\\alpha$ and $\\beta$ seems arbitrary, and using any point estimate for $\\alpha$ and $\\beta$ necessarily ignores some posterior uncertainty. ",
+            "- We can also make the opposite point: does it make sense to estimate $\\alpha$ and $\\beta$ at all? They are part of the prior distribution: should they be known before the data are gathered, according to the logic of Bayesian inference? "
+        ],
+        "bbox": [
+            49,
+            246,
+            975,
+            698
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "page_number",
+        "text": "22/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "LOGIC OF COMBINING INFORMATION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            665,
+            136
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Despite these problems, it clearly makes more sense to try to estimate the population distribution from all the data, and thereby to help estimate each $\\theta_{j}$ , than to estimate all 71 values $\\theta_{j}$ separately. ",
+        "bbox": [
+            19,
+            319,
+            977,
+            507
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Consider the following thought experiment about inference on two of the parameters, $\\theta_{26}$ and $\\theta_{27}$ , each corresponding to experiments with 2 observed tumors out of 20 rats. ",
+        "bbox": [
+            19,
+            595,
+            975,
+            775
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "page_number",
+        "text": "23/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Suppose our prior distribution for both $\\theta_{26}$ and $\\theta_{27}$ is centered around 0.15; now suppose that you were told after completing the data analysis that $\\theta_{26} = 0.1$ exactly. ",
+        "bbox": [
+            19,
+            132,
+            969,
+            305
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "This should influence your estimate of $\\theta_{27}$ ; in fact, it would probably make you think that $\\theta_{27}$ is lower than you previously believed, since the data for the two parameters are identical, and the postulated value of 0.1 is lower than you previously expected for $\\theta_{26}$ from the prior distribution. ",
+        "bbox": [
+            19,
+            408,
+            969,
+            650
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "Thus, $\\theta_{26}$ and $\\theta_{27}$ should be dependent in the posterior distribution, and they should not be analyzed separately. ",
+        "bbox": [
+            19,
+            753,
+            969,
+            863
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "page_number",
+        "text": "24/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "We retain the advantages of using the data to estimate prior parameters and eliminate all of the disadvantages just mentioned by putting a probability model on the entire set of parameters and experiments and then performing a Bayesian analysis on the joint distribution of all the model parameters. ",
+        "bbox": [
+            19,
+            268,
+            977,
+            514
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "text",
+        "text": "A complete Bayesian analysis is described in Section 5.3. ",
+        "bbox": [
+            22,
+            606,
+            745,
+            658
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "page_number",
+        "text": "25/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "text",
+        "text": "The analysis using the data to estimate the prior parameters, which is sometimes called empirical Bayes, can be viewed as an approximation to the complete hierarchical Bayesian analysis. ",
+        "bbox": [
+            19,
+            242,
+            969,
+            419
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "text",
+        "text": "We prefer to avoid the term empirical Bayes because it misleadingly suggests that the full Bayesian method, which we discuss here and use for the rest of the book, is not empirical. ",
+        "bbox": [
+            19,
+            518,
+            969,
+            694
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "header",
+        "text": "Constructing a Parameterized Prior Distribution ",
+        "bbox": [
+            129,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "page_number",
+        "text": "26/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 Hierarchical MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            977
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "page_number",
+        "text": "27/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "text",
+        "text": "EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            947,
+            220
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "Generalizing from the example of the previous section, consider a set of experiments $j = 1,\\ldots ,J$ , in which experiment $j$ has data (vector) $y_{j}$ and parameter (vector) $\\theta_{j}$ , with likelihood $p(y_{j}|\\theta_{j})$ . ",
+        "bbox": [
+            19,
+            341,
+            977,
+            529
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "NOTE ",
+        "text_level": 1,
+        "bbox": [
+            24,
+            636,
+            110,
+            676
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "Throughout this chapter we use the word experiment for convenience, but the methods can apply equally well to nonexperimental data. ",
+        "bbox": [
+            19,
+            694,
+            972,
+            805
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "page_number",
+        "text": "28/113 ",
+        "bbox": [
+            919,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "Some of the parameters in different experiments may overlap. ",
+        "bbox": [
+            22,
+            290,
+            803,
+            338
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "text",
+        "text": "For example, each data vector $y_{j}$ may be a sample of observations from a normal distribution with mean $\\mu_{j}$ and common variance $\\sigma^2$ , in which case $\\theta_{j} = (\\mu_{j},\\sigma^{2})$ . ",
+        "bbox": [
+            22,
+            437,
+            977,
+            625
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "page_number",
+        "text": "29/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "text",
+        "text": "EXCHANGEABILITY ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            359,
+            136
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "text",
+        "text": "If no information, other than the data $y$ , is available to distinguish any of the $\\theta_j$ 's from any of the others, and no ordering or grouping of the parameters can be made, one must assume symmetry among the parameters in their prior distribution. ",
+        "bbox": [
+            19,
+            290,
+            977,
+            536
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "text",
+        "text": "This symmetry is represented probabilistically by exchangeability; the parameters $(\\theta_{1},\\ldots ,\\theta_{J})$ are exchangeable in their joint distribution if $p(\\theta_1,\\dots ,\\theta_J)$ is invariant to permutations of the indexes $(1,\\ldots ,J)$ . ",
+        "bbox": [
+            19,
+            636,
+            1000,
+            819
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "page_number",
+        "text": "30/113 ",
+        "bbox": [
+            919,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "text",
+        "text": "For example, in the rat tumor problem, suppose we have no information to distinguish the 71 experiments, other than the sample sizes $n_j$ , which presumably are not related to the values of $\\theta_j$ . ",
+        "bbox": [
+            19,
+            290,
+            969,
+            474
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "text",
+        "text": "We therefore use an exchangeable model for the $\\theta_{j}$ 's. ",
+        "bbox": [
+            22,
+            569,
+            696,
+            621
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "page_number",
+        "text": "31/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "text",
+        "text": "We have already encountered the concept of exchangeability in constructing independent and identically distributed models for direct data. ",
+        "bbox": [
+            19,
+            319,
+            972,
+            433
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "text",
+        "text": "In practice, ignorance implies exchangeability. ",
+        "bbox": [
+            24,
+            533,
+            602,
+            580
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "page_number",
+        "text": "32/113",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "text",
+        "text": "Generally, the less we know about a problem, the more confidently we can make claims of exchangeability. ",
+        "bbox": [
+            22,
+            257,
+            972,
+            371
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "text",
+        "text": "NOTE This is not, we hasten to add, a good reason to limit our knowledge of a problem before embarking on statistical analysis! ",
+        "bbox": [
+            22,
+            477,
+            980,
+            658
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "page_number",
+        "text": "33/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "text",
+        "text": "Consider the analogy to a roll of a die: we should initially assign equal probabilities to all six outcomes. ",
+        "bbox": [
+            22,
+            246,
+            969,
+            356
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "However, if we study the measurements of the die and weigh the die carefully, we might eventually notice imperfections, which might make us favor one outcome over the others and thus eliminate the symmetry among the six outcomes. ",
+        "bbox": [
+            22,
+            459,
+            972,
+            694
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "page_number",
+        "text": "34/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "The simplest form of an exchangeable distribution has each of the parameters $\\theta_{j}$ as an independent sample from a prior (or population) distribution governed by some unknown parameter vector $\\phi$ . ",
+        "bbox": [
+            19,
+            209,
+            969,
+            389
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "text",
+        "text": "Thus, ",
+        "bbox": [
+            24,
+            485,
+            99,
+            533
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta | \\phi) = \\prod_ {i = 1} ^ {J} p (\\theta_ {j} | \\phi).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            364,
+            588,
+            629,
+            720
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "page_number",
+        "text": "35/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "text",
+        "text": "In general, $\\phi$ is unknown, so our distribution for $\\theta$ must average over our uncertainty in $\\phi$ : ",
+        "bbox": [
+            24,
+            213,
+            969,
+            327
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta) = \\int p (\\theta | \\phi) \\times p (\\phi) d \\phi = \\int \\left[ \\prod_ {i = 1} ^ {J} p (\\theta_ {j} | \\phi) \\right] \\times p (\\phi) d \\phi .\n$$",
+        "text_format": "latex",
+        "bbox": [
+            138,
+            378,
+            853,
+            511
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "text",
+        "text": "This form, the mixture of independent identical distributions, is usually all that we need to capture exchangeability in practice. ",
+        "bbox": [
+            24,
+            625,
+            969,
+            738
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "page_number",
+        "text": "36/113 ",
+        "bbox": [
+            922,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "text",
+        "text": "Statistically, the mixture model characterizes parameters $\\theta$ as drawn from a common superpopulation that is determined by the unknown hyperparameters, $\\phi$ . ",
+        "bbox": [
+            19,
+            242,
+            969,
+            419
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "text",
+        "text": "We are already familiar with exchangeable models for data, $y_{1}, \\ldots, y_{n}$ , in the form of likelihoods in which the $n$ observations are independent and identically distributed, given some parameter vector $\\theta$ . ",
+        "bbox": [
+            19,
+            518,
+            969,
+            694
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "page_number",
+        "text": "37/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "text",
+        "text": "As a simple counterexample to the above mixture model, consider the probabilities of a given die landing on each of its six faces. ",
+        "bbox": [
+            19,
+            242,
+            969,
+            352
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "text",
+        "text": "The probabilities $\\theta_{1},\\ldots ,\\theta_{6}$ are exchangeable, but the six parameters $\\theta_{j}$ are constrained to sum to 1 and so cannot be modeled with a mixture of independent identical distributions; nonetheless, they can be modeled exchangeably. ",
+        "bbox": [
+            19,
+            455,
+            975,
+            698
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "page_number",
+        "text": "38/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "text",
+        "text": "EXAMPLE: EXCHANGEABILITY AND SAMPLING ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            842,
+            139
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            485,
+            251,
+            529
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "page_number",
+        "text": "39/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "text",
+        "text": "EXCHANGEABILITY WHEN ADDITIONAL INFORMATION IS AVAILABLE ON THE UNITS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            966,
+            224
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "text",
+        "text": "Often observations are not fully exchangeable, but are partially or conditionally exchangeable: ",
+        "bbox": [
+            19,
+            261,
+            969,
+            375
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "- If observations can be grouped, we may make hierarchical model, where each group has its own submodel, but the group properties are unknown. If we assume that group properties are exchangeable, we can use a common prior distribution for the group properties. ",
+            "- If $y_{i}$ has additional information $x_{i}$ so that $y_{i}$ are not exchangeable but $(y_{i}, x_{i})$ still are exchangeable, then we can make a joint model for $(y_{i}, x_{i})$ or a conditional model for $y_{i}|x_{i}$ . "
+        ],
+        "bbox": [
+            49,
+            452,
+            972,
+            944
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "page_number",
+        "text": "40/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "text",
+        "text": "In the rat tumor example, $y_{j}$ were exchangeable as no additional knowledge was available on experimental conditions. ",
+        "bbox": [
+            19,
+            246,
+            969,
+            356
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "text",
+        "text": "If we knew that specific batches of experiments were made in different laboratories we could assume partial exchangeability and use two level hierarchical model to model variation within each laboratory and between laboratories. ",
+        "bbox": [
+            19,
+            459,
+            969,
+            694
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "page_number",
+        "text": "41/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "text",
+        "text": "In the divorce example, if we knew $x_{j}$ , the divorce rate in state $j$ last year, for $j = 1, \\ldots, 8$ , but not which index corresponded to which state, then we would certainly be able to distinguish the eight values of $y_{j}$ , but the joint prior distribution $p(x_{j}, y_{j})$ would be the same for each state. ",
+        "bbox": [
+            19,
+            187,
+            977,
+            437
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "text",
+        "text": "For states having the same last year divorce rates $x_{j}$ , we could use grouping and assume partial exchangeability or if there are many possible values for $x_{j}$ (as we would assume for divorce rates) we could assume conditional exchangeability and use $x_{j}$ as covariate in regression model. ",
+        "bbox": [
+            19,
+            529,
+            975,
+            779
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "page_number",
+        "text": "42/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "text",
+        "text": "In general, the usual way to model exchangeability with covariates is through conditional independence: ",
+        "bbox": [
+            19,
+            139,
+            969,
+            253
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta_ {1}, \\ldots , \\theta_ {J} | x _ {1}, \\ldots , x _ {J}) = \\int \\left[ \\prod_ {i = 1} ^ {J} p (\\theta_ {j} | \\phi , x _ {j}) \\right] p (\\phi | x) d \\phi ,\n$$",
+        "text_format": "latex",
+        "bbox": [
+            149,
+            308,
+            842,
+            437
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "with $x = (x_{1},\\ldots ,x_{J})$ ",
+        "bbox": [
+            19,
+            522,
+            301,
+            573
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "In this way, exchangeable models become almost universally applicable, because any information available to distinguish different units should be encoded in the $x$ and $y$ variables. ",
+        "bbox": [
+            19,
+            669,
+            972,
+            849
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "page_number",
+        "text": "43/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "In the rat tumor example, we have already noted that the sample sizes $n_j$ are the only available information to distinguish the different experiments. ",
+        "bbox": [
+            19,
+            187,
+            969,
+            297
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "It does not seem likely that $n_j$ would be a useful variable for modeling tumor rates, but if one were interested, one could create an exchangeable model for the $J$ pairs $(n, y)_j$ . ",
+        "bbox": [
+            19,
+            397,
+            969,
+            584
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "A natural first step would be to plot $y_{j} / n_{j}$ v.s. $n_{j}$ to see any obvious relation that could be modeled. ",
+        "bbox": [
+            19,
+            676,
+            969,
+            786
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "page_number",
+        "text": "44/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "For example, perhaps some studies $j$ had larger sample sizes $n_j$ because the investigators correctly suspected rarer events; that is, smaller $\\theta_j$ and thus smaller expected values of $y_j / n_j$ . ",
+        "bbox": [
+            19,
+            268,
+            977,
+            455
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "text",
+        "text": "In fact, the plot of $y_{j} / n_{j}$ v.s. $n_{j}$ , not shown here, shows no apparent relation between the two variables. ",
+        "bbox": [
+            19,
+            547,
+            969,
+            658
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "page_number",
+        "text": "45/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "text",
+        "text": "OBJECTIONS TO EXCHANGEABLE MODELS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            756,
+            139
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "text",
+        "text": "In virtually any statistical application, it is natural to object to exchangeability on the grounds that the units actually differ. ",
+        "bbox": [
+            19,
+            371,
+            969,
+            485
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "text",
+        "text": "For example, the 71 rat tumor experiments were performed at different times, on different rats, and presumably in different laboratories. ",
+        "bbox": [
+            19,
+            584,
+            972,
+            698
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "page_number",
+        "text": "46/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "text",
+        "text": "Such information does not, however, invalidate exchangeability. ",
+        "bbox": [
+            24,
+            235,
+            820,
+            279
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "text",
+        "text": "That the experiments differ implies that the $\\theta_{j}$ 's differ, but it might be perfectly acceptable to consider them as if drawn from a common distribution. ",
+        "bbox": [
+            22,
+            378,
+            969,
+            492
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "text",
+        "text": "In fact, with no information available to distinguish them, we have no logical choice but to model the $\\theta_{j}$ 's exchangeably. ",
+        "bbox": [
+            22,
+            591,
+            969,
+            709
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "page_number",
+        "text": "47/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "text",
+        "text": "Objecting to exchangeability for modeling ignorance is no more reasonable than objecting to an independent and identically distributed model for samples from a common population, objecting to regression models in general, or, for that matter, objecting to displaying points in a scatterplot without individual labels. ",
+        "bbox": [
+            19,
+            213,
+            977,
+            518
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "text",
+        "text": "As with regression, the valid concern is not about exchangeability, but about encoding relevant knowledge as explanatory variables where possible. ",
+        "bbox": [
+            19,
+            621,
+            972,
+            735
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "page_number",
+        "text": "48/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "text",
+        "text": "THE FULL BAYESIAN TREATMENT OF THE HIERARCHICAL MODEL ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            770,
+            220
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "text",
+        "text": "Returning to the problem of inference, the key hierarchical part of these models is that $\\phi$ is not known and thus has its own prior distribution, $p(\\phi)$ . ",
+        "bbox": [
+            22,
+            492,
+            972,
+            610
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "page_number",
+        "text": "49/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "text",
+        "text": "The appropriate Bayesian posterior distribution is of the vector $(\\phi, \\theta)$ . ",
+        "bbox": [
+            24,
+            165,
+            908,
+            216
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "The joint prior distribution is ",
+        "bbox": [
+            24,
+            316,
+            397,
+            363
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\phi , \\theta) = p (\\phi) \\times p (\\theta | \\phi),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            339,
+            444,
+            654,
+            496
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "and the joint posterior distribution is ",
+        "bbox": [
+            24,
+            610,
+            494,
+            654
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\phi , \\theta | y) \\propto p (\\phi , \\theta) \\times p (y | \\phi , \\theta) = p (\\phi , \\theta) \\times p (y | \\theta).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            179,
+            735,
+            812,
+            786
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "page_number",
+        "text": "50/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "Note that the latter simplification holding because the data distribution, $p(y|\\phi ,\\theta)$ , depends only on $\\theta$ ; the hyperparameters $\\phi$ affect $y$ only through $\\theta$ . ",
+        "bbox": [
+            19,
+            268,
+            977,
+            444
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "text",
+        "text": "Previously, we assumed $\\phi$ was known, which is unrealistic; now we include the uncertainty in $\\phi$ in the model. ",
+        "bbox": [
+            19,
+            544,
+            972,
+            658
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "page_number",
+        "text": "51/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "text",
+        "text": "THE HYPERPRIOR DISTRIBUTION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            599,
+            136
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "text",
+        "text": "In order to create a joint probability distribution for $(\\phi, \\theta)$ , we must assign a prior distribution to $\\phi$ . ",
+        "bbox": [
+            19,
+            319,
+            969,
+            433
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "text",
+        "text": "If little is known about $\\phi$ , we can assign a diffuse prior distribution, but we must be careful when using an improper prior density to check that the resulting posterior distribution is proper, and we should assess whether our conclusions are sensitive to this simplifying assumption. ",
+        "bbox": [
+            19,
+            533,
+            972,
+            775
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "page_number",
+        "text": "52/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "text",
+        "text": "In most real problems, one should have enough substantive knowledge about the parameters in $\\phi$ at least to constrain the hyperparameters into a finite region, if not to assign a substantive hyperprior distribution. ",
+        "bbox": [
+            19,
+            161,
+            977,
+            341
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "As in nonhierarchical models, it is often practical to start with a simple, relatively noninformative, prior distribution on $\\phi$ and seek to add more prior information if there remains too much variation in the posterior distribution. ",
+        "bbox": [
+            19,
+            437,
+            972,
+            613
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "In the rat tumor example, the hyperparameters are $(\\alpha, \\beta)$ , which determine the beta distribution for $\\theta$ . ",
+        "bbox": [
+            19,
+            716,
+            972,
+            827
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "page_number",
+        "text": "53/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "POSTERIOR PREDICTIVE DISTRIBUTIONS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            729,
+            136
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "text",
+        "text": "Hierarchical models are characterized both by hyperparameters, $\\phi$ , in our notation, and parameters $\\theta$ . ",
+        "bbox": [
+            19,
+            235,
+            969,
+            345
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "text",
+        "text": "There are two posterior predictive distributions that might be of interest to the data analyst: ",
+        "bbox": [
+            19,
+            448,
+            969,
+            558
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(1) the distribution of future observations $\\tilde{y}$ corresponding to an existing $\\theta_{j}$ , or ",
+            "(2) the distribution of observations $\\tilde{y}$ corresponding to future $\\theta_{j}$ 's drawn from the same superpopulation. "
+        ],
+        "bbox": [
+            24,
+            617,
+            972,
+            893
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "page_number",
+        "text": "54/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "text",
+        "text": "We label the future $\\theta_{j}$ 's as $\\tilde{\\theta}$ . ",
+        "bbox": [
+            22,
+            154,
+            397,
+            209
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "Both kinds of replications can be used to assess model adequacy. ",
+        "bbox": [
+            22,
+            305,
+            848,
+            352
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "In the rat tumor example, future observations can be ",
+        "bbox": [
+            22,
+            455,
+            696,
+            500
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(1) additional rats from an existing experiment, or ",
+            "(2) results from a future experiment. "
+        ],
+        "bbox": [
+            27,
+            613,
+            676,
+            808
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "page_number",
+        "text": "55/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "In the former case, the posterior predictive draws $\\tilde{y}$ are based on the posterior draws of $\\theta_{j}$ for the existing experiment. ",
+        "bbox": [
+            19,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "text",
+        "text": "In the latter case, one must first draw $\\tilde{\\theta}$ for the new experiment from the population distribution, given the posterior draws of $\\phi$ , and then draw $\\tilde{y}$ given the simulated $\\tilde{\\theta}$ . ",
+        "bbox": [
+            19,
+            474,
+            975,
+            658
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "header",
+        "text": "Exchangeability and Setting Up Hierarchical Models ",
+        "bbox": [
+            99,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "page_number",
+        "text": "56/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "2 EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            966,
+            977
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "page_number",
+        "text": "57/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "text",
+        "text": "FULLY BAYESIAN ANALYSIS OF CONJUGATE ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            795,
+            139
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "HIERARCHICAL MODELS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            176,
+            436,
+            220
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "Our inferential strategy for hierarchical models follows the general approach to multiparameter problems presented in Chapter 3 but is more difficult in practice because of the large number of parameters that commonly appear in a hierarchical model. ",
+        "bbox": [
+            19,
+            275,
+            977,
+            514
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "In particular, we cannot generally plot the contours or display a scatterplot of the simulations from the joint posterior distribution of $(\\theta, \\phi)$ . ",
+        "bbox": [
+            19,
+            617,
+            972,
+            735
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "With care, however, we can follow a similar simulation-based approach as before. ",
+        "bbox": [
+            19,
+            830,
+            972,
+            933
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            0,
+            486,
+            33
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "page_number",
+        "text": "58/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "In this section, we present an approach that combines analytical and numerical methods to obtain simulations from the joint posterior distribution, $p(\\theta ,\\phi |y)$ . ",
+        "bbox": [
+            19,
+            268,
+            969,
+            448
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "text",
+        "text": "For the beta-binomial model for the rat-tumor example, for which the population distribution, $p(\\theta|\\phi)$ , is conjugate to the likelihood, $p(y|\\theta)$ . ",
+        "bbox": [
+            19,
+            544,
+            969,
+            661
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "page_number",
+        "text": "59/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "text",
+        "text": "ANALYTIC DERIVATION OF CONDITIONAL AND MARGINAL DISTRIBUTIONS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            837,
+            220
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "We first perform the following three steps analytically. ",
+        "bbox": [
+            22,
+            264,
+            709,
+            312
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. Write the joint posterior density, $p(\\theta, \\phi | y)$ , in unnormalized form as a product of the hyperprior distribution $p(\\phi)$ , the population distribution $p(\\theta | \\phi)$ , and the likelihood $p(y | \\theta)$ . ",
+            "2. Determine analytically the conditional posterior density of $\\theta$ given the hyperparameters $\\phi$ ; for fixed observed $y$ , this is a function of $\\phi$ , $p(\\theta | \\phi, y)$ . ",
+            "3. Estimate $\\phi$ using the Bayesian paradigm; that is, obtain its marginal posterior distribution, $p(\\phi | y)$ . "
+        ],
+        "bbox": [
+            38,
+            393,
+            977,
+            937
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            0,
+            488,
+            33
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "page_number",
+        "text": "60/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "The first step is immediate, and the second step is easy for conjugate models because, conditional on $\\phi$ , the population distribution for $\\theta$ is just the independent and identically distributed, so that the conditional posterior density is a product of conjugate posterior densities for the components $\\theta_{j}$ . ",
+        "bbox": [
+            19,
+            169,
+            977,
+            419
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "text",
+        "text": "The third step can be performed by brute force by integrating the joint posterior distribution over $\\theta$ : ",
+        "bbox": [
+            19,
+            511,
+            972,
+            625
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\phi | y) = \\int p (\\theta , \\phi | y) d \\theta .\n$$",
+        "text_format": "latex",
+        "bbox": [
+            342,
+            683,
+            651,
+            783
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            63,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "page_number",
+        "text": "61/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "text",
+        "text": "For many standard models, however, including the normal distribution, the marginal posterior distribution of $\\phi$ can be computed algebraically using the conditional probability formula, ",
+        "bbox": [
+            22,
+            169,
+            972,
+            349
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\phi | y) = \\frac {p (\\theta , \\phi | y)}{p (\\theta | \\phi , y)}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            372,
+            400,
+            621,
+            511
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "text",
+        "text": "This expression is useful because the numerator is just the joint posterior distribution, and the denominator is the posterior distribution for $\\theta$ if $\\phi$ were known. ",
+        "bbox": [
+            22,
+            632,
+            972,
+            808
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            63,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "page_number",
+        "text": "62/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "text",
+        "text": "The difficulty in using the above formula, beyond a few standard conjugate models, is that the denominator, $p(\\theta | \\phi, y)$ , regarded as a function of both $\\theta$ and $\\phi$ for fixed $y$ , has a normalizing factor that depends on $\\phi$ as well as $y$ . ",
+        "bbox": [
+            19,
+            242,
+            977,
+            430
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "One must be careful with the proportionality constant in Bayes' theorem, especially when using hierarchical models, to make sure it is actually constant. ",
+        "bbox": [
+            19,
+            514,
+            972,
+            698
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            0,
+            486,
+            33
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "page_number",
+        "text": "63/113 ",
+        "bbox": [
+            919,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "DRAWING SIMULATIONS FROM THE POSTERIOR DISTRIBUTION",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            850,
+            220
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "text",
+        "text": "The following strategy is useful for simulating a draw from the joint posterior distribution, $p(\\theta, \\phi | y)$ , for simple hierarchical models such as are considered in this chapter. ",
+        "bbox": [
+            19,
+            371,
+            977,
+            551
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "text",
+        "text": "1. Draw the vector of hyperparameters, $\\phi$ , from its marginal posterior distribution, $p(\\phi | y)$ . ",
+        "bbox": [
+            41,
+            661,
+            972,
+            779
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "page_number",
+        "text": "64/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "2. Draw the parameter vector $\\theta$ from its conditional posterior distribution, $p(\\theta|\\phi, y)$ , given the drawn value of $\\phi$ . ",
+            "3. If desired, draw predictive values $\\tilde{y}$ from the posterior predictive distribution given the drawn $\\theta$ . Depending on the problem, it might be necessary first to draw a new value $\\tilde{\\theta}$ given $\\phi$ . "
+        ],
+        "bbox": [
+            41,
+            268,
+            969,
+            658
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            63,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "page_number",
+        "text": "65/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "text",
+        "text": "As usual, the above steps are performed $L$ times in order to obtain a set of $L$ draws. ",
+        "bbox": [
+            22,
+            294,
+            977,
+            404
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "text",
+        "text": "From the joint posterior simulations of $\\theta$ and $\\tilde{y}$ , we can compute the posterior distribution of any estimand or predictive quantity of interest. ",
+        "bbox": [
+            22,
+            507,
+            972,
+            621
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            60,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "page_number",
+        "text": "66/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "text",
+        "text": "APPLICATION TO THE MODEL FOR RAT TUMORS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            872,
+            139
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            485,
+            251,
+            529
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "header",
+        "text": "Fully Bayesian Analysis of Conjugate Hierarchical Models ",
+        "bbox": [
+            63,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "page_number",
+        "text": "67/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "2 EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            977
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "page_number",
+        "text": "68/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "text",
+        "text": "ESTIMATING EXCHANGEABLE PARAMETERS FROM ANORMAL MODEL ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            933,
+            220
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "text",
+        "text": "We now present a full treatment of a simple hierarchical model based on the normal distribution, in which observed data are normally distributed with a different mean for each group or experiment, with known observation variance, and a normal population distribution for the group means. ",
+        "bbox": [
+            19,
+            330,
+            977,
+            577
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "text",
+        "text": "This model is sometimes termed the one-way normal random-effects model with known data variance and is widely applicable, being an important special case of the hierarchical normal linear model. ",
+        "bbox": [
+            19,
+            676,
+            975,
+            852
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "page_number",
+        "text": "69/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "text",
+        "text": "THE DATA STRUCTURE ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            425,
+            132
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "text",
+        "text": "Consider $J$ independent experiments, with experiment $j$ estimating the parameter $\\theta_{j}$ from $n_j$ independent normally distributed data points, $y_{ij}$ , each with known error variance $\\sigma^2$ ; that is, ",
+        "bbox": [
+            19,
+            367,
+            969,
+            544
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "equation",
+        "text": "$$\ny _ {i j} | \\theta_ {j} \\sim N (\\theta_ {j}, \\sigma^ {2}), \\quad \\text {f o r} \\quad i = 1, \\ldots , n _ {j}; \\quad j = 1, \\ldots , J.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            174,
+            621,
+            817,
+            680
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "page_number",
+        "text": "70/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "text",
+        "text": "Using standard notation from the analysis of variance, we label the sample mean of each group $j$ as ",
+        "bbox": [
+            22,
+            187,
+            969,
+            297
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\bar {y} _ {, j} = \\frac {1}{n _ {j}} \\sum_ {i = 1} ^ {n _ {j}} y _ {i j}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            403,
+            356,
+            593,
+            481
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "text",
+        "text": "with sampling variance ",
+        "bbox": [
+            24,
+            569,
+            317,
+            613
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\sigma_ {j} ^ {2} = \\sigma^ {2} / n _ {j}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            419,
+            691,
+            574,
+            750
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "page_number",
+        "text": "71/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "text",
+        "text": "We can then write the likelihood for each $\\theta_{j}$ using the sufficient statistics, $\\bar{y}_{j}$ : ",
+        "bbox": [
+            19,
+            143,
+            969,
+            257
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\bar {y} _ {j} | \\theta_ {j} \\sim N (\\theta_ {j}, \\sigma_ {j} ^ {2}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            383,
+            330,
+            610,
+            389
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "text",
+        "text": "a notation that will prove useful later because of the flexibility in allowing a separate variance $\\sigma_{j}^{2}$ for the mean of each group $j$ . ",
+        "bbox": [
+            19,
+            511,
+            972,
+            632
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "text",
+        "text": "For the rest of this chapter, all expressions will be implicitly conditional on the known values $\\sigma_{j}^{2}$ . ",
+        "bbox": [
+            19,
+            724,
+            969,
+            845
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "page_number",
+        "text": "72/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "text",
+        "text": "The treatment of the model provided in this section is also appropriate for situations in which the variances differ for reasons other than the number of data points in the experiment. ",
+        "bbox": [
+            19,
+            183,
+            969,
+            356
+        ],
+        "page_idx": 72
+    },
+    {
+        "type": "text",
+        "text": "In fact, the likelihood can appear in much more general contexts than that stated here. ",
+        "bbox": [
+            19,
+            459,
+            969,
+            566
+        ],
+        "page_idx": 72
+    },
+    {
+        "type": "text",
+        "text": "For example, if the group sizes $n_j$ are large enough, then the means $\\bar{y}_{j}$ are approximately normally distributed, given $\\theta_{j}$ , even when the data $y_{ij}$ are not. ",
+        "bbox": [
+            19,
+            672,
+            969,
+            786
+        ],
+        "page_idx": 72
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 72
+    },
+    {
+        "type": "page_number",
+        "text": "73/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 72
+    },
+    {
+        "type": "text",
+        "text": "CONSTRUCTING A PRIOR DISTRIBUTION FROM PRAGMATIC CONSIDERATIONS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            837,
+            220
+        ],
+        "page_idx": 73
+    },
+    {
+        "type": "text",
+        "text": "Rather than considering immediately the problem of specifying a prior distribution for the parameter vector $\\theta = (\\theta_{1},\\ldots ,\\theta_{J})$ , let us consider what sorts of posterior estimates might be reasonable for $\\theta$ , given data $(y_{ij})$ . ",
+        "bbox": [
+            19,
+            382,
+            969,
+            558
+        ],
+        "page_idx": 73
+    },
+    {
+        "type": "text",
+        "text": "A simple natural approach is to estimate $\\theta_{j}$ by $\\bar{y}_{j}$ , the average outcome in experiment $j$ . ",
+        "bbox": [
+            19,
+            661,
+            969,
+            768
+        ],
+        "page_idx": 73
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 73
+    },
+    {
+        "type": "page_number",
+        "text": "74/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 73
+    },
+    {
+        "type": "text",
+        "text": "But what if, for example, there are $J = 20$ experiments with only $n_j = 2$ observations per experimental group, and the groups are 20 pairs of assays taken from the same strain of rat, under essentially identical conditions? ",
+        "bbox": [
+            19,
+            128,
+            969,
+            297
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "text",
+        "text": "The two observations per group do not permit accurate estimates. ",
+        "bbox": [
+            22,
+            404,
+            864,
+            452
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "text",
+        "text": "Since the 20 groups are from the same strain of rat, we might now prefer to estimate each $\\theta_{j}$ by the pooled estimate, ",
+        "bbox": [
+            19,
+            551,
+            969,
+            665
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\bar {y} _ {\\cdot \\cdot} = \\frac {\\sum_ {j = 1} ^ {J} \\bar {y} _ {\\cdot j} / \\sigma_ {j} ^ {2}}{\\sum_ {j = 1} ^ {J} 1 / \\sigma_ {j} ^ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            372,
+            713,
+            613,
+            849
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "page_number",
+        "text": "75/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 74
+    },
+    {
+        "type": "text",
+        "text": "To decide which estimate to use, a traditional approach from classical statistics is to perform an analysis of variance $F$ test for differences among means: if the $J$ group means appear significantly variable, choose separate sample means, and if the variance between the group means is not significantly greater than what could be explained by individual variability within groups, use $\\bar{y}$ . ",
+        "bbox": [
+            19,
+            191,
+            969,
+            558
+        ],
+        "page_idx": 75
+    },
+    {
+        "type": "text",
+        "text": "The theoretical analysis of variance table is as follows, where $\\tau^2$ is the variance of $\\theta_1, \\ldots, \\theta_J$ . ",
+        "bbox": [
+            19,
+            661,
+            969,
+            775
+        ],
+        "page_idx": 75
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 75
+    },
+    {
+        "type": "page_number",
+        "text": "76/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 75
+    },
+    {
+        "type": "text",
+        "text": "For simplicity, we present the analysis of variance for a balanced design in which $n_j = n$ and $\\sigma_j^2 = \\sigma^2 / n$ for all $j$ . ",
+        "bbox": [
+            19,
+            143,
+            969,
+            264
+        ],
+        "page_idx": 76
+    },
+    {
+        "type": "table",
+        "img_path": "images/586048597a71a1cdb729487325e757cf1a034944e55826ae5a34d5907bfb2f3c.jpg",
+        "table_caption": [],
+        "table_footnote": [],
+        "table_body": "<table><tr><td></td><td>df</td><td>SS</td><td>MS</td><td>E(MS|σ2,τ2)</td></tr><tr><td>Between groups</td><td>J-1</td><td>ΣiΣj(¯y.j-¯y..)2</td><td>SS/(J-1)</td><td>nτ2+ σ2</td></tr><tr><td>Within groups</td><td>J(n-1)</td><td>ΣiΣj(¯yij-¯y..)2</td><td>SS/(J(n-1))</td><td>σ2</td></tr><tr><td>Total</td><td>Jn-1</td><td></td><td>ΣiΣj(¯yij-¯y..)2</td><td>SS/(Jn-1)</td></tr></table>",
+        "bbox": [
+            35,
+            345,
+            958,
+            558
+        ],
+        "page_idx": 76
+    },
+    {
+        "type": "text",
+        "text": "In the classical random-effects analysis of variance, one computes the sum of squares (SS) and the mean square (MS) columns of the table and uses the between and within mean squares to estimate $\\tau$ . ",
+        "bbox": [
+            19,
+            672,
+            972,
+            849
+        ],
+        "page_idx": 76
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 76
+    },
+    {
+        "type": "page_number",
+        "text": "77/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 76
+    },
+    {
+        "type": "text",
+        "text": "If the ratio of between to within mean squares is significantly greater than 1, then the analysis of variance suggests separate estimates, $\\hat{\\theta}_j = \\bar{y}_{.j}$ for each $j$ . ",
+        "bbox": [
+            19,
+            242,
+            969,
+            419
+        ],
+        "page_idx": 77
+    },
+    {
+        "type": "text",
+        "text": "If the ratio of mean squares is not statistically significant, then the $F$ test cannot reject the hypothesis that $\\tau = 0$ , and pooling is reasonable: $\\hat{\\theta}_j = \\overline{y}_{..}$ for all $j$ . ",
+        "bbox": [
+            19,
+            518,
+            969,
+            694
+        ],
+        "page_idx": 77
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 77
+    },
+    {
+        "type": "page_number",
+        "text": "78/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 77
+    },
+    {
+        "type": "text",
+        "text": "But we are not forced to choose between complete pooling and none at all. ",
+        "bbox": [
+            24,
+            213,
+            966,
+            261
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "text",
+        "text": "An alternative is to use a weighted combination: ",
+        "bbox": [
+            24,
+            360,
+            640,
+            408
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\hat {\\theta} _ {j} = \\lambda_ {j} \\bar {y}. _ {j} + (1 - \\lambda_ {j}) \\bar {y}...\n$$",
+        "text_format": "latex",
+        "bbox": [
+            345,
+            481,
+            643,
+            540
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "text",
+        "text": "$\\lambda_{j}$ is between 0 and 1. ",
+        "bbox": [
+            52,
+            676,
+            367,
+            727
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "page_number",
+        "text": "79/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 78
+    },
+    {
+        "type": "text",
+        "text": "What kind of prior models produce these various posterior estimates? ",
+        "bbox": [
+            22,
+            139,
+            900,
+            187
+        ],
+        "page_idx": 79
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. The unpooled estimate $\\hat{\\theta}_j = \\overline{y}_{,j}$ is the posterior mean if the $J$ values $\\theta_{j}$ have independent uniform prior densities on $(-\\infty ,\\infty)$ . ",
+            "2. The pooled estimate $\\hat{\\theta} = \\overline{y}_{\\cdot}$ is the posterior mean if the $J$ values $\\theta_{j}$ are restricted to be equal, with a uniform prior density on the common $\\theta$ . ",
+            "3. The weighted combination is the posterior mean if the $J$ values $\\theta_{j}$ have independent and identically distributed normal prior densities. "
+        ],
+        "bbox": [
+            38,
+            290,
+            972,
+            838
+        ],
+        "page_idx": 79
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 79
+    },
+    {
+        "type": "page_number",
+        "text": "80/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 79
+    },
+    {
+        "type": "text",
+        "text": "All three of these options are exchangeable in the $\\theta_{j}$ 's, and options 1 and 2 are special cases of option 3. ",
+        "bbox": [
+            19,
+            264,
+            969,
+            378
+        ],
+        "page_idx": 80
+    },
+    {
+        "type": "text",
+        "text": "No pooling corresponds to $\\lambda_{j} \\equiv 1$ for all $j$ and an infinite prior variance for the $\\theta_{j}$ 's, and complete pooling corresponds to $\\lambda_{j} \\equiv 0$ for all $j$ and a zero prior variance for the $\\theta_{j}$ 's. ",
+        "bbox": [
+            19,
+            477,
+            972,
+            658
+        ],
+        "page_idx": 80
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 80
+    },
+    {
+        "type": "page_number",
+        "text": "81/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 80
+    },
+    {
+        "type": "text",
+        "text": "THE HIERARCHICAL MODEL ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            508,
+            136
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "text",
+        "text": "For the convenience of conjugacy (more accurately, partial conjugacy), we assume that the parameters $\\theta_{j}$ are drawn from a normal distribution with hyperparameters $(\\mu ,\\tau)$ : ",
+        "bbox": [
+            19,
+            227,
+            969,
+            411
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta_ {1}, \\ldots , \\theta_ {J} | \\mu , \\tau) = \\prod_ {j = 1} ^ {J} N (\\theta_ {j} | \\mu , \\tau^ {2}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            157,
+            500,
+            610,
+            636
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta_ {1}, \\ldots , \\theta_ {J}) = \\int \\left[ \\prod_ {j = 1} ^ {J} N (\\theta_ {j} | \\mu , \\tau^ {2}) \\right] \\times p (\\mu , \\tau) d (\\mu , \\tau).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            157,
+            727,
+            831,
+            871
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "page_number",
+        "text": "82/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 81
+    },
+    {
+        "type": "text",
+        "text": "That is, the $\\theta_{j}$ 's are conditionally independent given $(\\mu, \\tau)$ . ",
+        "bbox": [
+            24,
+            319,
+            770,
+            371
+        ],
+        "page_idx": 82
+    },
+    {
+        "type": "text",
+        "text": "The hierarchical model also permits the interpretation of the $\\theta_{j}$ 's as a random sample from a shared population distribution. ",
+        "bbox": [
+            22,
+            466,
+            969,
+            580
+        ],
+        "page_idx": 82
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 82
+    },
+    {
+        "type": "page_number",
+        "text": "83/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 82
+    },
+    {
+        "type": "text",
+        "text": "We assign a noninformative uniform hyperprior distribution to $\\mu$ , given $\\tau$ : ",
+        "bbox": [
+            24,
+            143,
+            955,
+            191
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\mu , \\tau) = p (\\mu | \\tau) p (\\tau) \\propto p (\\tau).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            309,
+            272,
+            685,
+            323
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "text",
+        "text": "The uniform prior density for $\\mu$ is generally reasonable for this problem; because the combined data from all $J$ experiments are generally highly informative about $\\mu$ , we can afford to be vague about its prior distribution. ",
+        "bbox": [
+            24,
+            455,
+            972,
+            632
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "text",
+        "text": "As usual, we first work out the answer conditional on the hyperparameters and then consider their prior and posterior distributions. ",
+        "bbox": [
+            24,
+            735,
+            972,
+            845
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "page_number",
+        "text": "84/113 ",
+        "bbox": [
+            922,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 83
+    },
+    {
+        "type": "text",
+        "text": "THE JOINT POSTERIOR DISTRIBUTION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            687,
+            136
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "text",
+        "text": "Combining the sampling model for the observable $y_{ij}$ 's and the prior distribution yields the joint posterior distribution of all the parameters and hyperparameters, which we can express in terms of the sufficient statistics, $\\bar{y}_{j}$ : ",
+        "bbox": [
+            19,
+            213,
+            969,
+            466
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l} p (\\theta , \\mu , \\tau | y) \\propto p (\\mu , \\tau) \\times p (\\theta | \\mu , \\tau) \\times p (y | \\theta) \\\\ \\propto p (\\mu , \\tau) \\times \\prod_ {j = 1} ^ {J} N (\\theta_ {j} | \\mu , \\tau^ {2}) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y}. _ {j} | \\theta_ {j}, \\sigma_ {j} ^ {2}), \\\\ \\end{array}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            135,
+            577,
+            859,
+            786
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "text",
+        "text": "where we can ignore factors that depend only on $y$ and the parameters $\\sigma_{j}$ which are assumed known for this analysis. ",
+        "bbox": [
+            19,
+            819,
+            969,
+            930
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "page_number",
+        "text": "85/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 84
+    },
+    {
+        "type": "text",
+        "text": "THE CONDITIONAL POSTERIOR DISTRIBUTION OF THE NORMAL MEANS, GIVEN THE HYPERPARAMETERS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            977,
+            227
+        ],
+        "page_idx": 85
+    },
+    {
+        "type": "text",
+        "text": "As in the general hierarchical structure, the parameters $\\theta_{j}$ are independent in the prior distribution (given $\\mu$ and $\\tau$ ) and appear in different factors in the likelihood. ",
+        "bbox": [
+            19,
+            386,
+            977,
+            566
+        ],
+        "page_idx": 85
+    },
+    {
+        "type": "text",
+        "text": "Thus, the conditional posterior distribution $p(\\theta | \\mu, \\tau, y)$ factors into $J$ components. ",
+        "bbox": [
+            19,
+            661,
+            972,
+            783
+        ],
+        "page_idx": 85
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 85
+    },
+    {
+        "type": "page_number",
+        "text": "86/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 85
+    },
+    {
+        "type": "text",
+        "text": "Conditional on the hyperparameters, we simply have $J$ independent unknown normal means, given normal prior distributions, so we can use the methods of Chapter 2 independently on each $\\theta_{j}$ . ",
+        "bbox": [
+            22,
+            121,
+            969,
+            297
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "text",
+        "text": "The conditional posterior distributions for the $\\theta_{j}$ 's are independent, and ",
+        "bbox": [
+            22,
+            397,
+            925,
+            444
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\theta_ {j} \\mid \\mu , \\tau , y \\sim N (\\hat {\\theta} _ {j}, V _ {j})\n$$",
+        "text_format": "latex",
+        "bbox": [
+            226,
+            562,
+            477,
+            617
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\hat {\\theta} _ {j} = \\frac {\\bar {y} _ {j} / \\sigma_ {j} ^ {2} + \\mu / \\tau^ {2}}{1 / \\sigma_ {j} ^ {2} + 1 / \\tau^ {2}} \\quad \\text {a n d} \\quad \\frac {1}{V _ {j}} = \\frac {1}{\\sigma_ {j} ^ {2}} + \\frac {1}{\\tau^ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            226,
+            716,
+            767,
+            838
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "page_number",
+        "text": "87/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 86
+    },
+    {
+        "type": "text",
+        "text": "The posterior mean is a precision-weighted average of the prior population mean and the sample mean of the $j$ th group; these expressions for $\\hat{\\theta}_j$ and $V_j$ are functions of $\\mu$ and $\\tau$ as well as the data. ",
+        "bbox": [
+            19,
+            290,
+            977,
+            470
+        ],
+        "page_idx": 87
+    },
+    {
+        "type": "text",
+        "text": "The conditional posterior density for each $\\theta_{j}$ given $(\\mu ,\\tau)$ is proper. ",
+        "bbox": [
+            24,
+            566,
+            872,
+            625
+        ],
+        "page_idx": 87
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 87
+    },
+    {
+        "type": "page_number",
+        "text": "88/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 87
+    },
+    {
+        "type": "text",
+        "text": "THE MARGINAL POSTERIOR DISTRIBUTION OF THE HYPERPARAMETERS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            919,
+            220
+        ],
+        "page_idx": 88
+    },
+    {
+        "type": "text",
+        "text": "The solution so far is only partial because it depends on the unknown $\\mu$ and $\\tau$ . ",
+        "bbox": [
+            22,
+            411,
+            969,
+            518
+        ],
+        "page_idx": 88
+    },
+    {
+        "type": "text",
+        "text": "The next step in our approach is a full Bayesian treatment for the hyperparameters. ",
+        "bbox": [
+            22,
+            625,
+            969,
+            731
+        ],
+        "page_idx": 88
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 88
+    },
+    {
+        "type": "page_number",
+        "text": "89/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 88
+    },
+    {
+        "type": "text",
+        "text": "For the hierarchical normal model, we can simply consider the information supplied by the data about the hyperparameters directly: ",
+        "bbox": [
+            19,
+            213,
+            969,
+            330
+        ],
+        "page_idx": 89
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\mu , \\tau | y) \\propto p (\\mu , \\tau) \\times p (y | \\mu , \\tau).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            295,
+            408,
+            696,
+            466
+        ],
+        "page_idx": 89
+    },
+    {
+        "type": "text",
+        "text": "For many problems, this decomposition is no help, because the marginal likelihood factor, $p(y|\\mu, \\tau)$ , cannot generally be written in closed form. ",
+        "bbox": [
+            19,
+            613,
+            972,
+            735
+        ],
+        "page_idx": 89
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 89
+    },
+    {
+        "type": "page_number",
+        "text": "90/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 89
+    },
+    {
+        "type": "text",
+        "text": "For the normal distribution, however, the marginal likelihood has a particularly simple form. ",
+        "bbox": [
+            22,
+            84,
+            969,
+            194
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "text",
+        "text": "The marginal distributions of the group means $\\bar{y}_j$ , averaging over $\\theta$ , are independent (but not identically distributed) normal: ",
+        "bbox": [
+            22,
+            297,
+            969,
+            411
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\bar {y} _ {j} | \\mu , \\tau \\sim N (\\mu , \\sigma_ {j} ^ {2} + \\tau^ {2}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            337,
+            485,
+            651,
+            547
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "text",
+        "text": "Thus, we can write the marginal posterior density as ",
+        "bbox": [
+            24,
+            665,
+            693,
+            713
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\mu , \\tau | y) \\propto p (\\mu , \\tau) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y}. _ {j} | \\mu , \\sigma_ {j} ^ {2} + \\tau^ {2}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            223,
+            768,
+            770,
+            900
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "page_number",
+        "text": "91/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 90
+    },
+    {
+        "type": "text",
+        "text": "POSTERIOR DISTRIBUTION OF $\\mu$ GIVEN $\\tau$ ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            743,
+            139
+        ],
+        "page_idx": 91
+    },
+    {
+        "type": "text",
+        "text": "We could use the above formula to compute directly the posterior distribution $p(\\mu, \\tau | y)$ as a function of two variables and proceed as in the rat tumor example. ",
+        "bbox": [
+            19,
+            341,
+            969,
+            518
+        ],
+        "page_idx": 91
+    },
+    {
+        "type": "text",
+        "text": "For the normal model, however, we can further simplify by integrating over $\\mu$ , leaving a simple univariate numerical computation of $p(\\tau | y)$ . ",
+        "bbox": [
+            19,
+            617,
+            969,
+            735
+        ],
+        "page_idx": 91
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 91
+    },
+    {
+        "type": "page_number",
+        "text": "92/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 91
+    },
+    {
+        "type": "text",
+        "text": "We factor the marginal posterior density of the hyperparameters as we did the prior density: ",
+        "bbox": [
+            19,
+            227,
+            969,
+            338
+        ],
+        "page_idx": 92
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\mu , \\tau | y) = p (\\mu | \\tau , y) \\times p (\\tau | y).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            303,
+            419,
+            690,
+            477
+        ],
+        "page_idx": 92
+    },
+    {
+        "type": "text",
+        "text": "The first factor on the right side of the above formula is just the posterior distribution of $\\mu$ if $\\tau$ were known. ",
+        "bbox": [
+            19,
+            606,
+            972,
+            716
+        ],
+        "page_idx": 92
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 92
+    },
+    {
+        "type": "page_number",
+        "text": "93/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 92
+    },
+    {
+        "type": "text",
+        "text": "From inspection of ",
+        "text_level": 1,
+        "bbox": [
+            24,
+            80,
+            267,
+            125
+        ],
+        "page_idx": 93
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l} p (\\mu , \\tau | y) \\propto p (\\mu , \\tau) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y} _ {j} | \\mu , \\sigma_ {j} ^ {2} + \\tau^ {2}) \\\\ = p (\\mu | \\tau) \\times p (\\tau) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y} _ {j} | \\mu , \\sigma_ {j} ^ {2} + \\tau^ {2}). \\\\ \\end{array}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            182,
+            220,
+            812,
+            533
+        ],
+        "page_idx": 93
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "$\\bullet$ $\\tau$ assumed known, ",
+            "a uniform conditional prior density $p(\\mu |\\tau)$ ",
+            "- the log posterior distribution is found to be quadratic in $\\mu$ . "
+        ],
+        "bbox": [
+            49,
+            654,
+            828,
+            930
+        ],
+        "page_idx": 93
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 93
+    },
+    {
+        "type": "page_number",
+        "text": "94/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 93
+    },
+    {
+        "type": "text",
+        "text": "Thus, $p(\\mu | \\tau, y)$ must be normal. ",
+        "bbox": [
+            24,
+            290,
+            433,
+            341
+        ],
+        "page_idx": 94
+    },
+    {
+        "type": "text",
+        "text": "The mean and variance of this distribution can be obtained immediately by considering the group means $\\overline{y}_j$ as $J$ independent estimates of $\\mu$ with variances $(\\sigma_j^2 + \\tau^2)$ . ",
+        "bbox": [
+            22,
+            437,
+            972,
+            625
+        ],
+        "page_idx": 94
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 94
+    },
+    {
+        "type": "page_number",
+        "text": "95/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 94
+    },
+    {
+        "type": "text",
+        "text": "Combining the data with the uniform prior density $p(\\mu|\\tau)$ yields ",
+        "bbox": [
+            24,
+            121,
+            837,
+            169
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mu | \\tau , y \\sim N (\\hat {\\mu}, V _ {\\mu}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            378,
+            250,
+            616,
+            297
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "text",
+        "text": "where $\\hat{\\mu}$ is the precision, weighted average of the $\\bar{y}_{j}$ , values, and $V_{\\mu}^{-1}$ is the total precision: ",
+        "bbox": [
+            19,
+            422,
+            969,
+            533
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\hat {\\mu} = \\frac {\\sum_ {j = 1} ^ {J} \\frac {\\bar {y} _ {j}}{\\sigma_ {j} ^ {2} + \\tau^ {2}}}{\\sum_ {j = 1} ^ {J} \\frac {1}{\\sigma_ {j} ^ {2} + \\tau^ {2}}}, V _ {\\mu} ^ {- 1} = \\sum_ {j = 1} ^ {J} \\frac {1}{\\sigma_ {j} ^ {2} + \\tau^ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            237,
+            584,
+            751,
+            750
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "text",
+        "text": "The result is a proper posterior density for $\\mu$ , given $\\tau$ . ",
+        "bbox": [
+            24,
+            834,
+            709,
+            878
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "page_number",
+        "text": "96/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 95
+    },
+    {
+        "type": "text",
+        "text": "POSTERIOR DISTRIBUTION OF 7 ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            582,
+            132
+        ],
+        "page_idx": 96
+    },
+    {
+        "type": "text",
+        "text": "We can now obtain the posterior distribution of $\\tau$ analytically, as follows: ",
+        "bbox": [
+            19,
+            301,
+            947,
+            349
+        ],
+        "page_idx": 96
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l} p (\\tau | y) = \\frac {p (\\mu , \\tau | y)}{p (\\mu | \\tau , y)} \\\\ \\propto \\frac {p (\\tau) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y} _ {j} | \\mu , \\sigma^ {2} + \\tau^ {2})}{N (\\mu | \\hat {\\mu} , V _ {\\mu})}. \\\\ \\end{array}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            240,
+            444,
+            751,
+            761
+        ],
+        "page_idx": 96
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 96
+    },
+    {
+        "type": "page_number",
+        "text": "97/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 96
+    },
+    {
+        "type": "text",
+        "text": "This identity must hold for any value of $\\mu$ (in other words, all the factors of $\\mu$ must cancel when the expression is simplified); in particular, it holds if we set $\\mu$ to $\\hat{\\mu}$ , which makes evaluation of the expression simple: ",
+        "bbox": [
+            22,
+            106,
+            972,
+            279
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\tau | y) \\propto \\frac {p (\\tau) \\times \\prod_ {j = 1} ^ {J} N (\\bar {y} _ {j} | \\mu , \\sigma^ {2} + \\tau^ {2})}{N (\\mu | \\hat {\\mu} , V _ {\\mu})}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            99,
+            371,
+            602,
+            496
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\propto p (\\tau) \\times V _ {\\mu} ^ {1 / 2} \\times \\prod_ {j = 1} ^ {J} \\left(\\sigma_ {j} ^ {2} + \\tau^ {2}\\right) ^ {- 1 / 2} \\exp \\left[ - \\frac {\\left(\\bar {y} _ {, j} - \\hat {\\mu}\\right) ^ {2}}{2 \\left(\\sigma_ {j} ^ {2} + \\tau^ {2}\\right)} \\right].\n$$",
+        "text_format": "latex",
+        "bbox": [
+            187,
+            551,
+            892,
+            687
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "text",
+        "text": "Both expressions are functions of $\\tau$ , which means that $p(\\tau | y)$ is a complicated function of $\\tau$ . ",
+        "bbox": [
+            22,
+            797,
+            969,
+            904
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "page_number",
+        "text": "98/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 97
+    },
+    {
+        "type": "text",
+        "text": "PRIOR DISTRIBUTION FOR 7 ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            519,
+            136
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "text",
+        "text": "To complete our analysis, we must assign a prior distribution to $\\tau$ . ",
+        "bbox": [
+            24,
+            253,
+            864,
+            297
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "text",
+        "text": "For convenience, we use a diffuse noninformative prior density for $\\tau$ and hence must examine the resulting posterior density to ensure it has a finite integral. ",
+        "bbox": [
+            22,
+            397,
+            972,
+            577
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "text",
+        "text": "For our illustrative analysis, we use the uniform prior distribution, ",
+        "bbox": [
+            24,
+            676,
+            850,
+            724
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\tau) \\propto 1.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            433,
+            805,
+            563,
+            856
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "page_number",
+        "text": "99/113 ",
+        "bbox": [
+            919,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 98
+    },
+    {
+        "type": "text",
+        "text": "Alternatively, in applications it involves little extra effort to determine a best guess and an upper bound for the population variance $\\tau$ , and a reasonable prior distribution can then be constructed from the scaled inverse- $\\chi^2$ family (the natural choice for variance parameters), matching the best guess to the mean of the scaled inverse- $\\chi^2$ density and the upper bound to an upper percentile such as the 99th. ",
+        "bbox": [
+            19,
+            169,
+            977,
+            540
+        ],
+        "page_idx": 99
+    },
+    {
+        "type": "text",
+        "text": "Once an initial analysis is performed using the noninformative uniform prior density, a sensitivity analysis with a more realistic prior distribution is often desirable. ",
+        "bbox": [
+            19,
+            639,
+            972,
+            812
+        ],
+        "page_idx": 99
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 99
+    },
+    {
+        "type": "page_number",
+        "text": "100/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 99
+    },
+    {
+        "type": "text",
+        "text": "COMPUTATION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            281,
+            132
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "text",
+        "text": "For this model, computation of the posterior distribution of $\\theta$ is most conveniently performed via simulation, following the factorization used above: ",
+        "bbox": [
+            19,
+            231,
+            969,
+            345
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "equation",
+        "text": "$$\np (\\theta , \\mu , \\tau | y) = p (\\tau | y) \\times p (\\mu | \\tau , y) \\times p (\\theta | \\mu , \\tau , y).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            201,
+            426,
+            790,
+            481
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "text",
+        "text": "The first step, simulating $\\tau$ , is easily performed numerically using the inverse cdf method on a grid of uniformly spaced values of $\\tau$ , with $p(\\tau | y)$ . ",
+        "bbox": [
+            19,
+            610,
+            972,
+            727
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "text",
+        "text": "The second and third steps, simulating $\\mu$ and then $\\theta$ , can both be done easily by sampling from normal distributions. ",
+        "bbox": [
+            19,
+            794,
+            972,
+            904
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "page_number",
+        "text": "101/113 ",
+        "bbox": [
+            911,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 100
+    },
+    {
+        "type": "text",
+        "text": "POSTERIOR PREDICTIVE DISTRIBUTIONS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            729,
+            136
+        ],
+        "page_idx": 101
+    },
+    {
+        "type": "text",
+        "text": "Sampling from the posterior predictive distribution of new data, either from a current or new batch, is straightforward given draws from the posterior distribution of the parameters. ",
+        "bbox": [
+            19,
+            430,
+            972,
+            610
+        ],
+        "page_idx": 101
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 101
+    },
+    {
+        "type": "page_number",
+        "text": "102/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 101
+    },
+    {
+        "type": "text",
+        "text": "We consider two scenarios: ",
+        "bbox": [
+            22,
+            172,
+            367,
+            213
+        ],
+        "page_idx": 102
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(1) future data $\\tilde{y}$ from the current set of batches, with means $\\theta = (\\theta_{1},\\dots ,\\theta_{J})$ and ",
+            "(2) future data $\\tilde{y}$ from $\\tilde{J}$ future batches, with means $\\tilde{\\theta} = (\\tilde{\\theta}_1,\\dots ,\\tilde{\\theta}_J)$ . "
+        ],
+        "bbox": [
+            24,
+            319,
+            997,
+            595
+        ],
+        "page_idx": 102
+    },
+    {
+        "type": "text",
+        "text": "In the latter case, we must also specify the $\\tilde{J}$ individual sample sizes $\\tilde{n}_j$ for the future batches. ",
+        "bbox": [
+            22,
+            694,
+            969,
+            808
+        ],
+        "page_idx": 102
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 102
+    },
+    {
+        "type": "page_number",
+        "text": "103/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 102
+    },
+    {
+        "type": "text",
+        "text": "DIFFICULTY WITH A NATURAL NON-BAYESIAN ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            842,
+            139
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "text",
+        "text": "ESTIMATE OF THE HYPERPARAMETERS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            176,
+            704,
+            220
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "text",
+        "text": "To see some advantages of our fully Bayesian approach, we compare it to an approximate method that is sometimes used based on a point estimate of $\\mu$ and $\\tau$ from the data. ",
+        "bbox": [
+            19,
+            264,
+            977,
+            441
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "text",
+        "text": "Unbiased point estimates, derived from the analysis of variance presented earlier, are ",
+        "bbox": [
+            19,
+            540,
+            972,
+            650
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\hat {\\mu} = \\bar {y} _ {\\cdot}, \\quad \\hat {\\tau} ^ {2} = (M S B - M S W) / n.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            273,
+            665,
+            720,
+            720
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "text",
+        "text": "In this alternative approach, inference for $\\theta = (\\theta_{1},\\dots,\\theta_{J})$ is based on the conditional posterior distribution, $p(\\theta |\\hat{\\mu},\\hat{\\tau})$ , given the point estimates. ",
+        "bbox": [
+            19,
+            834,
+            972,
+            948
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "page_number",
+        "text": "104/113 ",
+        "bbox": [
+            911,
+            963,
+            983,
+            988
+        ],
+        "page_idx": 103
+    },
+    {
+        "type": "text",
+        "text": "As we saw in the rat tumor example of the previous section, the main problem with substituting point estimates for the hyperparameters is that it ignores our real uncertainty about them. ",
+        "bbox": [
+            19,
+            102,
+            977,
+            279
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "text",
+        "text": "The resulting inference for $\\theta$ cannot be interpreted as a Bayesian posterior summary. ",
+        "bbox": [
+            19,
+            378,
+            972,
+            492
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "text",
+        "text": "In addition, the estimate $\\hat{\\tau}^2$ has the flaw that it can be negative! ",
+        "bbox": [
+            22,
+            588,
+            848,
+            639
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "text",
+        "text": "The problem of a negative estimate for a variance component can be avoided by setting $\\hat{\\tau}^2$ to zero in the case that MSW exceeds $MSB$ , but this creates new issues. ",
+        "bbox": [
+            19,
+            738,
+            972,
+            915
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "page_number",
+        "text": "105/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 104
+    },
+    {
+        "type": "text",
+        "text": "Estimating $\\tau^2 = 0$ whenever $MSW > MSB$ seems too strong a claim: if $MSW > MSB$ , then the sample size is too small for $\\tau^2$ to be distinguished from zero, but this is not the same as saying we know that $\\tau^2 = 0$ . ",
+        "bbox": [
+            22,
+            125,
+            975,
+            308
+        ],
+        "page_idx": 105
+    },
+    {
+        "type": "text",
+        "text": "The latter claim, made implicitly by the point estimate, implies that all the group means $\\theta_{j}$ are absolutely identical, which leads to scientifically indefensible claims. ",
+        "bbox": [
+            22,
+            404,
+            972,
+            584
+        ],
+        "page_idx": 105
+    },
+    {
+        "type": "text",
+        "text": "It is possible to construct a point estimate of $(\\mu, \\tau)$ to avoid this particular difficulty, but it would still have the problem, common to all point estimates, of ignoring uncertainty. ",
+        "bbox": [
+            22,
+            683,
+            972,
+            863
+        ],
+        "page_idx": 105
+    },
+    {
+        "type": "header",
+        "text": "Estimating Exchangeable Parameters From a Normal Model ",
+        "bbox": [
+            41,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 105
+    },
+    {
+        "type": "page_number",
+        "text": "106/113 ",
+        "bbox": [
+            914,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 105
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "2 EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            977
+        ],
+        "page_idx": 106
+    },
+    {
+        "type": "header",
+        "text": "Example: Parallel Experiments in Eight Schools ",
+        "bbox": [
+            132,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 106
+    },
+    {
+        "type": "page_number",
+        "text": "107/113 ",
+        "bbox": [
+            914,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 106
+    },
+    {
+        "type": "text",
+        "text": "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            856,
+            220
+        ],
+        "page_idx": 107
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            522,
+            251,
+            562
+        ],
+        "page_idx": 107
+    },
+    {
+        "type": "header",
+        "text": "Example: Parallel Experiments in Eight Schools ",
+        "bbox": [
+            132,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 107
+    },
+    {
+        "type": "page_number",
+        "text": "108/113 ",
+        "bbox": [
+            914,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 107
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+            "WEAKLY INFORMATIVE PRIORS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            977
+        ],
+        "page_idx": 108
+    },
+    {
+        "type": "header",
+        "text": "Hierarchical Modeling Applied to a Meta-analysis ",
+        "bbox": [
+            121,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 108
+    },
+    {
+        "type": "page_number",
+        "text": "109/113 ",
+        "bbox": [
+            914,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 108
+    },
+    {
+        "type": "text",
+        "text": "HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            770,
+            220
+        ],
+        "page_idx": 109
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            522,
+            251,
+            562
+        ],
+        "page_idx": 109
+    },
+    {
+        "type": "header",
+        "text": "Hierarchical Modeling Applied to a Meta-analysis ",
+        "bbox": [
+            121,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 109
+    },
+    {
+        "type": "page_number",
+        "text": "110/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 109
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 CONSTRUCTING A PARAMETERIZED PRIOR DISTRIBUTION ",
+            "2 EXCHANGEABILITY AND SETTING UP HIERARCHICAL MODELS ",
+            "3 FULLY BAYESIAN ANALYSIS OF CONJUGATE HIERARCHICAL MODELS ",
+            "ESTIMATING EXCHANGEABLE PARAMETERS FROM A NORMAL MODEL ",
+            "EXAMPLE: PARALLEL EXPERIMENTS IN EIGHT SCHOOLS ",
+            "6 HIERARCHICAL MODELING APPLIED TO A META-ANALYSIS "
+        ],
+        "bbox": [
+            16,
+            102,
+            961,
+            867
+        ],
+        "page_idx": 110
+    },
+    {
+        "type": "text",
+        "text": "WEAKLY INFORMATIVE PRIORS ",
+        "bbox": [
+            19,
+            922,
+            544,
+            977
+        ],
+        "page_idx": 110
+    },
+    {
+        "type": "header",
+        "text": "Weakly Informative Priors ",
+        "bbox": [
+            292,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 110
+    },
+    {
+        "type": "page_number",
+        "text": "111/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 110
+    },
+    {
+        "type": "text",
+        "text": "WEAKLY INFORMATIVE PRIORS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            585,
+            139
+        ],
+        "page_idx": 111
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            485,
+            251,
+            529
+        ],
+        "page_idx": 111
+    },
+    {
+        "type": "header",
+        "text": "Weakly Informative Priors ",
+        "bbox": [
+            290,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 111
+    },
+    {
+        "type": "page_number",
+        "text": "112/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 111
+    },
+    {
+        "type": "text",
+        "text": "ASSIGNMENT ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            251,
+            132
+        ],
+        "page_idx": 112
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "5.11 ",
+            "5.12 "
+        ],
+        "bbox": [
+            52,
+            397,
+            143,
+            584
+        ],
+        "page_idx": 112
+    },
+    {
+        "type": "header",
+        "text": "Assignment ",
+        "bbox": [
+            397,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 112
+    },
+    {
+        "type": "page_number",
+        "text": "113/113 ",
+        "bbox": [
+            911,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 112
+    }
+]

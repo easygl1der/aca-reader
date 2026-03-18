@@ -1,0 +1,3710 @@
+[
+    {
+        "type": "text",
+        "text": "INTRODUCTION TO BAYESIAN COMPUTATION ",
+        "text_level": 1,
+        "bbox": [
+            96,
+            319,
+            900,
+            375
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "CHAPTER 10 ",
+        "text_level": 1,
+        "bbox": [
+            408,
+            408,
+            588,
+            448
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_number",
+        "text": "1/72 ",
+        "bbox": [
+            939,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "BAYESIAN COMPUTATION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            466,
+            132
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Bayesian computation revolves around two steps: ",
+        "bbox": [
+            24,
+            356,
+            646,
+            397
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "- computation of the posterior distribution, $p(\\theta | y)$ , ",
+            "- computation of the posterior predictive distribution, $p\\left( {\\widetilde{y} \\mid  y}\\right)$ . "
+        ],
+        "bbox": [
+            49,
+            514,
+            831,
+            713
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "2/72 ",
+        "bbox": [
+            936,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "So far we have considered examples where these could be computed analytically in closed form, with simulations performed directly using a combination of preprogrammed routines for standard distributions (normal, gamma, beta, Poisson, and so forth) and numerical computation on grids. ",
+        "bbox": [
+            22,
+            154,
+            972,
+            404
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "For complicated or unusual models or in high dimensions, however, more elaborate algorithms are required to approximate the posterior distribution. ",
+        "bbox": [
+            24,
+            496,
+            972,
+            613
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Often the most efficient computation can be achieved by combining different algorithms. ",
+        "bbox": [
+            24,
+            705,
+            972,
+            830
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "3/72 ",
+        "bbox": [
+            936,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "NORMALIZED AND UNNORMALIZED DENSITIES ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            825,
+            136
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We refer to the (multivariate) distribution to be simulated as the target distribution and call it $p(\\theta | y)$ . ",
+        "bbox": [
+            19,
+            235,
+            969,
+            349
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "In general, we assume that $p(\\theta | y)$ can be easily computed for any value $\\theta$ , up to a factor involving only the data $y$ ; that is, we assume there is some easily computable function $q(\\theta | y)$ , an unnormalized density, for which $q(\\theta | y) / p(\\theta | y)$ is a constant that depends only on $y$ . ",
+        "bbox": [
+            19,
+            448,
+            972,
+            694
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "For example, in the usual use of Bayes' theorem, we work with the product $p(\\theta) \\times p(y|\\theta)$ , which is proportional to the posterior density. ",
+        "bbox": [
+            19,
+            790,
+            969,
+            904
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "4/72 ",
+        "bbox": [
+            936,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "LOG DENSITIES ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            295,
+            136
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "To avoid computational overflows and underflows, one should compute with the logarithms of posterior densities whenever possible. ",
+        "bbox": [
+            19,
+            319,
+            969,
+            433
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Exponentiation should be performed only when necessary and as late as possible; for example, in the Metropolis algorithm, the required ratio of two densities should be computed as the exponential of the difference of the log-densities. ",
+        "bbox": [
+            19,
+            533,
+            975,
+            779
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "5/72 ",
+        "bbox": [
+            936,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "1 NUMERICAL INTEGRATION ",
+        "bbox": [
+            19,
+            150,
+            466,
+            209
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "2 DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            19,
+            275,
+            798,
+            834
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            323,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "6/72 ",
+        "bbox": [
+            939,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "NUMERICAL INTEGRATION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            486,
+            136
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Numerical integration, also called quadrature, refers to methods in which the integral over continuous function is evaluated by computing the value of the function at finite number of points. ",
+        "bbox": [
+            19,
+            235,
+            977,
+            411
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "By increasing the number of points where the function is evaluated, desired accuracy can be obtained. ",
+        "bbox": [
+            22,
+            511,
+            972,
+            625
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Numerical integration methods can be divided to simulation (stochastic) methods, such as Monte Carlo, and deterministic methods such as many quadrature rule methods. ",
+        "bbox": [
+            19,
+            727,
+            972,
+            900
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "7/72 ",
+        "bbox": [
+            936,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "The posterior expectation of any function $h(\\theta)$ is defined as $\\mathsf{E}\\big(h(\\theta)|y\\big) = \\int h(\\theta)p(\\theta |y)d\\theta$ , where the integral has as many dimensions as $\\theta$ . ",
+        "bbox": [
+            22,
+            121,
+            972,
+            238
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Conversely, we can express any integral over the space of $\\theta$ as a posterior expectation by defining $h(\\theta)$ appropriately. ",
+        "bbox": [
+            22,
+            338,
+            969,
+            452
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "If we have posterior draws $\\theta^s$ from $p(\\theta | y)$ , we can estimate the integral by the sample average, ",
+        "bbox": [
+            22,
+            547,
+            969,
+            661
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\frac {1}{S} \\sum_ {s = 1} ^ {S} h (\\theta^ {s}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            422,
+            716,
+            574,
+            845
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "8/72 ",
+        "bbox": [
+            939,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "For any finite number of simulation draws, the accuracy of this estimate can be roughly gauged by the standard deviation of the $h(\\theta^s)$ values. ",
+        "bbox": [
+            22,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "If it is not easy to draw from the posterior distribution, or if the $h(\\theta^s)$ values are too variable (so that the sample average is too variable an estimate to be useful), more sampling methods are necessary. ",
+        "bbox": [
+            22,
+            474,
+            972,
+            658
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "9/72 ",
+        "bbox": [
+            939,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "SIMULATION METHODS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            422,
+            136
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Simulation (stochastic) methods are based on obtaining random samples $\\theta^s$ from the desired distribution $p(\\theta)$ and estimating the expectation of any function $h(\\theta)$ , ",
+        "bbox": [
+            19,
+            345,
+            969,
+            522
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathrm {E} (h (\\theta) | y) = \\int h (\\theta) p (\\theta | y) d \\theta \\approx \\frac {1}{S} \\sum_ {s = 1} ^ {S} h \\left(\\theta^ {s}\\right). \\tag {10.1}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            226,
+            580,
+            966,
+            705
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "10/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "The estimate is stochastic depending on generated random numbers, but the accuracy of the simulation can be improved by obtaining more samples. ",
+        "bbox": [
+            22,
+            268,
+            972,
+            386
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Basic Monte Carlo methods which produce independent samples and Markov chain Monte Carlo methods which can better adapt to high-dimensional complex distributions, but produce dependent samples. ",
+        "bbox": [
+            22,
+            474,
+            972,
+            661
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "11/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Markov chain Monte Carlo methods have been important in making Bayesian inference practical for generic hierarchical models. ",
+        "bbox": [
+            22,
+            213,
+            972,
+            327
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Simulation methods can be used for high-dimensional distributions, and there are general algorithms which work for a wide variety of models; where necessary, more efficient computation can be obtained by combining these general ideas with tailored simulation methods, deterministic methods, and distributional approximations. ",
+        "bbox": [
+            22,
+            426,
+            975,
+            738
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "12/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "DETERMINISTIC METHODS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            483,
+            132
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Deterministic numerical integration methods are based on evaluating the integrand $h(\\theta) \\times p(\\theta | y)$ at selected points $\\theta^s$ , based on a weighted version of (10.1): ",
+        "bbox": [
+            19,
+            272,
+            969,
+            455
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathsf {E} \\big (h (\\theta) | y \\big) = \\int h (\\theta) p (\\theta | y) d \\theta \\approx \\frac {1}{S} \\sum_ {s = 1} ^ {S} w _ {s} h \\left(\\theta^ {s}\\right) p \\left(\\theta^ {s} | y\\right),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            160,
+            507,
+            828,
+            636
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "with weight $w_{s}$ corresponding to the volume of space represented by the point $\\theta^{s}$ . ",
+        "bbox": [
+            19,
+            731,
+            969,
+            841
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "13/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "More elaborate rules, such as Simpson's, use local polynomials for improved accuracy. ",
+        "bbox": [
+            22,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Deterministic numerical integration rules typically have lower variance than simulation methods, but selection of locations gets difficult in high dimensions. ",
+        "bbox": [
+            22,
+            481,
+            972,
+            658
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "14/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "The simplest deterministic method is to evaluate the integrand in a grid with equal weights. ",
+        "bbox": [
+            22,
+            125,
+            969,
+            238
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Grid methods can be made adaptive starting the grid formation from the posterior mode. ",
+        "bbox": [
+            22,
+            334,
+            969,
+            448
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "For an integrand where one part has some specific form as Gaussian, there are specific quadrature rules that can give more accurate estimates with fewer integrand evaluations. ",
+        "bbox": [
+            22,
+            547,
+            969,
+            727
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Quadrature rules exist for both bounded and unbounded regions. ",
+        "bbox": [
+            22,
+            827,
+            845,
+            875
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "header",
+        "text": "Numerical Integration ",
+        "bbox": [
+            320,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "15/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 NUMERICAL INTEGRATION ",
+            "DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "5 HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            16,
+            150,
+            801,
+            834
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "header",
+        "text": "Distributional Approximations ",
+        "bbox": [
+            262,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "16/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "DISTRIBUTIONAL APPROXIMATIONS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            640,
+            136
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "Distributional (analytic) approximations approximate the posterior with some simpler parametric distribution, from which integrals can be computed directly or by using the approximation as a starting point for simulation-based methods. ",
+        "bbox": [
+            19,
+            408,
+            977,
+            643
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "header",
+        "text": "Distributional Approximations ",
+        "bbox": [
+            262,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "page_number",
+        "text": "17/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "CRUDE ESTIMATION BY IGNORING SOME ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            737,
+            139
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "INFORMATION ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            176,
+            267,
+            220
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "Before developing elaborate approximations or complicated methods for sampling from the target distribution, it is almost always useful to obtain a rough estimate of the location of the target distribution, that is, a point estimate of the parameters in the model, using some simple, noniterative technique. ",
+        "bbox": [
+            19,
+            305,
+            977,
+            610
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "The method for creating this first estimate will vary from problem to problem but typically will involve discarding parts of the model and data to create a simple problem for which convenient parameter estimates can be found. ",
+        "bbox": [
+            19,
+            709,
+            972,
+            893
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "header",
+        "text": "Distributional Approximations ",
+        "bbox": [
+            262,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "page_number",
+        "text": "18/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "In a hierarchical model, one can sometimes roughly estimate the main parameters $\\gamma$ by first estimating the hyperparameters $\\phi$ crudely, then using the conditional posterior distribution of $\\gamma | \\phi, y$ . ",
+        "bbox": [
+            19,
+            154,
+            977,
+            338
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "We applied this approach to the rat tumor example in Section 5.1, where crude estimates of the hyperparameters $(\\alpha, \\beta)$ were used to obtain initial estimates of the other parameters, $\\theta_{j}$ . ",
+        "bbox": [
+            19,
+            433,
+            972,
+            613
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "When some data are missing, a good way to get started is by simplistically imputing the missing values based on available data. ",
+        "bbox": [
+            19,
+            713,
+            972,
+            823
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "header",
+        "text": "Distributional Approximations ",
+        "bbox": [
+            262,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "page_number",
+        "text": "19/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "In addition to creating a starting point for a more exact analysis, crude inferences are useful for comparison with later results, if the rough estimate differs greatly from the results of the full analysis, the latter may well have errors in programming or modeling. ",
+        "bbox": [
+            22,
+            242,
+            977,
+            485
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Crude estimates are often convenient and reliable because they can be computed using available computer programs. ",
+        "bbox": [
+            22,
+            584,
+            969,
+            698
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "header",
+        "text": "Distributional Approximations ",
+        "bbox": [
+            262,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "page_number",
+        "text": "20/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 NUMERICAL INTEGRATION ",
+            "2 DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "5 HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            16,
+            150,
+            801,
+            834
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "page_number",
+        "text": "21/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "DIRECT SIMULATION AND REJECTION SAMPLING",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            872,
+            136
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "In simple nonhierarchical Bayesian models, it is often easy to draw from the posterior distribution directly, especially if conjugate prior distributions have been assumed. ",
+        "bbox": [
+            19,
+            294,
+            977,
+            470
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "For more complicated problems, it can help to factor the distribution analytically and simulate it in parts, first sampling from the marginal posterior distribution of the hyperparameters, then drawing the other parameters conditional on the data and the simulated hyperparameters. ",
+        "bbox": [
+            19,
+            569,
+            975,
+            819
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "page_number",
+        "text": "22/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "It is sometimes possible to perform direct simulations and analytic integrations for parts of the larger problem. ",
+        "bbox": [
+            19,
+            242,
+            969,
+            352
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Frequently, draws from standard distributions or low-dimensional non-standard distributions are required, either as direct draws from the posterior distribution of the estimand in an easy problem, or as an intermediate step in a more complex problem. ",
+        "bbox": [
+            19,
+            455,
+            994,
+            694
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "page_number",
+        "text": "23/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "In this section, we describe methods of drawing a random sample of size 1, with the understanding that the methods can be repeated to draw larger samples. ",
+        "bbox": [
+            19,
+            246,
+            969,
+            426
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "When obtaining more than one sample, it is often possible to reduce computation time by saving intermediate results such as the Cholesky factor for a fixed multivariate normal distribution. ",
+        "bbox": [
+            19,
+            522,
+            969,
+            698
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "page_number",
+        "text": "24/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "DIRECT APPROXIMATION BY CALCULATING AT A GRID OF POINTS",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            881,
+            220
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "text",
+        "text": "For the simplest discrete approximation, compute the target density, $p(\\theta | y)$ , at a set of evenly spaced values $\\theta_1, \\ldots, \\theta_N$ , that cover a broad range of the parameter space for $\\theta$ , then approximate the continuous $p(\\theta | y)$ by the discrete density at $\\theta_1, \\ldots, \\theta_N$ , with probabilities ",
+        "bbox": [
+            19,
+            360,
+            977,
+            606
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\frac {p (\\theta_ {i} | y)}{\\sum_ {j = 1} ^ {N} p (\\theta_ {j} | y)}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            408,
+            658,
+            585,
+            779
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "page_number",
+        "text": "25/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "text",
+        "text": "Because the approximate density must be normalized anyway, this method will work just as well using an unnormalized density function, $q(\\theta | y)$ , in place of $p(\\theta | y)$ . ",
+        "bbox": [
+            19,
+            213,
+            977,
+            400
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "text",
+        "text": "Once the grid of density values is computed, a random draw from $p(\\theta | y)$ is obtained by drawing a random sample $U$ from the uniform distribution on [0, 1], then transforming by the inverse cdf method to obtain a sample from the discrete approximation. ",
+        "bbox": [
+            19,
+            492,
+            975,
+            735
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "page_number",
+        "text": "26/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "text",
+        "text": "When the points $\\theta_{i}$ are spaced closely enough and miss nothing important beyond their boundaries, this method works well. ",
+        "bbox": [
+            22,
+            268,
+            977,
+            386
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "text",
+        "text": "The discrete approximation is more difficult to use in higher-dimensional multivariate problems, where computing at every point in a dense multidimensional grid becomes prohibitively expensive. ",
+        "bbox": [
+            22,
+            474,
+            975,
+            672
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "page_number",
+        "text": "27/72",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 26
+    },
+    {
+        "type": "text",
+        "text": "SIMULATING FROM PREDICTIVE DISTRIBUTIONS ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            856,
+            139
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "Once we have a sample from the posterior distribution, $p(\\theta | y)$ , it is typically easy to draw from the predictive distribution of unobserved or future data, $\\tilde{y}$ . ",
+        "bbox": [
+            19,
+            264,
+            977,
+            444
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "For each draw of $\\theta$ from the posterior distribution, just draw one $\\tilde{y}$ from the predictive distribution, $p(\\tilde{y}|\\theta)$ . ",
+        "bbox": [
+            19,
+            540,
+            972,
+            658
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "The set of simulated $\\tilde{y}$ 's from all the $\\theta$ 's characterizes the posterior predictive distribution. ",
+        "bbox": [
+            19,
+            753,
+            972,
+            863
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "page_number",
+        "text": "28/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 27
+    },
+    {
+        "type": "text",
+        "text": "REJECTION SAMPLING ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            414,
+            136
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "text",
+        "text": "Suppose we want to obtain a single random draw from a density $p(\\theta | y)$ , or perhaps an unnormalized density $q(\\theta | y)$ . ",
+        "bbox": [
+            19,
+            371,
+            969,
+            485
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "text",
+        "text": "In the following description we use $p$ to represent the target distribution, but we could just as well work with the unnormalized form $q$ instead. ",
+        "bbox": [
+            19,
+            584,
+            969,
+            694
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "page_number",
+        "text": "29/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 28
+    },
+    {
+        "type": "text",
+        "text": "To perform rejection sampling we require a positive function $g(\\theta)$ defined for all $\\theta$ for which $p(\\theta | y) > 0$ that has the following properties: ",
+        "bbox": [
+            22,
+            194,
+            969,
+            305
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "- We can draw from the probability density proportional to $g$ . It is not required that $g(\\theta)$ integrate to 1, but $g(\\theta)$ must have a finite integral. ",
+            "- The importance ratio $\\frac{p(\\theta|y)}{g(\\theta)}$ must have a known bound; that is, there must be some known constant $M$ for which $\\frac{p(\\theta|y)}{g(\\theta)} \\leq M$ for all $\\theta$ . "
+        ],
+        "bbox": [
+            49,
+            419,
+            969,
+            757
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "page_number",
+        "text": "30/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 29
+    },
+    {
+        "type": "text",
+        "text": "The rejection sampling algorithm proceeds in two steps: ",
+        "bbox": [
+            24,
+            253,
+            734,
+            301
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. Sample $\\theta$ at random from the probability density proportional to $g(\\theta)$ . ",
+            "2. With probability $\\frac{p(\\theta|y)}{Mg(\\theta)}$ , accept $\\theta$ as a draw from $p$ . If the drawn $\\theta$ is rejected, return to step 1. "
+        ],
+        "bbox": [
+            41,
+            411,
+            969,
+            669
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "page_number",
+        "text": "31/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 30
+    },
+    {
+        "type": "image",
+        "img_path": "images/ac6199d3eb924b60536f4c971674111d757d445154712e96572fb69c759b1311.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            96,
+            77,
+            892,
+            540
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "text",
+        "text": "FIGURE: Illustration of rejection sampling. The top curve is an approximation function, $Mg(\\theta)$ , and the bottom curve is the target density, $p(\\theta | y)$ . As required, $Mg(\\theta) \\geq p(\\theta | y)$ for all $\\theta$ . The vertical line indicates a single random draw $\\theta$ from the density proportional to $g$ . The probability that a sampled draw $\\theta$ is accepted is the ratio of the height of the lower curve to the height of the higher curve at the value $\\theta$ . ",
+        "bbox": [
+            19,
+            617,
+            977,
+            948
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "page_number",
+        "text": "32/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 31
+    },
+    {
+        "type": "text",
+        "text": "Figure 10.1 illustrates rejection sampling. ",
+        "text_level": 1,
+        "bbox": [
+            24,
+            235,
+            549,
+            279
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "text",
+        "text": "An accepted $\\theta$ has the correct distribution, $p(\\theta |y)$ ; that is, the distribution of drawn $\\theta$ , conditional on it being accepted, is $p(\\theta |y)$ . ",
+        "bbox": [
+            22,
+            382,
+            972,
+            500
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "text",
+        "text": "The boundedness condition is necessary so that the probability in step 2 is not greater than 1. ",
+        "bbox": [
+            22,
+            595,
+            975,
+            709
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "page_number",
+        "text": "33/72 ",
+        "bbox": [
+            928,
+            966,
+            986,
+            992
+        ],
+        "page_idx": 32
+    },
+    {
+        "type": "text",
+        "text": "A good approximate density $g(\\theta)$ for rejection sampling should be roughly proportional to $p(\\theta | y)$ (considered as a function of $\\theta$ ). ",
+        "bbox": [
+            22,
+            125,
+            969,
+            235
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "The ideal situation is $g \\propto p$ , in which case, with a suitable value of $M$ , we can accept every draw with probability 1. ",
+        "bbox": [
+            22,
+            334,
+            969,
+            448
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "When $g$ is not nearly proportional to $p$ , the bound $M$ must be set so large that almost all draws obtained in step 1 will be rejected in step 2. ",
+        "bbox": [
+            22,
+            547,
+            969,
+            658
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "A virtue of rejection sampling is that it is self-monitoring, if the method is not working efficiently, few simulated draws will be accepted. ",
+        "bbox": [
+            22,
+            761,
+            969,
+            871
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "page_number",
+        "text": "34/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 33
+    },
+    {
+        "type": "text",
+        "text": "The function $g(\\theta)$ is chosen to approximate $p(\\theta | y)$ and so in general will depend on $y$ . ",
+        "bbox": [
+            19,
+            264,
+            969,
+            386
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "text",
+        "text": "We do not use the notation $g(\\theta, y)$ or $g(\\theta | y)$ , however, because in practice we will be considering approximations to one posterior distribution at a time, and the functional dependence of $g$ on $y$ is not of interest. ",
+        "bbox": [
+            19,
+            474,
+            972,
+            661
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "page_number",
+        "text": "35/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 34
+    },
+    {
+        "type": "text",
+        "text": "Rejection sampling is used in some fast methods for sampling from standard univariate distributions. ",
+        "bbox": [
+            22,
+            294,
+            969,
+            400
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "text",
+        "text": "It is also often used for generic truncated multivariate distributions, if the proportion of the density mass in the truncated part is not close to 1. ",
+        "bbox": [
+            22,
+            507,
+            969,
+            621
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "header",
+        "text": "Direct Simulation and Rejection Sampling ",
+        "bbox": [
+            174,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "page_number",
+        "text": "36/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 35
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 NUMERICAL INTEGRATION ",
+            "2 DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "5 HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            16,
+            150,
+            798,
+            834
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "page_number",
+        "text": "37/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 36
+    },
+    {
+        "type": "text",
+        "text": "IMPORTANCE SAMPLING ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            441,
+            132
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "text",
+        "text": "Importance sampling is a method, related to rejection sampling and a precursor to the Metropolis algorithm (discussed in the next chapter), that is used for computing expectations using a random sample drawn from an approximation to the target distribution. ",
+        "bbox": [
+            19,
+            294,
+            977,
+            536
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "text",
+        "text": "Suppose we are interested in $\\operatorname{E}(h(\\theta)|y)$ , but we cannot generate random draws of $\\theta$ from $p(\\theta|y)$ and thus cannot evaluate the integral by a simple average of simulated values. ",
+        "bbox": [
+            19,
+            636,
+            972,
+            816
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "page_number",
+        "text": "38/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 37
+    },
+    {
+        "type": "text",
+        "text": "If $g(\\theta)$ is a probability density from which we can generate random draws, then we can write, ",
+        "bbox": [
+            24,
+            301,
+            966,
+            411
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathsf {E} \\big (h (\\theta) | y \\big) = \\frac {\\int h (\\theta) q (\\theta | y) d \\theta}{\\int q (\\theta | y) d \\theta} = \\frac {\\int \\left[ h (\\theta) q (\\theta | y) / g (\\theta) \\right] g (\\theta) d \\theta}{\\int \\left[ q (\\theta | y) / g (\\theta) \\right] g (\\theta) d \\theta}. \\tag {10.2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            88,
+            466,
+            966,
+            577
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "page_number",
+        "text": "39/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 38
+    },
+    {
+        "type": "text",
+        "text": "$\\mathsf{E}\\big(h(\\theta)|y\\big)$ can be estimated using $S$ draws $\\theta^1,\\ldots ,\\theta^S$ from $g(\\theta)$ by the expression, ",
+        "bbox": [
+            22,
+            113,
+            966,
+            227
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\frac {\\frac {1}{5} \\sum_ {s = 1} ^ {S} h \\left(\\theta^ {s}\\right) w \\left(\\theta^ {s}\\right)}{\\frac {1}{5} \\sum_ {s = 1} ^ {S} w \\left(\\theta^ {s}\\right)}. \\tag {10.3}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            372,
+            279,
+            966,
+            408
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "text",
+        "text": "The factors ",
+        "bbox": [
+            52,
+            514,
+            234,
+            551
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "equation",
+        "text": "$$\nw \\left(\\theta^ {s}\\right) = \\frac {q \\left(\\theta^ {s} \\mid y\\right)}{g \\left(\\theta^ {s}\\right)}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            425,
+            617,
+            629,
+            716
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "text",
+        "text": "are called importance ratios or importance weights. ",
+        "bbox": [
+            82,
+            830,
+            729,
+            875
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "page_number",
+        "text": "40/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 39
+    },
+    {
+        "type": "text",
+        "text": "Recall that $q$ is our general notation for unnormalized densities; that is, $q(\\theta | y)$ equals $p(\\theta | y)$ times some factor that does not depend on $\\theta$ . ",
+        "bbox": [
+            24,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "text",
+        "text": "It is generally advisable to use the same set of random draws for both the numerator and denominator of (10.3) in order to reduce the sampling error in the estimate. ",
+        "bbox": [
+            24,
+            481,
+            969,
+            654
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "page_number",
+        "text": "41/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 40
+    },
+    {
+        "type": "text",
+        "text": "If $g(\\theta)$ can be chosen such that $\\frac{hq}{g}$ is roughly constant, then fairly precise estimates of the integral can be obtained. ",
+        "bbox": [
+            22,
+            172,
+            972,
+            294
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "text",
+        "text": "Importance sampling is not a useful method if the importance ratios vary substantially. ",
+        "bbox": [
+            22,
+            393,
+            972,
+            507
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "text",
+        "text": "The worst possible scenario occurs when the importance ratios are small with high probability but with a low probability are huge, which happens, for example, if $hq$ has wide tails compared to $g$ , as a function of $\\theta$ . ",
+        "bbox": [
+            22,
+            606,
+            972,
+            786
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "page_number",
+        "text": "42/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 41
+    },
+    {
+        "type": "text",
+        "text": "ACCURACY AND EFFICIENCY OF IMPORTANCE ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            831,
+            139
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "SAMPLING ESTIMATES ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            176,
+            403,
+            220
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "In general, without some form of mathematical analysis of the exact and approximate densities, there is always the realistic possibility that we have missed some extremely large but rare importance weights. ",
+        "bbox": [
+            19,
+            268,
+            977,
+            448
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "However, it may help to examine the distribution of sampled importance weights to discover possible problems. ",
+        "bbox": [
+            19,
+            547,
+            972,
+            661
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "It can help to examine a histogram of the logarithms of the largest importance ratios: estimates will often be poor if the largest ratios are too large relative to the average. ",
+        "bbox": [
+            19,
+            761,
+            972,
+            937
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "page_number",
+        "text": "43/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 42
+    },
+    {
+        "type": "text",
+        "text": "In contrast, we do not have to worry about the behavior of small importance ratios, because they have little influence on equation (10.2). ",
+        "bbox": [
+            22,
+            88,
+            969,
+            198
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "If the variance of the weights is finite, the effective sample size can be estimated using an approximation, ",
+        "bbox": [
+            22,
+            301,
+            969,
+            411
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "equation",
+        "text": "$$\nS _ {\\text {e f f}} = \\frac {1}{\\sum_ {s = 1} ^ {S} \\left(\\tilde {w} \\left(\\theta^ {s}\\right)\\right) ^ {2}}. \\tag {10.4}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            350,
+            470,
+            969,
+            588
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "- $\\tilde{w}(\\theta^s)$ are normalized weights; that is, ",
+        "bbox": [
+            52,
+            691,
+            560,
+            738
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\tilde {w} (\\theta^ {s}) = \\frac {w (\\theta^ {s})}{\\sum_ {s ^ {\\prime} = 1} ^ {S} w (\\theta^ {s ^ {\\prime}})}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            383,
+            790,
+            674,
+            908
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            488,
+            33
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "page_number",
+        "text": "44/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 43
+    },
+    {
+        "type": "text",
+        "text": "The effective sample size $S_{\\mathrm{eff}}$ is small if there are few extremely high weights which would unduly influence the distribution. ",
+        "bbox": [
+            22,
+            290,
+            969,
+            404
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "text",
+        "text": "If the distribution has occasional very large weights, however, this estimate is itself noisy; it can thus be taken as no more than a rough guide. ",
+        "bbox": [
+            22,
+            507,
+            969,
+            621
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "page_number",
+        "text": "45/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 44
+    },
+    {
+        "type": "text",
+        "text": "IMPORTANCE RESAMPLING ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            91,
+            486,
+            132
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "text",
+        "text": "To obtain independent samples with equal weights, it is possible to use importance resampling (also called sampling-importance resampling or SIR). ",
+        "bbox": [
+            24,
+            455,
+            969,
+            569
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "page_number",
+        "text": "46/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 45
+    },
+    {
+        "type": "text",
+        "text": "Once $S$ draws, $\\theta^1, \\ldots, \\theta^S$ , from the approximate distribution $g$ have been sampled, a sample of $k < S$ draws can be simulated as follows. ",
+        "bbox": [
+            22,
+            136,
+            972,
+            253
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. Sample a value $\\theta$ from the set $\\{\\theta^1, \\ldots, \\theta^S\\}$ , where the probability of sampling each $\\theta^s$ is proportional to the weight, $w(\\theta^s) = \\frac{q(\\theta^s | y)}{g(\\theta^s)}$ . ",
+            "2. Sample a second value using the same procedure, but excluding the already sampled value from the set. ",
+            "3. Repeatedly sample without replacement $k - 2$ more times. "
+        ],
+        "bbox": [
+            41,
+            360,
+            975,
+            834
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "page_number",
+        "text": "47/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 46
+    },
+    {
+        "type": "text",
+        "text": "WHY SAMPLE WITHOUT REPLACEMENT? ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            740,
+            139
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "text",
+        "text": "If the importance weights are moderate, sampling with and without replacement gives similar results. ",
+        "bbox": [
+            22,
+            397,
+            969,
+            507
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "text",
+        "text": "Now consider a bad case, with a few large weights and many small weights. ",
+        "bbox": [
+            22,
+            610,
+            969,
+            658
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "page_number",
+        "text": "48/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 47
+    },
+    {
+        "type": "text",
+        "text": "Sampling with replacement will pick the same few values of $\\theta$ repeatedly; in contrast, sampling without replacement yields a more desirable intermediate approximation somewhere between the starting and target densities. ",
+        "bbox": [
+            22,
+            290,
+            977,
+            474
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "text",
+        "text": "For other purposes, sampling with replacement could be superior. ",
+        "bbox": [
+            22,
+            569,
+            853,
+            621
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "page_number",
+        "text": "49/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 48
+    },
+    {
+        "type": "text",
+        "text": "USES OF IMPORTANCE SAMPLING IN BAYESIAN ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            848,
+            139
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "COMPUTATION ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            176,
+            273,
+            220
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "Importance (re)sampling can also be useful when considering mild changes in the posterior distribution, for example replacing the normal distribution by a $t$ in the 8 schools model or when computing leave-one-out cross-validation. ",
+        "bbox": [
+            19,
+            382,
+            969,
+            558
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "The idea in this case is to treat the original posterior distribution as an approximation to the modified posterior distribution. ",
+        "bbox": [
+            19,
+            661,
+            969,
+            772
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "page_number",
+        "text": "50/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 49
+    },
+    {
+        "type": "text",
+        "text": "A good way to develop an understanding of importance sampling is to program simulations for simple examples, such as using a $t_3$ distribution as an approximation to the normal (good practice) or vice versa (bad practice). ",
+        "bbox": [
+            19,
+            268,
+            977,
+            455
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "text",
+        "text": "The approximating distribution $g$ in importance sampling should cover all the important regions of the target distribution. ",
+        "bbox": [
+            19,
+            544,
+            972,
+            658
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "header",
+        "text": "Importance Sampling ",
+        "bbox": [
+            325,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "page_number",
+        "text": "51/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 50
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 NUMERICAL INTEGRATION ",
+            "2 DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            16,
+            150,
+            798,
+            834
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "page_number",
+        "text": "52/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 51
+    },
+    {
+        "type": "text",
+        "text": "HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            850,
+            139
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "Bayesian inferences are usually most conveniently summarized by random draws from the posterior distribution of the model parameters. ",
+        "bbox": [
+            19,
+            261,
+            969,
+            371
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "Percentiles of the posterior distribution of univariate estimands can be reported to convey the shape of the distribution. ",
+        "bbox": [
+            19,
+            474,
+            969,
+            584
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "For example, reporting the $2.5\\%$ , $25\\%$ , $50\\%$ , $75\\%$ , and $97.5\\%$ points of the sampled distribution of an estimand provides a $50\\%$ and a $95\\%$ posterior interval and also conveys skewness in its marginal posterior density. ",
+        "bbox": [
+            19,
+            683,
+            972,
+            863
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "page_number",
+        "text": "53/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 52
+    },
+    {
+        "type": "text",
+        "text": "Scatterplots of simulations, contour plots of density functions, or more sophisticated graphical techniques can also be used to examine the posterior distribution in two or three dimensions. ",
+        "bbox": [
+            22,
+            272,
+            969,
+            444
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "text",
+        "text": "Quantities of interest can be defined in terms of the parameters or of parameters and data. ",
+        "bbox": [
+            22,
+            547,
+            969,
+            658
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "page_number",
+        "text": "54/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 53
+    },
+    {
+        "type": "text",
+        "text": "We also use posterior simulations to make inferences about predictive quantities. ",
+        "bbox": [
+            19,
+            150,
+            969,
+            257
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "Given each draw $\\theta^s$ , we can sample any predictive quantity, $\\tilde{y}^s \\sim p(\\tilde{y}|\\theta^s)$ or, for a regression model, $\\tilde{y}^s \\sim p(\\tilde{y}|\\tilde{X},\\theta^s)$ . ",
+        "bbox": [
+            19,
+            363,
+            969,
+            477
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "Posterior inferences and probability calculations can then be performed for each predictive quantity using the $S$ simulations. ",
+        "bbox": [
+            19,
+            573,
+            969,
+            687
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "Finally, given each simulation $\\theta^s$ , we can simulate a replicated dataset $y^{\\mathrm{rep} s}$ . ",
+        "bbox": [
+            22,
+            786,
+            969,
+            834
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "page_number",
+        "text": "55/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 54
+    },
+    {
+        "type": "text",
+        "text": "Our goal in Bayesian computation is to obtain a set of independent draws $\\theta^s$ , $s = 1, \\ldots, S$ , from the posterior distribution, with enough draws $S$ so that quantities of interest can be estimated with reasonable accuracy. ",
+        "bbox": [
+            19,
+            268,
+            977,
+            448
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "text",
+        "text": "For most examples, $S = 100$ independent draws are enough for reasonable posterior summaries. ",
+        "bbox": [
+            19,
+            544,
+            972,
+            658
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "page_number",
+        "text": "56/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 55
+    },
+    {
+        "type": "text",
+        "text": "We can see this by considering a scalar parameter $\\theta$ with an approximately normal posterior distribution with mean $\\mu_{\\theta}$ and standard deviation $\\sigma_{\\theta}$ . ",
+        "bbox": [
+            19,
+            297,
+            969,
+            408
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "text",
+        "text": "We assume these cannot be calculated analytically and instead are estimated from the mean $\\bar{\\theta}$ and standard deviation $s_{\\theta}$ of the $S$ simulation draws. ",
+        "bbox": [
+            19,
+            507,
+            969,
+            621
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            29
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "page_number",
+        "text": "57/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 56
+    },
+    {
+        "type": "text",
+        "text": "The posterior mean is then estimated to an accuracy of approximately $s_{\\theta} / \\sqrt{S}$ . ",
+        "bbox": [
+            22,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "The total standard deviation of the computational parameter estimate (including Monte Carlo error, the uncertainty contributed by having only a finite number of simulation draws) is then $s_{\\theta} \\sqrt{1 + 1 / S}$ . ",
+        "bbox": [
+            22,
+            481,
+            972,
+            658
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "page_number",
+        "text": "58/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 57
+    },
+    {
+        "type": "text",
+        "text": "For $S = 100$ , the factor $\\sqrt{1 + 1 / S}$ is 1.005, implying that Monte Carlo error adds almost nothing to the uncertainty coming from actual posterior variance. ",
+        "bbox": [
+            19,
+            238,
+            977,
+            419
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "text",
+        "text": "However, it can be convenient to have more than 100 simulations just so that the numerical summaries are more stable, even if this stability typically confers no important practical advantage. ",
+        "bbox": [
+            19,
+            518,
+            972,
+            698
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "page_number",
+        "text": "59/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 58
+    },
+    {
+        "type": "text",
+        "text": "For some posterior inferences, more simulation draws are needed to obtain desired precisions. ",
+        "bbox": [
+            22,
+            125,
+            969,
+            235
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "For example, posterior $p$ probabilities are estimated to a standard deviation of $\\sqrt{p(1 - p) / S}$ , so that $S = 100$ simulations allow estimation of a probability near 0.5 to an accuracy of $5\\%$ . ",
+        "bbox": [
+            22,
+            334,
+            972,
+            514
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "$S = 2500$ simulations are needed to estimate to an accuracy of $1\\%$ . ",
+        "bbox": [
+            24,
+            613,
+            881,
+            661
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "Even more simulation draws are needed to compute the posterior probability of rare events, unless analytic methods are used to assist the computations. ",
+        "bbox": [
+            22,
+            761,
+            969,
+            875
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            488,
+            29
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "page_number",
+        "text": "60/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 59
+    },
+    {
+        "type": "text",
+        "text": "EXAMPLE: EDUCATIONAL TESTING EXPERIMENTS",
+        "text_level": 1,
+        "bbox": [
+            19,
+            84,
+            900,
+            136
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "text",
+        "text": "See the textbook. ",
+        "bbox": [
+            24,
+            485,
+            251,
+            529
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "header",
+        "text": "How Many Simulation Draws Are Needed? ",
+        "bbox": [
+            168,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "page_number",
+        "text": "61/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 60
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1 NUMERICAL INTEGRATION ",
+            "2 DISTRIBUTIONAL APPROXIMATIONS ",
+            "3 DIRECT SIMULATION AND REJECTION SAMPLING",
+            "4 IMPORTANCE SAMPLING ",
+            "HOW MANY SIMULATION DRAWS ARE NEEDED? ",
+            "6 DEBUGGING BAYESIAN COMPUTING "
+        ],
+        "bbox": [
+            19,
+            150,
+            798,
+            834
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            248,
+            3,
+            483,
+            29
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "page_number",
+        "text": "62/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 61
+    },
+    {
+        "type": "text",
+        "text": "DEBUGGING USING FAKE DATA ",
+        "text_level": 1,
+        "bbox": [
+            19,
+            88,
+            566,
+            136
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "Our usual approach for building confidence in our posterior inferences is to fit different versions of the desired model, noticing when the inferences change unexpectedly. ",
+        "bbox": [
+            19,
+            235,
+            977,
+            411
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "Within the computation of any particular model, we check convergence by running parallel simulations from different starting points, checking that they mix and converge to the same estimated posterior distribution. ",
+        "bbox": [
+            19,
+            514,
+            972,
+            691
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "This can be seen as a form of debugging of the individual simulated sequences. ",
+        "bbox": [
+            19,
+            790,
+            969,
+            900
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "page_number",
+        "text": "63/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 62
+    },
+    {
+        "type": "text",
+        "text": "When a model is particularly complicated, or its inferences are unexpected enough to be not necessarily believable, one can perform more elaborate debugging using fake data. The basic approach is: ",
+        "bbox": [
+            22,
+            95,
+            977,
+            275
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "1. Pick a reasonable value for the true parameter vector $\\theta$ . Strictly speaking, this value should be a random draw from the prior distribution, but if the prior distribution is noninformative, then any reasonable value of $\\theta$ should work. ",
+            "2. If the model is hierarchical (as it generally will be), then perform the above step by picking reasonable values for the hyperparameters, then drawing the other parameters from the prior distribution conditional on the specified hyperparameters. "
+        ],
+        "bbox": [
+            41,
+            352,
+            977,
+            911
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "page_number",
+        "text": "64/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 63
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "3. Simulate a large fake dataset $y^{\\mathrm{fake}}$ from the data distribution $p(y|\\theta)$ . ",
+            "4. Perform posterior inference about $\\theta$ from $p(\\theta | y^{\\text{fake}})$ . ",
+            "5. Compare the posterior inferences to the true $\\theta$ from step 1 or 2. For instance, for any element of $\\theta$ , there should be a $50\\%$ probability that its $50\\%$ posterior interval contains the truth. "
+        ],
+        "bbox": [
+            41,
+            231,
+            969,
+            705
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "page_number",
+        "text": "65/72 ",
+        "bbox": [
+            930,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 64
+    },
+    {
+        "type": "text",
+        "text": "Formally, this procedure requires that the model has proper prior distributions and that the frequency evaluations be averaged over many values of the true $\\theta$ , drawn independently from the prior distribution in step 1 above. ",
+        "bbox": [
+            19,
+            161,
+            977,
+            338
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "text",
+        "text": "In practice, however, the debugging procedure can be useful with just a single reasonable choice of $\\theta$ in the first step. ",
+        "bbox": [
+            19,
+            437,
+            972,
+            551
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "text",
+        "text": "If the model does not produce reasonable inferences with $\\theta$ set to a reasonable value, then there is probably something wrong, either in the computation or in the model itself. ",
+        "bbox": [
+            19,
+            650,
+            972,
+            827
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "page_number",
+        "text": "66/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 65
+    },
+    {
+        "type": "text",
+        "text": "Inference from a single fake dataset can be revealing for debugging purposes, if the true value of $\\theta$ is far outside the computed posterior distribution. ",
+        "bbox": [
+            19,
+            268,
+            969,
+            386
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "text",
+        "text": "If the dimensionality of $\\theta$ is large (as can easily happen with hierarchical models), we can go further and compute debugging checks such as the proportion of the $50\\%$ intervals that contain the true value. ",
+        "bbox": [
+            19,
+            474,
+            975,
+            661
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "page_number",
+        "text": "67/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 66
+    },
+    {
+        "type": "text",
+        "text": "To check that inferences are correct on average, one can create a residual plot as follows. ",
+        "bbox": [
+            22,
+            158,
+            969,
+            264
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "text",
+        "text": "For each scalar parameter $\\theta_{j}$ , define the predicted value as the average of the posterior simulations of $\\theta_{j}$ , and the error as the true $\\theta_{j}$ (as specified or simulated in step 1 or 2 above) minus the predicted value. ",
+        "bbox": [
+            22,
+            371,
+            972,
+            547
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "text",
+        "text": "If the model is computed correctly, the errors should have zero mean, and we can diagnose problems by plotting errors v.s. predicted values, with one dot per parameter. ",
+        "bbox": [
+            22,
+            647,
+            969,
+            823
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "page_number",
+        "text": "68/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            988
+        ],
+        "page_idx": 67
+    },
+    {
+        "type": "text",
+        "text": "For models with only a few parameters, one can get the same effect by performing many fake-data simulations, resampling a new true vector $\\theta$ and a new fake dataset $y^{\\mathrm{fake}}$ each time, and then checking that the errors have zero mean and the correct interval coverage, on average. ",
+        "bbox": [
+            19,
+            327,
+            977,
+            569
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "page_number",
+        "text": "69/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 68
+    },
+    {
+        "type": "text",
+        "text": "MODEL CHECKING AND CONVERGENCE CHECKING AS DEBUGGING ",
+        "text_level": 1,
+        "bbox": [
+            16,
+            84,
+            966,
+            220
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "text",
+        "text": "In practice, when a model grossly misfits the data, or when a histogram or scatterplot or other display of replicated data looks weird, it is often because of a computing error. ",
+        "bbox": [
+            19,
+            305,
+            969,
+            485
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "text",
+        "text": "These errors can be as simple as forgetting to recode discrete responses (for example, $1 = \\text{Yes}$ , $0 = \\text{No}$ , $-9 = \\text{Don't Know}$ ) or misspelling a regression predictor, or as subtle as a miscomputed probability ratio in a Metropolis updating step, but typically they show up as predictions that do not make sense or do not fit the data. ",
+        "bbox": [
+            19,
+            584,
+            972,
+            889
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "page_number",
+        "text": "70/72 ",
+        "bbox": [
+            928,
+            963,
+            983,
+            992
+        ],
+        "page_idx": 69
+    },
+    {
+        "type": "text",
+        "text": "Similarly, poor convergence of an iterative simulation algorithm can sometimes occur from programming errors or conceptual errors in the model. ",
+        "bbox": [
+            22,
+            132,
+            969,
+            242
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "text",
+        "text": "When posterior inferences from a fitted model seem wrong, it is sometimes unclear if there is a bug in the program or a fundamental problem with the model itself. ",
+        "bbox": [
+            22,
+            345,
+            972,
+            518
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "text",
+        "text": "At this point, a useful conceptual and computational strategy is to simplify, to remove parameters from the model, or to give them fixed values or highly informative prior distributions, or to separately analyze data from different sources (that is, to un-link a hierarchical model). ",
+        "bbox": [
+            22,
+            621,
+            972,
+            863
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "page_number",
+        "text": "71/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 70
+    },
+    {
+        "type": "text",
+        "text": "These computations can be performed in steps, for example first removing a parameter from the model, then setting it equal to a null value (for example, zero) just to check that adding it into the program has no effect, then fixing it at a reasonable nonzero value, then assigning it a precise prior distribution, then allowing it to be estimated more fully from the data. ",
+        "bbox": [
+            19,
+            187,
+            977,
+            500
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "text",
+        "text": "Model building is a gradual process, and we often find ourselves going back and forth between simpler and more complicated models, both for conceptual and computational reasons. ",
+        "bbox": [
+            19,
+            595,
+            972,
+            775
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "header",
+        "text": "Debugging Bayesian Computing ",
+        "bbox": [
+            245,
+            3,
+            486,
+            33
+        ],
+        "page_idx": 71
+    },
+    {
+        "type": "page_number",
+        "text": "72/72 ",
+        "bbox": [
+            928,
+            966,
+            983,
+            992
+        ],
+        "page_idx": 71
+    }
+]
