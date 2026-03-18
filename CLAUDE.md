@@ -217,7 +217,7 @@ git worktree prune
 
 ## Figure 提取
 
-**脚本**: `/Users/yueyh/.claude/skills/figure_extractor.py`
+**脚本**: `/Users/yueyh/.claude/skills/figure-extractor/figure_extractor.py`
 
 **使用方法**：
 ```bash

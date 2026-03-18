@@ -205,7 +205,7 @@ Skew 除差算子满足以下性质：
 \label{sec:Introduction}
 \label{sec:Intro}
 
-我们在\cref{def:DoubleSchubertPolynomial}中已经定义了\textbf{双重 Schubert 多项式} $\{S_w(x; y) \mid w \in S_n\}$，它是\textbf{旗流形} $Fl_n(\mathbb{C})$ 的\textbf{等变量子上同调}类 $\{[\mathcal{X}(w)]_T\}$ 的 Lascoux-Schützenberger 型代表元（详见\cref{app:qa}中的\cref{sec:EquivariantCohomologyClass}和\cref{sec:LascouxSchutzenberger}）.+ 其中 $x = (x_1, \ldots, x_n)$ 和 $y = (y_1, \ldots, y_n)$ 是两组变量序列.
+我们在\cref{def:DoubleSchubertPolynomial}中已经定义了\textbf{双重 Schubert 多项式} $\{S_w(x; y) \mid w \in S_n\}$，它是\textbf{旗流形} $Fl_n(\mathbb{C})$ 的\textbf{等变量子上同调}类 $\{[\mathcal{X}(w)]_T\}$ 的 Lascoux-Schützenberger 型代表元（详见\cref{app:qa}中的\cref{sec:EquivariantCohomologyClass}和\cref{sec:LascouxSchutzenberger}）.+ 其中 $x = (x_1, \ldots, x_n)$ 和 $y = (y_1, \ldots, y_n)$ 是两组变量序列。双重 Schubert 多项式可以通过除差算子定义，具有丰富的代数和组合性质。具体而言，它们可以通过不同的组合模型计算，包括 pipe dreams \cite{bergeron1993, knutson2005} 和 bumpless pipe dreams \cite{lam2021}。
 
 我们研究以下展开系数：\footnote{$S_\infty$ 表示所有有限置换的并集，即 $S_\infty = \bigcup_{n=1}^\infty S_n$，可以理解为可数无限集 $\{1, 2, \ldots\}$ 上的对称群。}
 \begin{equation}
@@ -215,7 +215,7 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 
 当 $y = t = 0$ 时，$c^w_{u,v} := c^w_{u,v}(0, 0) \in \mathbb{N}$ 是经典的 Schubert 结构常数，与 Hilbert 第十五问题密切相关. 寻找这些系数${c^w_{u,v}}$的组合模型一直是代数组合和代数几何领域的核心问题.
 
-当 $u$ 和 $v$ 是 $k$-\textbf{Grassmannian 排列}时，Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem，见本文\cref{conj:Samuel}的来源论文 \cite{GX2025} 中的 Theorem 1.1）：
+当 $u$ 和 $v$ 是 $k$-\textbf{Grassmannian 排列}时，$S_u(x; y)$ 和 $S_v(x; t)$ 是因子化 Schur 多项式（factorial Schur polynomials）。Molev-Sagan \cite{molevsagan1999} 首次给出了这些系数的组合公式，Knutson-Tao \cite{knutson2003} 给出了展开的几何意义。Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem，见本文\cref{conj:Samuel}的来源论文 \cite{GX2025} 中的 Theorem 1.1）：
 
 \begin{Theorem}[Graham Positivity Theorem]
 \label{def:GrahamPositivity}
@@ -237,7 +237,25 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 其中 $c^w_{u,v}(y, t)$ 可以写成 $y$ 和 $t$ 的正系数多项式.
 \end{Conjecture}
 
-本文证明了上述猜想（\cref{conj:Samuel}），作为推论，还证明了 Kirillov 关于 skew 除差算子的正性猜想（\cref{def:SkewDividedDifference}）.
+本文证明了上述猜想（\cref{conj:Samuel}），作为推论，还证明了 Kirillov 关于 skew 除差算子的正性猜想（\cref{def:SkewDividedDifference}）。
+
+除上述情形外，定理 1.1 的一个被充分研究的情形是 separated descents（即 $\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$），其中 Samuel \cite{Sa} 建立了正性公式，Fan、Guo 和第二作者 \cite{FGL2025} 使用 puzzles 在双重 Grothendieck 多项式的范围内给出了另一个公式。
+
+Skew 除差算子 $\partial_{w/v}$，由 Macdonald \cite{macdonald1991} 首次引入，提供了计算 Schubert 结构常数的方法。这些算子因与 Fomin-Kirillov 代数 \cite{fomin1999} 的联系而受到广泛关注。其推广和正性性质在 \cite{berenstein2015, liu2022} 等工作中被广泛研究。
+
+本文的证明依赖于精化版本的 Graham 正性定理（\cref{def:RefinedGraham}，即 Theorem 2.3）。为了应用这个结果，我们建立了系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的新几何解释（Section 2.3），这与 Knutson-Tao \cite{knutson2003} 给出的解释不同。该定理的一个副产品是对 Billey 公式 \cite{billey1999}（Section 2.2）中正性的几何解释。
+
+我们在 Section 2.4 中以 Grothendieck 多项式的猜想结束本文的讨论.
+
+最后，我们提出一个关于 Grothendieck 多项式的正性猜想.
+
+设 $\beta$ 为形式变量，$\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 为 $w \in S_n$ 的双重 Grothendieck 多项式（采用 \cite{lam2023} 中的约定）。考虑展开
+$$\mathfrak{G}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{G}_v(\mathbf{x}; \mathbf{t}) = \sum_{w \in S_\infty} \tilde{c}^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{G}_w(\mathbf{x}; \mathbf{t})$$
+
+\begin{Conjecture}[Conjecture 2.7 - Grothendieck 正性猜想]
+\label{def:GrothendieckPositivityConjecture}
+对于 $u, v, w \in S_\infty$，有 $\tilde{c}^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[\beta][t_i \ominus y_j]_{i,j \geq 1}$，其中 $a \ominus b := \frac{a - b}{1 + \beta b}$。
+\end{Conjecture}
 
 \section{主要定理的证明}
 \label{sec:ProofMain}
@@ -335,13 +353,31 @@ $p_\alpha(y)$ 和 $q_\alpha(t)$ 可以选取为正系数的单项式.
 \subsection{Billey 公式的正性几何解释}
 \label{sec:BilleyPositivity}
 
-Billey 公式是计算等变量 Schubert 系数的重要工具. 本文给出了 Billey 公式中正性的新的几何解释.
+作为 \cref{def:RefinedGraham} 的应用，我们给出 Billey 公式 \cite{billey1999} 中正性的几何解释.
 
-Billey 公式表明，展开系数 $c^w_{u,v}(y)$ 可以通过特定的 Schubert 胞腔的几何性质来计算. 本文证明了这些胞腔的交集具有某种正性结构，从而解释了系数的正性来源.
+$G/B$ 的 $T$-不动点为 $(G/B)^T = \{wB/B \mid w \in W\}$。定义局部化为限制映射 $\cdot|_w : H_T^*(G/B) \to H_T^*(wB/B) \simeq H_T^*(\mathfrak{pt})$。Billey 公式是 Schubert 类 $[\overline{B^-uB/B}]_T|_w$ 对任意 $u, w \in W$ 的组合公式。从其显式形式（此处略去），我们看到
+\begin{equation}
+[\overline{B^-uB/B}]_T|_w \in \mathbb{N}[\alpha]_{\alpha \in I(w)} \tag{2}
+\end{equation}
 
-具体而言，对于给定的排列 $u, v, w$，Billey 公式给出：
+我们用 \cref{def:Corollary24}（如果存在）给出这一正性的几何解释。
+
+回忆点 $w_0B/B = B^-w_0B/B$ 在 $B^-$ 下不变。故 torus 不动点 $ww_0B/B$ 在 $wB^-w^{-1}$ 下不变。这意味着 $ww_0B/B$ 在 $B^-(w)$ 下不变。由 \cref{def:Corollary24}，我们有
+$$[ww_0B/B]_T \in \sum_{u \in W} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [\overline{B^-uB/B}]_T$$
+
+跟随 \cite[Section 3]{mihalcea2022} 和 \cite[Section 16.5]{anderson2023}，对于 Weyl 群元 $w \in W$，自同构 $gB \mapsto wgB/B$ 诱导左作用 $w^L : H_T^*(G/B) \to H_T^*(G/B)$。我们注意 $w^L$ 不是 $H_T^*(\mathfrak{pt})$-线性的除非 $w = \text{id}$，但关于由 $w$ 诱导的 $H_T^*(\mathfrak{pt})$ 的自同构是半线性的。对上式作用 $w_0^L$，得
+$$[w_0ww_0B/B]_T \in \sum_{u \in W} \mathbb{N}[-w_0\alpha]_{\alpha \in I(w)} \cdot [\overline{Bw_0uB/B}]_T$$
+
+由于 $I(w_0ww_0) = \{-w_0\alpha \mid \alpha \in I(w)\}$，用 $w$ 替换 $w_0ww_0$ 且用 $u$ 替换 $w_0u$，可重写为
+\begin{equation}
+[wB/B]_T \in \sum_{u \in W} \mathbb{N}[\alpha]_{\alpha \in I(w)} \cdot [\overline{BuB/B}]_T \tag{3}
+\end{equation}
+
+现在取 $[\overline{B^-uB/B}]_T$ 与两边做 Poincaré 对偶。左边是 $[\overline{B^-uB/B}]_T|_w$，右边是 (3) 中 $[\overline{BuB/B}]_T$ 的系数。这就给出 (2)。
+
+Billey 公式是计算等变量 Schubert 系数的重要工具。 具体而言，对于给定的排列 $u, v, w$，Billey 公式给出：
 $$c^w_{u,v}(y) = \sum_{b \in B(u,v,w)} \prod_{i=1}^{\ell(w)} y_i^{m_i(b)}$$
-其中 $B(u,v,w)$ 是某个特定的胞腔集合，$m_i(b)$ 是非负整数. 本文给出了这一几何解释的新证明.
+其中 $B(u,v,w)$ 是某个特定的胞腔集合，$m_i(b)$ 是非负整数。本文给出了这一几何解释的新证明。
 
 \subsection{\cref{def:Theorem12} 的证明：应用到 Triple Schubert Calculus}
 \label{sec:TripleSchubertProof}
