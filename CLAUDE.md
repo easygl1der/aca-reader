@@ -84,6 +84,29 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ---
 
+## ⚠️ Git 大文件处理禁止规则
+
+**禁止使用 git 处理大文件（>50MB）**，包括但不限于：
+
+- ❌ `git filter-repo` 重写历史
+- ❌ `git lfs track` / `git lfs install`
+- ❌ `git add` 大文件后配合 commit
+
+**原因（2026-03-19 血泪教训）**：
+
+1. `git filter-repo --path A --path B` 是**白名单模式**，会删除 A、B 之外所有文件的 git 历史
+2. `git lfs` 在 `git add` 后会**删除本地大文件**，只保留 134 bytes 的指针
+3. 超过 100MB 的文件**无法 push 到 GitHub**（会被 pre-receive hook 拒绝）
+4. push 失败后，如果执行了 `git add` + `git commit`，本地大文件已被 lfs 删除，无法恢复
+
+**正确做法**：
+- 超大 PDF（>50MB）**不要提交到 git**
+- 单独备份到 Google Drive 或其他外部存储
+- 或使用 GitHub LFS（需付费，免费额度仅 1GB）
+- 如果必须处理，**先问用户**，获得明确同意后再操作
+
+---
+
 ## 记笔记习惯（历史参考）
 
 **详细说明**: 见 `docs/note-taking-habits.md`
@@ -136,6 +159,7 @@ This file provides guidance to Claude Code when working with this literature stu
 - **2026-03-15**: R 中文乱码 → 用英文标签
 - **2026-03-15**: LaTeX 图片位置 → 使用 [H] 强制固定（需 float 宏包）
 - **2026-03-16**: 1998年前论文无 arXiv → 用 DOI
+- **2026-03-19**: ⚠️ git filter-repo/lfs 处理大文件导致 Stein 系列 PDF 永久丢失！详见下方警告
 
 ---
 
@@ -169,9 +193,18 @@ python figure_extractor.py <图片路径> -o <输出目录>
 
 ## 文献库
 
-| 主题 | 路径 |
-|------|------|
-| 因果推断 | `PDFs/causal-inference/transcript/A First Course in Causal Inference - Peng Ding/` |
-| 微分几何 | `PDFs/differential-geometry/Do Carmo - Differential Geometry of Curves and Surfaces.md` |
-| 贝叶斯 | `PDFs/bayesian/` |
-| 信息几何 | `PDFs/information-geometry/` (24个文件) |
+| 主题 | 路径 | 备注 |
+|------|------|------|
+| 因果推断 | `PDFs/causal-inference/transcript/A First Course in Causal Inference - Peng Ding/` | |
+| 微分几何 | `PDFs/differential-geometry/Do Carmo - Differential Geometry of Curves and Surfaces.md` | |
+| 贝叶斯 | `PDFs/bayesian/` | |
+| 信息几何 | `PDFs/information-geometry/` | 24个文件 |
+| Stein 系列 | `PDFs/Stein系列/` | ⚠️ 2026-03-19 丢失，需从 minerU 重新生成 |
+
+### Stein 系列恢复指南
+
+Stein 系列教材（Real Analysis I/II/III, Complex Analysis, Fourier Analysis）的 PDF 因超过 100MB 从未被提交到 GitHub，且在 2026-03-19 的 git-lfs 事故中被删除。**必须从 minerU 重新生成转录本**：
+
+1. 在 Google Colab 中重新运行 minerU
+2. 输出到 `PDFs/Stein系列/transcript/`
+3. 生成的 PDF 备份到 Google Drive（不要 push 到 GitHub）
