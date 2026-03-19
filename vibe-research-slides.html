@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Research - AI 驱动的学术研究工作流</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-slide: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-muted: #7a7a7a;
+            --accent: #2c5282;
+            --accent-light: #3182ce;
+            --border: #e2e8f0;
+            --shadow: rgba(0,0,0,0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', 'Noto Serif SC', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .slides-container {
+            height: 100vh;
+            height: 100dvh;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: clamp(1.5rem, 4vw, 4rem);
+            background: var(--bg-slide);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-title {
+            background: var(--accent);
+            color: white;
+        }
+
+        .slide-title h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+        }
+
+        .slide-title .subtitle {
+            font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+            font-weight: 300;
+            opacity: 0.9;
+            letter-spacing: 0.05em;
+        }
+
+        .slide-title .author {
+            margin-top: 2rem;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            opacity: 0.8;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: clamp(1rem, 2vw, 1.5rem);
+            right: clamp(1.5rem, 3vw, 2.5rem);
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .slide-title .slide-number {
+            color: rgba(255,255,255,0.6);
+        }
+
+        h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: clamp(1rem, 2vw, 1.5rem);
+            padding-bottom: clamp(0.5rem, 1vw, 0.75rem);
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .content {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+            line-height: 1.7;
+            margin-bottom: clamp(0.6rem, 1vw, 0.9rem);
+            padding-left: 1.5em;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8em;
+        }
+
+        li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+            margin-top: clamp(0.5rem, 1vw, 1rem);
+        }
+
+        .column h3 {
+            font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: clamp(0.5rem, 0.8vw, 0.75rem);
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .highlight-box {
+            background: #f8fafc;
+            border-left: 3px solid var(--accent);
+            padding: clamp(0.8rem, 1.2vw, 1rem);
+            margin: clamp(0.8rem, 1.2vw, 1rem) 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .highlight-box p {
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: clamp(0.8rem, 1.2vw, 1rem);
+            border-radius: 6px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            overflow-x: auto;
+            margin: clamp(0.5rem, 1vw, 0.8rem) 0;
+        }
+
+        .keyword { color: #93c5fd; }
+        .string { color: #86efac; }
+        .comment { color: #64748b; }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(1rem, 2vw, 1.5rem);
+            margin-top: clamp(1rem, 1.5vw, 1.5rem);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: clamp(1rem, 1.5vw, 1.2rem);
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .stat-label {
+            font-size: clamp(0.7rem, 0.9vw, 0.85rem);
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .workflow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.5rem, 1vw, 0.8rem);
+            margin: clamp(1rem, 1.5vw, 1.5rem) 0;
+            flex-wrap: wrap;
+        }
+
+        .workflow-step {
+            background: var(--accent);
+            color: white;
+            padding: clamp(0.5rem, 0.8vw, 0.7rem) clamp(0.8rem, 1.2vw, 1rem);
+            border-radius: 4px;
+            font-size: clamp(0.75rem, 1vw, 0.9rem);
+            font-weight: 500;
+        }
+
+        .workflow-arrow {
+            color: var(--text-muted);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: var(--accent-light);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+            .workflow-diagram {
+                flex-direction: column;
+            }
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progress"></div>
+    <div class="nav-dots" id="navDots"></div>
+
+    <div class="slides-container" id="slides">
+
+        <!-- Slide 1: Title -->
+        <div class="slide slide-title active" data-slide="1">
+            <h1>Vibe Research</h1>
+            <p class="subtitle">AI 驱动的学术研究工作流</p>
+            <p class="subtitle" style="margin-top: 0.5rem; font-size: clamp(0.8rem, 1.2vw, 1rem); opacity: 0.8;">用自动化工具加快学习速度，做好学习记录</p>
+            <p class="author">自动化 AI 研究助手工作流</p>
+            <span class="slide-number">1 / 15</span>
+        </div>
+
+        <!-- Slide 2: 什么是 Vibe Research -->
+        <div class="slide" data-slide="2">
+            <div class="content">
+                <h2>什么是 Vibe Research？</h2>
+                <ul>
+                    <li><strong>Vibe Research</strong> = 氛围研究 → 借助 AI 工具营造高效学术研究氛围</li>
+                    <li>核心理念：<strong>让 AI 处理繁琐工作，专注核心思考</strong></li>
+                    <li>三大目标：
+                        <ul>
+                            <li>📚 <strong>加快文献阅读</strong> — 自动化提取、总结论文要点</li>
+                            <li>📝 <strong>做好学习记录</strong> — 结构化笔记、跨会话记忆</li>
+                            <li>🔄 <strong>工作流自动化</strong> — 从 PDF 到 LaTeX 一键生成</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <span class="slide-number">2 / 15</span>
+        </div>
+
+        <!-- Slide 3: 传统 vs AI 辅助 -->
+        <div class="slide" data-slide="3">
+            <div class="content">
+                <h2>传统研究 vs AI 辅助研究</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>传统方式</h3>
+                        <ul>
+                            <li>手动复制 PDF 内容</li>
+                            <li>逐页阅读，效率低下</li>
+                            <li>笔记分散在不同工具</li>
+                            <li>难以追踪阅读进度</li>
+                            <li>引用格式需要手动维护</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>AI 辅助方式</h3>
+                        <ul>
+                            <li>自动 OCR + 结构化提取</li>
+                            <li>AI 总结 + 关键问题生成</li>
+                            <li>统一 LaTeX 格式笔记</li>
+                            <li>进度自动记录 + 可视化</li>
+                            <li>BibTeX 自动生成</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <span class="slide-number">3 / 15</span>
+        </div>
+
+        <!-- Slide 4: 核心工具链 -->
+        <div class="slide" data-slide="4">
+            <div class="content">
+                <h2>核心工具链</h2>
+                <ul>
+                    <li><strong>Claude Code</strong> — AI 编程助手，理解项目上下文</li>
+                    <li><strong>Skill 系统</strong> — 自动化任务封装（20+ 技能）</li>
+                    <li><strong>minerU</strong> — PDF 转录为 Markdown</li>
+                    <li><strong>LaTeX</strong> — 标准化学术笔记格式</li>
+                    <li><strong>Obsidian</strong> — 本地知识管理（可选）</li>
+                </ul>
+                <div class="highlight-box">
+                    <p>💡 <strong>关键洞察</strong>：不是用 AI 替代思考，而是用 AI 处理 <strong>重复性工作</strong>——格式整理、文献查找、进度追踪。</p>
+                </div>
+            </div>
+            <span class="slide-number">4 / 15</span>
+        </div>
+
+        <!-- Slide 5: Claude Code 基础 -->
+        <div class="slide" data-slide="5">
+            <div class="content">
+                <h2>Claude Code 基础</h2>
+                <ul>
+                    <li><strong>项目认知</strong> — 读取 CLAUDE.md 理解项目规范</li>
+                    <li><strong>长期记忆</strong> — MEMORY.md 跨会话记住偏好</li>
+                    <li><strong>Skill 调用</strong> — 用 <code>/skill-name</code> 触发专用能力</li>
+                    <li><strong>代码执行</strong> — 读取、编辑、创建文件</li>
+                </ul>
+                <div class="code-block">
+<span class="comment"># 常用命令</span>
+<span class="keyword">/reading-workflow</span>  <span class="comment"># 启动文献阅读</span>
+<span class="keyword">/latex-notes</span>      <span class="comment"># 生成 LaTeX 笔记</span>
+<span class="keyword">/pdf-reader</span>     <span class="comment"># 解析 PDF 文献</span>
+                </div>
+            </div>
+            <span class="slide-number">5 / 15</span>
+        </div>
+
+        <!-- Slide 6: Skill 系统 -->
+        <div class="slide" data-slide="6">
+            <div class="content">
+                <h2>Skill 系统介绍</h2>
+                <ul>
+                    <li><strong>Skill</strong> = 封装好的自动化工作流</li>
+                    <li>项目自带的 20+ Skills 覆盖：
+                        <ul>
+                            <li>📄 <strong>PDF 处理</strong>：minerU、figure-extractor、pdf-merger</li>
+                            <li>📝 <strong>笔记生成</strong>：latex-notes、obsidian-markdown</li>
+                            <li>🎨 <strong>演示制作</strong>：frontend-slides、pptx</li>
+                            <li>🔍 <strong>学术搜索</strong>：gs-search、paper-references</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="highlight-box">
+                    <p>📌 <strong>使用方式</strong>：告诉 Claude 你想做什么，AI 自动选择合适的 Skill。</p>
+                </div>
+            </div>
+            <span class="slide-number">6 / 15</span>
+        </div>
+
+        <!-- Slide 7: 文献阅读工作流 -->
+        <div class="slide" data-slide="7">
+            <div class="content">
+                <h2>文献阅读工作流</h2>
+                <div class="workflow-diagram">
+                    <span class="workflow-step">加载 PDF</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">解析结构</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">逐章阅读</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">实时问答</span>
+                    <span class="workflow-arrow">→</span>
+                    <span class="workflow-step">生成笔记</span>
+                </div>
+                <ul>
+                    <li><strong>扫描阶段</strong>：快速了解内容概览、章节结构</li>
+                    <li><strong>逐章阅读</strong>：深入理解，区分核心/细节</li>
+                    <li><strong>交互问答</strong>：口语化回答 + 自动记录到笔记</li>
+                    <li><strong>Stein 风格</strong>：动机驱动、历史脉络、有机关联</li>
+                </ul>
+            </div>
+            <span class="slide-number">7 / 15</span>
+        </div>
+
+        <!-- Slide 8: PDF 自动处理 -->
+        <div class="slide" data-slide="8">
+            <div class="content">
+                <h2>PDF 自动处理</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>minerU 转录</h3>
+                        <ul>
+                            <li>Google Colab 运行</li>
+                            <li>输出 Markdown + images</li>
+                            <li>保留章节结构</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Figure 提取</h3>
+                        <ul>
+                            <li>Gemini Vision API 识别</li>
+                            <li>自动裁剪图表</li>
+                            <li>400 DPI 高清输出</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment"># Figure 提取命令</span>
+python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <span class="string">&lt;输出目录&gt;</span>
+                </div>
+            </div>
+            <span class="slide-number">8 / 15</span>
+        </div>
+
+        <!-- Slide 9: 笔记自动生成 -->
+        <div class="slide" data-slide="9">
+            <div class="content">
+                <h2>LaTeX 笔记自动生成</h2>
+                <ul>
+                    <li><strong>格式规范</strong>：纯 LaTeX，禁止 Markdown</li>
+                    <li><strong>标签系统</strong>：\label{def:名称} + \cref{引用}</li>
+                    <li><strong>问答记录</strong>：\userannotation 自动追加</li>
+                    <li><strong>跨文件引用</strong>：章节间交叉引用</li>
+                </ul>
+                <div class="highlight-box">
+                    <p>📝 <strong>Stein 风格写作</strong>：每个概念引入前，先解释"为什么"；强调动机、历史脉络、有机联系。</p>
+                </div>
+            </div>
+            <span class="slide-number">9 / 15</span>
+        </div>
+
+        <!-- Slide 10: 问答机制 -->
+        <div class="slide" data-slide="10">
+            <div class="content">
+                <h2>交互式问答机制</h2>
+                <ul>
+                    <li><strong>实时问答</strong>：阅读中随时提问，AI 定位回答</li>
+                    <li><strong>口语化回答</strong>：让初学者能看懂</li>
+                    <li><strong>自动记录</strong>：
+                        <ol>
+                            <li>回答用户问题</li>
+                            <li>添加 \userannotation 到 LaTeX</li>
+                            <li>记录到 progress.json</li>
+                            <li>重新编译 PDF</li>
+                        </ol>
+                    </li>
+                    <li><strong>跨会话记忆</strong>：MEMORY.md 记住偏好和问题</li>
+                </ul>
+            </div>
+            <span class="slide-number">10 / 15</span>
+        </div>
+
+        <!-- Slide 11: 进度管理 -->
+        <div class="slide" data-slide="11">
+            <div class="content">
+                <h2>学习进度管理</h2>
+                <ul>
+                    <li><strong>progress.json</strong>：记录当前阅读位置、历史提问</li>
+                    <li><strong>章节状态追踪</strong>：✅ 已完成 / ⭕ 未读</li>
+                    <li><strong>可视化展示</strong>：进度仪表盘（Markdown + JSON）</li>
+                </ul>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">4</div>
+                        <div class="stat-label">因果推断章</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">2</div>
+                        <div class="stat-label">微分几何章</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">持续学习</div>
+                    </div>
+                </div>
+            </div>
+            <span class="slide-number">11 / 15</span>
+        </div>
+
+        <!-- Slide 12: 案例 - 因果推断 -->
+        <div class="slide" data-slide="12">
+            <div class="content">
+                <h2>案例：因果推断笔记</h2>
+                <ul>
+                    <li><strong>书籍</strong>：A First Course in Causal Inference (Peng Ding)</li>
+                    <li><strong>进度</strong>：1-4 章已完成 ✅</li>
+                    <li><strong>工作流</strong>：
+                        <ol>
+                            <li>用 minerU 转录 PDF → Markdown</li>
+                            <li>Claude Code 逐章阅读 + 问答</li>
+                            <li>自动生成 LaTeX 讲义</li>
+                            <li>编译 PDF → 输出到 notes/</li>
+                        </ol>
+                    </li>
+                </ul>
+                <div class="highlight-box">
+                    <p>📁 <strong>笔记位置</strong>：<code>notes/A-First-Course-in-Causal-Inference/</code></p>
+                </div>
+            </div>
+            <span class="slide-number">12 / 15</span>
+        </div>
+
+        <!-- Slide 13: 案例 - 微分几何 -->
+        <div class="slide" data-slide="13">
+            <div class="content">
+                <h2>案例：微分几何笔记</h2>
+                <ul>
+                    <li><strong>书籍</strong>：Do Carmo - Differential Geometry</li>
+                    <li><strong>进度</strong>：Chapter 1-2 已完成 ✅</li>
+                    <li><strong>特色</strong>：
+                        <ul>
+                            <li>Figure 400 DPI 提取</li>
+                            <li>Stein 风格 motivation 写作</li>
+                            <li>习题格式标准化</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="highlight-box">
+                    <p>📁 <strong>笔记位置</strong>：<code>notes/differential-geometry/do-carmo-curves-surfaces/</code></p>
+                </div>
+            </div>
+            <span class="slide-number">13 / 15</span>
+        </div>
+
+        <!-- Slide 14: 效果总结 -->
+        <div class="slide" data-slide="14">
+            <div class="content">
+                <h2>效果总结</h2>
+                <ul>
+                    <li><strong>时间节省</strong>：PDF 解析、格式整理自动化</li>
+                    <li><strong>知识沉淀</strong>：结构化 LaTeX 笔记，可版本控制</li>
+                    <li><strong>学习追踪</strong>：进度可视化，问题可回顾</li>
+                    <li><strong>风格统一</strong>：Stein 风格，动机驱动的写作</li>
+                </ul>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">6+</div>
+                        <div class="stat-label">主题并行</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">页笔记</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">可扩展</div>
+                    </div>
+                </div>
+            </div>
+            <span class="slide-number">14 / 15</span>
+        </div>
+
+        <!-- Slide 15: 总结 -->
+        <div class="slide" data-slide="15">
+            <div class="content">
+                <h2>总结与展望</h2>
+                <ul>
+                    <li><strong>Vibe Research</strong> = AI 辅助 + 自动化工作流 + 结构化记录</li>
+                    <li><strong>核心理念</strong>：让 AI 处理繁琐，人类专注思考</li>
+                    <li><strong>下一步</strong>：
+                        <ul>
+                            <li>扩展更多主题（贝叶斯、信息几何）</li>
+                            <li>优化 Skill 封装</li>
+                            <li>探索多模态输入（视频、音频）</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="highlight-box">
+                    <p>🎯 <strong>最终目标</strong>：构建个人知识管理系统，让学习可积累、可追溯、可持续。</p>
+                </div>
+            </div>
+            <span class="slide-number">15 / 15</span>
+        </div>
+
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const navDots = document.getElementById('navDots');
+        const progress = document.getElementById('progress');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create nav dots
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(index));
+            navDots.appendChild(dot);
+        });
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+
+            document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            progress.style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+        }
+
+        function goToSlide(index) {
+            currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
+            updateSlide();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides - 1);
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+        });
+
+        // Click navigation (left/right half)
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.nav-dot')) return;
+            const x = e.clientX;
+            const width = window.innerWidth;
+            if (x < width * 0.3) prevSlide();
+            else if (x > width * 0.7) nextSlide();
+        });
+    </script>
+</body>
+</html>
