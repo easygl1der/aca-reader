@@ -139,7 +139,8 @@ git worktree prune
 - **2026-03-15**: LaTeX 图片位置 → 使用 [H] 强制固定（需 float 宏包）
 - **2026-03-16**: 1998年前论文无 arXiv → 用 DOI
 - **2026-03-18**: LaTeX 笔记中避免口语化表达（如"这里错了"、"让我重新计算"），直接给出正确推导即可
-- **2026-03-19**: 遇到文献中省略证明的定理，如果找不到证明或没有可行思路，必须使用 /gemini-browser-chat 询问 Gemini Pro/Thinking
+- **2026-03-19**: 遇到文献中省略证明的定理，如果找不到证明或没有可行思路，必须使用 /gemini-browser-chat 询问 Gemini（必须使用 Pro 模式）
+- **2026-03-19**: Gemini browser chat 必须使用 Pro 模式
 
 ---
 
@@ -148,8 +149,9 @@ git worktree prune
 **禁止使用 git 处理大文件（>50MB）**，包括但不限于：
 
 - ❌ `git filter-repo` 重写历史
-- ❌ `git lfs track` / `git lfs install`
+- ❌ `git lfs track` / `git lfs install` / 任何 git lfs 命令
 - ❌ `git add` 大文件后配合 commit
+- ⚠️ **绝对禁止使用 git-lfs**
 
 **原因（2026-03-19 血泪教训）**：
 

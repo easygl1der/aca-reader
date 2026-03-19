@@ -122,45 +122,76 @@ $S_3$ 中其他置换的双重 Schubert 多项式：
 
 \subsection{等变量子上同调}
 
+我们在\cref{def:DoubleSchubertPolynomial}中已经看到双重 Schubert 多项式对应于旗流形上的等变量子上同调类. 本节我们将详细介绍这一核心概念.
+
+如果说普通的上同调是研究空间的"形状", 那么等变上同调就是在研究"带有对称性的形状". 它将几何问题转化为代数问题, 是现代 Schubert calculus 的基础.
+
+\begin{Definition}[Torus]
+\label{def:Torus}
+Torus (环面) 通常指 $\mathbb{C}^\times$ 的有限乘积或其紧形式 $S^1$ 的有限乘积:
+$$T = (\mathbb{C}^\times)^n \quad \text{或} \quad T = (S^1)^n$$
+
+直观上, 我们可以把它想象成一堆"圆圈"的乘积. 例如, 地球绕地轴自转, 就是一个 $S^1$ (1 维 Torus) 作用在球面上.
+\end{Definition}
+
 \begin{Definition}[分类空间 $ET$]
 \label{def:ET}
-设 $T \cong (\mathbb{C}^\times)^n$ 为一个 $n$ 维 torus。$T$ 的分类空间（classifying space）$ET$ 是一个拓扑空间，满足：
-\begin{itemize}
-\item $ET$ 是 $T$-主丛的万有分类空间
-\item $ET$ 是可缩的（contractible），即 $\widetilde{H}^*(ET) = 0$（对于任何维数的约化上同调）
-\item $T$ 在 $ET$ 上的作用是自由的
-\end{itemize}
-直观上，$ET$ 可以理解为所有高维球面的极限：
-$$ET = \lim_{m \to \infty} S^{2m+1}$$
-其中 $S^{2m+1}$ 是 $2m+1$ 维球面，$T = S^1$ 通过对角作用在坐标上。
+设 $T \cong (\mathbb{C}^\times)^n$ 为一个 $n$ 维 torus. $T$ 的分类空间 (classifying space) $ET$ 是一个拓扑空间, 满足以下两个核心属性:
+\begin{enumerate}
+\item \textbf{可缩性 (Contractible)}: $ET$ 在拓扑上就像一个点, 没有任何"洞". 用数学语言说: $\widetilde{H}^*(ET) = 0$ (所有高维约化上同调为零).
+\item \textbf{自由作用 (Free Action)}: 群 $T$ 作用在 $ET$ 上没有任何不动点.
+\end{enumerate}
 
-更具体地，对于 $T = (\mathbb{C}^\times)^n$，有：
+为什么要引入 $ET$? 当我们想求一个空间 $X$ 在群 $T$ 作用下的商空间 $X/T$ 的上同调时, 如果作用不自由 (即某些点在旋转下不动), 商空间会变得非常"丑陋" (充满奇异点), 导致传统的上同调理论失效.
+
+ Borel 的天才想法是: 既然 $X$ 上的作用不自由, 那就把 $X$ 和一个"绝对自由"的空间 $ET$ 乘起来! 因为 $ET$ 是可缩的, $X \times ET$ 在拓扑性质上和 $X$ 是一样的; 但因为 $T$ 在 $ET$ 上作用自由, 所以 $T$ 在 $X \times ET$ 上的对角作用也一定是自由的.
+
+直观上, $ET$ 可以理解为所有高维球面的极限:
+$$ET = \lim_{m \to \infty} S^{2m+1}$$
+其中 $S^{2m+1}$ 是 $2m+1$ 维球面.
+
+更具体地, 对于 $T = (\mathbb{C}^\times)^n$, 有:
 $$ET = (S^\infty)^n = \lim_{m \to \infty} (S^{2m+1})^n$$
-其中 $S^\infty$ 是无穷维球面。
+其中 $S^\infty$ 是无穷维球面.
 \end{Definition}
 
 \begin{Definition}[等变量子上同调]
 \label{def:EquivariantCohomology}
-设 $T \cong (\mathbb{C}^\times)^n$ 为一个 torus. 空间 $X$ 上的 $T$-等变量子上同调定义为：
+设 $T \cong (\mathbb{C}^\times)^n$ 为一个 torus, $X$ 是一个带有 $T$ 作用的拓扑空间. 空间 $X$ 上的 $T$-等变量子上同调定义为:
 \begin{equation}
 H_T^*(X) = H^*(X \times_T ET)
 \end{equation}
-其中 $ET$ 是 $T$ 的分类空间（见\cref{def:ET}），$X \times_T ET$ 是 $T$ 作用下的商空间。
+其中 $ET$ 是 $T$ 的分类空间 (见\cref{def:ET}), $X \times_T ET$ 是 $T$ 作用下的商空间, 称为 \textbf{Borel 构造} 或 \textbf{同伦商} (homotopy quotient).
 
-对于旗流形 $Fl_n(\mathbb{C})$，其 $T$-等变量子上同调环 $H_T^*(Fl_n(\mathbb{C}))$ 具有由 Schubert 类生成的自由 $\mathbb{Z}[y_1, \ldots, y_n]$-模结构.
+等变上同调 $H_T^*(X)$ 不仅仅是 一个环, 还是一个模 (module). 所有的等变上同调类可以看作是以多项式为系数的代数对象.
 \end{Definition}
 
 \begin{Example}[等变量子上同调的例子]
 \label{ex:EquivariantCohomology}
 \begin{itemize}
-\item 点空间 $\mathfrak{pt}$：$H_T^*(\mathfrak{pt}) = H^*(BT) = \mathbb{Z}[y_1, \ldots, y_n]$，其中 $y_i$ 对应 $T = (\mathbb{C}^\times)^n$ 的每个生成元的上同调类。
-\item 对于 $T = S^1$，$BT = \mathbb{C}P^\infty$，$H_{S^1}^*(\mathfrak{pt}) = \mathbb{Z}[y]$，其中 $y$ 是 $\mathbb{C}P^\infty$ 的第一 Chern 类。
-\item 对于 $T^2 = S^1 \times S^1$，$BT^2 = \mathbb{C}P^\infty \times \mathbb{C}P^\infty$，$H_{T^2}^*(\mathfrak{pt}) = \mathbb{Z}[y_1, y_2]$。
-\item 对于旗流形 $Fl_n(\mathbb{C})$，$H_T^*(Fl_n(\mathbb{C}))$ 作为 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[y_1, \ldots, y_n]$-模是自由的，基由 Schubert 类 $\{[\mathcal{X}(w)]_T \mid w \in S_n\}$ 给出。
+\item \textbf{点空间} $\mathfrak{pt}$:
+$$H_T^*(\mathfrak{pt}) = H^*(BT) = \mathbb{Z}[y_1, \ldots, y_n]$$
+其中 $y_i$ 对应 $T = (\mathbb{C}^\times)^n$ 的每个生成元的上同调类.
+
+特别地, 对于 $T = S^1$, $BT = \mathbb{C}P^\infty$ (无穷维复射影空间), 有:
+$$H_{S^1}^*(\mathfrak{pt}) = \mathbb{Z}[y]$$
+其中 $y$ 是 $\mathbb{C}P^\infty$ 的第一 Chern 类.
+
+对于 $T^2 = S^1 \times S^1$, $BT^2 = \mathbb{C}P^\infty \times \mathbb{C}P^\infty$, 有:
+$$H_{T^2}^*(\mathfrak{pt}) = \mathbb{Z}[y_1, y_2]$$
+
+\item \textbf{旗流形} $Fl_n(\mathbb{C})$: $H_T^*(Fl_n(\mathbb{C}))$ 作为 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[y_1, \ldots, y_n]$-模是自由的, 基底由 Schubert 类 $\{[\mathcal{X}(w)]_T \mid w \in S_n\}$ 给出. 这意味着我们可以通过代数手段 (处理多项式) 来精确计算旗流形上的几何交点问题.
 \end{itemize}
 \end{Example}
 
-等变量子上同调将传统的上同调与 torus 的作用相结合，产生了丰富的代数结构。在 Schubert calculus 中，$T$-等变量上同调类可以表示为双重 Schubert 多项式。
+\begin{Definition}[Schubert 类]
+\label{def:SchubertClass}
+旗流形 $Fl_n(\mathbb{C})$ 可以被分解为许多小的几何单元, 称为 \textbf{Schubert 胞腔} (Schubert cell). 每个胞腔的闭包称为 \textbf{Schubert 品种} (Schubert variety).
+
+Schubert 类就是这些品种在同调论中所对应的基础类. 它们就像是旗流形上同调的"原子"或"标准基底". 在等变上同调中, 每个 Schubert 类都对应一个双重 Schubert 多项式.
+\end{Definition}
+
+等变量子上同调将传统的上同调与 torus 的作用相结合, 产生了丰富的代数结构. 它使得我们可以把复杂的几何交点计算问题转化为多项式环上的线性代数问题.
 
 \subsection{Grassmannian 与 Grassmannian 排列}
 
