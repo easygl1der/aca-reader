@@ -199,7 +199,11 @@
             font-family: 'SF Mono', 'Fira Code', monospace;
             font-size: clamp(0.7rem, 1vw, 0.9rem);
             overflow-x: auto;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
             margin: clamp(0.5rem, 1vw, 0.8rem) 0;
+            max-height: 40vh;
         }
 
         .keyword { color: #93c5fd; }
@@ -257,19 +261,26 @@
         }
 
         .file-tree {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: clamp(0.8rem, 1.2vw, 1rem);
+            background: #1e293b;
+            border-radius: 8px;
+            padding: clamp(1rem, 1.5vw, 1.2rem);
             font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: clamp(0.65rem, 0.9vw, 0.85rem);
-            line-height: 1.6;
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            line-height: 1.8;
             overflow-x: auto;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #e2e8f0;
+            max-height: 35vh;
         }
 
-        .file-tree .folder { color: #b45309; font-weight: 600; }
-        .file-tree .file { color: var(--accent); }
-        .file-tree .indent { padding-left: 1.5em; }
+        .file-tree .folder { color: #fbbf24; font-weight: 600; }
+        .file-tree .file { color: #38bdf8; }
+        .file-tree .comment { color: #64748b; font-style: italic; }
+        .file-tree .arrow { color: #94a3b8; margin: 0 0.3em; }
+        .file-tree .pipe { color: #475569; }
+        .file-tree .level { padding-left: 1.2em; }
 
         .skill-card {
             background: #f8fafc;
@@ -457,12 +468,10 @@
                     <li><strong>Skill 调用</strong> — 用 <code>/skill-name</code> 触发专用能力</li>
                     <li><strong>代码执行</strong> — 读取、编辑、创建文件</li>
                 </ul>
-                <div class="code-block">
-<span class="comment"># 常用命令</span>
-<span class="keyword">/reading-workflow</span>  <span class="comment"># 启动文献阅读</span>
-<span class="keyword">/latex-notes</span>      <span class="comment"># 生成 LaTeX 笔记</span>
-<span class="keyword">/pdf-reader</span>     <span class="comment"># 解析 PDF 文献</span>
-                </div>
+                <div class="code-block"><span class="comment"># 常用命令</span><br>
+<span class="keyword">/reading-workflow</span>  <span class="comment"># 启动文献阅读</span><br>
+<span class="keyword">/latex-notes</span>      <span class="comment"># 生成 LaTeX 笔记</span><br>
+<span class="keyword">/pdf-reader</span>     <span class="comment"># 解析 PDF 文献</span></div>
             </div>
             <span class="slide-number">5 / 25</span>
         </div>
@@ -536,10 +545,8 @@
                         </ul>
                     </div>
                 </div>
-                <div class="code-block">
-<span class="comment"># Figure 提取命令</span>
-python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <span class="string">&lt;输出目录&gt;</span>
-                </div>
+                <div class="code-block"><span class="comment"># Figure 提取命令</span><br>
+python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <span class="string">&lt;输出目录&gt;</span></div>
             </div>
             <span class="slide-number">8 / 25</span>
         </div>
@@ -636,23 +643,33 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
             <span class="slide-number">12 / 25</span>
         </div>
 
-        <!-- Slide 13: 详细目录结构 - docs -->
+        <!-- Slide 13: 详细目录结构 - docs + Stein 风格 -->
         <div class="slide" data-slide="13">
             <div class="content">
-                <h2>docs/ 目录结构</h2>
-                <div class="file-tree">
-<span class="folder">docs/</span>
-├── <span class="file">latex-style.md</span>         <span class="comment"># LaTeX 格式规范</span>
-├── <span class="file">label-reference.md</span>      <span class="comment"># 标签和引用规范</span>
-├── <span class="file">structure.md</span>           <span class="comment"># 目录结构规范</span>
-├── <span class="file">stein-writing-style.md</span>  <span class="comment"># Stein 写作风格指南</span>
-├── <span class="file">note-taking-habits.md</span>   <span class="comment"># 记笔记习惯总结</span>
-├── <span class="file">lessons/</span>                <span class="comment"># 经验教训记录</span>
-│   └── <span class="file">*.md</span>
-└── <span class="file">structure.md</span>
-                </div>
-                <div class="highlight-box">
-                    <p>📌 <strong>作用</strong>：docs/ 是项目的"宪法"，定义所有格式规范和写作风格。</p>
+                <h2>docs/ 目录结构 + Stein 写作风格</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>📁 docs/ 目录</h3>
+                        <div class="file-tree">docs/<br>
+├── <span class="file">latex-style.md</span>         <span class="comment"># LaTeX 规范</span><br>
+├── <span class="file">label-reference.md</span>      <span class="comment"># 引用规范</span><br>
+├── <span class="file">structure.md</span>           <span class="comment"># 目录结构</span><br>
+├── <span class="file">stein-writing-style.md</span>  <span class="comment"># 写作指南</span><br>
+└── <span class="folder">lessons/</span><br>
+    └── <span class="file">*.md</span>             <span class="comment"># 经验教训</span></div>
+                    </div>
+                    <div class="column">
+                        <h3>✍️ Stein 写作风格</h3>
+                        <ul>
+                            <li><strong>动机优先</strong>：先解释"为什么需要它"</li>
+                            <li><strong>历史脉络</strong>：注重概念起源和发展</li>
+                            <li><strong>有机联系</strong>：强调不同领域间的关联</li>
+                            <li><strong>循序渐进</strong>：从简单到复杂</li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p>📖 <strong>示例</strong>：引入新概念时，先从物理问题或已学内容自然推广</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <span class="slide-number">13 / 25</span>
@@ -662,81 +679,105 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
         <div class="slide" data-slide="14">
             <div class="content">
                 <h2>notes/ 目录结构</h2>
-                <div class="file-tree">
-<span class="folder">notes/</span>
-├── <span class="folder">Schubert-Polynomials/</span>        <span class="comment"># Schubert 多项式</span>
-│   └── chapters/
-├── <span class="folder">A-First-Course-in-Causal-Inference/</span>  <span class="comment"># 因果推断</span>
-├── <span class="folder">differential-geometry/</span>  <span class="comment"># 微分几何</span>
-│   └── do-carmo-curves-surfaces/
-├── <span class="folder">bayesian/</span>                 <span class="comment"># 贝叶斯统计</span>
-├── <span class="folder">information-geometry/</span>    <span class="comment"># 信息几何</span>
-└── <span class="folder">mathematical-statistics/</span>   <span class="comment"># 数理统计</span>
-                </div>
+                <div class="file-tree">notes/<br>
+├── <span class="folder">Schubert-Polynomials/</span><br>
+│   └── <span class="folder">chapters/</span><br>
+├── <span class="folder">A-First-Course-in-Causal-Inference/</span><br>
+│   ├── <span class="file">*.tex</span><br>
+│   ├── <span class="file">progress.json</span><br>
+│   └── <span class="folder">chapters/</span><br>
+├── <span class="folder">differential-geometry/</span><br>
+│   └── <span class="folder">do-carmo-curves-surfaces/</span><br>
+│       ├── <span class="file">*.tex</span><br>
+│       └── <span class="folder">figures/</span><br>
+├── <span class="folder">bayesian/</span><br>
+├── <span class="folder">information-geometry/</span><br>
+└── <span class="folder">mathematical-statistics/</span></div>
                 <ul>
-                    <li>每个主题一个文件夹，包含：<strong>主笔记文件</strong> + <strong>chapters/</strong></li>
-                    <li>每章一个 .tex 文件，用 <code>\input{}</code> 包含</li>
-                    <li>支持 progress.json 记录进度</li>
+                    <li>每个主题：<code>*.tex</code> 主文件 + <code>chapters/</code> 分章</li>
+                    <li><code>progress.json</code> 记录阅读进度和问答历史</li>
+                    <li><code>compile.sh</code> 编译脚本（xelatex 3次）</li>
+                    <li><code>figures/</code> 存放高清图表（400 DPI）</li>
                 </ul>
             </div>
             <span class="slide-number">14 / 25</span>
         </div>
 
-        <!-- Slide 15: 详细目录结构 - PDFs -->
+        <!-- Slide 15: 详细目录结构 - PDFs + 转录流程 -->
         <div class="slide" data-slide="15">
             <div class="content">
-                <h2>PDFs/ 目录结构</h2>
-                <div class="file-tree">
-<span class="folder">PDFs/</span>
-├── <span class="folder">causal-inference/</span>       <span class="comment"># 因果推断</span>
-│   └── transcript/              <span class="comment"># minerU 转录输出</span>
-├── <span class="folder">differential-geometry/</span>  <span class="comment"># 微分几何</span>
-├── <span class="folder">Stein系列/</span>              <span class="comment"># Stein 傅里叶/复分析</span>
-│   └── transcript/
-├── <span class="folder">bayesian/</span>               <span class="comment"># 贝叶斯统计</span>
-├── <span class="folder">information-geometry/</span>  <span class="comment"># 信息几何</span>
-└── <span class="folder">quantum-schubert/</span>        <span class="comment"># Quantum Schubert</span>
-                </div>
-                <div class="highlight-box">
-                    <p>📌 <strong>转录结构</strong>：每个主题的 PDF 转录后，输出到 <code>transcript/</code> 目录，包含 .md + images/</p>
+                <h2>PDFs/ 目录结构 + minerU 转录</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>📁 PDFs/ 目录</h3>
+                        <div class="file-tree">PDFs/<br>
+├── <span class="folder">causal-inference/</span><br>
+│   └── <span class="folder">transcript/</span><br>
+├── <span class="folder">differential-geometry/</span><br>
+├── <span class="folder">Stein系列/</span><br>
+│   └── <span class="folder">transcript/</span><br>
+├── <span class="folder">bayesian/</span><br>
+├── <span class="folder">information-geometry/</span><br>
+└── <span class="folder">quantum-schubert/</span></div>
+                    </div>
+                    <div class="column">
+                        <h3>🔄 minerU 转录流程</h3>
+                        <ul>
+                            <li><strong>输入</strong>：原始 PDF 文件</li>
+                            <li><strong>处理</strong>：Google Colab 运行 minerU</li>
+                            <li><strong>输出</strong>：
+                                <ul>
+                                    <li>📄 .md 文件（带完整目录结构）</li>
+                                    <li>🖼️ images/ 文件夹（所有提取图片）</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="highlight-box">
+                            <p>📌 <strong>注意</strong>：转录输出可直接用于 Claude Code 阅读</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <span class="slide-number">15 / 25</span>
         </div>
 
-        <!-- Slide 16: Skills 列表 - 文献阅读 -->
+        <!-- Slide 16: Skills 列表 - 文献阅读核心 -->
         <div class="slide" data-slide="16">
             <div class="content">
-                <h2>Skills 列表：文献阅读</h2>
-                <div class="three-column">
+                <h2>Skills 列表：文献阅读核心</h2>
+                <div class="two-column">
                     <div class="column">
                         <div class="skill-card">
                             <h4>📖 reading-workflow</h4>
-                            <p>主工作流，协调扫描→阅读→问答→笔记生成</p>
+                            <p><strong>主工作流</strong>：协调扫描→阅读→问答→笔记生成</p>
+                            <span class="tag tag-blue">核心</span>
                         </div>
                         <div class="skill-card">
                             <h4>📄 pdf-reader</h4>
                             <p>解析 PDF 文献，提取章节结构，理解内容框架</p>
+                            <span class="tag tag-blue">核心</span>
+                        </div>
+                        <div class="skill-card">
+                            <h4>❓ interactive-qa</h4>
+                            <p>交互式问答，理解当前阅读位置，实时回答并同步更新讲义</p>
+                            <span class="tag tag-blue">核心</span>
                         </div>
                     </div>
                     <div class="column">
                         <div class="skill-card">
                             <h4>📝 latex-notes</h4>
-                            <p>生成 LaTeX 讲义，含用户注解、Stein 风格 motivation</p>
+                            <p>生成 LaTeX 讲义，包含用户注解、Stein 风格的 motivation 写作</p>
+                            <span class="tag tag-green">输出</span>
                         </div>
-                        <div class="skill-card">
-                            <h4>❓ interactive-qa</h4>
-                            <p>交互式问答，实时回答并同步更新讲义</p>
-                        </div>
-                    </div>
-                    <div class="column">
                         <div class="skill-card">
                             <h4>📊 reading-progress</h4>
-                            <p>管理阅读进度，包括当前位置、历史提问、章节状态</p>
+                            <p>管理阅读进度，包括当前位置、历史提问、章节状态追踪</p>
+                            <span class="tag tag-green">管理</span>
                         </div>
                         <div class="skill-card">
                             <h4>🔍 gs-search</h4>
-                            <p>Google Scholar 学术搜索，返回标题、作者、引用数</p>
+                            <p>Google Scholar 学术搜索，返回标题、作者、期刊、年份、引用数</p>
+                            <span class="tag tag-red">搜索</span>
                         </div>
                     </div>
                 </div>
@@ -744,45 +785,45 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
             <span class="slide-number">16 / 25</span>
         </div>
 
-        <!-- Slide 17: Skills 列表 - PDF/文档 -->
+        <!-- Slide 17: Skills 列表 - PDF/文档处理 -->
         <div class="slide" data-slide="17">
             <div class="content">
                 <h2>Skills 列表：PDF / 文档处理</h2>
-                <div class="three-column">
+                <div class="two-column">
                     <div class="column">
+                        <h3>🖼️ Figure 提取</h3>
                         <div class="skill-card">
-                            <h4>🖼️ pdf-figure-extractor</h4>
-                            <p>从教材 PDF 提取数学插图，600 DPI 高清渲染，自动裁剪</p>
-                            <span class="tag tag-red">Figure 提取</span>
+                            <h4>pdf-figure-extractor</h4>
+                            <p>从教材 PDF 提取数学插图，支持：</p>
+                            <ul>
+                                <li>PDF 600 DPI 高清渲染</li>
+                                <li>PNG 400 DPI 输入</li>
+                                <li>Gemini Vision API 识别边界</li>
+                                <li>自动裁剪 + 断点续传</li>
+                            </ul>
                         </div>
                         <div class="skill-card">
-                            <h4>📑 pdf-reader</h4>
-                            <p>解析 PDF 文献，提取章节结构</p>
-                            <span class="tag tag-blue">PDF 解析</span>
+                            <h4>pdf-merger</h4>
+                            <p>合并多个 PDF 为一份（简历、材料整合）</p>
                         </div>
                     </div>
                     <div class="column">
+                        <h3>📚 参考文献</h3>
                         <div class="skill-card">
-                            <h4>📚 paper-references</h4>
-                            <p>自动提取参考文献，CrossRef API 获取 DOI，生成 BibTeX</p>
-                            <span class="tag tag-green">参考文献</span>
+                            <h4>paper-references-generator</h4>
+                            <p>自动提取论文 md 转录中的参考文献：</p>
+                            <ul>
+                                <li>CrossRef API 搜索 DOI</li>
+                                <li>生成 BibTeX 引用格式</li>
+                            </ul>
                         </div>
                         <div class="skill-card">
-                            <h4>📎 pdf-merger</h4>
-                            <p>合并多个 PDF 文件为一份</p>
-                            <span class="tag tag-purple">PDF 合并</span>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="skill-card">
-                            <h4>📝 obsidian-markdown</h4>
-                            <p>创建 Obsidian 风格的 Markdown（wikilinks、callouts）</p>
-                            <span class="tag tag-blue">Markdown</span>
+                            <h4>citation-bibliography-generator</h4>
+                            <p>格式化引用：APA / MLA / Chicago / IEEE / Harvard</p>
                         </div>
                         <div class="skill-card">
-                            <h4>📖 citation-bibliography</h4>
-                            <p>格式化引用（APA/MLA/Chicago/IEEE），DOI 查找</p>
-                            <span class="tag tag-green">引用格式</span>
+                            <h4>obsidian-markdown</h4>
+                            <p>Obsidian 风格 Markdown：wikilinks、callouts、properties</p>
                         </div>
                     </div>
                 </div>
@@ -790,45 +831,47 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
             <span class="slide-number">17 / 25</span>
         </div>
 
-        <!-- Slide 18: Skills 列表 - 演示/工具 -->
+        <!-- Slide 18: Skills 列表 - 演示/多媒体 -->
         <div class="slide" data-slide="18">
             <div class="content">
-                <h2>Skills 列表：演示 / 工具</h2>
-                <div class="three-column">
+                <h2>Skills 列表：演示 / 多媒体</h2>
+                <div class="two-column">
                     <div class="column">
+                        <h3>🎨 演示制作</h3>
                         <div class="skill-card">
-                            <h4>🎨 frontend-slides</h4>
-                            <p>创建零依赖 HTML 演示文稿，支持动画、响应式</p>
-                            <span class="tag tag-purple">演示</span>
+                            <h4>frontend-slides</h4>
+                            <p>创建零依赖 HTML 演示文稿：</p>
+                            <ul>
+                                <li>Beamer 学术风格</li>
+                                <li>响应式设计（100vh 严格适配）</li>
+                                <li>丰富动画效果</li>
+                                <li>键盘/触摸导航</li>
+                            </ul>
+                            <span class="tag tag-purple">推荐</span>
                         </div>
                         <div class="skill-card">
-                            <h4>📊 pptx</h4>
-                            <p>处理 .pptx 文件，创建、编辑、转换</p>
-                            <span class="tag tag-purple">演示</span>
+                            <h4>pptx</h4>
+                            <p>处理 .pptx 文件：创建、编辑、转换</p>
                         </div>
                     </div>
                     <div class="column">
+                        <h3>🖼️ 多媒体</h3>
                         <div class="skill-card">
-                            <h4>🖼️ ai-image-generation</h4>
-                            <p>AI 图片生成（FLUX、Gemini、Grok 等 50+ 模型）</p>
-                            <span class="tag tag-red">图片</span>
+                            <h4>ai-image-generation</h4>
+                            <p>AI 图片生成（50+ 模型）：</p>
+                            <ul>
+                                <li>FLUX Dev / FLUX.2</li>
+                                <li>Gemini 3 Pro Image</li>
+                                <li>Grok Imagine</li>
+                            </ul>
                         </div>
                         <div class="skill-card">
-                            <h4>🎬 video-summary</h4>
+                            <h4>video-summary</h4>
                             <p>视频字幕总结，生成结构化笔记</p>
-                            <span class="tag tag-blue">视频</span>
                         </div>
-                    </div>
-                    <div class="column">
                         <div class="skill-card">
-                            <h4>📺 youtube-transcript</h4>
+                            <h4>youtube-transcript</h4>
                             <p>下载 YouTube 视频字幕</p>
-                            <span class="tag tag-blue">视频</span>
-                        </div>
-                        <div class="skill-card">
-                            <h4>🌐 firecrawl</h4>
-                            <p>网页抓取，LLM 优化输出</p>
-                            <span class="tag tag-green">爬虫</span>
                         </div>
                     </div>
                 </div>
@@ -842,36 +885,38 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
                 <h2>Skills 列表：系统能力</h2>
                 <div class="two-column">
                     <div class="column">
+                        <h3>🧠 思维过程</h3>
                         <div class="skill-card">
-                            <h4>🧠 brainstorming</h4>
-                            <p>创意工作前必须使用，探索需求和设计</p>
+                            <h4>superpowers:brainstorming</h4>
+                            <p>创意工作前<strong>必须使用</strong>，探索需求和设计</p>
                         </div>
                         <div class="skill-card">
-                            <h4>🐛 systematic-debugging</h4>
-                            <p>遇到 bug 时使用，系统化调试方法</p>
+                            <h4>superpowers:writing-plans</h4>
+                            <p>多步骤任务前，编写实现计划</p>
                         </div>
                         <div class="skill-card">
-                            <h4>✍️ writing-skills</h4>
-                            <p>创建和编辑技能，验证技能是否正常工作</p>
+                            <h4>superpowers:requesting-code-review</h4>
+                            <p>完成实现后，请求代码审查验证</p>
                         </div>
                     </div>
                     <div class="column">
+                        <h3>🔧 开发执行</h3>
                         <div class="skill-card">
-                            <h4>📋 writing-plans</h4>
-                            <p>多步骤任务前使用，编写实现计划</p>
+                            <h4>superpowers:systematic-debugging</h4>
+                            <p>遇到 bug 时，系统化调试方法</p>
                         </div>
                         <div class="skill-card">
-                            <h4>🔧 subagent-driven-development</h4>
+                            <h4>superpowers:subagent-driven-development</h4>
                             <p>执行有独立任务的实现计划</p>
                         </div>
                         <div class="skill-card">
-                            <h4>✅ verification-before-completion</h4>
-                            <p>声明工作完成前验证（运行验证命令）</p>
+                            <h4>superpowers:verification-before-completion</h4>
+                            <p>声明工作完成前<strong>验证</strong>（运行验证命令）</p>
                         </div>
                     </div>
                 </div>
                 <div class="highlight-box">
-                    <p>💡 <strong>提示</strong>：系统能力 Skill 以 <code>superpowers:</code> 开头，文档类 Skill 以 <code>document-skills:</code> 开头。</p>
+                    <p>💡 <strong>提示</strong>：系统能力 Skill 以 <code>superpowers:</code> 开头，文档类 Skill 以 <code>document-skills:</code> 开头。使用 <code>/skill-name</code> 触发。</p>
                 </div>
             </div>
             <span class="slide-number">19 / 25</span>
@@ -881,27 +926,34 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
         <div class="slide" data-slide="20">
             <div class="content">
                 <h2>案例：因果推断笔记</h2>
-                <ul>
-                    <li><strong>书籍</strong>：A First Course in Causal Inference (Peng Ding)</li>
-                    <li><strong>进度</strong>：1-4 章已完成 ✅</li>
-                    <li><strong>工作流</strong>：
+                <div class="two-column">
+                    <div class="column">
+                        <h3>📚 书籍信息</h3>
+                        <ul>
+                            <li><strong>书籍</strong>：A First Course in Causal Inference</li>
+                            <li><strong>作者</strong>：Peng Ding</li>
+                            <li><strong>进度</strong>：1-4 章已完成 ✅</li>
+                        </ul>
+                        <h3>🔄 工作流</h3>
                         <ol>
-                            <li>用 minerU 转录 PDF → Markdown</li>
+                            <li>minerU 转录 PDF → Markdown</li>
                             <li>Claude Code 逐章阅读 + 问答</li>
                             <li>自动生成 LaTeX 讲义</li>
                             <li>编译 PDF → 输出到 notes/</li>
                         </ol>
-                    </li>
-                </ul>
-                <div class="file-tree" style="margin-top: 1rem;">
-<span class="folder">notes/A-First-Course-in-Causal-Inference/</span>
-├── <span class="file">A-First-Course-in-Causal-Inference.tex</span>
-├── <span class="file">progress.json</span>
-├── <span class="file">compile.sh</span>
-└── <span class="folder">chapters/</span>
-    ├── <span class="file">chapter1.tex</span>
-    ├── <span class="file">chapter2.tex</span>
-    └── ...
+                    </div>
+                    <div class="column">
+                        <h3>📁 文件结构</h3>
+                        <div class="file-tree">notes/A-First-Course-in-Causal-Inference/<br>
+├── <span class="file">A-First-Course-in-Causal-Inference.tex</span><br>
+├── <span class="file">progress.json</span><br>
+├── <span class="file">compile.sh</span><br>
+└── <span class="folder">chapters/</span><br>
+    ├── <span class="file">chapter1.tex</span><br>
+    ├── <span class="file">chapter2.tex</span><br>
+    ├── <span class="file">chapter3.tex</span><br>
+    └── <span class="file">chapter4.tex</span></div>
+                    </div>
                 </div>
             </div>
             <span class="slide-number">20 / 25</span>
@@ -911,35 +963,36 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
         <div class="slide" data-slide="21">
             <div class="content">
                 <h2>案例：微分几何笔记</h2>
-                <ul>
-                    <li><strong>书籍</strong>：Do Carmo - Differential Geometry</li>
-                    <li><strong>进度</strong>：Chapter 1-2 已完成 ✅</li>
-                    <li><strong>特色</strong>：
+                <div class="two-column">
+                    <div class="column">
+                        <h3>📚 书籍信息</h3>
                         <ul>
-                            <li>Figure 400 DPI 提取</li>
+                            <li><strong>书籍</strong>：Do Carmo - Differential Geometry of Curves and Surfaces</li>
+                            <li><strong>进度</strong>：Chapter 1-2 已完成 ✅</li>
+                        </ul>
+                        <h3>✨ 特色</h3>
+                        <ul>
+                            <li>Figure 400 DPI 高清提取</li>
                             <li>Stein 风格 motivation 写作</li>
                             <li>习题格式标准化</li>
+                            <li>图表自动裁剪位置记录</li>
                         </ul>
-                    </li>
-                </ul>
-                <div class="two-column" style="margin-top: 1rem;">
-                    <div class="column">
-                        <div class="file-tree">
-<span class="folder">notes/differential-geometry/</span>
-└── <span class="folder">do-carmo-curves-surfaces/</span>
-    ├── <span class="file">do-carmo.tex</span>
-    └── <span class="folder">chapters/</span>
-                        </div>
                     </div>
                     <div class="column">
-                        <div class="file-tree">
-<span class="folder">notes/differential-geometry/</span>
-└── <span class="folder">do-carmo-curves-surfaces/</span>
-    └── <span class="folder">figures/</span>
-        ├── <span class="folder">chapter1/</span>
-        │   └── fig_1-1.png
-        └── <span class="folder">chapter2/</span>
-        </div>
+                        <h3>📁 文件结构</h3>
+                        <div class="file-tree">notes/differential-geometry/<br>
+└── <span class="folder">do-carmo-curves-surfaces/</span><br>
+    ├── <span class="file">do-carmo.tex</span><br>
+    ├── <span class="file">progress.json</span><br>
+    ├── <span class="file">compile.sh</span><br>
+    ├── <span class="folder">chapters/</span><br>
+    │   ├── <span class="file">chapter1.tex</span><br>
+    │   └── <span class="file">chapter2.tex</span><br>
+    └── <span class="folder">figures/</span><br>
+        ├── <span class="folder">chapter1/</span><br>
+        │   ├── <span class="file">fig_1-1.png</span><br>
+        │   └── <span class="file">...</span><br>
+        └── <span class="folder">chapter2/</span></div>
                     </div>
                 </div>
             </div>
@@ -950,20 +1003,33 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
         <div class="slide" data-slide="22">
             <div class="content">
                 <h2>案例：Schubert 多项式 (1)</h2>
-                <ul>
-                    <li><strong>主题</strong>：Schubert 多项式与量子乘法</li>
-                    <li><strong>目标</strong>：整理量子 Schubert 计算的研究笔记</li>
-                    <li><strong>挑战</strong>：多篇论文、符号复杂、图示繁多</li>
-                </ul>
-                <h3>工作流步骤</h3>
-                <ol>
-                    <li><strong>PDF 收集</strong>：从 arXiv、Google Scholar 下载相关论文</li>
-                    <li><strong>minerU 转录</strong>：批量转换为 Markdown</li>
-                    <li><strong>Claude Code 逐篇阅读</strong>：提取核心定理、定义、证明思路</li>
-                    <li><strong>LaTeX 笔记整理</strong>：按主题组织，加入自己的理解</li>
-                </ol>
-                <div class="highlight-box">
-                    <p>📌 <strong>关键</strong>：不是简单复制论文，而是用 <strong>Stein 风格</strong> 重写——动机驱动、有机关联。</p>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>📚 研究主题</h3>
+                        <ul>
+                            <li><strong>主题</strong>：Schubert 多项式与量子乘法</li>
+                            <li><strong>目标</strong>：整理量子 Schubert 计算的研究笔记</li>
+                            <li><strong>挑战</strong>：
+                                <ul>
+                                    <li>多篇论文分散</li>
+                                    <li>符号体系复杂</li>
+                                    <li>图示繁多难整理</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>🔄 工作流</h3>
+                        <ol>
+                            <li><strong>PDF 收集</strong>：arXiv、Google Scholar</li>
+                            <li><strong>minerU 转录</strong>：批量 → Markdown</li>
+                            <li><strong>Claude 阅读</strong>：提取定理、定义、证明</li>
+                            <li><strong>LaTeX 整理</strong>：按主题组织</li>
+                        </ol>
+                        <div class="highlight-box">
+                            <p>📌 <strong>核心</strong>：用 <strong>Stein 风格</strong> 重写——动机驱动、有机关联</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <span class="slide-number">22 / 25</span>
@@ -973,33 +1039,37 @@ python figure_extractor.py <span class="string">&lt;图片路径&gt;</span> -o <
         <div class="slide" data-slide="23">
             <div class="content">
                 <h2>案例：Schubert 多项式 (2)</h2>
-                <h3>笔记示例：Schubert 多项式定义</h3>
-                <div class="code-block">
-<span class="comment">% LaTeX 笔记片段</span>
-<span class="keyword">\section</span>{Schubert 多项式简介}
-
-<span class="comment">% 动机驱动写作 (Stein 风格)</span>
-Schubert 多项式的出现源于一个基本问题：
-如何计算旗流形 (flag variety) $Fl_n$ 的结构常数？
-
-与经典情形不同，量子 cohomology
-$QH^*(Fl_n)$ 中的乘法涉及<span class="string">"3-点函数"</span>，
-这对应于<span class="keyword">Gromov-Witten 不变量</span>。
-
-<span class="comment">% 核心定义</span>
-<span class="keyword">\begin</span>{definition}[Schubert 多项式]
-对于置换 $w \in S_n$，定义
-\[
-\mathfrak{S}_w(x) = \sum_{\substack{w = uv \\ u \in S_j}}
-x_1^{l(u)} \mathfrak{S}_{v}(x_{j+1},\ldots)
-\]
-<span class="keyword">\end</span>{definition}
+                <h3>LaTeX 笔记示例</h3>
+                <div class="code-block"><span class="comment">% 动机驱动写作 (Stein 风格)</span><br>
+<span class="keyword">\section</span>{Schubert 多项式简介}<br>
+<br>
+Schubert 多项式的出现源于一个基本问题：<br>
+如何计算旗流形 (flag variety) $Fl_n$ 的结构常数？<br>
+<br>
+与经典情形不同，量子 cohomology $QH^*(Fl_n)$ 中的乘法涉及<span class="string">"3-点函数"</span>，对应于<span class="keyword">Gromov-Witten 不变量</span>。<br>
+<br>
+<span class="comment">% 核心定义</span><br>
+<span class="keyword">\begin</span>{definition}[Schubert 多项式]<br>
+对于置换 $w \in S_n$，定义<br>
+\[<br>
+\mathfrak{S}_w(x) = \sum_{\substack{w = uv \\ u \in S_j}}<br>
+x_1^{l(u)} \mathfrak{S}_{v}(x_{j+1},\ldots)<br>
+\]<br>
+<span class="keyword">\end</span>{definition}</div>
+                <div class="two-column">
+                    <div class="column">
+                        <ul>
+                            <li>✅ 自动编号 → <code>\label{}</code></li>
+                            <li>✅ 交叉引用 → <code>\cref{}</code></li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <ul>
+                            <li>✅ 问答记录 → <code>\userannotation{}</code></li>
+                            <li>✅ Stein 风格 motivation</li>
+                        </ul>
+                    </div>
                 </div>
-                <ul>
-                    <li>✅ 自动编号 → <code>\label{def:schubert-poly}</code></li>
-                    <li>✅ 交叉引用 → <code>\cref{def:schubert-poly}</code></li>
-                    <li>✅ 问答记录 → <code>\userannotation{...}</code></li>
-                </ul>
             </div>
             <span class="slide-number">23 / 25</span>
         </div>
@@ -1008,24 +1078,32 @@ x_1^{l(u)} \mathfrak{S}_{v}(x_{j+1},\ldots)
         <div class="slide" data-slide="24">
             <div class="content">
                 <h2>效果总结</h2>
-                <ul>
-                    <li><strong>时间节省</strong>：PDF 解析、格式整理自动化</li>
-                    <li><strong>知识沉淀</strong>：结构化 LaTeX 笔记，可版本控制</li>
-                    <li><strong>学习追踪</strong>：进度可视化，问题可回顾</li>
-                    <li><strong>风格统一</strong>：Stein 风格，动机驱动的写作</li>
-                </ul>
-                <div class="stat-grid">
-                    <div class="stat-item">
-                        <div class="stat-number">6+</div>
-                        <div class="stat-label">主题并行</div>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>💡 核心收益</h3>
+                        <ul>
+                            <li><strong>时间节省</strong>：PDF 解析、格式整理自动化</li>
+                            <li><strong>知识沉淀</strong>：结构化 LaTeX 笔记，版本控制</li>
+                            <li><strong>学习追踪</strong>：进度可视化，问题可回顾</li>
+                            <li><strong>风格统一</strong>：Stein 风格，动机驱动写作</li>
+                        </ul>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100+</div>
-                        <div class="stat-label">页笔记</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">20+</div>
-                        <div class="stat-label">Skills</div>
+                    <div class="column">
+                        <h3>📊 项目统计</h3>
+                        <div class="stat-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">6+</div>
+                                <div class="stat-label">主题并行</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">100+</div>
+                                <div class="stat-label">页笔记</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">20+</div>
+                                <div class="stat-label">Skills</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1036,23 +1114,32 @@ x_1^{l(u)} \mathfrak{S}_{v}(x_{j+1},\ldots)
         <div class="slide" data-slide="25">
             <div class="content">
                 <h2>开启你的 Vibe Research</h2>
-                <div class="highlight-box" style="background: #eff6ff; border-left-color: #2563eb;">
-                    <p>🔗 <strong>GitHub 仓库</strong>：<br>
-                    <a href="https://github.com/yueyh/aca-workflow" style="color: #2563eb; font-size: clamp(0.9rem, 1.4vw, 1.1rem);">https://github.com/yueyh/aca-workflow</a></p>
+                <div class="highlight-box" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left-color: #2563eb; border: 2px solid #2563eb;">
+                    <p style="text-align: center; font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 600; color: #1e40af; margin-bottom: 0.5rem;">🔗 GitHub 仓库</p>
+                    <p style="text-align: center;"><a href="https://github.com/easygl1der/aca-reader" style="color: #2563eb; font-size: clamp(1rem, 1.6vw, 1.3rem); font-weight: 600; text-decoration: underline;">https://github.com/easygl1der/aca-reader</a></p>
                 </div>
-                <ul>
-                    <li><strong>立即开始</strong>：clone 仓库，启动 Claude Code</li>
-                    <li><strong>运行 /reading-workflow</strong> 开始文献阅读</li>
-                    <li><strong>运行 /frontend-slides</strong> 创建演示文稿</li>
-                </ul>
-                <h3>下一步</h3>
-                <ul>
-                    <li>📚 扩展更多主题（贝叶斯，信息几何）</li>
-                    <li>🔧 优化 Skill 封装</li>
-                    <li>🤝 欢迎贡献：提交 Issue、PR</li>
-                </ul>
-                <div class="highlight-box" style="margin-top: 1.5rem;">
-                    <p style="text-align: center; font-size: clamp(1rem, 1.5vw, 1.2rem);">🎯 <strong>最终目标</strong>：构建个人知识管理系统，<br>让学习可积累、可追溯、可持续。</p>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>🚀 立即开始</h3>
+                        <ul>
+                            <li><code>git clone</code> 仓库</li>
+                            <li>启动 Claude Code</li>
+                            <li><code>/reading-workflow</code> 阅读文献</li>
+                            <li><code>/frontend-slides</code> 创建演示</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>📈 下一步</h3>
+                        <ul>
+                            <li>扩展更多主题</li>
+                            <li>优化 Skill 封装</li>
+                            <li>探索多模态输入</li>
+                            <li>欢迎贡献 Issue/PR</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight-box" style="margin-top: 1.5rem; background: #f0fdf4; border-left-color: #16a34a;">
+                    <p style="text-align: center; font-size: clamp(1rem, 1.5vw, 1.2rem);">🎯 <strong>最终目标</strong>：构建个人知识管理系统，让学习可积累、可追溯、可持续。</p>
                 </div>
             </div>
             <span class="slide-number">25 / 25</span>
