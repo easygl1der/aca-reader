@@ -45,6 +45,13 @@ This file provides guidance to Claude Code when working with this literature stu
 - 引用方式：\cref{标签名}
 - 详细规则：见 `docs/label-reference.md`
 
+### 文献定理引用格式
+当引用文献中的定理/引理/猜想时，必须标出原文献的编号：
+- 格式：`\cite[ Theorem 1.1]{Gr}`
+- 示例：`Graham Positivity Theorem {\cite[ Theorem 1.1]{Gr}}`
+- Conjecture 引用：`Samuel 猜想 {\cite[Conjecture 1.2]{Sa}}`
+- Section 引用：`\cite[Section 3]{GX2025}`
+
 ### 目录结构
 - 标准结构：notes/<主题>/<主题>-notes.tex
 - 多 Part 书籍：notes/<主题>/<书籍名>/

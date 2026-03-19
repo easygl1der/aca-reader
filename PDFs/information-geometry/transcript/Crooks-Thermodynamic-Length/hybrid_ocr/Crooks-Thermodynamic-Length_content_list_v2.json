@@ -1,0 +1,2030 @@
+[
+    [
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "Measuring thermodynamic length "
+                    }
+                ],
+                "level": 1
+            },
+            "bbox": [
+                336,
+                64,
+                668,
+                82
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Gavin E. Crooks* "
+                    }
+                ]
+            },
+            "bbox": [
+                431,
+                95,
+                570,
+                109
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Physical Bioscience Division, Lawrence Berkeley National Laboratory, Berkeley, California 94720, USA "
+                    }
+                ]
+            },
+            "bbox": [
+                156,
+                111,
+                849,
+                125
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "(Dated: November 26, 2024) "
+                    }
+                ]
+            },
+            "bbox": [
+                406,
+                125,
+                596,
+                137
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Thermodynamic length is a metric distance between equilibrium thermodynamic states. Among other interesting properties, this metric asymptotically bounds the dissipation induced by a finite time transformation of a thermodynamic system. It is also connected to the Jensen-Shannon divergence, Fisher information and Rao's entropy differential metric. Therefore, thermodynamic length is of central interest in understanding matter out-of-equilibrium. In this paper, we will consider how to define thermodynamic length for a small system described by equilibrium statistical mechanics and how to measure thermodynamic length within a computer simulation. Surprisingly, Bennett's classic acceptance ratio method for measuring free energy differences also measures thermodynamic length. "
+                    }
+                ]
+            },
+            "bbox": [
+                169,
+                146,
+                831,
+                265
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "PACS numbers: 05.70.Ln, 05.40.-a "
+                    }
+                ]
+            },
+            "bbox": [
+                173,
+                277,
+                387,
+                289
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "INTRODUCTION "
+                    }
+                ],
+                "level": 1
+            },
+            "bbox": [
+                212,
+                316,
+                361,
+                329
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Thermodynamic length is a natural measure of the distance between equilibrium thermodynamic states [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], which equips the surface of thermodynamic states with a Riemannian metric and defines the length of a quasi-static transformation as the number of natural fluctuations along that path. Unlike the entropy or free energy change, which are state functions, the thermodynamic length explicitly depends on the path taken through thermodynamic state space. Thermodynamic length is of fundamental interest to the generalization of thermodynamics to finite time (rather than infinity slow) transformations. Minimum distance paths are geodesics on the Riemannian manifold and minimize the dissipation for slow, but finite time transformations [3, 8]. These insights have been employed to optimize fractional distillation and other thermodynamic processes [12, 13, 14]. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                349,
+                488,
+                590
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The study of thermodynamic length has largely been restricted to the field of macroscopic, endoreversible thermodynamics. However, there are deep connections between thermodynamic length, information theory and the statistical physics of small systems far-from-equilibrium. In this paper we will consider the most appropriate definition of thermodynamic length for small systems and how to measure this distance in a computer simulation. These considerations reveal a surprising connection between thermodynamic length, Jensen-Shannon divergence and Bennett's acceptance ratio method for free energy calculations [15]. Bennett's method is an optimal measure of free energy differences, but it also indirectly places a lower bound on the thermodynamic length between neighboring thermodynamic states. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                592,
+                488,
+                819
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "THERMODYNAMIC LENGTH "
+                    }
+                ],
+                "level": 1
+            },
+            "bbox": [
+                158,
+                852,
+                413,
+                864
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Consider a physical system, possible microscopically small, in equilibrium with a large thermal reservoir. The "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                886,
+                490,
+                917
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "configurational probability distribution is given by the Gibbs ensemble, [16] "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                315,
+                919,
+                345
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "p (x | \\lambda) = \\frac {1}{Z} e ^ {- \\beta H (x, \\lambda)} = \\frac {1}{Z} e ^ {- \\lambda^ {i} (t) X _ {i} (x)} \\tag {1}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/d592e68c2a50785b2d9d32c59e874536ca787dbfe7dabb615be1aafb5015ad3c.jpg"
+                }
+            },
+            "bbox": [
+                578,
+                354,
+                919,
+                385
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "where  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "x"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the configuration,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "t"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is time,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\beta = 1 / k_{\\mathrm{B}}T"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the reciprocal temperature  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "(T)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " of the environment in natural units,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "(k_{\\mathrm{B}}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the Boltzmann constant),  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "Z"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the partition function, and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "H"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the Hamiltonian of the system. This total Hamiltonian is split into a collection of collective variables  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X_{i}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and conjugate generalized forces  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda^i"
+                    },
+                    {
+                        "type": "text",
+                        "content": ",  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\beta H = \\lambda^i(t)X_i(x)"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". We use the Einstein convention that repeated upper/lower indices are implicitly summed. The sub-Hamiltonians  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X"
+                    },
+                    {
+                        "type": "text",
+                        "content": " are time-independent functions of the configurations, whereas the conjugate variables  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda"
+                    },
+                    {
+                        "type": "text",
+                        "content": " are time dependent and configuration independent. Note that the conjugate variables include a factor of inverse temperature. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                392,
+                919,
+                587
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda"
+                    },
+                    {
+                        "type": "text",
+                        "content": "'s are the experimentally controllable parameters of the system and define the accessible thermodynamic state space. For example, in the isothermal-isobaric ensemble we have  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X = \\{U,V\\}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda = \\{\\beta ,\\beta p\\}"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", where  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "U"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the internal energy,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "V"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the volume and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "p"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the external pressure. Modern experimental techniques have broadened the range of controllable parameters beyond those considered in standard thermodynamics. For instance, optical tweezers can apply a constant force to the ends of a single DNA molecule. The equilibrium description of this system includes the extension of the polymer, with the tension as conjugate variable. In computer simulations we have much greater flexibility. The configuration functions can be rather arbitrary collective variables delineating high dimensional manifolds of equilibrium thermodynamic states. "
+                    }
+                ]
+            },
+            "bbox": [
+                509,
+                588,
+                919,
+                828
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The partition function that normalizes the probability distribution,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "Z"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", is directly related to the free energy  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "F"
+                    },
+                    {
+                        "type": "text",
+                        "content": " (Gibbs potential), the free entropy  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\psi"
+                    },
+                    {
+                        "type": "text",
+                        "content": " (Massieu potential) and entropy  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "S"
+                    },
+                    {
+                        "type": "text",
+                        "content": ": "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                830,
+                919,
+                890
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\ln Z = - \\beta F = \\psi = S - \\lambda^ {i} \\langle X _ {i} \\rangle \\tag {2}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/91592d38e7628e3a2f564469472423c4def3ff5a7d42a382c7807bee9c414ab2.jpg"
+                }
+            },
+            "bbox": [
+                596,
+                898,
+                918,
+                917
+            ]
+        },
+        {
+            "type": "page_aside_text",
+            "content": {
+                "page_aside_text_content": [
+                    {
+                        "type": "text",
+                        "content": "arXiv:0706.0559v2 [cond-mat.stat-mech] 7 Sep 2007 "
+                    }
+                ]
+            },
+            "bbox": [
+                22,
+                190,
+                60,
+                744
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Angled brackets indicate an average over the appropriate equilibrium ensemble. The first derivatives of the free entropy give the first moments of the collective variables, "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                65,
+                490,
+                112
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\frac {\\partial \\psi}{\\partial \\lambda^ {i}} = - \\langle X _ {i} \\rangle \\tag {3}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/e5c68100cc386e39055a3b386b1342beb0b09149a3c88fe0d525879ce9be06ed.jpg"
+                }
+            },
+            "bbox": [
+                238,
+                123,
+                488,
+                152
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "and the second derivative yields the covariance matrix, "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                162,
+                482,
+                179
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "g _ {i j} = \\frac {\\partial^ {2} \\psi}{\\partial \\lambda^ {i} \\partial \\lambda^ {j}} = - \\frac {\\partial \\langle X _ {i} \\rangle}{\\partial \\lambda^ {j}} = \\left\\langle \\left(X _ {i} - \\langle X _ {i} \\rangle\\right) \\left(X _ {j} - \\langle X _ {j} \\rangle\\right) \\right\\rangle . \\tag {4}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/37a191e9028286116ddee0f40dd301fd14b9ae4839fedc54c4eeaa6e355cbed3.jpg"
+                }
+            },
+            "bbox": [
+                91,
+                191,
+                486,
+                234
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The covariance matrix  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "g_{ij}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is positive semi-definite and varies smoothly from point to point, except at macroscopic phase transitions. Therefore, we can use the covariance matrix as a metric tensor and naturally equip the manifold of thermodynamic states with a Riemannian metric. Recall that a metric provides a measure of 'distance' between points. It is a real function  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "d(a,b)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " such that (1) distances are non-negative,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "d(a,b) \\geq 0"
+                    },
+                    {
+                        "type": "text",
+                        "content": " with equality if and only if  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "a = b"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", (2) symmetric,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "d(a,b) = d(b,a)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and (3) it is generally shorter to go directly from point  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "a"
+                    },
+                    {
+                        "type": "text",
+                        "content": " to  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "c"
+                    },
+                    {
+                        "type": "text",
+                        "content": " than to go by way of  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "b"
+                    },
+                    {
+                        "type": "text",
+                        "content": ",  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "d(a,b) + d(b,c) \\geq d(a,c)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " (The triangle inequality). Moreover, in a Riemannian metric we can measure the distance along curves connecting different points. The length of a curve parameterized by  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "t"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", from 0 to  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\tau"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", is "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                234,
+                490,
+                460
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\mathcal {L} = \\int_ {0} ^ {\\tau} \\sqrt {\\frac {d \\lambda^ {i}}{d t} g _ {i j} \\frac {d \\lambda^ {j}}{d t}} d t \\tag {5}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/49ea05035221ed321dfa8e800a2a4247b139ad853b485a641f5c097e38c842f3.jpg"
+                }
+            },
+            "bbox": [
+                202,
+                474,
+                488,
+                508
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "and the point-to-point distance is the length of the shortest curve. Curves of locally minimal distance are called geodesics, and are the closest analogs of straight lines in a curved space. Because of the connection to fluctuations [Eq. (4)] the length of curves in thermodynamic state space are measured by the number of natural fluctuations along the path. The larger the fluctuations the closer points are together [17, 18]. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                518,
+                488,
+                640
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Originally, Weinhold [1] defined the thermodynamic length  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\mathcal{L}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " using the second derivatives of the internal energy  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "U(S,V,N)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " with respect to the extensive variables as a metric tensor, and by Ruppeiner [2] using the corresponding derivatives of the entropy,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "S(U,V,N)"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". Using intensive variable derivatives of the free energy was first discussed by Schlögl [5, 10, 11]. For macroscopic thermodynamic systems these different definitions of the metric are essentially equivalent [4, 5], analogously to the macroscopic equivalence of ensembles. However, in small systems these metrics are in general different and the Weinhold and Ruppeiner metrics may not exist, since the second derivatives of the entropy and entropy are not guaranteed to be positive. The definition adopted in this paper [Eqs. (4)], essentially that of Schlögl, does not require the thermodynamic limit. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                641,
+                488,
+                882
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Moreover, with this definition we can make an important connection to statistical estimation theory, since the "
+                    }
+                ]
+            },
+            "bbox": [
+                83,
+                883,
+                490,
+                914
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "thermodynamic metric tensor Eq. (4) is then identical to the Fisher information matrix [19]. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                65,
+                919,
+                97
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\begin{array}{l} g _ {i j} (\\lambda) = \\sum_ {x} p (x) \\frac {\\partial \\ln p (x)}{\\partial \\lambda^ {i}} \\frac {\\partial \\ln p (x)}{\\partial \\lambda^ {j}} \\tag {6} \\\\ = \\sum_ {x} p (x) \\left(X _ {i} + \\frac {\\partial \\psi}{\\partial \\lambda^ {i}}\\right) \\left(X _ {j} + \\frac {\\partial \\psi}{\\partial \\lambda^ {j}}\\right) \\\\ = \\left\\langle \\left(X _ {i} - \\left\\langle X _ {i} \\right\\rangle\\right) \\left(X _ {j} - \\left\\langle X _ {j} \\right\\rangle\\right) \\right\\rangle \\\\ \\end{array}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/8c91e0f971cd4481b8697b0ab4321a43cf7bf2c52d8a1f050ecc14532bf210ce.jpg"
+                }
+            },
+            "bbox": [
+                575,
+                107,
+                919,
+                200
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "According to the Cramér-Rao inequality the variance of any unbiased estimator is at least as high as the inverse of the Fisher information [19]. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                210,
+                919,
+                255
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "In 1945 Rao introduced the 'entropy differential metric', the distance between two distributions arising from the Riemannian metric over the parameter space with the Fisher information metric tensor [20, 21]. This entropy differential metric is identical to the thermodynamic length when, as here, the variables are conjugate parameters of a Gibbs ensemble [11]. Note that if we plug the Fisher information metric tensor [Eq. (6)] into the curve length [Eq. (5)] we can rewrite the entropy differential metric as [6, 17] "
+                    }
+                ]
+            },
+            "bbox": [
+                509,
+                256,
+                919,
+                407
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\mathcal {L} = \\int_ {0} ^ {\\tau} \\sqrt {\\sum_ {x} \\frac {1}{p (x)} \\left[ \\frac {d p (x)}{d t} \\right] ^ {2}} d t \\tag {7}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/35ca7e9eff100c6e49a96d43dfaa72cd057c242fac5e156a23c1616633d2af4a.jpg"
+                }
+            },
+            "bbox": [
+                604,
+                417,
+                916,
+                465
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We should probable consider Rao's definition as more general and fundamental than the thermodynamic definition, just as the statistical definition of entropy is widely considered more general and fundamental than the original thermodynamic definition. In particular, the entropy differential metric natural extends to the situation where the Hamiltonian is not a linear function of the control parameters, or where the system is not in thermal equilibrium. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                474,
+                919,
+                609
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "We can also define a related quantity, the thermodynamics divergence of the path, "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                609,
+                918,
+                641
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\mathcal {J} = \\tau \\int_ {0} ^ {\\tau} \\frac {d \\lambda^ {i}}{d t} g _ {i j} \\frac {d \\lambda^ {j}}{d t} d t \\tag {8}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/45d95ff4e00e9a60434f8307b3408ac7b69024a53d3ff86ad0ff843dbe179b80.jpg"
+                }
+            },
+            "bbox": [
+                635,
+                651,
+                916,
+                683
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "In Riemannian geometry  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\mathcal{I} / 2\\tau"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is called the energy, or action, of the curve, due to similarity with the kinetic energy integral in classical mechanics. The length and divergence are related by the inequality, "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                691,
+                919,
+                753
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\mathcal {J} \\geq \\mathcal {L} ^ {2} \\tag {9}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/b94cb8809972b8edf68c631b147e5b45dfb88be67064a10bb99fd1a6b3cabd6c.jpg"
+                }
+            },
+            "bbox": [
+                689,
+                763,
+                916,
+                780
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "which can be derived as a consequence of the Cauchy-Schwarz inequality  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\int_0^\\tau f^2 dt\\int_0^\\tau g^2 dt\\geq \\left[\\int_0^\\tau fgdt\\right]^2"
+                    },
+                    {
+                        "type": "text",
+                        "content": " with  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "g(t) = 1"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". The value of the divergence depends on the parametrization. The minimum value  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\mathcal{L}^2"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is attained only when the integrand is a constant along the path. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                791,
+                919,
+                868
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Thermodynamic length and divergence control the dissipation of finite time thermodynamic transformations as we approach the infinity slow quasi-static limit [3, 6, 8]. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                869,
+                919,
+                914
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "2 "
+                    }
+                ]
+            },
+            "bbox": [
+                906,
+                34,
+                919,
+                45
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Consider a protocol that perturbs the conjugate variables of the system from  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda_{1}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " to  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda_{N}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " in a series of discrete steps [8]. After each step we pause and allow the system to reequilibrate. After we get to the final thermodynamic state, we run the protocol in reverse, until we again reach the initial thermodynamic state. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                65,
+                490,
+                155
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The total average change in entropy of a single step is  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\Delta S_{\\mathrm{total}} = \\Delta S_{\\mathrm{system}} + \\lambda_{t + 1}^{i}\\left[\\langle X_{i}\\rangle_{t + 1} - \\langle X_{i}\\rangle_{t}\\right]"
+                    },
+                    {
+                        "type": "text",
+                        "content": " [6, 8]. Thus, the hysteresis, the total average dissipation of the combined forward and backwards protocols, is "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                156,
+                491,
+                217
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\begin{array}{l} \\omega = \\sum_ {t = 1} ^ {N - 1} \\left(\\lambda_ {t + 1} ^ {i} \\left[ \\langle X _ {i} \\rangle_ {t + 1} - \\langle X _ {i} \\rangle_ {t} \\right] + \\lambda_ {t} ^ {i} \\left[ \\langle X _ {i} \\rangle_ {t} - \\langle X _ {i} \\rangle_ {t + 1} \\right]\\right), \\\\ = \\sum_ {t = 1} ^ {N - 1} \\left[ \\lambda_ {t + 1} ^ {i} - \\lambda_ {t} ^ {i} \\right] \\left[ \\langle X _ {i} \\rangle_ {t + 1} - \\langle X _ {i} \\rangle_ {t} \\right], \\tag {10} \\\\ = \\sum_ {t = 1} ^ {N - 1} \\Delta \\lambda^ {i} \\Delta \\left\\langle X _ {i} \\right\\rangle , \\\\ \\end{array}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/ac9cdebd802c0c3d4e79d6354a36a0795bc5328122ca1023b89e128a686d2819.jpg"
+                }
+            },
+            "bbox": [
+                84,
+                229,
+                488,
+                357
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "which we can also write as "
+                    }
+                ]
+            },
+            "bbox": [
+                83,
+                367,
+                279,
+                381
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\omega = \\frac {\\tau}{N} \\sum_ {t = 1} ^ {N - 1} \\frac {\\Delta \\lambda^ {i}}{\\delta t} \\frac {\\Delta \\langle X _ {i} \\rangle}{\\Delta \\lambda^ {j}} \\frac {\\Delta \\lambda^ {j}}{\\delta t} \\delta t, \\tag {11}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/90c5aa43d362ed09147739d87cbbdff2a53ecdaf023c0c3911f4a177637c720e.jpg"
+                }
+            },
+            "bbox": [
+                174,
+                392,
+                488,
+                431
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "where  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\tau = N\\delta t"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". In the continuum limit we can replace the sum by an integral and find that "
+                    }
+                ]
+            },
+            "bbox": [
+                83,
+                441,
+                488,
+                472
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\lim  _ {N \\rightarrow \\infty} N \\sum_ {t = 1} ^ {N - 1} \\Delta \\lambda^ {i} \\Delta \\langle X _ {i} \\rangle = \\tau \\int_ {0} ^ {\\tau} \\frac {d \\lambda^ {i}}{d t} g _ {i j} \\frac {d \\lambda^ {j}}{d t} d t = \\mathcal {J} (1 2)",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/17ae37a35069443eb06b3e4179521d6041c46785b1040fb000b0bdc0a815cc05.jpg"
+                }
+            },
+            "bbox": [
+                99,
+                484,
+                488,
+                523
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "As the number of steps along a path increases we approach a reversible, quasi-static process. In this limit, the hysteresis scales as the thermodynamic divergence and inversely as the number of steps. (Note that this expression differs by a factor of 2 from Ref. [8] because here we have considered the hysteresis, the combined dissipation of the forward and reversed protocols, rather than the dissipation along a single direction.) Similar reasoning relates the divergence and the hysteresis of a slow, finite time transformation [3]. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                534,
+                490,
+                685
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The asymptotic hysteresis and thermodynamic divergence of a protocol will depend on the parametrization of the path. However, thanks to the length-divergence inequality  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\mathcal{J} \\geq \\mathcal{L}^2"
+                    },
+                    {
+                        "type": "text",
+                        "content": " [Eq. (9)] we know that the minimum thermodynamic divergence of the path is the square of the thermodynamic length. Repeating the previous analysis, we find that the thermodynamic length is related to the cumulative root mean single-step hysteresis. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                685,
+                491,
+                806
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\lim  _ {N \\rightarrow \\infty} N \\sum_ {t = 1} ^ {N - 1} \\sqrt {\\Delta \\lambda^ {i} \\Delta \\left\\langle X _ {i} \\right\\rangle} = \\mathcal {L} \\tag {13}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/e8f5c961401eee8ddd5467515fff1e4a386e41edbf7a91c4106d266604014340.jpg"
+                }
+            },
+            "bbox": [
+                183,
+                818,
+                488,
+                858
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Consequently, we can locate optimal, minimal dissipation paths connecting two thermodynamic states by measuring and optimizing the thermodynamic length. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                868,
+                490,
+                914
+            ]
+        },
+        {
+            "type": "title",
+            "content": {
+                "title_content": [
+                    {
+                        "type": "text",
+                        "content": "MEASURING THERMODYNAMIC LENGTH "
+                    }
+                ],
+                "level": 1
+            },
+            "bbox": [
+                531,
+                66,
+                901,
+                79
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Thermodynamic length and divergence are clearly of fundamental interest and importance to non-equilibrium thermodynamics. Therefore, we shall consider how best to measure these quantities. The relation between dissipation and divergence [Eqs. (12) and (13)] suggests one obvious approach. We run equilibrium simulations at a series of points along the path and examine the scaling of the dissipation with the number of steps. Since length and divergence are properties of the path taken through thermodynamic state space, but are independent of the underlying dynamics of the system, one can measure thermodynamic length in a computer simulation using whatever dynamics is most convenient, be it Metropolis Monte Carlo, Langevin dynamics or deterministically thermostated molecular dynamics. The only condition is that the chosen dynamics reproduce the correct equilibrium ensemble, Eq. (1). "
+                    }
+                ]
+            },
+            "bbox": [
+                509,
+                98,
+                919,
+                354
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Concretely, we must measure  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\Delta \\langle X_i\\rangle"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", the mean change of the collective variables between neighboring thermodynamic states. Given  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "K"
+                    },
+                    {
+                        "type": "text",
+                        "content": " uncorrelated measurements from an equilibrated computer simulation we can estimate this value as "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                354,
+                919,
+                429
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\begin{array}{l} \\Delta \\langle X _ {i} \\rangle = \\sum_ {x} p (x | \\lambda_ {2}) X _ {i} (x) - \\sum_ {x} p (x | \\lambda_ {1}) X _ {i} (x) \\tag {14} \\\\ = \\sum_ {x} p (x | \\lambda_ {1}) X _ {i} (x) \\left(\\frac {p (x | \\lambda_ {2})}{p (x | \\lambda_ {1})} - 1\\right) \\\\ \\approx \\sum_ {k = 1} ^ {K} X _ {i, 1, n} \\left(\\exp \\left(\\Delta \\psi_ {1 2} - \\left(\\lambda_ {2} ^ {j} - \\lambda_ {1} ^ {j}\\right) X _ {j, 1, k}\\right) - 1\\right) \\\\ \\end{array}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/23a2b47d1755a20c9fae5633d2c2ea9e760631b490479c5a654767884fbed477.jpg"
+                }
+            },
+            "bbox": [
+                524,
+                441,
+                916,
+                554
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "In the second line we rewrite the difference of the means as the mean difference. (We should not estimate the difference of the mean directly since this will lead to large statistical errors that will become larger as the number of steps increases.) The final line follows from the definition of the Gibbs ensemble, Eq. (1). Here,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X_{i,t,k}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "k"
+                    },
+                    {
+                        "type": "text",
+                        "content": "th measurement of the  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "i"
+                    },
+                    {
+                        "type": "text",
+                        "content": "th collective variable,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X_{i}(x)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " taken from an equilibrium system defined by the conjugate variables  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\lambda_{t}"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\Delta \\psi_{12} = \\psi_{2} - \\psi_{1}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the difference in free entropy. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                564,
+                919,
+                700
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "To employ Eq. (14) we need to know the free entropy change,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\Delta \\psi_{12}"
+                    },
+                    {
+                        "type": "text",
+                        "content": ", which can be optimally estimated using Bennett's acceptance ratio method [15, 22, 23]. Given  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "K"
+                    },
+                    {
+                        "type": "text",
+                        "content": " measurements from each of two neighboring states,  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X_{i,1,k}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "X_{i,2,k}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " the log likelihood  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\ell"
+                    },
+                    {
+                        "type": "text",
+                        "content": " that the free entropy has a particular value is [22, 23] "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                700,
+                919,
+                791
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\begin{array}{l} \\ell (\\Delta \\psi_ {1 2}) = \\frac {1}{K} \\sum_ {k = 1} ^ {K} \\ln \\frac {1}{1 + \\exp \\left(- \\Delta \\psi_ {1 2} + \\left(\\lambda_ {2} ^ {i} - \\lambda_ {1} ^ {i}\\right) X _ {i , 1 , k}\\right)} \\\\ + \\frac {1}{K} \\sum_ {k = 1} ^ {K} \\ln \\frac {1}{1 + \\exp \\left(- \\Delta \\psi_ {2 1} + \\left(\\lambda_ {1} ^ {i} - \\lambda_ {2} ^ {i}\\right) X _ {i , 2 , k}\\right)} \\tag {15} \\\\ \\end{array}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/2254ce33f541cb5ca1c93d56431a1f2c2d1c22274c6c52272b1389771d519851.jpg"
+                }
+            },
+            "bbox": [
+                526,
+                804,
+                919,
+                887
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "and the Bennett optimal estimate of  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\Delta \\psi_{12}"
+                    },
+                    {
+                        "type": "text",
+                        "content": " maximizes this "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                898,
+                919,
+                914
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "3 "
+                    }
+                ]
+            },
+            "bbox": [
+                906,
+                34,
+                919,
+                46
+            ]
+        }
+    ],
+    [
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "likelihood. (See [22] for a clear and concise exposition of this result.) "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                65,
+                491,
+                95
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "Rather than using this free entropy measurement to estimate the mean change in the collective variables using Eq. (14), we will instead show that the Bennett likelihood is directly related to the thermodynamic divergence. If we insert the Gibbs ensemble [Eq. (1)] into the log likelihood, then in the large sample limit, we find that the likelihood scales as "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                95,
+                491,
+                202
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\ell (\\Delta \\psi_ {1 2}) \\simeq 2 K \\left(\\mathrm {J S} (p ^ {1}; p ^ {2}) - \\ln 2\\right) \\tag {16}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/2c6335d669c97d2aba488868d29469feb28aa42f3471895cba56766f056d7b5a.jpg"
+                }
+            },
+            "bbox": [
+                166,
+                212,
+                488,
+                232
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "where  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\mathrm{JS}(p^1;p^2)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " is the Jensen-Shannon divergence, the mean of the relative entropy of each distribution to the mean distribution [24]. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                241,
+                491,
+                287
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\operatorname {J S} (p; q) = \\frac {1}{2} \\sum_ {i} p _ {i} \\ln \\frac {p _ {i}}{\\frac {1}{2} \\left(p _ {i} + q _ {i}\\right)} + \\frac {1}{2} \\sum_ {i} q _ {i} \\ln \\frac {q _ {i}}{\\frac {1}{2} \\left(p _ {i} + q _ {i}\\right)} \\tag {17}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/42ae20542de944bfd9e5e74e8ee095e562dbbe0b7b84cee5a3c42bf090ae283b.jpg"
+                }
+            },
+            "bbox": [
+                91,
+                297,
+                488,
+                347
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The minimum divergence is zero for identical distributions and the maximum is  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "\\ln 2"
+                    },
+                    {
+                        "type": "text",
+                        "content": ". The square root of the Jensen-Shannon divergence is a metric between probability distributions [25]. However, unlike a Riemannian metric, the Jensen-Shannon metric space is not an intrinsic length space. There may not be a mid point  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "b"
+                    },
+                    {
+                        "type": "text",
+                        "content": " between points  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "a"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "c"
+                    },
+                    {
+                        "type": "text",
+                        "content": " such that  "
+                    },
+                    {
+                        "type": "equation_inline",
+                        "content": "d(a,b) + d(b,c) = d(a,c)"
+                    },
+                    {
+                        "type": "text",
+                        "content": " and consequently we cannot naturally measure path lengths. However, on any metric space we can define a new intrinsic metric by measuring the distance along continuous paths. The Jensen-Shannon divergence between infinitesimally different distributions is [26] "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                348,
+                491,
+                530
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\operatorname {J S} (p; p + d p) = \\frac {1}{8} \\sum_ {i} \\frac {\\left(d p _ {i}\\right) ^ {2}}{p _ {i}}. \\tag {18}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/5d28b98e8af53cbb2923fe56427282772f2bedd90f589cb8ee6ae2eeacf25fac.jpg"
+                }
+            },
+            "bbox": [
+                181,
+                539,
+                488,
+                578
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "If we compare with Eq. (7), we can see that in the continuum limit "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                588,
+                488,
+                619
+            ]
+        },
+        {
+            "type": "equation_interline",
+            "content": {
+                "math_content": "\\mathcal {L} = \\sqrt {8} \\int d \\sqrt {\\mathrm {J S}} \\quad \\text {a n d} \\quad \\mathcal {J} = 8 \\int d \\mathrm {J S}. \\tag {19}",
+                "math_type": "latex",
+                "image_source": {
+                    "path": "images/64757595cd27d19247795eadc26ac805c49ab5ad4d0a3db5584b33702cc9438a.jpg"
+                }
+            },
+            "bbox": [
+                116,
+                626,
+                488,
+                659
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "The induced Jensen-Shannon metric is proportional to the thermodynamic (entropy differential) metric, and the induced Jensen-Shannon divergence is proportional to the thermodynamic divergence. Consequently, the square root of Jensen-Shannon divergence between two thermodynamic states gives a lower bound on the thermodynamic length of any path between those same states, and the Jensen-Shannon divergence is a lower bound to the thermodynamic divergence. "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                667,
+                491,
+                804
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "To summarize, we can measure the thermodynamic length and minimum thermodynamic divergence along a path in thermodynamics state space by adapting Bennett's method. We perform a series of equilibrium simulations along the path and find the maximum likelihood "
+                    }
+                ]
+            },
+            "bbox": [
+                81,
+                804,
+                491,
+                880
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "free entropy change [Eq. (15)] and Jensen-Shannon divergence [via Eq. (16)] between neighboring ensembles. The cumulative Jensen-Shannon metric along the path provides a lower bound to the thermodynamic length [Eq. (19)] and a lower bound to the minimum divergence of the path [via Eq. (9)]. This procedure is then repeated with finer discretizations of the path, until the estimates of divergence and length converge. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                65,
+                919,
+                186
+            ]
+        },
+        {
+            "type": "paragraph",
+            "content": {
+                "paragraph_content": [
+                    {
+                        "type": "text",
+                        "content": "This research was supported by the Department of Energy, under contract DE-AC02-05CH11231. "
+                    }
+                ]
+            },
+            "bbox": [
+                511,
+                195,
+                919,
+                226
+            ]
+        },
+        {
+            "type": "list",
+            "content": {
+                "list_type": "reference_list",
+                "list_items": [
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "* Electronic address: GECrooks@lbl.gov "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[1] F. Weinhold, J. Chem. Phys. 63, 2479 (1975). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[2] G. Ruppeiner, Phys. Rev. A 20, 1608 (1979). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[3] P. Salamon and R. S. Berry, Phys. Rev. Lett. 51, 1127 (1983). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[4] P. Salamon, J. Nulton, and E. Ihrig, J. Chem. Phys. 80, 436 (1984). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[5] F. Schlögl, Z. Phys. B 59, 449 (1985). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[6] P. Salamon, J. D. Nulton, and R. S. Berry, J. Chem. Phys. 82, 2433 (1985). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[7] J. D. Nulton and P. Salamon, Phys. Rev. A 31, 2520 (1985). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[8] J. Nulton, P. Salamon, B. Andresen, and Q. Anmin, J. Chem. Phys. 83, 334 (1985). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[9] H. Janyszek and R. Mrugala, Phys. Rev. A 39, 6515 (1989). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[10] R. Mrugala, J. D. Nulton, J. C. Schön, and P. Salamon, Phys. Rev. A 41, 3156 (1990). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[11] D. Brody and N. Rivier, Phys. Rev. E 51, 1006 (1995). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[12] P. Salamon and J. D. Nulton, Europhys. Lett. 42, 571 (1998). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[13] M. Schaller, K. H. Hoffmann, G. Siragusa, P. Salamon, and B. Andresen, Comp. Chem. Eng. 25, 1537 (2001). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[14] J. D. Nulton and P. Salamon, J. Non-Equilib. Thermodynamics. 27, 271 (2002). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[15] C. H. Bennett, J. Comput. Phys. 22, 245 (1976). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[16] H. B. Callen, Thermodynamics and an Introduction to Thermostatistics (Wiley, New York, 1985), 2nd ed. "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[17] W. K. Wootters, Phys. Rev. D 23, 357 (1981). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[18] B. Andresen, R. S. Berry, R. Gilmore, E. Ihrig, and P. Salamon, Phys. Rev. A 37, 845 (1988). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[19] T. M. Cover and J. A. Thomas, Elements of Information Theory (Wiley, New York, 1991). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[20] C. R. Rao, Bull. Calcutta Math. Soc. 37, 81 (1945). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[21] J. Burbea and C. R. Rao, J. Multivariate Anal. 12, 575 (1982). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[22] M. R. Shirts, E. Bair, G. Hooker, and V. S. Pande, Phys. Rev. Lett. 91, 140601 (2003). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[23] P. Maragakis, M. Spichty, and M. Karplus, Phys. Rev. Lett. 96, 100602 (2006). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[24] J. Lin, IEEE Trans. Info. Theory 37, 145 (1991). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[25] J. Endres, D.M. Schindelin, IEEE Trans. Info. Theory 49, 1858 (2003). "
+                            }
+                        ]
+                    },
+                    {
+                        "item_type": "text",
+                        "item_content": [
+                            {
+                                "type": "text",
+                                "content": "[26] A. Majtey, P. W. Lamberti, M. T. Martin, and A. Plastino, Eur. Phys. J. D 32, 413 (2005). "
+                            }
+                        ]
+                    }
+                ]
+            },
+            "bbox": [
+                516,
+                280,
+                918,
+                876
+            ]
+        },
+        {
+            "type": "page_number",
+            "content": {
+                "page_number_content": [
+                    {
+                        "type": "text",
+                        "content": "4 "
+                    }
+                ]
+            },
+            "bbox": [
+                906,
+                34,
+                919,
+                46
+            ]
+        }
+    ]
+]

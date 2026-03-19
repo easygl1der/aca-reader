@@ -1,0 +1,5412 @@
+[
+    {
+        "type": "text",
+        "text": "On Reproducing Kernel Banach Spaces: Generic Definitions and Unified Framework of Constructions ",
+        "text_level": 1,
+        "bbox": [
+            122,
+            150,
+            851,
+            200
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Rongrong Lin*, Haizhang Zhang† and Jun Zhang‡ ",
+        "bbox": [
+            256,
+            220,
+            722,
+            239
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Abstract ",
+        "text_level": 1,
+        "bbox": [
+            449,
+            282,
+            522,
+            297
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Recently, there has been emerging interest in constructing reproducing kernel Banach spaces (RKBS) for applied and theoretical purposes such as machine learning, sampling reconstruction, sparse approximation and functional analysis. Existing constructions include the reflexive RKBS via a bilinear form, the semi-inner-product RKBS, the RKBS with $\\ell^1$ norm, the $p$ -norm RKBS via generalized Mercer kernels, etc. The definitions of RKBS and the associated reproducing kernel in those references are dependent on the construction. Moreover, relations among those constructions are unclear. We explore a generic definition of RKBS and the reproducing kernel for RKBS that is independent of construction. Furthermore, we propose a framework of constructing RKBSs that leads to new RKBSs based on Orlicz spaces and unifies existing constructions mentioned above via a continuous bilinear form and a pair of feature maps. Finally, we develop representer theorems for machine learning in RKBSs constructed in our framework, which also unifies representer theorems in existing RKBSs. ",
+        "bbox": [
+            158,
+            301,
+            815,
+            498
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "Keywords: Reproducing kernel Banach spaces, feature maps, reproducing kernels, machine learning, the representer theorem ",
+        "bbox": [
+            156,
+            500,
+            815,
+            529
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "1 Introduction ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            551,
+            303,
+            570
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "In this paper, we aim at the construction of reproducing kernel Banach spaces (RKBSs), which serve as a generalization of reproducing kernel Hilbert spaces (RKHSs) [33]. The notion of RKBS was originally introduced in machine learning in 2009 [46]. Since then, various RKBSs [13, 16, 37, 38, 43, 45, 46, 48] have been constructed for different applied and theoretical purposes. They are used in a wide variety of fields such as machine learning [43, 45, 46, 48, 49], sampling reconstruction [14, 15, 18, 27, 28], sparse approximation [37, 38, 43, 45], and functional analysis [9, 35, 47]. The definitions of existing RKBSs and the associated reproducing kernels in the literature are dependent on the construction. To address this issue and to further promote research in the subject, it is helpful to understand the essence of RKBS and to propose a framework of constructing RKBSs that unifies existing constructions. ",
+        "bbox": [
+            109,
+            585,
+            861,
+            757
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "aside_text",
+        "text": "arXiv:1901.01002v2 [cs.LG] 8 Dec 2021 ",
+        "bbox": [
+            22,
+            248,
+            58,
+            676
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "\\*School of Mathematics and Statistics, Guangdong University of Technology, Guangzhou 510520, P. R. China. E-mail address: linrr@gdut.edu.cn. Supported in part by Natural Science Foundation of China under grant 11901595. ",
+        "bbox": [
+            111,
+            765,
+            857,
+            805
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "†School of Mathematics (Zhuhai), and Guangdong Province Key Laboratory of Computational Science, Sun Yat-sen University, Zhuhai 519082, P. R. China. E-mail address: zhhaizh2@mail.sysu.edu.cn. Supported in part by Natural Science Foundation of China under grant 11971490, and by Natural Science Foundation of Guangdong Province under grant 2018A030313841. ",
+        "bbox": [
+            112,
+            806,
+            857,
+            861
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_footnote",
+        "text": "$^{\\ddagger}$ Department of Psychology and Department of Mathematics, University of Michigan, Ann Arbor, MI 48109, USA. E-mail address: junz@umich.edu. Supported in part by DARPA/ARO under grant #W911NF-16-1-0383. ",
+        "bbox": [
+            114,
+            863,
+            857,
+            891
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "page_number",
+        "text": "1 ",
+        "bbox": [
+            480,
+            915,
+            491,
+            926
+        ],
+        "page_idx": 0
+    },
+    {
+        "type": "text",
+        "text": "RKHSs are Hilbert spaces of functions on which point evaluation functionals are continuous [33]. In machine learning, RKHSs have been viewed as ideal spaces for kernel-based learning algorithms. Thanks to the existence of an inner product, Hilbert spaces are well-understood in functional analysis. Many applications require that the sampling process to be stable. In other words, the point evaluations should be bounded. Most importantly, an RKHS has a reproducing kernel, which measures similarity between input data and gives birth to the \"kernel trick\" in machine learning that significantly saves computations. Successful and important machine learning methods based on RKHSs include support vector machines and the regularization networks [33, 36]. ",
+        "bbox": [
+            109,
+            102,
+            861,
+            253
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "There are many reasons that justify the need of RKBSs. We mention three here. First of all, Banach spaces possess richer geometrical structures and norms. It is well-known that any two Hilbert spaces over $\\mathbb{C}$ of the same dimension are isometrically isomorphic. By contrast, for $1 \\leq p \\neq q \\leq +\\infty$ , $L^p([0,1])$ and $L^q([0,1])$ are not isomorphic to each other (see, [12], page 180). Secondly, kernel functions play the role of measuring similarity of inputs in machine learning. They are defined by inner product through a feature map and therefore are inherently symmetric. In some applications such as psychology [51], asymmetric kernels are desired, which can only be obtained via Banach spaces. Thirdly, machine learning schemes in Banach spaces have received considerable attention recently [1, 10, 25, 26, 37, 38, 43, 45, 46, 48, 49]. Many important problems such as $p$ -norm coefficient-based regularization [34, 38, 40, 42], large-margin classification [10, 45, 46], lasso in statistics [39] and compressed sensing [4] had better be studied in Banach spaces. It suggests the need of extending Hilbert space type arguments to Banach spaces. ",
+        "bbox": [
+            109,
+            256,
+            862,
+            477
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "Under these considerations, different definitions and constructions of RKBSs have been proposed in the literature. In 2009, Zhang et al. [46] proposed the new concept of RKBS for machine learning. Reflexive RKBSs were constructed by the bilinear form between a reflexive Banach space and its dual. The semi-inner-product RKBS was also studied in [46] and [47, 48] based on the tool of semi-inner products [17, 22]. For the multi-task learning, Zhang et al. [49] developed the notion of semi-inner-product vector-valued RKBS. In 2013, Song et al. [38] constructed a class of RKBSs with the $\\ell^1$ norm via admissible kernels targeting at sparse learning. In those spaces, the representer theorem for regularized learning schemes is satisfied. In 2014, Georgiev et al. [16] constructed a class of RKBSs with the $p$ -norm $(1 \\leq p \\leq +\\infty)$ without the representer theorem. In 2015, Fasshauer et al. [13] constructed a class of RKBSs with positive definite functions. More recently, the $p$ -norm $(1 \\leq p \\leq +\\infty)$ RKBSs were systematically developed by Xu and Ye in [43] via generalized Mercer kernels. ",
+        "bbox": [
+            109,
+            478,
+            861,
+            681
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The definitions of RKBSs and the associated reproducing kernels in the above references are dependent on the construction. Moreover, the relation among those constructions is unclear. Limitations also persist. For instance, the Banach space $C([0,1])$ of all continuous functions on the interval [0,1] does not satisfy those definitions. However, $C([0,1])$ should be an RKBS as point evaluations are clearly continuous in the space. We hope to propose a framework of constructing RKBSs that unifies existing constructions, and leads further to new constructions that accept $C([0,1])$ as a particular example. The main purpose of this paper is two-fold: ",
+        "bbox": [
+            109,
+            684,
+            861,
+            806
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(i) to give a generic definition of RKBS that naturally generalizes the classical RKHS and is independent of construction; ",
+            "(ii) to propose a unified framework of constructing RKBSs that covers all existing constructions in the literature and also leads to new RKBSs. "
+        ],
+        "bbox": [
+            112,
+            811,
+            857,
+            891
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "page_number",
+        "text": "2 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 1
+    },
+    {
+        "type": "text",
+        "text": "The outline of the paper is as follows. In Section 2, we first give a generic definition of RKBSs, and then propose a novel framework of constructing RKBSs via a pair of feature maps. Furthermore, we are able to construct a new class of Orlicz RKBSs. In Section 3, we justify that our framework does unify existing RKBSs in the literature. In particular, $C([0,1])$ is included. In the last section, we develop a representative theorem for regularization networks in RKBSs constructed in our framework. ",
+        "bbox": [
+            109,
+            102,
+            861,
+            203
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2 Generic definitions and constructions ",
+        "text_level": 1,
+        "bbox": [
+            109,
+            228,
+            588,
+            247
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "In this section, we first present a generic definition of RKBS and the reproducing kernel for RKBS. Then, we propose a novel framework of constructing RKBSs via a pair of feature maps. Finally, we construct new RKBSs based on Orlicz spaces. ",
+        "bbox": [
+            109,
+            261,
+            861,
+            313
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "2.1 Generic definitions of RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            109,
+            332,
+            452,
+            348
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "We describe our generic definition of RKBSs as follows. ",
+        "bbox": [
+            109,
+            358,
+            550,
+            375
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Definition 2.1 (Reproducing Kernel Banach Spaces (RKBS)) A reproducing kernel Banach space $\\mathcal{B}$ on a prescribed nonempty set $X$ is a Banach space of certain functions on $X$ such that every point evaluation functional $\\delta_x$ , $x \\in X$ on $\\mathcal{B}$ is continuous, that is, there exists a positive constant $C_x$ such that ",
+        "bbox": [
+            109,
+            391,
+            861,
+            458
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left| \\delta_ {x} (f) \\right| = \\left| f (x) \\right| \\leq C _ {x} \\| f \\| _ {\\mathcal {B}} f o r a l l f \\in \\mathcal {B}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            330,
+            472,
+            643,
+            491
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Note that a normed vector space $V$ on $X$ is called a Banach space of functions if it is a Banach space whose elements are functions on $X$ and for each $f \\in V$ , $\\| f \\|_V = 0$ if and only if $f$ , as a function, vanishes everywhere on $X$ . By definition, $L^p([0,1])$ , $1 \\leq p \\leq +\\infty$ , is not a Banach space of functions as it consists of equivalent classes of functions with respect to the Lebesgue measure. ",
+        "bbox": [
+            109,
+            505,
+            859,
+            589
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Definition 2.1 naturally generalizes the classical definition of RKHS. We should point out that such a definition was implicitly mentioned in some papers on sampling theorems [5, 14, 18], although no reproducing kernels were defined or even mentioned therein. We also point out that the authors in [46] had also intended to use this definition for RKBSs, but eventually gave it up due to the example $C([0,1])$ . A semi-inner-product structure was imposed in [46] to ensure the existence of a reproducing kernel. ",
+        "bbox": [
+            109,
+            590,
+            859,
+            691
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "By Definition 2.1, $C([0,1])$ is an RKBS. We shall see what its reproducing kernels look like in Subsection 3.5. The only requirement on RKBSs in our definition is continuity of point evaluations. Definitions of RKBSs in existing literature [38, 43, 46, 47] all impose other requirements to ensure the existence of a reproducing kernel that is not a generalized function. Those requirements more or less seem unnatural. We are able to remove them by exploiting the definition of reproducing kernels via continuous bilinear forms. ",
+        "bbox": [
+            109,
+            694,
+            861,
+            796
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "A bilinear form between two normed vector spaces $V_{1}, V_{2}$ is a function $\\langle \\cdot, \\cdot \\rangle_{V_1 \\times V_2}$ from $V_{1} \\times V_{2}$ to $\\mathbb{C}$ that is linear about both arguments. It is said to be continuous if there exists a positive constant $C$ such that ",
+        "bbox": [
+            109,
+            797,
+            859,
+            847
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| \\langle f, g \\rangle_ {V _ {1} \\times V _ {2}} | \\leq C \\| f \\| _ {V _ {1}} \\| g \\| _ {V _ {2}} \\text {f o r a l l} f \\in V _ {1}, g \\in V _ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            294,
+            862,
+            679,
+            880
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "page_number",
+        "text": "3 ",
+        "bbox": [
+            846,
+            58,
+            857,
+            70
+        ],
+        "page_idx": 2
+    },
+    {
+        "type": "text",
+        "text": "Definition 2.2 (Reproducing Kernels for RKBS) Let $\\mathcal{B}_1$ be an RKBS on a set $\\Omega_1$ . If there exists a Banach space $\\mathcal{B}_2$ of functions on another set $\\Omega_2$ , a continuous bilinear form $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{B}_1 \\times \\mathcal{B}_2}$ and a function $K$ on $\\Omega_1 \\times \\Omega_2$ such that $K(x, \\cdot) \\in \\mathcal{B}_2$ for all $x \\in \\Omega_1$ and ",
+        "bbox": [
+            112,
+            101,
+            861,
+            154
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf (x) = \\langle f, K (x, \\cdot) \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} \\text {f o r a l l} x \\in \\Omega_ {1} \\text {a n d a l l} f \\in \\mathcal {B} _ {1}, \\tag {2.1}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            269,
+            159,
+            857,
+            178
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "then we call $K$ a reproducing kernel for $\\mathcal{B}_1$ . If, in addition, $\\mathcal{B}_2$ is also an RKBS on $\\Omega_2$ and it holds $K(\\cdot, y) \\in \\mathcal{B}_1$ for all $y \\in \\Omega_2$ and ",
+        "bbox": [
+            111,
+            183,
+            861,
+            218
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\ng (y) = \\left\\langle K (\\cdot , y), g \\right\\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} f o r a l l y \\in \\Omega_ {2} a n d a l l g \\in \\mathcal {B} _ {2}, \\tag {2.2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            272,
+            223,
+            857,
+            242
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "then we call $\\mathcal{B}_2$ an adjoint RKBS of $\\mathcal{B}_1$ and call $\\mathcal{B}_1$ and $\\mathcal{B}_2$ a pair of RKBSs. In this case, $\\widetilde{K}(x,y) := K(y,x)$ , $x \\in \\Omega_2$ , $y \\in \\Omega_1$ , is a reproducing kernel for $\\mathcal{B}_2$ . ",
+        "bbox": [
+            112,
+            247,
+            859,
+            282
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We call (2.1) and (2.2) the reproducing properties for the kernel $K$ in RKBSs $\\mathcal{B}_1$ and $\\mathcal{B}_2$ , respectively. ",
+        "bbox": [
+            111,
+            289,
+            859,
+            323
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Although there are many conditions in the definition, we shall see that RKBSs and reproducing kernels satisfying the conditions can be easily constructed via a pair of feature maps. ",
+        "bbox": [
+            111,
+            324,
+            859,
+            358
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "2.2 Constructions via a pair of feature maps ",
+        "text_level": 1,
+        "bbox": [
+            111,
+            376,
+            555,
+            393
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We shall propose a unified framework of constructing RKBSs via a pair of feature maps. We shall discuss in the next section that all existing constructions of RKBSs fall into the framework. ",
+        "bbox": [
+            111,
+            402,
+            861,
+            436
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Let $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ be a continuous bilinear form $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ on Banach spaces $\\mathcal{W}_1$ and $\\mathcal{W}_2$ . We call the linear span span $A$ of a set $A \\subseteq \\mathcal{W}_1$ dense in $\\mathcal{W}_1$ with respect to the bilinear form $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ if for any $v \\in \\mathcal{W}_2$ , ",
+        "bbox": [
+            111,
+            436,
+            861,
+            489
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle a, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = 0 \\text {f o r a \\in A}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            369,
+            494,
+            602,
+            512
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "implies $v = 0$ . Similarly, we can define denseness in $\\mathcal{W}_2$ with respect to the bilinear form. ",
+        "bbox": [
+            111,
+            518,
+            815,
+            534
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Our construction is described below. ",
+        "bbox": [
+            138,
+            536,
+            429,
+            550
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Constructions of RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            372,
+            561,
+            599,
+            575
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "Let $\\mathcal{W}_1, \\mathcal{W}_2$ be two Banach spaces, and $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ be a continuous bilinear form on $\\mathcal{W}_1 \\times \\mathcal{W}_2$ . Suppose there exist two nonempty sets $\\Omega_1$ and $\\Omega_2$ , and mappings ",
+        "bbox": [
+            140,
+            583,
+            830,
+            619
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            362,
+            632,
+            607,
+            648
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "such that with respect to the bilinear form ",
+        "bbox": [
+            140,
+            662,
+            480,
+            679
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\operatorname {s p a n} \\Phi_ {1} \\left(\\Omega_ {1}\\right) \\text {i s d e n s e i n} \\mathcal {W} _ {1}, \\operatorname {s p a n} \\Phi_ {2} \\left(\\Omega_ {2}\\right) \\text {i s d e n s e i n} \\mathcal {W} _ {2}. \\tag {2.3}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            259,
+            693,
+            828,
+            712
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "We construct ",
+        "bbox": [
+            142,
+            724,
+            250,
+            739
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}: v \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\} \\tag {2.4}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            281,
+            736,
+            828,
+            763
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "with norm ",
+        "bbox": [
+            142,
+            771,
+            227,
+            785
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| f _ {v} \\| _ {\\mathcal {B} _ {1}} := \\| v \\| _ {\\mathcal {W} _ {2}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            419,
+            787,
+            550,
+            805
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "and ",
+        "bbox": [
+            142,
+            814,
+            174,
+            827
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}: u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\} \\tag {2.5}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            282,
+            824,
+            828,
+            852
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "with norm ",
+        "bbox": [
+            142,
+            858,
+            227,
+            871
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\| g _ {u} \\right\\| _ {\\mathcal {B} _ {2}} := \\left\\| u \\right\\| _ {\\mathcal {W} _ {1}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            416,
+            875,
+            553,
+            893
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "page_number",
+        "text": "4 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 3
+    },
+    {
+        "type": "text",
+        "text": "The construction can be simplified when $\\mathcal{W}_2$ is a closed subspace of $\\mathcal{W}_1^*$ , the dual space of continuous linear functionals on $\\mathcal{W}_1$ . In this case, we always use the natural continuous bilinear form ",
+        "bbox": [
+            109,
+            136,
+            861,
+            184
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} := v (u), \\quad u \\in \\mathcal {W} _ {1}, v \\in \\mathcal {W} _ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            285,
+            186,
+            686,
+            205
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "The denseness condition (2.3) is satisfied if ",
+        "bbox": [
+            112,
+            212,
+            455,
+            228
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} = \\overline {{\\operatorname {s p a n}}} \\Phi_ {1} (\\Omega_ {1}), \\mathcal {W} _ {1} ^ {*} = \\overline {{\\operatorname {s p a n}}} \\Phi_ {2} (\\Omega_ {2}) \\tag {2.6}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            331,
+            241,
+            856,
+            258
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "or ",
+        "bbox": [
+            112,
+            273,
+            133,
+            285
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} = \\overline {{\\operatorname {s p a n}}} \\Phi_ {1} (\\Omega_ {1}), \\text {a n d} \\operatorname {s p a n} \\Phi_ {2} (\\Omega_ {2}) \\text {i s} \\tag {2.7}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            151,
+            300,
+            859,
+            316
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "We show that such constructed spaces $\\mathcal{B}_1$ and $\\mathcal{B}_2$ indeed form a pair of RKBSs, and present the associated reproducing kernel. ",
+        "bbox": [
+            112,
+            330,
+            859,
+            363
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Theorem 2.3 Let $\\mathcal{B}_1$ and $\\mathcal{B}_2$ be constructed as in (2.4) and (2.5), respectively. Then with the bilinear form on $\\mathcal{B}_1 \\times \\mathcal{B}_2$ ",
+        "bbox": [
+            112,
+            377,
+            861,
+            411
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} \\text {f o r a l l} f _ {v} \\in \\mathcal {B} _ {1} \\text {a n d a l l} g _ {u} \\in \\mathcal {B} _ {2}, \\tag {2.8}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            251,
+            422,
+            857,
+            441
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "$\\mathcal{B}_1$ is an RKBS on $\\Omega_1$ with the adjoint RKBS $\\mathcal{B}_2$ on $\\Omega_2$ . Moreover, ",
+        "bbox": [
+            112,
+            453,
+            645,
+            469
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) := \\left\\langle \\Phi_ {1} (x), \\Phi_ {2} (y) \\right\\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}, x \\in \\Omega_ {1}, y \\in \\Omega_ {2}, \\tag {2.9}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            295,
+            483,
+            857,
+            500
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            512,
+            352,
+            527
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Proof: First note that the denseness condition (2.3) guarantees that the $v, u$ in $f_v$ and $g_u$ are both unique. The definition is hence well-defined. We next prove that $\\mathcal{B}_1$ and $\\mathcal{B}_2$ are RKBSs. By assumption, there exists a positive constant $C$ such that ",
+        "bbox": [
+            109,
+            542,
+            859,
+            593
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left| \\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} \\right| \\leq C \\| u \\| _ {\\mathcal {W} _ {1}} \\| v \\| _ {\\mathcal {W} _ {2}} \\text {f o r a l l} u \\in \\mathcal {W} _ {1} \\text {a n d a l l} v \\in \\mathcal {W} _ {2}. \\tag {2.10}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            245,
+            606,
+            857,
+            625
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "By (2.4) and (2.10), we have for all $f_v \\in \\mathcal{B}_1$ and all $x \\in \\Omega_1$ ",
+        "bbox": [
+            112,
+            635,
+            575,
+            652
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| f _ {v} (x) | = | \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} | \\leq C \\| \\Phi_ {1} (x) \\| _ {\\mathcal {W} _ {1}} \\| v \\| _ {\\mathcal {W} _ {2}} = C \\| \\Phi_ {1} (x) \\| _ {\\mathcal {W} _ {1}} \\| f _ {v} \\| _ {\\mathcal {B} _ {1}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            205,
+            664,
+            767,
+            684
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Similarly, by (2.5) and (2.10), we have for all $g_{u} \\in \\mathcal{B}_{2}$ and all $y \\in \\Omega_{2}$ ",
+        "bbox": [
+            109,
+            694,
+            653,
+            710
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| g _ {u} (y) | = | \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} | \\leq C \\| \\Phi_ {2} (y) \\| _ {\\mathcal {W} _ {2}} \\| u \\| _ {\\mathcal {W} _ {1}} = C \\| \\Phi_ {2} (y) \\| _ {\\mathcal {W} _ {2}} \\| g _ {u} \\| _ {\\mathcal {B} _ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            205,
+            723,
+            767,
+            742
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Thus, point evaluation functionals are continuous on both $\\mathcal{B}_1$ and $\\mathcal{B}_2$ . By Definition 2.1, $\\mathcal{B}_1$ and $\\mathcal{B}_2$ are RKBSs on $\\Omega_1$ and $\\Omega_2$ , respectively. ",
+        "bbox": [
+            112,
+            753,
+            859,
+            786
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Next, $\\langle \\cdot ,\\cdot \\rangle_{\\mathcal{B}_1\\times \\mathcal{B}_2}$ is a continuous bilinear form as ",
+        "bbox": [
+            138,
+            787,
+            519,
+            804
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| \\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} | = | \\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} | \\leq C \\| u \\| _ {\\mathcal {W} _ {1}} \\| v \\| _ {\\mathcal {W} _ {2}} = C \\| f _ {v} \\| _ {\\mathcal {B} _ {1}} \\| g _ {u} \\| _ {\\mathcal {B} _ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            225,
+            816,
+            746,
+            835
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "Finally, by (2.3), (2.4), (2.8) and (2.9), we have ",
+        "bbox": [
+            138,
+            845,
+            517,
+            863
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, \\cdot) = g _ {\\Phi_ {1} (x)} \\in \\mathcal {B} _ {2}, f _ {v} (x) = \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\langle f _ {v}, g _ {\\Phi_ {1} (x)} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} = \\langle f _ {v}, K (x, \\cdot) \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            143,
+            875,
+            828,
+            893
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "page_number",
+        "text": "5 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 4
+    },
+    {
+        "type": "text",
+        "text": "for all $x\\in \\Omega_1$ and all $f_{v}\\in \\mathcal{B}_{1}$ . Similarly, ",
+        "bbox": [
+            111,
+            102,
+            434,
+            119
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (\\cdot , y) = f _ {\\Phi_ {2} (y)} \\in \\mathcal {B} _ {1}, g _ {u} (y) = \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\langle f _ {\\Phi_ {2} (y)}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} = \\langle K (\\cdot , y), g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            140,
+            132,
+            834,
+            152
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "for all $y \\in \\Omega_2$ and all $g_u \\in \\mathcal{B}_2$ . The proof is complete. ",
+        "bbox": [
+            111,
+            164,
+            535,
+            181
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We call $\\Phi_1: \\Omega_1 \\to \\mathcal{W}_1$ and $\\Phi_2: \\Omega_2 \\to \\mathcal{W}_2$ in Theorem 2.3 a pair of feature maps for the reproducing kernel $K$ , and $\\mathcal{W}_1$ and $\\mathcal{W}_2$ a pair of feature spaces for $K$ . The feature spaces and feature maps for an RKBS might not be unique. Different choices of them will lead to different reproducing kernels for the RKBS. ",
+        "bbox": [
+            109,
+            191,
+            861,
+            260
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Below we prove the existence of a reproducing kernel for a general RKBS under the mild condition that it is separable. ",
+        "bbox": [
+            111,
+            261,
+            861,
+            296
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Theorem 2.4 Every separable RKBS admits a reproducing kernel. ",
+        "bbox": [
+            112,
+            311,
+            645,
+            328
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Proof: Let $\\mathcal{B}$ be a separable RKBS on $X$ . Thus, there exist $f_{n} \\in \\mathcal{B}$ , $n \\in \\mathbb{N}$ such that $\\operatorname{span}\\{f_n : n \\in \\mathbb{N}\\}$ is dense in $\\mathcal{B}$ . We construct a pair of feature maps and feature spaces for $\\mathcal{B}$ as follows. Let ",
+        "bbox": [
+            109,
+            342,
+            861,
+            391
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} = \\overline {{\\mathrm {s p a n}}} \\{\\delta_ {x}: x \\in X \\} \\mathrm {i n} \\mathcal {B} ^ {*}, \\Omega_ {1} = X, \\mathrm {a n d} \\Phi_ {1} (x) = \\delta_ {x}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            256,
+            393,
+            718,
+            412
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Also, set ",
+        "bbox": [
+            112,
+            419,
+            187,
+            435
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {2} = \\mathcal {B}, \\Omega_ {2} = \\mathbb {N}, \\text {a n d} \\Phi_ {2} (n) = f _ {n} (x).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            331,
+            436,
+            640,
+            454
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Clearly, the denseness condition (2.3) is satisfied. We observe that the space $\\mathcal{B}_1$ followed from the construction is exactly $\\mathcal{B}$ . By Theorem 2.3, ",
+        "bbox": [
+            111,
+            460,
+            861,
+            496
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, n) = \\langle \\delta_ {x}, f _ {n} \\rangle = f _ {n} (x), x \\in \\Omega_ {1}, n \\in \\mathbb {N}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            313,
+            508,
+            658,
+            527
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "is a reproducing kernel for $\\mathcal{B}$ . ",
+        "bbox": [
+            111,
+            541,
+            346,
+            558
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We remark that the reproducing kernel given in the above theorem is of little use in practice. The purpose of the theorem is to verify that Definition 2.1 is indeed generic for RKBSs. Under the definition, reproducing kernels for RKBSs exist under a very mild condition, namely, separability. ",
+        "bbox": [
+            111,
+            569,
+            861,
+            638
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "2.3 Orlicz RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            657,
+            305,
+            672
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "To show the advantages of our framework, we construct a new class of RKBSs based on Orlicz spaces. Orlicz spaces constitute an important generalization of $L^p$ -spaces. To this end, we shall briefly review the basic theory of Orlicz spaces [29, 30]. ",
+        "bbox": [
+            109,
+            684,
+            861,
+            734
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "Set $\\mathbb{R}_+ := [0, +\\infty)$ . Let $\\varphi: \\mathbb{R}_+ \\to \\mathbb{R}_+$ be a strictly increasing and continuous function with $\\varphi(0) = 0$ and $\\lim_{t \\to +\\infty} \\varphi(t) = +\\infty$ . Besides $\\varphi$ , the following three functions are central to our discussions: ",
+        "bbox": [
+            111,
+            736,
+            861,
+            785
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\psi (t) := \\varphi^ {- 1} (t), \\Phi (t) := \\int_ {0} ^ {t} \\varphi (s) d s, \\Psi (t) := \\int_ {0} ^ {t} \\psi (s) d s, t \\in \\mathbb {R} _ {+}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            225,
+            794,
+            746,
+            833
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "We call $\\Phi$ and $\\Psi$ a pair of conjugated nice Young functions. Then ",
+        "bbox": [
+            112,
+            843,
+            637,
+            859
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "equation",
+        "text": "$$\nx y \\leq \\Phi (x) + \\Psi (y), x, y \\in \\mathbb {R} _ {+},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            362,
+            873,
+            609,
+            892
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "page_number",
+        "text": "6 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            69
+        ],
+        "page_idx": 5
+    },
+    {
+        "type": "text",
+        "text": "where equality holds if $x = \\psi(y)$ , or equivalently $y = \\varphi(x)$ . The nice Young function $\\Psi$ complementary to $\\Phi$ can equally be defined by $\\Psi(t) = \\sup \\{x|t| - \\Phi(x): x \\in \\mathbb{R}_+\\}$ , $t \\in \\mathbb{R}$ . ",
+        "bbox": [
+            111,
+            102,
+            857,
+            135
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Let $(\\Omega, \\mathcal{F}, \\mu)$ be a measure space. The Orlicz space [30] $\\mathcal{L}^{\\Phi}$ consists of all the $\\mathcal{F}$ -measurable functions $f: \\Omega \\to \\mathbb{C}$ such that ",
+        "bbox": [
+            111,
+            136,
+            859,
+            170
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\int_ {\\Omega} \\Phi (\\alpha | f |) d \\mu <   + \\infty \\text {f o r s o m e} \\alpha > 0.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            339,
+            181,
+            630,
+            217
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "It is a linear vector space with two equivalent norms $\\| \\cdot \\|_{\\Phi}$ , the Gauge norm (Luxemburg norm), and $|\\cdot |_{\\Phi}$ , the Orlicz norm. They are respectively defined by ",
+        "bbox": [
+            111,
+            228,
+            857,
+            262
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| f \\| _ {\\Phi} := \\inf  \\left\\{\\alpha > 0: \\int_ {\\Omega} \\Phi \\left(\\frac {| f |}{\\alpha}\\right) d \\mu \\leq \\Phi (1) \\right\\}, \\quad f \\in \\mathcal {L} ^ {\\Phi}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            276,
+            273,
+            696,
+            310
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "and ",
+        "bbox": [
+            112,
+            320,
+            148,
+            335
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| f | _ {\\Phi} := \\sup  \\left\\{\\int_ {\\Omega} | f g | d \\mu : g \\in \\mathcal {L} ^ {\\Psi}, \\| g \\| _ {\\Psi} \\leq 1 \\right\\}, f \\in \\mathcal {L} ^ {\\Phi}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            269,
+            332,
+            702,
+            367
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "They indeed are equivalent as $\\Phi(1) \\| f \\|_{\\Phi} \\leq |f|_{\\Phi} \\leq 2 \\| f \\|_{\\Phi}$ , $f \\in \\mathcal{L}^{\\Phi}$ . If $\\varphi(t) = t^{p-1}$ and $\\psi(t) = t^{q-1}$ , $t \\in \\mathbb{R}_+$ , where $1 < p, q < +\\infty$ with $1/p + 1/q = 1$ , then ",
+        "bbox": [
+            111,
+            373,
+            859,
+            407
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi (t) = t ^ {p} / p, \\Psi (t) = t ^ {q} / q, t \\in \\mathbb {R} _ {+}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            349,
+            421,
+            620,
+            439
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "In this case, $\\mathcal{L}^{\\Phi}$ is the usual space $L_{\\mu}^{p}(\\Omega)$ and both the Gauge norm and Orlicz norm equal ",
+        "bbox": [
+            111,
+            452,
+            828,
+            470
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| f \\| _ {p} := \\left(\\int_ {\\Omega} | f (x) | ^ {p} d \\mu (x)\\right) ^ {1 / p}, f \\in L _ {\\mu} ^ {p} (\\Omega).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            315,
+            482,
+            656,
+            517
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "If $\\Phi$ and $\\Psi$ are a pair of conjugated nice Young functions then $(\\mathcal{L}^{\\Psi},|\\cdot |_{\\Psi}) = (\\mathcal{L}^{\\Phi},\\| \\cdot \\|_{\\Phi})^{*}$ (see, Theorem 13 in Section 1.2, [30]) in the sense that for each continuous linear functional $T$ on $(\\mathcal{L}^{\\Phi},\\| \\cdot \\|_{\\Phi})$ there exists a unique $g\\in \\mathcal{L}^{\\Psi}$ such that ",
+        "bbox": [
+            111,
+            529,
+            859,
+            583
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\nT (f) = \\int_ {\\Omega} f g d \\mu , f \\in \\mathcal {L} ^ {\\Phi} \\mathrm {a n d} \\| T \\| = | g | _ {\\Psi}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            307,
+            593,
+            663,
+            630
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "There is a unique semi-inner product ([23], pp. 101-104) on $(\\mathcal{L}^{\\Phi},\\| \\cdot \\|_{\\Phi})$ given by ",
+        "bbox": [
+            112,
+            640,
+            750,
+            660
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\n[ f, g ] = \\| g \\| _ {\\Phi} ^ {2} \\frac {\\int_ {\\Omega} f \\operatorname {s g n} (\\bar {g}) \\varphi \\Big (\\frac {| g |}{\\| g \\| _ {\\Phi}} \\Big) d \\mu}{\\int_ {\\Omega} | g | \\varphi \\Big (\\frac {| g |}{\\| g \\| _ {\\Phi}} \\Big) d \\mu}, f, g \\in \\mathcal {L} ^ {\\Phi},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            290,
+            670,
+            681,
+            744
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "where $\\operatorname{sgn}(t) \\coloneqq t / |t|$ if $t \\in \\mathbb{C} \\setminus \\{0\\}$ and $\\operatorname{sgn}(0) \\coloneqq 0$ . It implies that the standard duality mapping $J_{\\Phi} : (\\mathcal{L}^{\\Phi}, \\| \\cdot \\|_{\\Phi}) \\to (\\mathcal{L}^{\\Psi}, |\\cdot|_{\\Psi})$ has the form ",
+        "bbox": [
+            111,
+            753,
+            859,
+            789
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "equation",
+        "text": "$$\nJ _ {\\Phi} (f) = \\frac {\\| f \\| _ {\\Phi} ^ {2} \\operatorname {s g n} (\\bar {f}) \\varphi \\left(\\frac {| f |}{\\| f \\| _ {\\Phi}}\\right)}{\\int_ {\\Omega} | f | \\varphi \\left(\\frac {| f |}{\\| f \\| _ {\\Phi}}\\right) d \\mu}, f \\in \\mathcal {L} ^ {\\Phi}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            318,
+            800,
+            651,
+            875
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "page_number",
+        "text": "7 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            69
+        ],
+        "page_idx": 6
+    },
+    {
+        "type": "text",
+        "text": "Particularly, when $\\mathcal{L}^{\\Phi} = L_{\\mu}^{p}(\\Omega)$ , we observe that ",
+        "bbox": [
+            112,
+            101,
+            496,
+            119
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\nJ _ {p} (f) = \\frac {\\mathrm {s g n} (\\bar {f}) | f | ^ {p - 1}}{| | f | | _ {p} ^ {p - 2}}, f \\in L _ {\\mu} ^ {p} (\\Omega),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            344,
+            126,
+            627,
+            167
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "which is the usual duality mapping from $L_{\\mu}^{p}(\\Omega)$ to $L_{\\mu}^{q}(\\Omega)$ first discovered by Giles [17]. ",
+        "bbox": [
+            111,
+            174,
+            794,
+            191
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Another interesting example ([30], page 9) is when $\\varphi(t) = \\log(1 + t)$ and $\\psi(t) = e^t - 1$ , $t \\in \\mathbb{R}_+$ . In this case, ",
+        "bbox": [
+            111,
+            191,
+            861,
+            226
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi (t) = (1 + t) \\log (1 + t) - t, \\quad \\Psi (t) = e ^ {t} - t - 1, \\quad t \\in \\mathbb {R} _ {+}. \\tag {2.11}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            261,
+            234,
+            857,
+            253
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "To emphasize the importance of Orlicz spaces in applications, we give an illustrating example that shows the Orlicz space with the nice Young functions (2.11) can approximate the $\\ell^2$ or $\\ell^1$ space. Consider the following sequence of nice Young functions ",
+        "bbox": [
+            111,
+            263,
+            861,
+            315
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {k} (t) := \\Phi (k t) = (1 + k t) \\log (1 + k t) - k t, \\quad t \\geq 0, k > 0.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            259,
+            323,
+            710,
+            342
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Let $\\Omega := \\{1, 2, \\dots, n\\}$ and $\\mu$ be the counting measure on $\\Omega$ . Then for each $y := (y_1, y_2, \\dots, y_n) \\in \\mathbb{C}^n$ , $\\|y\\|_{\\Phi_k}$ equals the smallest nonnegative number $\\alpha$ such that ",
+        "bbox": [
+            111,
+            349,
+            875,
+            386
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\sum_ {j = 1} ^ {n} \\left(1 + k \\frac {| y _ {j} |}{\\alpha}\\right) \\log \\left(1 + k \\frac {| y _ {j} |}{\\alpha}\\right) - \\frac {k}{\\alpha} \\sum_ {j = 1} ^ {n} | y _ {j} | \\leq (1 + k) \\log (1 + k) - k.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            215,
+            393,
+            754,
+            440
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Hence, the semi-inner-product for the corresponding Orlicz space $\\mathcal{L}^{\\Phi_k}$ has the form ",
+        "bbox": [
+            112,
+            448,
+            769,
+            465
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n[ x, y ] = \\alpha^ {2} \\frac {\\sum_ {j = 1} ^ {n} x _ {j} \\operatorname {s g n} \\left(\\overline {{y _ {j}}}\\right) \\log \\left(1 + k \\frac {| y _ {j} |}{\\alpha}\\right)}{\\sum_ {j = 1} ^ {n} | y _ {j} | \\log \\left(1 + k \\frac {| y _ {j} |}{\\alpha}\\right)}, x, y \\in \\mathbb {C} ^ {n}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            272,
+            472,
+            699,
+            530
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Thus, on the unit sphere where $\\alpha = 1$ , we see that ",
+        "bbox": [
+            112,
+            537,
+            511,
+            554
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\lim _ {k \\to 0} [ x, y ] = \\lim _ {k \\to 0} \\frac {\\sum_ {j = 1} ^ {n} x _ {j} \\operatorname {s g n} (\\overline {{y _ {j}}}) \\log (1 + k | y _ {j} |) ^ {1 / k}}{\\sum_ {j = 1} ^ {n} | y _ {j} | \\log (1 + k | y _ {j} |) ^ {1 / k}} = \\frac {\\sum_ {j = 1} ^ {n} x _ {j} \\operatorname {s g n} (\\overline {{y _ {j}}}) | y _ {j} |}{\\sum_ {j = 1} ^ {n} | y _ {j} | ^ {2}} = \\frac {\\sum_ {j = 1} ^ {n} x _ {j} \\overline {{y _ {j}}}}{\\sum_ {j = 1} ^ {n} | y _ {j} | ^ {2}},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            147,
+            561,
+            823,
+            604
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "which is the inner product on the $\\ell^2$ space, and by the L'Hôpital's rule that ",
+        "bbox": [
+            111,
+            612,
+            712,
+            630
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\lim _ {k \\to + \\infty} [ x, y ] = \\lim _ {k \\to + \\infty} \\frac {\\sum_ {j = 1} ^ {n} x _ {j} \\operatorname {s g n} (\\overline {{y _ {j}}}) \\frac {| y _ {j} |}{1 + k | y _ {j} |}}{\\sum_ {j = 1} ^ {n} | y _ {j} | \\frac {| y _ {j} |}{1 + k | y _ {j} |}} = \\frac {\\sum_ {j = 1} x _ {j} \\operatorname {s g n} (\\overline {{y _ {j}}})}{\\sum_ {j = 1} ^ {n} | y _ {j} |}, x, y \\in \\mathbb {C} ^ {n},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            189,
+            637,
+            782,
+            691
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "which is the semi-inner product on the $\\ell^1$ space. ",
+        "bbox": [
+            111,
+            698,
+            493,
+            715
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "We describe our construction of Orlicz RKBSs as follow. ",
+        "bbox": [
+            140,
+            715,
+            586,
+            731
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "Theorem 2.5 Let $\\Phi, \\Psi$ be a pair of nice Young functions. Choose ",
+        "bbox": [
+            112,
+            744,
+            640,
+            761
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} := \\left(\\mathcal {L} ^ {\\Phi}, \\| \\cdot \\| _ {\\Phi}\\right) a n d \\mathcal {W} _ {2} := \\left(\\mathcal {L} ^ {\\Psi}, | \\cdot | _ {\\Psi}\\right)\n$$",
+        "text_format": "latex",
+        "bbox": [
+            323,
+            768,
+            647,
+            789
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "as a pair of feature spaces. Suppose that there exist feature maps $\\Phi_1: \\Omega_1 \\to \\mathcal{W}_1, \\Phi_2: \\Omega_2 \\to \\mathcal{W}_2$ satisfying the denseness condition (2.3). Then $\\mathcal{B}_1$ defined by (2.4) is an RKBS on $\\Omega_1$ with the adjoint RKBS $\\mathcal{B}_2$ defined by (2.5) on $\\Omega_2$ endowed with the bilinear form (2.8). Moreover, a reproducing kernel for $\\mathcal{B}_1$ is ",
+        "bbox": [
+            111,
+            797,
+            861,
+            866
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) := \\left\\langle \\Phi_ {1} (x), \\Phi_ {2} (y) \\right\\rangle_ {\\mathcal {L} ^ {\\Phi}}, x \\in \\Omega_ {1}, y \\in \\Omega_ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            308,
+            875,
+            663,
+            893
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "page_number",
+        "text": "8 ",
+        "bbox": [
+            846,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 7
+    },
+    {
+        "type": "text",
+        "text": "3 Existing examples of RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            98,
+            488,
+            119
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "In this section, we aim at justifying that our construction in the previous section covers existing RKBSs in the literature, including the reflexive RKBS [46], the semi-inner-product RKBS [46, 47], the RKBS constructed by Borel measures [37], the RKBS with the $\\ell^1$ norm [38], the RKBS with positive definite functions [13], and the $p$ -norm RKBS [43]. In particular, $C([0,1])$ is included in our framework. Hence, we are able to write out three reproducing kernels for $C([0,1])$ . ",
+        "bbox": [
+            111,
+            132,
+            861,
+            234
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "We shall primarily use Theorem 2.3 to fulfill this task. Let us keep in mind that a pair of RKBSs contain the following eleven ingredients: ",
+        "bbox": [
+            111,
+            234,
+            861,
+            268
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1}, \\Omega_ {2}, \\mathcal {W} _ {1}, \\mathcal {W} _ {2}, \\Phi_ {1}, \\Phi_ {2}, \\langle \\cdot , \\cdot \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}, \\mathcal {B} _ {1}, \\mathcal {B} _ {2}, \\langle \\cdot , \\cdot \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}}, K.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            254,
+            281,
+            718,
+            299
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "3.1 Reproducing kernel Hilbert spaces ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            316,
+            501,
+            334
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Our construction must include RKHSs. To show this, we shall briefly review basic theory of RKHSs [2, 3, 8, 19, 33, 36, 41, 50]. ",
+        "bbox": [
+            111,
+            344,
+            861,
+            378
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "An RKHS $\\mathcal{H}$ on a nonempty set $X$ is a Hilbert space of certain functions on $X$ such that point evaluation functionals are continuous on $\\mathcal{H}$ . By the Riesz representation theorem, there exists a unique reproducing kernel $K$ on $X\\times X$ such that ",
+        "bbox": [
+            111,
+            378,
+            861,
+            429
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (\\cdot , x) \\in \\mathcal {H} \\text {f o r a l l} x \\in X, \\overline {{\\operatorname {s p a n}}} \\{K (\\cdot , x): x \\in X \\} = \\mathcal {H}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            272,
+            441,
+            699,
+            459
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "and ",
+        "bbox": [
+            112,
+            472,
+            148,
+            486
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf (x) = \\left(f, K (\\cdot , x)\\right) _ {\\mathcal {H}} \\text {f o r a l l} f \\in \\mathcal {H} \\text {a n d a l l} x \\in X \\tag {3.12}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            294,
+            488,
+            857,
+            506
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "where $(\\cdot, \\cdot)_{\\mathcal{H}}$ denotes the inner product on $\\mathcal{H}$ . Equation (3.12) is called the reproducing property in machine learning. A function $K$ on $X \\times X$ is a reproducing kernel of an RKHS if and only if there exists a feature map $\\Phi$ from $X$ to a Hilbert space $\\mathcal{W}$ such that ",
+        "bbox": [
+            111,
+            513,
+            861,
+            565
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) = (\\Phi (x), \\Phi (y)) _ {\\mathcal {W}}, x, y \\in X.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            346,
+            575,
+            627,
+            595
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Another well-known characterization of a reproducing kernel is for it to be positive semi-definite. There is a bijective correspondence between RKHSs and reproducing kernels. For this sake, the RKHS corresponding to a reproducing kernel $K$ is denoted by $\\mathcal{H}_K$ . The feature map $\\Phi$ and feature space $\\mathcal{W}$ of a reproducing kernel may not be unique. In particular, we say $\\Phi$ is the canonical feature map of $K$ if $\\Phi(x) = K(\\cdot, x)$ . In this case, $\\mathcal{W} = \\mathcal{H}_K$ and ",
+        "bbox": [
+            111,
+            606,
+            861,
+            691
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) = (K (\\cdot , x), K (\\cdot , y)) _ {\\mathcal {H} _ {K}}, x, y \\in X.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            325,
+            703,
+            647,
+            722
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "A reproducing kernel can be easily identified through its feature map. The following result is well-known in machine learning community [44, 50]. ",
+        "bbox": [
+            111,
+            733,
+            859,
+            768
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Lemma 3.1 [44] If $K: X \\times X \\to \\mathbb{C}$ is a reproducing kernel with a feature map $\\Phi$ from $X$ to a Hilbert space $\\mathcal{W}$ , then $\\mathcal{H}_K = \\{ (\\Phi(\\cdot), u)_{\\mathcal{W}} : u \\in \\mathcal{W} \\}$ with the inner product ",
+        "bbox": [
+            112,
+            780,
+            861,
+            815
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left(\\left(\\Phi (\\cdot), u\\right) _ {\\mathcal {W}}, \\left(\\Phi (\\cdot), v\\right) _ {\\mathcal {W}}\\right) _ {\\mathcal {H} _ {K}} = \\left(\\mathbb {P} _ {\\Phi} v, \\mathbb {P} _ {\\Phi} u\\right) _ {\\mathcal {W}}, u, v \\in \\mathcal {W},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            276,
+            825,
+            699,
+            849
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "where $\\mathbb{P}_{\\Phi}$ denotes the orthogonal projection from $\\mathcal{W}$ onto $\\overline{\\operatorname{span}}\\Phi(X)$ . If $\\mathcal{W} = \\overline{\\operatorname{span}}\\Phi(X)$ , then $\\mathcal{H}_K$ is isometrically isomorphic to $\\mathcal{W}$ through the linear mapping $(\\Phi(\\cdot), u)_{\\mathcal{W}} \\to u$ . ",
+        "bbox": [
+            112,
+            858,
+            861,
+            893
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "page_number",
+        "text": "9 ",
+        "bbox": [
+            846,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 8
+    },
+    {
+        "type": "text",
+        "text": "Note that the dual space of $\\mathcal{H}_K$ is $\\mathcal{H}_K^* = \\overline{\\mathcal{H}_K} \\coloneqq \\{\\bar{f} : f \\in \\mathcal{H}_K\\}$ . By Theorem 2.3 and Lemma 3.1, we obtain the following result. ",
+        "bbox": [
+            111,
+            101,
+            861,
+            136
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Example 3.2 Let $\\mathcal{H}_K$ be an RKHS on $X$ with the reproducing kernel $K$ , and let $\\Phi$ from $X$ to a Hilbert space $\\mathcal{W}$ be a feature map of $K$ such that $\\mathcal{W} = \\overline{\\operatorname{span}}\\Phi(X)$ . Choose ",
+        "bbox": [
+            111,
+            147,
+            861,
+            181
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := X, \\mathcal {W} _ {1} := \\mathcal {W}, \\mathcal {W} _ {2} := \\overline {{\\mathcal {W}}},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            344,
+            195,
+            629,
+            210
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := \\Phi (x), x \\in \\Omega_ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            331,
+            228,
+            642,
+            242
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\rightarrow \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := \\overline {{\\Phi (y)}}, y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            334,
+            251,
+            638,
+            267
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            277,
+            292,
+            292
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi (x), v \\rangle_ {\\mathcal {W}} = (\\Phi (x), \\bar {v}) _ {\\mathcal {W}}: v \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\} = \\mathcal {H} _ {K}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            166,
+            304,
+            805,
+            330
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| \\bar{v}\\|_{\\mathcal{W}}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            342,
+            650,
+            359
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle u, \\overline {{\\Phi (y)}} \\rangle_ {\\mathcal {W}} = (u, \\Phi (y)) _ {\\mathcal {W}} = \\overline {{(\\Phi (y) , u) _ {\\mathcal {W}}}}: u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\} = \\overline {{\\mathcal {H} _ {K}}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            114,
+            373,
+            862,
+            398
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}\\coloneqq \\| u\\|_{\\mathcal{W}}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is given by ",
+        "bbox": [
+            112,
+            411,
+            661,
+            428
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle (\\Phi (x), \\bar {v}) _ {\\mathcal {W}}, \\overline {{(\\Phi (y) , u) _ {\\mathcal {W}}}} \\rangle_ {\\mathcal {H} _ {K}} = \\big ((\\Phi (x), \\bar {v}) _ {\\mathcal {W}}, (\\Phi (y), u) _ {\\mathcal {W}} \\big) _ {\\mathcal {H} _ {K}} = (u, \\bar {v}) _ {\\mathcal {W}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            153,
+            441,
+            820,
+            463
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Moreover, ",
+        "bbox": [
+            112,
+            474,
+            194,
+            488
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle \\Phi_ {1} (x), \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi (x), \\overline {{\\Phi (y)}} \\rangle_ {\\mathcal {W}} = (\\Phi (x), \\Phi (y)) _ {\\mathcal {W}} = K (x, y)\n$$",
+        "text_format": "latex",
+        "bbox": [
+            246,
+            489,
+            727,
+            508
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            516,
+            352,
+            532
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Proof: The denseness condition (2.6) is satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            111,
+            542,
+            808,
+            561
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "image",
+        "img_path": "images/42554ace3e45e64ea0df13254266b7c331e24001f2270bf7e10f3ce9daa8c0be.jpg",
+        "image_caption": [],
+        "image_footnote": [],
+        "bbox": [
+            841,
+            545,
+            857,
+            558
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Therefore, we have showed that an RKHS is an RKBS with the same reproducing kernel. ",
+        "bbox": [
+            140,
+            573,
+            841,
+            589
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "3.2 Reflexive RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            609,
+            333,
+            625
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Learning in Banach spaces has received considerable attention in the past two decades. The notion of reproducing kernel Banach spaces was introduced in machine learning in 2009, [46]. Reflexive RKBSs constructed in [46] are the first class of RKBSs with reproducing kernels. ",
+        "bbox": [
+            111,
+            636,
+            859,
+            686
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "A normed vector space $V$ is reflexive if $(V^{*})^{*} = V$ , that is, every continuous linear functional $T$ on $V^{*}$ must be of the form ",
+        "bbox": [
+            111,
+            686,
+            857,
+            719
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "equation",
+        "text": "$$\nT (v ^ {*}) = v ^ {*} (u), \\quad v ^ {*} \\in V ^ {*}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            390,
+            720,
+            581,
+            739
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "for some $u \\in V$ . A Banach space is reflexive if and only if its dual is reflexive, [24]. ",
+        "bbox": [
+            111,
+            746,
+            761,
+            763
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "The definition and construction of reflexive RKBSs in [46] are described below. ",
+        "bbox": [
+            138,
+            763,
+            761,
+            780
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Definition of Reflexive RKBSs in [46]. An RKBS on $X$ is a reflexive Banach space $\\mathcal{B}$ of functions on $X$ for which $\\mathcal{B}^*$ is isometrically isomorphic to a Banach space $\\mathcal{B}^\\#$ of functions on $X$ and the point evaluation is continuous on both $\\mathcal{B}$ and $\\mathcal{B}^\\#$ . ",
+        "bbox": [
+            111,
+            797,
+            862,
+            848
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "Construction of Reflexive RKBSs in [46]. Let $\\mathcal{W}$ be a reflexive Banach space. Suppose ",
+        "bbox": [
+            111,
+            866,
+            861,
+            883
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "page_number",
+        "text": "10 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            71
+        ],
+        "page_idx": 9
+    },
+    {
+        "type": "text",
+        "text": "that there exists $\\Phi : X \\to \\mathcal{W}$ , and $\\Phi^* : X \\to \\mathcal{W}^*$ such that $\\overline{\\operatorname{span}}\\Phi(X) = \\mathcal{W}$ , $\\overline{\\operatorname{span}}\\Phi^*(X) = \\mathcal{W}^*$ . Then ",
+        "bbox": [
+            112,
+            101,
+            857,
+            132
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} := \\left\\{\\langle u, \\Phi^ {*} (\\cdot) \\rangle_ {\\mathcal {W}}: u \\in \\mathcal {W} \\right\\} w i t h n o r m \\| \\langle u, \\Phi^ {*} (\\cdot) \\rangle_ {\\mathcal {W}} \\| _ {\\mathcal {B}} := \\| u \\| _ {\\mathcal {W}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            232,
+            132,
+            740,
+            159
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "is an RKBS on $X$ with the dual space ",
+        "bbox": [
+            112,
+            164,
+            415,
+            181
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} ^ {\\#} := \\left\\{\\langle \\Phi (\\cdot), u ^ {*} \\rangle_ {\\mathcal {W}}: u ^ {*} \\in \\mathcal {W} ^ {*} \\right\\} e n d o w e d w i t h n o r m \\| \\langle \\Phi (\\cdot), u ^ {*} \\rangle_ {\\mathcal {W}} \\| _ {\\mathcal {B} ^ {\\#}} := \\| u ^ {*} \\| _ {\\mathcal {W} ^ {*}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            169,
+            191,
+            797,
+            220
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "and the bilinear form ",
+        "bbox": [
+            112,
+            232,
+            284,
+            248
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\langle \\left\\langle u, \\Phi^ {*} (\\cdot) \\right\\rangle_ {\\mathcal {W}}, \\left\\langle \\Phi (\\cdot), u ^ {*} \\right\\rangle_ {\\mathcal {W}} \\right\\rangle_ {\\mathcal {B} \\times \\mathcal {B} ^ {\\#}} := \\left\\langle u, u ^ {*} \\right\\rangle_ {\\mathcal {W}}, u \\in \\mathcal {W}, u ^ {*} \\in \\mathcal {W} ^ {*}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            243,
+            260,
+            727,
+            282
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K(x,y)\\coloneqq \\langle \\Phi (x),\\Phi^{*}(y)\\rangle_{\\mathcal{W}}$ is a reproducing kernel for $\\mathcal{B}$ ",
+        "bbox": [
+            112,
+            292,
+            642,
+            310
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "We show that the above construction of reflexive RKBSs falls within our framework. ",
+        "bbox": [
+            140,
+            327,
+            805,
+            343
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Example 3.3 Assume the same conditions as in the above construction of reflexive RKBSs. Choose ",
+        "bbox": [
+            112,
+            359,
+            857,
+            391
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l} \\Omega_ {1} = \\Omega_ {2} := X, \\mathcal {W} _ {1} := \\mathcal {W} ^ {*}, \\mathcal {W} _ {2} := \\mathcal {W}, \\\\ \\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := \\Phi^ {*} (x), x \\in \\Omega_ {1}, \\\\ \\Phi_ {2}: \\Omega_ {2} \\rightarrow \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := \\Phi (y), y \\in \\Omega_ {2} \\\\ \\end{array}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            323,
+            393,
+            648,
+            460
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            469,
+            292,
+            484
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi^ {*} (x), v \\rangle_ {\\mathcal {W} ^ {*}} = \\langle v, \\Phi^ {*} (x) \\rangle_ {\\mathcal {W}}: v \\in \\mathcal {W} _ {2} = \\mathcal {W}, x \\in \\Omega_ {1} \\right\\} = \\mathcal {B}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            138,
+            494,
+            833,
+            523
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\mathcal{W}}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            535,
+            650,
+            551
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle u, \\Phi (y) \\rangle_ {\\mathcal {W} ^ {*}} = \\langle \\Phi (y), u \\rangle_ {\\mathcal {W}}: u \\in \\mathcal {W} _ {1} = \\mathcal {W} ^ {*}, y \\in \\Omega_ {2} \\right\\} = \\mathcal {B} ^ {\\#}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            135,
+            564,
+            833,
+            592
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2} \\coloneqq \\| u\\|_{\\mathcal{W}^*}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ takes the form ",
+        "bbox": [
+            112,
+            604,
+            697,
+            621
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} = \\langle v, u \\rangle_ {\\mathcal {W}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            346,
+            633,
+            625,
+            652
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Moreover, a reproducing kernel of $\\mathcal{B}_1$ is ",
+        "bbox": [
+            112,
+            666,
+            426,
+            683
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle \\Phi_ {1} (x), \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi^ {*} (x), \\Phi (y) \\rangle_ {\\mathcal {W} ^ {*}} = \\langle \\Phi (y), \\Phi^ {*} (x) \\rangle_ {\\mathcal {W}} f o r a l l x \\in \\Omega_ {1}, y \\in \\Omega_ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            181,
+            696,
+            787,
+            715
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "Proof: Note that $\\mathcal{W}$ is a reflexive Banach space. The denseness condition (2.6) is hence satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            111,
+            728,
+            857,
+            762
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "page_number",
+        "text": "11 ",
+        "bbox": [
+            838,
+            58,
+            857,
+            70
+        ],
+        "page_idx": 10
+    },
+    {
+        "type": "text",
+        "text": "3.3 Semi-inner-product RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            101,
+            431,
+            118
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "As mentioned in [46], the lack of an inner product may cause arbitrariness in the properties of the associated reproducing kernel of an RKBS. To overcome this, the authors also proposed the second class of RKBSs, namely, semi-inner-product RKBSs. Thanks to the tool of semi-inner-products, existence, uniqueness and representer theorems for the standard learning schemes in semi-inner-product RKBSs were established therein. ",
+        "bbox": [
+            109,
+            128,
+            861,
+            212
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "For a uniformly convex and uniformly Fréchet differentiable Banach space $\\mathcal{B}$ , there exists a unique semi-inner product $[\\cdot, \\cdot]_{\\mathcal{B}}: \\mathcal{B} \\times \\mathcal{B} \\to \\mathbb{C}$ such that for all $f, g, h \\in \\mathcal{B}$ and $\\alpha \\in \\mathbb{C}$ , ",
+        "bbox": [
+            111,
+            213,
+            859,
+            248
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(i) $[f + g,h]_{\\mathcal{B}} = [f,h]_{\\mathcal{B}} + [g,h]_{\\mathcal{B}}, [\\alpha f,g]_{\\mathcal{B}} = \\alpha [f,g]_{\\mathcal{B}},$ ",
+            "(ii) $[f,f]_{\\mathcal{B}} > 0$ for $f\\neq 0$ ",
+            "(iii) (The Cauchy-Schwartz inequality) $|[f,g]_{\\mathcal{B}}|^{2} \\leq [f,f]_{\\mathcal{B}}[g,g]_{\\mathcal{B}}$ . "
+        ],
+        "bbox": [
+            112,
+            257,
+            620,
+            333
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "We refer to Section 2 in [48] or Section 5.5 in [24], and [10, 17, 22, 46] for more details on seminner products. By the Cauchy-Schwartz inequality, for each $g \\in \\mathcal{B}$ , $f \\to [f,g]_{\\mathcal{B}}$ is a bounded linear functional on $\\mathcal{B}$ , which is denoted by $g^{*} \\in \\mathcal{B}^{*}$ and called the dual element of $g$ . Following this definition, we have ",
+        "bbox": [
+            109,
+            343,
+            859,
+            410
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n[ f, g ] _ {\\mathcal {B}} = \\langle f, g ^ {*} \\rangle_ {\\mathcal {B}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            416,
+            412,
+            555,
+            430
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Giles [17] proved that if $\\mathcal{B}$ is a uniformly convex and uniformly Fréchet differentiable Banach space $\\mathcal{B}$ , then the duality mapping $f\\to f^{*}$ is bijective from $\\mathcal{B}$ to $\\mathcal{B}^*$ . Moreover, ",
+        "bbox": [
+            109,
+            436,
+            859,
+            472
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n[ f ^ {*}, g ^ {*} ] _ {\\mathcal {B} ^ {*}} = [ g, f ] _ {\\mathcal {B}} \\text {f o r a l l} f, g \\in \\mathcal {B}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            352,
+            484,
+            620,
+            503
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "is a semi-inner product on $\\mathcal{B}^*$ . ",
+        "bbox": [
+            111,
+            517,
+            352,
+            532
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "The following definition of the semi-inner-product RKBS (s.i.p. RKBS) comes from [46]. ",
+        "bbox": [
+            138,
+            532,
+            836,
+            550
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Definition of s.i.p. RKBS in [46]. We call a uniformly convex and uniformly Fréchet differentiable Banach space of functions on $X$ an s.i.p. RKBS. ",
+        "bbox": [
+            111,
+            566,
+            861,
+            601
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Note that a uniformly convex Banach space is reflexive. It follows that an s.i.p. RKBS is also a reflexive RKBS. We are able to construct the s.i.p. RKBS in our framework. ",
+        "bbox": [
+            111,
+            602,
+            859,
+            636
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "Example 3.4 Let $\\mathcal{W}$ be a uniformly convex and uniformly Fréchet differentiable Banach space, and $\\Phi : X \\to \\mathcal{W}$ and $\\Phi^* : X \\to \\mathcal{W}^*$ be such that $\\overline{\\operatorname{span}}\\Phi(X) = \\mathcal{W}$ and $\\overline{\\operatorname{span}}\\Phi^*(X) = \\mathcal{W}^*$ . Choose ",
+        "bbox": [
+            111,
+            647,
+            859,
+            696
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := X, \\mathcal {W} _ {1} := \\mathcal {W} ^ {*}, \\mathcal {W} _ {2} := \\mathcal {W},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            338,
+            699,
+            635,
+            715
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := \\Phi^ {*} (x), x \\in \\Omega_ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            323,
+            724,
+            648,
+            739
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\rightarrow \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := \\Phi (y), y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            328,
+            750,
+            638,
+            765
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            773,
+            292,
+            789
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi^ {*} (x), v \\rangle_ {\\mathcal {W} ^ {*}} = [ \\Phi^ {*} (x), v ^ {*} ] _ {\\mathcal {W} ^ {*}} = [ v, \\Phi (x) ] _ {\\mathcal {W}}: v \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            122,
+            800,
+            848,
+            828
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\mathcal{W}}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            838,
+            651,
+            858
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle u, \\Phi (y) \\rangle_ {\\mathcal {W} ^ {*}} = [ u, \\Phi (y) ^ {*} ] _ {\\mathcal {W} ^ {*}} = [ \\Phi (y), u ^ {*} ] _ {\\mathcal {W}}: u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            125,
+            867,
+            844,
+            897
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "page_number",
+        "text": "12 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 11
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_{u^*}\\|_{\\mathcal{B}_2} \\coloneqq \\| u^*\\|_{\\mathcal{W}^*}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is given by ",
+        "bbox": [
+            112,
+            101,
+            683,
+            119
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} = \\langle v, u \\rangle_ {\\mathcal {W}} = [ v, u ^ {*} ] _ {\\mathcal {W}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            303,
+            125,
+            666,
+            143
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Moreover, a reproducing kernel for $\\mathcal{B}_1$ is ",
+        "bbox": [
+            112,
+            150,
+            434,
+            167
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle \\Phi_ {1} (x), \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\langle \\Phi^ {*} (x), \\Phi (y) \\rangle_ {\\mathcal {W} ^ {*}} = [ \\Phi^ {*} (x), \\Phi^ {*} (y) ] _ {\\mathcal {W} ^ {*}} = [ \\Phi (y), \\Phi (x) ] _ {\\mathcal {W}} f o r a l l x \\in \\Omega_ {1}, y \\in \\Omega_ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            112,
+            172,
+            859,
+            191
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Proof: By assumptions, $\\mathcal{W}$ is a reflexive Banach space. The denseness condition (2.6) is hence satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            111,
+            196,
+            859,
+            231
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Here, we shall point out in Example 3.4 that ",
+        "bbox": [
+            138,
+            244,
+            496,
+            260
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} = \\left\\{\\left[ \\Phi (y), u ^ {*} \\right] _ {\\mathcal {W}}: u \\in \\mathcal {W} _ {1} = \\mathcal {W} ^ {*}, y \\in \\Omega_ {2} \\right\\} = \\left\\{\\left[ \\Phi (y), u \\right] _ {\\mathcal {W}}: u \\in \\mathcal {W}, y \\in X \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            186,
+            265,
+            782,
+            292
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "We remark that $\\mathcal{B}_1$ and $\\mathcal{B}_2$ in Example 3.4 are exactly the $\\mathcal{B}$ and $\\mathcal{B}^*$ constructed in (Theorem 10, [46]). They also have the same reproducing kernel. ",
+        "bbox": [
+            112,
+            297,
+            859,
+            333
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "3.4 RKBSs by Borel measures ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            349,
+            421,
+            367
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "In order to improve the learning rate estimate of the $\\ell_1$ -regularized least square regression, a class of RKBSs by Borel measures was constructed in [37] to have the $\\ell_1$ norm and satisfy the linear representer theorem. ",
+        "bbox": [
+            109,
+            377,
+            859,
+            426
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Suppose that $X$ is a locally compact Hausdorff space and denote by $C_0(X)$ the Banach space of continuous functions $f: X \\to \\mathbb{C}$ such that for all $\\varepsilon > 0$ , the set $\\{x \\in X : |f(x)| \\geq \\varepsilon\\}$ is compact. Its dual space is isometrically isomorphic to the space $\\mathcal{M}(X)$ of all the regular complex-valued Borel measures on $X$ (see, Theorem 6.19 in [31]). The norm of each measure $v \\in \\mathcal{M}(X)$ is its total variation $\\| v \\|_{TV}$ . ",
+        "bbox": [
+            111,
+            428,
+            859,
+            513
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "We are able to construct the RKBSs by Borel measures in our framework. ",
+        "bbox": [
+            138,
+            513,
+            723,
+            529
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Example 3.5 Let $X$ be a locally compact Hausdorff space, and let $K: X \\times X \\to \\mathbb{C}$ be a continuous function such that $\\overline{\\operatorname{span}}\\{K(\\cdot, x): x \\in X\\} = C_0(X)$ . Choose ",
+        "bbox": [
+            111,
+            536,
+            859,
+            571
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := X, \\mathcal {W} _ {1} := C _ {0} (X), \\mathcal {W} _ {2} = \\mathcal {M} (X),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            307,
+            577,
+            661,
+            595
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := K (\\cdot , x), x \\in \\Omega_ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            316,
+            599,
+            655,
+            619
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) = \\delta_ {y}, y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            341,
+            623,
+            630,
+            641
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            645,
+            292,
+            660
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\int_ {X} K (t, x) d v (t): v \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            225,
+            664,
+            743,
+            698
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{TV}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            703,
+            656,
+            720
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = u (y): u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\} = C _ {0} (X)\n$$",
+        "text_format": "latex",
+        "bbox": [
+            230,
+            724,
+            740,
+            753
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}\\coloneqq \\sup_{y\\in \\Omega_2}|u(y)|$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is given by ",
+        "bbox": [
+            112,
+            758,
+            725,
+            776
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} = \\int_ {X} u (t) d v (t).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            338,
+            782,
+            633,
+            816
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K$ is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            820,
+            460,
+            837
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "Proof: As $\\Phi_2(X) = \\{\\delta_y : y \\in X\\}$ is dense in $\\mathcal{M}(X) = (C_0(X))^*$ under the weak* topology, the denseness condition (2.7) holds true. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            109,
+            842,
+            859,
+            878
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "page_number",
+        "text": "13 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            71
+        ],
+        "page_idx": 12
+    },
+    {
+        "type": "text",
+        "text": "3.5 RKBSs with the $\\ell^1$ norm ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            101,
+            408,
+            117
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "The RKBS with the $\\ell^1$ norm was developed in [38] for sparse learning. The construction starts directly with a kernel function satisfying the following two requirements: ",
+        "bbox": [
+            111,
+            127,
+            859,
+            162
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "list",
+        "sub_type": "text",
+        "list_items": [
+            "(i) $K$ is bounded, ",
+            "(ii) for all pairwise distinct sampling points $x_{j} \\in X$ , $j \\in \\mathbb{N}$ and $c = (c_{j} : j \\in \\mathbb{N}) \\in \\ell^{1}(\\mathbb{N})$ , $\\sum_{j \\in \\mathbb{N}} c_{j} K(x_{j}, x) = 0$ for all $x \\in X$ implies $c = 0$ . "
+        ],
+        "bbox": [
+            112,
+            172,
+            859,
+            238
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Denote for any nonempty set $X$ by ",
+        "bbox": [
+            138,
+            247,
+            419,
+            263
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\ell^ {1} (X) := \\left\\{u := \\left(u _ {x} \\in \\mathbb {C}: x \\in X\\right): \\| u \\| _ {\\ell^ {1} (X)} := \\sum_ {x \\in X} | u _ {x} | <   + \\infty \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            236,
+            275,
+            736,
+            313
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "the Banach space of functions on $X$ that is integrable with respect to the counting measure on $X$ . Note that $X$ might be uncountable but for any $u \\in \\ell^1(X)$ , $\\operatorname{supp} u := \\{x \\in X : u_x \\neq 0\\}$ must be at most countable. Note that $\\ell^1(X)$ can be imbedded into $\\mathcal{M}(X)$ . ",
+        "bbox": [
+            111,
+            325,
+            859,
+            376
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Construction of RKBSs with the $\\ell^1$ Norm in [38]. Let $K: X \\times X \\to \\mathbb{C}$ be a kernel satisfying aforementioned two requirements (i) and (ii). Then ",
+        "bbox": [
+            111,
+            392,
+            862,
+            426
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} := \\left\\{f _ {u} := \\sum_ {x \\in \\operatorname {s u p p} u} u _ {x} K (x, \\cdot): u \\in \\ell^ {1} (X) \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            313,
+            438,
+            658,
+            477
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_u\\|_{\\mathcal{B}}\\coloneqq \\| u\\|_{\\ell^1}$ , and $\\mathcal{B}^\\#$ the completion of the vector space of functions $\\sum_{j = 1}^{n}v_{j}K(\\cdot ,y_{j})$ , $y_{j}\\in X$ under the supremum norm ",
+        "bbox": [
+            111,
+            489,
+            874,
+            525
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\| \\sum_ {j = 1} ^ {n} v _ {j} K (\\cdot , y _ {j}) \\right\\| _ {\\mathcal {B} ^ {\\#}} := \\sup  _ {x \\in X} \\left| \\sum_ {j = 1} ^ {n} v _ {j} K (x, y _ {j}) \\right|,\n$$",
+        "text_format": "latex",
+        "bbox": [
+            313,
+            537,
+            658,
+            583
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "are both Banach space of functions on $X$ where point evaluations are continuous linear functionals. In addition, the bilinear form ",
+        "bbox": [
+            111,
+            594,
+            859,
+            628
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\langle \\sum_ {j = 1} ^ {n} u _ {j} K (x _ {j}, \\cdot), \\sum_ {k = 1} ^ {m} v _ {k} K (\\cdot , y _ {k}) \\right\\rangle_ {\\mathcal {B} \\times \\mathcal {B} ^ {\\#}} := \\sum_ {j = 1} ^ {n} \\sum_ {k = 1} ^ {m} u _ {j} v _ {k} K (x _ {j}, y _ {k}), x _ {j}, y _ {k} \\in X,\n$$",
+        "text_format": "latex",
+        "bbox": [
+            192,
+            640,
+            779,
+            685
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "can be extended to $\\mathcal{B} \\times \\mathcal{B}^{\\#}$ such that ",
+        "bbox": [
+            112,
+            698,
+            405,
+            715
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n| \\langle f, g \\rangle_ {\\mathcal {B} \\times \\mathcal {B} ^ {\\#}} | \\leq \\| f \\| _ {\\mathcal {B}} \\| g \\| _ {\\mathcal {B} ^ {\\#}} f o r a l l f \\in \\mathcal {B}, g \\in \\mathcal {B} ^ {\\#}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            294,
+            728,
+            678,
+            750
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "and ",
+        "bbox": [
+            112,
+            761,
+            148,
+            775
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f, K (\\cdot , y) \\rangle_ {\\mathcal {B} \\times \\mathcal {B} ^ {\\#}} = f (y), \\langle K (x, \\cdot), g \\rangle_ {\\mathcal {B} \\times \\mathcal {B} ^ {\\#}} = g (x) f o r a l l x, y \\in X, f \\in \\mathcal {B}, g \\in \\mathcal {B} ^ {\\#}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            166,
+            790,
+            803,
+            811
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "We show below that RKBSs with the $\\ell^1$ norm fall into our framework. ",
+        "bbox": [
+            138,
+            839,
+            696,
+            856
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "page_number",
+        "text": "14 ",
+        "bbox": [
+            838,
+            58,
+            859,
+            69
+        ],
+        "page_idx": 13
+    },
+    {
+        "type": "text",
+        "text": "Example 3.6 Let $X$ be a locally compact Hausdorff space, and let $K: X \\times X \\to \\mathbb{C}$ be bounded and continuous such that $C_0(X) = \\overline{\\operatorname{span}}\\{K(\\cdot, x): x \\in X\\}$ . Choose ",
+        "bbox": [
+            112,
+            101,
+            861,
+            137
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := X, \\mathcal {W} _ {1} := C _ {0} (X), \\mathcal {W} _ {2} := \\ell^ {1} (X),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            313,
+            143,
+            658,
+            161
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := K (\\cdot , x), \\quad x \\in \\Omega_ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            316,
+            171,
+            656,
+            186
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) = \\delta_ {y}, \\quad y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            341,
+            193,
+            632,
+            209
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            214,
+            292,
+            229
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {t \\in \\operatorname {s u p p} v} v _ {t} K (t, x): v \\in \\mathcal {W} _ {2} = \\ell^ {1} (X), x \\in \\Omega_ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            187,
+            234,
+            782,
+            272
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\ell^1 (X)}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            277,
+            673,
+            297
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = u (y): u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\} = C _ {0} (X)\n$$",
+        "text_format": "latex",
+        "bbox": [
+            230,
+            304,
+            740,
+            332
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}\\coloneqq \\sup_{y\\in X}|u(y)|$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is given by ",
+        "bbox": [
+            112,
+            337,
+            723,
+            356
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} := \\sum_ {t \\in \\operatorname {s u p p} v} v _ {t} u (t).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            318,
+            364,
+            651,
+            398
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K$ is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            405,
+            460,
+            422
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Proof: The boundedness of $K$ guarantees that $f_{v}$ in $\\mathcal{B}_1$ is well-defined. The set $\\Phi_2(X) = \\{\\delta_y : y \\in X\\}$ is dense in $\\mathcal{M}(X) = (C_0(X))^*$ under the weak* topology. The denseness condition (2.7) is hence satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            111,
+            431,
+            861,
+            483
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "In the rest of this subsection, we discuss the particular and interesting space $C([0,1])$ . We shall show that $C([0,1])$ is an RKBS in our framework and shall present several explicit reproducing kernels for the space. Non-uniqueness of the reproducing kernel is caused by existence of many feature maps $\\Phi_1: [0,1] \\to C([0,1])$ satisfying the denseness condition $\\overline{\\operatorname{span}} \\Phi_1(X) = C([0,1])$ . ",
+        "bbox": [
+            111,
+            494,
+            859,
+            582
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Example 3.7 Choose ",
+        "bbox": [
+            112,
+            590,
+            294,
+            606
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := [ 0, 1 ], \\mathcal {W} _ {1} := C ([ 0, 1 ]), \\mathcal {W} _ {2} := \\ell^ {1} ([ 0, 1 ]),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            287,
+            614,
+            684,
+            632
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\rightarrow \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) (t) = 1 - | t - x |, x \\in \\Omega_ {1}, t \\in [ 0, 1 ],\n$$",
+        "text_format": "latex",
+        "bbox": [
+            259,
+            642,
+            712,
+            657
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) = \\delta_ {y}, y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            344,
+            664,
+            627,
+            680
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            685,
+            292,
+            700
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {t \\in \\operatorname {s u p p} v} v _ {t} (1 - | t - x |): v \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            202,
+            705,
+            767,
+            742
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{TV}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            750,
+            658,
+            767
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = u (y): u \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\} = C ([ 0, 1 ])\n$$",
+        "text_format": "latex",
+        "bbox": [
+            223,
+            773,
+            746,
+            801
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}:= \\sup_{y\\in [0,1]}|u(y)|$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is given by ",
+        "bbox": [
+            112,
+            806,
+            736,
+            825
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} := \\int_ {0} ^ {1} u (t) d v (t).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            321,
+            833,
+            648,
+            869
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K(x,y)\\coloneqq \\langle \\Phi_1(x),\\Phi_2(y)\\rangle_{\\mathcal{W}_1} = 1 - |x - y|$ $x,y\\in [0,1]$ is a reproducing kernel for $\\mathcal{B}_1$ ",
+        "bbox": [
+            112,
+            875,
+            857,
+            893
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "page_number",
+        "text": "15 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 14
+    },
+    {
+        "type": "text",
+        "text": "Proof: Note that every continuous function on $[0,1]$ can be approximated uniformly by piecewise linear functions. Thus, we have $\\mathcal{W}_1 = \\overline{\\operatorname{span}}\\Phi_1([0,1]) = \\overline{\\operatorname{span}}\\{1 - |\\cdot -x|:x\\in [0,1]\\}$ . The denseness condition (2.7) is hence satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            109,
+            102,
+            861,
+            156
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "We can also take $\\Phi_1(x)(t) \\coloneqq (1 + t)^x$ or $\\Phi_1(x)(t) \\coloneqq e^{tx}$ in Example 3.7 and they all satisfy the denseness condition (2.6). This is true by the fact in complex analysis that zeros of a nontrivial holomorphic function are isolated. Correspondingly, ",
+        "bbox": [
+            109,
+            164,
+            861,
+            217
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) = (1 + y) ^ {x} \\mathrm {o r} K (x, y) = e ^ {x y} \\mathrm {f o r a l l} x, y \\in [ 0, 1 ]\n$$",
+        "text_format": "latex",
+        "bbox": [
+            272,
+            227,
+            699,
+            248
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "can be viewed as reproducing kernels for $\\mathcal{B}_1$ as well. By Definition 2.2, $\\widetilde{K}(x,y) = K(y,x)$ is a reproducing kernel of $\\mathcal{B}_2 = C([0,1])$ . Thus, we obtain three reproducing kernels for $C([0,1])$ : ",
+        "bbox": [
+            109,
+            256,
+            861,
+            292
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n1 - | x - y |, (1 + x) ^ {y}, e ^ {x y}, x, y \\in [ 0, 1 ].\n$$",
+        "text_format": "latex",
+        "bbox": [
+            331,
+            301,
+            638,
+            321
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "3.6 RKBSs with positive definite functions ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            338,
+            542,
+            357
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "The relationship between generalized Sobolev spaces and RKHSs was established by developing a connection between Green functions and reproducing kernels. Motivated by this, the authors in [13] used Fourier transform techniques to construct RKBSs with positive definite functions. Furthermore, Ye in [45] developed numerical algorithms for support vector machines in those RKBSs. ",
+        "bbox": [
+            109,
+            364,
+            861,
+            448
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Let $\\phi \\in L^{1}(\\mathbb{R}^{d})\\cap C(\\mathbb{R}^{d})$ be positive definite, that is, for all finite distinct points $x_{1},x_{2},\\ldots ,x_{n}\\in$ $\\mathbb{R}^d$ , the matrix $[\\phi (x_j - x_k):j,k = 1,2,\\dots ,n]$ is strictly positive-definite. It has been known that $\\phi$ is positive definite if and only if it is bounded, its Fourier transform $\\hat{\\phi}$ is nonnegative, and ",
+        "bbox": [
+            109,
+            450,
+            862,
+            516
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\nS _ {\\hat {\\phi}} := \\left\\{\\xi \\in \\mathbb {R} ^ {d}: \\hat {\\phi} (\\xi) \\neq 0 \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            380,
+            518,
+            589,
+            541
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "has positive Lebesgue measure (see, for instance, Section 6.2 in [41]). In this paper, we use the following form of the Fourier transform ",
+        "bbox": [
+            109,
+            546,
+            861,
+            580
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\hat {f} (\\xi) = \\int_ {\\mathbb {R} ^ {d}} f (x) e ^ {- i 2 \\pi x \\cdot \\xi} d x, \\xi \\in \\mathbb {R} ^ {d}, f \\in L ^ {1} (\\mathbb {R} ^ {d})\n$$",
+        "text_format": "latex",
+        "bbox": [
+            295,
+            589,
+            676,
+            625
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "and the inverse Fourier transform ",
+        "bbox": [
+            112,
+            633,
+            382,
+            647
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\check {f} (\\xi) = \\int_ {\\mathbb {R} ^ {d}} f (x) e ^ {i 2 \\pi x \\cdot \\xi} d x, \\xi \\in \\mathbb {R} ^ {d}, f \\in L ^ {1} (\\mathbb {R} ^ {d}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            299,
+            655,
+            671,
+            690
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "We show below that RKBSs (Theorem 4.1 in [13] or Theorem 1 in [45]) with positive definite functions fall into our framework. ",
+        "bbox": [
+            109,
+            699,
+            861,
+            733
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "text",
+        "text": "Example 3.8 Let $1 < q \\leq 2 \\leq p < +\\infty$ and $1/p + 1/q = 1$ . Suppose that $\\phi \\in L^{1}(\\mathbb{R}^{d}) \\cap C(\\mathbb{R}^{d})$ is a positive definite, even function on $\\mathbb{R}^d$ and that $\\hat{\\phi}^{q-1} \\in L^{1}(\\mathbb{R}^{d})$ . Choose ",
+        "bbox": [
+            111,
+            742,
+            859,
+            777
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Omega_ {1} = \\Omega_ {2} := \\mathbb {R} ^ {d},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            421,
+            787,
+            550,
+            806
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} := \\left\\{u \\in L ^ {q} (\\mathbb {R} ^ {d}) \\cap C (\\mathbb {R} ^ {d}): S _ {\\check {u}} \\subseteq S _ {\\hat {\\phi}}, \\check {u} / \\hat {\\phi} ^ {1 / p} \\in L ^ {p} (\\mathbb {R} ^ {d}) \\right\\} w i t h n o r m \\| u \\| _ {\\mathcal {W} _ {1}} = \\left(\\int_ {\\mathbb {R} ^ {d}} \\frac {| \\check {u} (\\xi) | ^ {p}}{\\hat {\\phi} (\\xi)} d \\xi\\right) ^ {1 / p}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            111,
+            815,
+            870,
+            854
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {2} := \\left\\{v \\in L ^ {p} (\\mathbb {R} ^ {d}) \\cap C (\\mathbb {R} ^ {d}): S _ {\\hat {v}} \\subseteq S _ {\\hat {\\phi}}, \\hat {v} / \\hat {\\phi} ^ {1 / q} \\in L ^ {q} (\\mathbb {R} ^ {d}) \\right\\} w i t h n o r m \\| v \\| _ {\\mathcal {W} _ {2}} = \\left(\\int_ {\\mathbb {R} ^ {d}} \\frac {| \\hat {v} (\\xi) | ^ {q}}{\\hat {\\phi} (\\xi)} d \\xi\\right) ^ {1 / q}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            111,
+            858,
+            867,
+            898
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "page_number",
+        "text": "16 ",
+        "bbox": [
+            838,
+            56,
+            861,
+            71
+        ],
+        "page_idx": 15
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := \\phi (\\cdot - x), x \\in \\Omega_ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            310,
+            101,
+            658,
+            119
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := \\phi (\\cdot - y), y \\in \\Omega_ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            316,
+            125,
+            656,
+            143
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "and define the following continuous bilinear form on $\\mathcal{W}_1\\times \\mathcal{W}_2$ ",
+        "bbox": [
+            112,
+            150,
+            607,
+            167
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} := \\int_ {\\mathbb {R} ^ {d}} \\frac {\\check {u} (\\xi) \\hat {v} (\\xi)}{\\hat {\\phi} (\\xi)} d \\xi , \\quad u \\in \\mathcal {W} _ {1}, v \\in \\mathcal {W} _ {2}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            292,
+            176,
+            681,
+            215
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3. Then ",
+        "bbox": [
+            112,
+            224,
+            294,
+            239
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\int_ {\\mathbb {R} ^ {d}} \\frac {\\check {\\phi} (\\xi) e ^ {i 2 \\pi x \\cdot \\xi} \\hat {v} (\\xi)}{\\hat {\\phi} (\\xi)} d \\xi = \\int_ {\\mathbb {R} ^ {d}} \\frac {\\hat {\\phi} (\\xi) e ^ {i 2 \\pi x \\cdot \\xi} \\hat {v} (\\xi)}{\\hat {\\phi} (\\xi)} d \\xi = v (x): v \\in \\mathcal {W} _ {2} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            111,
+            247,
+            892,
+            287
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\mathcal{W}_2}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            297,
+            658,
+            315
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\int_ {\\mathbb {R} ^ {d}} \\frac {\\check {u} (\\xi) \\hat {\\phi} (\\xi) e ^ {- i 2 \\pi y \\cdot \\xi}}{\\hat {\\phi} (\\xi)} d \\xi = u (y): u \\in \\mathcal {W} _ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            181,
+            325,
+            789,
+            364
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2} := \\| u\\|_{\\mathcal{W}_1}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is defined by ",
+        "bbox": [
+            112,
+            375,
+            683,
+            393
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}. \\tag {3.13}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            370,
+            402,
+            857,
+            422
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $\\phi (x - y)$ is a reproducing kernel for $\\mathcal{B}_1$ ",
+        "bbox": [
+            112,
+            433,
+            511,
+            450
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "Proof: To begin with, we shall check the denseness condition (2.3). Since $\\phi \\in L^{1}(\\mathbb{R}^{d})\\cap C(\\mathbb{R}^{d})$ is positive definite, we have $\\hat{\\phi}\\in L^{1}(\\mathbb{R}^{d})\\cap C(\\mathbb{R}^{d})$ and $\\hat{\\phi}^{p - 1}\\in L^1 (\\mathbb{R}^d)$ for $p\\geq 2$ . Observe that $\\check{\\phi} = \\hat{\\phi}$ as $\\phi$ is an even function on $\\mathbb{R}^d$ . For each $x\\in \\mathbb{R}^d$ , we compute ",
+        "bbox": [
+            111,
+            458,
+            861,
+            512
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| \\phi (\\cdot - x) \\| _ {\\mathcal {W} _ {1}} = \\left(\\int_ {\\mathbb {R} ^ {d}} \\frac {| \\hat {\\phi} (\\xi) e ^ {i 2 \\pi x \\cdot \\xi} | ^ {p}}{\\hat {\\phi} (\\xi)} d \\xi\\right) ^ {1 / p} = \\int_ {\\mathbb {R} ^ {d}} | \\hat {\\phi} (\\xi) | ^ {p - 1} d \\xi <   + \\infty ,\n$$",
+        "text_format": "latex",
+        "bbox": [
+            222,
+            521,
+            751,
+            561
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "which implies $\\phi (\\cdot -x)\\in \\mathcal{W}_1$ for all $x\\in \\mathbb{R}^d$ . Furthermore, for any $v\\in \\mathcal{W}_2$ ",
+        "bbox": [
+            111,
+            573,
+            692,
+            590
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle \\phi (\\cdot - x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\int_ {\\mathbb {R} ^ {d}} \\frac {\\hat {\\phi} (\\xi) e ^ {i 2 \\pi x \\cdot \\xi} \\hat {v} (\\xi)}{\\hat {\\phi} (\\xi)} d \\xi = v (x) = 0 \\text {f o r a l l} x \\in \\mathbb {R} ^ {d}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            215,
+            599,
+            756,
+            642
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "implies $v = 0$ . Thus, span $\\Phi_1(\\Omega_1) = \\operatorname{span}\\{\\phi(\\cdot - x) : x \\in \\mathbb{R}^d\\}$ is dense in $\\mathcal{W}_1$ with respect to the bilinear form $\\langle \\cdot, \\cdot \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ . That span $\\Phi_2(\\Omega_2)$ is dense in $\\mathcal{W}_2$ with respect to the bilinear form can be proved in a similar manner. The denseness condition (2.3) is hence satisfied. ",
+        "bbox": [
+            111,
+            652,
+            861,
+            703
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "Let $K(x,y)\\coloneqq \\langle \\Phi_1(x),\\Phi_2(y)\\rangle_{\\mathcal{W}_1\\times \\mathcal{W}_2} = \\langle \\phi (\\cdot -x),\\phi (\\cdot -y)\\rangle_{\\mathcal{W}_1\\times \\mathcal{W}_2}$ . By (3.13), we have ",
+        "bbox": [
+            138,
+            704,
+            807,
+            722
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) = \\int_ {\\mathbb {R} ^ {d}} \\frac {\\hat {\\phi} (\\xi) e ^ {i 2 \\pi x \\cdot \\xi} \\hat {\\phi} (\\xi) e ^ {- i 2 \\pi y \\cdot \\xi}}{\\hat {\\phi} (\\xi)} d \\xi = \\int_ {\\mathbb {R} ^ {d}} \\hat {\\phi} (\\xi) e ^ {i 2 \\pi (x - y) \\cdot \\xi} d \\xi = \\phi (x - y), x, y \\in \\mathbb {R} ^ {d}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            148,
+            731,
+            823,
+            772
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "The proof is complete. ",
+        "bbox": [
+            112,
+            781,
+            292,
+            797
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "We remark that the space ",
+        "bbox": [
+            140,
+            810,
+            349,
+            825
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} = \\mathcal {W} _ {2} = \\left\\{v \\in L ^ {p} (\\mathbb {R} ^ {d}) \\cap C (\\mathbb {R} ^ {d}): S _ {\\hat {v}} \\subseteq S _ {\\hat {\\phi}}, \\hat {v} / \\hat {\\phi} ^ {1 / q} \\in L ^ {q} (\\mathbb {R} ^ {d}) \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            240,
+            835,
+            730,
+            864
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "in Example 3.8 is $\\mathcal{B}_{\\Phi}^{p}(\\mathbb{R}^{d})$ , $2 \\leq p < +\\infty$ in Theorem 1 of [45]. ",
+        "bbox": [
+            111,
+            875,
+            596,
+            893
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "page_number",
+        "text": "17 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            69
+        ],
+        "page_idx": 16
+    },
+    {
+        "type": "text",
+        "text": "3.7 $p$ -norm RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            101,
+            313,
+            118
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "The use of semi-inner products in the construction of RKBSs has its limitations. To overcome this issue and for the sake of sparse learning, Xu and Ye [43] constructed a class of $p$ -norm RKBSs via generalized Mercer kernels. ",
+        "bbox": [
+            111,
+            128,
+            861,
+            176
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "The generalized Mercer kernel used in [43] takes the following form ",
+        "bbox": [
+            138,
+            179,
+            671,
+            196
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\nK (x, y) = \\sum_ {n \\in \\mathbb {Z}} \\phi_ {n} (x) \\psi_ {n} (y), x \\in \\Omega_ {1}, y \\in \\Omega_ {2} \\tag {3.14}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            323,
+            210,
+            856,
+            242
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "where $\\{\\phi_n : n \\in \\mathbb{Z}\\}$ and $\\{\\psi_n : n \\in \\mathbb{Z}\\}$ are sequences of functions on $\\Omega_1$ and $\\Omega_2$ , respectively. For instance, the Gaussian kernel and the Brownian bridge kernel are generalized Mercer kernels. Denote by $c_0$ the Banach space of sequences on $\\mathbb{Z}$ that vanish at infinity and are endowed with the supremum norm. We show below that $p$ -norm RKBSs fall into our framework. ",
+        "bbox": [
+            111,
+            255,
+            861,
+            324
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "Example 3.9 Let $1 < p < +\\infty$ , $1/p + 1/q = 1$ . Choose ",
+        "bbox": [
+            112,
+            338,
+            557,
+            356
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\begin{array}{l} \\mathcal {W} _ {1} := \\ell^ {q}, \\quad \\mathcal {W} _ {2} := \\ell^ {p}, \\\\ \\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := (\\phi_ {n} (x): n \\in \\mathbb {Z}), \\\\ \\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := (\\psi_ {n} (y): n \\in \\mathbb {Z}) \\\\ \\end{array}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            321,
+            369,
+            651,
+            441
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3 such that $\\mathcal{W}_1 = \\overline{\\mathrm{span}}\\Phi_1(\\Omega_1)$ and $\\mathcal{W}_2 = \\overline{\\mathrm{span}}\\Phi_2(\\Omega_2)$ . Then ",
+        "bbox": [
+            112,
+            449,
+            710,
+            467
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} v _ {n} \\phi_ {n} (x): x \\in \\Omega_ {1}, v := (v _ {n}: n \\in \\mathbb {Z}) \\in \\mathcal {W} _ {2} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            179,
+            478,
+            790,
+            516
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\ell^p}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            527,
+            648,
+            545
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} u _ {n} \\psi_ {n} (y): y \\in \\Omega_ {2}, u := (u _ {n}: n \\in \\mathbb {Z}) \\in \\mathcal {W} _ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            176,
+            556,
+            792,
+            592
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}\\coloneqq \\| u\\|_{\\ell^q}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is defined by ",
+        "bbox": [
+            112,
+            604,
+            674,
+            623
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} u _ {n} v _ {n}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            339,
+            633,
+            632,
+            669
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K$ defined as in (3.14) is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            681,
+            620,
+            698
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "Proof: Note that $\\ell^p = (\\ell^q)^*$ , where $1/p + 1/q = 1$ , $1 < p < +\\infty$ . The denseness condition (2.6) is hence satisfied. The claim follows from Theorem 2.3. ",
+        "bbox": [
+            111,
+            713,
+            859,
+            746
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "The RKBSs $\\mathcal{B}_1$ and $\\mathcal{B}_2$ in Example 3.9 are exactly $\\mathcal{B}_K^p (\\Omega_1)$ and $\\mathcal{B}_{K'}^q (\\Omega_2)$ defined as in (3.5) and (3.6) of [43], respectively. Here, $K^{\\prime}(x,y)\\coloneqq K(y,x)$ , $x\\in \\Omega_2,y\\in \\Omega_1$ . ",
+        "bbox": [
+            111,
+            758,
+            859,
+            794
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "Example 3.10 Choose ",
+        "bbox": [
+            112,
+            808,
+            303,
+            825
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {W} _ {1} = c _ {0}, \\quad \\mathcal {W} _ {2} = \\ell^ {1},\n$$",
+        "text_format": "latex",
+        "bbox": [
+            406,
+            825,
+            566,
+            840
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {1}: \\Omega_ {1} \\to \\mathcal {W} _ {1}, \\quad \\Phi_ {1} (x) := (\\phi_ {n} (x): n \\in \\mathbb {Z}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            321,
+            852,
+            651,
+            867
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\Phi_ {2}: \\Omega_ {2} \\to \\mathcal {W} _ {2}, \\quad \\Phi_ {2} (y) := (\\psi_ {n} (y): n \\in \\mathbb {Z})\n$$",
+        "text_format": "latex",
+        "bbox": [
+            325,
+            877,
+            648,
+            892
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "page_number",
+        "text": "18 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 17
+    },
+    {
+        "type": "text",
+        "text": "in Theorem 2.3 such that $\\mathcal{W}_1 = \\overline{\\mathrm{span}}\\Phi_1(\\Omega_1)$ and $\\mathcal{W}_2 = \\overline{\\mathrm{span}}\\Phi_2(\\Omega_2)$ . Then ",
+        "bbox": [
+            112,
+            101,
+            710,
+            119
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {1} := \\left\\{f _ {v} (x) := \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} v _ {n} \\phi_ {n} (x): v := (v _ {n}: n \\in \\mathbb {Z}) \\in \\mathcal {W} _ {2}, x \\in \\Omega_ {1} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            183,
+            132,
+            790,
+            167
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| f_v\\|_{\\mathcal{B}_1} \\coloneqq \\| v\\|_{\\ell^1}$ is an RKBS on $\\Omega_1$ . Its adjoint RKBS is ",
+        "bbox": [
+            112,
+            180,
+            648,
+            198
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {B} _ {2} := \\left\\{g _ {u} (y) := \\langle u, \\Phi_ {2} (y) \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} u _ {n} \\psi_ {n} (y): u := (u _ {n}: n \\in \\mathbb {Z}) \\in \\mathcal {W} _ {1}, y \\in \\Omega_ {2} \\right\\}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            181,
+            210,
+            792,
+            247
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "with norm $\\| g_u\\|_{\\mathcal{B}_2}\\coloneqq \\| u\\|_{c_0}$ . The bilinear form on $\\mathcal{B}_1\\times \\mathcal{B}_2$ is defined by ",
+        "bbox": [
+            112,
+            258,
+            676,
+            277
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle f _ {v}, g _ {u} \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} := \\langle u, v \\rangle_ {\\mathcal {W} _ {1}} = \\sum_ {n \\in \\mathbb {Z}} u _ {n} v _ {n}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            344,
+            290,
+            630,
+            324
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "Moreover, $K$ defined as in (3.14) is a reproducing kernel for $\\mathcal{B}_1$ . ",
+        "bbox": [
+            112,
+            335,
+            620,
+            354
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "Proof: Note that $\\mathcal{W}_2 = \\ell^1 = \\mathcal{W}_1^* = c_0^*$ . The denseness condition (2.6) is hence satisfied. By Theorem 2.3, the proof is complete. ",
+        "bbox": [
+            111,
+            368,
+            861,
+            404
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "The RKBSs $\\mathcal{B}_1$ and $\\mathcal{B}_2$ in Example 3.10 are exactly $\\mathcal{B}_K^1 (\\Omega_1)$ and $\\mathcal{B}_{K'}^\\infty (\\Omega_2)$ defined as in (3.14) and (3.15) of [43], respectively. ",
+        "bbox": [
+            111,
+            414,
+            859,
+            450
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "4 Representer theorems for machine learning in RKBSs ",
+        "text_level": 1,
+        "bbox": [
+            111,
+            472,
+            781,
+            494
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "Most machine learning tasks boil down to a regularized minimization problem. When kernel methods are used, a representative theorem asserts that the minimizer is a linear combination of the kernel functions at the sampling points. This is key to the mathematical analysis of kernel methods in machine learning [7, 8, 33]. The classical representative theorem in RKHSs was first established by Kimeldorf and Wahba [21]. The result was generalized to non-quadratic loss functions in [6], and to general regularizers in [32]. Recent references [38, 43, 45, 46, 48] developed representative theorems for various RKBSs introduced in the previous section. The primary purpose of this section is to present a representative theorem for RKBSs constructed in our framework, thus unifying the representative theorems in the references. ",
+        "bbox": [
+            109,
+            506,
+            861,
+            657
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "Let $\\mathcal{B}_1$ be an RKBS constructed as in Theorem 2.3 via a continuous bilinear form and a pair of feature maps. We shall establish a representative theorem for the regularization network in $\\mathcal{B}_1$ . We begin the analysis with the related minimal norm interpolation in $\\mathcal{B}_1$ . ",
+        "bbox": [
+            109,
+            660,
+            859,
+            712
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "4.1 Minimal norm interpolation ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            729,
+            437,
+            750
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "The problem of minimal norm interpolation is to find a function with the smallest norm in $\\mathcal{B}_1$ that interpolates a prescribed set of sampled data. Let $\\mathbb{N}_m\\coloneqq \\{1,2,\\ldots ,m\\}$ , $\\mathbf{x}\\coloneqq \\{x_{j}:j\\in \\mathbb{N}_{m}\\} \\subseteq \\Omega_{1}$ be a set of $m$ pairwise distinct inputs, and $\\mathbf{t}\\coloneqq \\{t_j:j\\in \\mathbb{N}_m\\} \\subseteq \\mathbb{C}$ be the corresponding outputs. ",
+        "bbox": [
+            111,
+            757,
+            859,
+            808
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "The minimal norm interpolation problem looks for the minimizer ",
+        "bbox": [
+            138,
+            809,
+            656,
+            825
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf _ {\\inf } := \\arg \\inf  _ {f \\in S _ {\\mathbf {x}, \\mathbf {t}}} \\| f \\| _ {\\mathcal {B} _ {1}} \\text {w h e r e} S _ {\\mathbf {x}, \\mathbf {t}} = \\left\\{f \\in \\mathcal {B} _ {1}: f \\left(x _ {j}\\right) = t _ {j}, j \\in \\mathbb {N} _ {m} \\right\\} \\tag {4.15}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            223,
+            838,
+            857,
+            867
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "page_number",
+        "text": "19 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            71
+        ],
+        "page_idx": 18
+    },
+    {
+        "type": "text",
+        "text": "provided that it exists and is unique. By (2.4) and the denseness condition (2.3), (4.15) can be equivalently reformulated as ",
+        "bbox": [
+            109,
+            102,
+            861,
+            135
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf _ {\\mathrm {i n f}} = \\langle \\Phi_ {1} (\\cdot), v _ {\\mathrm {i n f}} \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            388,
+            136,
+            583,
+            154
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "where ",
+        "bbox": [
+            112,
+            162,
+            165,
+            175
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nv _ {\\text {i n f}} := \\arg \\inf  _ {v \\in V _ {\\mathbf {x}, \\mathbf {t}}} \\| v \\| _ {\\mathcal {W} _ {2}} \\tag {4.16}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            395,
+            176,
+            859,
+            203
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "with ",
+        "bbox": [
+            112,
+            210,
+            153,
+            224
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nV _ {\\mathbf {x}, \\mathbf {t}} := \\left\\{v \\in \\mathcal {W} _ {2}: \\langle \\Phi_ {1} (x _ {j}), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = t _ {j}, j \\in \\mathbb {N} _ {m} \\right\\}. \\tag {4.17}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            282,
+            220,
+            857,
+            250
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "In the special case when $t_j = 0$ for every $1 \\leq j \\leq m$ , ",
+        "bbox": [
+            112,
+            253,
+            527,
+            272
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nV _ {\\mathbf {x}, 0} = \\left\\{v \\in \\mathcal {W} _ {2}: \\langle \\Phi_ {1} (x _ {j}), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = 0: j \\in \\mathbb {N} _ {m} \\right\\} = \\left(\\Phi_ {1} (\\mathbf {x})\\right) ^ {\\vdash}, \\tag {4.18}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            240,
+            282,
+            859,
+            310
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "where $\\Phi_1(\\mathbf{x})\\coloneqq \\{\\Phi_1(x_1),\\Phi_1(x_2),\\ldots ,\\Phi_1(x_m)\\}$ . Here, for a subset $A\\subseteq \\mathcal{W}_1$ ",
+        "bbox": [
+            112,
+            320,
+            696,
+            338
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nA ^ {\\vdash} := \\left\\{v \\in \\mathcal {W} _ {2}: \\langle a, v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = 0 \\text {f o r a l l} a \\in A \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            292,
+            348,
+            679,
+            377
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Recall that for a subset $A$ in a normed vector space $V$ , ",
+        "bbox": [
+            112,
+            386,
+            547,
+            402
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\nA ^ {\\perp} := \\left\\{w \\in V ^ {*}: w (a) = 0 \\text {f o r a l l} a \\in A \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            318,
+            412,
+            651,
+            441
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "When $\\mathcal{W}_2\\subseteq \\mathcal{W}_1^*$ , $A^{\\perp}\\subseteq A^{\\perp}$ for $A\\subseteq \\mathcal{W}_1$ ",
+        "bbox": [
+            112,
+            452,
+            429,
+            469
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Next, we shall explore the condition ensuring that $V_{\\mathbf{x},\\mathbf{t}}$ is nonempty. ",
+        "bbox": [
+            138,
+            470,
+            676,
+            487
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Lemma 4.1 The set $V_{\\mathbf{x},\\mathbf{t}}$ defined by (4.17) is nonempty for any $\\mathbf{t} \\in \\mathbb{C}^m$ if and only if $\\{\\Phi_1(x_j) : j \\in \\mathbb{N}_m\\}$ is linearly independent in $\\mathcal{W}_1$ . ",
+        "bbox": [
+            109,
+            501,
+            859,
+            535
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Proof: One sees that $V_{\\mathbf{x},\\mathbf{t}}$ is nonempty for any $\\mathbf{t} \\in \\mathbb{C}^m$ if and only if $\\operatorname{span}\\{(f(x_j):j \\in \\mathbb{N}_m):f \\in \\mathcal{B}_1\\}$ is dense in $\\mathbb{C}^m$ . Note that for each $f \\in \\mathcal{B}_1$ , there exists a unique $v \\in \\overline{\\operatorname{span}}\\{\\Phi_2(y):y \\in \\Omega_2\\}$ such that $f(x) := f_v(x) = \\langle \\Phi_1(x),v\\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ , $x \\in \\Omega_1$ . Using the reproducing property, we have for each $(c_j:j \\in \\mathbb{N}_m) \\in \\mathbb{C}^m$ that ",
+        "bbox": [
+            109,
+            547,
+            861,
+            619
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\sum_ {j = 1} ^ {m} c _ {j} f (x _ {j}) = \\sum_ {j = 1} ^ {m} c _ {j} \\langle f _ {v}, K (\\cdot , x _ {j}) \\rangle_ {\\mathcal {B} _ {1} \\times \\mathcal {B} _ {2}} = \\sum_ {j = 1} ^ {m} c _ {j} \\langle \\Phi_ {1} (x _ {j}), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}} = \\left\\langle \\sum_ {j = 1} ^ {m} c _ {j} \\Phi_ {1} (x _ {j}), v \\right\\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            122,
+            628,
+            846,
+            674
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "By the denseness condition (2.3), the above equation implies that $\\{\\Phi_1(x_j):j\\in \\mathbb{N}_m\\}$ is linearly independent in $\\mathcal{W}_1$ if and only if $\\operatorname {span}\\{(f(x_j):j\\in \\mathbb{N}_m):f\\in \\mathcal{B}_1\\}$ is dense in $\\mathbb{C}^m$ . The proof is complete. ",
+        "bbox": [
+            109,
+            684,
+            861,
+            736
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "Before moving on, we need several concepts from the theory of Banach spaces (see, for instance, Sections 1.11, 5.1 and 5.4 in [24]). A normed vector space $V$ is strictly convex (rotund) if $\\|tf + (1 - t)g\\|_V < 1$ whenever $\\|f\\|_V = \\|g\\|_V = 1$ , $f \\neq g$ , and $0 < t < 1$ , and is Gâteaux differentiable if for all $f, h \\in V \\setminus \\{0\\}$ , $\\lim_{\\tau \\to 0} \\frac{\\|f + \\tau h\\|_V - \\|f\\|_V}{\\tau}$ exists. For each $f \\neq 0$ in a Gâteaux differentiable normed vector space $V$ , there exists a bounded linear functional, denoted by $\\mathcal{G}(f) \\in V^*$ and called a Gâteaux derivative of $f$ , such that ",
+        "bbox": [
+            109,
+            748,
+            861,
+            853
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\langle h, \\mathcal {G} (f) \\rangle_ {V} = \\lim  _ {\\tau \\rightarrow 0} \\frac {\\| f + \\tau h \\| _ {V} - \\| f \\| _ {V}}{\\tau} \\text {f o r a l l} h \\in V.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            287,
+            862,
+            684,
+            896
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "page_number",
+        "text": "20 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 19
+    },
+    {
+        "type": "text",
+        "text": "We make a convention that $\\mathcal{G}(f) = 0$ if $f = 0$ . ",
+        "bbox": [
+            112,
+            101,
+            477,
+            118
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Reflexivity and strict convexity of a Banach space ensure existence and uniqueness of the best approximation in the space (see, Corollary 5.1.19 in [24]). ",
+        "bbox": [
+            111,
+            119,
+            861,
+            154
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Lemma 4.2 [24] If $V$ is a reflexive and strictly convex Banach space, then for any nonempty closed convex subset $A \\subseteq V$ and any $x \\in V$ there exists a unique $x_0 \\in A$ such that ",
+        "bbox": [
+            111,
+            164,
+            861,
+            198
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| x - x _ {0} \\| _ {V} = \\inf  \\left\\{\\| x - a \\| _ {V}: a \\in A \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            339,
+            209,
+            633,
+            239
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "The last lemma needed is about orthogonality in normed vector spaces (see, page 272, [20]). Let $V$ be a normed vector space. We say that $f \\in V$ is orthogonal to $g \\in V$ if $\\| f + \\tau g \\|_V \\geq \\| f \\|_V$ for all $\\tau \\in \\mathbb{C}$ . We call $f \\in V$ orthogonal to a subspace $\\mathcal{N}$ of $V$ if it is orthogonal to every vector in $\\mathcal{N}$ . ",
+        "bbox": [
+            111,
+            250,
+            861,
+            316
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Lemma 4.3 [20] If a normed vector space $V$ is Gâteaux differentiable, then $f \\in V$ is orthogonal to $g \\in V$ if and only if $\\langle g, \\mathcal{G}(f) \\rangle_V = 0$ . ",
+        "bbox": [
+            111,
+            333,
+            861,
+            368
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "We are now ready to develop a representative theorem for the minimal norm interpolation in RKBSs constructed in our framework. ",
+        "bbox": [
+            111,
+            382,
+            861,
+            415
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Theorem 4.4 (Representer theorem) Assume the same assumptions as in Theorem 2.3. In addition, suppose that $\\mathcal{W}_2$ is reflexive, strictly convex and Gâteaux differentiable, and the set $\\{\\Phi_1(x_j):j\\in \\mathbb{N}_m\\}$ is linearly independent in $\\mathcal{W}_1$ . Then the minimal norm interpolation problem (4.16) has a unique solution $v_{\\mathrm{inf}}\\in \\mathcal{W}_2$ and it satisfies ",
+        "bbox": [
+            112,
+            431,
+            861,
+            501
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {G} \\left(v _ {\\inf }\\right) \\in \\left(\\left(\\Phi_ {1} (\\mathbf {x})\\right) ^ {\\vdash}\\right) ^ {\\perp}. \\tag {4.19}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            393,
+            513,
+            857,
+            534
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Proof: By Lemma 4.1, linear independence of $\\{\\Phi_1(x_j):j\\in \\mathbb{N}_m\\}$ in $\\mathcal{W}_1$ implies that $V_{\\mathbf{x},\\mathbf{t}}$ is nonempty. Clearly, $V_{\\mathbf{x},\\mathbf{t}}$ is closed and convex in $\\mathcal{W}_2$ . By Lemma 4.2, there exists a unique $v\\in V_{\\mathbf{x},\\mathbf{t}}$ , denoted by $v_{\\mathrm{inf}}$ , such that ",
+        "bbox": [
+            111,
+            547,
+            861,
+            599
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| v _ {\\mathrm {i n f}} \\| _ {\\mathcal {W} _ {2}} = \\inf  _ {v \\in V _ {\\mathbf {x}, \\mathbf {t}}} \\| v \\| _ {\\mathcal {W} _ {2}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            388,
+            613,
+            583,
+            638
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "If $v_{\\mathrm{inf}} = 0$ in $\\mathcal{W}_2$ , then (4.19) holds. Observe that $v_{\\mathrm{inf}} + V_{\\mathbf{x},0} = V_{\\mathbf{x},\\mathbf{t}}$ , where $V_{\\mathbf{x},0}$ is defined by (4.18). Since $v_{\\mathrm{inf}}$ is the minimizer for the minimal norm interpolation problem (4.16) and $v_{\\mathrm{inf}} + v \\in V_{\\mathbf{x},\\mathbf{t}}$ for each $v \\in V_{\\mathbf{x},0}$ , we have ",
+        "bbox": [
+            111,
+            652,
+            861,
+            705
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\| v _ {\\inf } + v \\right\\| _ {\\mathcal {W} _ {2}} \\geq \\left\\| v _ {\\inf } \\right\\| _ {\\mathcal {W} _ {2}} \\text {f o r a l l} v \\in V _ {\\mathbf {x}, 0}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            328,
+            717,
+            643,
+            736
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "By Lemma 4.3, $\\langle v,\\mathcal{G}(v_{\\mathrm{inf}})\\rangle_{\\mathcal{W}_2} = 0$ for all $v\\in V_{\\mathbf{x},0}$ , which implies $\\mathcal{G}(v_{\\mathrm{inf}})\\in V_{\\mathbf{x},0}^{\\perp}$ . The proof is complete. ",
+        "bbox": [
+            111,
+            748,
+            861,
+            782
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "When $\\mathcal{W}_2 = \\mathcal{W}_1^*$ , the above result can be simplified. ",
+        "bbox": [
+            138,
+            794,
+            553,
+            811
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Corollary 4.5 Assume the same assumptions as in Theorem 4.4. If, in addition, $\\mathcal{W}_2 = \\mathcal{W}_1^*$ , then the minimal norm interpolation problem (4.16) has a unique solution $v_{\\mathrm{inf}} \\in \\mathcal{W}_2$ and it satisfies ",
+        "bbox": [
+            111,
+            823,
+            861,
+            873
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {G} (v _ {\\text {i n f}}) \\in \\operatorname {s p a n} \\Phi_ {1} (\\mathbf {x}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            398,
+            875,
+            571,
+            892
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "page_number",
+        "text": "21 ",
+        "bbox": [
+            838,
+            56,
+            857,
+            70
+        ],
+        "page_idx": 20
+    },
+    {
+        "type": "text",
+        "text": "Proof: Since $\\mathcal{W}_2 = \\mathcal{W}_1^*$ and $\\mathcal{W}_2$ is reflexive, by Theorem 4.4, we have ",
+        "bbox": [
+            111,
+            101,
+            656,
+            119
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {G} (v _ {\\mathrm {i n f}}) \\in ((\\Phi_ {1} (\\mathbf {x})) ^ {\\perp}) ^ {\\perp} = \\operatorname {s p a n} \\Phi_ {1} (\\mathbf {x}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            339,
+            130,
+            630,
+            151
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "The proof is complete. ",
+        "bbox": [
+            112,
+            164,
+            292,
+            181
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "We shall make some comments on the assumptions of Corollary 4.5. Firstly, note that the constructed spaces $\\mathcal{B}_1$ and $\\mathcal{B}_2$ are isomorphic to $\\mathcal{W}_2$ and $\\mathcal{W}_1$ , respectively. Therefore, $\\mathcal{W}_2 = \\mathcal{W}_1^*$ is equivalent to $\\mathcal{B}_2 = \\mathcal{B}_1^*$ (in the sense of isomorphism). By the discussion in Section 3, the condition $\\mathcal{W}_2 = \\mathcal{W}_1^*$ is satisfied by RKHSs, Orlicz RKBSs, reflexive RKBSs, semi-inner-product RKBSs, RKBSs with Borel measures, RKBSs with positive definite functions, and the $p$ -norm RKBSs ( $1 < p < +\\infty$ ), but not satisfied by RKBSs with the $\\ell^1$ norm or the 1-norm RKBSs. Secondly, for $1 < p < +\\infty$ , $\\ell^p$ and $L^p$ are reflexive, strictly convex, and Gâteaux differentiable. It is also well-known that $\\ell^1$ is non-reflexive. As a result, the properties of reflexivity, strict convexity, and Gâteaux differentiability are satisfied by the semi-inner product RKBSs, the $p$ -norm RKBSs ( $1 < p < +\\infty$ ), and RKBSs with positive definite functions, but are not satisfied by the RKBSs with Borel measures, RKBSs with the $\\ell^1$ norm, or the 1-norm RKBSs [43]. Consequently, additional requirements have to be imposed to ensure a linear representative theorem in the latter three spaces. For instance, a uniform boundedness of the Lebesgue constant condition on the reproducing kernel was imposed in [38] for the RKBS with the $\\ell^1$ -norm. ",
+        "bbox": [
+            111,
+            191,
+            861,
+            431
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "In addition, we remark that when an RKBS reduces to an RKHS, the above results recover the classical representer theorem for minimal norm interpolation in RKHSs. ",
+        "bbox": [
+            111,
+            431,
+            859,
+            465
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "4.2 Regularization networks ",
+        "text_level": 1,
+        "bbox": [
+            112,
+            486,
+            401,
+            503
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "We consider learning a function from a prescribed set of finite sampling data ",
+        "bbox": [
+            112,
+            512,
+            718,
+            529
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathbf {z} := \\left\\{\\left(x _ {j}, t _ {j}\\right): j \\in \\mathbb {N} _ {m} \\right\\} \\subseteq \\Omega_ {1} \\times \\mathbb {C}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            349,
+            542,
+            620,
+            561
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "Let $L_{\\mathbf{t}}:\\mathbb{C}^{m}\\to \\mathbb{R}_{+}$ be a loss function that is continuous and convex. For each $f\\in \\mathcal{B}_1$ , we set ",
+        "bbox": [
+            111,
+            574,
+            839,
+            590
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {E} _ {\\mathbf {z}, \\lambda} (f) := L _ {\\mathbf {t}} (f (\\mathbf {x})) + \\lambda \\phi (\\| f \\| _ {\\mathcal {B} _ {1}}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            352,
+            604,
+            617,
+            625
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "where $f(\\mathbf{x}) \\coloneqq (f(x_{j}): j \\in \\mathbb{N}_{m})$ , and the regularization function $\\phi: \\mathbb{R}_{+} \\to \\mathbb{R}_{+}$ is continuous, convex and strictly increasing with $\\lim_{t \\to +\\infty} \\phi(t) = +\\infty$ . A regularization network in an RKBS $\\mathcal{B}_1$ takes the form: ",
+        "bbox": [
+            111,
+            635,
+            859,
+            685
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\inf  _ {f \\in \\mathcal {B} _ {1}} \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f). \\tag {4.20}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            437,
+            688,
+            857,
+            712
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "Note that each $f \\in \\mathcal{B}_1$ corresponds to a unique $v \\in \\overline{\\operatorname{span}}\\{\\Phi_2(y):y \\in \\Omega_2\\}$ such that ",
+        "bbox": [
+            111,
+            719,
+            771,
+            738
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\nf (x) := f _ {v} (x) = \\langle \\Phi_ {1} (x), v \\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}, x \\in \\Omega_ {1}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            318,
+            750,
+            653,
+            768
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "Thus, (4.20) reduces to ",
+        "bbox": [
+            112,
+            782,
+            302,
+            799
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathbf {v} _ {\\inf } := \\arg \\inf  _ {v \\in \\mathcal {W} _ {2}} L _ {\\mathbf {t}} \\left(\\left(\\left\\langle \\Phi_ {1} \\left(x _ {j}\\right), v \\right\\rangle_ {\\mathcal {W} _ {1} \\times \\mathcal {W} _ {2}}: j \\in \\mathbb {N} _ {m}\\right)\\right) + \\lambda \\phi (\\| v \\| _ {\\mathcal {W} _ {2}}). \\tag {4.21}\n$$",
+        "text_format": "latex",
+        "bbox": [
+            236,
+            811,
+            857,
+            837
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "In order to prove the existence of the minimizer for the regularization network, we need the following result (see, Proposition 6, page 75, [11]). ",
+        "bbox": [
+            111,
+            849,
+            859,
+            883
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "page_number",
+        "text": "22 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 21
+    },
+    {
+        "type": "text",
+        "text": "Lemma 4.6 [11] Let $V$ be a reflexive Banach space and $F: V \\to \\mathbb{R} \\cup \\{+\\infty\\}$ be convex and lower semi-continuous. If there is an $M \\in \\mathbb{R}$ such that the set $\\{v \\in V : F(v) \\leq M\\}$ is nonempty and bounded, then $F$ attains its minimum on $V$ . ",
+        "bbox": [
+            111,
+            101,
+            861,
+            152
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Next, we establish a representative theorem for the regularization network. ",
+        "bbox": [
+            138,
+            159,
+            707,
+            176
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Theorem 4.7 (Representer theorem) Assume the same assumptions as in Theorem 4.4. Then the regularization network (4.20) possesses a unique solution $f_{\\mathbf{v}_{\\mathrm{inf}}}$ where $\\mathbf{v}_{\\mathrm{inf}} \\in \\mathcal{W}_2$ satisfies ",
+        "bbox": [
+            111,
+            186,
+            861,
+            220
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {G} (\\mathbf {v} _ {\\inf }) \\in \\left(\\left(\\Phi_ {1} (\\mathbf {x})\\right) ^ {\\vdash}\\right) ^ {\\perp}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            393,
+            227,
+            575,
+            250
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Proof: We first prove the uniqueness by contradiction. Assume that there are two different minimizers $f_1, f_2 \\in \\mathcal{B}_1$ for (4.20). Let $f_3 := \\frac{1}{2}(f_1 + f_2)$ . Since $\\mathcal{W}_2$ is reflexive, strictly convex and Gâteaux differentiable, $\\mathcal{B}_1$ is reflexive, strictly convex and Gâteaux differentiable as well. By the strict convexity of $\\mathcal{B}_1$ , we have ",
+        "bbox": [
+            111,
+            256,
+            861,
+            325
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {3}) = L _ {\\mathbf {t}} \\Big (\\frac {1}{2} f _ {1} (\\mathbf {x}) + \\frac {1}{2} f _ {2} (\\mathbf {x}) \\Big) + \\lambda \\phi \\Big (\\left\\| \\frac {1}{2} f _ {1} + \\frac {1}{2} f _ {2} \\right\\| _ {\\mathcal {B} _ {1}} \\Big) <   L _ {\\mathbf {t}} \\Big (\\frac {1}{2} f _ {1} (\\mathbf {x}) + \\frac {1}{2} f _ {2} (\\mathbf {x}) \\Big) + \\lambda \\phi \\Big (\\frac {\\| f _ {1} \\| _ {\\mathcal {B} _ {1}}}{2} + \\frac {\\| f _ {2} \\| _ {\\mathcal {B} _ {1}}}{2} \\Big).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            111,
+            330,
+            898,
+            364
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "By assumptions on $L_{\\mathbf{t}}$ and $\\phi$ , it follows that ",
+        "bbox": [
+            112,
+            369,
+            464,
+            386
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {3}) <   \\frac {1}{2} L _ {\\mathbf {t}} (f _ {1} (\\mathbf {x})) + \\frac {1}{2} L _ {\\mathbf {t}} (f _ {2} (\\mathbf {x})) + \\frac {\\lambda}{2} \\phi (\\| f _ {1} \\| _ {\\mathcal {B} _ {1}}) + \\frac {\\lambda}{2} \\phi (\\| f _ {2} \\| _ {\\mathcal {B} _ {1}}) = \\frac {1}{2} \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {1}) + \\frac {1}{2} \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {2}) = \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {1}),\n$$",
+        "text_format": "latex",
+        "bbox": [
+            111,
+            391,
+            867,
+            424
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "contradicting that $f_{1}$ is a minimizer. ",
+        "bbox": [
+            111,
+            429,
+            401,
+            445
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Next, we shall show the existence. If $f \\in \\mathcal{B}_1$ satisfies $\\| f \\|_{\\mathcal{B}_1} > \\phi^{-1} \\left( \\frac{\\mathcal{E}_{\\mathbf{z}, \\lambda}(0)}{\\lambda} \\right)$ then ",
+        "bbox": [
+            138,
+            445,
+            761,
+            465
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {E} _ {\\mathbf {z}, \\lambda} (f) \\geq \\lambda \\phi (\\| f \\| _ {\\mathcal {B} _ {1}}) > \\mathcal {E} _ {\\mathbf {z}, \\lambda} (0).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            362,
+            472,
+            606,
+            491
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Thus, ",
+        "bbox": [
+            112,
+            498,
+            161,
+            513
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\inf  _ {f \\in \\mathcal {B} _ {1}} \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f) = \\inf  _ {f \\in E} \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f), \\text {w h e r e} E := \\left\\{f \\in \\mathcal {B} _ {1}: \\| f \\| _ {\\mathcal {B} _ {1}} \\leq \\phi^ {- 1} \\left(\\frac {\\mathcal {E} _ {\\mathbf {z} , \\lambda} (0)}{\\lambda}\\right) \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            189,
+            520,
+            779,
+            555
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Clearly, $E$ is nonempty and bounded in the reflexive Banach space $\\mathcal{B}_1$ . Observe that $\\mathcal{E}_{\\mathbf{z},\\lambda}$ is convex and continuous on $\\mathcal{B}_1$ . By Lemma 4.6, $\\mathcal{E}_{\\mathbf{z},\\lambda}$ attains its minimum on $\\mathcal{B}_1$ . ",
+        "bbox": [
+            111,
+            560,
+            859,
+            594
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Finally, suppose that $f_{v} = \\langle \\Phi_{1}(\\cdot), v \\rangle_{\\mathcal{W}_{1} \\times \\mathcal{W}_{2}} \\in \\mathcal{B}_{1}$ is the minimizer for (4.20). We set ",
+        "bbox": [
+            138,
+            595,
+            795,
+            612
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\nD := \\left\\{\\left(x _ {j}, f _ {v} \\left(x _ {j}\\right)\\right): j \\in \\mathbb {N} _ {m} \\right\\}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            370,
+            619,
+            601,
+            638
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "By Theorem 4.4, there exists a unique solution $v_{\\mathrm{inf}} \\in \\mathcal{W}_2$ for the minimal norm interpolation (4.15) with the samples $D$ , and it satisfies (4.19). It follows that $f_{v_{\\mathrm{inf}}} = \\langle \\Phi_1(\\cdot), v_{\\mathrm{inf}} \\rangle_{\\mathcal{W}_1 \\times \\mathcal{W}_2}$ interpolates the sample data $D$ and for all $v \\in \\mathcal{W}_2$ ",
+        "bbox": [
+            111,
+            645,
+            859,
+            696
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\| v _ {\\inf } \\| \\mathcal {W} _ {2} \\leq \\| v \\| \\mathcal {W} _ {2}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            411,
+            704,
+            558,
+            722
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Thus, $f_{v_{\\mathrm{inf}}}(\\mathbf{x}) = f_v(\\mathbf{x})$ and ",
+        "bbox": [
+            112,
+            729,
+            325,
+            747
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\left\\| f _ {v _ {\\inf }} \\right\\| _ {\\mathcal {B} _ {1}} = \\left\\| v _ {\\inf } \\right\\| _ {\\mathcal {W} _ {2}} \\leq \\left\\| v \\right\\| _ {\\mathcal {W} _ {2}} = \\left\\| f _ {v} \\right\\| _ {\\mathcal {B} _ {1}}.\n$$",
+        "text_format": "latex",
+        "bbox": [
+            328,
+            753,
+            640,
+            773
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "As $\\phi$ is increasing, we get ",
+        "bbox": [
+            112,
+            780,
+            316,
+            795
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {v _ {\\mathrm {i n f}}}) = L _ {\\mathbf {t}} (f _ {v _ {\\mathrm {i n f}}} (\\mathbf {x}) + \\lambda \\phi (\\| f _ {v _ {\\mathrm {i n f}}} \\| _ {\\mathcal {B} _ {1}}) \\leq L _ {\\mathbf {t}} (f _ {v} (\\mathbf {x})) + \\lambda \\phi (\\| f _ {v} \\| _ {\\mathcal {B} _ {1}}) = \\mathcal {E} _ {\\mathbf {z}, \\lambda} (f _ {v}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            181,
+            804,
+            787,
+            823
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "By uniqueness of minimizer, $f_{v_{\\mathrm{inf}}} = f_v$ . As a consequence, $\\mathbf{v}_{\\mathrm{inf}}$ defined by (4.21) satisfies (4.19). The proof is complete. ",
+        "bbox": [
+            111,
+            829,
+            859,
+            863
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "When $\\mathcal{W}_2 = \\mathcal{W}_1^*$ , the above result can be simplified. ",
+        "bbox": [
+            138,
+            875,
+            550,
+            892
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "page_number",
+        "text": "23 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            70
+        ],
+        "page_idx": 22
+    },
+    {
+        "type": "text",
+        "text": "Corollary 4.8 Assume the same assumptions as in Theorem 4.4. If, in addition, $\\mathcal{W}_2 = \\mathcal{W}_1^*$ then the regularization network (4.20) possesses a unique solution $f_{\\mathbf{v}_{\\mathrm{inf}}}$ where $\\mathbf{v}_{\\mathrm{inf}} \\in \\mathcal{W}_2$ satisfies ",
+        "bbox": [
+            112,
+            101,
+            862,
+            138
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "equation",
+        "text": "$$\n\\mathcal {G} (\\mathbf {v} _ {\\mathrm {i n f}}) \\in \\operatorname {s p a n} \\Phi_ {1} (\\mathbf {x}).\n$$",
+        "text_format": "latex",
+        "bbox": [
+            398,
+            148,
+            573,
+            167
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "The above result covers representative theorems in existing RKBSs [43, 46, 48]. Especially, it covers the classical representative theorem for regularization networks in an RKHS. ",
+        "bbox": [
+            111,
+            180,
+            861,
+            215
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "text",
+        "text": "References ",
+        "text_level": 1,
+        "bbox": [
+            114,
+            253,
+            241,
+            273
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[1] A. Argyriou, C. A. Micchelli, and M. Pontil, On spectral learning, J. Mach. Learn. Res. 11 (2010), 935-953. ",
+            "[2] N. Aronszajn, Theory of reproducing kernels, Trans. Amer. Math. Soc. 68 (1950), 337-404. ",
+            "[3] M. Buhmann, *Radial Basis Functions: Theory and Implementations*, Cambridge Monographs on Applied and Computational Mathematics, 12, Cambridge University Press, Cambridge, 2003. ",
+            "[4] E. J. Candés, J. Romberg, and T. Tao, Robust uncertainty principles: exact signal reconstruction from highly incomplete frequency information, IEEE Trans. Inform. Theory 52 (2006), 489-509. ",
+            "[5] J. G. Christensen, Sampling in reproducing kernel Banach spaces on Lie groups, J. Approx. Theory 164 (2012), 179-203. ",
+            "[6] D. Cox and F. O'Sullivan, Asymptotic analysis of penalized likelihood and related estimators, Ann. Statist. 18 (1990), 1676-1695. ",
+            "[7] F. Cucker and S. Smale, On the mathematical foundations of learning, Bull. Amer. Math. Soc. 39 (2002), 1-49. ",
+            "[8] F. Cucker and D. X. Zhou, Learning Theory: An Approximation Theory Viewpoint, Cambridge Monographs on Applied and Computational Mathematics, 24, Cambridge University Press, Cambridge, 2007. ",
+            "[9] B. Dastourian and M. Janfada, Frames for operators in Banach spaces via semi-inner products, Int. J. Wavelets Multiresolut. Inf. Process. 14 (2016), no. 3, 1650011, 17 pp. ",
+            "[10] R. Der and D. Lee, Large-margin classification in Banach spaces, JMLR Workshop and Conference Proceedings 2 (2007), AISTATS: 91-98. ",
+            "[11] I. Ekeland and T. Turnbull, Infinite-dimensional Optimization and Convexity, University of Chicago Press, Chicago, IL, 1983. ",
+            "[12] M. Fabian, P. Habala, P. Hajek et al., Functional Analysis and Infinite-Dimensional Geometry, Springer, New York, 2001. ",
+            "[13] G. E. Fasshauer, F. J. Hickernell, and Q. Ye, Solving support vector machines in reproducing kernel Banach spaces with positive definite functions, Appl. Comput. Harmon. Anal. 38 (2015), 115-139. ",
+            "[14] A. G. García and P. Alberto, Sampling in reproducing kernel Banach spaces, Mediterr. J. Math. 10 (2013), 1401-1417. ",
+            "[15] A. G. García, M. A. Hernández-Medina, and M. J. Muñnoz-Bouzo, The Kramer sampling theorem revisited, Acta Appl. Math. 133 (2014), 87-111. ",
+            "[16] P. G. Georgiev, L. Sánchez-González, and P. M. Pardalos, Construction of pairs of reproducing kernel Banach spaces, Constructive Nonsmooth Analysis and Related Topics 87 (2014), 39-57. "
+        ],
+        "bbox": [
+            114,
+            284,
+            861,
+            883
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "page_number",
+        "text": "24 ",
+        "bbox": [
+            838,
+            56,
+            859,
+            71
+        ],
+        "page_idx": 23
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[17] J. R. Giles, Classes of semi-inner-product spaces, Trans. Amer. Math. Soc. 129 (1967), 436-446. ",
+            "[18] D. Han, M. Z. Nashed, and Q. Sun, Sampling expansions in reproducing kernel Hilbert and Banach spaces, Numer. Funct. Anal. Optim. 30 (2009), 971-987. ",
+            "[19] T. Hastie, R. Tibshirani, and J. Friedman, The Elements of Statistical Learning: Data Mining, Inference and Prediction, Second edition, Springer-Verlag, New York, 2009. ",
+            "[20] R. C. James, Orthogonality and linear functionals in normed linear spaces, Trans. Amer. Math. Soc. 61 (1947), 265-292. ",
+            "[21] G. Kimeldorf and G. Wahba, Some results on Tchebycheffian spline functions, J. Math. Anal. Appl. 33 (1971), 82-95. ",
+            "[22] G. Lumer, Semi-inner-product spaces, Trans. Amer. Math. Soc. 100 (1961), 29-43. ",
+            "[23] G. Lumer, On the isometries of reflexive Orlicz spaces, Ann. Inst. Fourier (Grenoble) 13 (1963), 99-109. ",
+            "[24] R. E. Megginson, An Introduction to Banach Space Theory, Springer-Verlag, New York, 1998. ",
+            "[25] C. A. Micchelli and M. Pontil, A function representation for learning in Banach spaces, Proceeding of the 17th Annual Conference on Learning Theory, pp. 255-269, Lecture Notes in Computer Science 3120, Springer, Berlin, 2004. ",
+            "[26] C. A. Micchelli and M. Pontil, Feature space perspectives for learning the kernel, Mach. Learn. 66 (2007), 297-319. ",
+            "[27] M. Z. Nashed and Q. Sun, Sampling and reconstruction of signals in a reproducing kernel subspace of $L^p(\\mathbb{R}^d)$ , J. Funct. Anal. 258 (2010), 2422-2452. ",
+            "[28] M. Z. Nashed, Q. Sun, and J. Xian, Convolution sampling and reconstruction of signals in a reproducing kernel subspace, Proc. Amer. Math. Soc. 141 (2013), 1995-2007. ",
+            "[29] M. M. Rao and Z. D. Ren, Theory of Orlicz Spaces, Marcel Dekker, New York, 1991. ",
+            "[30] M. Rao and Z. Ren, Applications of Orlicz Spaces, Monographs and Textbooks in Pure and Applied Mathematics, 250, Marcel Dekker, Inc., New York, 2002. ",
+            "[31] W. Rudin, Real and Complex Analysis, Third edition, McGraw-Hill Book Co., New York, 1987. ",
+            "[32] B. Schölkopf, R. Herbrich, and A. J. Smola, A generalized representer theorem, Proceeding of the Fourteenth Annual Conference on Computational Learning Theory and the Fifth European Conference on Computational Learning Theory, pp. 416-426, Springer-Verlag, London, UK, 2001. ",
+            "[33] B. Schölkopf and A. J. Smola, Learning with Kernels: Support Vector Machines, Regularization, Optimization, and Beyond, MIT Press, Cambridge, Massachusetts, 2002. ",
+            "[34] L. Shi, Y.-L. Feng, and D.-X. Zhou, Concentration estimates for learning with $\\ell^1$ -regularizer and data dependent hypothesis spaces, Appl. Comput. Harmon. Anal. 31 (2011), 286-302. ",
+            "[35] B. Sriperumbudur, K. Fukumizu, and G. Lanckriet, Learning in Hilbert vs. Banach spaces: A measure embedding viewpoint, Adv. Neural Inf. Process. Syst. 24 (2011), 1773-1781. ",
+            "[36] I. Steinwart and A. Christmann, Support Vector Machines, Springer-Verlag, New York, 2008. ",
+            "[37] G. Song and H. Zhang, Reproducing kernel Banach spaces with the $\\ell^1$ norm II: Error analysis for regularized least square regression, Neural Comput. 23 (2011), 2713-2729. ",
+            "[38] G. Song, H. Zhang, and F. J. Hickernell, Reproducing kernel Banach spaces with the $\\ell^1$ norm, Appl. Comput. Harmon. Anal. 34 (2013), 96-116. ",
+            "[39] R. Tibshirani, Regression shrinkage and selection via the lasso, J. Roy. Statist. Soc. Ser. B 58 (1996), 267-288. "
+        ],
+        "bbox": [
+            114,
+            101,
+            861,
+            892
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "page_number",
+        "text": "25 ",
+        "bbox": [
+            838,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 24
+    },
+    {
+        "type": "list",
+        "sub_type": "ref_text",
+        "list_items": [
+            "[40] H. Tong, D.-R. Chen, and F. Yang, Least square regression with $\\ell^p$ -coefficient regularization, Neural Comput. 22 (2010), 3221-3235. ",
+            "[41] H. Wendland, Scattered Data Approximation, Cambridge Monographs on Applied and Computational Mathematics 17, Cambridge University Press, Cambridge, 2005. ",
+            "[42] Q. W. Xiao and D. X. Zhou, Learning by nonsymmetric kernels with data dependent spaces and $\\ell_1$ -regularizer, Taiwanese J. Math. 14 (2010), 1821-1836. ",
+            "[43] Y. Xu and Q. Ye, Generalized Mercer kernels and reproducing kernel Banach spaces, Mem. Am. Math. Soc. 258 (2019), no. 1243, 122 pp. ",
+            "[44] Y. Xu and H. Zhang, Refinable kernels, J. Mach. Learn. Res. 8 (2007), 2083-2120. ",
+            "[45] Q. Ye, Support vector machines in reproducing kernel Hilbert spaces versus Banach spaces, Approximation Theory XIV: San Antonio 2013, 377-395. ",
+            "[46] H. Zhang, Y. Xu, and J. Zhang, Reproducing kernel Banach spaces for machine learning, *J. Mach. Learn.* Res. **10** (2009), 2741-2775. ",
+            "[47] H. Zhang and J. Zhang, Frames, Riesz bases, and sampling expansions in Banach spaces via semi-inner products, Appl. Comput. Harmon. Anal. 31 (2011), 1-25. ",
+            "[48] H. Zhang and J. Zhang, Regularized learning in Banach spaces as an optimization problem: representer theorems, J. Global Optim. 54 (2012), 235-250. ",
+            "[49] H. Zhang and J. Zhang, Vector-valued reproducing kernel Banach spaces with applications to multi-task learning, J. Complexity 29 (2013), 195-215. ",
+            "[50] H. Zhang and L. Zhao, On the inclusion relation of reproducing kernel Hilbert spaces, Anal. Appl. (Singap.) 11 (2013), no. 2, 1350014, 31 pp. ",
+            "[51] J. Zhang and H. Zhang, Categorization Based on Similarity and Features: The Reproducing Kernel Banach Space Approach. In W. Batchelder, H. Colonius, E.N. Dzhafarov, and J. Myung (Eds.) New Handbook of Mathematical Psychology, Volume 2, Springer, 2018. "
+        ],
+        "bbox": [
+            114,
+            102,
+            861,
+            549
+        ],
+        "page_idx": 25
+    },
+    {
+        "type": "page_number",
+        "text": "26 ",
+        "bbox": [
+            838,
+            58,
+            859,
+            70
+        ],
+        "page_idx": 25
+    }
+]

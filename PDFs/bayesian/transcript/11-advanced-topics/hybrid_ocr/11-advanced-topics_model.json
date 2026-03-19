@@ -1,0 +1,6180 @@
+[
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.135,
+                0.321,
+                0.867,
+                0.377
+            ],
+            "angle": 0,
+            "content": "BASICS OF MARKOV CHAIN SIMULATION"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.41,
+                0.411,
+                0.589,
+                0.453
+            ],
+            "angle": 0,
+            "content": "CHAPTER 11"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.932,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "1/108"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.735,
+                0.138
+            ],
+            "angle": 0,
+            "content": "BASICS OF MARKOV CHAIN SIMULATION"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.321,
+                0.972,
+                0.432
+            ],
+            "angle": 0,
+            "content": "Many clever methods have been devised for constructing and sampling from arbitrary posterior distributions."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.531,
+                0.975,
+                0.783
+            ],
+            "angle": 0,
+            "content": "Markov chain simulation (also called Markov chain Monte Carlo, or MCMC) is a general method based on drawing values of \\(\\theta\\) from approximate distributions and then correcting those draws to better approximate the target posterior distribution, \\(p(\\theta | y)\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "2/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.231,
+                0.972,
+                0.342
+            ],
+            "angle": 0,
+            "content": "The sampling is done sequentially, with the distribution of the sampled draws depending on the last value drawn; hence, the draws form a Markov chain."
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.024,
+                0.453,
+                0.111,
+                0.498
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.511,
+                0.975,
+                0.693
+            ],
+            "angle": 0,
+            "content": "As defined in probability theory, a Markov chain is a sequence of random variables \\(\\theta_1, \\theta_2, \\ldots\\), for which, for any \\(t\\), the distribution of \\(\\theta_t\\) given all previous \\(\\theta\\)'s depends only on the most recent value, \\(\\theta_{t-1}\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "3/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.354,
+                0.978,
+                0.533
+            ],
+            "angle": 0,
+            "content": "The key to the method's success, however, is not the Markov property but rather that the approximate distributions are improved at each step in the simulation, in the sense of converging to the target distribution."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.967,
+                0.987,
+                0.994
+            ],
+            "angle": 0,
+            "content": "4/108"
+        }
+    ],
+    [
+        {
+            "type": "image",
+            "bbox": [
+                0.064,
+                0.152,
+                0.316,
+                0.482
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.364,
+                0.151,
+                0.62,
+                0.483
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.665,
+                0.151,
+                0.92,
+                0.483
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image_caption",
+            "bbox": [
+                0.023,
+                0.535,
+                0.978,
+                0.81
+            ],
+            "angle": 0,
+            "content": "FIGURE: Five independent sequences of a Markov chain simulation for the bivariate unit normal distribution, with overdispersed starting points indicated by solid squares. The simulation is a Metropolis algorithm described in the example on page 278, with a jumping rule that has purposely been chosen to be inefficient so that the chains will move slowly and their random-walk-like aspect will be apparent."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.931,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "5/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.168,
+                0.972,
+                0.348
+            ],
+            "angle": 0,
+            "content": "Figure 11.1 illustrates a simple example of a Markov chain simulation. In this case, a Metropolis algorithm in which \\(\\theta\\) is a vector with only two components, with a bivariate unit normal posterior distribution, \\(\\theta \\sim N(0, I)\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.445,
+                0.977,
+                0.817
+            ],
+            "angle": 0,
+            "content": "First consider Figure 11.1a, which portrays the early stages of the simulation. The space of the figure represents the range of possible values of the multivariate parameter, \\(\\theta\\), and each of the five jagged lines represents the early path of a random walk starting near the center or the extremes of the target distribution and jumping through the distribution according to an appropriate sequence of random iterations."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "6/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.243,
+                0.978,
+                0.487
+            ],
+            "angle": 0,
+            "content": "Figure 11.1b represents the mature stage of the same Markov chain simulation, in which the simulated random walks have each traced a path throughout the space of \\(\\theta\\), with a common stationary distribution that is equal to the target distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.587,
+                0.975,
+                0.701
+            ],
+            "angle": 0,
+            "content": "We can then perform inferences about \\(\\theta\\) using points from the second halves of the Markov chains we have simulated, as displayed in Figure 11.1c."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.966,
+                0.988,
+                0.994
+            ],
+            "angle": 0,
+            "content": "7/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.228,
+                0.975,
+                0.344
+            ],
+            "angle": 0,
+            "content": "In our applications of Markov chain simulation, we create several independent sequences; each sequence, \\(\\theta^1, \\theta^2, \\theta^3, \\ldots\\), is produced by"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.051,
+                0.449,
+                0.539,
+                0.498
+            ],
+            "angle": 0,
+            "content": "- starting at some point \\(\\theta^0\\) and then,"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.051,
+                0.597,
+                0.975,
+                0.71
+            ],
+            "angle": 0,
+            "content": "- for each \\(t\\), drawing \\(\\theta^t\\) from a transition distribution, \\(T_t(\\theta^t | \\theta^{t-1})\\) that depends on the previous draw, \\(\\theta^{t-1}\\)."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.051,
+                0.449,
+                0.975,
+                0.71
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "8/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.24,
+                0.978,
+                0.423
+            ],
+            "angle": 0,
+            "content": "As we shall see in the discussion of combining the Gibbs sampler and Metropolis sampling, it is often convenient to allow the transition distribution to depend on the iteration number \\( t \\); hence the notation \\( T_{t} \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.517,
+                0.975,
+                0.705
+            ],
+            "angle": 0,
+            "content": "The transition probability distributions must be constructed so that the Markov chain converges to a unique stationary distribution that is the posterior distribution, \\( p(\\theta | y) \\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.93,
+                0.966,
+                0.988,
+                0.994
+            ],
+            "angle": 0,
+            "content": "9/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.243,
+                0.978,
+                0.495
+            ],
+            "angle": 0,
+            "content": "Markov chain simulation is used when it is not possible (or not computationally efficient) to sample \\(\\theta\\) directly from \\(p(\\theta | y)\\); instead we sample iteratively in such a way that at each step of the process we expect to draw from a distribution that becomes closer to \\(p(\\theta | y)\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.585,
+                0.975,
+                0.701
+            ],
+            "angle": 0,
+            "content": "For a wide class of problems (including posterior distributions for many hierarchical models), this appears to be the easiest way to get reliable results."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "10/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.243,
+                0.978,
+                0.487
+            ],
+            "angle": 0,
+            "content": "The key to Markov chain simulation is to create a Markov process whose stationary distribution is the specified \\( p(\\theta | y) \\) and to run the simulation long enough that the distribution of the current draws is close enough to this stationary distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.585,
+                0.975,
+                0.701
+            ],
+            "angle": 0,
+            "content": "For any specific \\( p(\\theta | y) \\), or unnormalized density \\( q(\\theta | y) \\), a variety of Markov chains with the desired property can be constructed."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "11/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.243,
+                0.978,
+                0.489
+            ],
+            "angle": 0,
+            "content": "Once the simulation algorithm has been implemented and the simulations drawn, it is absolutely necessary to check the convergence of the simulated sequences; for example, the simulations of Figure 11.1a are far from convergence and are not close to the target distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.587,
+                0.975,
+                0.7
+            ],
+            "angle": 0,
+            "content": "We will discuss how to check convergence, and construct an expression for the effective number of simulation draws for a correlated sample."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "12/108"
+        }
+    ],
+    [
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.269,
+                0.978,
+                0.453
+            ],
+            "angle": 0,
+            "content": "This chapter introduces the basic Markov chain simulation methods, the Gibbs sampler and the Metropolis-Hastings algorithm, in the context of our general computing approach based on successive approximation."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.547,
+                0.975,
+                0.665
+            ],
+            "angle": 0,
+            "content": "We sketch a proof of the convergence of Markov chain simulation algorithms and present a method for monitoring the convergence in practice."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "13/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.007,
+                0.487,
+                0.032
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.279,
+                0.915,
+                0.337
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.404,
+                0.888,
+                0.462
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.721,
+                0.587
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.712
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.019,
+                0.279,
+                0.915,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.923,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "14/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.006,
+                0.487,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.31,
+                0.138
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.02,
+                0.237,
+                0.972,
+                0.414
+            ],
+            "angle": 0,
+            "content": "A particular Markov chain algorithm that has been found useful in many multidimensional problems is the Gibbs sampler, also called alternating conditional sampling, which is defined in terms of subvectors of \\(\\theta\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.02,
+                0.515,
+                0.972,
+                0.631
+            ],
+            "angle": 0,
+            "content": "Suppose the parameter vector \\(\\theta\\) has been divided into \\(d\\) components or subvectors, \\(\\theta = (\\theta_{1},\\ldots ,\\theta_{d})\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.02,
+                0.728,
+                0.972,
+                0.903
+            ],
+            "angle": 0,
+            "content": "Each iteration of the Gibbs sampler cycles through the subvectors of \\(\\theta\\), drawing each subset conditional on the value of all the others. There are thus \\(d\\) steps in iteration \\(t\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "15/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.006,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.138,
+                0.972,
+                0.311
+            ],
+            "angle": 0,
+            "content": "At each iteration \\( t \\), an ordering of the \\( d \\) subvectors of \\( \\theta \\) is chosen and, in turn, each \\( \\theta_j^t \\) is sampled from the conditional distribution given all the other components of \\( \\theta \\):"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.415,
+                0.39,
+                0.581,
+                0.456
+            ],
+            "angle": 0,
+            "content": "\\[\np (\\theta_ {j} | \\theta_ {- j} ^ {t - 1}, y).\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.051,
+                0.577,
+                0.975,
+                0.69
+            ],
+            "angle": 0,
+            "content": "- \\(\\theta_{-j}^{t - 1}\\) represents all the components of \\(\\theta\\), except for \\(\\theta_{j}\\), at their current values:"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.306,
+                0.77,
+                0.75,
+                0.835
+            ],
+            "angle": 0,
+            "content": "\\[\n\\theta_ {- j} ^ {t - 1} = (\\theta_ {1} ^ {t}, \\ldots , \\theta_ {j - 1} ^ {t}, \\theta_ {j + 1} ^ {t - 1}, \\ldots , \\theta_ {d} ^ {t}).\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "16/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.007,
+                0.487,
+                0.032
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.354,
+                0.978,
+                0.533
+            ],
+            "angle": 0,
+            "content": "Thus, each subvector \\(\\theta_{j}\\) is updated conditional on the latest values of the other components of \\(\\theta\\), which are the iteration \\(t\\) values for the components already updated and the iteration \\(t - 1\\) values for the others."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "17/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.007,
+                0.487,
+                0.032
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.186,
+                0.978,
+                0.36
+            ],
+            "angle": 0,
+            "content": "For many problems involving standard statistical models, it is possible to sample directly from most or all of the conditional posterior distributions of the parameters."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.463,
+                0.975,
+                0.573
+            ],
+            "angle": 0,
+            "content": "We typically construct models using a sequence of conditional probability distributions, as in the hierarchical models of Chapter 5."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.675,
+                0.975,
+                0.788
+            ],
+            "angle": 0,
+            "content": "It is often the case that the conditional distributions in such models are conjugate distributions that provide for easy simulation."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.992
+            ],
+            "angle": 0,
+            "content": "18/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.376,
+                0.006,
+                0.487,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Gibbs Sampler"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.845,
+                0.141
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: BIVARIATE NORMAL DISTRIBUTION"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.487,
+                0.253,
+                0.53
+            ],
+            "angle": 0,
+            "content": "See the textbook."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.923,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "19/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.489,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.279,
+                0.918,
+                0.339
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.404,
+                0.888,
+                0.464
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.722,
+                0.587
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.712
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.019,
+                0.154,
+                0.918,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "20/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.784,
+                0.141
+            ],
+            "angle": 0,
+            "content": "METROPOLIS AND METROPOLIS-HASTINGS"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.18,
+                0.251,
+                0.222
+            ],
+            "angle": 0,
+            "content": "ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.298,
+                0.978,
+                0.475
+            ],
+            "angle": 0,
+            "content": "The Metropolis-Hastings algorithm is a general term for a family of Markov chain simulation methods that are useful for sampling from Bayesian posterior distributions."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.577,
+                0.975,
+                0.693
+            ],
+            "angle": 0,
+            "content": "We have already seen the Gibbs sampler in the previous section; it can be viewed as a special case of Metropolis-Hastings."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.788,
+                0.975,
+                0.905
+            ],
+            "angle": 0,
+            "content": "Here we present the basic Metropolis algorithm and its generalization to the Metropolis-Hastings algorithm."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.921,
+                0.966,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "21/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.573,
+                0.141
+            ],
+            "angle": 0,
+            "content": "THE METROPOLIS ALGORITHM"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.24,
+                0.972,
+                0.356
+            ],
+            "angle": 0,
+            "content": "The Metropolis algorithm is an adaptation of a random walk with an acceptance/rejection rule to converge to the specified target distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.454,
+                0.467,
+                0.501
+            ],
+            "angle": 0,
+            "content": "The algorithm proceeds as follows."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.044,
+                0.577,
+                0.975,
+                0.89
+            ],
+            "angle": 0,
+            "content": "1. Draw a starting point \\(\\theta^0\\), for which \\(p(\\theta^0 | y) > 0\\), from a starting distribution \\(p_0(\\theta)\\). The starting distribution might, for example, be based on an approximation as described in Section 13.3. Or we may simply choose starting values dispersed around a crude approximate estimate of the sort discussed in Chapter 10."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.921,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "22/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.048,
+                0.206,
+                0.297,
+                0.252
+            ],
+            "angle": 0,
+            "content": "2. For \\( t = 1, 2, \\ldots \\):"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.071,
+                0.352,
+                0.972,
+                0.456
+            ],
+            "angle": 0,
+            "content": "(2.1) Sample a proposal \\(\\theta^{*}\\) from a jumping distribution (or proposal distribution) at time \\(t\\), \\(J_{t}(\\theta^{*}|\\theta^{t-1})\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.146,
+                0.551,
+                0.975,
+                0.768
+            ],
+            "angle": 0,
+            "content": "For the Metropolis algorithm (but not the Metropolis-Hastings algorithm, as discussed later in this section), the jumping distribution must be symmetric, satisfying the condition \\( J_{t}(\\theta_{a}|\\theta_{b}) = J_{t}(\\theta_{b}|\\theta_{a}) \\) for all \\( \\theta_{a}, \\theta_{b} \\), and \\( t \\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "23/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.044,
+                0.138,
+                0.294,
+                0.182
+            ],
+            "angle": 0,
+            "content": "2. For \\( t = 1, 2, \\ldots \\):"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.068,
+                0.286,
+                0.556,
+                0.33
+            ],
+            "angle": 0,
+            "content": "(2.2) Calculate the ratio of the densities,"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.473,
+                0.375,
+                0.971,
+                0.472
+            ],
+            "angle": 0,
+            "content": "\\[\nr = \\frac {p \\left(\\theta^ {*} | y\\right)}{p \\left(\\theta^ {t - 1} | y\\right)}. \\tag {11.1}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.068,
+                0.568,
+                0.191,
+                0.612
+            ],
+            "angle": 0,
+            "content": "(2.3) Set"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.319,
+                0.662,
+                0.797,
+                0.848
+            ],
+            "angle": 0,
+            "content": "\\[\n\\theta^ {t} = \\left\\{ \\begin{array}{l l} \\theta^ {*}, & \\text {w i t h p r o b a b i l i t y m i n} (r, 1), \\\\ \\theta^ {t - 1}, & \\text {o t h e r w i s e}. \\end{array} \\right.\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "24/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.328,
+                0.978,
+                0.573
+            ],
+            "angle": 0,
+            "content": "Given the current value \\(\\theta^{t - 1}\\), the transition distribution \\(T_{t}(\\theta^{t}|\\theta^{t - 1})\\) of the Markov chain is thus a mixture of a point mass at \\(\\theta^t = \\theta^{t - 1}\\), and a weighted version of the jumping distribution, \\(J_{t}(\\theta^{t}|\\theta^{t - 1})\\), that adjusts for the acceptance rate."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "25/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.145,
+                0.978,
+                0.321
+            ],
+            "angle": 0,
+            "content": "The algorithm requires the ability to calculate the ratio \\( r \\) in (11.1) for all \\( (\\theta, \\theta^*) \\), and to draw \\( \\theta \\) from the jumping distribution \\( J_t(\\theta^* | \\theta) \\) for all \\( \\theta \\) and \\( t \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.423,
+                0.975,
+                0.533
+            ],
+            "angle": 0,
+            "content": "In addition, step (2.3) above requires the generation of a uniform random number."
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.027,
+                0.642,
+                0.111,
+                0.682
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.7,
+                0.975,
+                0.818
+            ],
+            "angle": 0,
+            "content": "When \\(\\theta^t = \\theta^{t-1}\\), that is, if the jump is not accepted, this still counts as an iteration in the algorithm."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "26/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.959,
+                0.222
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: BIVARIATE UNIT NORMAL DENSITY WITH NORMAL JUMPING KERNEL"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.525,
+                0.253,
+                0.568
+            ],
+            "angle": 0,
+            "content": "See the textbook."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "27/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.09,
+                0.536,
+                0.138
+            ],
+            "angle": 0,
+            "content": "RELATION TO OPTIMIZATION"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.304,
+                0.978,
+                0.414
+            ],
+            "angle": 0,
+            "content": "The acceptance/rejection rule of the Metropolis algorithm can be stated as follows:"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.528,
+                0.781,
+                0.58
+            ],
+            "angle": 0,
+            "content": "(1) if the jump increases the posterior density, set \\(\\theta^t = \\theta^*\\);"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.677,
+                0.972,
+                0.79
+            ],
+            "angle": 0,
+            "content": "(2) if the jump decreases the posterior density, set \\(\\theta^t = \\theta^*\\) with probability equal to the density ratio, \\(r\\), and set \\(\\theta^t = \\theta^{t-1}\\) otherwise."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.027,
+                0.528,
+                0.972,
+                0.79
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "28/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.354,
+                0.978,
+                0.533
+            ],
+            "angle": 0,
+            "content": "The Metropolis algorithm can thus be viewed as a stochastic version of a stepwise mode-finding algorithm, always accepting steps that increase the density but only sometimes accepting downward steps."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "29/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.914,
+                0.141
+            ],
+            "angle": 0,
+            "content": "WHY DOES THE METROPOLIS ALGORITHM WORK?"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.28,
+                0.972,
+                0.396
+            ],
+            "angle": 0,
+            "content": "The proof that the sequence of iterations \\(\\theta^1, \\theta^2, \\ldots\\) converges to the target distribution has two steps:"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.051,
+                0.507,
+                0.972,
+                0.617
+            ],
+            "angle": 0,
+            "content": "- first, it is shown that the simulated sequence is a Markov chain with a unique stationary distribution,"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.051,
+                0.721,
+                0.972,
+                0.826
+            ],
+            "angle": 0,
+            "content": "- second, it is shown that the stationary distribution equals this target distribution."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.051,
+                0.507,
+                0.972,
+                0.826
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "30/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.215,
+                0.975,
+                0.329
+            ],
+            "angle": 0,
+            "content": "The first step of the proof holds if the Markov chain is irreducible, aperiodic, and not transient."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.427,
+                0.977,
+                0.742
+            ],
+            "angle": 0,
+            "content": "Except for trivial exceptions, the latter two conditions hold for a random walk on any proper distribution, and irreducibility holds as long as the random walk has a positive probability of eventually reaching any state from any other state; that is, the jumping distributions \\( J_{t} \\) must eventually be able to jump to all states with positive probability."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "31/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.268,
+                0.978,
+                0.452
+            ],
+            "angle": 0,
+            "content": "To see that the target distribution is the stationary distribution of the Markov chain generated by the Metropolis algorithm, consider starting the algorithm at time \\( t - 1 \\) with a draw \\( \\theta^{t-1} \\) from the target distribution \\( p(\\theta | y) \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.545,
+                0.975,
+                0.665
+            ],
+            "angle": 0,
+            "content": "Now consider any two such points \\(\\theta_{a}\\) and \\(\\theta_{b}\\), drawn from \\(p(\\theta | y)\\) and labeled so that \\(p(\\theta_{b} | y) \\geq p(\\theta_{a} | y)\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "32/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.12,
+                0.913,
+                0.165
+            ],
+            "angle": 0,
+            "content": "The unconditional probability density of a transition from \\(\\theta_{a}\\) and \\(\\theta_{b}\\) is"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.219,
+                0.219,
+                0.778,
+                0.276
+            ],
+            "angle": 0,
+            "content": "\\[\np (\\theta^ {t - 1} = \\theta_ {a}, \\theta^ {t} = \\theta_ {b}) = p (\\theta_ {a} | y) \\times J _ {t} (\\theta_ {b} | \\theta_ {a}),\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.331,
+                0.972,
+                0.508
+            ],
+            "angle": 0,
+            "content": "where the acceptance probability is 1 because of our labeling of \\( a \\) and \\( b \\), and the unconditional probability density of a transition from \\( \\theta_{b} \\) and \\( \\theta_{a} \\) is, from (11.1),"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.156,
+                0.542,
+                0.839,
+                0.719
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} p (\\theta^ {t} = \\theta_ {a}, \\theta^ {t - 1} = \\theta_ {b}) = p (\\theta_ {b} | y) \\times J _ {t} (\\theta_ {a} | \\theta_ {b}) \\times \\frac {p (\\theta_ {a} | y)}{p (\\theta_ {b} | y)} \\\\ = p \\left(\\theta_ {a} | y\\right) \\times J _ {t} \\left(\\theta_ {a} \\mid \\theta_ {b}\\right), \\\\ \\end{array}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.773,
+                0.972,
+                0.886
+            ],
+            "angle": 0,
+            "content": "where is the same as the probability of a transition from \\(\\theta_{a}\\) to \\(\\theta_{b}\\), since we have required that \\(J_{t}(.|.)\\) be symmetric, that is, \\(J_{t}(\\theta_{a}|\\theta_{b}) \\equiv J_{t}(\\theta_{b}|\\theta_{a})\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "33/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.354,
+                0.978,
+                0.533
+            ],
+            "angle": 0,
+            "content": "Since their joint distribution is symmetric, \\(\\theta^t\\) and \\(\\theta^{t-1}\\) have the same marginal distributions, and so \\(p(\\theta | y)\\) is the stationary distribution of the Markov chain of \\(\\theta\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "34/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.763,
+                0.138
+            ],
+            "angle": 0,
+            "content": "THE METROPOLIS-HASTINGS ALGORITHM"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.372,
+                0.972,
+                0.484
+            ],
+            "angle": 0,
+            "content": "The Metropolis-Hastings algorithm generalizes the basic Metropolis algorithm presented above in two ways."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.587,
+                0.972,
+                0.702
+            ],
+            "angle": 0,
+            "content": "First, the jumping rules \\( J_{t} \\) need no longer be symmetric; that is, there is no requirement that \\( J_{t}(\\theta_{a}|\\theta_{b}) \\equiv J_{t}(\\theta_{b}|\\theta_{a}) \\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "35/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.171,
+                0.972,
+                0.286
+            ],
+            "angle": 0,
+            "content": "Second, to correct for the asymmetry in the jumping rule, the ratio \\( r \\) in (11.1) is replaced by a ratio of ratios:"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.312,
+                0.334,
+                0.971,
+                0.442
+            ],
+            "angle": 0,
+            "content": "\\[\nr = \\frac {p \\left(\\theta^ {*} \\mid y\\right)}{p \\left(\\theta^ {t - 1} \\mid y\\right)} \\times \\frac {J _ {t} \\left(\\theta^ {t - 1} \\mid \\theta^ {*}\\right)}{J _ {t} \\left(\\theta^ {*} \\mid \\theta^ {t - 1}\\right)}. \\tag {11.2}\n\\]"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.027,
+                0.605,
+                0.111,
+                0.645
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.665,
+                0.975,
+                0.785
+            ],
+            "angle": 0,
+            "content": "The ratio \\( r \\) is always defined, because a jump from \\( \\theta^{t-1} \\) to \\( \\theta^* \\) can only occur if both \\( p(\\theta^{t-1}|y) \\) and \\( J_t(\\theta^*|\\theta^{t-1}) \\) are nonzero."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "36/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.237,
+                0.978,
+                0.351
+            ],
+            "angle": 0,
+            "content": "Allowing asymmetric jumping rules can be useful in increasing the speed of the random walk."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.45,
+                0.975,
+                0.56
+            ],
+            "angle": 0,
+            "content": "Convergence to the target distribution is proved in the same way as for the Metropolis algorithm."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.663,
+                0.943,
+                0.71
+            ],
+            "angle": 0,
+            "content": "The proof of convergence to a unique stationary distribution is identical."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "37/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.243,
+                0.978,
+                0.432
+            ],
+            "angle": 0,
+            "content": "To prove that the stationary distribution is the target distribution, \\( p(\\theta | y) \\), consider any two points \\( \\theta_{a} \\) and \\( \\theta_{b} \\) with posterior densities labeled so that \\( p(\\theta_{b} | y) J_{t}(\\theta_{a} | \\theta_{b}) \\geq p(\\theta_{a} | y) J_{t}(\\theta_{b} | \\theta_{a}) \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.517,
+                0.977,
+                0.701
+            ],
+            "angle": 0,
+            "content": "If \\(\\theta^{t - 1}\\) follows the target distribution, then it is easy to show that the unconditional probability density of a transition from \\(\\theta_{a}\\) to \\(\\theta_{b}\\) is the same as the reverse transition."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "38/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.135,
+                0.004,
+                0.489,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.838,
+                0.222
+            ],
+            "angle": 0,
+            "content": "RELATION BETWEEN THE JUMPING RULE AND EFFICIENCY OF SIMULATIONS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.321,
+                0.972,
+                0.444
+            ],
+            "angle": 0,
+            "content": "The ideal Metropolis-Hastings jumping rule is simply to sample the proposal, \\(\\theta^{*}\\), from the target distribution; that is, \\(J(\\theta^{*}|\\theta)\\equiv p(\\theta^{*}|y)\\) for all \\(\\theta\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.533,
+                0.975,
+                0.655
+            ],
+            "angle": 0,
+            "content": "Then the ratio \\( r \\) in (11.2) is always exactly 1, and the iterates \\( \\theta^t \\) are a sequence of independent draws from \\( p(\\theta | y) \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.748,
+                0.975,
+                0.864
+            ],
+            "angle": 0,
+            "content": "In general, however, iterative simulation is applied to problems for which direct sampling is not possible."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.986,
+                0.994
+            ],
+            "angle": 0,
+            "content": "39/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.136,
+                0.005,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Metropolis and Metropolis-Hastings Algorithms"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.109,
+                0.75,
+                0.156
+            ],
+            "angle": 0,
+            "content": "A good jumping distribution has the following properties:"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.267,
+                0.647,
+                0.318
+            ],
+            "angle": 0,
+            "content": "- For any \\(\\theta\\), it is easy to sample from \\(J(\\theta^{*}|\\theta)\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.418,
+                0.502,
+                0.464
+            ],
+            "angle": 0,
+            "content": "It is easy to compute the ratio \\( r \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.564,
+                0.972,
+                0.678
+            ],
+            "angle": 0,
+            "content": "- Each jump goes a reasonable distance in the parameter space (otherwise the random walk moves too slowly)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.776,
+                0.972,
+                0.891
+            ],
+            "angle": 0,
+            "content": "- The jumps are not rejected too frequently (otherwise the random walk wastes too much time standing still)."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.053,
+                0.267,
+                0.972,
+                0.891
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "40/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.005,
+                0.487,
+                0.035
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.279,
+                0.915,
+                0.337
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.404,
+                0.888,
+                0.462
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.722,
+                0.586
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.71
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.019,
+                0.154,
+                0.915,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "41/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.978,
+                0.141
+            ],
+            "angle": 0,
+            "content": "USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.262,
+                0.974,
+                0.373
+            ],
+            "angle": 0,
+            "content": "The Gibbs sampler and the Metropolis algorithm can be used in various combinations to sample from complicated distributions."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.475,
+                0.971,
+                0.652
+            ],
+            "angle": 0,
+            "content": "The Gibbs sampler is the simplest of the Markov chain simulation algorithms, and it is our first choice for conditionally conjugate models, where we can directly sample from each conditional posterior distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.753,
+                0.971,
+                0.865
+            ],
+            "angle": 0,
+            "content": "For example, we could use the Gibbs sampler for the normal-normal hierarchical models in Chapter 5."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "42/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.487,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.133,
+                0.972,
+                0.309
+            ],
+            "angle": 0,
+            "content": "The Metropolis algorithm can be used for models that are not conditionally conjugate, for example, the two-parameter logistic regression for the bioassay experiment in Section 3.7."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.409,
+                0.972,
+                0.652
+            ],
+            "angle": 0,
+            "content": "In this example, the Metropolis algorithm could be performed in vector form, jumping in the two-dimensional space of \\((\\alpha, \\beta)\\), or embedded within a Gibbs sampler structure, by alternately updating \\(\\alpha\\) and \\(\\beta\\) using one-dimensional Metropolis jumps."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.753,
+                0.971,
+                0.865
+            ],
+            "angle": 0,
+            "content": "In either case, the Metropolis algorithm will probably have to be tuned to get a good acceptance rate, as discussed in Section 12.2."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "43/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.487,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.221,
+                0.972,
+                0.461
+            ],
+            "angle": 0,
+            "content": "If some of the conditional posterior distributions in a model can be sampled from directly and some cannot, then the parameters can be updated one at a time, with the Gibbs sampler used where possible and one-dimensional Metropolis updating used otherwise."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.563,
+                0.971,
+                0.736
+            ],
+            "angle": 0,
+            "content": "More generally, the parameters can be updated in blocks, where each block is altered using the Gibbs sampler or a Metropolis jump of the parameters within the block."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "44/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.875,
+                0.309
+            ],
+            "angle": 0,
+            "content": "INTERPRETATION OF THE GIBBS SAMPLER AS A SPECIAL CASE OF THE METROPOLIS-HASTINGS ALGORITHM"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.438,
+                0.975,
+                0.55
+            ],
+            "angle": 0,
+            "content": "Gibbs sampling can be viewed as a special case of the Metropolis-Hastings algorithm in the following way."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.65,
+                0.977,
+                0.826
+            ],
+            "angle": 0,
+            "content": "We first define iteration \\( t \\) to consist of a series of \\( d \\) steps, with step \\( j \\) of iteration \\( t \\) corresponding to an update of the subvector \\( \\theta_j \\) conditional on all the other elements of \\( \\theta \\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "45/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.139,
+                0.006,
+                0.486,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.148,
+                0.972,
+                0.333
+            ],
+            "angle": 0,
+            "content": "Then the jumping distribution, \\( J_{j,t}(\\cdot |.) \\), at step \\( j \\) of iteration \\( t \\) only jumps along the \\( j \\)th subvector, and does so with the conditional posterior density of \\( \\theta_j \\) given \\( \\theta_{-j}^{t - 1} \\):"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.184,
+                0.382,
+                0.809,
+                0.585
+            ],
+            "angle": 0,
+            "content": "\\[\n\\mathcal {J} _ {j, t} ^ {\\text {G i b b s}} (\\theta^ {*} | \\theta^ {t - 1}) = \\left\\{ \\begin{array}{l l} p (\\theta_ {j} ^ {*} | \\theta_ {- j} ^ {t - 1}, y), & \\text {i f} \\theta_ {- j} ^ {*} = \\theta_ {- j} ^ {t - 1}, \\\\ 0, & \\text {o t h e r w i s e}. \\end{array} \\right.\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.728,
+                0.97,
+                0.843
+            ],
+            "angle": 0,
+            "content": "The only possible jumps are to parameter vectors \\(\\theta^{*}\\) that match \\(\\theta^{t-1}\\) on all components other than the \\(j\\)th."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.923,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "46/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.139,
+                0.006,
+                0.485,
+                0.032
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.08,
+                0.972,
+                0.186
+            ],
+            "angle": 0,
+            "content": "Under this jumping distribution, the ratio (11.2) at the \\(j\\)th step of iteration \\(t\\) is"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.089,
+                0.284,
+                0.909,
+                0.784
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} r = \\frac {p \\left(\\theta^ {*} \\mid y\\right)}{p \\left(\\theta^ {t - 1} \\mid y\\right)} \\times \\frac {\\int_ {j , t} ^ {\\text {G i b b s}} \\left(\\theta^ {t - 1} \\mid \\theta^ {*}\\right)}{\\int_ {j , t} ^ {\\text {G i b b s}} \\left(\\theta^ {*} \\mid \\theta^ {t - 1}\\right)} = \\frac {p \\left(\\theta^ {*} \\mid y\\right)}{p \\left(\\theta^ {t - 1} \\mid y\\right)} \\times \\frac {p \\left(\\theta_ {j} ^ {t - 1} \\mid \\theta_ {- j} ^ {t - 1} , y\\right)}{p \\left(\\theta_ {j} ^ {*} \\mid \\theta_ {- j} ^ {t - 1} , y\\right)} \\\\ = \\frac {p \\left(\\theta_ {j} ^ {*} \\mid \\theta_ {- j} ^ {*} , y\\right) \\times p \\left(\\theta_ {- j} ^ {*} \\mid y\\right)}{p \\left(\\theta_ {j} ^ {t - 1} \\mid \\theta_ {- j} ^ {t - 1} , y\\right) \\times p \\left(\\theta_ {- j} ^ {t - 1} \\mid y\\right)} \\times \\frac {p \\left(\\theta_ {j} ^ {t - 1} \\mid \\theta_ {- j} ^ {t - 1} , y\\right)}{p \\left(\\theta_ {j} ^ {*} \\mid \\theta_ {- j} ^ {t - 1} , y\\right)} \\quad \\left(\\theta_ {- j} ^ {*} = \\theta_ {- j} ^ {t - 1}\\right) \\\\ = \\frac {p (\\theta_ {- j} ^ {t - 1} | y)}{p (\\theta_ {- j} ^ {t - 1} | y)} \\equiv 1, \\\\ \\end{array}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.901,
+                0.443,
+                0.943
+            ],
+            "angle": 0,
+            "content": "and thus every jump is accepted."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "47/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.291,
+                0.972,
+                0.402
+            ],
+            "angle": 0,
+            "content": "The second line above follows from the first because, under this jumping rule, \\(\\theta^{*}\\) differs from \\(\\theta^{t - 1}\\) only in the \\(j\\)th component."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.503,
+                0.971,
+                0.628
+            ],
+            "angle": 0,
+            "content": "The third line follows from the second by applying the rules of conditional probability to \\(\\theta = (\\theta_{j},\\theta_{-j})\\) and noting that \\(\\theta_{-j}^{*} = \\theta_{-j}^{t - 1}\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "48/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.487,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.244,
+                0.978,
+                0.417
+            ],
+            "angle": 0,
+            "content": "Usually, one iteration of the Gibbs sampler is defined as we do, to include all \\(d\\) steps corresponding to the \\(d\\) components of \\(\\theta\\), thereby updating all of \\(\\theta\\) at each iteration."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.522,
+                0.975,
+                0.7
+            ],
+            "angle": 0,
+            "content": "It is possible, however, to define Gibbs sampling without the restriction that each component be updated in each iteration, as long as each component is updated periodically."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "49/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.138,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.738,
+                0.138
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER WITH APPROXIMATIONS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.431,
+                0.972,
+                0.611
+            ],
+            "angle": 0,
+            "content": "For some problems, sampling from some, or all, of the conditional distributions \\( p(\\theta_j|\\theta_{-j,y}) \\) is impossible, but one can construct approximations, which we label \\( g(\\theta_j|\\theta_{-j}) \\), from which sampling is possible."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "50/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.139,
+                0.006,
+                0.486,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Using Gibbs and Metropolis as Building Blocks"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.026,
+                0.104,
+                0.97,
+                0.214
+            ],
+            "angle": 0,
+            "content": "The general form of the Metropolis-Hastings algorithm can be used to compensate for the approximation."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.026,
+                0.318,
+                0.972,
+                0.427
+            ],
+            "angle": 0,
+            "content": "As in the Gibbs sampler, we choose an order for altering the \\(d\\) elements of \\(\\theta\\); the jumping function at the \\(j\\)th Metropolis step at iteration \\(t\\) is then"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.219,
+                0.487,
+                0.776,
+                0.69
+            ],
+            "angle": 0,
+            "content": "\\[\nJ _ {j, t} (\\theta^ {*} | \\theta^ {t - 1}) = \\left\\{ \\begin{array}{l l} g (\\theta_ {j} ^ {*} | \\theta_ {- j} ^ {t - 1}), & \\text {i f} \\theta_ {- j} ^ {*} = \\theta_ {- j} ^ {t - 1}, \\\\ 0, & \\text {o t h e r w i s e}, \\end{array} \\right.\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.026,
+                0.803,
+                0.97,
+                0.906
+            ],
+            "angle": 0,
+            "content": "and the ratio \\( r \\) in (11.2) must be computed and the acceptance or rejection of \\( \\theta^* \\) decided."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.924,
+                0.968,
+                0.984,
+                0.991
+            ],
+            "angle": 0,
+            "content": "51/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.279,
+                0.915,
+                0.337
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.404,
+                0.888,
+                0.462
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.722,
+                0.586
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.71
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.019,
+                0.154,
+                0.915,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "52/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.092,
+                0.784,
+                0.138
+            ],
+            "angle": 0,
+            "content": "INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.239,
+                0.978,
+                0.482
+            ],
+            "angle": 0,
+            "content": "The basic method of inference from iterative simulation is the same as for Bayesian simulation in general: use the collection of all the simulated draws from \\( p(\\theta | y) \\) to summarize the posterior density and to compute quantiles, moments, and other summaries of interest as needed."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.583,
+                0.975,
+                0.696
+            ],
+            "angle": 0,
+            "content": "Posterior predictive simulations of unobserved outcomes \\(\\tilde{y}\\) can be obtained by simulation conditional on the drawn values of \\(\\theta\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.797,
+                0.971,
+                0.906
+            ],
+            "angle": 0,
+            "content": "Inference using the iterative simulation draws requires some care, however, as we discuss in this section."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "53/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.852,
+                0.221
+            ],
+            "angle": 0,
+            "content": "DIFFICULTIES OF INFERENCE FROM ITERATIVE SIMULATION"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.324,
+                0.836,
+                0.371
+            ],
+            "angle": 0,
+            "content": "Iterative simulation adds two challenges to simulation inference."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.471,
+                0.975,
+                0.592
+            ],
+            "angle": 0,
+            "content": "First, if the iterations have not proceeded long enough, as in Figure 11.1a, the simulations may be grossly unrepresentative of the target distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.684,
+                0.977,
+                0.866
+            ],
+            "angle": 0,
+            "content": "Even when simulations have reached approximate convergence, early iterations still reflect the starting approximation rather than the target distribution; for example, consider the early iterations of Figures 11.1b and 11.2b."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "54/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.196,
+                0.978,
+                0.436
+            ],
+            "angle": 0,
+            "content": "The second problem with iterative simulation draws is their within-sequence correlation; aside from any convergence issues, simulation inference from correlated draws is generally less precise than from the same number of independent draws."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.538,
+                0.976,
+                0.776
+            ],
+            "angle": 0,
+            "content": "Serial correlation in the simulations is not necessarily a problem because, at convergence, the draws are identically distributed as \\( p(\\theta | y) \\), and so when performing inferences, we ignore the order of the simulation draws in any case."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "55/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.158,
+                0.772,
+                0.202
+            ],
+            "angle": 0,
+            "content": "But such correlation can cause inefficiencies in simulations."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.304,
+                0.978,
+                0.615
+            ],
+            "angle": 0,
+            "content": "Consider Figure 11.1c, which displays 500 successive iterations from each of five simulated sequences of the Metropolis algorithm: the patchy appearance of the scatterplot would not be likely to appear from 2500 independent draws from the normal distribution but is rather a result of the slow movement of the simulation algorithm."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.713,
+                0.974,
+                0.828
+            ],
+            "angle": 0,
+            "content": "In some sense, the effective number of simulation draws here is far fewer than 2500. We calculate effective sample size using formula (11.8)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "56/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.296,
+                0.896,
+                0.343
+            ],
+            "angle": 0,
+            "content": "We handle the special problems of iterative simulation in three ways."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.443,
+                0.978,
+                0.622
+            ],
+            "angle": 0,
+            "content": "First, we attempt to design the simulation runs to allow effective monitoring of convergence, in particular by simulating multiple sequences with starting points dispersed throughout parameter space, as in Figure 11.1a."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "57/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.244,
+                0.972,
+                0.422
+            ],
+            "angle": 0,
+            "content": "Second, we monitor the convergence of all quantities of interest by comparing variation between and within simulated sequences until within variation roughly equals between variation, as in Figure 11.1b."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.522,
+                0.972,
+                0.698
+            ],
+            "angle": 0,
+            "content": "Only when the distribution of each simulated sequence is close to the distribution of all the sequences mixed together can they all be approximating the target distribution."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "58/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.331,
+                0.978,
+                0.573
+            ],
+            "angle": 0,
+            "content": "Third, if the simulation efficiency is unacceptably low (in the sense of requiring too much real time on the computer to obtain approximate convergence of posterior inferences for quantities of interest), the algorithm can be altered, as we discuss in Sections 12.1 and 12.2."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "59/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.969,
+                0.222
+            ],
+            "angle": 0,
+            "content": "DISCARDING EARLY ITERATIONS OF THE SIMULATION RUNS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.272,
+                0.972,
+                0.388
+            ],
+            "angle": 0,
+            "content": "To diminish the influence of the starting values, we generally discard the first half of each sequence and focus attention on the second half."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.485,
+                0.975,
+                0.675
+            ],
+            "angle": 0,
+            "content": "Our inferences will be based on the assumption that the distributions of the simulated values \\(\\theta^t\\), for large enough \\(t\\), are close to the target distribution, \\(p(\\theta | y)\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.763,
+                0.975,
+                0.945
+            ],
+            "angle": 0,
+            "content": "We refer to the practice of discarding early iterations in Markov chain simulation as warm-up; depending on the context, different warm-up fractions can be appropriate."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "60/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.186,
+                0.972,
+                0.296
+            ],
+            "angle": 0,
+            "content": "For example, in the Gibbs sampler displayed in Figure 11.2, it would be necessary to discard only a few initial iterations."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.398,
+                0.972,
+                0.506
+            ],
+            "angle": 0,
+            "content": "We adopt the general practice of discarding the first half as a conservative choice."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.611,
+                0.975,
+                0.788
+            ],
+            "angle": 0,
+            "content": "For example, we might run 200 iterations and discard the first half. If approximate convergence has not yet been reached, we might then run another 200 iterations, now discarding all of the initial 200 iterations."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "61/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.037,
+                0.221,
+                0.311,
+                0.582
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.369,
+                0.219,
+                0.645,
+                0.583
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.708,
+                0.221,
+                0.978,
+                0.583
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image_caption",
+            "bbox": [
+                0.024,
+                0.648,
+                0.972,
+                0.808
+            ],
+            "angle": 0,
+            "content": "FIGURE: Four independent sequences of the Gibbs sampler for a bivariate normal distribution with correlation \\(\\rho = 0.8\\), with overdispersed starting points indicated by solid squares."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "62/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.127,
+                0.134
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.288,
+                0.975,
+                0.4
+            ],
+            "angle": 0,
+            "content": "(A) First 10 iterations, showing the componentwise updating of the Gibbs iterations."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.498,
+                0.975,
+                0.616
+            ],
+            "angle": 0,
+            "content": "(B) After 500 iterations, the sequences have reached approximate convergence."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.712,
+                0.971,
+                0.831
+            ],
+            "angle": 0,
+            "content": "(c) This figure shows the points from the second halves of the sequences, representing a set of correlated draws from the target distribution."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.027,
+                0.288,
+                0.975,
+                0.831
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.984,
+                0.994
+            ],
+            "angle": 0,
+            "content": "63/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.09,
+                0.978,
+                0.143
+            ],
+            "angle": 0,
+            "content": "DEPENDENCE OF THE ITERATIONS IN EACH SEQUENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.3,
+                0.974,
+                0.476
+            ],
+            "angle": 0,
+            "content": "Another issue that sometimes arises, once approximate convergence has been reached, is whether to thin the sequences by keeping every \\( k \\)th simulation draw from each sequence and discarding the rest."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.577,
+                0.974,
+                0.813
+            ],
+            "angle": 0,
+            "content": "In our applications, we have found it useful to skip iterations in problems with large numbers of parameters where computer storage is a problem, perhaps setting \\( k \\) so that the total number of iterations saved is no more than 1000."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "64/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.089,
+                0.127,
+                0.137
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.433,
+                0.978,
+                0.613
+            ],
+            "angle": 0,
+            "content": "Whether or not the sequences are thinned, if the sequences have reached approximate convergence, they can be directly used for inferences about the parameters \\(\\theta\\) and any other quantities of interest."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "65/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.823,
+                0.143
+            ],
+            "angle": 0,
+            "content": "MULTIPLE SEQUENCES WITH OVERDISPERSED"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.18,
+                0.336,
+                0.222
+            ],
+            "angle": 0,
+            "content": "STARTING POINTS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.022,
+                0.443,
+                0.978,
+                0.69
+            ],
+            "angle": 0,
+            "content": "Our recommended approach to assessing convergence of iterative simulation is based on comparing different simulated sequences, as illustrated in Figure 11.1, which shows five parallel simulations before and after approximate convergence."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "66/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.269,
+                0.978,
+                0.45
+            ],
+            "angle": 0,
+            "content": "In Figure 11.1a, the multiple sequences clearly have not converged; the variance within each sequence is much less than the variance between sequences."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.547,
+                0.975,
+                0.66
+            ],
+            "angle": 0,
+            "content": "Later, in Figure 11.1b, the sequences have mixed, and the two variance components are essentially equal."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "67/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.321,
+                0.97,
+                0.369
+            ],
+            "angle": 0,
+            "content": "To see such disparities, we clearly need more than one independent sequence."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.468,
+                0.972,
+                0.582
+            ],
+            "angle": 0,
+            "content": "Thus our plan is to simulate independently at least two sequences, with starting points drawn from an overdispersed distribution."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "68/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.62,
+                0.141
+            ],
+            "angle": 0,
+            "content": "MONITORING SCALAR ESTIMANDS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.237,
+                0.972,
+                0.35
+            ],
+            "angle": 0,
+            "content": "We monitor each scalar estimand or other scalar quantities of interest separately."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.45,
+                0.974,
+                0.628
+            ],
+            "angle": 0,
+            "content": "Estimands include all the parameters of interest in the model and any other quantities of interest (for example, the ratio of two parameters or the value of a predicted future observation)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.727,
+                0.972,
+                0.906
+            ],
+            "angle": 0,
+            "content": "It is often useful also to monitor the value of the logarithm of the posterior density, which has probably already been computed if we are using a version of the Metropolis algorithm."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "69/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.845,
+                0.143
+            ],
+            "angle": 0,
+            "content": "CHALLENGES OF MONITORING CONVERGENCE:"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.178,
+                0.51,
+                0.223
+            ],
+            "angle": 0,
+            "content": "MIXING AND STATIONARITY"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.272,
+                0.978,
+                0.388
+            ],
+            "angle": 0,
+            "content": "Figure 11.3 illustrates two of the challenges of monitoring convergence of iterative simulations."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.484,
+                0.974,
+                0.73
+            ],
+            "angle": 0,
+            "content": "The first graph shows two sequences, each of which looks fine on its own (and, indeed, when looked at separately would satisfy any reasonable convergence criterion), but when looked at together reveal a clear lack of convergence."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.829,
+                0.974,
+                0.941
+            ],
+            "angle": 0,
+            "content": "Figure 11.3a illustrates that, to achieve convergence, the sequences must together have mixed."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "70/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.078,
+                0.166,
+                0.473,
+                0.62
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image",
+            "bbox": [
+                0.529,
+                0.168,
+                0.923,
+                0.617
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "image_caption",
+            "bbox": [
+                0.024,
+                0.68,
+                0.972,
+                0.776
+            ],
+            "angle": 0,
+            "content": "FIGURE: Examples of two challenges in assessing convergence of iterative simulations."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "71/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.127,
+                0.135
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.029,
+                0.286,
+                0.975,
+                0.407
+            ],
+            "angle": 0,
+            "content": "(1) In the left plot, either sequence alone looks stable, but the juxtaposition makes it clear that they have not converged to a common distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.029,
+                0.498,
+                0.972,
+                0.617
+            ],
+            "angle": 0,
+            "content": "(2) In the right plot, the two sequences happen to cover a common distribution but neither sequence appears stationary."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.029,
+                0.712,
+                0.972,
+                0.831
+            ],
+            "angle": 0,
+            "content": "(3) These graphs demonstrate the need to use between-sequence and also within-sequence information when assessing convergence."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.029,
+                0.286,
+                0.975,
+                0.831
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.984,
+                0.994
+            ],
+            "angle": 0,
+            "content": "72/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.269,
+                0.978,
+                0.452
+            ],
+            "angle": 0,
+            "content": "The second graph in Figure 11.3 shows two chains that have mixed, in the sense that they have traced out a common distribution, but they do not appear to have converged."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.547,
+                0.975,
+                0.66
+            ],
+            "angle": 0,
+            "content": "Figure 11.3b illustrates that, to achieve convergence, each individual sequence must reach stationarity."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "73/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.959,
+                0.143
+            ],
+            "angle": 0,
+            "content": "SPLITTING EACH SAVED SEQUENCE INTO TWO PARTS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.351,
+                0.972,
+                0.465
+            ],
+            "angle": 0,
+            "content": "We diagnose convergence (as noted above, separately for each scalar quantity of interest) by checking mixing and stationarity."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.563,
+                0.975,
+                0.736
+            ],
+            "angle": 0,
+            "content": "There are various ways to do this; we apply a fairly simple approach in which we split each chain in half and check that all the resulting half-sequences have mixed."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "74/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.027,
+                0.229,
+                0.349,
+                0.276
+            ],
+            "angle": 0,
+            "content": "This simultaneously tests"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.054,
+                0.387,
+                0.975,
+                0.496
+            ],
+            "angle": 0,
+            "content": "- mixing: if all the chains have mixed well, the separate parts of the different chains should also mix;"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.599,
+                0.975,
+                0.71
+            ],
+            "angle": 0,
+            "content": "- stationarity: at stationarity, the first and second half of each sequence should be traversing the same distribution."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.053,
+                0.387,
+                0.975,
+                0.71
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "75/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.269,
+                0.978,
+                0.448
+            ],
+            "angle": 0,
+            "content": "We start with some number of simulated sequences in which the warm-up period (which by default we set to the first half of the simulations) has already been discarded."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.547,
+                0.975,
+                0.66
+            ],
+            "angle": 0,
+            "content": "We then take each of these chains and split into the first and second half (this is all after discarding the warm-up iterations)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.984,
+                0.994
+            ],
+            "angle": 0,
+            "content": "76/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.294,
+                0.972,
+                0.403
+            ],
+            "angle": 0,
+            "content": "Let \\( m \\) be the number of chains (after splitting) and \\( n \\) be the length of each chain."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.508,
+                0.971,
+                0.622
+            ],
+            "angle": 0,
+            "content": "We always simulate at least two sequences so that we can observe mixing; see Figure 11.3a; thus \\( m \\) is always at least 4."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "77/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.211,
+                0.972,
+                0.321
+            ],
+            "angle": 0,
+            "content": "For example, suppose we simulate 5 chains, each of length 1000, and then discard the first half of each as warm-up."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.423,
+                0.972,
+                0.604
+            ],
+            "angle": 0,
+            "content": "We are then left with 5 chains, each of length 500, and we split each into two parts: iterations \\(1 \\sim 250\\) (originally iterations \\(501 \\sim 750\\)) and iterations \\(251 \\sim 500\\) (originally iterations \\(751 \\sim 1000\\))."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.702,
+                0.708,
+                0.748
+            ],
+            "angle": 0,
+            "content": "We now have \\(m = 10\\) chains, each of length \\(n = 250\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "78/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.763,
+                0.224
+            ],
+            "angle": 0,
+            "content": "ASSESSING MIXING USING BETWEEN- AND WITHIN-SEQUENCE VARIANCES"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.02,
+                0.288,
+                0.975,
+                0.465
+            ],
+            "angle": 0,
+            "content": "For each scalar estimate \\(\\psi\\), we label the simulations as \\(\\psi_{ij}\\), \\(i = 1, \\ldots, n\\); \\(j = 1, \\ldots, m\\), and we compute \\(B\\) and \\(W\\), the between- and within-sequence variances:"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.102,
+                0.558,
+                0.895,
+                0.69
+            ],
+            "angle": 0,
+            "content": "\\[\nB = \\frac {n}{m - 1} \\sum_ {j = 1} ^ {m} (\\bar {\\psi} _ {. j} - \\bar {\\psi} _ {. \\cdot}) ^ {2}, \\quad \\bar {\\psi} _ {. j} = \\frac {1}{n} \\sum_ {i = 1} ^ {n} \\psi_ {i j}, \\quad \\bar {\\psi} _ {. \\cdot} = \\frac {1}{m} \\sum_ {j = 1} ^ {m} \\bar {\\psi} _ {. j},\n\\]"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.102,
+                0.752,
+                0.66,
+                0.885
+            ],
+            "angle": 0,
+            "content": "\\[\nW = \\frac {1}{m} \\sum_ {j = 1} ^ {m} s _ {j} ^ {2}, s _ {j} ^ {2} = \\frac {1}{n - 1} \\sum_ {i = 1} ^ {n} (\\psi_ {i j} - \\bar {\\psi} _ {. j}) ^ {2}.\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.966,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "79/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.202,
+                0.972,
+                0.384
+            ],
+            "angle": 0,
+            "content": "The between-sequence variance, \\( B \\), contains a factor of \\( n \\) because it is based on the variance of the within-sequence means, \\( \\bar{\\psi}_{j} \\), each of which is an average of \\( n \\) values \\( \\psi_{jj} \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.477,
+                0.971,
+                0.592
+            ],
+            "angle": 0,
+            "content": "We can estimate \\(\\operatorname{Var}(\\psi | y)\\), the marginal posterior variance of the estimand, by a weighted average of \\(W\\) and \\(B\\), namely"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.314,
+                0.648,
+                0.971,
+                0.74
+            ],
+            "angle": 0,
+            "content": "\\[\n\\widehat {\\operatorname {V a r}} ^ {+} (\\psi | y) = \\frac {n - 1}{n} W + \\frac {1}{n} B. \\tag {11.3}\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "80/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.269,
+                0.978,
+                0.511
+            ],
+            "angle": 0,
+            "content": "This quantity overestimates the marginal posterior variance assuming the starting distribution is appropriately overdispersed, but is unbiased under stationarity (that is, if the starting distribution equals the target distribution), or in the limit \\( n \\to \\infty \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.611,
+                0.959,
+                0.661
+            ],
+            "angle": 0,
+            "content": "This is analogous to the classical variance estimate with cluster sampling."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.921,
+                0.967,
+                0.986,
+                0.992
+            ],
+            "angle": 0,
+            "content": "81/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.215,
+                0.978,
+                0.471
+            ],
+            "angle": 0,
+            "content": "Meanwhile, for any finite \\( n \\), the within variance \\( W \\) should be an underestimate of \\( \\operatorname{Var}(\\psi | y) \\) because the individual sequences have not had time to range over all of the target distribution and, as a result, will have less variability; in the limit as \\( n \\to \\infty \\), the expectation of \\( W \\) approaches \\( \\operatorname{Var}(\\psi | y) \\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.561,
+                0.977,
+                0.742
+            ],
+            "angle": 0,
+            "content": "We monitor convergence of the iterative simulation by estimating the factor by which the scale of the current distribution for \\(\\psi\\) might be reduced if the simulations were continued in the limit \\(n\\to \\infty\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "82/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.033
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.16,
+                0.603,
+                0.205
+            ],
+            "angle": 0,
+            "content": "This potential scale reduction is estimated by"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.378,
+                0.256,
+                0.971,
+                0.39
+            ],
+            "angle": 0,
+            "content": "\\[\n\\hat {R} = \\sqrt {\\frac {\\widehat {\\operatorname {V a r}} ^ {+} (\\psi | y)}{W}}, \\tag {11.4}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.502,
+                0.418,
+                0.543
+            ],
+            "angle": 0,
+            "content": "which declines to 1 as \\(n\\to \\infty\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.022,
+                0.649,
+                0.975,
+                0.826
+            ],
+            "angle": 0,
+            "content": "If the potential scale reduction is high, then we have reason to believe that proceeding with further simulations may improve our inference about the target distribution of the associated scalar estimand."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "83/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.019,
+                0.088,
+                0.958,
+                0.234
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: BIVARIATE UNIT NORMAL DENSITY WITH NORMAL JUMPING KERNEL (CONT.)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.533,
+                0.255,
+                0.573
+            ],
+            "angle": 0,
+            "content": "See the textbook."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "84/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.244,
+                0.972,
+                0.422
+            ],
+            "angle": 0,
+            "content": "The method of monitoring convergence presented here has the key advantage of not requiring the user to examine time series graphs of simulated sequences."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.522,
+                0.972,
+                0.698
+            ],
+            "angle": 0,
+            "content": "Inspection of such plots is a notoriously unreliable method of assessing convergence and in addition is unwieldy when monitoring a large number of quantities of interest, such as can arise in complicated hierarchical models."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "85/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Inference and Assessing Convergence"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.244,
+                0.978,
+                0.422
+            ],
+            "angle": 0,
+            "content": "Because it is based on means and variances, the simple method presented here is most effective for quantities whose marginal posterior distributions are approximately normal."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.522,
+                0.975,
+                0.7
+            ],
+            "angle": 0,
+            "content": "When performing inference for extreme quantiles, or for parameters with multimodal marginal posterior distributions, one should monitor also extreme quantiles of the between and within sequences."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "86/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.03
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.279,
+                0.915,
+                0.337
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.404,
+                0.888,
+                0.464
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.72,
+                0.587
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.712
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.019,
+                0.154,
+                0.915,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "87/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.09,
+                0.806,
+                0.138
+            ],
+            "angle": 0,
+            "content": "EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.296,
+                0.978,
+                0.473
+            ],
+            "angle": 0,
+            "content": "Once the simulated sequences have mixed, we can compute an approximate effective number of independent simulation draws for any estimand of interest \\(\\psi\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.573,
+                0.975,
+                0.815
+            ],
+            "angle": 0,
+            "content": "We start with the observation that if the \\(n\\) simulation draws within each sequence were truly independent, then the between-sequence variance \\(B\\) would be an unbiased estimate of the posterior variance, \\(\\operatorname{Var}(\\psi | y)\\), and we would have a total of \\(mn\\) independent simulations from the \\(m\\) sequences."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "88/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.136,
+                0.972,
+                0.252
+            ],
+            "angle": 0,
+            "content": "In general, however, the simulations of \\(\\psi\\) within each sequence will be autocorrelated, and \\(B\\) will be larger than \\(\\operatorname{Var}(\\psi | y)\\), in expectation."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.348,
+                0.974,
+                0.533
+            ],
+            "angle": 0,
+            "content": "One way to define effective sample size for correlated simulation draws is to consider the statistical efficiency of the average of the simulations \\(\\bar{\\psi}_{\\cdot}\\), as an estimate of the posterior mean, \\(\\mathsf{E}(\\psi |y)\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.625,
+                0.977,
+                0.866
+            ],
+            "angle": 0,
+            "content": "This can be a reasonable baseline even though it is not the only possible summary and might be inappropriate, for example, if there is particular interest in accurate representation of low-probability events in the tails of the distribution."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "89/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.215,
+                0.978,
+                0.396
+            ],
+            "angle": 0,
+            "content": "Continuing with this definition, it is usual to compute effective sample size using the following asymptotic formula for the variance of the average of a correlated sequence:"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.228,
+                0.451,
+                0.971,
+                0.573
+            ],
+            "angle": 0,
+            "content": "\\[\n\\lim  _ {n \\rightarrow \\infty} m n \\operatorname {V a r} (\\bar {\\psi} _ {\\cdot \\cdot}) = \\left(1 + 2 \\sum_ {t = 1} ^ {\\infty} \\rho_ {t}\\right) \\operatorname {V a r} (\\psi | y). \\tag {11.5}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.034,
+                0.678,
+                0.682,
+                0.726
+            ],
+            "angle": 0,
+            "content": "\\(\\rho_t\\): the autocorrelation of the sequence \\(\\psi\\) at lag \\(t\\)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.992
+            ],
+            "angle": 0,
+            "content": "90/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.248,
+                0.972,
+                0.368
+            ],
+            "angle": 0,
+            "content": "If the \\(n\\) simulation draws from each of the \\(m\\) chains were independent, then \\(\\operatorname{Var}(\\bar{\\psi}_{..})\\) would simply be \\(\\frac{1}{mn}\\operatorname{Var}(\\psi |y)\\) and the sample size would be \\(mn\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.461,
+                0.94,
+                0.505
+            ],
+            "angle": 0,
+            "content": "In the presence of correlation we then define the effective sample size as"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.36,
+                0.574,
+                0.971,
+                0.672
+            ],
+            "angle": 0,
+            "content": "\\[\nn _ {\\text {e f f}} = \\frac {m n}{1 + 2 \\sum_ {t = 1} ^ {\\infty} \\rho_ {t}}. \\tag {11.6}\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.986,
+                0.992
+            ],
+            "angle": 0,
+            "content": "91/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.321,
+                0.978,
+                0.573
+            ],
+            "angle": 0,
+            "content": "The asymptotic nature of (11.5) and (11.6) might seem disturbing given that in reality we will only have a finite simulation, but this should not be a problem given that we already want to run the simulations long enough for approximate convergence to the (asymptotic) target distribution."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "92/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.186,
+                0.972,
+                0.296
+            ],
+            "angle": 0,
+            "content": "To compute the effective sample size we need an estimate of the sum of the correlations \\(\\rho\\), for which we use information within and between sequences."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.382,
+                0.972,
+                0.575
+            ],
+            "angle": 0,
+            "content": "We start by computing the total variance using the estimate \\(\\widehat{\\mathsf{Var}}^{+}\\) from (11.3); we then estimate the correlations by first computing the variogram \\(V_{t}\\) at each lag \\(t\\):"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.252,
+                0.628,
+                0.745,
+                0.758
+            ],
+            "angle": 0,
+            "content": "\\[\nV _ {t} = \\frac {1}{m (n - t)} \\sum_ {j = 1} ^ {m} \\sum_ {i = t + 1} ^ {n} \\left(\\psi_ {i, j} - \\psi_ {i - t, j}\\right) ^ {2}.\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "93/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.116,
+                0.972,
+                0.23
+            ],
+            "angle": 0,
+            "content": "We then estimate the correlations by inverting the formula, \\( \\mathsf{E}(\\psi_i - \\psi_{i - t})^2 = 2(1 - \\rho_t)\\mathsf{Var}(\\psi) \\):"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.389,
+                0.286,
+                0.971,
+                0.396
+            ],
+            "angle": 0,
+            "content": "\\[\n\\hat {\\rho} _ {t} = 1 - \\frac {V _ {t}}{2 \\widehat {\\operatorname {V a r}} ^ {+}}. \\tag {11.7}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.498,
+                0.972,
+                0.609
+            ],
+            "angle": 0,
+            "content": "Unfortunately we cannot simply sum all of these to estimate \\( n_{\\mathrm{eff}} \\) in (11.6); the difficulty is that for large values of \\( t \\) the sample correlation is too noisy."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.708,
+                0.972,
+                0.885
+            ],
+            "angle": 0,
+            "content": "Instead we compute a partial sum, starting from lag 0 and continuing until the sum of autocorrelation estimates for two successive lags \\(\\hat{\\rho}_{2t'} + \\hat{\\rho}_{2t' + 1}\\) is negative."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "94/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.186,
+                0.909,
+                0.239
+            ],
+            "angle": 0,
+            "content": "We use this positive partial sum as our estimate of \\(\\sum_{t=1}^{\\infty} \\rho_t\\) in (11.6)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.336,
+                0.586,
+                0.382
+            ],
+            "angle": 0,
+            "content": "Putting this all together yields the estimate,"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.36,
+                0.446,
+                0.971,
+                0.551
+            ],
+            "angle": 0,
+            "content": "\\[\n\\hat {n} _ {\\text {e f f}} = \\frac {m n}{1 + 2 \\sum_ {t = 1} ^ {T} \\hat {\\rho} _ {t}}. \\tag {11.8}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.053,
+                0.661,
+                0.972,
+                0.776
+            ],
+            "angle": 0,
+            "content": "- the estimated autocorrelations \\(\\hat{\\rho}_t\\) are computed from formula (11.7) and \\(T\\) is the first odd positive integer for which \\(\\hat{\\rho}_{T+1} + \\hat{\\rho}_{T+2}\\) is negative."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "95/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.184,
+                0.972,
+                0.296
+            ],
+            "angle": 0,
+            "content": "All these calculations should be performed using only the saved iterations, after discarding the warm-up period."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.396,
+                0.972,
+                0.509
+            ],
+            "angle": 0,
+            "content": "For example, suppose we simulate 4 chains, each of length 1000, and then discard the first half of each as warm-up."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.608,
+                0.975,
+                0.793
+            ],
+            "angle": 0,
+            "content": "Then \\( m = 8 \\), \\( n = 250 \\), and we compute variograms and correlations only for the saved iterations (thus, up to a maximum lag \\( t \\) of 249, although in practice the stopping point \\( T \\) in (11.8) will be much lower)."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "96/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.09,
+                0.79,
+                0.138
+            ],
+            "angle": 0,
+            "content": "BOUNDED OR LONG-TAILED DISTRIBUTIONS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.432,
+                0.972,
+                0.611
+            ],
+            "angle": 0,
+            "content": "The above convergence diagnostics are based on means and variances, and they will not work so well for parameters or scalar summaries for which the posterior distribution, \\( p(\\phi | y) \\), is far from Gaussian."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "97/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.176,
+                0.972,
+                0.35
+            ],
+            "angle": 0,
+            "content": "As discussed in Chapter 4, asymptotically the posterior distribution should typically be normally distributed as the data sample size approaches infinity, but"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.463,
+                0.972,
+                0.579
+            ],
+            "angle": 0,
+            "content": "(A) we are never actually at the asymptotic limit (in fact we are often interested in learning from small samples), and"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.027,
+                0.677,
+                0.971,
+                0.788
+            ],
+            "angle": 0,
+            "content": "(B) it is common to have only a small amount of data on individual parameters that are part of a hierarchical model."
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.027,
+                0.463,
+                0.972,
+                0.788
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "98/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.487,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.133,
+                0.972,
+                0.376
+            ],
+            "angle": 0,
+            "content": "For summaries \\(\\phi\\) whose distributions are constrained or otherwise far from normal, we can preprocess simulations using transformations before computing the potential scale reduction factor \\(\\hat{R}\\) and the effective sample size \\(\\hat{n}_{\\mathrm{eff}}\\)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.475,
+                0.972,
+                0.65
+            ],
+            "angle": 0,
+            "content": "We can take the logarithm of all-positive quantities, the logit of quantities that are constrained to fall in \\((0,1)\\), and use the rank transformation for long-tailed distributions."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.753,
+                0.971,
+                0.866
+            ],
+            "angle": 0,
+            "content": "Transforming the simulations to have well-behaved distributions should allow mean and variance-based convergence diagnostics to work better."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.922,
+                0.967,
+                0.984,
+                0.992
+            ],
+            "angle": 0,
+            "content": "99/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.004,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.532,
+                0.141
+            ],
+            "angle": 0,
+            "content": "STOPPING THE SIMULATIONS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.348,
+                0.978,
+                0.53
+            ],
+            "angle": 0,
+            "content": "We monitor convergence for the entire multivariate distribution, \\( p(\\theta | y) \\), by computing the potential scale reduction factor (11.4) and the effective sample size (11.8) for each scalar summary of interest."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.625,
+                0.975,
+                0.742
+            ],
+            "angle": 0,
+            "content": "Recall that we are using \\(\\theta\\) to denote the vector of unknowns in the posterior distribution, and \\(\\phi\\) to represent scalar summaries, considered one at a time."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "100/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.03
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.244,
+                0.972,
+                0.486
+            ],
+            "angle": 0,
+            "content": "We recommend computing the potential scale reduction for all scalar estimands of interest; if \\(\\hat{R}\\) is not near 1 for all of them, continue the simulation runs (perhaps altering the simulation algorithm itself to make the simulations more efficient, as described in the next section)."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.583,
+                0.971,
+                0.698
+            ],
+            "angle": 0,
+            "content": "The condition of \\(\\hat{R}\\) being near 1 depends on the problem at hand, but we generally have been satisfied with setting 1.1 as a threshold."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "101/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.194,
+                0.972,
+                0.301
+            ],
+            "angle": 0,
+            "content": "We can use effective sample size \\(\\hat{n}_{\\mathrm{eff}}\\) to give us a sense of the precision obtained from our simulations."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.406,
+                0.972,
+                0.516
+            ],
+            "angle": 0,
+            "content": "As we have discussed in Section 10.5, for many purposes it should suffice to have 100 or even 10 independent simulation draws."
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.027,
+                0.631,
+                0.111,
+                0.672
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.027,
+                0.69,
+                0.972,
+                0.748
+            ],
+            "angle": 0,
+            "content": "\\[\n\\text {I f} \\hat {n} _ {\\text {e f f}} = 1 0, \\text {t h e s i m u l a t i o n s t a n d a r d e r r o r i s i n c e r e a s e d b y} \\sqrt {1 + 1 / 1 0} = 1. 0 5.\n\\]"
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "102/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.233,
+                0.972,
+                0.407
+            ],
+            "angle": 0,
+            "content": "As a default rule, we suggest running the simulation until \\(\\hat{n}_{\\mathrm{eff}}\\) is at least \\(5m\\), that is, until there are the equivalent of at least 10 independent draws per sequence."
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.027,
+                0.522,
+                0.111,
+                0.56
+            ],
+            "angle": 0,
+            "content": "NOTE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.024,
+                0.578,
+                0.972,
+                0.69
+            ],
+            "angle": 0,
+            "content": "Recall that \\( m \\) is twice the number of sequences, as we have split each sequence into two parts so that \\( \\hat{R} \\) can assess stationarity as well as mixing."
+        },
+        {
+            "type": "footer",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "103/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.298,
+                0.972,
+                0.408
+            ],
+            "angle": 0,
+            "content": "Having an effective sample size of 10 per sequence should typically correspond to stability of all the simulated sequences."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.023,
+                0.509,
+                0.972,
+                0.617
+            ],
+            "angle": 0,
+            "content": "For some purposes, more precision will be desired, and then a higher effective sample size threshold can be used."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "104/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.188,
+                0.978,
+                0.432
+            ],
+            "angle": 0,
+            "content": "Once \\(\\hat{R}\\) is near 1 and \\(\\hat{n}_{\\mathrm{eff}}\\) is more than 10 per chain for all scalar estimands of interest, just collect the \\(mn\\) simulations (with warm-up iterations already excluded, as noted before) and treat them as a sample from the target distribution."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.535,
+                0.975,
+                0.783
+            ],
+            "angle": 0,
+            "content": "Even if an iterative simulation appears to converge and has passed all tests of convergence, it still may actually be far from convergence if important areas of the target distribution were not captured by the starting distribution and are not easily reachable by the simulation algorithm."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "105/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.2,
+                0.005,
+                0.489,
+                0.031
+            ],
+            "angle": 0,
+            "content": "Effective Number of Simulation Draws"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.186,
+                0.978,
+                0.36
+            ],
+            "angle": 0,
+            "content": "When we declare approximate convergence, we are actually concluding that each individual sequence appears stationary and that the observed sequences have mixed well with each other."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.463,
+                0.975,
+                0.573
+            ],
+            "angle": 0,
+            "content": "These checks are not hypothesis tests. There is no \\( p \\)-value and no statistical significance."
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.021,
+                0.675,
+                0.975,
+                0.79
+            ],
+            "angle": 0,
+            "content": "We assess discrepancy from convergence via practical significance (or some conventional version thereof, such as \\(\\hat{R} > 1.1\\))."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.914,
+                0.967,
+                0.985,
+                0.992
+            ],
+            "angle": 0,
+            "content": "106/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.006,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Example: Hierarchical Normal Model"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.154,
+                0.322,
+                0.212
+            ],
+            "angle": 0,
+            "content": "GIBBS SAMPLER"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.017,
+                0.279,
+                0.915,
+                0.337
+            ],
+            "angle": 0,
+            "content": "2 METROPOLIS AND METROPOLIS-HASTINGS ALGORITHMS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.017,
+                0.404,
+                0.888,
+                0.464
+            ],
+            "angle": 0,
+            "content": "3 USING GIBBS AND METROPOLIS AS BUILDING BLOCKS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.529,
+                0.722,
+                0.587
+            ],
+            "angle": 0,
+            "content": "4 INFERENCE AND ASSESSING CONVERGENCE"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.653,
+                0.748,
+                0.712
+            ],
+            "angle": 0,
+            "content": "5 EFFECTIVE NUMBER OF SIMULATION DRAWS"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.019,
+                0.778,
+                0.731,
+                0.836
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.017,
+                0.154,
+                0.915,
+                0.836
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.915,
+                0.967,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "107/108"
+        }
+    ],
+    [
+        {
+            "type": "header",
+            "bbox": [
+                0.212,
+                0.004,
+                0.489,
+                0.034
+            ],
+            "angle": 0,
+            "content": "Example: Hierarchical Normal Model"
+        },
+        {
+            "type": "title",
+            "bbox": [
+                0.02,
+                0.088,
+                0.812,
+                0.141
+            ],
+            "angle": 0,
+            "content": "EXAMPLE: HIERARCHICAL NORMAL MODEL"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.025,
+                0.487,
+                0.253,
+                0.53
+            ],
+            "angle": 0,
+            "content": "See the textbook."
+        },
+        {
+            "type": "page_number",
+            "bbox": [
+                0.915,
+                0.966,
+                0.985,
+                0.994
+            ],
+            "angle": 0,
+            "content": "108/108"
+        }
+    ]
+]

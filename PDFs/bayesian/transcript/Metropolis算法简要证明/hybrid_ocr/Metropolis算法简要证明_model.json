@@ -1,0 +1,648 @@
+[
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.07,
+                0.475,
+                0.838,
+                0.621
+            ],
+            "angle": 0,
+            "content": "Metropolis算法简要证明"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.411,
+                0.243
+            ],
+            "angle": 0,
+            "content": "Metropolis算法"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.092,
+                0.331,
+                0.502,
+                0.416
+            ],
+            "angle": 0,
+            "content": "目的：从 \\(f(x)\\) 中抽取样本"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.513,
+                0.937,
+                0.593
+            ],
+            "angle": 0,
+            "content": "方法：用迭代算法生成随机变量序列（马尔可夫链）"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.698,
+                0.503,
+                0.773
+            ],
+            "angle": 0,
+            "content": "要求：建议分布需要对称"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.144,
+                0.197,
+                0.235
+            ],
+            "angle": 0,
+            "content": "步骤"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.321,
+                0.894,
+                0.393
+            ],
+            "angle": 0,
+            "content": "1. 给定 \\(x^{t - 1}\\), 从建议分布 \\(J(x^{t} \\mid x^{t - 1})\\) 中抽取样本, 并记为 \\(x^{*}\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.492,
+                0.627,
+                0.604
+            ],
+            "angle": 0,
+            "content": "2. 计算 \\(r = \\frac{f(x^{*})}{f(x^{t - 1})}\\), 并从 \\(U[0,1]\\) 中抽取 \\(u\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.672,
+                0.796,
+                0.742
+            ],
+            "angle": 0,
+            "content": "3. 若 \\(u \\leq \\min \\{r, 1\\}\\), 则令 \\(x^{t} = x^{*}\\); 否则令 \\(x^{t} = x^{t - 1}\\)"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.321,
+                0.894,
+                0.742
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.099,
+                0.149,
+                0.197,
+                0.236
+            ],
+            "angle": 0,
+            "content": "问题"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.331,
+                0.886,
+                0.571
+            ],
+            "angle": 0,
+            "content": "1. 按以上方法得到的随机变量序列收敛，即存在平稳分布。（此问题由随机过程可证。）"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.652,
+                0.902,
+                0.891
+            ],
+            "angle": 0,
+            "content": "2. 平稳分布为 \\(f\\), 即随机变量序列的平稳分布为目标分布。"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.331,
+                0.902,
+                0.891
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.196,
+                0.236
+            ],
+            "angle": 0,
+            "content": "记号"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.297,
+                0.765,
+                0.367
+            ],
+            "angle": 0,
+            "content": "- 马尔科夫链（Markov chain）：\\(X_{1}, X_{2}, \\ldots, X_{t}, X_{t+1}, \\ldots\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.087,
+                0.413,
+                0.5,
+                0.473
+            ],
+            "angle": 0,
+            "content": "- 转移函数（transition kernel）："
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.085,
+                0.297,
+                0.765,
+                0.473
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.227,
+                0.532,
+                0.759,
+                0.6
+            ],
+            "angle": 0,
+            "content": "\\[\nT (b | a) \\doteq P (X _ {t + 1} = b | X _ {t} = a) \\doteq f _ {X _ {t + 1} | X _ {t}} (b | a)\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.102,
+                0.645,
+                0.596,
+                0.71
+            ],
+            "angle": 0,
+            "content": "从 \\(X_{t} = a\\) 转移到 \\(X_{t + 1} = b\\) 的概率, 或"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.102,
+                0.761,
+                0.563,
+                0.826
+            ],
+            "angle": 0,
+            "content": "\\(\\bullet\\) 给定 \\(X_{t} = a\\) 时 \\(X_{t + 1} = b\\) 的条件密度"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.102,
+                0.645,
+                0.596,
+                0.826
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.144,
+                0.197,
+                0.238
+            ],
+            "angle": 0,
+            "content": "定义"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.32,
+                0.713,
+                0.388
+            ],
+            "angle": 0,
+            "content": "若 \\(T\\) 对某一（密度）函数 \\(f\\) 满足：对任意 \\(a\\) 和 \\(b\\)，有"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.288,
+                0.468,
+                0.695,
+                0.536
+            ],
+            "angle": 0,
+            "content": "\\[\nT (b | a) \\times f (a) = T (a | b) \\times f (b),\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.615,
+                0.741,
+                0.675
+            ],
+            "angle": 0,
+            "content": "则称 \\(T\\) 满足平衡条件（detailed balanced condition）。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.201,
+                0.236
+            ],
+            "angle": 0,
+            "content": "引理"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.318,
+                0.914,
+                0.638
+            ],
+            "angle": 0,
+            "content": "对于马尔科夫链 \\(X_{1}, X_{2}, \\ldots, X_{t}, X_{t+1}, \\ldots\\), \\(T\\) 为该马尔科夫链的转移函数。若 \\(T\\) 满足平衡条件（detailed balanced condition），则对应的密度函数 \\(f\\) 为该马氏链的平稳分布。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.195,
+                0.236
+            ],
+            "angle": 0,
+            "content": "证明"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.086,
+                0.328,
+                0.596,
+                0.397
+            ],
+            "angle": 0,
+            "content": "设 \\(X_{t}\\) 的密度函数为 \\(f_{X_{t}}\\) 。对任意 \\(a\\) 和 \\(b\\), 有"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.124,
+                0.482,
+                0.862,
+                0.698
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} f _ {X _ {t + 1}, X _ {t}} (b, a) = f _ {X _ {t + 1} | X _ {t}} (b | a) \\times f _ {X _ {t}} (a) \\doteq T (b | a) \\times f _ {X _ {t}} (a) \\\\ = T (a | b) \\times f _ {X _ {t}} (b) \\doteq f _ {X _ {t + 1} | X _ {t}} (a | b) \\times f _ {X _ {t}} (b) = f _ {X _ {t + 1}, X _ {t}} (a, b) 。 \\\\ \\end{array}\n\\]"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.195,
+                0.236
+            ],
+            "angle": 0,
+            "content": "证明"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.095,
+                0.304,
+                0.89,
+                0.59
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} f _ {X _ {t + 1}} (b) = \\int f _ {X _ {t + 1}, X _ {t}} (b, a) d a = \\int f _ {X _ {t + 1}, X _ {t}} (a, b) d a \\\\ = \\int f _ {X _ {t + 1} | X _ {t}} (a | b) \\times f _ {X _ {t}} (b) d a = f _ {X _ {t}} (b) \\times \\int f _ {X _ {t + 1} | X _ {t}} (a | b) d a = f _ {X _ {t}} (b) \\circ \\\\ \\end{array}\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.657,
+                0.909,
+                0.802
+            ],
+            "angle": 0,
+            "content": "可见 \\(f_{X_{t + 1}}(b) = f_{X_t}(b)\\) 对任意 \\(b\\) 成立，即 \\(X_{t + 1}\\) 的密度函数仍为 \\(f_{X_t}\\)，故 \\(f_{X_t}\\) 为平稳分布。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.149,
+                0.196,
+                0.236
+            ],
+            "angle": 0,
+            "content": "定理"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.321,
+                0.913,
+                0.541
+            ],
+            "angle": 0,
+            "content": "Metropolis算法所提出的 \\(T\\) 满足密度函数为目标分布 \\(f\\) 的平衡条件。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.195,
+                0.236
+            ],
+            "angle": 0,
+            "content": "证明"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.321,
+                0.301,
+                0.38
+            ],
+            "angle": 0,
+            "content": "对任意 \\(a\\) 和 \\(b\\), 有"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.102,
+                0.465,
+                0.882,
+                0.793
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} T (b | a) \\times f (a) = J (b | a) \\times \\min \\{r, 1 \\} \\times f (a) \\\\ = J (b | a) \\times \\min \\left\\{\\frac {f (b)}{f (a)}, 1 \\right\\} \\times f (a) = J (b | a) \\times \\min \\{f (b), f (a) \\}. \\\\ \\end{array}\n\\]"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.195,
+                0.236
+            ],
+            "angle": 0,
+            "content": "证明"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.102,
+                0.32,
+                0.882,
+                0.648
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} T (a | b) \\times f (b) = J (a | b) \\times \\min  \\{r, 1 \\} \\times f (b) \\\\ = J (a | b) \\times \\min \\left\\{\\frac {f (a)}{f (b)}, 1 \\right\\} \\times f (b) = J (a | b) \\times \\min \\{f (a), f (b) \\}. \\\\ \\end{array}\n\\]"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.148,
+                0.195,
+                0.236
+            ],
+            "angle": 0,
+            "content": "证明"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.314,
+                0.662,
+                0.388
+            ],
+            "angle": 0,
+            "content": "- \\(T(b \\mid a) \\times f(a) = J(b \\mid a) \\times \\min \\{f(b), f(a)\\}\\);"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.453,
+                0.662,
+                0.531
+            ],
+            "angle": 0,
+            "content": "\\(T(a|b) \\times f(b) = J(a|b) \\times \\min \\{f(a), f(b)\\}\\);"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.087,
+                0.599,
+                0.327,
+                0.663
+            ],
+            "angle": 0,
+            "content": "\\(\\cdot J(b \\mid a) = J(a \\mid b)\\);"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.736,
+                0.741,
+                0.805
+            ],
+            "angle": 0,
+            "content": "- \\(T(b \\mid a) \\times f(a) = T(a \\mid b) \\times f(b)\\) （满足平衡条件）"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.085,
+                0.314,
+                0.741,
+                0.805
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.149,
+                0.148,
+                0.232
+            ],
+            "angle": 0,
+            "content": "注"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.321,
+                0.862,
+                0.382
+            ],
+            "angle": 0,
+            "content": "\\(\\bullet\\) Metropolis算法中要求 \\(J(b \\mid a) = J(a \\mid b)\\), 即建议分布为对称。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.468,
+                0.896,
+                0.529
+            ],
+            "angle": 0,
+            "content": "- Metropolis-Hastings算法对Metropolis算法进行推广，不再要求"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.085,
+                0.321,
+                0.896,
+                0.529
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.092,
+                0.628,
+                0.729,
+                0.734
+            ],
+            "angle": 0,
+            "content": "建议分布对称，接收概率为 \\(r = \\frac{f(x^{*})}{f(x^{t - 1})} \\times \\frac{J(x^{t - 1} | x^{*})}{J(x^{*} | x^{t - 1})}\\)。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.144,
+                0.197,
+                0.238
+            ],
+            "angle": 0,
+            "content": "思考"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.321,
+                0.672,
+                0.38
+            ],
+            "angle": 0,
+            "content": "1. 写出Metropolis-Hastings算法的转移函数 \\(T\\)。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.467,
+                0.902,
+                0.647
+            ],
+            "angle": 0,
+            "content": "2. 根据以上证明思路证明: Metropolis-Hastings算法的转移函数 \\(T\\) 满足平衡条件。"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.321,
+                0.902,
+                0.647
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ]
+]

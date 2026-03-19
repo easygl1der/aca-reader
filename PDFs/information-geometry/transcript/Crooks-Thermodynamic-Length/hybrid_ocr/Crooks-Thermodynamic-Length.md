@@ -1,0 +1,205 @@
+# Measuring thermodynamic length
+
+Gavin E. Crooks*
+
+Physical Bioscience Division, Lawrence Berkeley National Laboratory, Berkeley, California 94720, USA
+
+(Dated: November 26, 2024)
+
+Thermodynamic length is a metric distance between equilibrium thermodynamic states. Among other interesting properties, this metric asymptotically bounds the dissipation induced by a finite time transformation of a thermodynamic system. It is also connected to the Jensen-Shannon divergence, Fisher information and Rao's entropy differential metric. Therefore, thermodynamic length is of central interest in understanding matter out-of-equilibrium. In this paper, we will consider how to define thermodynamic length for a small system described by equilibrium statistical mechanics and how to measure thermodynamic length within a computer simulation. Surprisingly, Bennett's classic acceptance ratio method for measuring free energy differences also measures thermodynamic length.
+
+PACS numbers: 05.70.Ln, 05.40.-a
+
+# INTRODUCTION
+
+Thermodynamic length is a natural measure of the distance between equilibrium thermodynamic states [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], which equips the surface of thermodynamic states with a Riemannian metric and defines the length of a quasi-static transformation as the number of natural fluctuations along that path. Unlike the entropy or free energy change, which are state functions, the thermodynamic length explicitly depends on the path taken through thermodynamic state space. Thermodynamic length is of fundamental interest to the generalization of thermodynamics to finite time (rather than infinity slow) transformations. Minimum distance paths are geodesics on the Riemannian manifold and minimize the dissipation for slow, but finite time transformations [3, 8]. These insights have been employed to optimize fractional distillation and other thermodynamic processes [12, 13, 14].
+
+The study of thermodynamic length has largely been restricted to the field of macroscopic, endoreversible thermodynamics. However, there are deep connections between thermodynamic length, information theory and the statistical physics of small systems far-from-equilibrium. In this paper we will consider the most appropriate definition of thermodynamic length for small systems and how to measure this distance in a computer simulation. These considerations reveal a surprising connection between thermodynamic length, Jensen-Shannon divergence and Bennett's acceptance ratio method for free energy calculations [15]. Bennett's method is an optimal measure of free energy differences, but it also indirectly places a lower bound on the thermodynamic length between neighboring thermodynamic states.
+
+# THERMODYNAMIC LENGTH
+
+Consider a physical system, possible microscopically small, in equilibrium with a large thermal reservoir. The
+
+configurational probability distribution is given by the Gibbs ensemble, [16]
+
+$$
+p (x | \lambda) = \frac {1}{Z} e ^ {- \beta H (x, \lambda)} = \frac {1}{Z} e ^ {- \lambda^ {i} (t) X _ {i} (x)} \tag {1}
+$$
+
+where $x$ is the configuration, $t$ is time, $\beta = 1 / k_{\mathrm{B}}T$ is the reciprocal temperature $(T)$ of the environment in natural units, $(k_{\mathrm{B}}$ is the Boltzmann constant), $Z$ is the partition function, and $H$ is the Hamiltonian of the system. This total Hamiltonian is split into a collection of collective variables $X_{i}$ and conjugate generalized forces $\lambda^i$ , $\beta H = \lambda^i(t)X_i(x)$ . We use the Einstein convention that repeated upper/lower indices are implicitly summed. The sub-Hamiltonians $X$ are time-independent functions of the configurations, whereas the conjugate variables $\lambda$ are time dependent and configuration independent. Note that the conjugate variables include a factor of inverse temperature.
+
+The $\lambda$ 's are the experimentally controllable parameters of the system and define the accessible thermodynamic state space. For example, in the isothermal-isobaric ensemble we have $X = \{U,V\}$ and $\lambda = \{\beta ,\beta p\}$ , where $U$ is the internal energy, $V$ is the volume and $p$ is the external pressure. Modern experimental techniques have broadened the range of controllable parameters beyond those considered in standard thermodynamics. For instance, optical tweezers can apply a constant force to the ends of a single DNA molecule. The equilibrium description of this system includes the extension of the polymer, with the tension as conjugate variable. In computer simulations we have much greater flexibility. The configuration functions can be rather arbitrary collective variables delineating high dimensional manifolds of equilibrium thermodynamic states.
+
+The partition function that normalizes the probability distribution, $Z$ , is directly related to the free energy $F$ (Gibbs potential), the free entropy $\psi$ (Massieu potential) and entropy $S$ :
+
+$$
+\ln Z = - \beta F = \psi = S - \lambda^ {i} \langle X _ {i} \rangle \tag {2}
+$$
+
+Angled brackets indicate an average over the appropriate equilibrium ensemble. The first derivatives of the free entropy give the first moments of the collective variables,
+
+$$
+\frac {\partial \psi}{\partial \lambda^ {i}} = - \langle X _ {i} \rangle \tag {3}
+$$
+
+and the second derivative yields the covariance matrix,
+
+$$
+g _ {i j} = \frac {\partial^ {2} \psi}{\partial \lambda^ {i} \partial \lambda^ {j}} = - \frac {\partial \langle X _ {i} \rangle}{\partial \lambda^ {j}} = \left\langle \left(X _ {i} - \langle X _ {i} \rangle\right) \left(X _ {j} - \langle X _ {j} \rangle\right) \right\rangle . \tag {4}
+$$
+
+The covariance matrix $g_{ij}$ is positive semi-definite and varies smoothly from point to point, except at macroscopic phase transitions. Therefore, we can use the covariance matrix as a metric tensor and naturally equip the manifold of thermodynamic states with a Riemannian metric. Recall that a metric provides a measure of 'distance' between points. It is a real function $d(a,b)$ such that (1) distances are non-negative, $d(a,b) \geq 0$ with equality if and only if $a = b$ , (2) symmetric, $d(a,b) = d(b,a)$ and (3) it is generally shorter to go directly from point $a$ to $c$ than to go by way of $b$ , $d(a,b) + d(b,c) \geq d(a,c)$ (The triangle inequality). Moreover, in a Riemannian metric we can measure the distance along curves connecting different points. The length of a curve parameterized by $t$ , from 0 to $\tau$ , is
+
+$$
+\mathcal {L} = \int_ {0} ^ {\tau} \sqrt {\frac {d \lambda^ {i}}{d t} g _ {i j} \frac {d \lambda^ {j}}{d t}} d t \tag {5}
+$$
+
+and the point-to-point distance is the length of the shortest curve. Curves of locally minimal distance are called geodesics, and are the closest analogs of straight lines in a curved space. Because of the connection to fluctuations [Eq. (4)] the length of curves in thermodynamic state space are measured by the number of natural fluctuations along the path. The larger the fluctuations the closer points are together [17, 18].
+
+Originally, Weinhold [1] defined the thermodynamic length $\mathcal{L}$ using the second derivatives of the internal energy $U(S,V,N)$ with respect to the extensive variables as a metric tensor, and by Ruppeiner [2] using the corresponding derivatives of the entropy, $S(U,V,N)$ . Using intensive variable derivatives of the free energy was first discussed by Schlögl [5, 10, 11]. For macroscopic thermodynamic systems these different definitions of the metric are essentially equivalent [4, 5], analogously to the macroscopic equivalence of ensembles. However, in small systems these metrics are in general different and the Weinhold and Ruppeiner metrics may not exist, since the second derivatives of the entropy and entropy are not guaranteed to be positive. The definition adopted in this paper [Eqs. (4)], essentially that of Schlögl, does not require the thermodynamic limit.
+
+Moreover, with this definition we can make an important connection to statistical estimation theory, since the
+
+thermodynamic metric tensor Eq. (4) is then identical to the Fisher information matrix [19].
+
+$$
+\begin{array}{l} g _ {i j} (\lambda) = \sum_ {x} p (x) \frac {\partial \ln p (x)}{\partial \lambda^ {i}} \frac {\partial \ln p (x)}{\partial \lambda^ {j}} \tag {6} \\ = \sum_ {x} p (x) \left(X _ {i} + \frac {\partial \psi}{\partial \lambda^ {i}}\right) \left(X _ {j} + \frac {\partial \psi}{\partial \lambda^ {j}}\right) \\ = \left\langle \left(X _ {i} - \left\langle X _ {i} \right\rangle\right) \left(X _ {j} - \left\langle X _ {j} \right\rangle\right) \right\rangle \\ \end{array}
+$$
+
+According to the Cramér-Rao inequality the variance of any unbiased estimator is at least as high as the inverse of the Fisher information [19].
+
+In 1945 Rao introduced the 'entropy differential metric', the distance between two distributions arising from the Riemannian metric over the parameter space with the Fisher information metric tensor [20, 21]. This entropy differential metric is identical to the thermodynamic length when, as here, the variables are conjugate parameters of a Gibbs ensemble [11]. Note that if we plug the Fisher information metric tensor [Eq. (6)] into the curve length [Eq. (5)] we can rewrite the entropy differential metric as [6, 17]
+
+$$
+\mathcal {L} = \int_ {0} ^ {\tau} \sqrt {\sum_ {x} \frac {1}{p (x)} \left[ \frac {d p (x)}{d t} \right] ^ {2}} d t \tag {7}
+$$
+
+We should probable consider Rao's definition as more general and fundamental than the thermodynamic definition, just as the statistical definition of entropy is widely considered more general and fundamental than the original thermodynamic definition. In particular, the entropy differential metric natural extends to the situation where the Hamiltonian is not a linear function of the control parameters, or where the system is not in thermal equilibrium.
+
+We can also define a related quantity, the thermodynamics divergence of the path,
+
+$$
+\mathcal {J} = \tau \int_ {0} ^ {\tau} \frac {d \lambda^ {i}}{d t} g _ {i j} \frac {d \lambda^ {j}}{d t} d t \tag {8}
+$$
+
+In Riemannian geometry $\mathcal{I} / 2\tau$ is called the energy, or action, of the curve, due to similarity with the kinetic energy integral in classical mechanics. The length and divergence are related by the inequality,
+
+$$
+\mathcal {J} \geq \mathcal {L} ^ {2} \tag {9}
+$$
+
+which can be derived as a consequence of the Cauchy-Schwarz inequality $\int_0^\tau f^2 dt\int_0^\tau g^2 dt\geq \left[\int_0^\tau fgdt\right]^2$ with $g(t) = 1$ . The value of the divergence depends on the parametrization. The minimum value $\mathcal{L}^2$ is attained only when the integrand is a constant along the path.
+
+Thermodynamic length and divergence control the dissipation of finite time thermodynamic transformations as we approach the infinity slow quasi-static limit [3, 6, 8].
+
+Consider a protocol that perturbs the conjugate variables of the system from $\lambda_{1}$ to $\lambda_{N}$ in a series of discrete steps [8]. After each step we pause and allow the system to reequilibrate. After we get to the final thermodynamic state, we run the protocol in reverse, until we again reach the initial thermodynamic state.
+
+The total average change in entropy of a single step is $\Delta S_{\mathrm{total}} = \Delta S_{\mathrm{system}} + \lambda_{t + 1}^{i}\left[\langle X_{i}\rangle_{t + 1} - \langle X_{i}\rangle_{t}\right]$ [6, 8]. Thus, the hysteresis, the total average dissipation of the combined forward and backwards protocols, is
+
+$$
+\begin{array}{l} \omega = \sum_ {t = 1} ^ {N - 1} \left(\lambda_ {t + 1} ^ {i} \left[ \langle X _ {i} \rangle_ {t + 1} - \langle X _ {i} \rangle_ {t} \right] + \lambda_ {t} ^ {i} \left[ \langle X _ {i} \rangle_ {t} - \langle X _ {i} \rangle_ {t + 1} \right]\right), \\ = \sum_ {t = 1} ^ {N - 1} \left[ \lambda_ {t + 1} ^ {i} - \lambda_ {t} ^ {i} \right] \left[ \langle X _ {i} \rangle_ {t + 1} - \langle X _ {i} \rangle_ {t} \right], \tag {10} \\ = \sum_ {t = 1} ^ {N - 1} \Delta \lambda^ {i} \Delta \left\langle X _ {i} \right\rangle , \\ \end{array}
+$$
+
+which we can also write as
+
+$$
+\omega = \frac {\tau}{N} \sum_ {t = 1} ^ {N - 1} \frac {\Delta \lambda^ {i}}{\delta t} \frac {\Delta \langle X _ {i} \rangle}{\Delta \lambda^ {j}} \frac {\Delta \lambda^ {j}}{\delta t} \delta t, \tag {11}
+$$
+
+where $\tau = N\delta t$ . In the continuum limit we can replace the sum by an integral and find that
+
+$$
+\lim  _ {N \rightarrow \infty} N \sum_ {t = 1} ^ {N - 1} \Delta \lambda^ {i} \Delta \langle X _ {i} \rangle = \tau \int_ {0} ^ {\tau} \frac {d \lambda^ {i}}{d t} g _ {i j} \frac {d \lambda^ {j}}{d t} d t = \mathcal {J} (1 2)
+$$
+
+As the number of steps along a path increases we approach a reversible, quasi-static process. In this limit, the hysteresis scales as the thermodynamic divergence and inversely as the number of steps. (Note that this expression differs by a factor of 2 from Ref. [8] because here we have considered the hysteresis, the combined dissipation of the forward and reversed protocols, rather than the dissipation along a single direction.) Similar reasoning relates the divergence and the hysteresis of a slow, finite time transformation [3].
+
+The asymptotic hysteresis and thermodynamic divergence of a protocol will depend on the parametrization of the path. However, thanks to the length-divergence inequality $\mathcal{J} \geq \mathcal{L}^2$ [Eq. (9)] we know that the minimum thermodynamic divergence of the path is the square of the thermodynamic length. Repeating the previous analysis, we find that the thermodynamic length is related to the cumulative root mean single-step hysteresis.
+
+$$
+\lim  _ {N \rightarrow \infty} N \sum_ {t = 1} ^ {N - 1} \sqrt {\Delta \lambda^ {i} \Delta \left\langle X _ {i} \right\rangle} = \mathcal {L} \tag {13}
+$$
+
+Consequently, we can locate optimal, minimal dissipation paths connecting two thermodynamic states by measuring and optimizing the thermodynamic length.
+
+# MEASURING THERMODYNAMIC LENGTH
+
+Thermodynamic length and divergence are clearly of fundamental interest and importance to non-equilibrium thermodynamics. Therefore, we shall consider how best to measure these quantities. The relation between dissipation and divergence [Eqs. (12) and (13)] suggests one obvious approach. We run equilibrium simulations at a series of points along the path and examine the scaling of the dissipation with the number of steps. Since length and divergence are properties of the path taken through thermodynamic state space, but are independent of the underlying dynamics of the system, one can measure thermodynamic length in a computer simulation using whatever dynamics is most convenient, be it Metropolis Monte Carlo, Langevin dynamics or deterministically thermostated molecular dynamics. The only condition is that the chosen dynamics reproduce the correct equilibrium ensemble, Eq. (1).
+
+Concretely, we must measure $\Delta \langle X_i\rangle$ , the mean change of the collective variables between neighboring thermodynamic states. Given $K$ uncorrelated measurements from an equilibrated computer simulation we can estimate this value as
+
+$$
+\begin{array}{l} \Delta \langle X _ {i} \rangle = \sum_ {x} p (x | \lambda_ {2}) X _ {i} (x) - \sum_ {x} p (x | \lambda_ {1}) X _ {i} (x) \tag {14} \\ = \sum_ {x} p (x | \lambda_ {1}) X _ {i} (x) \left(\frac {p (x | \lambda_ {2})}{p (x | \lambda_ {1})} - 1\right) \\ \approx \sum_ {k = 1} ^ {K} X _ {i, 1, n} \left(\exp \left(\Delta \psi_ {1 2} - \left(\lambda_ {2} ^ {j} - \lambda_ {1} ^ {j}\right) X _ {j, 1, k}\right) - 1\right) \\ \end{array}
+$$
+
+In the second line we rewrite the difference of the means as the mean difference. (We should not estimate the difference of the mean directly since this will lead to large statistical errors that will become larger as the number of steps increases.) The final line follows from the definition of the Gibbs ensemble, Eq. (1). Here, $X_{i,t,k}$ is $k$ th measurement of the $i$ th collective variable, $X_{i}(x)$ taken from an equilibrium system defined by the conjugate variables $\lambda_{t}$ , and $\Delta \psi_{12} = \psi_{2} - \psi_{1}$ is the difference in free entropy.
+
+To employ Eq. (14) we need to know the free entropy change, $\Delta \psi_{12}$ , which can be optimally estimated using Bennett's acceptance ratio method [15, 22, 23]. Given $K$ measurements from each of two neighboring states, $X_{i,1,k}$ and $X_{i,2,k}$ the log likelihood $\ell$ that the free entropy has a particular value is [22, 23]
+
+$$
+\begin{array}{l} \ell (\Delta \psi_ {1 2}) = \frac {1}{K} \sum_ {k = 1} ^ {K} \ln \frac {1}{1 + \exp \left(- \Delta \psi_ {1 2} + \left(\lambda_ {2} ^ {i} - \lambda_ {1} ^ {i}\right) X _ {i , 1 , k}\right)} \\ + \frac {1}{K} \sum_ {k = 1} ^ {K} \ln \frac {1}{1 + \exp \left(- \Delta \psi_ {2 1} + \left(\lambda_ {1} ^ {i} - \lambda_ {2} ^ {i}\right) X _ {i , 2 , k}\right)} \tag {15} \\ \end{array}
+$$
+
+and the Bennett optimal estimate of $\Delta \psi_{12}$ maximizes this
+
+likelihood. (See [22] for a clear and concise exposition of this result.)
+
+Rather than using this free entropy measurement to estimate the mean change in the collective variables using Eq. (14), we will instead show that the Bennett likelihood is directly related to the thermodynamic divergence. If we insert the Gibbs ensemble [Eq. (1)] into the log likelihood, then in the large sample limit, we find that the likelihood scales as
+
+$$
+\ell (\Delta \psi_ {1 2}) \simeq 2 K \left(\mathrm {J S} (p ^ {1}; p ^ {2}) - \ln 2\right) \tag {16}
+$$
+
+where $\mathrm{JS}(p^1;p^2)$ is the Jensen-Shannon divergence, the mean of the relative entropy of each distribution to the mean distribution [24].
+
+$$
+\operatorname {J S} (p; q) = \frac {1}{2} \sum_ {i} p _ {i} \ln \frac {p _ {i}}{\frac {1}{2} \left(p _ {i} + q _ {i}\right)} + \frac {1}{2} \sum_ {i} q _ {i} \ln \frac {q _ {i}}{\frac {1}{2} \left(p _ {i} + q _ {i}\right)} \tag {17}
+$$
+
+The minimum divergence is zero for identical distributions and the maximum is $\ln 2$ . The square root of the Jensen-Shannon divergence is a metric between probability distributions [25]. However, unlike a Riemannian metric, the Jensen-Shannon metric space is not an intrinsic length space. There may not be a mid point $b$ between points $a$ and $c$ such that $d(a,b) + d(b,c) = d(a,c)$ and consequently we cannot naturally measure path lengths. However, on any metric space we can define a new intrinsic metric by measuring the distance along continuous paths. The Jensen-Shannon divergence between infinitesimally different distributions is [26]
+
+$$
+\operatorname {J S} (p; p + d p) = \frac {1}{8} \sum_ {i} \frac {\left(d p _ {i}\right) ^ {2}}{p _ {i}}. \tag {18}
+$$
+
+If we compare with Eq. (7), we can see that in the continuum limit
+
+$$
+\mathcal {L} = \sqrt {8} \int d \sqrt {\mathrm {J S}} \quad \text {a n d} \quad \mathcal {J} = 8 \int d \mathrm {J S}. \tag {19}
+$$
+
+The induced Jensen-Shannon metric is proportional to the thermodynamic (entropy differential) metric, and the induced Jensen-Shannon divergence is proportional to the thermodynamic divergence. Consequently, the square root of Jensen-Shannon divergence between two thermodynamic states gives a lower bound on the thermodynamic length of any path between those same states, and the Jensen-Shannon divergence is a lower bound to the thermodynamic divergence.
+
+To summarize, we can measure the thermodynamic length and minimum thermodynamic divergence along a path in thermodynamics state space by adapting Bennett's method. We perform a series of equilibrium simulations along the path and find the maximum likelihood
+
+free entropy change [Eq. (15)] and Jensen-Shannon divergence [via Eq. (16)] between neighboring ensembles. The cumulative Jensen-Shannon metric along the path provides a lower bound to the thermodynamic length [Eq. (19)] and a lower bound to the minimum divergence of the path [via Eq. (9)]. This procedure is then repeated with finer discretizations of the path, until the estimates of divergence and length converge.
+
+This research was supported by the Department of Energy, under contract DE-AC02-05CH11231.
+
+* Electronic address: GECrooks@lbl.gov   
+[1] F. Weinhold, J. Chem. Phys. 63, 2479 (1975).   
+[2] G. Ruppeiner, Phys. Rev. A 20, 1608 (1979).   
+[3] P. Salamon and R. S. Berry, Phys. Rev. Lett. 51, 1127 (1983).   
+[4] P. Salamon, J. Nulton, and E. Ihrig, J. Chem. Phys. 80, 436 (1984).   
+[5] F. Schlögl, Z. Phys. B 59, 449 (1985).   
+[6] P. Salamon, J. D. Nulton, and R. S. Berry, J. Chem. Phys. 82, 2433 (1985).   
+[7] J. D. Nulton and P. Salamon, Phys. Rev. A 31, 2520 (1985).   
+[8] J. Nulton, P. Salamon, B. Andresen, and Q. Anmin, J. Chem. Phys. 83, 334 (1985).   
+[9] H. Janyszek and R. Mrugala, Phys. Rev. A 39, 6515 (1989).   
+[10] R. Mrugala, J. D. Nulton, J. C. Schön, and P. Salamon, Phys. Rev. A 41, 3156 (1990).   
+[11] D. Brody and N. Rivier, Phys. Rev. E 51, 1006 (1995).   
+[12] P. Salamon and J. D. Nulton, Europhys. Lett. 42, 571 (1998).   
+[13] M. Schaller, K. H. Hoffmann, G. Siragusa, P. Salamon, and B. Andresen, Comp. Chem. Eng. 25, 1537 (2001).   
+[14] J. D. Nulton and P. Salamon, J. Non-Equilib. Thermodynamics. 27, 271 (2002).   
+[15] C. H. Bennett, J. Comput. Phys. 22, 245 (1976).   
+[16] H. B. Callen, Thermodynamics and an Introduction to Thermostatistics (Wiley, New York, 1985), 2nd ed.   
+[17] W. K. Wootters, Phys. Rev. D 23, 357 (1981).   
+[18] B. Andresen, R. S. Berry, R. Gilmore, E. Ihrig, and P. Salamon, Phys. Rev. A 37, 845 (1988).   
+[19] T. M. Cover and J. A. Thomas, Elements of Information Theory (Wiley, New York, 1991).   
+[20] C. R. Rao, Bull. Calcutta Math. Soc. 37, 81 (1945).   
+[21] J. Burbea and C. R. Rao, J. Multivariate Anal. 12, 575 (1982).   
+[22] M. R. Shirts, E. Bair, G. Hooker, and V. S. Pande, Phys. Rev. Lett. 91, 140601 (2003).   
+[23] P. Maragakis, M. Spichty, and M. Karplus, Phys. Rev. Lett. 96, 100602 (2006).   
+[24] J. Lin, IEEE Trans. Info. Theory 37, 145 (1991).   
+[25] J. Endres, D.M. Schindelin, IEEE Trans. Info. Theory 49, 1858 (2003).   
+[26] A. Majtey, P. W. Lamberti, M. T. Martin, and A. Plastino, Eur. Phys. J. D 32, 413 (2005).

@@ -1,0 +1,143 @@
+# Towards a category-theoretic foundation of Classical and Quantum Information Geometry
+
+F. M. Ciaglia $^{1,5}$ , F. Di Cosmo $^{2,3,6}$ , L. González-Bravo $^{3,4,7}$
+
+September 15, 2025
+
+<sup>1</sup> Universidad Carlos III de Madrid, ROR: 03ths8210, Departamento de Matemáticas, Avenida de la Universidad, 30 (edificio Sabatini), 28911 Leganés (Madrid), España.   
+<sup>2</sup> Universidad de Alcalá, ROR: 04pmn0e78, Departamento de Física y Matemáticas, Ctra Madrid-Barcelona, km.33, 600, 28805 Alcalá de Henares, Madrid, España.   
+<sup>3</sup> Instituto de Ciencias Matemáticas ICMAT (CSIC-UAM-UC3M-UCM), ROR: 05e9bn444, Campus de Cantoblanco UAM, Calle Nicolás Cabrera, 13-15, 28049 Madrid, España.   
+<sup>4</sup> Universidad Complutense de Madrid, ROR: 02p0gd045. Departamento de Álgebra, Geometría y Topología, Facultad de Ciencias Matemáticas, Pl. de las Ciencias, 3, Moncloa-Aravaca, 28040 Madrid, España   
+$5^{\mathrm{f}}$ fciaglia[at]math.uc3m.es $6^{\mathrm{f}}$ fcosmo[at]math.uc3m.es $7^{\mathrm{f}}$ lauraego[at]ucm.es
+
+# Abstract
+
+We introduce the category NCP, whose objects are pairs of $\mathbf{W}^*$ -algebras and normal states and whose morphisms are state-preserving unital completely positive (CPU) maps, as a common stage for classical and quantum information geometry, and we formulate two results that will appear in forthcoming works.
+
+First, we recast the problem of classifying admissible Riemannian geometries on classical and quantum statistical models in terms of functors $\mathfrak{C}:\mathsf{NCP}\to \mathsf{Hilb}$ . These functors provide a generalization of classical statistical covariance, and we call them fields of covariances. A prominent example being the so-called GNS functor arising from the Gelfand-Naimark-Segal (GNS) construction. The classification of fields of covariances on NCP entails both Čencov's uniqueness of the Fisher-Rao metric tensor and Petz's classification of monotone quantum metric tensors as particular cases.
+
+Then, we show how classical and quantum statistical models can be realized as subcategories of NCP in a way that takes into account symmetries. In this setting, the fields of covariances determine Riemannian metric tensors on the model that reduce to the Fisher-Rao, Fubini-Study, and Bures-Helstrom metric tensor in particular cases.
+
+# Contents
+
+1 Introduction 2   
+2 From metric tensors to covariances 4   
+3 Statistical models in NCP 5
+
+References 7
+
+# 1 Introduction
+
+In statistics, the Fisher-Rao metric tensor $G_{FR}$ provides a lower bound for the covariance of an unbiased estimator through the so-called Cramér-Rao inequality [9]. Since this inequality applies broadly across a wide range of statistical models, it raises a natural question: why does the "same" metric tensor consistently appear in such diverse settings?
+
+In his work [25], Čencov investigated this question providing a detailed answer in the case of finite probability spaces $\mathcal{X}_{n+1}$ . Specifically, Čencov built the category CAPF whose objects are the smooth manifolds $\Delta_n$ given by the open interior of probability simplexes $\overline{\Delta}_n$ , and whose morphisms are Markov maps [25]. Within this framework, Čencov proved that the Fisher-Rao metric tensor is the only metric tensor on objects of CAPF which is invariant under congruent embeddings (that is, the smooth maps determined by those Markov maps admitting a left inverse which is also a Markov map).
+
+Čencov's original insights naturally extend to the quantum setting, a direction that he and Morozova explored in [17, 18]. In the finite-dimensional quantum case, we can define the category cQS of quantum states, whose objects are the manifolds of faithful quantum states $\mathcal{S}_f(\mathcal{H})$ on the Hilbert space $\mathcal{H}$ of the system, and whose morphisms are determined by completely-positive, trace preserving (fCPTP) maps<sup>1</sup>. In this context, the requirement of invariance with respect to congruent embeddings characterizing the Fisher-Rao metric tensor in the classical case is replaced by the stronger requirement that quantum morphisms are contractions (the so-called monotonicity property). Despite a stronger requirement, the quantum case presents an infinite number of Riemannian metric tensors satisfying the monotonicity property, as firstly discussed by Čencov and Morozowa [18], and later rigorously proved by Petz [21], who classified all these Riemannian metric tensors in terms of suitable operator monotone functions.
+
+Čencov's and Petz's classifications of metric tensors focus on the manifolds of faithful probability vectors and faithful quantum states in finite dimensions, respectively. In particular, Čencov's work leaves outside many important statistical models which have continuous outcome spaces (e.g., multivariate normal distributions), while Petz's classification excludes all models on infinite-dimensional algebras, and all models of non-faithful states (e.g., pure states², which are highly relevant in quantum mechanics).
+
+Several efforts have been made to extend Čencov's theorem to the case of continuous outcome spaces, as demonstrated in works such as [16, 3, 10, 23]. However, none of these generalizations engage with Čencov's original categorical framework. Moreover, while Čencov's original work naturally extends to the quantum setting, the mathematical techniques employed in these generalizations are not well-suited to be adapted to the quantum domain. Finally, to the best of the authors' knowledge, no attempt to generalize Petz's theorem to infinite-dimensions has been undertaken.
+
+These challenges point to the need for a more flexible and structurally unified approach. Operator algebras offer a natural mathematical setting in which the structural similarities between classical and quantum theories can coexist, providing a common language for describing and analyzing their probabilistic aspects. This unifying perspective is particularly appealing for the development of a general framework for information geometry, one that encompasses both classical and quantum settings. The key idea is that from a functional-analytic perspective,
+
+both (dominated) probability distributions and quantum states (or density operators) can be understood as distinct realizations of the notion of a normal state—on an Abelian $W^*$ -algebra in the classical case, and on a non-Abelian $W^*$ -algebra in the quantum case. This unified framework is particularly motivated by the presence of probabilistic structures in quantum mechanics that closely mirror their classical counterparts. For example, the Born rule assigns probabilities to measurement outcomes in a way that parallels classical probability theory, while positive operator-valued measures (POVMs) generalize quantum measurements in a manner that resembles classical probabilistic processes. Other examples include local operations and classical communication (LOCC) which directly combine local quantum operations with classical coordination and quantum tomography which adapts classical statistical inference techniques to the quantum setting.
+
+Within the operator algebraic approach, there is a plethora of interesting results that highlight deep connections between algebraic structures and information geometry [8, 12, 13, 14, 7]. Moreover, in [6] the formulation of classical and quantum information geometry in terms of (normal) states on finite-dimensional $\mathbf{W}^*$ -algebras allows for a framework that unifies Čencov's and Petz's problems. However, within this approach a counterpart to the problem originally proposed by Čencov that scales to infinite dimensions and unifies all classical and quantum systems has not yet been formulated.
+
+In this work we would like to combine the approach of operator algebras and the initial categorical ideas from Čencov to propose a formalism compatible with these requirements. Additionally, in this formalism we would like to implement a way in which the geometry of the models is derived from the "geometry" of the ambient space. However, this implementation needs to be done in an appropriate suitable manner since as we know, the set of states of an infinite-dimensional $W^*$ -algebra is not a smooth manifold<sup>4</sup>. Thus, to get such an implementation we will abandon the idea of manifolds and we will replace it by the notion of a suitable category. Of course, in this categorical setting, analogue structures to those of the manifold-oriented approach to information geometry will need to be defined. Specifically, building on Čencov's categorical approach [17] and the realization that quantum and classical information geometry can be seen, inspired by Voiculescu's free probabilities [26], as different faces of the same non-commutative object, we introduce the category of non-commutative probabilities (NCP) whose objects are given by pairs $(\mathcal{A}, \rho)$ where, $\mathcal{A}$ is a $W^*$ -algebra and $\rho$ is a normal state and whose morphism are given by state-preserving CPU maps, i.e., a morphism $\Phi : (\mathcal{A}, \rho) \to (\mathcal{B}, \sigma)$ exists when there is a CPU map $\phi: \mathcal{B} \to \mathcal{A}$ such that $\phi^*(\rho) = \sigma$ .
+
+The category NCP can be seen as a sort of environment containing any statistical model, whether classical or quantum. Indeed, as we will show, any statistical model can be recovered—at least in some sense—within the language of NCP. This framework thus provides a categorical setting in which statistical models themselves can be studied. Within the categorical context provided by NCP we aim not only to recover Čencov's and Morozova's categorical perspective but also to develop a suitable categorical counterpart to the problem of invariant geometries in the category CAPF originally posed by Čencov. Our proposed Čencov-like problem within NCP does not depend on the standard notion of a statistical model. This opens the door to investigating whether the invariant “geometries” can be regarded as model-independent features of information geometry—that is, whether there exists a “geometry” on the ambient space NCP
+
+that naturally "projects" to the geometries found within individual statistical models.
+
+This work is structured as follows. In Section 2, we introduce the novel concept of field of covariances and explain how this concept allows to develop a categorical counterpart to the problem of invariant geometries initiated by Čencov. In Section 3, we demonstrate how statistical models can be recovered as subcategories of NCP.
+
+# 2 From metric tensors to covariances
+
+Intuitively speaking, we can think of NCP as a kind of universal model of both classical and quantum states replacing the standard notion of (classical or quantum) statistical model of information geometry. Objects in NCP would replace points in the manifold underlying a statistical model, while the morphisms in NCP would be a kind of point-wise symmetry transformations. Similarly to how every point $m$ in a statistical model with underlying smooth manifold $M$ carries a tangent space $T_{m}M$ and a cotangent space $T_{m}^{*}M$ , an object $(\mathcal{A},\rho)$ in NCP carries the Gelfand-Naimark-Segal (GNS) Hilbert space $\mathcal{H}_{\rho}^5$ at each object $(\mathcal{A},\rho)$ . The assignment $(\mathcal{A},\rho)\mapsto \mathcal{H}_{\rho}$ leads to a contravariant functor $^6\mathfrak{G}:\mathsf{NCP}\to \mathsf{Hilb}$ defined on objects by $\mathfrak{G}_0(\mathcal{A},\rho) = \mathcal{H}_{\rho}$ and on morphisms by $\mathfrak{G}_1(\Phi) = \widetilde{\Phi}$ where, $\widetilde{\Phi}$ is the contraction determined by the CPU map $\Phi$ . We call $\mathfrak{G}$ the GNS functor.
+
+A Riemannian metric tensor $\mathbb{R}$ on a finite-dimensional manifold $M$ can be seen as the (smooth) assignment of a real Hilbert structure on the tangent space $T_{m}M$ at each $m\in M$ . Such an assignment can be seen as a covariant functor<sup>7</sup> $\Re :\mathbb{C}(\mathsf{M})\to \mathrm{Hilb}_{\mathbb{R}}$ where, $\mathbb{C}(\mathsf{M})$ is the category associated with the manifold $M$ , the category whose objects are points of $M$ , and whose morphisms are the identity morphisms at each object. Note that, as it is defined, the category $\mathbb{C}(\mathsf{M})$ does not recover any topological or differentiable properties of $M$ .
+
+The functor $\mathfrak{R}$ is defined on objects by $\mathfrak{R}_0(m) \coloneqq (T_mM, \mathbb{R}_m)$ and on morphisms by $\mathfrak{R}_1(1_m) \coloneqq T(1_m):(T_mM, \mathbb{R}_m) \to (T_mM, \mathbb{R}_m)$ . Moreover, when a Lie group $G$ acts on a manifold $M$ , we have the action Lie groupoid $G \ltimes M$ [15], and a $G$ -invariant Riemannian metric tensor $\mathbb{R}$ on $M$ gives rise to the functor $\mathfrak{R}: G \ltimes M \to \mathrm{Hilb}_{\mathbb{R}}$ defined on objects by $\mathfrak{R}_0(m) \coloneqq (T_mM, \mathbb{R}_m)$ , and on morphism by $\mathfrak{R}_1(\alpha \equiv (g,m)) \coloneqq T\alpha:(T_mM, \mathbb{R}_m) \to (T_{\mathsf{gom}}M, \mathbb{R}_{\mathsf{gom}})$ . Note that the invariance behaviour of $\mathbb{R}$ is encoded in the functoriality of $\mathfrak{R}$ . If we replace Riemannian metric tensors with their contravariant counterparts defined on cotangent spaces, we obtain contravariant functors.
+
+Considering the analogies above, in the categorical setting of NCP, we may replace a contravariant Riemannian metric tensor with a contravariant functor $\mathfrak{C}$ from NCP to Hilb. On objects of NCP, the functor $\mathfrak{C}$ reads $\mathfrak{C}_0(\mathcal{A},\rho) = (\mathcal{K}_\rho ,\mathfrak{C}_\rho)$ where, $\mathcal{K}_{\rho}$ is a Hilbert space and $\mathfrak{C}_{\rho}$ its Hilbert product, and on morphisms, it reads $\mathfrak{C}_1(\Phi :(\mathcal{A},\rho)\to (\mathcal{B},\sigma)) = \hat{\Phi}$ , with $\hat{\Phi}:\mathcal{K}_{\sigma}\rightarrow \mathcal{K}_{\rho}$ a linear contraction. Taking into account that all contravariant Riemannian metric tensors on $M$ are defined on the same cotangent space, we impose the strong equality
+
+$$
+\mathfrak {F} \circ \mathfrak {C} = \mathfrak {F} \circ \mathfrak {G}, \tag {1}
+$$
+
+where $\mathfrak{F}\colon \mathrm{Hilb}\to \mathrm{Vect}$ is the obvious forgetful functor. The previous condition guarantees that the vector space underlying the Hilbert space $\mathfrak{C}_0(\mathcal{A},\rho) = \mathcal{K}_{\rho}$ is the vector space underlying the GNS Hilbert space $\mathcal{H}_{\rho}$ , and that the morphism $\mathfrak{C}_1(\Phi)$ is the linear contraction $\tilde{\Phi}$ determined by the CPU map $\phi$ inducing the morphism $\Phi$ in NCP. We will call such a contravariant functor $\mathfrak{C}$ a field of covariances on NCP. The alternative Hilbert product $\mathfrak{C}_{\rho}$ , defined on $\mathcal{H}_{\rho}$ via the functor $\mathfrak{C}$ , will be referred to as a covariance at $\rho$ .
+
+This perspective, which favors contravariant Riemannian metric tensors over their covariant counterparts aligns with the original derivation of the Cramér-Rao bound which is expressed in terms of a contravariant Riemannian metric [11, 19]. Moreover, the term "covariance" is motivated by the fact that, when the algebra under investigation is $\mathcal{A} \cong \mathcal{L}^{\infty}(\Omega, \nu)$ and the state $\rho$ is normal (which means it is associated with a probability measure on $\Omega$ which is absolutely continuous with respect to $\nu$ ), the GNS Hilbert space is $\mathcal{H}_{\rho} \cong \mathcal{L}^{2}(\Omega, \rho)$ , and the statistical covariance between (complex-valued) random variables (with vanishing expectation with respect to $\rho$ ) coincides with their scalar product with respect to the GNS inner product.
+
+In this categorical setting, the analogue of Čencov's problem would be to classify all functors $\mathfrak{C} : \mathsf{NCP} \to \mathsf{Hilb}$ satisfying condition (1). From the point of view of covariances, the functoriality of $\mathfrak{C}$ on morphisms encodes the monotonicity property
+
+$$
+\mathfrak {C} _ {\rho} (\widetilde {\Phi} (\xi), \widetilde {\Phi} (\xi)) \leq \mathfrak {C} _ {\sigma} (\xi , \xi),
+$$
+
+for any $\Phi \in \mathsf{NCP}_1$
+
+It is worth noting that the GNS functor is an obvious example of field of covariance on NCP, that reduces to the (complexified) statistical covariance as mentioned above. Since the Fisher-Rao metric tensor is essentially the inverse of the statistical covariance, this instance suggests a strong connection between the GNS functor and the Fisher-Rao metric tensor that will be explored in a forthcoming publication.
+
+We will address the problem of classification of fields of covariances on NCP in a series of forthcoming publications. In particular, it is worth mentioning a result of our investigation. If we focus on the full subcategory fNCT of tracial states<sup>9</sup> on finite-dimensional algebras, a uniqueness result reminiscent of Čencov's classical result holds because the GNS functor $\mathfrak{G}$ is the only possible functor (up to the choice of two positive constants). This case is particularly interesting because it shows that uniqueness is possible also in a non-commutative setting, as long as the states under consideration do not feel the non-commutative character of the algebra.
+
+# 3 Statistical models in NCP
+
+As remarked in section 2, we may intuitively think of NCP as a sort of universal statistical model that encompasses all classical and quantum statistical models of information geometry. This idea can be further formalized by viewing models as subcategories of NCP. Specifically, let $M$ denote the manifold underlying a statistical model, and let $\mathsf{C}(\mathsf{M})$ be its associated category. We can define the trivial immersion functor $\hat{\mathbf{i}}:\mathsf{C}(\mathsf{M})\to \mathsf{NCP}$ by setting $\hat{\mathbf{i}}_0(m)\coloneqq (\mathcal{A},\rho_m)$ , where $\hat{\mathbf{i}}_0(m)\cong \hat{\mathbf{i}}_0(n)\iff m\cong n$ , and $\hat{\mathbf{i}}_1(1_m)\coloneqq 1_{\mathfrak{i}_0(m)}$ . The image of this functor is trivially a subcategory of NCP, and any statistical model can be seen as a (trivial) subcategory of NCP.
+
+Building on the manifold-oriented perspective of information geometry, we may consider the map on objects $\hat{\mathbf{i}}_0:M\to \mathsf{NCP}_0$ , $\hat{\mathbf{i}}_0(m)\coloneqq (\mathcal{A},\rho_m)$ as the analogue of the injective map
+
+$i: M \to S(\Omega)$ in the classical case or $i: M \to (\mathcal{B}(\mathcal{H}))^*$ in the quantum case, which is at the core of the definition of a statistical model [1]. In this context, the introduction of an essentially injective functor, which is crucial for obtaining a subcategory, can be understood as the categorical analogue of the injectivity of the immersion map. Therefore, in the categorical context of NCP, it is natural to define a statistical model as a subcategory of NCP, referred to as a statistical subcategory.
+
+The immersion functor $\hat{\mathbf{i}}$ defined above is not able to encode additional geometric structures of the model under investigation, but the categorical framework is perfectly capable of handling additional structures. For instance, let us examine the case of univariate normal distributions. The manifold underlying the model of univariate normal distributions is $M = \mathbb{R} \times \mathbb{R}^{+}$ , which admits a Lie group structure. Moreover, the "same" Lie group can be thought of as the affine group naturally acting the outcome space $\Omega = \mathbb{R}$ on which univariate normal distributions are defined. Such a geometric structure can be encoded within NCP. Concretely, given the affine action $\alpha_{\xi}: \mathbb{R} \to \mathbb{R}, x \mapsto \sigma x + \mu$ with $\xi \equiv (\mu, \sigma) \in M$ , we may define the automorphism
+
+$$
+\phi_ {\xi}: \mathcal {L} ^ {\infty} (\mathbb {R}, d l) \rightarrow \mathcal {L} ^ {\infty} (\mathbb {R}, d l), f \mapsto \phi_ {\xi} (f) := f \circ \alpha_ {\xi} \tag {2}
+$$
+
+where, $l$ is the Lebesgue measure on $\mathbb{R}$ . Moreover, $\Phi_{\xi}^{*}(p_{\xi'}) = p_{\xi \circ \xi'}$ which can be expressed as
+
+$$
+\int_ {A} p \left(\xi^ {\prime}, x\right) d l (x) = \int_ {\xi \circ A} p \left(x, \xi \circ \xi^ {\prime}\right) d l (x)
+$$
+
+ensuring the compatibility between the Lie group structure of $M \cong \mathbb{R} \times \mathbb{R}^+$ and the realization of its points as probability distributions on $\mathbb{R}$ [2]. Thus, the action of $M$ over itself defines an action groupoid<sup>10</sup> which can be embedded as a subcategory of $\mathsf{NCP}$ by means of the image of the Gaussian functor $\hat{\mathbf{G}}: M \ltimes M \to \mathsf{NCP}$ , $\hat{\mathbf{G}}_0(\xi') := (\mathcal{L}^\infty(\mathbb{R}, dl), p_{\xi'})$ , where $\hat{\mathbf{G}}_0(\xi') \cong \hat{\mathbf{G}}_0(\lambda) \iff \xi' \cong \lambda$ , and $\hat{\mathbf{G}}_1((\xi, \xi')) := \Phi_\xi: (\mathcal{L}^\infty(\mathbb{R}, dl), p_\xi) \to (\mathcal{L}^\infty(\mathbb{R}, dl), p_{\xi \circ \xi'})$ with $\phi_\xi$ given by equation (2). From this particular example, a specific structure can be distilled for statistical models admitting a Lie group action. Specifically, the Lie group action is encoded in the functor $\hat{\mathbf{g}}: G \ltimes M \to \mathsf{NCP}$ , $\hat{\mathbf{g}}_0(m) := (\mathcal{A}, \rho_m)$ , where $\hat{\mathbf{g}}_0(m) \cong \hat{\mathbf{g}}_0(n) \iff m \cong n$ , and $\hat{\mathbf{g}}_1((g, m)) := \Phi_g$ where $\phi_g: \mathcal{A} \to \mathcal{A}$ is an automorphism of $\mathcal{A}$ and $\phi_g^*(\rho_m) = \rho_{g \circ m}$ whose image defines a subcategory of $\mathsf{NCP}$ .
+
+Following this line of reasoning, it is a matter of verification that transformation models and coherent states are statistical subcategories of NCP. Moreover, other interesting statistical subcategories arise in this way once we relax the requirement of dealing with smooth manifolds. For example, we can take topological action groupoid determined by the topological space $S(\mathcal{A})$ of states on the $C^*$ -algebra $\mathcal{A}$ with the natural action of the automorphism group $\operatorname{Aut}(\mathcal{A})$ , and realize it as a statistical subcategory of NCP by means of the obvious functor given by identification. These statistical subcategories contain subcategories that are meaningful in their own right (for instance, when $\mathcal{A} = \mathcal{B}(\mathcal{H})$ , the action groupoid of pure states with the unitary group is an example, while, imposing $\dim(\mathcal{H}) < \infty$ allows us to recover the action groupoids of the manifolds of quantum states with fixed rank with the action of the unitary group).
+
+The realization of models that do not admit a Lie group action as non-trivial statistical subcategories of NCP, will be discussed in a forthcoming work.
+
+From the discussion above, it follows that the notion of statistical subcategories of NCP allows us to connect with and generalize the notion of (classical and quantum) statistical models.
+
+The next step would be that of using a field of covariance on NCP to induce a Riemannian metric tensor on a statistical subcategory admitting a smooth structure in a way that suitably generalizes the idea of taking the pullback of covariant tensor fields. In this way, the notion of field of covariance would act as a sort of universal model for the Riemannian geometries of statistical models. We plan to thoroughly discuss this procedure in a forthcoming work, showing how the GNS functor discussed in section 2 leads to the Fisher-Rao metric tensor on statistical subcategories on commutative algebras, and to the Bures-Helstrom metric tensor on the statistical subcategory of faithful states on $\mathcal{B}(\mathcal{H})$ in finite dimensions.
+
+# References
+
+[1] S. I. Amari. Information Geometry and its Application. Springer, Japan, 2016. DOI: 10.1007/978-4-431-55978-8. $\downarrow$ 6   
+[2] S. I. Amari and H. Nagaoka. Methods of Information Geometry. American Mathematical Society, Providence, RI, 2000. DOI: 10.1090/mmono/191. $\downarrow 6$   
+[3] N. Ay, J. Jost, H. V. Le, and L. Schwachhöfer. Information Geometry. Springer International Publishing, 2017. DOI: 10.1007/978-3-319-56478-4. $\downarrow$ 2   
+[4] B. Blackadar. Operator Algebras: Theory of $C^*$ -algebras and von Neumann Algebras. Springer-Verlag, Berlin, 2006. DOI: 10.1007/3-540-28517-2. $\downarrow$ 3   
+[5] M. Choi. Completely positive linear maps on complex matrices. Linear Algebra and its Applications, 10(3):285-290, 1975. DOI: 10.1016/0024-3795(75)90075-0. $\downarrow$ 2   
+[6] F. M. Ciaglia, F. Di Cosmo, and L. González-Bravo. Can Čencov Meet Petz, pages 363–371. Lecture Notes in Computer Science. Springer Nature Switzerland, 2023. DOI: 10.1007/978-3-031-38299-4_38, arXiv:2305.12482 [math-ph]. $\downarrow$ 3   
+[7] F. M. Ciaglia, F. Di Nocera, J. Jost, and L. Schwachhöfer. Parametric models and information geometry on $W^{*}$ -algebras. Information Geometry, 5(1):329-354, 2023. DOI: 10.1007/s41884-022-00094-6, arXiv:2207.09396 [math-ph]. $\downarrow$ 3   
+[8] F. M. Ciaglia, J. Jost, and L. Schwachhöfer. From the Jordan product to Riemannian geometries on classical and quantum states. Entropy, 22(06):637-27, 2020. DOI: 10.3390/e22060637, arXiv:2005.02023 [math-ph]. $\downarrow 3$   
+[9] Harald Cramér. Mathematical Methods of Statistics. Princeton University Press, December 1946. DOI: 10.1515/9781400883868. $\downarrow 2$   
+[10] A. Fujiwara. Hommage to Chentsov's theorem. Information Geometry, 2023. DOI: 10.1007/s41884-022-00077-7. ↓2   
+[11] H. Hendriks. A Cramer-Rao Type Lower Bound for Estimators with Values in a Manifold. Journal of Multivariate Analysis, 38(2):245 - 261, 1991. DOI: 10.1016/0047-259X(91)90044-3. $\downarrow$ 5   
+[12] A. Jenčová. Affine connections, duality and divergences for a von Neumann algebra. arXiv:0311004 [math-ph], 2003. $\downarrow 3$
+
+[13] A. Jenčová. A construction of a nonparametric quantum information manifold. Journal of Functional Analysis, 239(1):1-20, 2006. DOI: 10.1016/j.jfa.2006.02.007, arXiv:0511065 [math-ph]. $\downarrow$ 3   
+[14] A. Jenčová. The exponential Orlicz space in quantum information geometry. Information Geometry, 7(S1):377-395, January 2023. DOI: 10.1007/s41884-023-00097-x, arXiv:2301.06906 [quant-ph]. $\downarrow 3$   
+[15] K. C. Mackenzie. General theory of Lie groupoids and Lie algebroids. Cambridge University Press, 2005. DOI: 10.1017/cbo9781107325883. $\downarrow 4$   
+[16] Peter W Michor. *Manifolds of differentiable mappings*. Shiva Publishing Limited, 1980. DOI: 10.1007/978-3-642-11102-0_5. ↓2   
+[17] E. A. Morozova and N. N. Čencov. Markov maps in noncommutative probability theory and mathematical statistics. In Y. V. Prokhorov, V. A. Statulevicius, V. V. Sazonov, and B. Grigelionis, editors, Probability theory and mathematical statistics: proceedings of the Fourth Vilnius Conference, volume 2, pages 287-310. VNU Science Press, Utrecht, 1987. DOI: 10.1515/9783112313985-026. ↓2, 3   
+[18] E. A. Morozova and N. N. Čencov. Markov invariant geometry on manifolds of states. Journal of Soviet Mathematics, 56(5):2648-2669, 1991. DOI: 10.1007/BF01095975. ↓2   
+[19] H. Nagaoka. The Fisher metric as a metric on the cotangent bundle. Information Geometry, 7(1), 2024. DOI: 10.1007/s41884-023-00126-9, arXiv:2310.13237 [cs.IT]. $\downarrow 5$   
+[20] M. A. Nielsen and I. L. Chuang. Quantum Computation and Quantum Information. Cambridge University Press, New York, NY, 2011. DOI: 10.1017/CBO9780511976667. $\downarrow 2$   
+[21] D. Petz. Monotone metrics on matrix spaces. Linear Algebra and its Applications, 244:81-96, 1996. DOI: 10.1016/0024-3795(94)00211-8. $\downarrow 2$   
+[22] D. Petz and C. Sudar. Geometries of Quantum States. Journal of Mathematical Physics, 37, 1996. DOI: 10.1063/1.531535. $\downarrow 2$   
+[23] G. Pistone and C. Sempi. An infinite-dimensional geometric structure on the space of all the probability measures equivalent to a given one. The Annals of Statistics, 23(5):1543-1561, 1995. DOI: 10.1214/aos/117632431. $\downarrow 2$   
+[24] M. Takesaki. Theory of Operator Algebra I. Springer-Verlag, Berlin, 2002. DOI: 10.1007/978-1-4612-6188-9. $\downarrow 3$   
+[25] N. N. Čencov. Statistical Decision Rules and Optimal Inference. American Mathematical Society, Providence, RI, 1982. DOI: 10.1090/mmono/053.↓2   
+[26] D. V. Voicolescu, K. J. Dykema, and A. Nica. Free Random Variables. American Mathematical Society, Providence, RI, 1992. ISBN: 978-0-8218-1140-5. ↓3

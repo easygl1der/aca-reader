@@ -1,0 +1,686 @@
+[
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.458,
+                0.806,
+                0.616
+            ],
+            "angle": 0,
+            "content": "R语言实现抽样基础"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.445,
+                0.237
+            ],
+            "angle": 0,
+            "content": "离散型随机变量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.298,
+                0.894,
+                0.45
+            ],
+            "angle": 0,
+            "content": "已知 \\(P\\left(X = x_{i}\\right) = p_{i}, i = 1, \\ldots, n\\) 。根据以上概率分布抽取 100 个样本。"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.084,
+                0.298,
+                0.894,
+                0.92
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} > x <   - c (\\dots); p <   - c (\\dots); n <   - l e n g t h (x) \\\\ > \\text {i n d e x} <   - \\text {s a m p l e} (1: n, 1 0 0, \\text {r e p l a c e} = T, \\text {p r o b} = p); x _ {\\text {s a m p l e}} <   - x [ \\text {i n d e x} ] \\\\ > x \\_ s a m p l e <   - s a m p l e (x, 1 0 0, r e p l a c e = T, p r o b = p) \\\\ \\end{array}\n\\]"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.142,
+                0.445,
+                0.239
+            ],
+            "angle": 0,
+            "content": "连续型随机变量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.068,
+                0.29,
+                0.816,
+                0.358
+            ],
+            "angle": 0,
+            "content": "已知 \\(X\\) 密度函数为 \\(f(x)\\) 。根据以上密度函数抽取 100 个样本。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.064,
+                0.527,
+                0.934,
+                0.785
+            ],
+            "angle": 0,
+            "content": "在 \\(X\\) 的支撑（取值范围，设为 \\([a, b]\\)）内均匀地“打格子点”，即令 \\(a = x_{1} \\leq \\cdots \\leq x_{n} = b\\)，且 \\(x_{i}\\) 的间隔一样，并计算 \\(p_{i} = f(x_{i})\\)，然后按离散概率的抽样方式从 \\(x_{i}\\) 中抽取 100 个样本即可。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.445,
+                0.237
+            ],
+            "angle": 0,
+            "content": "连续型随机变量"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.075,
+                0.296,
+                0.916,
+                0.449
+            ],
+            "angle": 0,
+            "content": "\\[\n\\begin{array}{l} P (X = x _ {i}) \\approx P (x _ {i} \\leq X \\leq x _ {i} + \\Delta x) = P (X \\leq x _ {i} + \\Delta x) - P (X \\leq x _ {i}) = \\\\ F (x _ {i} + \\Delta x) - F (x _ {i}) = F ^ {\\prime} (\\xi) \\cdot \\Delta x = f (\\xi) \\cdot \\Delta x \\approx f (x _ {i}) \\Delta x \\\\ \\end{array}\n\\]"
+        },
+        {
+            "type": "equation",
+            "bbox": [
+                0.075,
+                0.506,
+                0.273,
+                0.564
+            ],
+            "angle": 0,
+            "content": "\\[\n\\xi \\in [ x _ {i}, x _ {i} + \\Delta x ]\n\\]"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.08,
+                0.736,
+                0.417,
+                0.795
+            ],
+            "angle": 0,
+            "content": "可见，\\(P(X = x_{i}) \\propto f(x_{i})\\)。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.615,
+                0.242
+            ],
+            "angle": 0,
+            "content": "例：从U(0,1)中抽取样本"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.092,
+                0.297,
+                0.407,
+                0.36
+            ],
+            "angle": 0,
+            "content": "> x<-seq(0, 1, length=500)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.396,
+                0.344,
+                0.452
+            ],
+            "angle": 0,
+            "content": "> p<-rep(1/500, 500)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.486,
+                0.655,
+                0.548
+            ],
+            "angle": 0,
+            "content": "> x_sample<-sample(x, 100, replace=T, prob=p)"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.092,
+                0.297,
+                0.655,
+                0.548
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.102,
+                0.671,
+                0.41,
+                0.73
+            ],
+            "angle": 0,
+            "content": "注: p不一定需要是概率"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.771,
+                0.289,
+                0.826
+            ],
+            "angle": 0,
+            "content": "> p<-rep(1, 500)"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.615,
+                0.242
+            ],
+            "angle": 0,
+            "content": "例：从N(0,1)中抽取样本"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.092,
+                0.297,
+                0.418,
+                0.36
+            ],
+            "angle": 0,
+            "content": "> x<-seq(-3, 3, length=500)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.396,
+                0.327,
+                0.453
+            ],
+            "angle": 0,
+            "content": "> p<-dnorm(x, 0, 1)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.486,
+                0.655,
+                0.548
+            ],
+            "angle": 0,
+            "content": "> x_sample<-sample(x, 100, replace=T, prob=p)"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.092,
+                0.297,
+                0.655,
+                0.548
+            ],
+            "angle": 0,
+            "content": null
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.102,
+                0.671,
+                0.483,
+                0.726
+            ],
+            "angle": 0,
+            "content": "注：概率可以为密度函数的核"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.095,
+                0.771,
+                0.32,
+                0.826
+            ],
+            "angle": 0,
+            "content": "\\(> p<-exp(-0.5^{*}x^{\\wedge}2)\\)"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.142,
+                0.545,
+                0.242
+            ],
+            "angle": 0,
+            "content": "二维离散型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.304,
+                0.923,
+                0.468
+            ],
+            "angle": 0,
+            "content": "已知 \\(P\\left(X = x_{i}, Y = y_{j}\\right) = p_{ij}, i = 1, \\ldots, I; j = 1, \\ldots, J\\) 。根据以上概率分布抽取 100 个样本。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.082,
+                0.594,
+                0.923,
+                0.896
+            ],
+            "angle": 0,
+            "content": "把数据矩阵“拉直”为一个向量，即令 \\(P(Z = k) = P\\big(X = x_{i}, Y = y_{j}\\big), k = 1,2,\\ldots,I \\times J\\)，并记此概率为 \\(\\tilde{p}_{k}\\)。然后按照离散型随机变量的方式抽取100个 \\(Z\\) 的样本，并把 \\(k\\) 对应回 \\(x_{i}\\) 和 \\(y_{j}\\) 即可。"
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.543,
+                0.236
+            ],
+            "angle": 0,
+            "content": "二维离散型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.3,
+                0.611,
+                0.36
+            ],
+            "angle": 0,
+            "content": "\\(>\\mathrm{x}<-\\mathrm{c}(\\ldots);\\mathrm{y}<-\\mathrm{c}(\\ldots);\\mathrm{l}<-\\mathrm{length}(\\mathrm{x});\\mathrm{J}<-\\mathrm{length}(\\mathrm{y})\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.409,
+                0.45,
+                0.463
+            ],
+            "angle": 0,
+            "content": "> \\(p<-matrix(..., nrow=1, ncol=J)\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.509,
+                0.668,
+                0.567
+            ],
+            "angle": 0,
+            "content": "> p2<-as.vector(p) #注：按列拉直"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.616,
+                0.672,
+                0.672
+            ],
+            "angle": 0,
+            "content": "> index<-sample(1:(I*J), 100, replace=T, prob=p2)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.721,
+                0.71,
+                0.774
+            ],
+            "angle": 0,
+            "content": "> index1<- (index-1)%%|+1; index2<- (index-1)%%|+1"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.826,
+                0.604,
+                0.881
+            ],
+            "angle": 0,
+            "content": "> data_sample<-cbind(x[index1], y[index2])"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.085,
+                0.3,
+                0.71,
+                0.881
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.142,
+                0.545,
+                0.239
+            ],
+            "angle": 0,
+            "content": "二维离散型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.294,
+                0.923,
+                0.46
+            ],
+            "angle": 0,
+            "content": "1. 计算 \\(X\\) 的边缘概率，并记为 \\(p_{i + }\\) 。按照 \\(p_{i + }\\) 的概率从 \\(x_{i}\\) 中抽取 100 个样本，记为 \\(x_{1}^{*}, \\ldots, x_{100}^{*}\\) 。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.511,
+                0.923,
+                0.691
+            ],
+            "angle": 0,
+            "content": "2. 对 \\(k = 1, \\ldots, 100\\), 计算条件概率 \\(P(Y = y_{j} | X = x_{k}^{*})\\), 并记为 \\(p_{j \\mid k}^{*}\\) 。按照 \\(p_{j \\mid k}^{*}\\) 的概率从 \\(y_{j}\\) 中抽取壹个样本, 并记为 \\(y_{k}^{*}\\) 。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.736,
+                0.605,
+                0.808
+            ],
+            "angle": 0,
+            "content": "3. 样本 \\((x_{1}^{*}, y_{1}^{*}), \\ldots, (x_{100}^{*}, y_{100}^{*})\\) 即为所得。"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.294,
+                0.923,
+                0.808
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.543,
+                0.236
+            ],
+            "angle": 0,
+            "content": "二维离散型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.297,
+                0.611,
+                0.36
+            ],
+            "angle": 0,
+            "content": "\\(>\\mathrm{x}<-\\mathrm{c}(\\ldots);\\quad \\mathrm{y}<-\\mathrm{c}(\\ldots);\\quad \\mathrm{l}<-\\mathrm{length}(\\mathrm{x});\\quad \\mathrm{J}<-\\mathrm{length}(\\mathrm{y})\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.406,
+                0.656,
+                0.467
+            ],
+            "angle": 0,
+            "content": "> p<-matrix(..., nrow=1, ncol=J); px<-rowSums(p)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.511,
+                0.643,
+                0.568
+            ],
+            "angle": 0,
+            "content": "> index1<-sample(1:I, 100, replace=T, prob=px)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.616,
+                0.374,
+                0.672
+            ],
+            "angle": 0,
+            "content": "> index2<-numeric(100)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.718,
+                0.838,
+                0.778
+            ],
+            "angle": 0,
+            "content": "> for (i in 1:100) { index2[i]<-sample(1:J, 1, prob=p[index1[i],])}"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.826,
+                0.604,
+                0.883
+            ],
+            "angle": 0,
+            "content": "> data_sample<-cbind(x[index1], y[index2])"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.297,
+                0.838,
+                0.883
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.146,
+                0.543,
+                0.236
+            ],
+            "angle": 0,
+            "content": "二维离散型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.297,
+                0.611,
+                0.36
+            ],
+            "angle": 0,
+            "content": "\\(>\\mathrm{x}<-\\mathrm{c}(\\ldots);\\quad \\mathrm{y}<-\\mathrm{c}(\\ldots);\\quad \\mathrm{l}<-\\mathrm{length}(\\mathrm{x});\\quad \\mathrm{J}<-\\mathrm{length}(\\mathrm{y})\\)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.406,
+                0.645,
+                0.467
+            ],
+            "angle": 0,
+            "content": "> p<-matrix(..., nrow=1, ncol=J); py<-colSums(p)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.511,
+                0.645,
+                0.569
+            ],
+            "angle": 0,
+            "content": "> index2<-sample(1:J, 100, replace=T, prob=py)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.616,
+                0.374,
+                0.672
+            ],
+            "angle": 0,
+            "content": "> index1<-numeric(100)"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.718,
+                0.836,
+                0.778
+            ],
+            "angle": 0,
+            "content": "> for (i in 1:100) { index1[i]<-sample(1:i, 1, prob=p[,index2[i]])}"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.085,
+                0.826,
+                0.604,
+                0.883
+            ],
+            "angle": 0,
+            "content": "> data_sample<-cbind(x[index1], y[index2])"
+        },
+        {
+            "type": "list",
+            "bbox": [
+                0.084,
+                0.297,
+                0.836,
+                0.883
+            ],
+            "angle": 0,
+            "content": null
+        }
+    ],
+    [
+        {
+            "type": "title",
+            "bbox": [
+                0.097,
+                0.142,
+                0.545,
+                0.242
+            ],
+            "angle": 0,
+            "content": "二维连续型随机向量"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.294,
+                0.923,
+                0.45
+            ],
+            "angle": 0,
+            "content": "已知 \\((X, Y)\\) 的密度函数为 \\(f(x, y)\\) 。根据以上概率分布抽取 100 个样本。"
+        },
+        {
+            "type": "text",
+            "bbox": [
+                0.084,
+                0.575,
+                0.923,
+                0.853
+            ],
+            "angle": 0,
+            "content": "在 \\((X, Y)\\) 的支撑（取值范围，设为 \\([a, b] \\times [c, d]\\)）内均匀地“打格子点”，得 \\((x_{i}, y_{j})\\)，并计算 \\(p_{ij} = f(x_{i}, y_{j})\\)，然后按二维离散概率的抽样方式从 \\((x_{i}, y_{j})\\) 中抽取100个样本即可。"
+        }
+    ]
+]

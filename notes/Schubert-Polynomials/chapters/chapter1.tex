@@ -105,12 +105,39 @@ S_w(x; y) = \sum_{u \leq w} (-1)^{\ell(w)-\ell(u)} \mathfrak{S}_u(x) \cdot \prod
 \item $w = 12$（恒等置换），$S_{12}(x; y) = 1$。
 \item $w = 21$，展开：$S_{21}(x; y) = x_1 x_2 - x_1 y_2 - x_2 y_1 + y_1 y_2$。
 \end{itemize}
+
 在 $S_3$ 中，取 $w_0 = 321$：
 $$S_{321}(x; y) = (x_1 - y_1)(x_2 - y_2)(x_3 - y_3)$$
 这对应于旗流形的基本类。
+
+$S_3$ 中其他置换的双重 Schubert 多项式：
+\begin{itemize}
+\item $w = 123$（恒等置换），$S_{123}(x; y) = 1$。
+\item $w = 213$，计算得 $S_{213}(x; y) = x_1 - y_2$（因为 $213 = s_1$，对应交换前两个位置）。
+\item $w = 231$，$S_{231}(x; y) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$。
+\item $w = 312$，$S_{312}(x; y) = x_1 - y_3$。
+\item $w = 132$，$S_{132}(x; y) = x_2 - y_2$。
+\end{itemize}
 \end{Example}
 
 \subsection{等变量子上同调}
+
+\begin{Definition}[分类空间 $ET$]
+\label{def:ET}
+设 $T \cong (\mathbb{C}^\times)^n$ 为一个 $n$ 维 torus。$T$ 的分类空间（classifying space）$ET$ 是一个拓扑空间，满足：
+\begin{itemize}
+\item $ET$ 是 $T$-主丛的万有分类空间
+\item $ET$ 是可缩的（contractible），即 $\widetilde{H}^*(ET) = 0$（对于任何维数的约化上同调）
+\item $T$ 在 $ET$ 上的作用是自由的
+\end{itemize}
+直观上，$ET$ 可以理解为所有高维球面的极限：
+$$ET = \lim_{m \to \infty} S^{2m+1}$$
+其中 $S^{2m+1}$ 是 $2m+1$ 维球面，$T = S^1$ 通过对角作用在坐标上。
+
+更具体地，对于 $T = (\mathbb{C}^\times)^n$，有：
+$$ET = (S^\infty)^n = \lim_{m \to \infty} (S^{2m+1})^n$$
+其中 $S^\infty$ 是无穷维球面。
+\end{Definition}
 
 \begin{Definition}[等变量子上同调]
 \label{def:EquivariantCohomology}
@@ -118,12 +145,22 @@ $$S_{321}(x; y) = (x_1 - y_1)(x_2 - y_2)(x_3 - y_3)$$
 \begin{equation}
 H_T^*(X) = H^*(X \times_T ET)
 \end{equation}
-其中 $ET$ 是 $T$ 的分类空间.
+其中 $ET$ 是 $T$ 的分类空间（见\cref{def:ET}），$X \times_T ET$ 是 $T$ 作用下的商空间。
 
 对于旗流形 $Fl_n(\mathbb{C})$，其 $T$-等变量子上同调环 $H_T^*(Fl_n(\mathbb{C}))$ 具有由 Schubert 类生成的自由 $\mathbb{Z}[y_1, \ldots, y_n]$-模结构.
 \end{Definition}
 
-等变量子上同调将传统的上同调与 torus 的作用相结合，产生了丰富的代数结构.
+\begin{Example}[等变量子上同调的例子]
+\label{ex:EquivariantCohomology}
+\begin{itemize}
+\item 点空间 $\mathfrak{pt}$：$H_T^*(\mathfrak{pt}) = H^*(BT) = \mathbb{Z}[y_1, \ldots, y_n]$，其中 $y_i$ 对应 $T = (\mathbb{C}^\times)^n$ 的每个生成元的上同调类。
+\item 对于 $T = S^1$，$BT = \mathbb{C}P^\infty$，$H_{S^1}^*(\mathfrak{pt}) = \mathbb{Z}[y]$，其中 $y$ 是 $\mathbb{C}P^\infty$ 的第一 Chern 类。
+\item 对于 $T^2 = S^1 \times S^1$，$BT^2 = \mathbb{C}P^\infty \times \mathbb{C}P^\infty$，$H_{T^2}^*(\mathfrak{pt}) = \mathbb{Z}[y_1, y_2]$。
+\item 对于旗流形 $Fl_n(\mathbb{C})$，$H_T^*(Fl_n(\mathbb{C}))$ 作为 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[y_1, \ldots, y_n]$-模是自由的，基由 Schubert 类 $\{[\mathcal{X}(w)]_T \mid w \in S_n\}$ 给出。
+\end{itemize}
+\end{Example}
+
+等变量子上同调将传统的上同调与 torus 的作用相结合，产生了丰富的代数结构。在 Schubert calculus 中，$T$-等变量上同调类可以表示为双重 Schubert 多项式。
 
 \subsection{Grassmannian 与 Grassmannian 排列}
 
@@ -215,9 +252,9 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 
 当 $y = t = 0$ 时，$c^w_{u,v} := c^w_{u,v}(0, 0) \in \mathbb{N}$ 是经典的 Schubert 结构常数，与 Hilbert 第十五问题密切相关. 寻找这些系数${c^w_{u,v}}$的组合模型一直是代数组合和代数几何领域的核心问题.
 
-当 $u$ 和 $v$ 是 $k$-\textbf{Grassmannian 排列}时，$S_u(x; y)$ 和 $S_v(x; t)$ 是因子化 Schur 多项式（factorial Schur polynomials）。Molev-Sagan \cite{molevsagan1999} 首次给出了这些系数的组合公式，Knutson-Tao \cite{knutson2003} 给出了展开的几何意义。Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem，见本文\cref{conj:Samuel}的来源论文 \cite{GX2025} 中的 Theorem 1.1）：
+当 $u$ 和 $v$ 是 $k$-\textbf{Grassmannian 排列}时，$S_u(x; y)$ 和 $S_v(x; t)$ 是因子化 Schur 多项式（factorial Schur polynomials）。Molev-Sagan \cite{molevsagan1999} 首次给出了这些系数的组合公式（见 \cite{molevsagan1999} Theorem 1），Knutson-Tao \cite{knutson2003} 给出了展开的几何意义。Graham 在文献 \cite{Gr} 中证明了以下结果（现称为 Graham Positivity Theorem）：
 
-\begin{Theorem}[Graham Positivity Theorem]
+\begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 1.1]{Gr}}]
 \label{def:GrahamPositivity}
 设 $u, v \in S_n$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列. 则
 \begin{equation}
@@ -226,9 +263,9 @@ c^w_{u,v}(y, t) = \sum_{\alpha} P_\alpha(y) \cdot Q_\alpha(t)
 其中 $P_\alpha(y), Q_\alpha(t)$ 是具有正系数的单项式组合.
 \end{Theorem}
 
-最近，Samuel 在文献 \cite{Sa}（亦可参考本笔记\cref{sec:LiteratureSummary}）中提出了以下猜想，将上述结果推广到三重变量集的情形：
+最近，Samuel 在文献 \cite{Sa}（见 \cite[Conjecture 1.2]{Sa}，亦可参考本笔记\cref{sec:LiteratureSummary}）中提出了以下猜想，将上述结果推广到三重变量集的情形：
 
-\begin{Conjecture}[Samuel 猜想]
+\begin{Conjecture}[Samuel 猜想 {\cite[Conjecture 1.2]{Sa}}]
 \label{conj:Samuel}
 设 $u, v \in S_\infty$ 满足一定条件（descents 条件），则
 \begin{equation}
@@ -237,22 +274,22 @@ S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t
 其中 $c^w_{u,v}(y, t)$ 可以写成 $y$ 和 $t$ 的正系数多项式.
 \end{Conjecture}
 
-本文证明了上述猜想（\cref{conj:Samuel}），作为推论，还证明了 Kirillov 关于 skew 除差算子的正性猜想（\cref{def:SkewDividedDifference}）。
+本文证明了上述猜想（\cref{conj:Samuel}），作为推论，还证明了 Kirillov 关于 skew 除差算子的正性猜想（\cite[Conjecture]{kirillov1995}，亦见 \cref{def:SkewDividedDifference}）。
 
-除上述情形外，定理 1.1 的一个被充分研究的情形是 separated descents（即 $\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$），其中 Samuel \cite{Sa} 建立了正性公式，Fan、Guo 和第二作者 \cite{FGL2025} 使用 puzzles 在双重 Grothendieck 多项式的范围内给出了另一个公式。
+除上述情形外，\cref{def:GrahamPositivity} 的一个被充分研究的情形是 separated descents（即 $\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$），其中 Samuel \cite{Sa} 建立了正性公式（见 \cite[ Theorem 1.3]{Sa}），Fan、Guo 和第二作者 \cite{FGL2025} 使用 puzzles 在双重 Grothendieck 多项式的范围内给出了另一个公式。
 
-Skew 除差算子 $\partial_{w/v}$，由 Macdonald \cite{macdonald1991} 首次引入，提供了计算 Schubert 结构常数的方法。这些算子因与 Fomin-Kirillov 代数 \cite{fomin1999} 的联系而受到广泛关注。其推广和正性性质在 \cite{berenstein2015, liu2022} 等工作中被广泛研究。
+Skew 除差算子 $\partial_{w/v}$，由 Macdonald \cite{macdonald1991} 首次引入（见 \cite[Section 3]{macdonald1991}），提供了计算 Schubert 结构常数的方法。这些算子因与 Fomin-Kirillov 代数 \cite{fomin1999} 的联系而受到广泛关注。其推广和正性性质在 \cite{berenstein2015, liu2022} 等工作中被广泛研究。
 
-本文的证明依赖于精化版本的 Graham 正性定理（\cref{def:RefinedGraham}，即 Theorem 2.3）。为了应用这个结果，我们建立了系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的新几何解释（Section 2.3），这与 Knutson-Tao \cite{knutson2003} 给出的解释不同。该定理的一个副产品是对 Billey 公式 \cite{billey1999}（Section 2.2）中正性的几何解释。
+本文的证明依赖于精化版本的 Graham 正性定理（\cref{def:RefinedGraham}，即 \cite[ Theorem 1.1]{GX2025}）。为了应用这个结果，我们建立了系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的新几何解释（\cite[Section 3]{GX2025}），这与 Knutson-Tao \cite{knutson2003} 给出的解释不同。该定理的一个副产品是对 Billey 公式 \cite{billey1999} 中正性的几何解释（\cite[Section 3.3]{GX2025}）。
 
-我们在 Section 2.4 中以 Grothendieck 多项式的猜想结束本文的讨论.
+我们在 \cite[Section 4]{GX2025} 中以 Grothendieck 多项式的猜想结束本文的讨论.
 
-最后，我们提出一个关于 Grothendieck 多项式的正性猜想.
+最后，我们提出一个关于 Grothendieck 多项式的正性猜想（\cite[Conjecture 2.7]{GX2025}）.
 
 设 $\beta$ 为形式变量，$\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 为 $w \in S_n$ 的双重 Grothendieck 多项式（采用 \cite{lam2023} 中的约定）。考虑展开
 $$\mathfrak{G}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{G}_v(\mathbf{x}; \mathbf{t}) = \sum_{w \in S_\infty} \tilde{c}^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{G}_w(\mathbf{x}; \mathbf{t})$$
 
-\begin{Conjecture}[Conjecture 2.7 - Grothendieck 正性猜想]
+\begin{Conjecture}[Grothendieck 正性猜想 {\cite[Conjecture 2.7]{GX2025}}]
 \label{def:GrothendieckPositivityConjecture}
 对于 $u, v, w \in S_\infty$，有 $\tilde{c}^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[\beta][t_i \ominus y_j]_{i,j \geq 1}$，其中 $a \ominus b := \frac{a - b}{1 + \beta b}$。
 \end{Conjecture}
@@ -328,6 +365,32 @@ $$\mathfrak{n}^-(w) = \mathrm{span}\{F_\alpha \mid \alpha \in J(w)\} \subseteq \
 \end{Theorem}
 
 该条件被称为 \textbf{descents 条件}，它包含了原始的 Grassmannian 情形作为特例.
+
+\textbf{证明思路：} 我们限制到 $G = \mathrm{GL}_m(\mathbb{C})$ 的情形。由 \cite[Theor em 10.6.4]{anderson2023}，类 $[\overline{B^-\pi B/B}]_T$ 由双重 Schubert 多项式 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{t})$ 表示。
+
+取定排列 $u, v$，通过选择足够大的 $n$，可假设等式 (1) 只涉及 $w \in S_n$。设 $G := \mathrm{GL}_{2n}(\mathbb{C})$，$B, B^-, T$ 如上。识别 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[t_1, \ldots, t_{2n}]$，其中 $t_i = -\epsilon_i := -c_1(\mathbb{C}_{\epsilon_i})$，$\epsilon_i$ 是 $T$ 对应于第 $i$ 个对角元的特征。将变量重命名：$t_{n+i} = y_i$ 对所有 $i \in [n] := \{1, 2, \ldots, n\}$。
+
+考虑一个特殊排列 $\tau \in S_{2n}$，满足 $\tau(i) = n + i$，$\tau(n + i) = i$ 对所有 $i \in [n]$。由 \cite[Section 16.5]{anderson2023}，$[\tau\overline{B^-uB/B}]_T$ 由 $\mathfrak{S}_u(\mathbf{x}; \tau\mathbf{t}) = \mathfrak{S}_u(\mathbf{x}; \mathbf{y})$ 表示。
+
+\begin{Lemma}[Lemma 2.5]
+\label{def:Lemma25}
+交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是正常的，且在一般点上是横截的。
+
+\textbf{证明：} 设 $w_0^{(m)} \in S_m$ 是最长排列 $m \cdot 1 \cdots 1$。对于排列 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为 $w$ 和 $\pi$ 的直和，即若 $i \leq n$ 则 $w \times \pi(i) = w(i)$，若 $i > n$ 则 $w \times \pi(i) = \pi(i-n) + n$。因为 $v \in S_n$，对 $n \leq i < 2n$ 有 $s_i v > v$，故 $\overline{B^-vB/B}$ 在 $s_i$（即 $(i+1)$）下不变。因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$。类似地，$\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$。由于 $u_0^{-1} \tau u_0 = w_0^{(2n)}$，引理由 \cite[Section 19.3]{anderson2023} 得证。
+\end{Lemma}
+
+现在我们准备证明主要定理。
+
+\textbf{证明：} 由 \cref{def:Lemma25}，我们可重写所感兴趣的系数：
+$$[\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}]_T = \sum_{w \in S_n} c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot [\overline{B^-wB/B}]_T$$
+
+因为 $\tau \overline{B^-uB/B}$ 在 $\tau N^- \tau^{-1}$ 下闭，$\overline{B^-vB/B}$ 在 $N^-$ 下闭，交集在 $N^- \cap \tau N^- \tau^{-1} =: N^-(\tau)$ 下闭。由 \cref{def:Corollary24}，我们得出 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$，其中我们计算 $I(\tau) = \{y_j - t_i \mid 1 \leq i,j \leq n\}$。
+
+这就完成了 \cref{def:RefinedGraham} 的证明。
+
+\begin{Remark}
+当 $w = w_0$ 是最长元时，$B^-(w_0) = T$，\cref{def:RefinedGraham} 给出原始的 Graham 正性定理 \cite{Gr}。我们的假设比 Graham 的更强，因为 $B^-(w)$-不变的环必是 $T$-不变的，产生更强的正性结果，其中根被限制在 $I(w)$ 而非所有正根。
+\end{Remark}
 
 \textbf{证明：} \cref{def:RefinedGraham} 的证明基于 \cref{def:Lemma21}、\cref{def:Lemma22} 和 \cref{def:Lemma23}.
 
