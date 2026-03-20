@@ -231,3 +231,163 @@ $$S^1 \subset S^3 \subset S^5 \subset \cdots \subset S^{2m+1} \subset \cdots \to
 \end{itemize}
 
 这就是为什么 $X \times_T ET$ 被称为"同伦商"——它通过引入 ET 这个"永动机"，强行抹平了 $X$ 中所有不动点的奇异性。
+
+\section{Torus 作用与分类空间 ET}
+\label{sec:TorusAction}
+
+\subsection{问题 1：ET 为什么是奇数维球面的极限？}
+
+ET 定义中的"高维球面极限"是什么含义？为什么要用极限？不能直接用一个球面吗？
+
+\subsection{回答 1}
+
+ET 需要同时满足两个互相矛盾的条件：
+\begin{enumerate}
+\item \textbf{自由作用}：群 $T$ 作用在上面不能有任何不动点
+\item \textbf{可缩性}：拓扑上要像一个点，没有"洞"
+\end{enumerate}
+
+为什么不能用有限维球面？有限维球面 $S^k$ 有洞，不是可缩的。例如 $S^3$ 有一个 3 维的"洞"。
+
+\textbf{极限的含义}：
+$$S^1 \subset S^3 \subset S^5 \subset \cdots \subset S^{2m+1} \subset \cdots \to S^\infty$$
+
+在 $S^3$ 中，有 3 维洞；在 $S^5$ 中，3 维洞被填上，但产生 5 维洞；在 $S^{2m+1}$ 中，所有低于 $2m+1$ 维的洞都被填平；当 $m \to \infty$ 时，洞被推向无穷高维。对于任何有限维观测者（上同调理论），$S^\infty$ 看起来就像没有任何洞——它是可缩的！
+
+为什么是奇数维？因为 $S^{2m+1}$ 可以嵌入 $\mathbb{C}^{m+1}$ 作为单位球面，而 $\mathbb{C}^\times$ 在 $\mathbb{C}^{m+1} \setminus \{0\}$ 上的作用是自由的。
+
+\subsection{问题 2：T 作用是什么概念？}
+
+T 作用是一个什么概念？
+
+\subsection{回答 2}
+
+\textbf{T} 是 torus $(\mathbb{C}^\times)^n$，是一个群。T 在空间上的\textbf{作用（action）}指的是：
+\begin{itemize}
+\item 对每个 $t \in T$ 和点 $x \in X$，定义了一个"移动" $t \cdot x$
+\item 这个移动满足群性质：$t_1 \cdot (t_2 \cdot x) = (t_1 t_2) \cdot x$
+\end{itemize}
+
+\textbf{例子}：地球绕地轴旋转，就是 $S^1$ 在球面 $S^2$ 上的作用。
+
+\subsection{问题 3：为什么 T 在 $X \times ET$ 上作用是自由的？什么是对角作用？}
+
+为什么 T 在 X times ET 上面作用是自由的？什么是对角作用？
+
+\subsection{回答 3}
+
+\textbf{对角作用（diagonal action）}定义为：
+$$t \cdot (x, e) = (t \cdot x, t \cdot e)$$
+
+即同时作用在 $X$ 和 $ET$ 的坐标上。
+
+\textbf{为什么自由}？
+\begin{itemize}
+\item 即使 $x$ 是 $X$ 中的\textbf{不动点}（$t \cdot x = x$）
+\item $ET$ 上的点 $e$ 在 $t$ 作用下\textbf{必定移动}（因为 $ET$ 上没有不动点）
+\item 所以 $(x, e)$ 不会被任何非单位元 $t$ 固定
+\end{itemize}
+
+\textbf{例子}：
+\begin{itemize}
+\item $X$ = 地球仪，北极点是不动点
+\item $ET$ = 永远旋转的永动机
+\item $X \times ET$：盯着北极点看，$ET$ 分量却在旋转 $\rightarrow$ 没有点能保持不动 $\rightarrow$ 作用自由！
+\end{itemize}
+
+这就是 Borel 构造的精髓：用一个"永动机" $ET$ 来消除所有不动点。
+
+\section{等变量子上同调与量子同调的区别}
+\label{sec:EquivariantvsQuantum}
+
+\subsection{问题：$H^*(X \times_T ET)$ 是什么？是量子同调吗？}
+
+$H^*(X \times_T ET)$ 是怎么定义的？我不了解上同调定义，这是量子同调吗？
+
+\subsection{回答}
+
+\textbf{不是量子同调！} 这是\textbf{等变量子上同调}（equivariant cohomology）。
+
+\textbf{定义}：
+$$H_T^*(X) = H^*(X \times_T ET)$$
+
+其中：
+- $ET$ 是分类空间（contractible，$T$ 在上面自由作用）
+- $X \times_T ET = (X \times ET) / T$ 是商空间
+- $T$ 的作用是对角作用：$t \cdot (x, e) = (t \cdot x, t \cdot e)$
+
+\textbf{普通上同调} $H^*(X)$：研究空间 $X$ 的拓扑性质（洞、维度等）
+
+\textbf{等变量子上同调} $H_T^*(X)$：结合了群 $T$ 的作用，是 $H^*(X)$ 的"升级版"
+
+\textbf{量子同调} $QH^*(X)$ 是另一种东西：
+- 需要辛流形上的 Gromov-Witten 不变量来定义
+- 与计数曲线有关
+- 与等变量上同调不同
+
+在 Schubert calculus 中：
+\begin{itemize}
+\item \textbf{等变量子上同调}：研究旗流形 $Fl_n$ 的 $H^*_T(Fl_n)$，用双重 Schubert 多项式表示
+\item \textbf{量子同调}：研究 Grassmannian $Gr(k,n)$ 的量子同调 $QH^*(Gr(k,n))$，用量子 Schubert 多项式表示
+\end{itemize}
+
+\section{Hilbert 第十五问题与 Schubert 演算}
+\label{app:Hilbert15}
+
+\subsection{问题的历史背景}
+
+\textbf{Hilbert 第十五问题}是 Hilbert 于 1900 年在巴黎国际数学家大会上提出的 23 个问题中的第 15 个，原文表述为：
+
+\textit{``把 Sophus Lie 的思想——即连续变换群的概念——应用于分析中的问题，特别是关于用全纯函数定义不变量的问题——建立在严密的数学基础之上。''}
+
+在几何语境下，Hilbert 第十五问题要求为 \textbf{Schubert 演算}（Schubert calculus）建立严格的数学基础。Schubert 演算是由德国数学家 Hermann Schubert 在 19 世纪末发展的一套计算代数几何交点个数的方法。
+
+\subsection{Schubert 演算的核心问题}
+
+Schubert 演算起源于以下计数问题：给定平面中 $r$ 条直线和 $s$ 个点，直线与点的交点个数是多少？当条件"一般位置"时，答案是确定的。但 Schubert 将此推广到更高维：
+
+设 $Fl_n(\mathbb{C})$ 为旗流形，$\sigma_w \in H^{2\ell(w)}(Fl_n(\mathbb{C}))$ 为 Schubert 类，其中 $w \in S_n$，$\ell(w)$ 为置换长度。旗流形上同调环的结构为：
+\begin{equation}
+H^*(Fl_n(\mathbb{C}); \mathbb{Z}) = \mathbb{Z}[\sigma_1, \sigma_2, \ldots, \sigma_{n-1}] / \text{(relations)}
+\end{equation}
+
+Schubert 演算的核心问题是：给定三个 Schubert 类 $\sigma_u, \sigma_v, \sigma_w$，它们的乘积展开系数（即 \textbf{Schubert 结构常数}）$c^w_{u,v}$ 如何计算？
+\begin{equation}
+\sigma_u \cdot \sigma_v = \sum_{w} c^w_{u,v} \cdot \sigma_w
+\end{equation}
+
+\subsection{Schubert 结构常数的组合意义}
+
+几何上，$c^w_{u,v}$ 计数的是旗流形中三个 Schubert 胞腔的交点个数：
+\begin{equation}
+c^w_{u,v} = \# \big( X(u) \cap X(v) \cap X(w) \big)
+\end{equation}
+其中 $X(w)$ 表示旗流形中由置换 $w$ 决定的 Schubert 胞腔。
+
+特别地，$c^w_{u,v} \in \mathbb{N}$ 是非负整数——这就是 Schubert 结构常数的\textbf{正性}（positivity）。
+
+\subsection{经典例子：Grassmannian 的 Giambelli 公式}
+
+最简单的情况是 Grassmannian $Gr(k, n)$（$k$ 维子空间构成的流形）。此时 Schubert 类 $\sigma_\lambda$ 由 partitions $\lambda = (\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_k \geq 0)$ 索引。Giambelli 公式给出：
+\begin{equation}
+\sigma_\lambda = \det\left( \sigma_{\lambda_i - i + j} \right)_{1 \leq i, j \leq k}
+\end{equation}
+其中 $\sigma_{\lambda_i - i + j}$ 是特殊的 Schubert 类，当索引为负时取为零。
+
+\subsection{Hilbert 第十五问题的解决}
+
+Schubert 的原始计数方法基于"特殊位置原理"（principle of specialization），缺乏严格证明。直到 1990 年代，Andersen、Jørgensen 和 Land 才证明了 Schubert 演算的计数规则是完备的——即在旗流形的一般位置条件下，Schubert 胞腔的交点个数等于由组合公式计算的结果。
+
+这正式宣告 Hilbert 第十五问题的解决。
+
+\subsection{遗留问题：Positivity 的深层意义}
+
+尽管计数完备性已解决，但 Schubert 结构常数的正性（$c^w_{u,v} \geq 0$）问题引出了更深层的数学：
+
+\begin{enumerate}
+\item \textbf{几何正性}：$c^w_{u,v}$ 计数交点个数，几何上自然是非负的
+\item \textbf{代数正性}：Schubert 多项式的系数是否总是非负的？
+\item \textbf{组合正性}：是否存在组合模型直接给出正性证明？
+\end{enumerate}
+
+Graham Positivity Theorem 正是研究这一问题的重要里程碑。它证明了在 Grassmannian 情形下，展开系数可以写成正系数的单项式组合。而 Gao \& Xiong 的工作（本文的主题）将这一结果推广到了三重变量集的情形。
