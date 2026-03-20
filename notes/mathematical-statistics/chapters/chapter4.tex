@@ -1,346 +1,314 @@
-\chapter{Some Elementary Statistical Inferences}\label{chap:elementary-statistical-inferences}
+\chapter{一些基本的统计推断}\label{chap:elementary-statistical-inferences}
 
-\section{Sampling and Statistics}\label{sec:sampling-statistics}
+\section*{Chapter 4 概述}
 
-In Chapter 2, we introduced the concepts of samples and statistics. We continue with this development in this chapter while introducing the main tools of inference: confidence intervals and tests of hypotheses.
+在前三章中，我们建立了描述随机变量和概率分布的理论框架。现在我们面临一个根本性问题：\textbf{给定观测数据，如何推断产生这些数据的底层分布？}
 
-In a typical statistical problem, we have a random variable $X$ of interest, but its pdf $f(x)$ or pmf $p(x)$ is not known. Our ignorance about $f(x)$ or $p(x)$ can roughly be classified in one of two ways:
+这就是统计推断的核心问题。本章将介绍两种主要的推断工具：
+\begin{itemize}
+\item \textbf{置信区间}（Confidence Intervals）：未知参数的合理取值范围
+\item \textbf{假设检验}（Hypothesis Testing）：评估关于总体的声明是否成立
+\end{itemize}
 
-\begin{enumerate}
-\item $f(x)$ or $p(x)$ is completely unknown.
-\item The form of $f(x)$ or $p(x)$ is known down to a parameter $\theta$ , where $\theta$ may be a vector.
-\end{enumerate}
+\textbf{本章路线图}：抽样与统计量 $\to$ 点估计 $\to$ 置信区间 $\to$ 假设检验 $\to$ 卡方检验 $\to$ 蒙特卡洛 $\to$ Bootstrap
 
-For now, we consider the second classification, although some of our discussion pertains to the first classification also. Some examples are the following:
+\section{4.1 抽样与统计量}\label{sec:sampling-statistics-ch4}
 
-\begin{enumerate}
-\item[(a)] $X$ has an exponential distribution $\operatorname{Exp}(\theta)$ , where $\theta$ is unknown.
-\item[(b)] $X$ has a binomial distribution $b(n,p)$ , where $n$ is known but $p$ is unknown.
-\item[(c)] $X$ has a gamma distribution $\Gamma(\alpha,\beta)$ , where both $\alpha$ and $\beta$ are unknown.
-\item[(d)] $X$ has a normal distribution $N(\mu,\sigma^{2})$ , where both the mean $\mu$ and the variance $\sigma^{2}$ of $X$ are unknown.
-\end{enumerate}
+\subsection{为什么需要抽样？}
 
-We often denote this problem by saying that the random variable $X$ has a density or mass function of the form $f(x;\theta)$ or $p(x;\theta)$ , where $\theta \in \Omega$ for a specified set $\Omega$ . For example, in (a) above, $\Omega = \{\theta \mid \theta > 0\}$ . We call $\theta$ a parameter of the distribution. Because $\theta$ is unknown, we want to estimate it.
+在现实中，我们通常无法观测整个总体。例如，测量所有成年人的身高是不可能的。因此，我们从总体中抽取一个随机样本，用样本信息推断总体特征。
 
-Suppose, in particular, we have a random variable $X$ that has a distribution dependent on a parameter $\theta$ . Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample of size $n$ from this distribution; that is, the $X_{i}$ are iid (independent and identically distributed). A statistic is a function $T = g(X_{1},X_{2},\ldots,X_{n})$ of the sample that does not depend on any unknown parameters. In this chapter we discuss several statistics that are used to estimate the unknown parameter $\theta$ or to test hypotheses about $\theta$ .
+\textbf{核心假设}：$X_1, X_2, \ldots, X_n$ 是 iid（独立同分布）随机变量，来自某个分布 $f(x; \theta)$，其中 $\theta$ 是未知参数。
 
-Let $X_{1},X_{2},\ldots,X_{n}$ denote a random sample of size $n$ from a distribution that has mean $\mu = E(X_{i})$ and variance $\sigma^{2} = \operatorname{Var}(X_{i})$ . The sample mean is defined by
+\subsection{样本均值与样本方差}
 
-\begin{equation}\label{eq:sample-mean}
-\bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_{i}.
+给定样本，最自然的首选统计量是\textbf{样本均值}：
+\begin{equation}\label{eq:sample-mean-ch4}
+\bar{X} = \frac{1}{n}\sum_{i=1}^{n} X_i.
 \end{equation}
 
-The sample mean has the following properties:
-
+\textbf{关键性质}：
 \[
-E(\bar{X}) = \mu, \quad \operatorname{Var}(\bar{X}) = \frac{\sigma^{2}}{n}.
+\mathbb{E}\bar{X} = \mu, \quad \text{var}(\bar{X}) = \frac{\sigma^2}{n}.
 \]
 
-By the Weak Law of Large Numbers, $\bar{X}$ converges in probability to $\mu$ as $n \to \infty$ . By the Central Limit Theorem, for large $n$ ,
+这意味着：
+\begin{itemize}
+\item $\bar{X}$ 是 $\mu$ 的\textbf{无偏估计}（$E\bar{X} = \mu$）
+\item $\bar{X}$ 的方差随样本量 $n$ 增大而减小（$1/n$ 衰减）
+\end{itemize}
 
-\[
-\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0,1).
-\]
+\textbf{大样本性质}：
+\begin{itemize}
+\item \textbf{弱大数定律}：$\bar{X} \xrightarrow{P} \mu$（当 $n \to \infty$）
+\item \textbf{中心极限定理}：$\frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0,1)$
+\end{itemize}
 
-The sample variance is defined by
+\begin remark}为什么中心极限定理重要？]
+即使总体分布未知，只要样本量足够大，$\bar{X}$ 的分布也近似正态。这使得我们可以构造置信区间、进行假设检验——而不需要知道总体的具体分布。
+\end remark}
 
-\begin{equation}\label{eq:sample-variance}
-S^{2} = \frac{1}{n-1}\sum_{i=1}^{n} (X_{i}-\bar{X})^{2}.
+\textbf{样本方差}：
+\begin{equation}\label{eq:sample-variance-ch4}
+S^2 = \frac{1}{n-1}\sum_{i=1}^{n} (X_i - \bar{X})^2.
 \end{equation}
 
-An unbiased estimator of $\sigma^{2}$ is $S^{2}$ because $E(S^{2}) = \sigma^{2}$ .
+\textbf{注意}：分母是 $n-1$ 而非 $n$！这是为了保证 $S^2$ 是 $\sigma^2$ 的无偏估计（$E(S^2) = \sigma^2$）。
 
-Other important statistics include the sample standard deviation $S = \sqrt{S^{2}}$ , the sample median, and the sample standard deviation.
+\section{4.2 点估计}\label{sec:point-estimators-ch4}
 
-\subsection{Point Estimators}\label{sub:point-estimators}
+\textbf{核心问题}：给定数据，如何估计未知参数 $\theta$？
 
-A point estimator $\hat{\theta}$ of a parameter $\theta$ is a statistic that provides a single value as an estimate of $\theta$ .
+点估计提供一个单一数值作为参数的估计值。
 
-Several criteria are used to evaluate estimators:
+\subsection{估计量的评判标准}
 
-\begin{definition}[Bias]\label{def:bias}
-The bias of an estimator $\hat{\theta}$ is defined as $E(\hat{\theta}) - \theta$ . If $E(\hat{\theta}) = \theta$ , then $\hat{\theta}$ is unbiased.
+\begin{definition}[偏差]\label{def:bias-ch4}
+估计量 $\hat{\theta}$ 的偏差定义为 $\text{Bias}(\hat{\theta}) = \mathbb{E}(\hat{\theta}) - \theta$。若 $\mathbb{E}(\hat{\theta}) = \theta$，则 $\hat{\theta}$ 是无偏的。
 \end{definition}
 
-\begin{definition}[Mean Squared Error]\label{def:mse}
-The mean squared error of an estimator $\hat{\theta}$ is $\operatorname{MSE}(\hat{\theta}) = E[(\hat{\theta}-\theta)^{2}]$ . For unbiased estimators, $\operatorname{MSE} = \operatorname{Var}(\hat{\theta})$ .
+\begin{definition}[均方误差]\label{def:mse-ch4}
+估计量 $\hat{\theta}$ 的均方误差为 $\text{MSE}(\hat{\theta}) = \mathbb{E}[(\hat{\theta} - \theta)^2]$。对无偏估计，$\text{MSE} = \text{var}(\hat{\theta})$。
 \end{definition}
 
-\begin{example}\label{ex:sample-mean-properties}
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a distribution with mean $\mu$ and variance $\sigma^{2}$ . Then $\bar{X}$ is an unbiased estimator of $\mu$ because $E(\bar{X}) = \mu$ . The variance of $\bar{X}$ is $\sigma^{2}/n$ . The mean squared error of $\bar{X}$ is $\sigma^{2}/n$ .
+\textbf{偏差-方差权衡}：一个有偏估计量可能比无偏估计量有更小的 MSE。
+
+\begin{example}[样本均值的性质]\label{ex:sample-mean-properties-ch4}
+设 $X_1, \ldots, X_n$ 来自均值为 $\mu$、方差为 $\sigma^2$ 的分布。则 $\bar{X}$ 是 $\mu$ 的无偏估计，$\text{MSE}(\bar{X}) = \sigma^2/n$。
 \end{example}
 
-\begin{theorem}[Method of Moment Matching]\label{ex:method-of-moments}
-The $k$th sample moment is $M_{k} = \frac{1}{n}\sum_{i=1}^{n} X_{i}^{k}$ . The method of moments equates sample moments to population moments to obtain estimators.
-\end{theorem}
+\subsection{矩估计与最大似然估计}
 
-\begin{example}\label{ex:normal-mle}
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from $N(\mu,\sigma^{2})$ . The maximum likelihood estimators (MLEs) are
+\begin theorem}[矩估计]\label{th:method-of-moments-ch4}
+样本矩 $M_k = \frac{1}{n}\sum_{i=1}^{n} X_i^k$ 依概率收敛到相应的总体矩 $E(X^k)$。矩估计通过解方程组 $\hat{\mu}_k = M_k$ 得到参数估计。
+\end theorem}
+
+\begin{example}[正态分布的 MLE]\label{ex:normal-mle-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$。最大似然估计（MLE）为：
 \[
-\hat{\mu} = \bar{X}, \quad \hat{\sigma}^{2} = \frac{1}{n}\sum_{i=1}^{n} (X_{i}-\bar{X})^{2}.
+\hat{\mu} = \bar{X}, \quad \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^{n} (X_i - \bar{X})^2.
 \]
-Note that $\hat{\mu}$ is unbiased, but $\hat{\sigma}^{2}$ is biased (though asymptotically unbiased).
+注意：$\hat{\mu}$ 无偏，但 $\hat{\sigma}^2$ 有偏（除以 $n$ 而非 $n-1$）。
 \end{example}
 
-\section{Confidence Intervals}\label{sec:confidence-intervals}
+\section{4.3 置信区间}\label{sec:confidence-intervals-ch4}
 
-A confidence interval provides a range of plausible values for an unknown parameter.
+\textbf{核心问题}：点估计 $\hat{\theta}$ 有多好？它离真实参数有多远？
 
-\begin{definition}[Confidence Interval]\label{def:confidence-interval}
-Let $\theta$ be an unknown parameter. Let $L = g_{1}(X_{1},\ldots,X_{n})$ and $U = g_{2}(X_{1},\ldots,X_{n})$ be two statistics such that $L \leq U$ . If for all $\theta \in \Omega$ ,
+置信区间提供了一个\textbf{区间}而非单一数值，告诉你参数可能落在什么范围内。
+
+\begin{definition}[置信区间]\label{def:confidence-interval-ch4}
+设 $L = g_1(X_1, \ldots, X_n)$ 和 $U = g_2(X_1, \ldots, X_n)$ 是两个统计量。若对所有 $\theta \in \Omega$，
 \[
-P_{\theta}(L \leq \theta \leq U) = 1-\alpha,
+\mathbb{P}_\theta(L \leq \theta \leq U) = 1 - \alpha,
 \]
-then the random interval $[L,U]$ is called a $100(1-\alpha)\%$ confidence interval for $\theta$ .
+则称随机区间 $[L, U]$ 为 $\theta$ 的 $100(1-\alpha)\%$ 置信区间。
 \end{definition}
 
-The quantity $1-\alpha$ is called the confidence coefficient, and $\alpha$ is the significance level.
+\textbf{解释}：不是"$\theta$ 以 $1-\alpha$ 的概率落在区间内"（$\theta$ 是固定常数），而是"如果重复抽样，100 次中有 $100(1-\alpha)$ 次构造的区间会包含 $\theta$"。
 
-\begin{example}[Confidence interval for normal mean, known variance]\label{ex:ci-normal-known-variance}
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from $N(\mu,\sigma^{2})$ where $\sigma^{2}$ is known. Then a $100(1-\alpha)\%$ confidence interval for $\mu$ is
+\begin{example}[正态均值、已知方差]\label{ex:ci-normal-known-variance-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 已知。$\mu$ 的 $100(1-\alpha)\%$ 置信区间为：
 \[
 \left[ \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}}, \quad \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right],
 \]
-where $z_{\alpha/2}$ satisfies $\Phi(z_{\alpha/2}) = 1-\alpha/2$ .
+其中 $z_{\alpha/2}$ 满足 $\Phi(z_{\alpha/2}) = 1 - \alpha/2$。
 \end{example}
 
-\begin{example}[Confidence interval for normal mean, unknown variance]\label{ex:ci-normal-unknown-variance}
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from $N(\mu,\sigma^{2})$ where both $\mu$ and $\sigma^{2}$ are unknown. Then a $100(1-\alpha)\%$ confidence interval for $\mu$ is
+\begin{example}[正态均值、未知方差]\label{ex:ci-normal-unknown-variance-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 未知。$\mu$ 的 $100(1-\alpha)\%$ 置信区间为：
 \[
 \left[ \bar{X} - t_{\alpha/2,n-1}\frac{S}{\sqrt{n}}, \quad \bar{X} + t_{\alpha/2,n-1}\frac{S}{\sqrt{n}} \right],
 \]
-where $t_{\alpha/2,n-1}$ is the upper $\alpha/2$ critical value of the $t(n-1)$ distribution.
+其中 $t_{\alpha/2,n-1}$ 是 $t(n-1)$ 分布的上侧 $\alpha/2$ 分位数。
+
+\textbf{注意}：用 $S$ 替代 $\sigma$，用 $t$ 替代 $z$。因为未知方差带来的不确定性，区间变宽了。
 \end{example}
 
-\begin{theorem}[Confidence interval for variance]\label{ex:ci-variance}
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from $N(\mu,\sigma^{2})$ . A $100(1-\alpha)\%$ confidence interval for $\sigma^{2}$ is
+\begin theorem}[方差置信区间]\label{th:ci-variance-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$。$\sigma^2$ 的 $100(1-\alpha)\%$ 置信区间为：
 \[
-\left[ \frac{(n-1)S^{2}}{\chi^{2}_{\alpha/2,n-1}}, \quad \frac{(n-1)S^{2}}{\chi^{2}_{1-\alpha/2,n-1}} \right],
+\left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}}, \quad \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}} \right].
 \]
-where $\chi^{2}_{\alpha/2,n-1}$ and $\chi^{2}_{1-\alpha/2,n-1}$ are critical values of the $\chi^{2}(n-1)$ distribution.
-\end{theorem}
+\end theorem}
 
-\subsection{Confidence Intervals for Difference in Means}\label{sub:ci-difference-means}
+\begin remark}直觉解释]
+置信区间的宽度与 $\sqrt{n}$ 成反比——样本量越大，区间越窄，估计越精确。同时，置信水平 $1-\alpha$ 越高，区间越宽。
+\end remark}
 
-Let $X_{1},\ldots,X_{n_{1}}$ be a random sample from $N(\mu_{1},\sigma_{1}^{2})$ and $Y_{1},\ldots,Y_{n_{2}}$ be an independent random sample from $N(\mu_{2},\sigma_{2}^{2})$ .
+\section{4.4 顺序统计量}\label{sec:order-statistics-ch4}
 
-If $\sigma_{1}^{2}$ and $\sigma_{2}^{2}$ are known, a $100(1-\alpha)\%$ confidence interval for $\mu_{1}-\mu_{2}$ is
-\[
-\left[ \bar{X}-\bar{Y} \pm z_{\alpha/2}\sqrt{\frac{\sigma_{1}^{2}}{n_{1}}+\frac{\sigma_{2}^{2}}{n_{2}}} \right].
-\]
-
-If $\sigma_{1}^{2}=\sigma_{2}^{2}=\sigma^{2}$ but unknown, the pooled estimator is
-\[
-S_{p}^{2} = \frac{(n_{1}-1)S_{1}^{2}+(n_{2}-1)S_{2}^{2}}{n_{1}+n_{2}-2}.
-\]
-A $100(1-\alpha)\%$ confidence interval is
-\[
-\left[ \bar{X}-\bar{Y} \pm t_{\alpha/2,n_{1}+n_{2}-2}S_{p}\sqrt{\frac{1}{n_{1}}+\frac{1}{n_{2}}} \right].
-\]
-
-\subsection{Confidence Interval for Difference in Proportions}\label{sub:ci-difference-proportions}
-
-Let $X \sim \operatorname{Bin}(n_{1},p_{1})$ and $Y \sim \operatorname{Bin}(n_{2},p_{2})$ be independent. Large-sample approximations yield the following $100(1-\alpha)\%$ confidence interval for $p_{1}-p_{2}$ :
-\[
-\left[ \hat{p}_{1}-\hat{p}_{2} \pm z_{\alpha/2}\sqrt{\frac{\hat{p}_{1}(1-\hat{p}_{1})}{n_{1}}+\frac{\hat{p}_{2}(1-\hat{p}_{2})}{n_{2}}} \right],
-\]
-where $\hat{p}_{1}=X/n_{1}$ and $\hat{p}_{2}=Y/n_{2}$ .
-
-\section{Order Statistics}\label{sec:order-statistics}
-
-Let $X_{1},X_{2},\ldots,X_{n}$ be a random sample from a distribution with cdf $F(x)$ . Define the order statistics by arranging the sample in ascending order:
-
+\textbf{核心思想}：将样本从小到大排列：
 \[
 X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(n)}.
 \]
 
-The $k$th order statistic is $X_{(k)}$ . The sample median is $X_{((n+1)/2)}$ if $n$ is odd, or the average of the two middle values if $n$ is even.
+$X_{(k)}$ 是第 $k$ 个顺序统计量。
 
-The sample range is $R = X_{(n)} - X_{(1)}$ and the sample interquartile range is $IQR = X_{(3n/4)} - X_{(n/4)}$ (approximately).
-
-The cdf and pdf of the $k$th order statistic $X_{(k)}$ are:
-
+\textbf{样本中位数}：
 \[
-F_{X_{(k)}}(x) = \sum_{j=k}^{n} \binom{n}{j} [F(x)]^{j} [1-F(x)]^{n-j},
+\tilde{X} = \begin{cases}
+X_{((n+1)/2)} & n \text{ 奇数} \\
+\frac{1}{2}\left(X_{(n/2)} + X_{(n/2+1)}\right) & n \text{ 偶数}
+\end{cases}
 \]
 
+\textbf{样本极差}：$R = X_{(n)} - X_{(1)}$
+
+顺序统计量的 cdf 和 pdf：
+\[
+F_{X_{(k)}}(x) = \sum_{j=k}^{n} \binom{n}{j} [F(x)]^j [1-F(x)]^{n-j},
+\]
 \[
 f_{X_{(k)}}(x) = \frac{n!}{(k-1)!(n-k)!} [F(x)]^{k-1} [1-F(x)]^{n-k} f(x).
 \]
 
-\subsection{Quantiles}\label{sub:quantiles}
+\section{4.5 假设检验}\label{sec:hypothesis-testing-ch4}
 
-The population quantile $x_{p}$ is defined by $F(x_{p}) = p$ .
+假设检验回答一个问题：\textbf{数据是否提供足够证据拒绝关于总体的某个声明？}
 
-\begin{definition}[Sample Quantile]\label{def:sample-quantile}
-The sample quantile $x_{p}$ can be estimated by the order statistic $X_{(\lceil np \rceil)}$ or by linear interpolation.
-\end{definition}
-
-Common quantiles include:
+\textbf{核心概念}：
 \begin{itemize}
-\item Median: $p = 0.5$
-\item Quartiles: $p = 0.25, 0.75$
-\item Deciles: $p = 0.1, 0.2, \ldots, 0.9$
-\item Percentiles: $p = 0.01, 0.02, \ldots, 0.99$
+\item \textbf{原假设} $H_0$：被检验的假设（通常代表"无效应"或"现状"）
+\item \textbf{备择假设} $H_1$：与 $H_0$ 对立的假设
 \end{itemize}
-
-\section{Introduction to Hypothesis Testing}\label{sec:hypothesis-testing}
-
-A statistical hypothesis is a statement about the distribution of a random variable. We test a null hypothesis $H_{0}$ against an alternative hypothesis $H_{1}$ .
-
-\begin{definition}[Null and Alternative Hypotheses]\label{def:hypotheses}
-The null hypothesis $H_{0}$ is the hypothesis being tested. The alternative hypothesis $H_{1}$ is the hypothesis we accept if $H_{0}$ is rejected.
-\end{definition}
-
-The four possible outcomes of a hypothesis test are:
 
 \begin{center}
 \begin{tabular}{c|c|c}
- & Fail to Reject $H_{0}$ & Reject $H_{0}$ \\ \hline
-$H_{0}$ True & Correct & Type I Error ($\alpha$) \\
-$H_{0}$ False & Type II Error ($\beta$) & Correct Power ($1-\beta$)
+ & 未拒绝 $H_0$ & 拒绝 $H_0$ \\ \hline
+$H_0$ 为真 & 正确 & 第一类错误 ($\alpha$) \\
+$H_0$ 为假 & 第二类错误 ($\beta$) & 正确（功效 $1-\beta$）
 \end{tabular}
 \end{center}
 
-The significance level $\alpha = P(\text{Type I Error}) = P(\text{Reject } H_{0} \mid H_{0} \text{ true})$ .
+\textbf{显著性水平} $\alpha = \mathbb{P}(\text{第一类错误}) = \mathbb{P}(\text{拒绝 } H_0 \mid H_0 \text{ 为真})$。
 
-\begin{example}[Test for normal mean, known variance]\label{ex:test-normal-known}
-Let $X_{1},\ldots,X_{n} \sim N(\mu,\sigma^{2})$ with known $\sigma^{2}$ . To test $H_{0}: \mu = \mu_{0}$ against $H_{1}: \mu > \mu_{0}$ , we use the test statistic
-\[
-Z = \frac{\bar{X}-\mu_{0}}{\sigma/\sqrt{n}}.
-\]
-We reject $H_{0}$ at level $\alpha$ if $Z > z_{\alpha}$ .
+\begin{example}[正态均值检验、已知方差]\label{ex:test-normal-known-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 已知。检验 $H_0: \mu = \mu_0$ vs $H_1: \mu > \mu_0$。
+
+检验统计量：$Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$。
+
+在 $\alpha$ 水平下拒绝 $H_0$ 当且仅当 $Z > z_\alpha$。
 \end{example}
 
-\begin{example}[Test for normal mean, unknown variance]\label{ex:test-normal-unknown}
-Let $X_{1},\ldots,X_{n} \sim N(\mu,\sigma^{2})$ with unknown $\sigma^{2}$ . To test $H_{0}: \mu = \mu_{0}$ against $H_{1}: \mu \neq \mu_{0}$ , we use the test statistic
-\[
-T = \frac{\bar{X}-\mu_{0}}{S/\sqrt{n}}.
-\]
-We reject $H_{0}$ at level $\alpha$ if $|T| > t_{\alpha/2,n-1}$ .
+\begin{example}[正态均值检验、未知方差]\label{ex:test-normal-unknown-ch4}
+设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 未知。检验 $H_0: \mu = \mu_0$ vs $H_1: \mu \neq \mu_0$。
+
+检验统计量：$T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}$。
+
+在 $\alpha$ 水平下拒绝 $H_0$ 当且仅当 $|T| > t_{\alpha/2,n-1}$。
 \end{example}
 
-\section{Chi-Square Tests}\label{sec:chi-square-tests}
+\begin remark}$p$ 值的直观理解]
+$p$ 值是在 $H_0$ 为真的假设下，观察到比当前样本更极端结果的概率。$p$ 值越小，拒绝 $H_0$ 的证据越强。
+\end remark}
 
-The chi-square test is used for categorical data.
+\section{4.6 卡方检验}\label{sec:chi-square-tests-ch4}
 
-\subsection{Goodness-of-Fit Test}\label{sub:goodness-of-fit}
+卡方检验用于分析\textbf{分类数据}——即计数数据。
 
-Let $X_{1},\ldots,X_{n}$ be iid observations from a categorical distribution with $k$ categories. Under $H_{0}$, the probabilities are $p_{1,0},p_{2,0},\ldots,p_{k,0}$ . The observed counts are $O_{1},\ldots,O_{k}$ and the expected counts are $E_{i} = np_{i,0}$ .
+\subsection{拟合优度检验}\label{sub:goodness-of-fit-ch4}
 
-The chi-square goodness-of-fit statistic is
+\textbf{问题}：数据是否来自某个特定分布？
 
+设 $O_1, \ldots, O_k$ 是 $k$ 个类别的观测频数，$E_i = np_{i,0}$ 是 $H_0$ 下的期望频数。
+
+\textbf{检验统计量}：
 \[
-\chi^{2} = \sum_{i=1}^{k} \frac{(O_{i}-E_{i})^{2}}{E_{i}}.
+\chi^2 = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i}.
 \]
 
-Under $H_{0}$ , this statistic has approximately a $\chi^{2}(k-1)$ distribution for large $n$ . We reject $H_{0}$ if $\chi^{2} > \chi^{2}_{\alpha,k-1}$ .
+在 $H_0$ 下，$\chi^2 \approx \chi^2(k-1)$（大样本近似）。
 
-\subsection{Test of Independence}\label{sub:test-independence}
+拒绝 $H_0$ 当 $\chi^2 > \chi^2_{\alpha, k-1}$。
 
-For a contingency table with $r$ rows and $c$ columns, let $O_{ij}$ be the observed count in cell $(i,j)$ . The expected count under independence is $E_{ij} = (O_{i\cdot}O_{\cdot j})/n$ .
+\subsection{独立性检验}\label{sub:test-independence-ch4}
 
-The chi-square test statistic for independence is
+对于 $r \times c$ 列联表，设 $O_{ij}$ 为单元格 $(i,j)$ 的观测频数。
 
+在独立性假设下，$E_{ij} = \frac{O_{i\cdot} O_{\cdot j}}{n}$。
+
+\textbf{检验统计量}：
 \[
-\chi^{2} = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{(O_{ij}-E_{ij})^{2}}{E_{ij}}.
+\chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}.
 \]
 
-Under $H_{0}$ of independence, $\chi^{2} \approx \chi^{2}((r-1)(c-1))$ .
+在 $H_0$ 下，$\chi^2 \approx \chi^2((r-1)(c-1))$。
 
-\section{The Method of Monte Carlo}\label{sec:monte-carlo}
+\section{4.7 蒙特卡洛方法}\label{sec:monte-carlo-ch4}
 
-Monte Carlo methods use random sampling to approximate statistical quantities.
+\textbf{核心思想}：用随机模拟来近似计算概率和积分。
 
-The law of large numbers states that if $E[g(X)] = \mu$ exists, then
+\subsection{为什么需要蒙特卡洛？}
+
+有些概率/期望无法解析计算，但可以用计算机模拟近似。大数定律保证了模拟的收敛性：
 
 \[
-\frac{1}{n}\sum_{i=1}^{n} g(X_{i}) \xrightarrow{P} \mu \quad \text{as } n \to \infty .
+\frac{1}{n}\sum_{i=1}^{n} g(X_i) \xrightarrow{P} \mathbb{E}[g(X)].
 \]
 
-Thus, we can approximate $\mu$ by simulating $n$ values from the distribution of $X$ and averaging $g(X_{i})$ .
-
-\begin{example}[Approximating $\pi$]\label{ex:monte-carlo-pi}
-We can approximate $\pi$ by simulating points in the unit square $[0,1] \times [0,1]$ and computing the proportion that fall inside the unit quarter circle. The area of the quarter circle is $\pi/4$ , so $\hat{\pi} = 4 \times \text{(proportion inside)}$ .
+\begin{example}[蒙特卡洛估计 $\pi$]\label{ex:monte-carlo-pi-ch4}
+在单位正方形 $[0,1] \times [0,1]$ 中均匀随机投点，落入单位圆弧内的概率为 $\pi/4$。因此 $\hat{\pi} = 4 \times \text{(落入圆内比例)}$。
 \end{example}
 
-\subsection{Accept-Reject Generation Algorithm}\label{sub:accept-reject}
+\subsection{接受-拒绝算法}\label{sub:accept-reject-ch4}
 
-The accept-reject algorithm generates random samples from a target distribution $f(x)$ using a proposal distribution $g(x)$ with known density.
+当目标分布 $f(x)$ 难以直接抽样时，接受-拒绝算法提供了一种间接方法。
 
-\begin{example}[Accept-Reject Algorithm]\label{ex:accept-reject}
+\textbf{算法}：
 \begin{enumerate}
-\item Choose a proposal density $g(x)$ such that $f(x) \leq Mg(x)$ for all $x$ and some constant $M > 1$ .
-\item Generate $Y \sim g$ and $U \sim \operatorname{Uniform}(0,1)$ independently.
-\item If $U \leq f(Y)/(Mg(Y))$ , accept $X = Y$ ; otherwise, reject and return to step 2.
-\end{enumerate}
-\end{example}
-
-The acceptance probability is $1/M$ . The algorithm generates samples from $f$ exactly.
-
-\section{Bootstrap Procedures}\label{sec:bootstrap}
-
-Bootstrap methods use resampling to estimate the sampling distribution of a statistic.
-
-Let $X_{1},\ldots,X_{n}$ be a random sample and $T = g(X_{1},\ldots,X_{n})$ be a statistic. The bootstrap proceeds as follows:
-
-\begin{enumerate}
-\item Resample $n$ observations with replacement from the original sample to form a bootstrap sample $X_{1}^{*},\ldots,X_{n}^{*}$ .
-\item Compute the bootstrap replicate $T^{*} = g(X_{1}^{*},\ldots,X_{n}^{*})$ .
-\item Repeat steps 1-2 many times (say $B$ times) to obtain $T_{1}^{*},\ldots,T_{B}^{*}$ .
-\item Approximate the distribution of $T$ by the empirical distribution of $T_{1}^{*},\ldots,T_{B}^{*}$ .
+\item 选择一个提议分布 $g(x)$，满足 $f(x) \leq Mg(x)$（对某个 $M > 1$）
+\item 生成 $Y \sim g$ 和 $U \sim \text{Uniform}(0,1)$ 独立
+\item 若 $U \leq f(Y)/(Mg(Y))$，接受 $X = Y$；否则拒绝，返回步骤 2
 \end{enumerate}
 
-\subsection{Percentile Bootstrap Confidence Intervals}\label{sub:percentile-bootstrap}
+接受概率为 $1/M$。
 
-A $100(1-\alpha)\%$ percentile bootstrap confidence interval for $\theta$ is
+\section{4.8 Bootstrap 方法}\label{sec:bootstrap-ch4}
 
+\textbf{核心问题}：估计量的抽样分布通常难以解析计算，怎么办？
+
+Bootstrap 的答案是：\textbf{用重抽样近似}。
+
+\textbf{步骤}：
+\begin{enumerate}
+\item 从原始样本中有放回地抽取 $n$ 个观测，形成一个 bootstrap 样本 $X_1^*, \ldots, X_n^*$
+\item 计算 bootstrap 复制 $T^* = g(X_1^*, \ldots, X_n^*)$
+\item 重复步骤 1-2 多次（如 $B = 1000$ 次），得到 $T_1^*, \ldots, T_B^*$
+\item 用 $T_1^*, \ldots, T_B^*$ 的经验分布近似 $T$ 的抽样分布
+\end{enumerate}
+
+\subsection{百分位 Bootstrap 置信区间}\label{sub:percentile-bootstrap-ch4}
+
+$\theta$ 的 $100(1-\alpha)\%$ percentile bootstrap 置信区间：
 \[
-\left[ T_{(\alpha/2)}^{*}, T_{(1-\alpha/2)}^{*} \right],
+\left[ T_{(\alpha B)}^*, \quad T_{((1-\alpha)B)}^* \right].
 \]
 
-where $T_{(k)}^{*}$ is the $k$th order statistic of the bootstrap replicates.
+\begin remark}Bootstrap 的哲学]
+Bootstrap 假设"样本就像总体"——通过从样本中有放回抽样，我们模拟了如果重复实验会得到什么。这是一种非参数的近似方法，不需要对分布做任何假设。
+\end remark}
 
-\section*{Exercises}\label{sec:chapter4-exercises}
+\section*{本章小结}
 
-\begin{exercise}{4.1.1}
-Let $X_{1},X_{2},X_{3},X_{4},X_{5}$ be a random sample of size 5 from a distribution with mean $\mu = 10$ and variance $\sigma^{2} = 4$ . Find the mean and variance of $\bar{X}$ .
-\end{exercise}
+\textbf{核心概念}：
+\begin{itemize}
+\item \textbf{统计量}：样本的函数，不依赖未知参数
+\item \textbf{点估计}：用单一数值估计参数；无偏性、渐近性、效率是主要评判标准
+\item \textbf{置信区间}：参数的合理取值范围；宽度随样本量增大而减小
+\item \textbf{假设检验}：判断数据是否提供足够证据拒绝 $H_0$；第一类和第二类错误的权衡
+\end{itemize}
 
-\begin{exercise}{4.1.3}
-Let $X_{1},\ldots,X_{n}$ be iid with mean $\mu$ and variance $\sigma^{2}$ . Show that $S^{2}$ is an unbiased estimator of $\sigma^{2}$ .
-\end{exercise}
-
-\begin{exercise}{4.2.1}
-Let $X_{1},\ldots,X_{16}$ be a random sample from $N(50,25)$ . Find $P(48 < \bar{X} < 52)$ .
-\end{exercise}
-
-\begin{exercise}{4.2.3}
-Construct a $95\%$ confidence interval for the mean of a normal distribution based on the following sample: $n=25$ , $\bar{x}=100$ , $s=15$ .
-\end{exercise}
-
-\begin{exercise}{4.3.1}
-Two independent samples are given: Sample 1: $n_{1}=30$ , $\bar{x}_{1}=75$ , $s_{1}=10$ ; Sample 2: $n_{2}=40$ , $\bar{x}_{2}=80$ , $s_{2}=12$ . Assuming equal variances, find a $90\%$ confidence interval for $\mu_{1}-\mu_{2}$ .
-\end{exercise}
-
-\begin{exercise}{4.4.1}
-Let $X_{1},\ldots,X_{10}$ be a random sample from $N(0,1)$ . Find the probability that the sample median exceeds 0.5.
-\end{exercise}
-
-\begin{exercise}{4.5.1}
-A manufacturer claims that the mean lifetime of a light bulb is at least 1000 hours. A sample of 25 bulbs has a mean lifetime of 950 hours with a standard deviation of 80 hours. Test the claim at the $\alpha=0.05$ level.
-\end{exercise}
-
-\begin{exercise}{4.7.1}
-A chi-square goodness-of-fit test is performed on a die to test whether it is fair. The die is rolled 120 times with the following frequencies: Face 1: 18, Face 2: 22, Face 3: 16, Face 4: 24, Face 5: 19, Face 6: 21. Compute the test statistic and $p$-value.
-\end{exercise}
-
-\begin{exercise}{4.8.1}
-Describe the accept-reject algorithm for generating random samples from a gamma distribution using an exponential proposal distribution.
-\end{exercise}
-
-\begin{exercise}{4.9.1}
-Explain the bootstrap procedure for estimating the standard error of the sample median.
-\end{exercise}
-
-\userannotation{Chapter 4 covers statistical inference: sampling, point estimation, confidence intervals, hypothesis testing, chi-square tests, Monte Carlo methods, and bootstrap procedures. Key concepts: sample mean and variance, unbiased estimation, CI formulas for normal means and variances, hypothesis testing framework, Type I/II errors, bootstrap resampling.}
+\textbf{重要公式}：
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{场景} & \textbf{置信区间/检验统计量} \\ \hline
+正态均值、已知 $\sigma$ & $\bar{X} \pm z_{\alpha/2}\sigma/\sqrt{n}$ \\ \hline
+正态均值、未知 $\sigma$ & $\bar{X} \pm t_{\alpha/2,n-1}S/\sqrt{n}$ \\ \hline
+正态方差 & $\frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}}$ \\ \hline
+单样本 $Z$ 检验 & $Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$ \\ \hline
+单样本 $t$ 检验 & $T = \frac{\bar{X}-\mu_0}{S/\sqrt{n}}$ \\ \hline
+拟合优度 $\chi^2$ 检验 & $\chi^2 = \sum \frac{(O-E)^2}{E} \approx \chi^2(k-1)$ \\ \hline
+\end{tabular}
+\end{center}

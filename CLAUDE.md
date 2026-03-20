@@ -22,6 +22,8 @@ This file provides guidance to Claude Code when working with this literature stu
 6. **Unicode 禁止规则**: 写作 markdown/LaTeX 时，禁止使用 n₁ 等 unicode 下标，必须使用 `$n_1$` 格式
 7. **Tex 优先规则**: 查看教材时，如果有 .tex 版本则优先使用（因为有更好的 label/cref 引用跳转功能）
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
+9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
+10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
 
 ---
 
@@ -57,6 +59,23 @@ This file provides guidance to Claude Code when working with this literature stu
 - **有机联系**: 强调不同数学领域之间的相互关联
 - **叙事流畅**: 定义→命题→证明之间有连贯的叙述，避免干巴巴的罗列
 - **循序渐进**: 从简单到复杂，不过早引入技术细节
+
+### 引言写作风格（Schubert 笔记）
+- **简洁流畅**: 引言应简洁有力，避免冗长的括号注释打断叙述
+- **定义后置**: 详细定义放到第一节背景知识中
+- **注解脚注**: 较长的说明性注解使用 `\footnote{}`，不要用 Remark 环境
+- **减少交叉引用**: 引言中避免过多 `\cref{}` 引用，让读者专注于核心内容
+
+### 定义格式规则
+- **关键术语加粗下划线**: 在 Definition 环境中，被定义的关键术语/概念使用 `\textbf{\underline{术语}}` 格式
+- 例如：`\textbf{\underline{旗流形}} $Fl_n(\mathbb{C})$ 是...`
+
+### 问答记录规则 ⚠️
+**每次用户提问后必须执行以下步骤：**
+1. 口语化回答用户
+2. ✅ **记录到 `appendix/qa.tex`**（强制要求，不要忘记！）
+3. 如有正式定义需要，添加到正文对应章节
+4. 重新编译 PDF
 
 ---
 

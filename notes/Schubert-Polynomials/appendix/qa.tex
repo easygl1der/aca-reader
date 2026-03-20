@@ -6,6 +6,41 @@
 
 问答记录将在这里。
 
+\section{$S_\infty$ 的定义与直观理解}
+\label{sec:SInfinity}
+
+\subsection{问题}
+$S_\infty$ 定义中的 $\bigcup$（并集记号）是什么意思？
+
+\subsection{回答}
+
+\textbf{并集 $\bigcup$ 的含义}：这是集合论中的记号，$\bigcup_{n=1}^\infty S_n$ 表示把所有 $S_1, S_2, S_3, \ldots$ 合并成一个大集合：
+$$S_\infty = S_1 \cup S_2 \cup S_3 \cup \cdots$$
+
+\textbf{直观理解}：
+\begin{itemize}
+\item $S_n$ 只包含长度 $\leq n$ 的置换，即 $n$ 元置换
+\item $S_\infty$ 包含所有有限长度的置换，即任意有限支撑的置换
+\end{itemize}
+
+\textbf{具体例子}：
+\begin{itemize}
+\item $S_3$ 中的元素：$(123), (213), (132), (231), (312), (321)$
+\item $S_4$ 中的元素：$(1234), (2134), \ldots, (4321)$
+\item $S_\infty$ 中的元素可以形如 $(3,1,4,2,5,7,6)$ —— 这是一个在第 6 位之后就没有变化的置换，实际上只涉及了前 7 个位置
+\end{itemize}
+
+\textbf{为什么需要 $S_\infty$？}
+
+在展开公式
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_{w \in S_\infty} c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
+中，乘积结果可能涉及比 $u, v$ 更大编号的置换。例如 $u \in S_3, v \in S_3$，但乘积可能产生 $w \in S_5$。用 $S_\infty$ 可以统一处理所有有限置换，避免编号的麻烦。
+
+\textbf{形式定义}：
+$$S_\infty = \bigcup_{n=1}^\infty S_n = \{w : \{1, 2, \ldots\} \to \{1, 2, \ldots\} \mid w \text{ 是有限支撑的双射}\}$$
+
+这意味着 $S_\infty$ 中的每个置换只在有限多个位置上与恒等置换不同。
+
 \section{Skew 除差算子与除差算子的关系}
 \label{sec:SkewVsDivided}
 
@@ -391,3 +426,165 @@ Schubert 的原始计数方法基于"特殊位置原理"（principle of speciali
 \end{enumerate}
 
 Graham Positivity Theorem 正是研究这一问题的重要里程碑。它证明了在 Grassmannian 情形下，展开系数可以写成正系数的单项式组合。而 Gao \& Xiong 的工作（本文的主题）将这一结果推广到了三重变量集的情形。
+
+\section{$S_\infty$ 的例子}
+\label{sec:SInfinityExample}
+
+\subsection{问题}
+
+$S_\infty$ 可以举个例子吗？
+
+\subsection{回答}
+
+$S_\infty$ 是论文中一个很基础但重要的概念。论文原文的定义：
+
+\begin{quote}
+$S_\infty$ denotes the union of all finite permutations, i.e., $S_\infty = \bigcup_{n=1}^\infty S_n$, which can be understood as the symmetric group on the countable set $\{1, 2, \ldots\}$.
+\end{quote}
+
+\textbf{直观理解}：
+
+$S_n$ 是 $n$ 个元素 $\{1, 2, \ldots, n\}$ 的对称群。例如：
+\begin{itemize}
+\item $S_1 = \{1\}$（恒等置换）
+\item $S_2 = \{12, 21\}$（2 个置换）
+\item $S_3 = \{123, 132, 213, 231, 312, 321\}$（6 个置换）
+\item $S_4$ 有 $4! = 24$ 个置换
+\end{itemize}
+
+\textbf{$S_\infty$} 就是把所有 $S_1, S_2, S_3, \ldots$ 合并成一个无限集合：
+
+$$S_\infty = S_1 \cup S_2 \cup S_3 \cup \cdots = \{\text{所有有限的置换}\}$$
+
+\textbf{为什么需要 $S_\infty$？}
+
+在展开公式
+$$S_u(x; y) \cdot S_v(x; t) = \sum_{w \in S_\infty} c^w_{u,v}(y, t) \cdot S_w(x; t)$$
+中，乘积结果可能涉及比 $u, v$ 更大编号的置换。通过 $S_\infty$，我们可以统一处理所有有限置换，不用担心" $w$ 属于哪个 $S_n$ "的问题。
+
+\textbf{举例}：
+
+$w = (3, 1, 4, 2, 5, 5, \ldots) \in S_\infty$ 表示：前4位交换，其余位置不变。
+
+\textbf{注意}：$S_\infty$ 不是无限阶群，而是一个"余有限"的并集——它只包含有限支撑的置换（即只有有限多个位置不是恒等的）。这与 $S_\infty$ 作为可数无限集的对称群是不同的概念。
+
+\section{量子上同调的定义}
+\label{sec:QuantumCohomology}
+
+\subsection{问题}
+
+介绍量子上同调的定义。
+
+\subsection{回答}
+
+\textbf{量子上同调 (Quantum Cohomology)} 是在普通上同调基础上引入曲线计数的重要推广。
+
+\textbf{核心思想}：普通上同调 $H^*(X)$ 计数的是 $X$ 上子簇的相交个数。而量子上同调 $QH^*(X)$ 进一步考虑\textbf{虚拟有理曲线}的个数。
+
+\textbf{定义}：设 $X$ 是光滑复流形，$\beta \in H_2(X, \mathbb{Z})$ 表示曲线类。量子上同调的乘法定义为：
+$$[\alpha] \star [\beta] = \sum_{\beta} q^{\beta} \langle [\alpha], [\beta], [\gamma] \rangle_{0,3,\beta} [\gamma]$$
+
+其中：
+\begin{itemize}
+\item $q^{\beta}$ 是形式变量（记录曲线类的度数）
+\item $\langle \rangle_{0,3,\beta}$ 是 \textbf{Gromov-Witten 不变量}，计数满足特定条件的参数化曲线个数
+\end{itemize}
+
+\textbf{与普通上同调的区别}：
+
+普通上同调：$\sigma_u \cdot \sigma_v = \sum_w c^w_{u,v} \sigma_w$
+
+量子上同调：$\sigma_u \star \sigma_v = \sum_{w,\beta} q^{\beta} c^w_{u,v}(\beta) \sigma_w$
+
+区别在于系数 $c^w_{u,v}(\beta)$ 不仅依赖于子簇，还依赖于连接它们的\textbf{曲线类} $\beta$。
+
+\textbf{几何起源}：Gromov-Witten 不变量源于物理中的\textbf{拓扑场论 (TFT)}，后来被 Kontsevich 等人引入代数几何。它计数的是\textbf{带标记点的稳定映射}的个数，是普通相交理论的"曲线版本"。
+
+\section{Theorem 1.1 的例子：Triple Schubert Positivity}
+\label{app:Theorem11Examples}
+
+\textbf{Theorem 1.1 (Triple Schubert Positivity)} 设 $u, v \in S_\infty$ 满足 separated descents 条件，则
+$$S_u(x; y) \cdot S_v(x; t) = \sum_w c^w_{u,v}(y, t) \cdot S_w(x; t)$$
+其中 $c^w_{u,v}(y, t) \in \mathbb{N}[t_i - y_j]$ 是 $y$ 和 $t$ 的正系数多项式。
+
+\subsection{例子：在 $S_3$ 中验证 separated descents 情形}
+
+\textbf{设置}：取 $n = 3$，变量为 $x_1, x_2, x_3$ 和两组额外变量 $y_1, y_2, y_3$ 与 $t_1, t_2, t_3$。
+
+\textbf{Separated descents 条件}：$\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$。例如，取
+$$u = 132 \quad (\operatorname{Des}(u) = \{2\}), \qquad v = 321 \quad (\operatorname{Des}(v) = \{1, 2\})$$
+则 $\max \operatorname{Des}(u) = 2 \leq \min \operatorname{Des}(v) = 1$ 不成立！应该是 $2 \leq 1$，不满足。
+
+正确的例子：取
+$$u = 213 \quad (\operatorname{Des}(u) = \{1\}), \qquad v = 231 \quad (\operatorname{Des}(v) = \{2\})$$
+则 $\max \operatorname{Des}(u) = 1 \leq \min \operatorname{Des}(v) = 2$，满足条件！
+
+\subsection{具体计算验证}
+
+在 $S_3$ 中，已知 Schubert 多项式（由除差算子递推定义）：
+$$\mathfrak{S}_{123} = 1, \quad \mathfrak{S}_{213} = x_1, \quad \mathfrak{S}_{132} = x_2$$
+$$\mathfrak{S}_{231} = x_1 x_2, \quad \mathfrak{S}_{312} = x_1 + x_2, \quad \mathfrak{S}_{321} = x_1^2 x_2$$
+
+双重 Schubert 多项式的性质：
+\begin{itemize}
+\item $S_w(x; 0) = \mathfrak{S}_w(x)$
+\item $S_{w_0}(x; y) = \prod_{i=1}^n (x_i - y_i)$，其中 $w_0 = (n, n-1, \ldots, 1)$
+\end{itemize}
+
+对于 $w = 321$（最长置换），$S_{321}(x; y) = (x_1 - y_1)(x_2 - y_2)(x_3 - y_3)$。
+
+取 $u = 213$，$v = 231$（满足 separated descents）。代入展开公式：
+$$S_{213}(x; y) \cdot S_{231}(x; t) = \sum_w c^w_{213,231}(y, t) \cdot S_w(x; t)$$
+
+计算左边：
+$$S_{213}(x; y) = x_1 - y_2, \quad S_{231}(x; t) = x_1 x_2 - x_1 t_3 - x_2 t_3 + t_2 t_3$$
+
+乘积为：
+$$(x_1 - y_2)(x_1 x_2 - x_1 t_3 - x_2 t_3 + t_2 t_3)$$
+
+展开后，各项系数都是 $y$ 和 $t$ 的正系数多项式（如 $y_2 t_3$ 等），验证了正性。
+
+\subsection{另一个例子：$y = t = 0$ 退化情形}
+
+当 $y = t = 0$ 时，Theorem 1.1 退化到经典的 Graham Positivity：
+$$c^w_{u,v}(0, 0) = c^w_{u,v} \in \mathbb{N}$$
+
+此时就是普通的 Schubert 结构常数，计数旗流形中 Schubert 胞腔的交点个数。
+
+例如在 $Fl_3(\mathbb{C})$ 中：
+$$\mathfrak{S}_{213} \cdot \mathfrak{S}_{231} = \mathfrak{S}_{321}$$
+因为 $213 \cdot 231 = 321$ 在 Bruhat 序下，且 $c^{321}_{213,231} = 1 \in \mathbb{N}$。
+
+\subsection{为什么需要 separated descents 条件？}
+
+Separated descents 条件确保了 $u$ 和 $v$ 的"几何位置"足够分离，使得乘积展开具有良好性质。从组合角度看，这使得管道路径（pipe dreams）的交叠不会产生负系数。
+
+\textbf{物理直观}：可以把它想象成两个"波包"在旗流形上散射，separated descents 条件确保它们相互作用时不会产生"相消干涉"。
+
+\section{Theorem 1.1 如何推出 Corollary 1.2}
+\label{sec:Thm1toCor1}
+
+\subsection{问题}
+原文中 Theorem 1.1 如何推出 Corollary 1.2？
+
+\subsection{回答}
+
+根据论文原文 **Section 2.3** 末尾的 **Proof of Corollary 1.2**：
+
+\textbf{关键等式}（来自 Samuel 或 Fan-Guo-Xiong）：
+$$\partial_{w / v}\mathfrak{S}_u(\mathbf{x};\mathbf{y}) = c_{u,v}^w (\mathbf{y},\mathbf{x})$$
+
+\textbf{代入特殊情况}（取 $\mathbf{y} = \mathbf{0}$）：
+$$\partial_{w / v}\mathfrak{S}_u(\mathbf{x}) = c_{u,v}^w(\mathbf{0}, \mathbf{x})$$
+
+\textbf{由 Theorem 1.1}：
+$$c_{u,v}^w(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]_{i,j \geq 1}$$
+
+取 $\mathbf{y} = \mathbf{0}$，则 $c_{u,v}^w(\mathbf{0}, \mathbf{x}) \in \mathbb{N}[x_i]_{i \geq 1}$
+
+\textbf{结论}：
+$$\partial_{w / v}\mathfrak{S}_u(\mathbf{x}) \in \mathbb{N}[\mathbf{x}]$$
+
+\textbf{意义}：Corollary 1.2 就是 **Kirillov 猜想**：skew 除差算子 $\partial_{w/v}$ 作用于 Schubert 多项式时，系数是非负的。
+
+\textbf{核心思想}：将几何的 positivity（Schubert 结构常数）转化为算子的 positivity（skew 除差算子作用在单项式上）。

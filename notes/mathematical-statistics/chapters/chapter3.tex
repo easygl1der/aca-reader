@@ -1,475 +1,419 @@
-\chapter{Some Special Distributions}\label{chap:special-distributions}
+\chapter{一些特殊分布}\label{chap:special-distributions}
 
-\section{The Binomial and Related Distributions}\label{sec:binomial-distributions}
+\section*{Chapter 3 概述}
 
-In Chapter 1 we introduced the uniform distribution and the hypergeometric distribution. In this chapter we discuss some other important distributions of random variables frequently used in statistics. We begin with the binomial and related distributions.
+在前两章中，我们建立了描述单一和多个随机变量的数学框架。现在是时候问：\textbf{哪些分布最值得关注？}
 
-A Bernoulli experiment is a random experiment, the outcome of which can be classified in but one of two mutually exclusive and exhaustive ways, for instance, success or failure (e.g., female or male, life or death, nondefective or defective). A sequence of Bernoulli trials occurs when a Bernoulli experiment is performed several independent times so that the probability of success, say $p$ , remains the same from trial to trial.
+统计学之所以有用，是因为某些概率分布反复出现在自然界和实验数据中。掌握这些分布就像掌握一门语言的基本词汇——它们是进一步学习的基石。
 
-Let $X$ be a random variable associated with a Bernoulli trial by defining it as follows:
+\textbf{本章路线图}：二项分布 $\to$ 泊松分布 $\to$ 伽马/卡方/贝塔分布 $\to$ 正态分布 $\to$ 多元正态 $\to$ $t$ 与 $F$ 分布
 
+\section{3.1 从伯努利到二项：计数的科学}\label{sec:binomial-distributions-ch3}
+
+\subsection{为什么需要二项分布？}
+
+当我们重复进行某项独立实验时，最自然的问题是：\textbf{成功多少次？} 抛 10 次硬币正面出现几次？1000 个零件中有多少合格？这种"计数问题"在统计学中无处不在。
+
+\subsection{伯努利试验}
+
+\textbf{伯努利试验}（Bernoulli trial）是一种最简单的随机实验：结果只有两种互斥且互补的可能性——成功或失败。
+
+用随机变量 $X$ 表示：
 \[
-X(\text{success}) = 1 \quad \text{and} \quad X(\text{failure}) = 0.
+X(\text{成功}) = 1, \quad X(\text{失败}) = 0.
 \]
 
-That is, the two outcomes, success and failure, are denoted by one and zero, respectively. The pmf of $X$ can be written as
-
-\begin{equation}\label{eq:bernoulli-pmf}
-p(x) = p^{x}(1-p)^{1-x}, \quad x=0,1,
+其 pmf 为
+\begin{equation}\label{eq:bernoulli-pmf-ch3}
+p(x) = p^{x}(1-p)^{1-x}, \quad x = 0, 1.
 \end{equation}
 
-and we say that $X$ has a Bernoulli distribution. The expected value of $X$ is
-
+期望和方差：
 \[
-\mu = E(X) = (0)(1-p) + (1)(p) = p,
+\mathbb{E}X = p, \quad \text{var}(X) = p(1-p).
 \]
 
-and the variance of $X$ is
+\textbf{为什么伯努利分布如此基础？} 因为它是最简单的非平凡随机变量——既不是确定性常量，也不是均匀分布。它捕捉了"是/否"决策的不确定性本质。
 
-\[
-\sigma^{2} = \operatorname{Var}(X) = p^{2}(1-p) + (1-p)^{2}p = p(1-p).
-\]
+\subsection{二项分布}
 
-It follows that the standard deviation of $X$ is $\sigma = \sqrt{p(1-p)}$ .
+现在问：\textbf{进行 $n$ 次独立伯努利试验，成功次数的分布是什么？}
 
-In a sequence of $n$ independent Bernoulli trials, where the probability of success remains constant, let $X_{i}$ denote the Bernoulli random variable associated with the $i$th trial. In such a sequence of Bernoulli trials, we are often interested in the total number of successes and not in the order of their occurrence. If we let the random variable $X$ equal the number of observed successes in $n$ Bernoulli trials, the possible values of $X$ are $0,1,2,\ldots,n$ . If $x$ successes occur, where $x=0,1,2,\ldots,n$ , then $n-x$ failures occur. The number of ways of selecting the $x$ positions for the $x$ successes in the $n$ trials is
+设 $X_i$ 为第 $i$ 次试验的伯努利变量，我们关心 $X = \sum_{i=1}^{n} X_i$。
 
-\[
-\binom{n}{x} = \frac{n!}{x!(n-x)!}.
-\]
+$x$ 次成功意味着在 $n$ 个位置中选择 $x$ 个放成功，其余放失败。组合数为 $\binom{n}{x}$，每种排列的概率为 $p^x(1-p)^{n-x}$。
 
-Since the trials are independent and the probabilities of success and failure on each trial are, respectively, $p$ and $1-p$ , the probability of each of these ways is $p^{x}(1-p)^{n-x}$ . Thus the pmf of $X$ is
-
-\begin{equation}\label{eq:binomial-pmf}
-p(x) = \begin{cases}
-\binom{n}{x} p^{x}(1-p)^{n-x} & x=0,1,2,\ldots,n \\
-0 & \text{elsewhere}.
-\end{cases}
+\begin{equation}\label{eq:binomial-pmf-ch3}
+p(x) = \binom{n}{x} p^{x}(1-p)^{n-x}, \quad x = 0, 1, \ldots, n.
 \end{equation}
 
-A random variable $X$ that has a pmf of the form of $p(x)$ is said to have a binomial distribution, and any such $p(x)$ is called a binomial pmf. A binomial distribution is denoted by the symbol $b(n,p)$ . The constants $n$ and $p$ are called the parameters of the binomial distribution.
+记作 $X \sim \text{Bin}(n, p)$。
 
-\begin{example}\label{ex:binomial-dice}
-Suppose we roll a fair six-sided die 3 times. What is the probability of getting exactly 2 sixes? For our notation, let $X$ be the number of sixes obtained in the 3 rolls. Then $X$ has a binomial distribution with $n=3$ and $p=1/6$ . Hence,
+\begin{example}[骰子问题]\label{ex:binomial-dice-ch3}
+掷一枚均匀六面骰子 3 次，得到恰好 2 次 6 点的概率是多少？
 
+解：设 $X$ 为 6 点出现次数，则 $X \sim \text{Bin}(n=3, p=1/6)$，
 \[
-P(X=2) = p(2) = \binom{3}{2} \left(\frac{1}{6}\right)^{2} \left(\frac{5}{6}\right)^{1} = 0.06944.
+\mathbb{P}(X=2) = \binom{3}{2} \left(\frac{1}{6}\right)^2 \left(\frac{5}{6}\right)^1 = 0.06944.
 \]
 \end{example}
 
-The mgf of a binomial distribution is easily obtained as follows:
-
+\textbf{矩母函数}：
 \[
-M(t) = \sum_{x} e^{tx} p(x) = \sum_{x=0}^{n} \binom{n}{x} (pe^{t})^{x} (1-p)^{n-x} = [(1-p) + pe^{t}]^{n}.
+M(t) = [(1-p) + pe^{t}]^{n}.
 \]
 
-The mean $\mu$ and the variance $\sigma^{2}$ of $X$ are
-
+\textbf{均值与方差}：
 \[
-\mu = np, \quad \sigma^{2} = np(1-p).
+\mathbb{E}X = np, \quad \text{var}(X) = np(1-p).
 \]
 
-\begin{theorem}\label{ex:binomial-sum}
-Suppose $X_{1},X_{2},\ldots,X_{m}$ are independent random variables such that $X_{i}$ has binomial $b(n_{i},p)$ distribution, for $i=1,2,\ldots,m$ . Let $Y = \sum_{i=1}^{m} X_{i}$ . Then $Y$ has a binomial $b(\sum_{i=1}^{m} n_{i},p)$ distribution.
+\begin{theorem}[二项分布的可加性]\label{th:binomial-sum-ch3}
+若 $X_1 \sim \text{Bin}(n_1, p)$，$X_2 \sim \text{Bin}(n_2, p)$ 独立，则 $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$。
 \end{theorem}
 
-This result follows from the mgf or by convolution of pmfs.
+这意味着：两次二项实验可以合并成一次更大的二项实验。
 
-\subsection{Negative Binomial and Geometric Distributions}\label{sub:negative-binomial}
+\beginremark}[直观理解]
+想象两堆独立的硬币抛掷：第一堆 $n_1$ 枚得到 $X_1$ 个正面，第二堆 $n_2$ 枚得到 $X_2$ 个正面。合并后总共 $n_1 + n_2$ 枚，正面总数自然是 $X_1 + X_2$。
+\end remark}
 
-Consider a sequence of independent Bernoulli trials with constant probability $p$ of success. Let the random variable $Y$ denote the total number of failures in this sequence before the $r$th success, that is, $Y+r$ is equal to the number of trials necessary to produce exactly $r$ successes with the last trial as a success. Here $r$ is a fixed positive integer. The pmf of $Y$ is
+\subsection{负二项与几何分布}\label{sub:negative-binomial-ch3}
 
-\begin{equation}\label{eq:negative-binomial-pmf}
-p_{Y}(y) = \begin{cases}
-\binom{y+r-1}{r-1} p^{r}(1-p)^{y} & y=0,1,2,\ldots \\
-0 & \text{elsewhere}.
-\end{cases}
+\textbf{核心问题}：如果我们不数成功次数，而是数\textbf{获得第 $r$ 次成功所需的试验次数}，分布会是什么？
+
+设 $Y$ 为第 $r$ 次成功前的失败次数。则试验总数为 $Y + r$。
+
+\begin{equation}\label{eq:negative-binomial-pmf-ch3}
+p_Y(y) = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-A distribution with a pmf of the form $p_{Y}(y)$ is called a negative binomial distribution.
+这称为\textbf{负二项分布}。
 
-If $r=1$ , then $Y$ has the pmf
-
-\begin{equation}\label{eq:geometric-pmf}
-p_{Y}(y) = p(1-p)^{y}, \quad y=0,1,2,\ldots,
+当 $r=1$ 时，得到\textbf{几何分布}：
+\begin{equation}\label{eq:geometric-pmf-ch3}
+p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-zero elsewhere. In this special case, $r=1$ , we say that $Y$ has a geometric distribution. In terms of Bernoulli trials, $Y$ is the number of failures until the first success.
-
-The geometric distribution has the memoryless property:
-
+几何分布具有独特的\textbf{无记忆性}：
 \[
-P(Y \geq k+j \mid Y \geq k) = P(Y \geq j).
+\mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j).
 \]
 
-\subsection{Multinomial Distribution}\label{sub:multinomial-distribution}
+\textbf{这意味着什么？} 如果你已经失败了 $k$ 次，等待第 1 次成功的剩余时间与一开始完全相同。过去的失败不改变未来的期望。
 
-The binomial distribution is generalized to the multinomial distribution as follows. Let a random experiment be repeated $n$ independent times. On each repetition, there is one and only one outcome from one of $k$ categories. Call the categories $C_{1},C_{2},\ldots,C_{k}$ . For each $i=1,\ldots,k$ , let $p_{i}$ be the probability that the outcome is an element of $C_{i}$ and assume that $p_{i}$ remains constant throughout the $n$ independent repetitions. Define the random variable $X_{i}$ to be equal to the number of outcomes that are elements of $C_{i}$ , $i=1,2,\ldots,k-1$ . Because $X_{k} = n-X_{1}-\cdots-X_{k-1}$ , $X_{k}$ is determined by the other $X_{i}$'s.
+\subsection{多项分布}\label{sub:multinomial-ch3}
 
-The joint pmf of $(X_{1},X_{2},\ldots,X_{k-1})$ is
+二项分布推广到 $k$ 类：每次试验结果属于 $k$ 个互斥类别之一。
 
-\begin{equation}\label{eq:multinomial-pmf}
-P(X_{1}=x_{1},X_{2}=x_{2},\ldots,X_{k-1}=x_{k-1}) = \frac{n!}{x_{1}!\cdots x_{k-1}!x_{k}!} p_{1}^{x_{1}}\cdots p_{k-1}^{x_{k-1}} p_{k}^{x_{k}},
+设 $X_i$ 为第 $i$ 类出现的次数，则 $(X_1, \ldots, X_k)$ 服从参数为 $n$ 和 $p_1, \ldots, p_k$ 的\textbf{多项分布}：
+
+\begin{equation}\label{eq:multinomial-pmf-ch3}
+P(X_1=x_1, \ldots, X_k=x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}.
 \end{equation}
 
-for all $x_{1},x_{2},\ldots,x_{k-1}$ that are nonnegative integers and such that $x_{1}+x_{2}+\cdots+x_{k-1} \leq n$ , where $x_{k} = n-x_{1}-\cdots-x_{k-1}$ and $p_{k} = 1-\sum_{j=1}^{k-1} p_{j}$ .
+\subsection{超几何分布}\label{sub:hypergeometric-ch3}
 
-We say that $(X_{1},X_{2},\ldots,X_{k-1})$ has a multinomial distribution with parameters $n$ and $p_{1},\ldots,p_{k-1}$ .
+\textbf{核心问题}：如果不放回抽样，成功次数的分布是什么？
 
-\subsection{Hypergeometric Distribution}\label{sub:hypergeometric}
+一批 $N$ 件产品中有 $D$ 件次品，抽取 $n$ 件（不放回），$X$ 为次品数：
 
-Suppose we have a lot of $N$ items of which $D$ are defective. Let $X$ denote the number of defective items in a sample of size $n$ . If the sampling is done without replacement, the pmf of $X$ is
-
-\begin{equation}\label{eq:hypergeometric-pmf}
-p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x=0,1,\ldots,n,
+\begin{equation}\label{eq:hypergeometric-pmf-ch3}
+p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x = 0, 1, \ldots, n.
 \end{equation}
 
-where, as usual, a binomial coefficient is taken to be 0 when the top value is less than the bottom value. We say that $X$ has a hypergeometric distribution with parameters $(N,D,n)$ .
-
-The mean of $X$ is
-
+\textbf{均值与方差}：
 \[
-E(X) = n\frac{D}{N},
+\mathbb{E}X = n\frac{D}{N}, \quad \text{var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}.
 \]
 
-and the variance is
+最后一个因子 $\frac{N-n}{N-1}$ 是\textbf{不放回修正系数}。当 $N \gg n$ 时，它接近 1，此时超几何分布近似二项分布。
 
-\begin{equation}\label{eq:hypergeometric-variance}
-\operatorname{Var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}.
+\section{3.2 泊松分布：稀有事件的世界}\label{sec:poisson-distribution-ch3}
+
+\subsection{为什么泊松分布重要？}
+
+在自然界和社会中，有一类特殊的现象：\textbf{在固定时间/空间内，事件发生的次数}——如每小时到达银行的顾客数、每页书的印刷错误数、每年地震次数。
+
+这些现象有一个共同特征：\textbf{发生概率很小，但试验次数很多}。二项分布的极限形式正是泊松分布。
+
+\subsection{泊松分布的定义}
+
+\begin{equation}\label{eq:poisson-pmf-ch3}
+p(x) = \frac{\lambda^{x}e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \ldots
 \end{equation}
 
-The last term is often thought of as the correction term when sampling without replacement. Note that it is close to 1 if $N$ is much larger than $n$ .
+其中 $\lambda > 0$ 是参数。记作 $X \sim \text{Poisson}(\lambda)$。
 
-\section{The Poisson Distribution}\label{sec:poisson-distribution}
-
-Recall that the following series expansion holds for all real numbers $z$ :
-
+\textbf{验证}：因为 $e^{\lambda} = \sum_{x=0}^{\infty} \frac{\lambda^x}{x!}$，
 \[
-e^{z} = \sum_{x=0}^{\infty} \frac{z^{x}}{x!}.
+\sum_{x=0}^{\infty} p(x) = e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^x}{x!} = e^{-\lambda} \cdot e^{\lambda} = 1.
 \]
 
-Consider the function $p(x)$ defined by
-
-\begin{equation}\label{eq:poisson-pmf}
-p(x) = \begin{cases}
-\frac{\lambda^{x}e^{-\lambda}}{x!} & x=0,1,2,\ldots \\
-0 & \text{elsewhere},
-\end{cases}
-\end{equation}
-
-where $\lambda > 0$ . Since $\lambda > 0$ , then $p(x) \geq 0$ and
-
+\textbf{均值与方差}：
 \[
-\sum_{x=0}^{\infty} p(x) = \sum_{x=0}^{\infty} \frac{\lambda^{x}e^{-\lambda}}{x!} = e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^{x}}{x!} = e^{-\lambda}e^{\lambda} = 1;
+\mathbb{E}X = \lambda, \quad \text{var}(X) = \lambda.
 \]
 
-that is, $p(x)$ satisfies the conditions of being a pmf of a discrete type of random variable. A random variable that has a pmf of the form $p(x)$ is said to have a Poisson distribution with parameter $\lambda$ .
+\textbf{这有一个令人惊讶的性质}：均值和方差相等！这是泊松分布的标志特征。
 
-The Poisson distribution occurs in many areas of applications. Consider a process that counts the number of certain events occurring over an interval of time; for example, the number of tornados that touch down in Michigan per year, the number of cars entering a parking lot between 8:00 and 12:00 on a weekday, the number of car accidents at a busy intersection per week, the number of typographical errors per page of a manuscript, and the number of blemishes on a manufactured car door.
+\begin theorem}[泊松近似]\label{th:poisson-approximation-ch3}
+若 $X_n \sim \text{Bin}(n, p_n)$ 且 $np_n \to \lambda$，则 $X_n \xrightarrow{d} \text{Poisson}(\lambda)$。
+\endtheorem}
 
-The mean and variance of a Poisson distribution are both $\lambda$ :
+\textbf{直观理解}：当 $n$ 很大、$p$ 很小时，二项分布的行为与泊松分布几乎没有区别。实践中常用泊松近似简化计算。
 
-\[
-E(X) = \lambda, \quad \operatorname{Var}(X) = \lambda.
-\]
+\beginremark}[泊松分布的起源]
+泊松分布由西莫恩·德·泊松（Simeon Denis Poisson）在 1837 年提出，最初用于分析法国法院的判决数据——法官在给定时间内做出一定数量判决的概率。
+\end remark}
 
-The mgf of a Poisson distribution is
+\section{3.3 伽马、卡方与贝塔分布}\label{sec:gamma-chi2-beta-ch3}
 
-\[
-M(t) = \exp\{\lambda(e^{t}-1)\}.
-\]
+这三个分布是连续统计推断的支柱。理解它们的关系，就理解了半参数推断的数学基础。
 
-\begin{theorem}\label{ex:poisson-approximation}
-If $X_{n} \sim \operatorname{Bin}(n,p_{n})$ and $np_{n} \to \lambda$ as $n \to \infty$ , then $X_{n} \xrightarrow{d} \operatorname{Poisson}(\lambda)$ .
-\end{theorem}
+\subsection{伽马函数}
 
-This theorem shows that the Poisson distribution can be used as an approximation to the binomial distribution when $n$ is large and $p$ is small.
-
-\section{The $\Gamma$, $\chi^{2}$, and $\beta$ Distributions}\label{sec:gamma-chi2-beta}
-
-In this section we discuss several continuous distributions that are related to the gamma function.
-
-\subsection{The Gamma Distribution}\label{sub:gamma-distribution}
-
-The gamma function is defined by
+\textbf{为什么从伽马函数开始？} 因为它是连接阶乘与积分的桥梁——这本身就是数学中最美的恒等式之一。
 
 \[
 \Gamma(\alpha) = \int_{0}^{\infty} x^{\alpha-1}e^{-x} \, dx, \quad \alpha > 0.
 \]
 
-The gamma function satisfies the recursion $\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$ , and for positive integers, $\Gamma(n) = (n-1)!$ .
+\textbf{关键性质}：$\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$，对正整数 $n$，$\Gamma(n) = (n-1)!$。
 
-\begin{definition}[Gamma Distribution]\label{def:gamma-distribution}
-A random variable $X$ is said to have a gamma distribution with parameters $\alpha > 0$ and $\beta > 0$ if its pdf is
+\subsection{伽马分布}\label{sub:gamma-distribution-ch3}
 
+\begin{definition}[伽马分布]\label{def:gamma-distribution-ch3}
+若随机变量 $X$ 的 pdf 为
 \[
 f(x) = \begin{cases}
 \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta} & x > 0 \\
-0 & \text{elsewhere}.
+0 & \text{elsewhere},
 \end{cases}
 \]
-
-We write $X \sim \Gamma(\alpha,\beta)$ .
+则称 $X$ 服从伽马分布，记作 $X \sim \Gamma(\alpha, \beta)$。
 \end{definition}
 
-The parameters $\alpha$ and $\beta$ are called the shape and scale parameters, respectively. The mean and variance of $X$ are
-
-\[
-E(X) = \alpha\beta, \quad \operatorname{Var}(X) = \alpha\beta^{2}.
-\]
-
-The mgf of a gamma distribution is
-
-\[
-M(t) = (1-\beta t)^{-\alpha}, \quad t < \frac{1}{\beta}.
-\]
-
-Two important special cases of the gamma distribution are:
+\textbf{参数的意义}：
 \begin{itemize}
-\item $\Gamma(1,\beta)$ is the exponential distribution $\operatorname{Exp}(1/\beta)$ .
-\item $\Gamma(\alpha,2)$ with $\alpha = n/2$ is related to the chi-square distribution.
+\item $\alpha$：形状参数（shape），控制分布的形态
+\item $\beta$：尺度参数（scale），控制分布的宽窄
 \end{itemize}
 
-If $X_{1} \sim \Gamma(\alpha_{1},\beta)$ and $X_{2} \sim \Gamma(\alpha_{2},\beta)$ are independent, then $X_{1}+X_{2} \sim \Gamma(\alpha_{1}+\alpha_{2},\beta)$ .
-
-\subsection{The $\chi^{2}$-Distribution}\label{sub:chi-square-distribution}
-
-\begin{definition}[Chi-Square Distribution]\label{def:chi-square}
-Let $Z_{1},Z_{2},\ldots,Z_{n}$ be iid $N(0,1)$ random variables. Then the random variable
-
+\textbf{均值与方差}：
 \[
-X = \sum_{i=1}^{n} Z_{i}^{2}
+\mathbb{E}X = \alpha\beta, \quad \text{var}(X) = \alpha\beta^{2}.
 \]
 
-is said to have a chi-square distribution with $n$ degrees of freedom. We write $X \sim \chi^{2}(n)$ .
+\textbf{两个重要特例}：
+\begin{itemize}
+\item $\Gamma(1, \beta) = \text{Exp}(1/\beta)$（指数分布）
+\item $\Gamma(n/2, 2)$ = 卡方分布
+\end{itemize}
+
+\beginremark}[可加性]
+若 $X_1 \sim \Gamma(\alpha_1, \beta)$，$X_2 \sim \Gamma(\alpha_2, \beta)$ 独立，则 $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$。
+\end remark}
+
+\subsection{卡方分布}\label{sub:chi-square-ch3}
+
+\textbf{核心问题}：如果我们将多个标准正态随机变量平方后求和，这个新变量的分布是什么？
+
+\begin{definition}[卡方分布]\label{def:chi-square-ch3}
+设 $Z_1, Z_2, \ldots, Z_n \sim N(0, 1)$ iid，则
+\[
+X = \sum_{i=1}^{n} Z_i^2 \sim \chi^{2}(n).
+\]
 \end{definition}
 
-The chi-square distribution is a special case of the gamma distribution with $\alpha = n/2$ and $\beta = 2$ . That is, $\chi^{2}(n) \equiv \Gamma(n/2,2)$ .
+卡方分布是 $\Gamma(n/2, 2)$ 的特例。
 
-The pdf of $X \sim \chi^{2}(n)$ is
-
+\textbf{均值与方差}：
 \[
-f(x) = \begin{cases}
-\frac{1}{\Gamma(n/2)2^{n/2}} x^{n/2-1} e^{-x/2} & x > 0 \\
-0 & \text{elsewhere}.
-\end{cases}
+\mathbb{E}X = n, \quad \text{var}(X) = 2n.
 \]
 
-The mean and variance of a chi-square distribution are
+\textbf{可加性}：若 $X_1 \sim \chi^2(m)$，$X_2 \sim \chi^2(n)$ 独立，则 $X_1 + X_2 \sim \chi^2(m+n)$。
 
-\[
-E(X) = n, \quad \operatorname{Var}(X) = 2n.
-\]
+\textbf{为什么重要？} 样本方差的抽样分布与卡方分布紧密相连——这使得它成为方差估计和假设检验的核心工具。
 
-The chi-square distribution has the additive property: if $X_{1} \sim \chi^{2}(m)$ and $X_{2} \sim \chi^{2}(n)$ are independent, then $X_{1}+X_{2} \sim \chi^{2}(m+n)$ .
+\subsection{贝塔分布}\label{sub:beta-distribution-ch3}
 
-\subsection{The $\beta$-Distribution}\label{sub:beta-distribution}
+与伽马分布类似，贝塔分布也是定义在 $(0,1)$ 区间上的连续分布，在建模概率时特别有用。
 
-\begin{definition}[Beta Distribution]\label{def:beta-distribution}
-A random variable $X$ is said to have a beta distribution with parameters $\alpha > 0$ and $\beta > 0$ if its pdf is
-
+\begin{definition}[贝塔分布]\label{def:beta-distribution-ch3}
+若 $X$ 的 pdf 为
 \[
 f(x) = \begin{cases}
 \frac{1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1} & 0 < x < 1 \\
 0 & \text{elsewhere},
 \end{cases}
 \]
-
-where $B(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$ is the beta function.
+其中 $B(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$，则称 $X \sim \text{Beta}(\alpha, \beta)$。
 \end{definition}
 
-The mean and variance of $X \sim \operatorname{Beta}(\alpha,\beta)$ are
-
+\textbf{均值与方差}：
 \[
-E(X) = \frac{\alpha}{\alpha+\beta}, \quad \operatorname{Var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^{2}(\alpha+\beta+1)}.
+\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \text{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
 \]
 
-Note that $\operatorname{Beta}(1,1)$ is the uniform distribution on $(0,1)$ .
+\textbf{特别地}：$\text{Beta}(1,1) = \text{Uniform}(0,1)$。
 
-\section{The Normal Distribution}\label{sec:normal-distribution}
+\textbf{贝叶斯视角}：在贝叶斯统计中，当我们用贝塔分布作为二项分布参数 $p$ 的先验时，后验分布仍然是贝塔分布——这称为\textbf{共轭先验}。
 
-The normal distribution is one of the most important distributions in statistics.
+\section{3.4 正态分布：统计学的女王}\label{sec:normal-distribution-ch3}
 
-\begin{definition}[Normal Distribution]\label{def:normal-distribution}
-A random variable $X$ is said to have a normal distribution with parameters $\mu \in \mathbb{R}$ and $\sigma^{2} > 0$ if its pdf is
+在所有概率分布中，\textbf{正态分布}占据至高无上的地位。它是统计推断、计量经济学、信号处理等领域的基石。
 
+\textbf{为什么正态分布如此特殊？} 原因有三：
+\begin{enumerate}
+\item \textbf{中心极限定理}：大量独立小因素的总和近似正态分布
+\item \textbf{数学上的优雅性}：正态分布的线性组合仍是正态分布
+\item \textbf{可解释的参数}：均值和方差都有直观含义
+\end{enumerate}
+
+\begin{definition}[正态分布]\label{def:normal-distribution-ch3}
+若 $X$ 的 pdf 为
 \[
-f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}} \right\}, \quad -\infty < x < \infty.
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left\{ -\frac{(x-\mu)^2}{2\sigma^2} \right\}, \quad -\infty < x < \infty,
 \]
-
-We write $X \sim N(\mu,\sigma^{2})$ .
+则称 $X$ 服从正态分布，记作 $X \sim N(\mu, \sigma^2)$。
 \end{definition}
 
-When $\mu = 0$ and $\sigma^{2} = 1$ , we say that $X$ has a standard normal distribution, denoted by $Z \sim N(0,1)$ . The pdf of $Z$ is
+特别地，$N(0,1)$ 称为\textbf{标准正态分布}，其 pdf 记作 $\phi(z)$，cdf 记作 $\Phi(z)$。
 
+\textbf{标准化}：若 $X \sim N(\mu, \sigma^2)$，则 $Z = \frac{X-\mu}{\sigma} \sim N(0,1)$。
+
+这使得任何正态概率计算都能转化为标准正态计算：
 \[
-\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^{2}/2}, \quad -\infty < z < \infty,
+\mathbb{P}(X \leq x) = \Phi\!\left(\frac{x-\mu}{\sigma}\right).
 \]
 
-and the cdf is $\Phi(z) = P(Z \leq z)$ .
+\begin{example}[正态概率计算]\label{ex:normal-prob-ch3}
+设 $X \sim N(100, 225)$（即 $\sigma=15$），求 $\mathbb{P}(X < 85)$。
 
-If $X \sim N(\mu,\sigma^{2})$ , then the standardized variable $Z = (X-\mu)/\sigma \sim N(0,1)$ . This property is extremely useful for computing probabilities:
+解：$Z = \frac{85-100}{15} = -1$，所以 $\mathbb{P}(X < 85) = \Phi(-1) \approx 0.1587$。
+\end{example}
 
+\begin theorem}[正态分布的线性组合]\label{th:normal-linear-combination-ch3}
+若 $X_1 \sim N(\mu_1, \sigma_1^2)$，$X_2 \sim N(\mu_2, \sigma_2^2)$ 独立，则对任意常数 $a, b$，
 \[
-P(X \leq x) = P\!\left(Z \leq \frac{x-\mu}{\sigma}\right) = \Phi\!\left(\frac{x-\mu}{\sigma}\right).
+aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2).
 \]
+\endtheorem}
 
-The mean and variance of $X \sim N(\mu,\sigma^{2})$ are $E(X) = \mu$ and $\operatorname{Var}(X) = \sigma^{2}$ .
+\textbf{为什么这个性质重要？} 它意味着正态分布在线性变换下封闭——这使得正态分布成为线性模型的理论基础。
 
-The mgf of $X$ is
+\beginremark}[高斯的贡献]
+正态分布由卡尔·弗里德里希·高斯（Carl Friedrich Gauss）在 1809 年研究测量误差时提出。尽管拉普拉斯更早讨论过误差分布，但高斯的工作使正态分布在统计学中占据了核心地位。这也解释了为什么正态分布常被称为"高斯分布"。
+\end remark}
 
+\section{3.5 多元正态分布}\label{sec:multivariate-normal-ch3}
+
+正态分布向高维的自然推广。
+
+\subsection{二元正态分布}
+
+\begin{definition}[二元正态分布]\label{def:bivariate-normal-ch3}
+若 $(X_1, X_2)$ 的联合 pdf 为
 \[
-M(t) = \exp\left\{\mu t + \frac{\sigma^{2}t^{2}}{2}\right\}.
+f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{Q(x_1, x_2)}{2(1-\rho^2)} \right\},
 \]
+其中 $Q = \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^2}{\sigma_2^2}$，则称 $(X_1, X_2)$ 服从二元正态分布，记作 $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$。
+\end{definition}
 
-\begin{theorem}[Linear Combinations of Normals]\label{ex:normal-linear-combination}
-If $X_{1} \sim N(\mu_{1},\sigma_{1}^{2})$ and $X_{2} \sim N(\mu_{2},\sigma_{2}^{2})$ are independent, then for any constants $a$ and $b$ ,
-
-\[
-aX_{1} + bX_{2} \sim N(a\mu_{1}+b\mu_{2}, a^{2}\sigma_{1}^{2}+b^{2}\sigma_{2}^{2}).
-\]
-
-More generally, any linear combination of independent normal random variables is normally distributed.
-\end{theorem}
-
-\section{The Multivariate Normal Distribution}\label{sec:multivariate-normal}
-
-\subsection{Bivariate Normal Distribution}\label{sub:bivariate-normal-ch3}
-
-We say that $(X_{1},X_{2})$ has a bivariate normal distribution if the joint pdf is given by
-
-\[
-f(x_{1},x_{2}) = \frac{1}{2\pi\sigma_{1}\sigma_{2}\sqrt{1-\rho^{2}}} \exp\left\{ -\frac{1}{2(1-\rho^{2})} \left[ \frac{(x_{1}-\mu_{1})^{2}}{\sigma_{1}^{2}} - 2\rho\frac{(x_{1}-\mu_{1})(x_{2}-\mu_{2})}{\sigma_{1}\sigma_{2}} + \frac{(x_{2}-\mu_{2})^{2}}{\sigma_{2}^{2}} \right] \right\},
-\]
-
-for $-\infty < x_{1} < \infty$ , $-\infty < x_{2} < \infty$ , where $\mu_{1} \in \mathbb{R}$ , $\mu_{2} \in \mathbb{R}$ , $\sigma_{1} > 0$ , $\sigma_{2} > 0$ , and $-1 < \rho < 1$ . We write $(X_{1},X_{2}) \sim N(\mu_{1},\mu_{2},\sigma_{1}^{2},\sigma_{2}^{2},\rho)$ .
-
-The parameters have the following interpretations:
+\textbf{五个参数的含义}：
 \begin{itemize}
-\item $E(X_{1}) = \mu_{1}$ and $E(X_{2}) = \mu_{2}$ .
-\item $\operatorname{Var}(X_{1}) = \sigma_{1}^{2}$ and $\operatorname{Var}(X_{2}) = \sigma_{2}^{2}$ .
-\item $\rho$ is the correlation coefficient between $X_{1}$ and $X_{2}$ .
+\item $\mu_1, \mu_2$：边缘分布的均值
+\item $\sigma_1^2, \sigma_2^2$：边缘分布的方差
+\item $\rho$：相关系数
 \end{itemize}
 
-\begin{theorem}[Properties of Bivariate Normal]\label{ex:bivariate-normal-properties-ch3}
-If $(X_{1},X_{2}) \sim N(\mu_{1},\mu_{2},\sigma_{1}^{2},\sigma_{2}^{2},\rho)$ , then:
-
+\begin theorem}[二元正态的性质]\label{th:bivariate-normal-properties-ch3}
+若 $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$，则：
 \begin{enumerate}
-\item The marginal distributions are $X_{1} \sim N(\mu_{1},\sigma_{1}^{2})$ and $X_{2} \sim N(\mu_{2},\sigma_{2}^{2})$ .
-\item The conditional distribution of $X_{2}$ given $X_{1}=x_{1}$ is normal with mean and variance:
-\[
-E(X_{2}\mid x_{1}) = \mu_{2} + \rho\frac{\sigma_{2}}{\sigma_{1}}(x_{1}-\mu_{1}), \quad \operatorname{Var}(X_{2}\mid x_{1}) = \sigma_{2}^{2}(1-\rho^{2}).
-\]
-\item $X_{1}$ and $X_{2}$ are independent if and only if $\rho = 0$ .
-\item Any linear combination $aX_{1}+bX_{2}$ has a normal distribution.
+\item 边缘分布：$X_1 \sim N(\mu_1, \sigma_1^2)$，$X_2 \sim N(\mu_2, \sigma_2^2)$
+\item 条件分布：$X_2 \mid X_1 = x_1 \sim N(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1-\mu_1), \ \sigma_2^2(1-\rho^2))$
+\item $X_1 \Perp X_2 \iff \rho = 0$（正态独有的"不相关 $\Rightarrow$ 独立"）
+\item 任意线性组合 $aX_1 + bX_2$ 服从正态分布
 \end{enumerate}
-\end{theorem}
+\endtheorem}
 
-\section{$t$- and $F$-Distributions}\label{sec:t-f-distributions}
+\textbf{关键洞察}：条件均值是 $x_1$ 的线性函数。这意味着给定一个变量，另一个变量的最佳预测也是线性的。
 
-\subsection{The $t$-Distribution}\label{sub:t-distribution-ch3}
+\section{3.6 $t$ 分布与 $F$ 分布}\label{sec:t-f-distributions-ch3}
 
-\begin{definition}[$t$-Distribution]\label{def:t-distribution-ch3}
-Let $Z \sim N(0,1)$ and $X \sim \chi^{2}(n)$ be independent. Then the random variable
+这两个分布起源于一个现实问题：\textbf{当总体方差未知时，如何进行推断？}
 
+\subsection{$t$ 分布}\label{sub:t-distribution-ch3}
+
+\begin{definition}[$t$ 分布]\label{def:t-distribution-ch3}
+设 $Z \sim N(0,1)$，$X \sim \chi^2(n)$ 独立，则
 \[
-T = \frac{Z}{\sqrt{X/n}}
+T = \frac{Z}{\sqrt{X/n}} \sim t(n).
 \]
-
-is said to have a $t$-distribution with $n$ degrees of freedom. We write $T \sim t(n)$ .
 \end{definition}
 
-The pdf of $T \sim t(n)$ is
-
+\textbf{均值与方差}：
 \[
-f(t) = \frac{\Gamma((n+1)/2)}{\sqrt{n\pi}\,\Gamma(n/2)} \left(1+\frac{t^{2}}{n}\right)^{-(n+1)/2}, \quad -\infty < t < \infty.
+\mathbb{E}T = 0 \ (n>1), \quad \text{var}(T) = \frac{n}{n-2} \ (n>2).
 \]
 
-The mean and variance of $T$ are
+\textbf{与正态的关系}：当 $n \to \infty$ 时，$t(n) \xrightarrow{d} N(0,1)$。
 
+\textbf{直观理解}：分子 $Z$ 是标准正态，分母 $\sqrt{X/n}$ 估算了 $Z$ 的标准差。当 $n$ 小时，这个估算很不稳定，所以 $t$ 分布比正态分布有更厚的尾部。$n=1$ 时得到柯西分布——这是一个均值不存在的"危险"分布。
+
+\begin{example}[$t$ 分布应用]\label{ex:t-distribution-ch3}
+设 $T \sim t(10)$，求 $\mathbb{P}(|T| > 2.228)$。
+
+查表得 $t_{0.025, 10} = 2.228$，所以 $\mathbb{P}(|T| > 2.228) = 0.05$。
+\end{example}
+
+\subsection{$F$ 分布}\label{sub:f-distribution-ch3}
+
+\begin{definition}[$F$ 分布]\label{def:f-distribution-ch3}
+设 $X_1 \sim \chi^2(m)$，$X_2 \sim \chi^2(n)$ 独立，则
 \[
-E(T) = 0 \quad (n > 1), \quad \operatorname{Var}(T) = \frac{n}{n-2} \quad (n > 2).
+F = \frac{X_1/m}{X_2/n} \sim F(m, n).
 \]
-
-As $n \to \infty$ , $t(n) \xrightarrow{d} N(0,1)$ .
-
-When $n=1$ , the $t$-distribution is the Cauchy distribution.
-
-\subsection{The $F$-Distribution}\label{sub:f-distribution-ch3}
-
-\begin{definition}[$F$-Distribution]\label{def:f-distribution-ch3}
-Let $X_{1} \sim \chi^{2}(m)$ and $X_{2} \sim \chi^{2}(n)$ be independent. Then the random variable
-
-\[
-F = \frac{X_{1}/m}{X_{2}/n}
-\]
-
-is said to have an $F$-distribution with degrees of freedom $m$ and $n$ . We write $F \sim F(m,n)$ .
 \end{definition}
 
-The pdf of $F \sim F(m,n)$ is
-
+\textbf{均值与方差}：
 \[
-f(x) = \frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)} \left(\frac{m}{n}\right)^{m/2} x^{m/2-1} \left(1+\frac{mx}{n}\right)^{-(m+n)/2}, \quad x > 0.
+\mathbb{E}F = \frac{n}{n-2} \ (n>2), \quad \text{var}(F) = \frac{2n^2(m+n-2)}{m(n-2)^2(n-4)} \ (n>4).
 \]
 
-The mean and variance of $F$ are
+\textbf{倒数性质}：若 $F \sim F(m, n)$，则 $1/F \sim F(n, m)$。
 
-\[
-E(F) = \frac{n}{n-2} \quad (n > 2), \quad \operatorname{Var}(F) = \frac{2n^{2}(m+n-2)}{m(n-2)^{2}(n-4)} \quad (n > 4).
-\]
+\textbf{为什么重要？} $F$ 分布是方差分析（ANOVA）和回归分析的核心——我们用它比较两个方差是否相等。
 
-Note that if $F \sim F(m,n)$ , then $1/F \sim F(n,m)$ .
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{分布} & \textbf{参数} & \textbf{记号} \\ \hline
+二项 & 试验次数 $n$，成功概率 $p$ & $\text{Bin}(n,p)$ \\ \hline
+泊松 & 速率 $\lambda$ & $\text{Poisson}(\lambda)$ \\ \hline
+伽马 & 形状 $\alpha$，尺度 $\beta$ & $\Gamma(\alpha,\beta)$ \\ \hline
+卡方 & 自由度 $n$ & $\chi^2(n)$ \\ \hline
+贝塔 & 形状 $\alpha, \beta$ & $\text{Beta}(\alpha,\beta)$ \\ \hline
+正态 & 均值 $\mu$，方差 $\sigma^2$ & $N(\mu,\sigma^2)$ \\ \hline
+$t$ & 自由度 $n$ & $t(n)$ \\ \hline
+$F$ & 自由度 $m, n$ & $F(m,n)$ \\ \hline
+\end{tabular}
+\end{center}
 
-\section*{Exercises}\label{sec:chapter3-exercises}
+\section*{本章小结}
 
-\begin{exercise}{3.1.1}
-If the mgf of a random variable $X$ is $\left(\frac{1}{3}+\frac{2}{3}e^{t}\right)^{5}$ , find $P(X=2 \text{ or } 3)$ .
-\end{exercise}
+本章介绍了统计学中最重要的特殊分布家族：
 
-\begin{exercise}{3.1.3}
-If $X$ is $b(n,p)$ , show that $E(X/n) = p$ and $E[(X/n-p)^{2}] = p(1-p)/n$ .
-\end{exercise}
+\textbf{离散型}：伯努利 $\to$ 二项 $\to$ 负二项/几何 $\to$ 泊松 $\to$ 多项/超几何
 
-\begin{exercise}{3.1.11}
-Toss two nickels and three dimes at random. Make appropriate assumptions and compute the probability that there are more heads showing on the nickels than on the dimes.
-\end{exercise}
+\textbf{连续型}：均匀 $\to$ 指数 $\to$ 伽马 $\to$ 卡方 $\to$ 贝塔 $\to$ 正态 $\to$ $t$/$F$
 
-\begin{exercise}{3.2.1}
-Let $X$ have a Poisson distribution with parameter $\lambda = 3$ . Find $P(X=2)$ and $P(X \geq 1)$ .
-\end{exercise}
-
-\begin{exercise}{3.3.1}
-Show that the gamma function $\Gamma(\alpha)$ satisfies $\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$ .
-\end{exercise}
-
-\begin{exercise}{3.3.3}
-Let $X \sim \chi^{2}(10)$ . Find $P(X > 15.99)$ using R.
-\end{exercise}
-
-\begin{exercise}{3.4.1}
-Let $X \sim N(100,225)$ (i.e., $\sigma=15$ ). Find:
-\begin{enumerate}
-\item $P(X < 85)$ ;
-\item $P(90 < X < 115)$ ;
-\item $P(X > 120)$ .
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}{3.4.3}
-If $X_{1} \sim N(50,36)$ and $X_{2} \sim N(30,16)$ are independent, find the distribution of $Y = 2X_{1} - 3X_{2}$ .
-\end{exercise}
-
-\begin{exercise}{3.5.1}
-If $(X,Y)$ has a bivariate normal distribution with $\mu_{1}=2$ , $\mu_{2}=3$ , $\sigma_{1}^{2}=4$ , $\sigma_{2}^{2}=9$ , and $\rho=1/2$ , find $E(Y\mid X=2)$ and $\operatorname{Var}(Y\mid X=2)$ .
-\end{exercise}
-
-\begin{exercise}{3.6.1}
-Let $T \sim t(10)$ . Find $P(|T| > 2.228)$ .
-\end{exercise}
-
-\begin{exercise}{3.6.5}
-Let $F \sim F(5,10)$ . Find $E(F)$ (if it exists) and $P(F > 3.33)$ .
-\end{exercise}
-
-\userannotation{Chapter 3 covers special distributions: binomial, negative binomial, Poisson, gamma, chi-square, beta, normal, multivariate normal, $t$, and $F$ distributions. Key formulas: (3.1.2) binomial pmf, (3.2.1) Poisson pmf, (3.3.1) gamma pdf, (3.4.1) normal pdf. Important relationships: binomial $\to$ Poisson (large $n$, small $p$), chi-square is special gamma, $t$ and $F$ involve normal and chi-square.}
+\textbf{关键关系}：
+\begin{itemize}
+\item $\text{Bin}(n,p) \xrightarrow{n\to\infty, p\to0} \text{Poisson}(\lambda)$
+\item $\Gamma(n/2, 2) = \chi^2(n)$
+\item $t(n) \xrightarrow{n\to\infty} N(0,1)$
+\item $F(m,n)$ 中 $1/F \sim F(n,m)$
+\end{itemize}
