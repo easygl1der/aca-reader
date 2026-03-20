@@ -1,0 +1,434 @@
+
+\chapter{Sensitivity Analysis for the Average Causal Effect with Unmeasured Confounding}
+\chaptermark{Sensitivity Analysis for Average Causal Effect}\label{chapter::sensitivity-ACE}
+
+
+ 
+ 
+ 
+ 
+Cornfield-type sensitivity analysis works best for binary outcomes on the risk ratio scale, conditional on the observed covariates. Although  \citet{ding2016sensitivity} also proposed Cornfield-type sensitivity analysis methods for the average causal effect, they are not general enough and are not convenient to apply. Below I give a more direct approach to sensitivity analysis based on the conditional expectations of the potential outcomes. The advantage of this approach is that it can deal with commonly used estimators for the average causal effect under the sensitivity analysis framework. 
+The idea appeared in the early work of \citet{robins1999association} and \citet{scharfstein1999adjusting}. This chapter is based on \citet{luding2023flexible}'s recent formulation.  
+ 
+ 
+ 
+ 
+ The approach is closely related to the idea of deriving worse-case bounds on the average potential outcomes. I will first review the simpler idea of bounds, and then extend the approach to sensitivity analysis. 
+
+
+
+\section{Introduction}
+
+
+Recall the canonical setup of an observational study with  $\{  Z_i, X_i,  Y_i(1), Y_i(0) \}_{i=1}^n \iidsim  \{ Z, X, Y(1), Y(0) \}$ and focus on the average causal effect
+$$
+\tau = E\{ Y(1) - Y(0) \}.
+$$
+It decomposes to
+\begin{eqnarray*}
+\tau &=& \left[  E(Y\mid Z=1) \pr(Z=1) + E\{ Y(1)\mid Z=0 \} \pr(Z=0) \right]  \\
+&&- \left[   E\{ Y(0)\mid Z=1\} \pr(Z=1) + E(Y\mid Z=0)  \pr(Z=0)  \right] . 
+\end{eqnarray*}
+So the fundamental difficulty is to estimate the counterfactual means 
+$$
+E\{ Y(1)\mid Z=0 \}  ,\quad \quad E\{ Y(0)\mid Z=1\}.
+$$
+There are in general two extreme strategies to estimate them.
+
+
+
+We have discussed the first strategy in Part \ref{part::observational-studies}, which relies on ignorability. 
+Assuming
+\begin{eqnarray*}
+E\{ Y(1)\mid Z=1, X \} &=& E\{ Y(1)\mid Z=0, X \} ,\\ 
+E\{ Y(0)\mid Z=1, X \} &=& E\{ Y(0)\mid Z=0, X \}, 
+\end{eqnarray*}
+we can identify the counterfactual means by the observables:
+$$
+E\{ Y(1)\mid Z=0 \}  
+%= E\left[ E\{ Y(1)\mid Z=0, X \}  \mid Z=0 \right] 
+%= E\left[ E\{ Y(1)\mid Z=1, X \}  \mid Z=0\right] 
+= E\left\{  E( Y\mid Z=1, X )  \mid Z=0\right\}
+$$
+and, similarly, 
+$$
+E\{ Y(0)\mid Z=1\} = E\left\{  E( Y\mid Z=0, X )  \mid Z=1\right\} . 
+$$
+
+
+
+The second strategy in the next section assumes nothing except that the outcomes are bounded between $\underline{y}$ and $\overline{y}$. 
+This is natural for binary outcomes with $\underline{y} = 0$ and $\overline{y} = 1$. 
+With this assumption, the two counterfactual means are also bounded between $\underline{y}$ and $\overline{y}$, which implies the worst-case bounds on $\tau$. 
+Table \ref{table::manski-bounds} illustrates the basic idea and Chapter \ref{sec::manski-bounds} below reviews this strategy in more detail. 
+
+
+ 
+
+
+ 
+
+
+
+\begin{table}
+\centering
+\caption{Science Table with bounded outcome $ [\underline{y}, \overline{y}]$, where $\underline{y}$ and $\overline{y}$ are two constants}\label{table::manski-bounds}
+\begin{tabular}{ccccccc}
+\hline 
+$Z$ & $Y(1)$ & $Y(0)$ &  Lower $Y(1)$ & Upper $Y(1)$ & Lower $Y(0)$ & Upper $Y(0)$ \\
+\hline 
+$1$ & $Y_1(1)$ & ? & $Y_1(1)$  & $Y_1(1)$ & $\underline{y}$ & $\overline{y}$ \\
+$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$   \\
+$1$ & $Y_{n_1}(1)$ & ? &  $Y_{n_1}(1)$  & $Y_{n_1}(1)$ & $\underline{y}$ & $\overline{y}$ \\
+\hline 
+$0$ & ? & $Y_{n_1+1}(0)$ & $\underline{y}$ & $\overline{y}$& $Y_{n_1+1}(0)$ & $Y_{n_1+1}(0)$ \\ 
+$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$&$\vdots$ \\ 
+$0$ & ? & $Y_{n}(0)$ & $\underline{y}$ & $\overline{y}$& $Y_{n}(0)$ & $Y_{n}(0)$ \\
+\hline 
+\end{tabular}
+\end{table}
+
+
+\section{Manski-type worse-case bounds on the average causal effect without assumptions}\label{subsection::manski-bounds}
+\label{sec::manski-bounds}
+
+
+
+Assume that the outcome is bounded between $\underline{y}$ and $\overline{y}$.
+From the decomposition
+$$
+E\{  Y(1) \} = E\{  Y(1) \mid Z=1\} \pr(Z=1)  +  E\{  Y(1) \mid Z=0\} \pr(Z=0)  ,
+$$
+we can derive that $E\{  Y(1) \}$ has lower bound
+$$
+E\{  Y \mid Z=1\} \pr(Z=1)  +   \underline{y} \pr(Z=0) 
+$$
+and upper bound
+$$
+E\{  Y \mid Z=1\} \pr(Z=1)  +  \overline{y} \pr(Z=0).
+$$
+Similarly, from the decomposition
+$$
+E\{  Y(0) \} = E\{  Y(0) \mid Z=1\} \pr(Z=1)  +  E\{  Y(0) \mid Z=0\} \pr(Z=0)  ,
+$$
+we can derive that $E\{  Y(0) \}$ has lower bound
+$$
+\underline{y}\pr(Z=1)  +  E\{  Y \mid Z=0\} \pr(Z=0) 
+$$
+and upper bound
+$$
+ \overline{y} \pr(Z=1)  +  E\{  Y \mid Z=0\} \pr(Z=0). 
+$$
+Combining these bounds, we can derive that the average causal effect $\tau = E\{  Y(1) \} - E\{  Y(0) \}$ has the lower bound
+$$
+E\{  Y \mid Z=1\} \pr(Z=1)  +   \underline{y} \pr(Z=0) - \overline{y} \pr(Z=1)  -  E\{  Y \mid Z=0\} \pr(Z=0) 
+$$
+and the upper bound
+$$
+ E\{  Y \mid Z=1\} \pr(Z=1)  +  \overline{y} \pr(Z=0) - \underline{y}\pr(Z=1)  -   E\{  Y \mid Z=0\} \pr(Z=0). 
+$$ 
+The length of the bounds is $\overline{y}-\underline{y}$. The bounds are not informative but are better than the a priori bounds $[\underline{y}-\overline{y}, \overline{y}-\underline{y}]$ with length $2(\overline{y}-\underline{y})$. Without further assumptions, the observed data distribution does not uniquely determine $\tau$. In this case, we say that $\tau$ is {\it partially identified}, with the formal definition below. 
+
+
+\begin{definition}
+[partial identification]\label{def::partial-identification}
+A parameter $\theta$ is partially identified if the observed data distribution is compatible with multiple values of $\theta$. 
+\end{definition}
+
+
+Compare Definitions \ref{def::nonparametric-identification} and \ref{def::partial-identification}. If the parameter $\theta$ is uniquely determined by the observed data distribution, then it is identifiable; otherwise, it is only partially identifiable.  Therefore, $\tau$ is identifiable with the ignorability assumption, but only partially identifiable without the ignorability assumption. 
+
+
+
+
+\citet{cochran1953} used the idea of worse-case bounds in surveys with missing data but abandoned the idea because it often gives very conservative results. Similarly, the above worst-case bounds on $\tau$ are often uninteresting from a practical perspective because they often cover $0$.  Moreover, this strategy does not apply to the settings with unbounded outcomes. 
+
+
+
+Manski applied the idea to causal inference \citep{manski1990nonparametric} and many other econometric models \citep{manski2003partial}. 
+This idea of bounding causal parameters with minimal assumptions is powerful when coupled with other qualitative assumptions. \citet{manski2003partial} surveyed many strategies. 
+For instance, we may believe that the treatment does not harm any units, so the monotonicity assumption holds:
+$
+Y(1)\geq Y(0) . 
+$
+Then the lower bound on $\tau$ is zero but the upper bound is unchanged. 
+Another type of assumption is 
+$Z = I\{  Y(1) \geq Y(0) \}$, that is, the treatment selection is based on the difference between the latent potential outcomes. This assumption can also improve the bounds on $\tau$. 
+A more detailed discussion of this approach is beyond the scope of this book. 
+
+ 
+ 
+
+
+ 
+\section{Sensitivity analysis for the average causal effect}
+
+
+ 
+The first strategy is optimistic and assumes that the potential outcomes do not differ across treatment and control groups, conditional on the observed covariates. The second strategy is pessimistic and does not infer the counterfactual means based on the observed data at all. The following strategy is in-between. 
+
+
+
+\subsection{Identification formulas}
+
+Define
+\begin{eqnarray*}
+\frac{ E\{ Y(1)\mid Z=1, X \} }{ E\{ Y(1)\mid Z=0, X \} } = \varepsilon_1(X), \\
+\frac{ E\{ Y(0)\mid Z=1, X \} }{ E\{ Y(0)\mid Z=0, X \} } = \varepsilon_0(X) ,
+\end{eqnarray*}
+which are the sensitivity parameters. For simplicity, we can further assume that they are constant independent of $X$. In practice, we need to fix them or vary them in a pre-specified range. Recall that $\mu_1(X) = E(Y\mid Z=1, X)$ and $\mu_0(X) = E(Y\mid Z=0, X)$ are the conditional mean functions of the observed outcomes under treatment and control, respectively. We can identify the two counterfactual means and the average causal effect as follows. 
+
+\begin{theorem}
+\label{thm::outcome-reg-sensitivity}
+With known $\varepsilon_1(X)$ and $ \varepsilon_0(X) $, we have 
+\begin{eqnarray*}
+E\{ Y(1)\mid Z=0 \}   &=& E\left\{\mu_1(X)   / \varepsilon_1(X)  \mid Z=0\right\},\\ 
+E\{ Y(0)\mid Z=1 \}   &=& E\left\{\mu_0(X)    \varepsilon_0(X)  \mid Z=1\right\}
+\end{eqnarray*} 
+and therefore
+\begin{eqnarray}
+\tau & = & E\{ ZY + (1-Z) \mu_1(X)   / \varepsilon_1(X)\}  \nonumber  \\
+ && - E\{ Z \mu_0(X)    \varepsilon_0(X) + (1-Z)Y\}  \label{eq::predictive}\\
+& = & E\{ Z \mu_1(X) + (1-Z) \mu_1(X)   / \varepsilon_1(X)\}  \nonumber \\
+&&- E\{ Z \mu_0(X)    \varepsilon_0(X) + (1-Z) \mu_0(X)\}. \label{eq::projective}
+\end{eqnarray}
+\end{theorem}
+
+
+ 
+
+
+I leave the proof of Theorem \ref{thm::outcome-reg-sensitivity} to Problem \ref{hw::proof-theorem-1-sa}. 
+With the fitted outcome model, \eqref{eq::predictive} and \eqref{eq::projective} motivate the following predictive and projective estimators for $\tau$:
+\begin{eqnarray*}
+\hat\tau^{\textup{pred}} &=&\left\{  n^{-1}\sumn Z_i Y_i + n^{-1} \sumn (1-Z_i) \hat{\mu}_1(X_i)   / \varepsilon_1(X_i)  \right\} \\
+&&- \left\{ n^{-1}  \sumn Z_i \hat{\mu}_0(X_i)    \varepsilon_0(X_i) + n^{-1} \sumn (1-Z_i) Y_i \right\},
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\hat{\tau}^{\textup{proj}}&=&\left\{ n^{-1}\sumn Z_{i}\hat{\mu}_{1}(X_{i})+n^{-1}\sumn(1-Z_{i})\hat{\mu}_{1}(X_{i})/\varepsilon_{1}(X_{i})\right\} \\
+&&-\left\{ n^{-1}\sumn Z_{i}\hat{\mu}_{0}(X_{i})\varepsilon_{0}(X_{i})+n^{-1}\sumn(1-Z_{i})\hat{\mu}_{0}(X_{i})\right\}.
+\end{eqnarray*} 
+The terminology ``predictive'' and ``projective'' is from the survey sampling literature \citep{firth1998robust, ding2018causal}; see also Chapter \ref{sec::understand-lin-predict}. The estimators $\hat\tau^{\textup{pred}} $ and $\hat{\tau}^{\textup{proj}}$ differ slightly: the former uses the observed outcomes when available, whereas the latter replaces the observed outcomes with the fitted values. 
+
+
+
+
+
+More interesting, we can also identify $\tau$ by an inverse probability weighting formula.
+
+\begin{theorem}\label{thm::ipw-sensitivity}
+With known $\varepsilon_1(X)$ and $ \varepsilon_0(X) $, we have 
+\begin{eqnarray*} 
+E\{ Y(1) \} = 
+E\left\{ w_1(X) \frac{Z}{e(X)}  Y  \right\}  ,\quad
+ E\{Y(0)\} = E\left\{ w_0(X) \frac{1-Z}{1-e(X)} Y \right\},
+\end{eqnarray*}
+where
+$$
+w_1(X) = e(X) + \{1-e(X)\}/ \varepsilon_1(X) ,\quad
+w_0(X) = e(X)  \varepsilon_0(X) + 1- e(X). 
+$$
+\end{theorem}
+
+
+ 
+ 
+
+I leave the proof of Theorem \ref{thm::ipw-sensitivity} to Problem \ref{hw::proof-theorem-2-sa}. 
+Theorem \ref{thm::ipw-sensitivity} modifies the classic  IPW  formulas with two extra factors $w_1(X) $ and $w_0(X) $, which depend on both the propensity score and the sensitivity parameters. With the fitted propensity scores, Theorem \ref{thm::ipw-sensitivity} motivates the following estimators for $\tau$: 
+\begin{eqnarray*} 
+\hat\tau^{\textup{ht}} &=&  n^{-1} \sumn \frac{ \{ \hat{e}(X_i)\varepsilon_1(X_i) + 1-\hat{e}(X_i) \} Z_iY_i     }{  \varepsilon_1(X_i)  \hat e(X_i)  } \\
+&&- n^{-1} \sumn  \frac{ \{  \hat e(X_i)  \varepsilon_0(X_i) + 1- \hat e(X_i)  \} (1-Z_i) Y_i }{ 1- \hat e(X_i)} 
+\end{eqnarray*}
+and
+\begin{eqnarray*} 
+\hat\tau^{\textup{haj}} &=&   \sumn \frac{ \{ \hat{e}(X_i)\varepsilon_1(X_i) + 1-\hat{e}(X_i) \} Z_iY_i     }{  \varepsilon_1(X_i)  \hat  e(X_i)  }  \Big / \sumn \frac{Z_i}{ \hat{e}(X_i)  }   \\
+&&- n^{-1} \sumn  \frac{ \{  \hat  e(X_i)  \varepsilon_0(X_i) + 1- \hat e(X_i)  \} (1-Z_i) Y_i }{ 1- \hat e(X_i)} \Big / \sumn \frac{1-Z_i}{ 1- \hat{e}(X_i)  } .
+\end{eqnarray*}
+
+
+
+
+
+More interestingly, with fitted propensity score and outcome models, the following estimator for $\tau$ is doubly robust:
+\begin{eqnarray*}
+\hat{\tau}^{\textup{ht}} = \hat\tau^{\textup{ht}} 
+- n^{-1} \sumn \{Z_i- \hat e(X_i)\}  \left\{   \frac{  \hat  \mu_1(X_i) }{  \hat e(X_i) \varepsilon_1(X_i)  }    + \frac{  \hat  \mu_0(X_i)\varepsilon_0(X_i)  }{ 1-  \hat  e(X_i) } \right\}.
+\end{eqnarray*}
+That is, with known $\varepsilon_1(X_i) $ and $\varepsilon_0(X_i) $, the estimator  $\hat{\tau}^{\textup{dr}} $ is consistent for $\tau$ if either the propensity score model or the outcome model is correctly specified. We can use the bootstrap to approximate the variance of the above estimators. See \citet{luding2023flexible} for technical details. 
+
+
+
+
+When $\varepsilon_1(X_i)  =  \varepsilon_0(X_i) = 1$, the above estimators reduce to the predictive estimator, IPW estimator, and the doubly robust estimators introduced in Part \ref{part::observational-studies}. 
+
+
+
+\subsection{Example}
+\label{sec::eg-sensitivity-tau}
+
+
+\subsubsection{R functions for sensitivity analysis}
+
+
+The following \ri{R} function can compute the point estimates for sensitivity analysis. 
+
+\begin{lstlisting}
+OS_est_sa = function(z, y, x, out.family = gaussian, 
+                     truncps = c(0, 1), e1 = 1, e0 = 1)
+{
+     ## fitted propensity score
+     pscore   = glm(z ~ x, family = binomial)$fitted.values
+     pscore   = pmax(truncps[1], pmin(truncps[2], pscore))
+     
+     ## fitted potential outcomes
+     outcome1 = glm(y ~ x, weights = z, 
+                    family = out.family)$fitted.values
+     outcome0 = glm(y ~ x, weights = (1 - z), 
+                    family = out.family)$fitted.values
+     
+     ## outcome regression estimator
+     ace.reg  = mean(z*y) + mean((1-z)*outcome1/e1) - 
+                   mean(z*outcome0*e0) - mean((1-z)*y) 
+     ## IPW estimators
+     w1 = pscore + (1-pscore)/e1
+     w0 = pscore*e0 + (1-pscore)
+     ace.ipw0 = mean(z*y*w1/pscore) - 
+                   mean((1 - z)*y*w0/(1 - pscore))
+     ace.ipw  = mean(z*y*w1/pscore)/mean(z/pscore) - 
+                   mean((1 - z)*y*w0/(1 - pscore))/mean((1 - z)/(1 - pscore))
+     ## doubly robust estimator
+     aug = outcome1/pscore/e1 + outcome0*e0/(1-pscore)
+     ace.dr   = ace.ipw0 + mean((z-pscore)*aug)
+
+     return(c(ace.reg, ace.ipw0, ace.ipw, ace.dr))     
+}
+\end{lstlisting}
+
+I relegate the calculation of the standard errors to Problem \ref{hw::sensitivity-se}. 
+
+\subsubsection{Revisit Example \ref{eg::chan-bmi-ATE}}
+
+
+With 
+$$
+\varepsilon_1(X) = \varepsilon_0(X) \in \{1/2, 1/1.7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2\},
+$$ 
+we obtain an array of doubly robust estimates of $\tau$ based on the following \ri{R} code:
+\begin{lstlisting}
+> nhanes_bmi = read.csv("nhanes_bmi.csv")[, -1]
+> z = nhanes_bmi$School_meal
+> y = nhanes_bmi$BMI
+> x = as.matrix(nhanes_bmi[, -c(1, 2)])
+> x = scale(x)
+> 
+> 
+> E1 = c(1/2, 1/1.7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2)
+> E0 = c(1/2, 1/1.7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2)
+> EST = outer(E1, E0)
+> ll1 = length(E1)
+> ll0 = length(E0)
+> for(i in 1:ll1)
++   for(j in 1:ll0)
++     EST[i, j] = OS_est_sa(z, y, x, e1 = E1[i], e0 = E0[j])[4]
+\end{lstlisting}
+
+
+
+
+\begin{table}[ht]
+\centering
+\caption{Sensitivity analysis for the average causal effect}\label{table::sensitivity-ACE}
+\begin{tabular}{rrrrrrrrrr}
+  \hline
+ & 1/2 & 1/1.7 & 1/1.5 & 1/1.3 & 1 & 1.3 & 1.5 & 1.7 & 2 \\ 
+  \hline
+1/2 & 11.62 & 10.44 & 9.40 & 8.03 & 4.96 & 0.97 & -1.69 & -4.35 & -8.34 \\ 
+  1/1.7 & 9.22 & 8.05 & 7.00 & 5.64 & 2.57 & -1.42 & -4.08 & -6.75 & -10.74 \\ 
+  1/1.5 & 7.63 & 6.45 & 5.41 & 4.05 & 0.97 & -3.02 & -5.68 & -8.34 & -12.33 \\ 
+  1/1.3 & 6.03 & 4.86 & 3.81 & 2.45 & -0.62 & -4.61 & -7.27 & -9.94 & -13.93 \\ 
+  1 & 3.64 & 2.47 & 1.42 & 0.06 & -3.01 & -7.01 & -9.67 & -12.33 & -16.32 \\ 
+  1.3 & 1.80 & 0.63 & -0.42 & -1.78 & -4.85 & -8.85 & -11.51 & -14.17 & -18.16 \\ 
+  1.5 & 0.98 & -0.19 & -1.24 & -2.60 & -5.67 & -9.66 & -12.33 & -14.99 & -18.98 \\ 
+  1.7 & 0.36 & -0.82 & -1.86 & -3.23 & -6.30 & -10.29 & -12.95 & -15.61 & -19.60 \\ 
+  2 & -0.35 & -1.52 & -2.57 & -3.93 & -7.00 & -10.99 & -13.65 & -16.32 & -20.31 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+Table \ref{table::sensitivity-ACE} presents the point estimates.  
+The signs of the estimates are not sensitive to sensitivity parameters larger than 1, but they are quite sensitive to sensitivity parameters smaller than 1. When the participants of the meal plan tend to have higher BMI (that is, $\varepsilon_1(X) >1$ and $ \varepsilon_0(X)  > 1$), the average causal effect of the meal plan on BMI is negative. However, this conclusion can be quite sensitive if the participants of the meal plan tend to have lower BMI. 
+
+
+
+\section{Homework Problems}
+
+
+\paragraph{Proof of Theorem \ref{thm::outcome-reg-sensitivity}}\label{hw::proof-theorem-1-sa}
+
+Prove Theorem \ref{thm::outcome-reg-sensitivity}. 
+
+\paragraph{Proof of Theorem \ref{thm::ipw-sensitivity}}\label{hw::proof-theorem-2-sa}
+
+Prove Theorem \ref{thm::ipw-sensitivity}. 
+
+
+\paragraph{Standard errors in sensitivity analysis}\label{hw::sensitivity-se}
+
+Chapter \ref{sec::eg-sensitivity-tau} only presents the point estimates. Report the corresponding bootstrap standard errors. 
+
+  
+
+
+\paragraph{Sensitivity analysis for the average causal effect on the treated units $\tau_\textsc{T}$}\label{hw::att-sentivity-analysis}
+
+This problem extends Chapter \ref{chapter::ATT-and-other} to allow for unmeasured confounding for estimating
+$$
+\tau_\textsc{T} = E\{  Y(1) - Y(0)  \mid Z=1  \} 
+= E(Y\mid Z=1) - E\{  Y(0)  \mid Z=1  \} .
+$$
+We can easily estimate $E(Y\mid Z=1)$ by the sample moment, $\hat{\mu}_{\textsc{t}1} =   \sumn Z_i Y_i / \sumn Z_i$. The only counterfactual term is $E\{  Y(0)  \mid Z=1  \}$. Therefore, we only need the sensitivity parameter $ \varepsilon_0(X) $. We have the following two identification formulas with a known  $\varepsilon_0(X) .$
+
+\begin{theorem}
+\label{thm::att-reg-ipw}
+With known $\varepsilon_0(X) $, we have 
+ \begin{eqnarray*}
+E\{  Y(0)  \mid Z=1  \}  &=& E\left\{  Z \mu_0(X)  \varepsilon_0(X)    \right\} /e \\
+&=& E\left\{  e(X)\varepsilon_0(X) \frac{ 1-Z}{1-e(X)}  Y      \right\} /e,
+\end{eqnarray*}
+where $e = \pr(Z=1)$
+\end{theorem}
+
+
+Prove Theorem \ref{thm::att-reg-ipw}. 
+
+Remark:  Theorem \ref{thm::att-reg-ipw} motivates using $\hat{\tau}_{\textsc{t}}^* = \hat{\mu}_{\textsc{t}1}  - \hat{\mu}_{\textsc{t}0}^*$ to estimate $\tau_{\textsc{t}}$, where  
+ \begin{eqnarray*}
+\hat{\mu}_{\textsc{t}0}^\text{reg} &=& n_1^{-1} \sumn Z_i  \varepsilon_0(X_i) \hat  \mu_0(X_i) ,   \\
+\hat{\mu}_{\textsc{t}0}^\text{ht} &=& n_1^{-1} \sumn   \varepsilon_0(X_i) \hat  o(X_i) (1-Z_i) Y_i ,   \\
+\hat{\mu}_{\textsc{t}0}^\text{haj} &=&  \sumn   \varepsilon_0(X_i) \hat  o(X_i) (1-Z_i) Y_i  /  \sumn   \hat  o(X_i) (1-Z_i) , 
+\end{eqnarray*}
+with $  \hat  o(X_i) = \hat  e(X_i) / \{1- \hat  e(X_i)\}$ being the estimated conditional odds of the treatment given the observed covariates. 
+Moreover, we can construct the doubly robust estimator 
+$\hat{\tau}_{\textsc{t}}^\text{dr} = \hat{\mu}_{\textsc{t}1}  - \hat{\mu}_{\textsc{t}0}^\text{dr}$ for $\tau_{\textsc{t}}$, where
+$$
+\hat{\mu}_{\textsc{t}0}^\text{dr} = 
+\hat{\mu}_{\textsc{t}0}^\text{ht}  - n_1^{-1} \sumn \varepsilon_0(X_i) \frac{\hat e(X_i) - Z}{1-\hat e(X_i)}  \hat \mu_0(X_i)  . 
+$$
+\citet{luding2023flexible} provide more details. 
+
+
+
+\paragraph{R code}
+
+Implement the estimators in Problem \ref{hw::att-sentivity-analysis}. 
+Analyze the data used in Chapter \ref{sec::eg-sensitivity-tau}. 
+
+
+\paragraph{Recommended reading}
+
+ \citet{Rosenbaum::1983JRSSB} and \citet{imbens2003sensitivity} are two classic papers on sensitivity analysis which, however, involve more complicated procedures. 
+
+

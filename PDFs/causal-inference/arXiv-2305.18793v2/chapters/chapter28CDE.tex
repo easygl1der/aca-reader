@@ -1,0 +1,266 @@
+ 
+\chapter{Controlled Direct Effect}
+ \label{chapter::cde}
+
+
+The formulation of mediation analysis in Chapter \ref{chapter::mediation} relies on the nested potential outcomes, and fundamentally, some nested potential outcomes are not observable in any physical experiments. If we stick to the Popperian philosophy of science reviewed in Chapter  \ref{sec::popper-science}, we should only define causal parameters in terms of quantities that are observable under some experiments. This chapter discusses an alternative view of causal inference with an intermediate variable. In this view, we only define the direct effect but can not define the indirect effect. 
+
+
+
+
+
+\section{Definition of the controlled direct effect}
+
+
+We view $Z$ and $M$ as two treatment factors that can be manipulated, and define potential outcomes $Y(z,m)$ for $z=0,1$ and $m\in \mathcal{M}$. Based on these potential outcomes, we can define the {\it controlled direct effect} (CDE) below.
+
+\begin{definition}
+[CDE]
+Define
+$$
+\CDE (m)  = E\{  Y(1,m)  - Y(0,m)\}.
+$$
+\end{definition}
+  
+ 
+By definition, $\CDE (m) $ is the average causal effect of the treatment if the intermediate variable is fixed at $m$. 
+The parameter $\CDE(m)$ can capture the direct effect of the treatment holding the mediator at $m$. However, this formulation cannot capture the indirect effect. In particular, the parameter
+$
+E\{  Y(z,1) - Y(z,0)\}
+$
+only measures the effect of the mediator on the outcome holding the treatment at $z.$ This is not a meaningful definition of the indirect effect. 
+
+
+
+\section{Identification and estimation of the controlled direct effect}
+
+
+To identify $\CDE(m)$, we need the following assumption, which requires that $Z$ and $M$ are jointly randomized given $X$. 
+
+
+\begin{assumption}\label{assume::si-cde}
+Sequential ignorability requires
+$$
+Z\ind Y(z,m) \mid X, \quad M \ind  Y(z,m) \mid (Z,X)
+$$
+or, equivalently (see Problem \ref{para::sr-jr}),
+$$
+(Z,M) \ind  Y(z,m) \mid X.
+$$
+\end{assumption}
+
+I will focus on the case with a binary $Z$ and $M$. 
+Mathematically, we can just view this problem as an observational study with four treatment levels 
+$$
+(z,m) \in \{  (0,0), (0,1), (1,0), (1,1) \} .
+$$
+The following theorem extends the results for observational studies with a binary treatment, identifying
+$$
+\mu_{zm} = E\{  Y(z,m) \}
+$$
+based on outcome regression, IPW, and doubly robust estimation. 
+
+
+Define 
+$$ 
+\mu_{zm}(x) = E(Y\mid Z=z,M=m, X=x) 
+$$
+ as the outcome mean conditional on the treatment, mediator, and covariates. Define 
+\begin{eqnarray*}
+e_{zm}(x)  &=&  \pr(Z=z,M=m\mid X=x)  \\
+&=& \pr(Z=z\mid X=x) \pr( M=m\mid Z=z, X=x)
+\end{eqnarray*} 
+as the probability of the joint value of $Z$ and $M$ conditional on the covariates. 
+
+\begin{theorem}
+\label{thm::cde-identification}
+Under Assumption \ref{assume::si-cde}, we have
+$$
+\mu_{zm} = E\{  \mu_{zm}(X) \}
+= E \left\{   \frac{I(Z=z, M=m) Y}{  e_{zm}(X)  }  \right\} .
+$$
+Moreover, based on the working models $e_{zm}(X, \alpha) $ and $\mu_{zm}(X, \beta) $ for $e_{zm}(X) $ and $\mu_{zm}(X) $, respectively, we have the doubly robust   formula 
+$$
+\mu_{zm}^{\textup{dr}}  = E\{  \mu_{zm}(X, \beta) \} + E \left[   \frac{I(Z=z, M=m) \{ Y - \mu_{zm}(X, \beta)  \}}{  e_{zm}(X, \alpha)  }  \right],
+$$
+which equals $\mu_{zm} $ if either $e_{zm}(X, \alpha) = e_{zm}(X)$ or $\mu_{zm}(X, \beta)  = \mu_{zm}(X)$. 
+\end{theorem}
+
+
+
+The proof of Theorem \ref{thm::cde-identification} is similar to those for the standard unconfounded observational studies. Problem \ref{para::obs-multi-valued-Z} gives a general result. 
+Based on the outcome mean model, we can obtain $\hat{\mu}_{zm}(x) $ for $\mu_{zm}(x)$. Based on the treatment model, we can obtain $\hat{e}_z(x)$ for $\pr(Z=z\mid X = x)$; based on the intermediate variable model, we can obtain $\hat{e}_m(z,x)$ for $\pr(M=m\mid Z=z, X=x)$. We can then estimate $\mu_{zm} $ by outcome regression
+$$
+\hat{\mu}_{zm}^\text{reg} = n^{-1} \sumn  \hat{\mu}_{zm}(X_i),
+$$
+by IPW 
+\begin{eqnarray*}
+\hat{\mu}_{zm}^\text{ht} &=& n^{-1}\sumn  \frac{  I(Z_i=z, M_i=m) Y_i  }{  \hat{e}_z(X_i)  \hat{e}_m(z,X_i)  } , \\
+\hat{\mu}_{zm}^\text{haj} &=&  \sumn  \frac{  I(Z_i=z, M_i=m) Y_i  }{  \hat{e}_z(X_i)  \hat{e}_m(z,X_i)  } \Big /  \sumn  \frac{  I(Z_i=z, M_i=m)    }{  \hat{e}_z(X_i)  \hat{e}_m(z,X_i)  }, 
+\end{eqnarray*}
+or by augmented IPW
+$$
+\hat{\mu}_{zm}^\text{dr} = \hat{\mu}_{zm}^\text{reg}  +  n^{-1} \sumn  \frac{  I(Z_i=z, M_i=m) \{ Y_i - \hat{\mu}_{zm}(X_i)\}   }{  \hat{e}_z(X_i)  \hat{e}_m(z,X_i)  } .
+$$
+We can then estimate $\CDE(m)$ by $\hat{\mu}_{1m}^* - \hat{\mu}_{0m}^*\ (*=\text{reg}, \text{ht}, \text{haj}, \text{dr} )$  and use the bootstrap to approximate the standard error. 
+
+
+
+
+If we are willing to assume a linear outcome model, the controlled direct effect simplifies to the coefficient of the treatment. Example \ref{eg::cde-linear} below gives the details. 
+\begin{example}
+\label{eg::cde-linear}
+Under Assumption \ref{assume::si-cde} and a linear outcome model,
+$$
+E(Y\mid Z,M,X) = \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X,
+$$
+we can show that
+$
+\CDE(m) 
+$
+equals the coefficient $ \theta_1$, which coincides with the natural direct effect in the Baron--Kenny method. I relegate the proof to Problem \ref{problem::cde-linear}. 
+\end{example}
+
+
+
+
+
+
+
+\section{Discussion}
+
+The formulation of the controlled direct effect does not involve nested or a priori counterfactual potential outcomes, and its identification does not require the cross-world counterfactual independence assumption. The parameter $\CDE(m)$ can capture the direct effect of the treatment holding the mediator at $m$. However, this formulation cannot capture the indirect effect.  
+I summarize the causal frameworks for intermediate variables in Table \ref{table::causal-intermediate-frameworks}. 
+ 
+\begin{table}
+\centering 
+\caption{Causal frameworks for intermediate variables}\label{table::causal-intermediate-frameworks}
+\begin{tabular}{cccc}
+\hline 
+chapter & framework & direct effect & indirect effect   \\
+\hline 
+\ref{chapter::principal-stratification} & principal stratification & $\tau(1,1),\ \tau(0,0)$ & ?  \\
+\ref{chapter::mediation} & mediation analysis & $\NDE$ & $\NIE$  \\
+\ref{chapter::cde}& controlled direct effect & $\CDE(m)$ & ?  \\
+\hline 
+\end{tabular}
+\end{table} 
+ 
+The mediation analysis framework can decompose the total effect into natural direct and indirect effects, but it requires nested potential outcomes and cross-world independence. 
+The principal stratification and controlled direct effect frameworks cannot define indirect effects but they do not involve nested potential outcomes and cross-world independence.
+Moreover, the principal stratification framework does not necessarily require that $M$ lies on the causal pathway from the treatment to the outcome. However, its identification and estimation involves disentangling mixture distributions, which is a nontrivial task in statistics. 
+
+
+
+  
+  \section{Homework problems}
+
+\paragraph{$\CDE$ and $\NDE$}\label{problem::cde-nde}
+
+Show that under cross-world independence 
+$
+Y(z,m) \ind M(z') \mid X
+$
+for all $z,z'$ and $m$,  the conditional controlled direct effect $\CDE(m\mid x) = E\{  Y(1,m)  - Y(0,m)\mid X=x\}$ and the conditional natural direct effect $\NDE(x) = E\{   Y(1,M_0) - Y(0, M_0) \mid X=x  \}$ have the following relationship:
+$$
+\NDE(x) = \sum_m \CDE(m\mid x) \pr(M_0 = m\mid X=x)
+$$
+for a discrete $M$. Without the cross-world independence, does this relationship still hold in general? 
+  
+  
+  
+  \paragraph{Observational studies with a multi-valued treatment}\label{para::obs-multi-valued-Z}
+  
+Theorem \ref{thm::cde-identification} is a special case of the following theorem for unconfounded observational studies with multiple treatment levels \citep{imai2004causal, cattaneo2010efficient}. Below, I state the general problem and theorem. 
+
+
+
+Consider an observational study with a multi-valued treatment $Z \in \{ 1, \ldots, K \}$, covariates $X$, and outcome $Y$. Unit $i$ has $K$ potential outcomes $Y_i(1), \ldots, Y_i(K)$ corresponding to the $K$ treatment levels. In general, we can define causal effect in terms of contrasts of the potential outcomes:
+$$
+\tau_C  = \sum_{k=1}^K C_k   E\{  Y(k) \}
+$$
+where $  \sum_{k=1}^K C_k  = 0$. The canonical choice of the pairwise comparison
+$$
+\tau_{k,k'} = E\{   Y(k) - Y(k') \}.
+$$
+Therefore, the key is to identify and estimate the means of the potential outcomes $\mu_k  =  E\{  Y(k) \}$ under the ignorability and overlap assumptions below based on IID data of $(Z_i,  X_i, Y_i)_{i=1}^n$.
+
+
+
+\begin{assumption}
+\label{assume::ignorability-multi-valued-Z}
+$Z\ind \{ Y (1), \ldots, Y (K) \} \mid X$ and $\pr(Z = k \mid X) > 0$ for $k=1,\ldots, K.$
+\end{assumption}
+
+
+
+Define the generalized propensity score as
+$$
+e_k(X) = \pr(Z = k \mid X), 
+$$
+and define the conditional outcome mean as
+$$
+\mu_k(X) = E(   Y \mid Z=k,  X )
+$$
+for $k=1, \ldots, K.$ We have the following theorem.
+
+\begin{theorem}
+\label{thm::treatment-multi-valued-Z}
+Under Assumption \ref{assume::ignorability-multi-valued-Z}, we have
+$$
+\mu_{k} = E\{  \mu_{k}(X) \}
+= E \left\{   \frac{I(Z = k) Y}{  e_{k}(X)  }  \right\} .
+$$
+Moreover, based on the working models $e_{k}(X, \alpha) $ and $\mu_{k}(X, \beta) $ for $e_{k}(X) $ and $\mu_{k}(X) $, respectively, we have the doubly robust  formula 
+$$
+\mu_{k}^{\textup{dr}}  = E\{  \mu_{k}(X, \beta) \} + E \left[   \frac{I(Z=k) \{ Y - \mu_{k}(X, \beta)  \}}{  e_{k}(X, \alpha)  }  \right],
+$$
+which equals $\mu_{k} $ if either $e_{k}(X, \alpha) = e_{k}(X)$ or $\mu_{k}(X, \beta)  = \mu_{k}(X)$. 
+\end{theorem}
+
+
+Prove Theorem \ref{thm::treatment-multi-valued-Z}.
+
+
+Remark: Theorem \ref{thm::cde-identification} is a special case of Theorem \ref{thm::treatment-multi-valued-Z} if we view the $(Z,M)$ in Theorem \ref{thm::cde-identification} as a treatment with four levels. The $  \CDE (m) $ is a special case of $\tau_C $. 
+
+
+  
+  \paragraph{$\CDE$ in the linear outcome model}\label{problem::cde-linear}
+  
+  Show that under Assumption \ref{assume::si-cde}, if $E(Y\mid Z, M, X ) = \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X$, then
+  $$
+  \CDE (m) = \theta_1
+  $$
+  for all $m$;
+  if $E(Y\mid Z, M, X ) = \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM +    \theta_4\tran X$, then
+  $$
+\CDE(m) =   \theta_1 + \theta_3 m. 
+  $$
+  
+  
+    \paragraph{$\CDE$ in the logistic outcome model}\label{problem::cde-logit}
+  
+  Show that for a binary outcome, under Assumption \ref{assume::si-cde}, if 
+  $$
+  \logit \{ \pr(Y = 1\mid Z, M, X ) \} = \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X ,
+  $$ 
+  then
+  $$
+  \CDE (m) = E\{ \expit( \theta_0 + \theta_1  + \theta_2 m +   \theta_4\tran X ) - \expit( \theta_0    + \theta_2 m +   \theta_4\tran X ) \} ; 
+  $$
+  if 
+  $$
+  \logit \{ \pr(Y = 1\mid Z, M, X ) \} = \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM +    \theta_4\tran X,
+  $$ 
+  then
+  $$
+\CDE(m) =  E\{ \expit( \theta_0 + \theta_1  + \theta_2 m  +\theta_3 m +   \theta_4\tran X ) - \expit( \theta_0    + \theta_2 m +   \theta_4\tran X ) \}.
+  $$
+  
+  
+  
+  \paragraph{Recommended reading} 
+
+\citet{nguyen2020clarifying} provided a friendly review of of the topics in Chapters \ref{chapter::mediation} and \ref{chapter::cde}. 
+

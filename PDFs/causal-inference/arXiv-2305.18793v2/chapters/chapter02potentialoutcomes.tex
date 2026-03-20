@@ -1,0 +1,333 @@
+\chapter{Potential Outcomes}
+ \label{chapter::potential-outcomes}
+
+
+\section{Experimentalists' view of causal inference}
+
+
+
+
+
+
+\citet{rubin1975bayesian} and \citet{holland1986statistics} made up the aphorism:
+\begin{quote}
+``no causation without manipulation.''
+\end{quote}
+Not everybody agrees with this point of view. However, it is quite helpful to clarify ambiguity in thinking about causal relationships. This book follows this view and defines causal effects using the potential outcomes framework \citep{Neyman:1923, Rubin:1974}. In this framework, an experiment, or at least a thought experiment, has a treatment, and we are interested in its effect on an outcome or multiple outcomes. Sometimes, the {\it treatment} is also called an {\it intervention} or a {\it manipulation}. 
+
+
+\begin{example}\label{eg::aspirin}
+If we are interested in the effect of taking aspirin or not on the relief of headaches, the intervention is taking aspirin or not. 
+\end{example}
+
+
+
+\begin{example}\label{eg::jobtraining}
+If we are interested in the effect of participating in a job training program or not on employment and wage, the intervention is participating in the job training program or not. 
+\end{example}
+
+
+\begin{example}\label{eg::classroom}
+If we are interested in the effect of studying in a small classroom or a large classroom on standardized test scores, the intervention is studying in a small classroom or not. 
+\end{example} 
+
+\begin{example}\label{eg::gotv}
+\citet{gerber2008social} were interested in the effect of different get-out-to-vote messages on the voting behavior. The intervention is the different get-out-to-vote messages. 
+\end{example} 
+
+
+\begin{example}\label{eg::bmi}
+\citet{pearl2018does} claimed that we could infer the effect of obesity on life span. 
+A popular measure of obesity is the body mass index (BMI), defined as the body mass divided by the square of the body height in units of kg/m$^2$. So the intervention can be different levels of BMI. 
+\end{example} 
+
+
+However, there are different levels of ambiguity in the interventions above. The meanings of interventions in Examples \ref{eg::aspirin}--\ref{eg::gotv} are relatively clear, but the meaning of intervention on BMI in Example \ref{eg::bmi} is less clear. In particular, we can imagine different versions of BMI reduction: healthier diet, more physical exercise, bariatric surgery, etc. These different versions of the intervention can have quite different effects on the outcome. In this book, we will view the intervention in Example \ref{eg::bmi} as ill-defined without further clarifications.
+
+ 
+
+Another ill-defined intervention is race. Racial discrimination is an important issue in the labor market, but it is not easy to imagine an experiment to change the race of any experimental unit. \citet{bertrand2004emily} give an interesting experiment that partially answers the question. 
+
+\begin{example}\label{eg::race}
+Recall Example \ref{eg::bertrand2004emily-chapter1}. 
+\citet{bertrand2004emily} randomly change the names on the resumes, and compare the callback rates of resumes with African-American- or White-sounding names. For each resume, the intervention is the binary indicator of a Black-sounding or White-sounding name, and the outcome is the binary indicator of callback. I analyzed the following two-by-two table in Section \ref{sec::twobytwotables-withresume}: 
+
+\begin{center} 
+\begin{tabular}{ccc}
+\hline 
+ &   callback & no  callback \\
+ \hline 
+Black  & 157 & 2278\\
+White   & 235 & 2200\\
+\hline 
+\end{tabular}
+\end{center}
+
+From the above, we can compare the probabilities of being called back among  Black-sounding and White-sounding names:
+$$
+\frac{157}{2278 + 157} - \frac{235}{  2200 + 235 } = 6.45\% - 9.65\% = - 3.20\% < 0
+$$
+with $p$-value from the Fisher exact test being much smaller than $0.001$. 
+\end{example}
+
+In \citet{bertrand2004emily}'s experiment, the treatment is the {\it perceived race} which can be manipulated by experimenters. They design an experiment to answer a well-defined causal question.  However, critics may raise the concern that the causal effect of the perceived race may differ from the causal effect of the actual race. 
+
+
+
+\section{Formal notation of potential outcomes}
+\label{sec::po-sciencetable}
+
+Consider a study with $n$ experimental units indexed by $i= 1, \ldots, n$. As a starting point, we focus on a treatment with two levels: $1$ for the treatment and $0$ for the control. For each unit $i$, the outcome of interest $Y$ has two versions: 
+$$
+Y_i(1)  \text{ and } Y_i(0),
+$$ 
+which are potential outcomes under the hypothetical interventions 1 and 0. 
+%The founding father of the Statistics Department at the University of California Berkeley, Professor Jerzy Neyman, first used this notation in his thesis written in Polish \citep{Neyman:1923}. 
+\citet{Neyman:1923} first used this notation. It seems intuitive but has some hidden assumptions. \citet{Rubin:1980} made the following clarifications on the hidden assumptions.
+
+\begin{assumption}
+[no interference]
+\label{sutva1}
+Unit $i$'s potential outcomes do not depend on other units' treatments. This is sometimes called the {\it no-interference} assumption. 
+\end{assumption}
+
+
+\begin{assumption}
+[consistency]
+\label{sutva2}
+There are no other versions of the treatment. Equivalently, we require that the treatment levels be well-defined, or have no ambiguity at least for the outcome of interest. This is sometimes called the {\it consistency} assumption.\footnote{This notion of consistency is totally different from the one in Definition \ref{def::consistency} in Chapter \ref{chapter::basic-prob-append}.} 
+\end{assumption}
+
+
+%\begin{enumerate}
+%[(1)]
+%\item\label{sutva1}
+%Unit $i$'s potential outcomes do not depend on other units' treatments. This is sometimes called the {\it no-interference} assumption. 
+%
+%\item\label{sutva2}
+%There are no other versions of the treatment. Equivalently, we require that the treatment level be well-defined, or have no ambiguity at least for the outcome of interest. This is sometimes called the {\it consistency} assumption. 
+%
+%\end{enumerate}
+
+Assumption \ref{sutva1} can be violated in infectious diseases or network experiments. For instance, if some of my friends receive flu shots, my chance of getting the flu decreases even if I do not receive the flu shot; if my friends see an advertisement on Facebook, my chance of buying that product increases even if I do not see the advertisement directly. It is an active research area to study situations with interfering units in modern causal inference literature \citep[e.g.,][]{hudgens2008toward}. 
+
+
+Assumption \ref{sutva2} can be violated for treatments with complex components. For instance, when studying the effect of cigarette smoking on lung cancer, the type of cigarettes may matter; when studying the effect of college education on income, the type and major of college education may matter. 
+
+
+\citet{Rubin:1980} called the Assumptions \ref{sutva1} and \ref{sutva2} above together the Stable Unit Treatment Value Assumption (SUTVA).
+
+
+\begin{assumption}
+[SUTVA]
+\label{sutva-complete}
+Both Assumptions \ref{sutva1} and \ref{sutva2} hold.
+\end{assumption}
+
+
+Under SUTVA, \citet{Rubin:2005} called the $n\times 2$ matrix of potential outcomes the Science Table:
+\begin{center}
+\begin{tabular}{ccc}
+\hline 
+$i$ & $Y_i(1)$ &  $Y_i(0)$ \\
+ \hline 
+$1$ & $Y_1(1)$ &  $Y_1(0)$ \\
+$2$ & $Y_2(1)$ &  $Y_2(0)$ \\
+\vdots  &\vdots & \vdots   \\
+$n$ & $Y_n(1)$ &  $Y_n(0)$ \\
+\hline 
+\end{tabular}
+\end{center}  
+
+
+Due to the fundamental contributions of Neyman and Rubin to statistical causal inference, the potential outcomes framework is sometimes referred to as the Neyman Model, the Neyman--Rubin Model, or the Rubin Causal Model. I prefer using  ``the potential outcomes framework'' in this book and my other scientific writings. 
+ 
+ 
+Causal effects are functions of the Science Table. Inferring individual causal effects 
+$$
+\tau_i =  Y_i(1) - Y_i(0) ,\quad (i=1, \ldots, n)
+$$ 
+is fundamentally challenging because we can only observe either $Y_i(1)$ or $Y_i(0)$ for each unit $i$, that is, we can observe only half of the Science Table. As a starting point, most parts of the book focus on the average causal effect (ACE): 
+\begin{eqnarray*}
+\tau  &=&  n^{-1} \sumn \{  Y_i(1) - Y_i(0) \}  \\
+&=&  n^{-1} \sumn  Y_i(1) -  n^{-1} \sumn  Y_i(0).
+\end{eqnarray*} 
+But we can extend our discussion to many other parameters (also called {\it estimands}).  Problem \ref{hw::nonlinear-causal-estimands} gives some examples. 
+
+
+\subsection{Causal effects, subgroups, and the non-existence of Yule--Simpson Paradox}
+
+
+If we have two subgroups defined by a binary variable $X_i $, we can define the subgroup causal effects as
+$$
+\tau_x = \frac{  \sumn  I(X_i = x) \{  Y_i(1) - Y_i(0) \}    }{   \sumn  I(X_i = x)    },\quad (x=0,1) 
+$$
+where $I(\cdot)$ is the indicator function. 
+A simple identity is that
+$$
+\tau =  \pi_1 \tau_1  +  \pi_0 \tau_0
+$$
+where $\pi_x =  \sumn  I(X_i = x)  / n$ is the proportion of units with $X_i = x$ $(x=0,1)$. Therefore, if $\tau_1  > 0$ and $ \tau_0 > 0$, we must have $\tau > 0$. The Yule--Simpson Paradox thus cannot happen to causal effects.  
+
+
+
+\subsection{Subtlety of the definition of the experimental unit}
+
+I now discuss a subtlety related to the definition of the experimental unit. Simply speaking, the experimental unit can be different from the physical unit. For example, if I did not take aspirin before and my headache did not go away, but I take aspirin now and my headache goes away, then you might think that we can observe my potential outcomes under both control and treatment. Let $i$ index myself, and let $Y=1$ denote the indicator of no headache. Then, the above heuristic suggests that $Y_i(0) = 0$ and $Y_i(1) = 1$, so it seems that aspirin kills my headache. But this logic is very wrong because of the misunderstanding of the definition of the experimental unit. At different time points, I, the same physical person, become two distinct experimental units, indexed by ``$i,\textup{before}$'' and ``$i,\textup{after}$''. Therefore, we have four potential outcomes
+$$
+Y_{i,\textup{before}}(0)=0, \quad  Y_{i,\textup{before}}(1)=?,\quad
+Y_{i,\textup{after}}(0)=?, \quad  Y_{i,\textup{after}}(1)=1,
+$$ 
+with two of them observed and two of them missing. The individual causal effects 
+$$
+Y_{i,\textup{before}}(1) -  Y_{i,\textup{before}}(0) = ? - 0 \text{ and } Y_{i,\textup{after}}(1)  - Y_{i,\textup{after}}(0) = 1 - ?
+$$ 
+are unknown. It is possible that my headache goes away even if I do not take aspirin:
+$$
+Y_{i,\textup{after}}(0)=1, \quad  Y_{i,\textup{after}}(1)=1
+$$
+which implies zero effect; it is also possible that my headache does not go away if I do not take aspirin:
+$$
+Y_{i,\textup{after}}(0)=0, \quad  Y_{i,\textup{after}}(1)=1
+$$
+which implies a positive effect of aspirin. 
+
+The wrong heuristic argument might get the right answer if the control potential outcomes are stable at the before and after periods: 
+$$
+Y_{i,\textup{before}}(0) = Y_{i,\textup{after}}(0) = 0 .
+$$ 
+But this assumption is rather strong and fundamentally untestable. \citet{rubin2001comment} offered a related discussion in the context of self-experimentation for causal effects.
+
+
+
+\section{Treatment assignment mechanism}\label{sec::Treatment-ScienceTable}
+
+Let $Z_i$ be the binary treatment indicator for unit $i$, vectorized as $\bm{Z} = (Z_1, \ldots, Z_n)$. The observed outcome of unit $i$ is a function of the potential outcomes and the treatment indicator: 
+\begin{eqnarray} 
+Y_i &=& \begin{cases}
+   Y_i(1),& \text{if } Z_i = 1\\
+   Y_i(0), & \text{if } Z_i = 0
+\end{cases} \label{eq::yobsdef} \\
+&=& Z_i Y_i(1) + (1-Z_i)Y_i(0) \label{eq::fundamentalbridge} \\
+&=& Y_i(0)  + Z_i\{  Y_i(1) - Y_i(0)  \} \label{eq::teh} \\
+&=&Y_i(0)  + Z_i\tau_i . \label{eq::teh2} 
+\end{eqnarray}  
+Equation \eqref{eq::yobsdef} is the definition of the observed outcome. Equation \eqref{eq::fundamentalbridge} is equivalent to \eqref{eq::yobsdef}. It is a trivial fact, but \citet{pearl2010brief} viewed it as the fundamental bridge between the potential outcomes and the observed outcome. Equations \eqref{eq::teh} and  \eqref{eq::teh2}  highlight the fact that the individual causal effect $\tau_i =  Y_i(1) - Y_i(0)  $ can be heterogeneous across units. 
+
+
+The experiment reveals only one of unit $i$'s potential outcomes with the other one missing:
+\begin{eqnarray*} 
+Y_i^\textup{mis} &=& \begin{cases}
+   Y_i(0),& \text{if } Z_i = 1\\
+   Y_i(1), & \text{if } Z_i = 0
+\end{cases}  \\
+&=& Z_i Y_i(0) + (1-Z_i)Y_i(1) .
+\end{eqnarray*}  
+The missing potential outcome corresponds to the opposite treatment level of unit $i$. For this reason, the potential outcomes framework is also called the {\it counterfactual} framework.  \footnote{The terminology ``counterfactual'' is more popular in philosophy, probably due to \citet{lewis1973causation}. }
+This name can be confusing because before the experiment, both the potential outcomes can be observed. Only after the experiment, one potential outcome is observed whereas the other potential outcome is counterfactual. 
+
+
+The treatment assignment mechanism, i.e., the probability distribution of $\bm{Z} $, plays an important role in inferring causal effects. The following simple numerical examples illustrate this point. We first generate potential outcomes from Normal distributions with the average causal effect close to $-0.5$. 
+\begin{lstlisting}
+> n  = 500
+> Y0 = rnorm(n)
+> tau = - 0.5 + Y0
+> Y1 = Y0 + tau
+\end{lstlisting} 
+A perfect doctor assigns the treatment to the patient if s/he knows that the individual causal effect is non-negative. This results in a positive difference in means of the observed outcomes: 
+\begin{lstlisting}
+> Z = (tau >= 0)
+> Y = Z*Y1 + (1 - Z)*Y0
+> mean(Y[Z==1]) - mean(Y[Z==0])
+[1] 2.166509
+\end{lstlisting} 
+%Another perfect doctor ranks the individual causal effects and assigns the treatment to the patient if the rank is larger than or equal to $n/2$. This again results in a positive difference in means of the observed outcomes: 
+%\begin{lstlisting}
+%> Z = (rank(tau) >= n/2)
+%> Y = Z*Y1 + (1 - Z)*Y0
+%> mean(Y[Z==1]) - mean(Y[Z==0])
+%[1] 1.851417
+% \end{lstlisting} 
+A clueless doctor does not know any information about the individual causal effects and assigns the treatment to patients by flipping a fair coin. This results in a difference in means of the observed outcomes close to the true average causal effect: 
+\begin{lstlisting}
+> Z = rbinom(n, 1, 0.5)
+> Y = Z*Y1 + (1 - Z)*Y0
+> mean(Y[Z==1]) - mean(Y[Z==0])
+[1] -0.552064 
+  \end{lstlisting} 
+  
+ The above examples are hypothetical since no doctors perfectly know the individual causal effects. However, the examples do demonstrate the crucial role of the treatment assignment mechanism. This book will organize the topics based on the treatment assignment mechanism. 
+
+
+
+
+ 
+\section{Homework Problems}
+
+
+
+\paragraph{A perfect doctor}
+\label{hw::perfect-doctor}
+
+Following the first perfect doctor example in Section \ref{sec::Treatment-ScienceTable}, assume the potential outcomes are random variables generated from 
+$$
+Y(0) \sim \textsc{N}(0,1), \quad \tau = -0.5 + Y(0),\quad Y(1)  = Y(0) + \tau .
+$$
+The binary treatment is determined by the treatment effect as $Z = 1(\tau \geq 0)$, and the observed outcome is determined by the potential outcomes and the treatment by $Y = ZY(1) + (1-Z) Y(0)$. Calculate the difference in means
+$$
+E(Y\mid Z=1) - E(Y\mid Z=0).
+$$
+
+
+Remark: The mean of a truncated Normal random variable equals 
+$$
+E(X\mid   a < X < b ) = \mu - \sigma \frac{   \phi \left(  \frac{b-\mu}{\sigma} \right )   -  \phi \left(  \frac{a-\mu}{\sigma} \right )   }
+{   \Phi \left(  \frac{b-\mu}{\sigma} \right )   -  \Phi \left(  \frac{a-\mu}{\sigma} \right )   } , 
+$$
+where $X \sim \textsc{N}(\mu, \sigma^2)$, and $\phi(\cdot)$ and $\Phi(\cdot)$ are the probability density and cumulative distribution functions of a standard Normal random variable $\textsc{N}(0,1)$. 
+
+
+
+\paragraph{Nonlinear causal estimands}
+\label{hw::nonlinear-causal-estimands}
+
+
+
+With potential outcomes $\{  (Y_i(1), Y_i(0) \}_{i=1}^n$ for $n$ units under the treatment and control, the difference in means equals the mean of the individual treatment effects:
+$$
+\bar{Y}(1) - \bar{Y}(0) = n^{-1} \sum_{i=1}^n  \{ Y_i(1) - Y_i(0) \}.
+$$
+Therefore, the average treatment effect is a {\it linear} causal estimand in the sense that the difference in average potential outcomes equals the average of the differences in individual potential outcomes. 
+
+
+Other estimands may not be linear. For instance, we can define the median treatment effect as
+$$
+\delta_1 = \text{median}\{  (Y_i(1) \}_{i=1}^n - \text{median}\{  (Y_i(0) \}_{i=1}^n,
+$$
+which is, in general, different from the median of the individual treatment effect
+$$
+\delta_2 = \text{median}\{  (Y_i(1) - Y_i(0) \}_{i=1}^n .
+$$
+
+\begin{enumerate}
+\item
+Give numerical examples that have $\delta_1 = \delta_2$, $\delta_1 > \delta_2$, and $\delta_1 < \delta_2$, respectively. 
+
+
+\item
+Which estimand makes more sense, $\delta_1$ or $\delta_2$? Why? Use examples to justify your conclusion. If you feel that both $\delta_1$ and $\delta_2$ can make sense in different applications, you can also give examples to justify both estimands. 
+\end{enumerate}
+
+
+
+
+\paragraph{Average and individual effects}
+
+Give a numerical example in which $\tau = n^{-1} \sum_{i=1}^n  \{ Y_i(1) - Y_i(0) \}  >0$ but the proportion of units with $Y_i(1) > Y_i(0)$ is smaller than $0.5$. That is, the average causal effect is positive, but the treatment benefits less than half of the units. 
+
+
+\paragraph{Recommended reading}
+
+\citet{holland1986statistics} is a classic review article on statistical causal inference. It popularized the name ``Rubin Causal Model'' for the potential outcomes framework. At the University of California Berkeley, we call it the ``Neyman Model'' for obvious reasons.  
+
+

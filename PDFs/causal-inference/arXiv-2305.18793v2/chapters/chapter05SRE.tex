@@ -1,0 +1,854 @@
+
+\chapter{Stratification and Post-Stratification in Randomized Experiments}
+ \chaptermark{Stratification and Post-Stratification}
+\label{chapter::stratification-poststratification}
+
+\begin{quotation}
+Block what you can and randomize what you cannot.  
+
+--- \citet[][page 103]{box1978statistics}
+\end{quotation}
+
+This is the second most famous quote from George Box\footnote{His most famous quote is ``all models are wrong but some are useful'' \citep[][page 202]{box1979robustness}.}. This chapter will explain its meaning.
+
+
+
+\section{Stratification}
+
+
+
+A CRE may generate an undesired treatment allocation by chance. Let us start with a CRE with a discrete covariate $X_i   \in \{ 1, \ldots, K \}$, and define $n_{[k]} = \#\{ i: X_i    =k  \}$ and $\pi_{[k]} = n_{[k]} / n$ as the number and proportion of units  in stratum $k$ $(k=1, \ldots, K)$. A CRE assigns $n_1$ units to the treatment group and $n_0$ units to the control group, which results in 
+$$
+n_{[k]1} = \#\{ i: X_i   = k, Z_i = 1 \},\quad
+n_{[k]0} = \#\{ i: X_i   = k, Z_i = 0 \}
+$$
+units in the treatment and control groups, respectively, within stratum $k$. With positive probability, $n_{[k]1}$ or $n_{[k]0}$ is zero for some $k$, that is, it is possible that some strata only have treated or control units. Even if none of the $n_{[k]1}$'s or $n_{[k]0}$'s are zero, with high probability 
+\begin{equation}
+\frac{  n_{[k]1} }{n_1}  -  \frac{  n_{[k]0} }{n_0} \neq 0 ,
+\label{eq::covarianceimbK}
+\end{equation} 
+and the magnitude can be quite large. So  the proportions of units in stratum $k$ are different across the treatment and control groups although on average their difference is zero (see Problem \ref{hw::balance-discrete-CRE}):
+\begin{equation}\label{eq::balance-discrete-CRE}
+E\left(  \frac{  n_{[k]1} }{n_1}  -  \frac{  n_{[k]0} }{n_0} \right) = 0.
+\end{equation}
+When $n_{[k]1}  / n_1  -  n_{[k]0} / n_0$ is large for some strata $k$'s, the treatment and control groups have undesirable covariate imbalance. Such covariate imbalance deteriorates the quality of the experiment, making it difficult to interpret the results of the experiment since the difference in the outcomes may be attributed to the treatment or the covariate imbalance. 
+
+
+
+How can we actively avoid covariate imbalance in the experiment? We can conduct stratified randomized experiments (SRE).
+
+\begin{definition}[SRE]
+\label{def::SRE}
+Fix the $n_{[k]1}$'s or $n_{[k]0}$'s.
+We conduct $K$ independent  CREs within the $K$ strata of a discrete covariate $X$.
+\end{definition}
+
+In agricultural experiments, the SRE is also called the {\it randomized block design}, with the strata called the blocks. Analogously, {\it stratified randomization} is also called {\it block randomization}.\footnote{
+Chapter \ref{sec::fisherian-principles-experiments} mentioned two Fisherian principles for experiments: {\it randomization} and {\it replication}. {\it Blocking} is the third Fisherian principle. 
+} The total number of randomizations in an SRE equals 
+$$
+\prod_{k=1}^K  \binom{  n_{[k]} }{  n_{[k]1} } ,
+$$
+and each feasible randomization has equal probability. Within stratum $k$, the proportion of units receiving the treatment is
+$$
+e_{[k]} = \frac{n_{[k]1}}{n_{[k]}},
+$$
+which is also called the {\it propensity score}, a concept that will play a central role in Part \ref{part::observational-studies} of this book (see Definition \ref{def::pscore}). 
+An SRE is different from a CRE: first, all feasible randomizations in an SRE form a subset of all feasible randomizations in a CRE, so 
+$$
+\prod_{k=1}^K  \binom{  n_{[k]} }{  n_{[k]1} } < 
+\binom{n}{n_1} ;
+$$
+second, $e_{[k]} $ is fixed in an SRE but random in a CRE.  
+
+
+For every unit $i$, we have potential outcomes $Y_i(1)$ and $Y_i(0)$, and individual causal effect $\tau_i = Y_i(1) - Y_i(0) . $
+For stratum $k$, we have the stratum-specific average causal effect
+$$
+\tau_{[k]} = n_{[k]}^{-1} \sum_{X_i   = k} \tau_i .
+$$
+The average causal effect is 
+$$
+\tau = n^{-1} \sumn \tau_i = n^{-1} \sum_{k=1}^K \sum_{X_i   = k} \tau_i =  \sum_{k=1}^K  \pi_{[k]}  \tau_{[k]},
+$$
+which is a weighted average of the stratum-specific average causal effects. 
+
+
+If we are interested in $\tau_{[k]} $, then we can use the methods in Chapters \ref{ch::frt-cre} and \ref{chapter::neyman-cr} for the CRE within stratum $k$. Below I will discuss statistical inference for $\tau$. 
+
+
+\section{FRT}
+\label{sec::sre-frt}
+
+
+\subsection{Theory}
+In parallel with the discussion of a CRE, I will start with the FRT in an SRE. The sharp null hypothesis is still 
+$$
+\HF: Y_i(1) = Y_i(0) \text{ for all units } i=1, \ldots, n.
+$$
+The fundamental idea of the FRT applies to any randomized experiment: we can use any test statistic $T = T(\bm{Z}, \bm{Y}, \bm{X})$, where $\bm{Z}, \bm{Y}$ and $\bm{X}$ are the treatment vector, observed outcome vector and the covariate matrix, respectively. Under the SRE and $\HF$,  the test statistic $T$ has a known distribution because $\bm{Z}$ has a known distribution under the SRE. However, we must be careful with two subtle issues. First, when we simulate the treatment vector, we must permute the treatment indicators within strata of $X$ according to Definition \ref{def::SRE}. The resulting FRT is sometimes called the {\it conditional randomization test} or {\it  conditional permutation test}. Second, we should choose test statistics that can reflect the nature of the SRE. Below I give some canonical choices of the test statistic.
+
+\begin{example}[Stratified estimator]
+\label{eg::stratifiedestimator}
+Motivated by estimating $\tau$ (see Chapter \ref{sec::sre-neyman} below), we can use the following stratified estimator in the FRT:
+$$
+\hat{\tau}_\textsc{S} = \sum_{k=1}^K  \pi_{[k]} \hat{\tau}_{[k]},
+$$
+where 
+$$
+\hat{\tau}_{[k]} = n_{[k]1}^{-1} \sumn I(X_i  =k, Z_i=1) Y_i - n_{[k]0}^{-1} \sumn I(X_i  =k, Z_i=0) Y_i 
+$$
+is the stratum-specific difference-in-means within stratum $k$. 
+\end{example}
+
+
+
+
+\begin{example}[Studentized stratified estimator]
+\label{eg::student-stratifiedestimator}
+Motivated by the studentized statistic in the simple two-sample problem, we can use the following studentized statistic for the stratified estimator in the FRT:
+$$
+t_\textsc{S} = 
+\frac{ \hat{\tau}_\textsc{S}  }{  \sqrt{\hat{V}_\textsc{S}  }},
+$$
+with 
+$$
+\hat{V}_\textsc{S} = \sum_{k=1}^K  \pi_{[k]}^2 \left(  \frac{\hat{S}_{[k]}^2(1)}{ n_{[k]1} } +  \frac{ \hat{S}_{[k]}^2(0)}{ n_{[k]0} } \right)
+$$
+where $\hat{S}_{[k]}^2(1)$ and $\hat{S}_{[k]}^2(0)$ are the stratum-specific sample variances of the outcomes under the treatment and control, respectively. The exact form of this statistic is motivated by the Neymanian perspective discussed in Section \ref{sec::sre-neyman} below.
+\end{example}
+
+
+
+
+\begin{example}[Combining Wilcoxon rank-sum statistics]
+\label{eg::vanelteren}
+We first compute the Wilcoxon rank sum statistic $W_{[k]}$ within stratum $k$ (recall Example \ref{example::wilcoxon-cre}) and then combine them as
+$$
+W_\textsc{S} = \sum_{k=1}^K   c_{[k]}  W_{[k]}   . 
+$$
+Based on different asymptotic schemes and optimality criteria, \citet{van1960combination} proposed two weighting methods, one with
+$$
+c_{[k]}  = \frac{1}{  n_{[k]1}  n_{[k]0} },
+$$
+and the other with 
+$$ 
+c_{[k]}  = \frac{1}{  n_{[k]}  +1 } .
+$$
+The motivations for these weights are quite technical, and other choices of weights may also be reasonable. 
+\end{example}
+
+
+ 
+
+
+\begin{example}[\citet{hodges1962rank}'s aligned rank statistic]
+\label{eg::hodgeslehmann}
+\citet{van1960combination}'s statistic works well with a few large strata. However, it does not work well with many small strata since it does not make enough comparisons, potentially losing information in the data.  \citet{hodges1962rank} proposed a test statistic that makes more comparisons across strata after standardizing the outcomes. They suggested first centering the outcomes as
+$$
+\tilde{Y}_i = Y_i  - \bar{Y}_{[k]}
+$$
+with the stratum-specific mean
+$
+\bar{Y}_{[k]} = n_{[k]}^{-1} \sum_{X_i   = k} Y_i
+$
+if $X_i = k$, 
+then obtaining the ranks $(\tilde{R}_1, \ldots, \tilde{R}_n)$ of the pooled outcomes $(\tilde{Y}_1, \ldots, \tilde{Y}_n)$, and finally constructing the test statistic 
+$$
+\tilde{W} = \sumn Z_i \tilde{R}_i.
+$$
+\end{example}
+
+
+We can simulate the exact distributions of the above test statistics under the SRE. We can also calculate their means and variances and obtain the $p$-values based on Normal approximations. 
+
+
+After searching for a while,  I failed to find a detailed discussion of the Kolmogorov--Smirnov statistic for the SRE. Below is my proposal.
+
+
+ \begin{example}[Kolmogorov--Smirnov statistic]
+\label{eg::ks-stratified}
+We compute $D_{[k]}$, the maximum difference between the empirical distributions of the outcomes under treatment and control within stratum $k$. The final test statistic can be 
+$$
+D_\textsc{S}  = \sum_{k=1}^K    c_{[k]}    D_{[k]}
+$$
+or 
+$$
+D_{\max} = \max_{1\leq k \leq K}  c_{[k]}   D_{[k]},
+$$ 
+where $ c_{[k]}   = \sqrt{   n_{[k]1}  n_{[k]0} /  n_{[k]}  }$ is motivated by the limiting distribution of $D_{[k]}$ with $n_{[k]1} $ and $ n_{[k]0} $ approaching infinity (see Example \ref{eg::ks-CRE}). The statistics $D_\textsc{S} $ and $D_{\max} $ are more appropriate when all strata have large sample sizes. 
+Another reasonable choice is
+$$
+D =  \max_y \Big |  \sum_{k=1}^K  \pi_{[k]}  \{  \hat{F}_{[k]1}(y)  - \hat{F}_{[k]0}(y) \}   \Big | ,
+$$
+where $\hat{F}_{[k]1}(y)  $ and $ \hat{F}_{[k]0}(y)$ are the stratum-specific empirical distribution functions of the outcomes under the treatment and control, respectively. The statistic $D$ is appropriate in both the cases with large strata and the cases with many small strata. 
+\end{example}
+ 
+ 
+ 
+ \subsection{An application}
+ \label{sec::frt-pennbonus}
+ 
+ 
+ 
+The Penn Bonus experiment is an example to illustrate the FRT in the SRE. The dataset used by  \citet{koenker2002inference}  is from a job training program stratified on \ri{quarter}, with the outcome being the duration before employment. 
+
+\begin{lstlisting}
+> penndata = read.table("Penn46_ascii.txt")
+> z = penndata$treatment
+> y = log(penndata$duration)
+> block = penndata$quarter
+> table(penndata$treatment, penndata$quarter)
+   
+      0   1   2   3   4   5
+  0 234  41 687 794 738 860
+  1  87  48 757 866 811 461
+\end{lstlisting} 
+
+
+I will focus on $\hat{\tau}_\textsc{S}$ and $W_\textsc{S}$, and leave the FRT with other statistics as Problem \ref{hw::FRT-SRE-more}. 
+The following function computes $\hat{\tau}_\textsc{S}$ and $W_\textsc{S}$:
+
+\begin{lstlisting}
+stat_SRE = function(z, y, x)
+{
+       xlevels = unique(x)
+       K       = length(xlevels)
+       PiK     = rep(0, K)
+       TauK    = rep(0, K)
+       WK      = rep(0, K)
+       for(k in 1:K)
+       {
+             xk         = xlevels[k]
+             zk         = z[x == xk]
+             yk         = y[x == xk]
+             PiK[k]     = length(zk)/length(z)
+             TauK[k]    = mean(yk[zk==1]) - mean(yk[zk==0])
+             WK[k]      = wilcox.test(yk[zk==1], yk[zk==0])$statistic
+       }
+       
+       return(c(sum(PiK*TauK), sum(WK/PiK)))
+}
+\end{lstlisting} 
+
+
+The following function generates a random treatment assignment in the SRE based on the observed data:
+
+\begin{lstlisting}
+zRandomSRE = function(z, x)
+{
+         xlevels = unique(x)
+         K       = length(xlevels)
+         zrandom = z
+         for(k in 1:K)
+         {
+              xk = xlevels[k]   
+              zrandom[x == xk] = sample(z[x == xk])
+         }
+         
+         return(zrandom)
+}
+\end{lstlisting} 
+
+
+Based on the above data and functions, we can simulate the randomization distributions of the test statistics and compute the $p$-values. 
+\begin{lstlisting}
+> stat.obs = stat_SRE(z, y, block)
+> MC = 10^3
+> statSREMC = matrix(0, MC, 2)
+> for(mc in 1:MC)
++ {
++     zrandom         = zRandomSRE(z, block) 
++     statSREMC[mc, ] = stat_SRE(zrandom, y, block)     
++ }
+> mean(statSREMC[, 1] <= stat.obs[1])
+[1] 0.002
+> mean(statSREMC[, 2] <= stat.obs[2])
+[1] 0.001
+\end{lstlisting} 
+In the above, I calculate the $p$-values based on left-tail probabilities because the treatment has a negative effect on the outcome. 
+See Figure \ref{fig::frt_sre_penn} for more details about the observed test statistics and randomization distributions.  
+ 
+
+ 
+\begin{figure}
+\centering
+\includegraphics[width = \textwidth]{figures/FRT_SRE_histograms.pdf}
+\caption{The randomization distributions of $\hat{\tau}_\textsc{S}$ and $W_\textsc{S}$ based on the data from the Penn Bonus experiment, with $10^4$ Monte Carlo draws.}\label{fig::frt_sre_penn}
+\end{figure} 
+
+
+
+\section{Neymanian inference}
+\label{sec::sre-neyman}
+\subsection{Point and interval estimation}
+
+Statistical inference for an SRE builds on the fact that it essentially consists of $K$ independent CREs. Based on this, we can extend \citet{Neyman:1923}'s results to the SRE.  Within stratum $k$, the difference-in-means $\hat{\tau}_{[k]}$ is unbiased for $\tau_{[k]}$ with variance
+$$
+\var ( \hat{\tau}_{[k]}) =  \frac{S_{[k]}^2(1)}{ n_{[k]1} } +  \frac{S_{[k]}^2(0)}{ n_{[k]0} }
+- \frac{  S_{[k]}^2(\tau) }{ n_{[k]} },
+$$
+where $ S_{[k]}^2(1), S_{[k]}^2(0)$ and $S_{[k]}^2(\tau)$ are the stratum-specific variances of potential outcomes and the individual causal effects, respectively. 
+Therefore, the stratified estimator $\hat{\tau}_\textsc{S} = \sum_{k=1}^K  \pi_{[k]} \hat{\tau}_{[k]}$ is unbiased for $\tau =\sum_{k=1}^K  \pi_{[k]}  \tau_{[k]} $ with variance
+$$
+\var( \hat{\tau}_\textsc{S}   ) = \sum_{k=1}^K  \pi_{[k]}^2   \var ( \hat{\tau}_{[k]}).
+$$
+If $n_{[k]1} \geq 2$ and $n_{[k]0} \geq 2$, then we can obtain the sample variances $\hat{S}_{[k]}^2(1)$ and $\hat{S}_{[k]}^2(0)$ of the outcomes within stratum $k$ and construct a conservative variance estimator
+$$
+\hat{V}_\textsc{S}  = \sum_{k=1}^K  \pi_{[k]}^2 \left(  \frac{\hat{S}_{[k]}^2(1)}{ n_{[k]1} } +  \frac{ \hat{S}_{[k]}^2(0)}{ n_{[k]0} } \right), 
+$$  
+where $\hat{S}_{[k]}^2(1)$ and $\hat{S}_{[k]}^2(0)$ are the stratum-specific sample variances of the outcomes under treatment and control, respectively. Based on a Normal approximation of $\hat{\tau}_\textsc{S} $, we can construct a Wald-type $1-\alpha$ confidence interval for $\tau$:
+$$
+\hat{\tau}_\textsc{S} \pm z_{1-\alpha/2} \sqrt{  \hat{V}_\textsc{S}  } . 
+$$
+From a hypothesis testing perspective, under $\HN: \tau=0$, we can compare $t_\textsc{S} =   \hat{\tau}_\textsc{S} / \sqrt{  \hat{V}_\textsc{S}  }$ with the standard Normal quantiles to obtain asymptotic $p$-values. The statistic $t_\textsc{S} $ appears in Example \ref{eg::student-stratifiedestimator} for the FRT. Chapter \ref{chapter::unification-fisher-neyman} later will show that using  $t_\textsc{S} $ in the FRT yields finite-sample exact $p$-value under $\HF$  and asymptotically valid $p$-value under $\HN$. 
+
+
+
+Here I omit the technical details for the CLT of $\hat{\tau}_\textsc{S} $. See \citet{liu2020regression} for a proof,  which includes the two regimes with a few large strata and many small strata. I will illustrate this theoretical issue using numerical examples in Chapter \ref{sec::sre-neyman-example} below. 
+
+
+\subsection{Numerical examples}
+\label{sec::sre-neyman-example}
+
+The following function computes the Neymanian point and variance estimators under the SRE:
+\begin{lstlisting}
+Neyman_SRE = function(z, y, x)
+{
+       xlevels = unique(x)
+       K       = length(xlevels)
+       PiK     = rep(0, K)
+       TauK    = rep(0, K)
+       varK    = rep(0, K)
+       for(k in 1:K)
+       {
+             xk         = xlevels[k]
+             zk         = z[x == xk]
+             yk         = y[x == xk]
+             PiK[k]     = length(zk)/length(z)
+             TauK[k]    = mean(yk[zk==1]) - mean(yk[zk==0])
+             varK[k]    = var(yk[zk==1])/sum(zk) + 
+                               var(yk[zk==0])/sum(1 - zk)
+       }
+       
+       return(c(sum(PiK*TauK), sum(PiK^2*varK)))
+}
+\end{lstlisting} 
+
+
+The first simulation setting has $K=5$ and each stratum has $80$ units. \ri{TauHat} and \ri{VarHat} are the point and variance estimators over $10^4$ simulations. 
+\begin{lstlisting}
+> K  = 5
+> n  = 80
+> n1 = 50
+> n0 = 30
+> x  = rep(1:K, each = n)
+> y0 = rexp(n*K, rate = x)
+> y1 = y0 + 1
+> zb = c(rep(1, n1), rep(0, n0))
+> MC = 10^4
+> TauHat = rep(0, MC)
+> VarHat = rep(0, MC)
+> for(mc in 1:MC)
++ {
++   z  = replicate(K, sample(zb))
++   z  = as.vector(z)
++   y  = z*y1 + (1-z)*y0
++   est = Neyman_SRE(z, y, x) 
++   TauHat[mc] = est[1]
++   VarHat[mc] = est[2]
++ }
+> var(TauHat)
+[1] 0.002248925
+> mean(VarHat)
+[1] 0.002266396
+\end{lstlisting} 
+The upper panel of Figure \ref{fig::2CLTs} shows the histogram of the point estimator, which is symmetric and bell-shaped around the true parameter. From the above, the average value of the variance estimator is almost identical to the variance of the estimators because the individual causal effects are constant. 
+
+
+
+The second simulation setting has $K=50$ and each stratum has $8$ units. 
+\begin{lstlisting}
+> K  = 50
+> n  = 8
+> n1 = 5
+> n0 = 3
+> x  = rep(1:K, each = n)
+> y0 = rexp(n*K, rate = log(x + 1))
+> y1 = y0 + 1
+> zb = c(rep(1, n1), rep(0, n0))
+> MC = 10^4
+> TauHat = rep(0, MC)
+> VarHat = rep(0, MC)
+> for(mc in 1:MC)
++ {
++   z  = replicate(K, sample(zb))
++   z  = as.vector(z)
++   y  = z*y1 + (1-z)*y0
++   est = Neyman_SRE(z, y, x) 
++   TauHat[mc] = est[1]
++   VarHat[mc] = est[2]
++ }
+> 
+> hist(TauHat, xlab = expression(hat(tau)[S]),
++      ylab = "", main = "many small strata", 
++      border = FALSE, col = "grey",
++      breaks = 30, yaxt = 'n',
++      xlim = c(0.8, 1.2))
+> abline(v = 1)
+> 
+> var(TauHat)
+[1] 0.001443111
+> mean(VarHat)
+[1] 0.001473616
+\end{lstlisting} 
+The lower panel of Figure \ref{fig::2CLTs} shows the histogram of the point estimator, which is symmetric and bell-shaped around the true parameter.  Again, the average value of the variance estimator is almost identical to the variance of the estimators because the individual causal effects are constant. 
+
+\begin{figure}
+\centering
+\includegraphics[width = \textwidth]{figures/SRE_CLT_2Regimes.pdf}
+\caption{Normal approximations under two regimes}\label{fig::2CLTs}
+\end{figure} 
+
+
+
+
+We finally use the Penn Bonus Experiment to illustrate the Neymanian inference in an SRE. 
+Applying the function \ri{Neyman_SRE} to the dataset, we obtain:
+\begin{lstlisting}
+> penndata = read.table("Penn46_ascii.txt")
+> z = penndata$treatment
+> y = log(penndata$duration)
+> block = penndata$quarter
+> est = Neyman_SRE(z, y, block)
+> est[1]
+[1] -0.08990646
+> sqrt(est[2])
+[1] 0.03079775
+\end{lstlisting} 
+So the job training program significantly shortens the log of the duration time before employment. 
+
+
+\subsection{Comparing the SRE and the CRE}
+
+What are the benefits of the SRE compared with the CRE?  I have motivated the SRE from the covariate balance perspective. In addition, I will show that better covariate balance in turn results in better estimation precision of the average causal effect. To make a fair comparison, I assume that $e_{[k]} = e$ for all $k$ which ensures that the difference in means equals the stratified estimator: 
+\begin{equation}
+\label{eq::dim=stratified}
+\hat{\tau} = \hat{\tau}_\textsc{S}.
+\end{equation}
+I leave the proof of \eqref{eq::dim=stratified} as Problem \ref{hw::sre-additional-neyman}. 
+
+
+
+
+We now compare the sampling variances. The  classic analysis of variance technique motivates the decomposition of the total variance into the summation of the within-strata and between-strata variances, yielding
+\begin{eqnarray*}
+S^2(1) &=&  (n-1)^{-1} \sumn \{  Y_i(1) - \bar{Y}(1) \}^2 \\
+&=& (n-1)^{-1} \sum_{k=1}^K \sum_{X_i   = k} \{ Y_i(1) - \bar{Y}_{[k]}(1)  + \bar{Y}_{[k]}(1)  -   \bar{Y}(1)  \}^2 \\
+&=& (n-1)^{-1} \sum_{k=1}^K \sum_{X_i   = k} \left[  \{ Y_i(1) - \bar{Y}_{[k]}(1) \}^2 +  \{ \bar{Y}_{[k]}(1)  -   \bar{Y}(1)  \}^2 \right] \\
+&=& \sum_{k=1}^K \left[   \frac{n_{[k]} - 1}{n-1}   S_{[k]}^2(1)  +  \frac{ n_{[k]}}{ n-1} \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \}^2  \right],
+\end{eqnarray*} 
+and similarly,
+\begin{eqnarray*}
+S^2(0) &=& \sum_{k=1}^K \left[   \frac{n_{[k]} - 1}{n-1}   S_{[k]}^2(0)  +  \frac{ n_{[k]}}{ n-1} \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}^2  \right],\\
+S^2(\tau) &=& \sum_{k=1}^K \left[   \frac{n_{[k]} - 1}{n-1}   S_{[k]}^2(\tau)  +  \frac{ n_{[k]}}{ n-1} \{ \tau_{[k]} - \tau \}^2  \right] .
+\end{eqnarray*}
+The variance of the difference-in-means estimator under the CRE decomposes into 
+\begin{eqnarray*}
+&&\var_{\text{CRE}}(  \hat{\tau} )  \\
+&=& \frac{S^2(1)}{ n_{1} } +  \frac{S^2(0)}{ n_{0} }
+- \frac{  S^2(\tau) }{ n }  \\ 
+&=& \sum_{k=1}^K  \left[   \frac{ n_{[k]} - 1}{(n-1)n_1}  S_{[k]}^2(1) + \frac{ n_{[k]} - 1}{ (n-1)n_0}  S_{[k]}^2(0) -  \frac{ n_{[k]} - 1}{(n-1)n}    S_{[k]}^2(\tau) \right] \\
+&&  + \sum_{k=1}^K  \left[    \frac{ n_{[k]} - 1}{ (n-1)n_1}  \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \}^2 +  \frac{ n_{[k]} - 1}{ (n-1)n_0}  \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}^2   \right. \\
+&& \left.  - \frac{ n_{[k]} - 1  }{ (n-1)n} \{ \tau_{[k]} - \tau \}^2  \right] .
+ \end{eqnarray*}
+ With large $n_{[k]}$'s, it is approximately
+ \begin{eqnarray*}
+ &&\var_{\text{CRE}}(  \hat{\tau} )  \\
+&\approx & 
+\sum_{k=1}^K  \left[   \frac{ \pi_{[k]}}{n_1}  S_{[k]}^2(1) + \frac{ \pi_{[k]}}{n_0}  S_{[k]}^2(0) -  \frac{ \pi_{[k]}}{n}    S_{[k]}^2(\tau) \right] \\
+&&  + \sum_{k=1}^K  \left[    \frac{ \pi_{[k]}}{n_1}  \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \}^2 +  \frac{ \pi_{[k]}}{n_0}  \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}^2  
+ - \frac{ \pi_{[k]}  }{n} \{ \tau_{[k]} - \tau \}^2  \right] .
+\end{eqnarray*}
+The constant propensity scores assumption ensures 
+$$ 
+\pi_{[k]} / n_{[k]1}  = 1/(ne), \quad   \pi_{[k]} / n_{[k]0} = 1/\{n(1-e) \},\quad \pi_{[k]} / n_{[k]} = 1/n,
+$$
+which allow us to  rewrite the variance of $\hat{\tau}_\textsc{S}$ under the SRE as
+\begin{eqnarray*}
+\var_\textsc{SRE}(\hat{\tau}_\textsc{S}) &= & \sum_{k=1}^K  \pi_{[k]}^2 \left[ \frac{S_{[k]}^2(1)}{ n_{[k]1} } +  \frac{S_{[k]}^2(0)}{ n_{[k]0} }
+- \frac{  S_{[k]}^2(\tau) }{ n_{[k]} } \right]\\
+&=&\sum_{k=1}^K  \left[   \frac{ \pi_{[k]}}{n_1}  S_{[k]}^2(1) + \frac{ \pi_{[k]}}{n_0}  S_{[k]}^2(0) -  \frac{ \pi_{[k]}}{n}    S_{[k]}^2(\tau) \right] .
+\end{eqnarray*}
+ With large $n_{[k]}$'s, approximately, the difference between $\var_{\text{CRE}}(  \hat{\tau} )$ and $\var_\textsc{SRE}(\hat{\tau}_\textsc{S})$ is 
+$$
+\sum_{k=1}^K  \left[    \frac{ \pi_{[k]}}{n_1}  \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \}^2 +  \frac{ \pi_{[k]}}{n_0}  \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}^2  
+ - \frac{  \pi_{[k]}  }{n}  ( \tau_{[k]} - \tau  ) ^2  \right] 
+ $$
+ which is nonnegative because it equals (see Problem \ref{hw::compare-CRE-SRE})
+ \begin{eqnarray}
+\label{eq::difference}
+\sum_{k=1}^K\frac{ \pi_{[k]}}{n} 
+ \left\{
+\sqrt{ \frac{n_0}{n_1} } \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \} +  \sqrt{ \frac{n_1}{n_0} } \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}
+ \right\}^2 \geq 0,
+\end{eqnarray} 
+The difference in \eqref{eq::difference} is zero only in the extreme case that
+$$
+\sqrt{ \frac{n_0}{n_1} } \{ \bar{Y}_{[k]}(1) - \bar{Y}(1) \} +  \sqrt{ \frac{n_1}{n_0} } \{ \bar{Y}_{[k]}(0) - \bar{Y}(0) \}
+= 0 
+$$
+for $k=1,\ldots, K$. When the covariate is predictive of the potential outcomes, the above quantities are usually not all zeros, which ensures the efficiency gain of the SRE compared with the CRE. Only in the extreme cases that the covariate is not predictive at all, the large-sample efficiency gain is zero. In those cases, the SRE can even result in less efficient estimators in finite samples. The above discussion corroborates the quote from George Box at the beginning of this chapter. 
+
+ 
+
+
+I will end this section with several remarks. First, the above comparison is based on the sampling variance, and we can also compare the estimated variances under the SRE and the CRE. The results are similar. Second,  increasing $K$ improves efficiency, but this argument depends on the large strata assumption. So we face a trade-off in practice.  We cannot arbitrarily increase $K$, and the most extreme case is $n_{[k]1} = n_{[k]0} = 1$, which is called the matched-pairs experiment and will be discussed in Chapter \ref{chapter::mpe}. 
+
+ 
+
+
+
+
+\section{Post-stratification in a CRE}\label{sec::poststra-cre}
+
+In a CRE with a discrete covariate $X$, the numbers of units receiving the treatment and control are random within stratum $k$. In a SRE, these numbers are fixed. But if we conduct conditional inference given $\bm{n} = \{  n_{[k]1} , n_{[k]0} \}_{k=1}^K$, then a CRE becomes a SRE. Mathematically, if none of the components of $\bm{n}$ are zero, then 
+\begin{equation}\label{eq::condition-to-SRE}
+\pr_\textsc{CRE}(\bm{Z} = \bm{z} \mid\bm{n} )
+= \frac{ \pr_\textsc{CRE}( \bm{Z} = \bm{z},  \bm{n})   }{ \pr_\textsc{CRE}(   \bm{n})   }
+=  \frac{1}{  \prod_{k=1}^K  \binom{  n_{[k]} }{  n_{[k]1} } }  ,
+\end{equation}
+that is, the conditional distribution of $\bm{Z}$ from a CRE given $\bm{n}$ is identical to the distribution of $\bm{Z}$ from an SRE. 
+I leave the proof of \eqref{eq::condition-to-SRE} as Problem \ref{hw::CRE-SRE}. 
+So conditional on $\bm{n}$, we can analyze a CRE with a discrete covariate $X$ in the same way as in a SRE. 
+In particular,  the FRT becomes a {\it conditional FRT}, and the Neymanian analysis becomes {\it post-stratification}:
+$$
+\hat{\tau}_\textsc{PS} = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]},
+$$
+which has an identical form as $\hat{\tau}_\textsc{S}$. The variance of $\hat{\tau}_\textsc{PS} $ conditioning on $\bm{n}$ is identical to the variance of $\hat{\tau}_\textsc{S}$ under the SRE.  
+
+
+\citet{hennessy2016conditional} used simulation to show that the conditional FRT is often more powerful than the unconditional one. \citet{miratrix:2013} used theory to show that in many cases, post-stratification improves efficiency compared with $\hat{\tau}$. Both results hold if $X$ is predictive of the outcome.  However, the simulation is based on a limited number of data-generating processes, and the theory assumes all strata are large enough. We can not go too extreme in the conditional FRT or post-stratification because with a larger $K$ it is more likely that some $n_{[k]1} $ or $ n_{[k]0}$ become zero. Small or zero values of $n_{[k]1} $ or $ n_{[k]0}$ greatly reduce the number of randomizations in the FRT, possibly reducing the power dramatically. The problem for the Neymanian counterpart is more salient because we cannot even define $\hat{\tau}_\textsc{PS}$ and the corresponding variance estimator. 
+
+
+Stratification uses $X$ in the design stage and post-stratification uses $X$ in the analysis stage.  They are duals for using $X$. 
+Asymptotically, their difference is small with large strata \citep{miratrix:2013}.
+
+\subsection{\citet{meinert1970study}'s Example}\label{sec::ps-merinert}
+
+We use the data from a CRE reported in \citet{meinert1970study}, which were also used by \citet{rothman2008modern}. The treatment is tolbutamide and the control is a placebo. 
+\begin{center} 
+\begin{tabular}{ccc}
+\multicolumn{3}{c}{ Age $< 55$} \\
+\hline 
+ & Surviving & Dead \\
+$Z=1$ &    98 & 8 \\
+$Z=0$  & 115 & 5 \\
+\hline 
+\end{tabular}
+%&
+\begin{tabular}{ccc}
+\multicolumn{3}{c}{ Age $\geq  55$} \\
+\hline 
+ & Surviving & Dead \\
+$Z=1$ &    76 & 22 \\
+$Z=0$  &  69 & 16 \\
+\hline 
+\end{tabular}
+%&
+\begin{tabular}{ccc}
+\multicolumn{3}{c}{Total } \\
+\hline 
+ & Surviving & Dead \\
+$Z=1$ &    174 & 30 \\
+$Z=0$  & 184 & 21 \\
+\hline 
+\end{tabular}
+\end{center}
+ 
+
+The following table shows the estimates for two strata separately, the post-stratified estimator, and the crude estimator ignoring the binary covariate, as well as the corresponding standard errors.  
+\begin{center}
+\begin{tabular}{crrrr}
+\hline 
+    &stratum 1& stratum 2 &post-stratification &  crude \\
+est &    $-0.034$ &   $-0.036$ &  $-0.035$ & $-0.045$ \\
+se   &   $0.031$    & $0.060$   & $0.032$   & $0.033$\\
+\hline 
+\end{tabular}
+\end{center} 
+
+
+The crude estimator and the post-stratification estimator do not lead to fundamentally different results.
+However, the crude estimator is larger than both of the stratum-specific estimators, whereas the post-stratification estimator is within the range. 
+
+
+\subsection{\citet{chong2016iron}'s Example}\label{sec::ps-chong}
+
+
+\citet{chong2016iron} conducted an SRE on   219 students of a rural secondary school in the Cajamarca district of Peru during the 2009 school year. They first provided the village clinic with iron supplements and trained the local staff to distribute one free iron pill to any adolescent who requested one in person. They then randomly assigned students to three arms with three different types of videos: in the first video, a popular soccer player was encouraging the use of iron supplements to maximize energy (``soccer'' arm); in the second video, a physician was encouraging the use of iron supplements to improve overall health (``physician'' arm); the third video did not mention iron at all (``control'' arm). The experiment was stratified on the class level (1--5). The treatment and control group sizes within classes are shown below:
+
+\begin{lstlisting}
+> library("foreign")
+> dat_chong = read.dta("chong.dta")
+> table(dat_chong$treatment, dat_chong$class_level)
+               
+                 1  2  3  4  5
+  Soccer Player 16 19 15 10 10
+  Physician     17 20 15 11 10
+  Placebo       15 19 16 12 10
+\end{lstlisting}
+
+One outcome of interest is the average grades in the third and fourth quarters of 2009, and an important background covariate was the anemia status at baseline. 
+I will only use a subset of the original data in this chapter. 
+
+\begin{lstlisting}
+> use.vars = c("treatment", 
++              "gradesq34", 
++              "class_level", 
++              "anemic_base_re")
+> dat_physician = subset(dat_chong,
++                        treatment != "Soccer Player",
++                        select = use.vars)
+> dat_physician$z = (dat_physician$treatment=="Physician")
+> dat_physician$y = dat_physician$gradesq34
+> table(dat_physician$z, 
++       dat_physician$class_level)
+       
+         1  2  3  4  5
+  FALSE 15 19 16 12 10
+  TRUE  17 20 15 11 10
+> table(dat_physician$z, 
++       dat_physician$class_level,
++       dat_physician$anemic_base_re)
+, ,  = No
+
+       
+         1  2  3  4  5
+  FALSE  6 14 12  7  4
+  TRUE   8 12  9  5  6
+
+, ,  = Yes
+
+       
+         1  2  3  4  5
+  FALSE  9  5  4  5  6
+  TRUE   9  8  6  6  4
+\end{lstlisting}
+
+ 
+We can use the \ri{Neyman_SRE} function defined before to compute the stratified estimator and its estimated variance. 
+\begin{lstlisting}
+tauS = with(dat_physician,
+            Neyman_SRE(z, gradesq34, class_level))
+\end{lstlisting}
+
+An important additional covariate is the baseline anemic indicator which is quite important for predicting the outcome. Further conditioning the baseline anemic indicator, we have an experiment with $5\times 2 =10$ strata, with the treatment and control group sizes shown above. 
+ Again we can use the \ri{Neyman_SRE} function defined before to compute the post-stratified estimator and its estimated variance. 
+ \begin{lstlisting}
+> tauSPS = with(dat_physician, {
++   sps = interaction(class_level, anemic_base_re)
++   Neyman_SRE(z, gradesq34, sps)
++ })
+\end{lstlisting}
+
+The following table compares these two estimators. The post-stratified estimator yields a much smaller $p$-value. 
+\begin{center}
+\begin{tabular}{crrrr}
+                          & est &   se &t.stat& p.value \\
+stratify                & 0.406 &0.202 & 2.005  & 0.045 \\
+stratify and post-stratify & 0.463 &0.190 & 2.434 &  0.015
+\end{tabular}
+\end{center} 
+
+This example illustrates that post-stratification can be used not only in the CRE but also in the SRE with additional discrete covariates. 
+
+
+\section{Practical questions}
+
+
+How do we choose $X$ to construct an SRE? Theoretically, $X$ should be predictive of the potential outcomes. In some cases, the experimenter has enough background knowledge about the predictive covariates based on, for example, some pilot studies. 
+Then the choice of $X$ should be straightforward. In some other cases, this background knowledge may not be clear enough. Experimenters instead choose $X$ based on logistical convenience, for example, $X$ can be the indicator for the study areas or the cohort of students. 
+
+
+The choice of $K$ is a related problem. Theoretically, more stratification increases the estimation efficiency if all strata are large enough. However, extremely large $K$ may even decrease the estimation efficiency. In simulation studies, we observe diminishing marginal returns of increasing $K$. Anecdotally, $K = 5$ often suffices for efficiency gain (the magic number $5$ will appear again in Chapter \ref{chapter::pscore-key}). Some experimenter prefers the most extreme version of the SRE with $K=n/2$. This results in the matched-pairs experiment, which will be discussed in Chapter \ref{chapter::mpe} later.  
+
+
+Some experiments have multidimensional continuous covariates. Can the SRE still be used? If we have a pilot study, we can build a model for the potential outcome $Y(0)$ given those covariates, and then we can choose $X$ as a discretized version of the predictor $\hat{Y}(0)$. In general, if we do not have such a pilot study or we do not want to make ad hoc discretizations, we can use a more general strategy called rerandomization, which will be the topic for Chapter \ref{chapter:rerandomization-regression}. 
+
+ 
+ 
+ \section{Homework Problems}
+ 
+ 
+  \paragraph{Covariate balance in the CRE}\label{hw::balance-discrete-CRE}
+  
+ Under the CRE, prove \eqref{eq::balance-discrete-CRE}. 
+ 
+ \paragraph{Consequence of the constant propensity score}
+\label{hw::sre-additional-neyman}
+
+Prove \eqref{eq::dim=stratified}. 
+
+
+\paragraph{Consquence of constant individual causal effects}
+
+Assume that the individual causal effects are constant $\tau_i = \tau$ for all $i=1,\ldots, n$. 
+Consider the following class of weighted estimator for $\tau$:
+$$
+\hat{\tau}_w = \sum_{k=1}^K  w_{[k]}  \hat{\tau}_{[k]} ,
+$$
+where the weights $w_{[k]}  $'s are non-negative for all $k$.
+
+Find the condition on the $w_{[k]}$'s such that $\hat{\tau}_w $ is unbiased for $\tau$. Among all unbiased estimators, find the weights that give the $\hat{\tau}_w$ with the minimum variance. 
+
+
+\paragraph{Compare the CRE and SRE}\label{hw::compare-CRE-SRE}
+
+Prove \eqref{eq::difference}.
+
+
+
+\paragraph{From the CRE to the SRE}\label{hw::CRE-SRE}
+
+
+Prove \eqref{eq::condition-to-SRE}.
+
+
+ 
+ \paragraph{More FRTs for Section \ref{sec::frt-pennbonus}}\label{hw::FRT-SRE-more}
+ 
+ Extend the analysis in Section \ref{sec::frt-pennbonus} using FRTs with other test statistics.
+
+
+ 
+ \paragraph{FRT for an SRE in \citet{imbens2015causal}}
+
+
+\citet{imbens2015causal} discussed an SRE from the Student/Teacher Achievement Ratio experiment conducted in 1985--1986 in Tennessee. 
+The kindergarten data are below:
+ \begin{lstlisting}
+treatment = list(c(1,1,0,0), 
+                 c(1,1,0,0), 
+                 c(1,1,1,0,0), 
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0), 
+                 c(1,1,1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0))
+outcome = list(c(0.165,0.321,-0.197,0.236), 
+               c(0.918,-0.202,1.19,0.117),
+               c(0.341,0.561,-0.059,-0.496,0.225),
+               c(-0.024,-0.450,-1.104,-0.956), 
+               c(-0.258,-0.083,-0.126,0.106),
+               c(1.151,0.707,0.597,-0.495), 
+               c(0.077,0.371,0.685,0.270), 
+               c(-0.870,-0.496,-0.444,0.392,-0.934,-0.633), 
+               c(-0.568,-1.189,-0.891,-0.856), 
+               c(-0.727,-0.580,-0.473,-0.807), 
+               c(-0.533,0.458,-0.383,0.313), 
+               c(1.001,0.102,0.484,0.474,0.140), 
+               c(0.855,0.509,0.205,0.296), 
+               c(0.618,0.978,0.742,0.175), 
+               c(-0.545,0.234,-0.434,-0.293), 
+               c(-0.240,-0.150,0.355,-0.130))
+\end{lstlisting}
+The strata correspond to schools, and the unit of analysis is the teacher or class. The treatment equals $1$ for small classes (13--17 students per teacher) and $0$ for regular classes (22--25 students per teacher). The outcome is the standardized average mathematics score.
+
+
+Reanalyze the Project STAR data below using the FRT.  Use $\hat{\tau}_\textsc{S}$, $W_\textsc{S}$ and $\tilde W$ in the FRT. Compare the $p$-values.
+
+Remark: This book uses $Z$ for the treatment indicator but \citet{imbens2015causal} use $W.$
+ 
+
+
+
+
+
+
+\paragraph{A multi-center trial}
+
+\citet[][Table 1]{gould1998multi} reported the following data from a multi-center trial:
+
+\begin{lstlisting}
+> multicenter = read.csv("multicenter.csv")
+> multicenter
+   center n0 mean0  sd0 n1 mean1  sd1 n5 mean5  sd5
+1       1  7  0.43 4.58  7 -5.43 5.53  8 -2.63 3.38
+2       2 11  0.10 4.21 11 -2.59 3.95 12 -2.21 4.14
+3       3  6  2.58 4.80  6 -3.94 4.25  7  1.29 7.39
+4       4 10 -2.30 3.86 10 -1.23 5.17 10 -1.40 2.27
+5       5 10  2.08 6.46 10 -6.70 7.45 10 -5.13 3.91
+6       6  6  1.13 3.24  5  3.40 8.17  5 -1.59 3.19
+7       7  5  1.20 7.85  6 -3.67 4.89  5 -1.40 2.61
+8       8 12 -1.21 2.66 13  0.18 3.81 12 -4.08 6.32
+9       9  8  1.13 5.28  8 -2.19 5.17  9 -1.96 5.84
+10     10  9 -0.11 3.62 10 -2.00 5.35 10  0.60 3.53
+11     11 15 -4.37 6.12 14 -2.68 5.34 15 -2.14 4.27
+12     12  8 -1.06 5.27  9  0.44 4.39  9 -2.03 5.76
+13     13 12 -0.08 3.32 12 -4.60 6.16 11 -6.22 5.33
+14     14  9  0.00 5.20  9 -0.25 8.23  7 -3.29 5.12
+15     15  6  1.83 5.85  7 -1.23 4.33  6 -1.00 2.61
+16     16 14 -4.21 7.53 14 -2.10 5.78 12 -5.75 5.63
+17     17 13  0.76 3.82 13  0.55 2.53 13 -0.63 5.41
+18     18 15 -1.05 4.54 13  2.54 4.16 14 -2.80 2.89
+19     19 15  2.07 4.88 15 -1.67 4.95 15 -3.43 4.71
+20     20 11 -1.46 5.48 10 -1.99 5.63 10 -6.77 5.19
+21     21  5  0.80 4.21  5 -3.35 4.73  5 -0.23 4.14
+22     22 11 -2.92 5.42 10 -1.22 5.95 11 -4.45 6.65
+23     23  9 -3.37 4.73  9 -1.38 4.17  7  0.57 2.70
+24     24 12 -1.92 2.91 12 -0.66 3.55 12 -2.39 2.27
+25     25  9 -3.89 4.76  9 -3.22 5.54  8 -1.23 4.91
+26     26 15 -3.48 5.98 15 -2.13 3.25 14 -3.71 5.30
+27     27 11 -1.91 6.49 12 -1.33 4.40 11 -1.52 4.68
+28     28 10 -2.66 3.80 10 -1.29 3.18 10 -4.70 3.43
+29     29 13 -0.77 4.73 13 -2.31 3.88 13 -0.47 4.95
+\end{lstlisting}
+
+
+This is a SRE with centers being the strata. 
+The trial was conducted to study the efficacy and tolerability of finasteride, a drug for treating benign prostatic hyperplasia. 
+Within each of the $29$ centers, patients were randomized into three arms: control, finasteride 1mg, and finasteride 5mg. The above dataset
+provides summary statistics for the outcome, which is the change from baseline in total symptom score. The total symptom score is the sum of the responses to nine questions (score $0$ to $4$) about symptoms of various aspects of impaired urinary ability. The meanings of the columns are:
+
+\begin{enumerate}
+\item
+\texttt{center}: ID of the centers;
+\item
+\texttt{n0, n1, n5}: sample sizes under the three arms;
+\item
+\texttt{mean0, mean1, mean5}: means of the outcomes under the three arms;
+\item
+\texttt{sd0, sd1, sd5}: standard deviations of the outcomes under the three arms. 
+\end{enumerate}
+
+The individual-level outcomes are not reported so we cannot implement the FRT. However, the Neymanian inference only requires the summary statistics. Report the point estimators and variance estimators for comparing ``finasteride 1mg'' and ``finasteride 5mg'' to ``control'', separately. 
+
+
+\paragraph{Data re-analyses}
+ 
+ 
+Re-analyze the LaLonde data used in Chapter \ref{sec::example-neyman-formula}. Conduct both Fisherian and Neymanian inferences. 
+
+The original experiment is a CRE. Now we pretend that the original experiment is an SRE.
+First, re-analyze the data pretending that the experiment is stratified on the race (black, Hispanic, or other). Second, re-analyze the data pretending that the experiment is stratified on marital status. Third, re-analyze the data pretending that the experiment is stratified on the indicator of a high school diploma. 
+
+Compare with the results obtained under a CRE. 
+
+ 
+
+
+\paragraph{Recommended reading}
+
+\citet{miratrix:2013} provided a solid theory for post-stratification and compared it with stratification. A main theoretical result is that their difference is small asymptotically although they can differ in finite samples. 
+
+
+

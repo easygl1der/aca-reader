@@ -1,0 +1,319 @@
+\chapter{Bridging Finite and Super Population Causal Inference}\label{chapter::bridging}
+ \chaptermark{Bridging finite and super population causal inference}
+
+
+ 
+
+
+We have focused on the finite population perspective in randomized experiments. It treats all the potential outcomes as fixed numbers. Even if the potential outcomes are random variables, we can condition on them under the finite population perspective. The advantages of this perspective are
+\begin{enumerate}
+\item
+it focuses on the design of the experiments;
+\item
+it requires minimal assumptions on the data-generating process of the outcomes.
+\end{enumerate}
+However, it is often criticized for having only {\it  internal validity} but not necessarily {\it external validity}, with informal definitions below. 
+
+\begin{definition}
+[internal validity]
+The statistical analysis is valid for the study samples at hand. 
+\end{definition}
+
+
+\begin{definition}
+[external validity]
+The statistical analysis is valid for a broader population beyond the study samples. 
+\end{definition}
+
+
+
+Obviously, all experimenters want not only the internal validity but also the external validity of their experiments.  Since all statistical properties are conditional on the potential outcomes for the units we have, the results are only about the observed units under the finite population perspective. Then a natural question arises: do the finite population results generalize to a bigger population? 
+
+
+
+This is a fair critique of the finite population framework conditional on the potential outcomes. However, this can be a philosophical question. What we observed is a finite population, so any experimental design and analysis directly give us information about this finite population. Randomization only ensures internal validity given the potential outcomes of these units. The external validity of the results depends on the sampling process of the units. If the finite population is a representative sample of a larger population we are interested in, then of course the experimental results also have external validity. Otherwise, the results based on randomization inference may not generalize. To rigorously discuss this issue, we need to have a framework with two levels of randomness, one due to the sampling process of the units and the other due to the random assignment of the treatment. See \citet{miratrix2018worth} and \citet{abadie2020sampling} for formal discussions of this idea.\footnote{\citet{pearl2014external} discussed the {\it transportability} problem from the perspective of causal diagrams.}
+  
+  
+  
+  
+For some statisticians, this is just a technical problem. We can change the statistical framework, assuming that the units are sampled from a superpopulation. Then all the statements are about the population of interest. This is a convenient framework, although it does not really solve the problem mentioned above. Below, I will introduce this framework for two purposes:
+\begin{enumerate}
+\item
+it gives a different perspective on randomized experiments;
+\item
+it serves as a bridge between Parts \ref{part::rcts} and  \ref{part::observational-studies} of this book.
+\end{enumerate}
+The latter purpose is more important since the superpopulation framework allows us to derive more fruitful results for observational studies in which the treatment is not randomly assigned. 
+
+
+
+
+
+\section{CRE}\label{sec::cre-superpop}
+
+Assume 
+$$
+\{  Z_i, Y_i(1), Y_i(0),  X_i  \}_{i=1}^n  \iidsim \{  Z, Y(1), Y(0), X \}
+$$ 
+from a superpopulation. So we can drop the subscript $i$ for quantities of this population.   With a little abuse of notation, we define the population average causal effect as
+$$
+\tau  = E\{  Y(1)  - Y(0)\}  = E\{  Y(1)  \} -  E\{ Y(0)\} .
+$$
+Under the superpopulation framework, we can formulate the CRE as below.
+
+\begin{definition}
+[CRE under the superpopulation framework]
+\label{def::cre-superpopulation}
+We have
+$$
+Z \ind \{  Y(1), Y(0), X \} .
+$$
+\end{definition}
+
+Under Definition \ref{def::cre-superpopulation}, the average causal effect can be written as
+\begin{eqnarray}
+\tau &=& E\{  Y(1) \mid Z=1\}  - E\{  Y(0) \mid Z=0 \}   \nonumber  \\
+&=& E( Y \mid Z=1)  - E(  Y \mid Z=0 ),
+\label{eq::cre-identifiable}
+\end{eqnarray}
+which equals the difference in expectations of the outcomes. The first line in \eqref{eq::cre-identifiable} is the key step that leverages the value of randomization.  Since  $\tau  $ can be expressed as a function of the distributions of the observables, it is {\it nonparametrically identifiable}\footnote{In causal inference, we say that a parameter is nonparametrically identifiable if it can be determined by the distribution of the observed variables without imposing further parametric assumptions. See Definition \ref{def::nonparametric-identification} later for a more formal discussion.}. The formula \eqref{eq::cre-identifiable} immediately suggests a moment estimator $\hat{\tau}$, which is the difference in means of the outcomes defined before. Conditioning on $\bm{Z}$, this is then a standard two-sample problem comparing the means of two independent samples. We have
+$$
+E(  \hat{\tau} \mid \bm{Z}) = \tau
+$$
+and
+$$
+\var (  \hat{\tau} \mid \bm{Z}) =   \frac{ \var\{ Y(1) \}}{n_1} + \frac{ \var\{ Y(0) \}}{n_0}.
+$$
+Under IID sampling, the sample variances are unbiased for the population variances, so \citet{Neyman:1923}'s variance estimator is unbiased for $\var (  \hat{\tau} \mid \bm{Z}) $. The conservativeness problem goes away under this superpopulation framework.
+
+
+We can also discuss covariate adjustment. Based on the OLS decompositions (see Chapter \ref{appendix::basic-linear-regression})
+\begin{eqnarray}
+Y(1) &=& \gamma_1 + \beta_1\tran X + \varepsilon(1),\label{eq::ols-decomposition-y1}\\
+Y(0) &=& \gamma_0 + \beta_0\tran X + \varepsilon(0),\label{eq::ols-decomposition-y0}
+\end{eqnarray}
+we have
+\begin{eqnarray*}
+\tau  &=& E\{  Y(1)  - Y(0)\} \\
+&=& \gamma_1  -  \gamma_0 + (\beta_1 - \beta_0)\tran E(X),
+\end{eqnarray*}
+since the residuals $  \varepsilon(1)$ and $\varepsilon(0)$ have mean zero due to the inclusion of the intercepts. 
+We can use the OLS with the treated and control data to estimate the coefficients in \eqref{eq::ols-decomposition-y1} and \eqref{eq::ols-decomposition-y0}, respectively. The sample versions of the coefficients are $\hat{\gamma}_1, \hat{\beta}_1, \hat{\gamma}_0, \hat{\beta}_0$, so a covariate-adjusted estimator for  $\tau $ is
+$$
+\hat{\tau}_\text{adj} =  \hat \gamma_1  - \hat  \gamma_0 + (\hat \beta_1 - \hat \beta_0)\tran \bar{X}.
+$$
+If we center covariates with $ \bar{X} = 0$, the above estimator reduces to \citet{lin2013}'s estimator
+$$
+\hat{\tau}_\textsc{L} = \hat \gamma_1  - \hat  \gamma_0,
+$$
+which equals the coefficient of $Z$ in the pooled regression with treatment-covariates interactions; see Proposition \ref{prop::lin-ols}. 
+
+
+
+Unfortunately, the EHW variance estimator does not work for $\hat{\tau}_\textsc{L}$ because of the additional uncertainty in the sample mean of covariates $\bar{X} $ under the super population framework. \citet{berk2013covariance}, \citet{negi2020revisiting} and \citet{zhao2020caFRT} proposed a correction of the EHW variance estimator by adding an extra term
+\begin{equation}\label{eq::lin-ehw-correction}
+(\hat \beta_1 - \hat \beta_0)\tran S_X^2  (\hat \beta_1 - \hat \beta_0)  / n
+\end{equation}
+where $\hat \beta_1 - \hat \beta_0$ equals the coefficient of the interaction $Z_iX_i$ in obtaining \citet{lin2013}'s estimator and $S_X^2$ is the finite-population covariance matrix of the covariates. 
+A conceptually simpler yet computationally intensive approach is to use the bootstrap to estimate the variance; see Chapter \ref{sec::bootstrap} and Problem \ref{hw::variance-bootstrap-superpopulation}. 
+
+
+
+\section{Simulation under the CRE: the super population perspective}
+\label{sec::simulation-CRE-superp}
+
+
+The following \ri{linestimator} function can compute \citet{lin2013}'s estimator, the EHW standard error, and the corrected standard error based on \eqref{eq::lin-ehw-correction} for the super population. 
+\begin{lstlisting}
+library("car")
+linestimator = function(Z, Y, X){
+  ## standardize X
+  X      = scale(X)
+  n      = dim(X)[1]
+  p      = dim(X)[2]
+  
+  ## fully interacted OLS
+  linreg = lm(Y ~ Z*X)
+  est    = coef(linreg)[2]
+  vehw   = hccm(linreg)[2, 2]
+  
+  ## super population correction
+  inter  = coef(linreg)[(p+3):(2*p+2)]
+  vsuper = vehw + sum(inter*(cov(X)%*%inter))/n
+  
+  c(est, sqrt(vehw), sqrt(vsuper))
+}
+\end{lstlisting}
+
+
+I then use simulation to compare the EHW standard error and the corrected standard error. 
+I choose sample size $n=500$ and use 2000 Monte Carlo repetitions. The potential outcomes are nonlinear in covariates and the error terms are not Normal. The true average causal effect equals $0.$
+\begin{lstlisting}
+res = replicate(2000, {
+  n  = 500
+  X  = matrix(rnorm(n*2), n, 2)
+  Y1 = X[, 1] + X[, 1]^2 + runif(n, -0.5, 0.5)
+  Y0 = X[, 2] + X[, 2]^2 + runif(n, -1, 1)
+  Z  = rbinom(n, 1, 0.6)
+  Y  = Z*Y1 + (1-Z)*Y0
+  linestimator(Z, Y, X)
+})
+\end{lstlisting}
+
+
+The following results confirm the theory. First, \citet{lin2013}'s estimator is nearly unbiased. 
+Second, the average EHW standard error is smaller than the empirical standard derivation, resulting in undercoverage of the 95\% confidence intervals. 
+Third, the average corrected standard error for super population is nearly identical to the empirical standard derivation, resulting in more accurate coverage of the 95\% confidence intervals.  
+\begin{lstlisting}
+> ## bias
+> mean(res[1, ])
+[1] -0.0001247585
+> ## empirical standard deviation
+> sd(res[1, ])
+[1] 0.1507773
+> ## estimated EHW standard error
+> mean(res[2, ])
+[1] 0.1388657
+> ## coverage based on EHW standard error
+> mean((res[1, ]-1.96*res[2, ])*(res[1, ]+1.96*res[2, ])<=0)
+[1] 0.927
+> ## estimated super population standard error
+> mean(res[3, ])
+[1] 0.1531519
+> ## coverage based on population standard error
+> mean((res[1, ]-1.96*res[3, ])*(res[1, ]+1.96*res[3, ])<=0)
+[1] 0.9525
+\end{lstlisting}
+
+\section{Extension to the SRE}
+
+We can extend the discussion in Section \ref{sec::cre-superpop} to the SRE since it is equivalent to independent CREs within strata. 
+%The discussion will also extend to the MPE since it is a special case of the SRE. 
+The notation below will be slightly different from that in Chapter \ref{chapter::stratification-poststratification}. 
+
+
+Assume that 
+$$
+\{ Z_i,  Y_i(1), Y_i(0) ,  X_i  \}  \iidsim \{ Z,  Y(1), Y(0), X  \} .
+$$ 
+With a discrete covariate $ X_i \in \{ 1,\ldots, K\}$, we can formulate the SRE as below.
+
+
+\begin{definition}
+[SRE under the super population framework]\label{def::sre-superpopulation}
+We have 
+$$
+Z\ind\{  Y(1), Y(0) \} \mid   X  .
+$$
+\end{definition}
+
+
+Under Definition \ref{def::sre-superpopulation},  the conditional average causal effect can be rewritten as
+\begin{eqnarray*}
+\tau_{[k]}  &=&  E\{   Y(1) -  Y(0)  \mid X= k \} \\
+&=& E(Y\mid Z=1, X=k) - E(Y\mid Z=0, X=k),
+\end{eqnarray*}
+so the average causal effect can be rewritten as
+\begin{eqnarray*}
+\tau &=&   E\{   Y(1) -  Y(0)   \}  \\
+&=& \sum_{k=1}^K \pr(X = k) E\{   Y(1) -  Y(0)  \mid X = k \} \\
+&=& \sum_{k=1}^K \pr(X  = k) \tau_{[k]} .
+\end{eqnarray*}
+%
+% The covariates $ X_i $'s are fixed with marginal proportions $\pi_{[k]} = \#\{ i:  X_i  = k \} / n$ for  $k=1,\ldots, K$. 
+%The MPE corresponds to the case in which $K=n/2$ and there is only one treated and one control unit with $ X_i  = k$ for all $k=1,\ldots, K$. 
+%The stratum-specific average causal effect is
+%$$
+%\tau_{[k]} = E\{  Y_{[k]}(1) -  Y_{[k]}(0) \} ,
+%$$
+%and the population average causal effect is
+%$$
+%\tau  = \sum_{k=1}^K \pi_{[k]} \tau_{[k]} .
+%$$
+The discussion in Section \ref{sec::cre-superpop} holds within all strata, so we can derive the superpopulation analog for the SRE. When there are more than two treatment and control units within each stratum, we can use $\hat{V}_\textsc{S}$ as the variance estimator for $\var( \hat{\tau}_\textsc{S} )$. 
+
+
+%Unsurprisingly, the MPE is more subtle since $\hat{V}_\textsc{S}$ is not well defined. With $\{\hat{\tau}_{[1]} , \ldots, \hat{\tau}_{[n/2]} \}$, we can use  
+%$$
+%\hat{V} = \frac{1}{  n/2(n/2-1) } \sum_{k=1}^{n/2} (  \hat{\tau}_{[k]} -  \hat{\tau}_\textsc{S})^2
+%$$
+%to estimate the variance of $\hat{\tau}_\textsc{S}$. Similar to our proof before, we can show that 
+%\begin{eqnarray}
+%\label{eq::super-pop-mpe-var}
+%E(\hat{V}) - \var( \hat{\tau}_\textsc{S} ) =  \frac{1}{  n/2(n/2-1) } \sum_{k=1}^{n/2} ( \tau_{[k]} -  \tau)^2 \geq 0,
+%\end{eqnarray}
+%so $\hat{V} $ is still a conservative variance estimator. Unlike the CRE and SRE, the conservativeness issue does not go away for the MPE even under the superpopulation framework. 
+%  
+%  
+%Sometimes, we may further assume that the covariates are random draws in the SRE and MPE:
+%$$
+%\{Z_i,  Y_i(1), Y_i(0) ,  X_i    \}  \iidsim \{   Z_i,  Y_i(1), Y_i(0) ,  X_i   \}
+%$$
+%with
+%$$
+%Z \ind\{  Y(1), Y(0) \} \mid  x  .
+%$$
+%The population average causal effect simplifies to
+%$$
+%\tau  = E\{  Y(1) -  Y(0) \}
+%=\sum_{k=1}^K  E\{  Y(1) -  Y(0) \mid x = k \} \pr(x  = k).
+%$$
+%The estimators remain unchanged. This framework brings mathematical convenience due to the IID assumption. However, it seems especially awkward in the MPE when the pair indicators are IID which invalidates the motivation for the experimental design itself. We should impose IID assumptions with caution. 
+
+
+We will see the exact form of Definition \ref{def::sre-superpopulation} in Part \ref{part::observational-studies} later. 
+  
+
+ \section{Homework Problems}
+ 
+\paragraph{OLS decomposition of the observed outcome under the CRE}\label{hw::ols-decompose-cre}
+
+Based on \eqref{eq::ols-decomposition-y1} and \eqref{eq::ols-decomposition-y0}, show that the OLS decomposition of the observed outcome on the treatment, covariates, and their interaction is
+$$
+Y= \alpha_0 + \alpha_Z  Z +
+\alpha_X \tran X + \alpha_{ZX} \tran X Z + \varepsilon 
+$$
+where 
+$$
+\alpha_0 = \gamma_0 ,\quad
+\alpha_Z = \gamma_1 - \gamma_0,\quad
+\alpha_X  =  \beta_0, \quad
+\alpha_{ZX} = \beta_1 - \beta_0
+$$
+and
+$$
+\varepsilon  = Z \varepsilon (1) + (1-Z) \varepsilon (0). 
+$$
+That is,
+$$
+(\alpha_0, \alpha_Z, \alpha_X , \alpha_{ZX} )
+=\arg\min_{a_0, a_Z, a_X, a_{ZX}   }  E  (  Y - a_0 - a_Z Z - a_X\tran X -a_{ZX} \tran X Z)^2.
+$$ 
+ 
+ 
+\paragraph{Variance estimation of \citet{lin2013}'s estimator under the super population framework}\label{hw::variance-bootstrap-superpopulation}
+ 
+Under the super population framework, simulate $\{  X_i, Z_i, Y_i(1), Y_i(0) \}_{i=1}^n$ with $\beta_1 \neq \beta_0$ in \eqref{eq::ols-decomposition-y1} and \eqref{eq::ols-decomposition-y0}. Calculate \citet{lin2013}'s estimator in each simulated dataset. 
+Compare the true variance and the following estimated variances:
+\begin{enumerate}
+\item
+the EHW robust variance estimator;
+\item
+the EHW robust variance estimator with the correction term defined in \eqref{eq::lin-ehw-correction};
+\item
+the bootstrap variance estimator, with covariates centered at the beginning but not re-centered for each bootstrap sample;
+\item
+the bootstrap variance estimator, with covariates re-centered for each bootstrap sample.
+\end{enumerate}
+
+  
+ 
+% \paragraph{Variance estimation in the MPE}
+% Show \eqref{eq::super-pop-mpe-var} under the super population framework. 
+
+
+\paragraph{Recommended reading}
+
+
+\citet{ding2017bridging} provide a unified discussion of the finite population and superpopulation inferences for the average causal effect. 
+

@@ -1,0 +1,745 @@
+
+\chapter{Probability and Statistics}
+ \label{chapter::basic-prob-append}
+ 
+ 
+This book assumes that the readers have basic knowledge of probability theory and statistical inference. Therefore, this chapter is not a comprehensive review of probability and statistics. For easy reference, I review the key concepts that are crucial for the main text.  
+ 
+ 
+
+\section{Probability}
+
+
+
+\subsection{Pearson correlation coefficient and squared multiple correlation coefficient}
+\label{sec::measure-pearson-r2}
+
+For two random variables $Y$ and $X$, define the Pearson correlation coefficient as
+$$
+\rho_{YX} = \frac{  \cov(Y, X)  }{  \sqrt{  \var(Y)   \var(X) }   }
+$$
+which measures the linear dependence of $Y$ on $X$. The definition is symmetric in $Y$ and $X$ in that
+$$
+\rho_{YX}  = \rho_{XY} .
+$$
+
+
+With a random variable $Y$ and a random vector $X$, define the squared multiple correlation coefficient as
+$$
+R^2_{YX} = \textup{corr}^2(Y, X )
+= \frac{   \cov(Y, X) \cov(X)^{-1} \cov(X, Y)  }{  \var(Y) }
+$$
+where $\cov(Y, X) $ is a row vector and $\cov(X, Y)$ is a column vector. It also measures the linear dependence of $Y$ on $X$. But this definition is not symmetric in $Y$ and $X$.
+
+
+
+\subsection{Multivariate Normal random vector}
+\label{sec::multivariate-normal}
+ 
+A multivariate Normal random vector $\textsc{N}(\mu, \Sigma)$ is determined by its mean vector $\mu$ and covariance matrix $\Sigma$. Partition it into two parts: 
+\[
+\left(\begin{array}{c}
+Y_{1}\\
+Y_{2}
+\end{array}\right)\sim\textsc{N}\left(\left(\begin{array}{c}
+\mu_{1}\\
+\mu_{2}
+\end{array}\right),\left(\begin{array}{cc}
+\Sigma_{11} & \Sigma_{12}\\
+\Sigma_{21} & \Sigma_{22}
+\end{array}\right)\right).
+\]
+
+First, the marginal distributions are Normal:
+$$
+Y_{1}  \sim\textsc{N}\left(\mu_{1},\Sigma_{11}\right),\quad 
+Y_{2}  \sim\textsc{N}\left(\mu_{2},\Sigma_{22}\right).
+$$
+Second, if $\Sigma_{22}$ is positive definite, then the conditional distribution is also Normal:
+\[
+Y_{1}\mid Y_{2}=y_{2}\sim\textsc{N}\left(\mu_{1}+\Sigma_{12}\Sigma_{22}^{-1}(y_{2}-\mu_{2}),\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\right).
+\]
+ 
+
+ 
+ 
+ \subsection{$\chi^2$ and $t$ distributions}
+\label{subsection::chi2-t-distribution}
+
+
+
+Assume $X_1,\ldots, X_n$ are IID $\N01$. Then 
+$$
+\sumn X_i^2 
+$$
+follows a $\chi^2_n$ distribution with degrees of freedom $n$. The $\chi^2_n$ distribution has mean $n$ and variance $2n$. 
+
+
+
+Assume $X\sim \N01, Q_n\sim \chi^2_n$ and $X\ind Q_n$. Then
+$$
+\frac{X}{  \sqrt{Q_n / n} }
+$$
+follows a $t_n$ distribution with degrees of freedom $n$. The $t_n$ distribution has mean 0 if $n>1$. When $n=1$, the $t_1$ distribution is also called the Cauchy distribution, which does not have a finite mean. 
+
+
+
+
+
+
+
+\subsection{Cauchy--Schwarz inequality}\label{sec::cauchy-schwarz-inequality}
+
+ 
+The  Cauchy--Schwarz inequality has many forms. With two random variables $A$ and $B$, we have
+$$
+ | E(AB)  | \leq \sqrt{   E(A^2) E(B^2)  }
+$$
+with equality holding when $B = \beta A$ for some $\beta$. Centering  $A$ and $B$ to have mean 0, we have
+$$
+| \cov(A, B)  | \leq \sqrt{   \var(A) \var(B)  } 
+$$
+with equality holding when $B = \alpha + \beta A$ for some $\alpha$ and  $\beta$.
+
+When $A$ and $B$ are uniform random variables over finite sets $\{ a_1, \ldots, a_n \}$ and $\{ b_1, \ldots, b_n \}$ respectively, we have
+$$
+ \left|  \sumn a_i b_i  \right| \leq \sqrt{  \sumn a_i^2   \sumn b_i^2  }
+$$
+with equality holding if there exists   $\beta$ such that $b_i =  \beta a_i$ for all $i$'s. 
+ 
+ 
+
+
+
+\subsection{Tower property and variance decomposition}\label{appendix::tower-property}
+
+Given random variables or vectors $A, B, C$, we have
+$$
+E(A) = E\{   E(A \mid B) \} 
+$$
+and
+$$
+E(A\mid C) = E\{   E(A \mid B, C) \mid C \}. 
+$$
+
+ 
+Given a random variable $A$ and random variables or vectors $B, C$, we have
+$$
+\var(A) = E\{   \var(A \mid B) \}  +  \var\{   E(A \mid B) \} 
+$$
+and
+$$
+\var(A\mid C) = E\{   \var(A \mid B, C)  \mid C \}  +  \var\{   E(A \mid B, C)\mid C \}  .
+$$
+When I was in graduate school, my professors Carl Morris and Joe Blitzstein called this formula the {\it Eve's Law} due to the ``EVVE'' form of the formula. They then went back to call the first tower property the {\it Adam's Law.}
+
+
+
+Similarly, we can decompose the covariance as
+$$
+\cov(A_1, A_2) = E\left\{ \cov(A_1, A_2\mid B)   \right\} + \cov\{ E(A_1\mid B), E(A_2\mid B)  \}
+$$
+and
+$$
+\cov(A_1, A_2\mid C) = E\left\{ \cov(A_1, A_2\mid B, C)  \mid C \right\} + \cov\{ E(A_1\mid B, C), E(A_2\mid B, C) \mid C  \}.
+$$
+
+
+\subsection{Limiting theorems}
+
+
+\begin{definition}
+[convergence in probability]\label{def::converge-in-prob}
+A sequence of random variables $(X_n)_{n\geq 1}$ converges to $X$ in probability, if for every $\varepsilon > 0$, we have
+$$
+\pr (   |X_n - X| > \varepsilon  ) \rightarrow 0
+$$
+as $n\rightarrow \infty$. 
+\end{definition}
+
+
+
+\begin{definition}
+[convergence in distribution]\label{def::converge-in-distribution}
+A sequence of random variables $(X_n)_{n\geq 1}$ converges to $X$ in distribution, if 
+$$
+\pr(X_n \leq x) \rightarrow \pr(X\leq x)
+$$
+for all continuity point $x$ of $ \pr(X\leq x) $, as $n\rightarrow \infty$. 
+\end{definition}
+
+
+Convergence in probability is stronger than convergence in distribution. Definitions \ref{def::converge-in-prob} and \ref{def::converge-in-distribution} are useful for stating the following two fundamental theorems on the sample average of independent and identically distributed (IID) random variables. 
+
+
+
+\begin{theorem}[law of large numbers]
+\label{thm::lln}
+If $X_1,\ldots, X_n \iidsim X$ with $E| X| <\infty$, then $\bar{X} = n^{-1} \sumn X_i \rightarrow E(X)$ in probability. 
+\end{theorem}
+
+
+The law of large numbers in Theorem \ref{thm::lln} states that the sample average is close to the population mean in the limit. 
+
+\begin{theorem}[central limit theorem (CLT)]
+\label{thm::clt}
+If $X_1,\ldots, X_n \iidsim X$ with $\var (X) <\infty$, then 
+$$ 
+\frac{   \bar{X} - E(X)   }
+{ \sqrt{ \var (X) /n    } } \rightarrow \N01
+$$  
+in distribution. 
+\end{theorem}
+
+The CLT in Theorem \ref{thm::clt} states that the standardized sample average is close to a standard Normal random variable in the limit. 
+
+
+Theorems \ref{thm::lln} and \ref{thm::clt} assume IID random variables for convenience. 
+There are also many laws of large numbers and CLTs for the sample mean of independent or weakly dependent random variable \citep[e.g.,][]{durrett2019probability}. 
+
+
+
+
+\subsection{Delta method}\label{section::delta-method}
+
+
+The delta method is a power tool to derive the asymptotic Normality of nonlinear functions of an asymptotically Normal random vector. I review a special case of the delta method below.
+
+
+\begin{theorem}
+[delta method]\label{thm::delta-method}
+Assume $\sqrt{n} (X_n - \mu) \rightarrow \textsc{N}(0, \Sigma)$ in distribution and the function $g(x)$ has non-zero derivative $ \nabla g(\mu)   $ at $\mu$. Then
+$$
+\sqrt{n} \{  g(X_n) - g(\mu) \}  \rightarrow \textsc{N} (0,   (\nabla g(\mu) ) \tran  \Sigma \nabla g(\mu)  )
+$$
+in distribution.
+\end{theorem}  
+
+I will omit the proof of Theorem \ref{thm::delta-method}. It is intuitive based on the first-order Taylor expansion:
+$$
+g(X_n) - g(\mu) \approx  (\nabla g(\mu) ) \tran  (X_n - \mu) .
+$$
+So $\sqrt{n} \{  g(X_n) - g(\mu) \} $ is close to the linear transformation of $\textsc{N}(0, \Sigma)$, which is $\textsc{N} (0,   (\nabla g(\mu) ) \tran  \Sigma \nabla g(\mu)  )$. 
+
+
+
+
+As illustrations, we can use the delta method to obtain the asymptotic Normality of the ratio and product. 
+
+\begin{example}
+[asymptotic Normality for the ratio]\label{example::asymptotic-normal-ratio}
+Assume 
+\begin{equation}\label{eq::normal-ratio}
+\sqrt{n} \begin{pmatrix}
+Y_n - \mu_Y \\
+X_n - \mu_X
+\end{pmatrix}
+\rightarrow 
+\textsc{N}\left(
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix},
+\begin{pmatrix}
+\sigma_Y^2 & \sigma_{YX} \\
+ \sigma_{YX} &  \sigma_X^2 
+\end{pmatrix}
+\right)
+\end{equation}
+in distribution with $\mu_X \neq 0.$ Apply Theorem \ref{thm::delta-method} to obtain that
+\begin{equation}\label{eq::ratio-normality}
+\sqrt{n} \left(   \frac{Y_n}{X_n}  -  \frac{\mu_Y}{\mu_X} \right)
+\rightarrow
+\textsc{N}\left(0,    \frac{  \sigma_Y^2 }{ \mu_X^2 }  + \frac{ \mu_Y^2 \sigma_X^2}{ \mu_X^4}  - \frac{2\mu_Y \sigma_{YX}}{\mu_X^3} \right)
+\end{equation}
+in distribution. 
+In the special case that $X_n$ and $Y_n$ are asymptotically independent with $\sigma_{YX} = 0$, the asymptotic variance of $Y_n/X_n$ simplifies to $\sigma_Y^2 / \mu_X^2 + \mu_Y^2 \sigma_X^2 / \mu_X^4$.
+I leave the details to Problem \ref{hw::asymptotic-normality-ratio}.
+\end{example}
+
+
+The asymptotic variance in Example \ref{example::asymptotic-normal-ratio} is a little cumbersome. An easier way to memorize it is based on the following approximation:
+\begin{equation}\label{eq::ratio-slutsky}
+\frac{Y_n}{X_n}  -  \frac{\mu_Y}{\mu_X}  = \frac{Y_n -  \mu_Y/\mu_X \cdot X_n  }{X_n} \approx   \frac{Y_n -  \mu_Y/\mu_X \cdot X_n  }{\mu_X}, 
+\end{equation}
+so the asymptotic variance of the ratio equals the asymptotic variance of 
+$$
+ \frac{Y_n -  \mu_Y/\mu_X \cdot X_n  }{\mu_X},
+ $$
+which is a linear combination of $Y_n$ and $X_n$. Slutsky's theorem can make the approximation in \eqref{eq::ratio-slutsky} rigorous but it is beyond this book. 
+
+
+\begin{example}
+[asymptotic Normality for the product]\label{example::asymptotic-normal-product}
+Assume \eqref{eq::normal-ratio}. Apply Theorem \ref{thm::delta-method} to obtain that
+\begin{equation}\label{eq::product-normality}
+\sqrt{n} \left(   X_n  Y_n  -  \mu_X \mu_Y \right)
+\rightarrow
+\textsc{N}\left(0,     \mu_Y^2 \sigma_X^2 + \mu_X^2 \sigma_Y^2 + 2 \mu_X \mu_Y \sigma_{XY} \right)
+\end{equation}
+in distribution. In the special case that $X_n$ and $Y_n$ are asymptotically independent with $\sigma_{YX} = 0$, the asymptotic variance of $X_n Y_n$ simplifies to $\mu_Y^2 \sigma_X^2 + \mu_X^2 \sigma_Y^2$.
+I leave the details to Problem \ref{hw::asymptotic-normality-product}.
+\end{example}
+
+
+
+\section{Statistical inference}
+\label{sec::statistical-inference}
+
+\subsection{Point estimation}
+
+
+Assume that $\theta$ is the parameter of interest. Oftentimes, the problem also contains other parameters not of interest, denoted by $\eta$. Statisticians call $\eta$ the {\it nuisance parameter}. Based on the data, we can compute an estimator $\hat\theta$. Throughout this book, we take the frequentist's perspective by assuming that $\theta$ is a fixed number and $\hat\theta$ is random due to the randomness of data. Two basic requirements for an estimator are below. 
+
+\begin{definition}
+[unbiasedness]\label{def::unbiasedness}
+The estimator $\hat\theta$ is {\it unbiased} for $\theta$ if 
+$$
+E(\hat\theta) = \theta
+$$
+for all possible values of $\theta$ and $\eta$. 
+\end{definition}
+
+
+
+\begin{definition}
+[consistency]\label{def::consistency}
+The estimator $\hat\theta$ is {\it consistent} for $\theta$ if 
+$$
+ \hat\theta  \rightarrow \theta
+$$
+in probability as the sample size approaches to infinity, for all possible values of $\theta$ and $\eta$. 
+\end{definition}
+
+
+Unbiasedness requires that the mean of the estimator is identical to the parameter of interest. Consistency requires that the estimator is close to the true parameter in the limit. Unbiasedness does not imply consistency, and consistency does not imply unbiasedness either. Unbiasedness can be restrictive because it is impossible even in some simple statistics problems. Consistency is often the basic requirement in most statistics problems. 
+
+
+
+
+
+\subsection{Confidence interval}
+
+
+
+A point estimator $\hat\theta$ is a random variable that differs from the true parameter $\theta$. Statisticians are often interested in finding an interval that covers the true parameter with a certain given probability. This interval is computed based on the data, and it is random. 
+
+\begin{definition}
+[confidence interval]\label{def::confidence-interval}
+A data-dependent interval $[  \hat\theta_\textsc{l} , \hat\theta_\textsc{u} ] $ is a confidence interval for $\theta$ with coverage probability at least $1-\alpha$ if
+$$
+\pr(    \hat\theta_\textsc{l}    \leq \theta \leq  \hat\theta_\textsc{u}  ) \geq 1-\alpha 
+$$
+for all possible values of $\theta$ and $\eta$.  
+\end{definition}
+
+
+\begin{definition}
+[asymptotic confidence interval]\label{def::asymptotic-confidence-interval}
+A data-dependent interval $[  \hat\theta_\textsc{l} , \hat\theta_\textsc{u} ] $ is an asymptotic confidence interval for $\theta$ with coverage probability at least $1-\alpha$ if
+$$
+\pr(    \hat\theta_\textsc{l}   \leq \theta \leq  \hat\theta_\textsc{u}  )   \rightarrow    1-\alpha'   ,\qquad \text{ as } n\rightarrow \infty
+$$
+with $\alpha '  \leq \alpha$, for all possible values of $\theta$ and $\eta$.     
+\end{definition}
+
+
+A standard choice is $\alpha = 0.05$. 
+In Definitions \ref{def::confidence-interval} and \ref{def::asymptotic-confidence-interval}, the coverage probabilities can be larger than the nominal level $1-\alpha$. That is, the definitions allow for over-coverage but do not allow for under-coverage. With over-coverage, we say that the confidence interval is conservative. Of course, we hope the confidence interval to be as narrow as possible. Otherwise, the definition of the confidence interval can be arbitrary. 
+
+
+
+\subsection{Hypothesis testing}
+
+
+  Many applied problems can be formulated as testing a hypothesis:
+  $$
+  H_0: \theta = 0 .
+  $$
+The decision rule $\phi$ is a binary function of the data: $\phi = 1$ if we reject $H_0$; $\phi = 0$ if we fail to reject   $H_0$. The type one error rate of the test is the probability of rejection if the null hypothesis holds. I review the definition below. 
+
+
+\begin{definition}[type one error rate]
+\label{def::size-test}
+When $H_0$ holds, define the type one error rate of the test $\phi$ as the maximum value of the probability
+$$
+\pr(\phi = 1)
+$$
+over all possible values of $\theta$ and $\eta$.     
+\end{definition}
+  
+
+A standard choice is to make sure that the type one error rate is below $\alpha = 0.05$. The type two error rate of the test is the probability of no rejection if the null hypothesis does not hold. I review the definition below. 
+
+
+\begin{definition}[type two error rate]
+\label{def::type2-error-test}
+When $H_0$ does not hold, define the type two error rate of the test $\phi$ as the maximum value of the  probability
+$$
+\pr(\phi = 0)
+$$
+over all possible values of $\theta$ and $\eta$.     
+\end{definition}
+
+
+Given the control of the type one error rate under $H_0$, we hope the type two error rate is as low as possible when $H_0$ does not hold. 
+
+
+
+
+
+
+\subsection{Wald-type confidence interval and test}\label{section::wald-type-ci-test}
+
+
+Many statistics problems have the following structure. The parameter of interest is $\theta$. We first find a consistent estimator $\hat\theta$ that converges in probability to $\theta$, and show that it is asymptotically Normal with mean $\theta$ and variance $v$ which may depend on $\theta$ as well as the nuisance parameter $\eta$. We then find a consistent estimator $\hat v$ for $v$, based on analytic formulas or the bootstrap reviewed in Chapter \ref{sec::bootstrap} later. 
+The square root of $\hat v$ is called the {\it standard error}. 
+We finally construct the Wald-type confidence interval for $\theta$ as
+$$
+\hat{\theta} \pm z_{1-\alpha/2} \sqrt{ \hat{v} }
+$$  
+where $z_{1-\alpha/2}$ is the $1-\alpha/2$ upper quantile of the standard Normal random variable.
+It covers $\theta$ with probability approximately $1-\alpha$. When this interval excludes a particular $c$, for example, $c = 0$, we reject the null hypothesis $H_0(c): \theta = c$, which is called the Wald test. 
+
+ 
+ 
+ \subsection{Duality between constructing confidence sets and testing null hypotheses}
+ \label{section::duality-ci-testing}
+
+Consider the statistical inference problem for a scalar parameter $\theta$. A fundamental result in statistics is that constructing confidence sets for $\theta$ is equivalent to testing null hypotheses about $\theta$. This is often called the duality between constructing confidence sets and testing null hypotheses. 
+
+Section \ref{section::wald-type-ci-test} has reviewed the duality based on the  Wald-type confidence interval and test. The duality also holds in general. Assume that $\hat\Theta$ is a $(1-\alpha)$-level confidence set for $\theta$:
+$$
+\pr(  \theta \in \hat\Theta  ) \geq  1-\alpha.
+$$
+Then we can reject the null hypothesis $H_0(c): \theta = c$ if $c$ is not in the set $\hat\Theta$. This is a valid test because when $\theta$ indeed equals $c$, we have the correct type one error rate $\pr(  \theta \not  \in \hat\Theta ) \leq  \alpha$. 
+Conversely, if we test a sequence of null hypotheses $H_0(c): \theta = c$, we can obtain the corresponding $p$-values, $p(c)$, as a function of $c$. Then the values of $c$ that we fail to reject at level $\alpha$ form a confidence set for $\theta$:
+$$
+ \hat\Theta = 
+\{  c:  p(c) \geq \alpha \} = \{  c: \text{ fail to reject } H_0(c) \text{ at level } \alpha \} . 
+$$
+It is a valid confidence set because 
+$$
+\pr( \theta \in  \hat\Theta ) = 
+\pr\{  \text{fail to reject } H_0(\theta) \text{ at level } \alpha \} \geq   1-\alpha.
+$$
+
+
+Here I use ``confidence set'' instead of ``confidence interval'' because $ \hat\Theta$ based on inverting tests may not be an interval. 
+See the use of the duality in Chapters \ref{sec::fc-problem} and \ref{sec::frt-invert-interval}. 
+
+
+
+\section{Inference with two-by-two tables}
+
+
+
+\subsection{Fisher's exact test}
+\label{sec::fisher-exact-test}
+
+Fisher  proposed an exact test for $H_0: p_1 = p_0$ under the statistical model: 
+$$
+n_{11} \sim \text{Binomial}(n_1, p_1),\quad
+n_{01} \sim \text{Binomial}(n_0, p_0),\quad 
+n_{11} \ind n_{01}.
+$$
+The table below summarizes the data.
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline 
+ & 1 & 0 & row sum \\
+ \hline 
+sample 1 & $n_{11}$ & $n_{10}$ & $n_1$ \\
+sample 0 & $n_{01}$ & $n_{00}$ & $n_0$ \\
+column sum & $n_{\cdot 1}$ & $n_{\cdot 0}$ & $n$ \\
+\hline 
+\end{tabular}
+\end{center}
+
+
+
+
+
+He argued that the sums $n_{11}  + n_{01}  =  n_{\cdot 1}$ and $n_{10}  + n_{00}  =  n_{\cdot 0}$ contain little information about the difference between $p_1$ and $p_0$, and conditional on them, $n_{11}$  follows a  Hypergeometric distribution that does not depend on the unknown parameter $p_1=p_0$ under $H_0$:
+$$
+\pr(n_{11} = k )  = \frac{  \binom{ n_{\cdot 1} }{  k }  \binom{  n -  n_{\cdot 1} }{  n_1 - k   }  }{  \binom{  n }{ n_1 }  }.
+$$
+In \ri{R}, the function \ri{fisher.test} implements this test. 
+
+
+
+\subsection{Estimation with two-by-two tables}\label{section::asymptotic-inference-2x2}
+
+
+Based on the model in Section \ref{sec::fisher-exact-test}, we can estimate the parameters $p_1$ and $p_0$ by sample frequencies:
+$$
+\hat p_1 = \frac{n_{11}}{n_1} ,\quad \hat p_0 = \frac{n_{01}}{n_0}.
+$$
+Therefore, we can estimate the risk difference, log risk ratio, and log odds ratio 
+\begin{eqnarray*}
+\RD &=& p_1 - p_0,\\ 
+\log \RR &=&\log \frac{ p_1}{p_0},\\ 
+\log \OR &=& \log \frac{ p_1/(1-p_1)}{p_0/(1-p_0)}
+\end{eqnarray*}
+by the sample analogs
+\begin{eqnarray*}
+\hat \RD &=& \hat  p_1 -\hat  p_0,\\ 
+\log \hat \RR &=& \log\frac{ \hat p_1}{\hat p_0},\\ 
+\log \hat \OR &=&\log \frac{ \hat p_1/(1-\hat p_1)}{\hat p_0/(1-\hat p_0)}  = \log\frac{n_{11}n_{00}}{n_{10}n_{01}}.
+\end{eqnarray*}
+Based on the asymptotic approximation (see Problem \ref{hw::variance-estimators-2x2}), the estimated variance for the above parameters are 
+\begin{eqnarray*}
+&&\frac{ \hat  p_1 (1-\hat  p_1) }{n_1} + \frac{ \hat  p_0 (1-\hat  p_0) }{n_0},\\
+&& \frac{   1-\hat  p_1 }{n_1 \hat  p_1} + \frac{   1-\hat  p_0 }{n_0 \hat  p_0 },\\
+&& \frac{ 1 }{n_1  \hat  p_1 (1-\hat  p_1)} + \frac{ 1 }{n_0 \hat  p_0 (1-\hat  p_0)},
+\end{eqnarray*}
+respectively.
+The log transformation above yields better Normal approximations because the risk ratio and odds ratio are always positive. 
+
+
+
+
+\section{Two famous problems in statistics}
+
+
+
+\subsection{Behrens--Fisher problem}\label{sec::bf-problem}
+
+
+
+Consider the two-sample problem with $n_1$ units under the treatment and $n_0$ units under the control, respectively. Assume the outcomes under the treatment $\{  Y_i: Z_i = 1 \}$ are IID from $\textsc{N} (\mu_1, \sigma_1^2)$ and the outcomes under the control  $\{  Y_i: Z_i = 0 \}$ are IID from $\textsc{N} (\mu_0, \sigma_0^2)$, respectively. The goal is to test $H_0: \mu_1 = \mu_0$. 
+
+
+
+Start with the easier case with $\sigma_1^2  = \sigma_0^2.$ Coherent with Chapter \ref{ch::frt-cre}, let 
+$$
+\hat{\bar{Y}}(1) = n_1^{-1} \sum_{Z_i =1}  Y_i ,\quad
+\hat{\bar{Y}}(0) = n_0^{-1} \sum_{Z_i =0}  Y_i
+$$
+denote the sample means of the outcomes under the treatment and control, respectively. 
+A standard result is that 
+$$
+t_\textup{equal} = 
+\frac{  \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)    }{  \sqrt{\frac{n}{n_1 n_0(n-2)}  \left[  \sum_{Z_i=1}  \{Y_i - \hat{\bar{Y}}(1)\}^2
++ \sum_{Z_i=0}  \{Y_i - \hat{\bar{Y}}(0)\}^2
+    \right]  }    }   \sim t_{n-2}.
+$$     
+Based on $t_\textup{equal} $, we can construct a test for $H_0.$
+
+
+Now consider the more difficult case with possibly different $\sigma_1^2  $ and $ \sigma_0^2.$ The distribution of $t_\textup{equal}$ is no longer $t_{n-2}.$ Estimating the variances separately, we can also define
+$$
+t_\textup{unequal} = \frac{    \hat{\bar{Y}}(1)  -   \hat{\bar{Y}}(0)    }{  \sqrt{  \frac{  \hat{S}^2(1)  }{n_1}  + \frac{\hat{S}^2(0)}{n_0}  }   },
+$$
+where 
+$$
+\hat{S}^2(1) = (n_1 - 1)^{-1} \sum_{Z_i =1} \{ Y_i  -\hat{\bar{Y}}(1)   \}^2,\quad
+\hat{S}^2(0) = (n_0 - 1)^{-1} \sum_{Z_i =0} \{ Y_i  -\hat{\bar{Y}}(0)   \}^2 
+$$
+are the sample variances of the outcomes under the treatment and control, respectively.  Unfortunately, the exact distribution of $t_\textup{unequal} $ depends on the known variances. Testing $H_0$ without assuming equal variances is the famous Behrens--Fisher problem.  With large sample sizes $n_1$ and $n_0$, the CLT ensures that $t_\textup{unequal} $ is approximately $\N01$. So we can construct an approximate test for $H_0.$ By duality, a large-sample Wald-type confidence interval for $\mu_1 - \mu_0$ is
+$$
+ \hat{\bar{Y}}(1)  -   \hat{\bar{Y}}(0)   \pm z_{1-\alpha/2}    \sqrt{  \frac{  \hat{S}^2(1)  }{n_1}  + \frac{\hat{S}^2(0)}{n_0}  }     
+$$
+where $z_{1-\alpha/2}$ is the $1-\alpha/2$ upper quantile of the standard Normal random variable.
+
+
+ 
+
+
+
+\subsection{Fieller--Creasy problem}\label{sec::fc-problem}
+
+Consider the two-sample problem with $n_1$ units under the treatment and $n_0$ units under the control, respectively. Assume the outcomes under the treatment $\{  Y_i: Z_i = 1 \}$ are IID from $\textsc{N} (\mu_1, 1)$ and the outcomes under the control $\{  Y_i: Z_i = 0 \}$ are IID from $\textsc{N} (\mu_0, 1)$, respectively. The goal is to estimate $\gamma = \mu_1 / \mu_0$. We can use $\hat\gamma = \hat{\bar{Y}}(1)  / \hat{\bar{Y}}(0) $ to estimate $\gamma$. However, the point estimator has a complicated distribution, which does not yield a simple procedure to construct the confidence interval for $\gamma$. 
+
+
+
+Fieller's confidence interval can be formulated as inverting tests for a sequence of null hypotheses: $H_0(c): \gamma = c$. Under $H_0(c)$, we have 
+$$
+\frac{  \hat{\bar{Y}}(1)  - c \hat{\bar{Y}}(0) }{  \sqrt{ 1/n_1 + c^2/n_0  } } \sim \N01 
+$$
+which motivates the confidence interval
+$$
+\left\{
+c: \Big | \frac{  \hat{\bar{Y}}(1)  - c \hat{\bar{Y}}(0) }{  \sqrt{ 1/n_1 + c^2/n_0  } } \Big | \leq z_{1-\alpha/2}
+\right\}
+$$
+where $z_{1-\alpha/2}$ is the $1-\alpha/2$ upper quantile of the standard Normal random variable.
+
+
+\section{Monte Carlo method in statistics}\label{sec::monte-carlo-method}
+
+
+The Monte Carlo method is a powerful tool in statistics. I will review its basic use in approximating expectations or averages, which is fundamental in understanding the idea of FRT  introduced in Chapter \ref{ch::frt-cre}. 
+
+
+If our goal is to calculate $\theta = E\{  g(Y)\}$ with $Y$ being a random variable, we can simply draw IID samples $Y_1,\ldots, Y_n$ from the distribution of $Y$ and obtain the moment estimator for $\theta$:
+$$
+\hat\theta = n^{-1} \sumn g(Y_i).
+$$
+
+As a special case, $Y$ is a uniform distribution over $\{ y_1, \ldots, y_N \}$ and $\theta = N^{-1} \sum_{i=1}^N g(y_i)$. We can draw $n$ IID samples $\{ Y_1, \ldots, Y_n \}$ from $\{ y_1, \ldots, y_N \}$ to obtain the moment estimator $\hat\theta $ defined above. This is called {\it sampling with replacement}, which is different from {\it sampling without replacement} reviewed in Chapter \ref{chapter::SRS-appendix}. 
+
+
+
+\section{Bootstrap}
+\label{sec::bootstrap}
+
+
+ 
+It is often very tedious to derive the variance formulas for complex estimators. \citet{Efron_1979} proposed the bootstrap as a general tool for variance estimation.  There are many versions of the bootstrap \citep{davison1997bootstrap}. In this book, we only need the most basic one: the nonparametric bootstrap, which will be simply called the bootstrap. 
+
+
+Consider the generic setting with 
+$$
+Y_1,\ldots, Y_n \iidsim Y,
+$$
+where $Y_i$ can be a general random element denoting the observed data for unit $i$. An estimator $\hat\theta$ is a function of the observed data: $\hat\theta = T(Y_1, \ldots, Y_n)$. When $T$ is a complex function, it may not be easy to obtain the variance or asymptotic variance of $\hat\theta$. 
+
+The uncertainty of $\hat\theta$ is driven by the IID sampling of $Y_1,\ldots, Y_n$ from the true distribution. Although the true distribution is unknown, it can be well approximated by its empirical version 
+$$
+\hat{F}_n(y) = n^{-1} \sumn I(Y_i \leq y),
+$$
+when the sample size $n$ is large. If we believe this approximation, we can simulate $\hat\theta$ by sampling 
+$$
+(Y_1^*,\ldots, Y_n^* ) \iidsim \hat{F}_n(y).
+$$ 
+Because $\hat{F}_n(y) $ is a discrete distribution with mass $1/n$ on each observed data point, the simulation of $\hat\theta$ reduces to the following procedure: 
+\begin{enumerate}
+\item
+sample $(Y_1^*,\ldots, Y_n^* ) $ from $\{Y_1,\ldots, Y_n \}$ with replacement;
+\item
+compute $\hat{\theta}^* = T(Y_1^*, \ldots, Y_n^*)$;
+\item
+repeat the above two steps $B$ times to obtain the bootstrap replicates $\{  \hat{\theta}^*_1, \ldots, \hat{\theta}^*_B \}$.
+\end{enumerate}
+
+
+
+
+We can then approximate the (asymptotic) variance of $\hat\theta$ by the sample variance of the bootstrap replicates:
+$$
+\hat{V}_\text{boot} = (B-1)^{-1} \sum_{b=1}^B  (\hat{\theta}^*_b - \bar{\theta}^*)^2,
+$$
+where $\bar{\theta}^* = B^{-1}\sum_{b=1}^B \hat{\theta}^*_b $. The bootstrap confidence interval based on the Normal approximation is then
+$$
+\hat\theta \pm  z_{1-\alpha/2} \sqrt{\hat{V}_\text{boot} },
+$$
+where $z_{1-\alpha/2}$ is the $1-\alpha/2$ upper quantile of the standard Normal random variable.
+
+
+
+I use the following simple example to illustrate the idea of the bootstrap. With $n=100$ IID observations $Y_i$'s from $\textsc{N}(1,1)$, the sample mean should be close to $1$ with variance $1/100 = 0.01$. Over $500$ simulations, the classic variance estimator and the bootstrap variance estimator with $B=200$ both have average values close to $0.01$. 
+
+\begin{lstlisting}
+> ## sample size
+> n  = 100
+> ## number of Monte Carlo simulations
+> MC = 500
+> ## number of bootstrap replicates B
+> n.boot = 200
+> simulation = replicate(MC, {
++   Y = rnorm(n, 1, 1)
++   boot.mu.hat = replicate(n.boot, {
++     index = sample(1:n, n, replace = TRUE)
++     mean(Y[index])
++   })
++   c(mean(Y), var(Y)/n, var(boot.mu.hat))
++ })
+> ## summarize the results
+> apply(simulation, 1, mean)
+[1] 0.997602961 0.010006303 0.009921895
+\end{lstlisting}
+
+
+
+
+\section{Homework problems}
+
+\paragraph{Independent but not IID data}
+\label{hw::inid}
+
+Assume that the $Y_i$'s are independent with mean $\mu_i$ and variances $\sigma_i^2$ for $i=1,\ldots, n$. The parameter of interest is 
+$
+\mu = n^{-1} \sum_{i=1}^n \mu_i.
+$
+Show that 
+$
+\hat\mu = n^{-1} \sum_{i=1}^n Y_i
+$
+is unbiased for $\mu$ and find its variance. Show that the usual variance estimator for IID data
+$$
+\hat{v} = \{  n(n-1) \}^{-1} \sum_{i=1}^n (Y_i -  \hat{\mu})^2
+$$
+is a conservative estimator for the variance of $\hat\mu$ in the sense that
+$$
+E(\hat{v}) - \var( \hat\mu ) = \{  n(n-1) \}^{-1} \sum_{i=1}^n (\mu_i - \mu)^2 \geq 0. 
+$$
+
+Remark: Consider a simpler case with $\mu_i = \mu$ and $\sigma_i^2 = \sigma^2$ for all $i=1,\ldots, n$. The sample mean is unbiased for $\mu$ with variance $\sigma^2/n$. Moreover, an unbiased estimator for the variance $\sigma^2/n$ is $\hat \sigma^2/n = \hat v$, where $\hat\sigma^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i -  \hat{\mu})^2$. 
+This problem states a more general result for the case with independent but not identically distributed observations. The result has an important implication for Theorem \ref{thm::varianceest-mp} for the matched-pairs experiment discussed in Chapter \ref{chapter::mpe}. 
+
+
+
+
+
+\paragraph{Asymptotic Normality of ratio}\label{hw::asymptotic-normality-ratio}
+
+
+Prove \eqref{eq::ratio-normality}.
+
+
+\paragraph{Asymptotic Normality of product}\label{hw::asymptotic-normality-product}
+
+
+Prove \eqref{eq::product-normality}.
+
+
+\paragraph{Product of two independent Normals}\label{hw-product-Normals}
+
+Assume $X\sim \textsc{N}(\mu_X, \sigma_X^2), Y\sim \textsc{N}(\mu_Y, \sigma_Y^2)$ and $X\ind Y$. Show that
+$$
+\var(XY) = \sigma_X^2 \sigma_Y^2 +\mu_X^2 \sigma_Y^2 + \mu_Y^2 \sigma_X^2 .
+$$
+
+
+
+Remark: This problem gives a non-asymptotic form of Example \ref{example::asymptotic-normal-product}. 
+
+
+
+
+\paragraph{Variance estimators in two-by-two tables}\label{hw::variance-estimators-2x2}
+
+Use the delta method to show the variance estimators in Section \ref{section::asymptotic-inference-2x2}. 
+
+
+
+
+\paragraph{Fisher weighting}\label{hw::fisher-weighting}
+
+
+Assume that we have $p$ independent unbiased estimators $\hat{\theta}_1, \ldots, \hat{\theta}_p$ for a common parameter $\theta$:
+$$
+E(\hat{\theta}_j) = \theta,\quad (j=1,\ldots, p).
+$$
+The estimator  $\hat{\theta}_j$ has variance $v_j$ $(j=1,\ldots, p)$. 
+
+Construct a new estimator
+$$
+\hat{\theta} = \sum_{j=1}^p w_j \hat{\theta}_j
+$$
+with nonrandom constants $w_j$'s. 
+Show that $\hat{\theta} $ is unbiased for estimating $\theta$ if $\sum_{j=1}^p w_j = 1$. Show that the optimal $w_j$'s such that $\hat{\theta} $ has the smallest variance under the constraint $\sum_{j=1}^p w_j = 1$ are
+$$
+w_j^* =  \frac{1/v_j}{ \sum_{j'=1}^p   1/v_{j'} }, \quad (j=1,\ldots, p).
+$$
+Show that the resulting estimator $\hat{\theta}^* = \sum_{j=1}^p w_j^* \hat{\theta}_j$ has variance
+$$
+\var(\hat{\theta}^*) =  \frac{1 }{ \sum_{j=1}^p   1/v_{j} }. 
+$$
+
+
+Remark: This is called Fisher weighting. The optimal weights are proportional to the inverses of the variances. 
+
+

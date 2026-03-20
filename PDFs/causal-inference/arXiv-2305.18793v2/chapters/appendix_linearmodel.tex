@@ -1,0 +1,594 @@
+
+\chapter{Linear and Logistic Regressions}
+\label{appendix::basic-linear-regression}
+ 
+ \section{Population ordinary least squares}\label{sec::populationOLS}
+ 
+ 
+Assume that $(x_{i},y_{i})_{i=1}^{n} \iidsim (x,y)$, where $x $ is a $p$-dimensional random scalar or vector and $y $ is a random scalar. 
+Below I will use $(x,y)$ to denote a general observation, dropping the subscript $i$ for simplicity. 
+Define the population ordinary least squares (OLS) coefficient as
+\[
+\beta=\arg\min_{b } E\left\{ (y-x \tran b)^{2}\right\} .
+\]
+The objective function is quadratic in $b$, so we can show that the minimizer is 
+$$
+\beta=\left\{ E\left(xx \tran \right)\right\} ^{-1}E\left(xy\right)
+$$
+if the moments exist and $E(xx \tran )$ is invertible. 
+%As a special case, the covariate contains $1$ and a scalar $x$,
+%the OLS coefficient of $x$ simplifies to 
+%\[
+%\beta=\frac{\cov(x,y)}{\var(x)} = \rho_{xy} \sqrt{   \frac{\var(y)}{\var(x)}  }.
+%\]
+
+With $\beta$, we can define $x \tran \beta$ as the {\it linear projection} of $y$ on $x$, and define 
+\begin{equation}
+\varepsilon=y-x \tran \beta\label{eq:populationresidualols}
+\end{equation}
+as the {\it population residual}. 
+By the definition of $\beta$, we can verify that
+$$
+E(x\varepsilon)=E\left\{ x(y-x \tran \beta)\right\} =E(xy)-E(xx \tran )\beta=0. 
+$$
+
+
+\begin{example}
+[population OLS with the intercept]
+If we include $1$ as a component of $x$, then 
+$$
+E(\varepsilon)
+=E(y-x \tran \beta)
+=0
+$$
+which further implies that $\cov(x,\varepsilon)=0$.
+So with an intercept in $\beta$, the mean of the population residual
+must be zero, and it is uncorrelated with other covariates by construction. 
+\end{example}
+
+
+ 
+\begin{example}
+[univariate population OLS with the intercept]\label{eg::ols1-intercept}
+An important special case is that for scalars $x$ and $y$, we can define
+$$
+(\alpha, \beta)  = \arg\min_{a,b} E \{  (y - a - bx)^2 \}
+$$
+which have explicit formulas
+$$
+\beta = \frac{  \cov(x,y) }{\var(x)},\quad 
+\alpha = E(y)  - \beta E(x).
+$$
+\end{example}
+
+ 
+ \begin{example}
+[univariate population OLS without an intercept]
+Without intercept, we can define 
+$$
+\gamma = \arg\min_{c} E \{  (y  - c x)^2 \}
+$$
+which equals
+$$
+\gamma = \frac{  E(xy) }{E(x^2)}.
+$$
+When $x$ has mean zero, $ \gamma$ equals the $\beta $ in Example \ref{eg::ols1-intercept}. 
+\end{example}
+
+
+
+
+
+
+We can also rewrite (\ref{eq:populationresidualols}) as
+\begin{equation}
+y=x \tran \beta+\varepsilon,\label{eq:population-ols-decomposition}
+\end{equation}
+which holds by the definition of the population OLS coefficient and residual without any modeling
+assumption. We call (\ref{eq:population-ols-decomposition}) the population
+OLS decomposition. 
+
+
+ \section{Sample ordinary least squares}\label{sec::sampleOLS}
+
+Based on data $(x_{i},y_{i})_{i=1}^{n} \iidsim (x,y)$, we can easily
+obtain the moment estimator for the population OLS coefficient
+\[
+\hat{\beta}=\left(n^{-1}\sumn x_{i}x_{i} \tran \right)^{-1}\left(n^{-1}\sumn x_{i}y_{i}\right),
+\]
+and the residuals $ \hat{\varepsilon}_i = y_i - x_i \tran  \hat{\beta} . $ 
+This is called the sample OLS or simply the OLS. The OLS coefficient 
+$\hat{\beta}$ minimizes the residual sum of squares
+\[
+\hat \beta=\arg\min_{b } n^{-1} \sumn  (y_i-x_i \tran b)^{2} ,
+\]
+so it must satisfy 
+$$
+\sumn x_i (y_i-x_i \tran \hat{\beta}) = 0,
+$$
+which is sometimes called the {\it Normal equation.}
+ The fitted values, also called the {\it linear projections} of $y_i$ on $x_i$, equal
+ $$
+ \hat{y}_i = x_i\tran \hat\beta \quad (i=1,\ldots, n).
+ $$
+ 
+ 
+ Using the matrix notation
+ $$
+ X = \begin{pmatrix}
+ x_1\tran \\
+ \vdots \\
+ x_n\tran 
+ \end{pmatrix},\quad
+ Y = \begin{pmatrix}
+ y_1 \\
+ \vdots \\
+ y_n
+ \end{pmatrix} ,
+ $$
+ we can write the OLS coefficient as
+$$
+\hat{\beta} = (X \tran X)^{-1} X\tran Y
+$$ 
+and the fitted vector as
+ $$
+ \hat{Y} = X\hat{\beta} =  X (X \tran X)^{-1} X\tran Y.
+ $$
+Define the hat matrix as
+$$
+H =  X (X \tran X)^{-1} X\tran.
+$$
+Then we also have $ \hat{Y}  = HY$, justifying the name ``hat matrix.'' The diagonal elements of $H $, $h_{ii}$'s, are often called the {\it  leverage scores}.
+
+
+Assuming finite fourth moments of $(x,y)$, we can use the law of large numbers and the CLT to show that 
+$$
+\sqrt{n}(\hat{\beta}-\beta)\rightarrow\text{N} ( 0, V )
+$$
+in distribution with $V =  B^{-1} M B^{-1}$,  where $B =   E(xx \tran ) $ and $M= E(\varepsilon^{2}xx \tran )$. 
+So a moment estimator for the asymptotic variance of $\hat{\beta}$ is  
+\begin{equation}\label{eq::v-hat-ehw}
+\hat{V}_\textsc{ehw} =  
+n^{-1}
+\left(n^{-1}\sumn x_{i}x_{i} \tran \right)^{-1}
+\left(n^{-1}\sumn  \hat{\varepsilon}_i^2  x_{i}x_{i} \tran \right) 
+\left(n^{-1}\sumn x_{i}x_{i} \tran \right)^{-1} ,
+\end{equation}
+which is called the Eicker--Huber--White (EHW) robust covariance
+estimator \citep{eicker1967limit, huber::1967, white::1980}. We can show that $n \hat{V}_\textsc{ehw}  \rightarrow  V$ in probability. Based on $\hat{\beta}$ and $\hat{V}_\textsc{ehw} $, we can make inference about the population OLS coefficient $\beta$.  
+
+
+There are many variants of the EHW robust covariance estimator based on the leverage scores \citep{long2000using}. In particular, the HC1 variant modifies $\hat{\varepsilon}_i^2$ to $\hat{\varepsilon}_i^2/(n-p)$,
+the HC2 variant modifies $\hat{\varepsilon}_i^2$ to $\hat{\varepsilon}_i^2 /(1 - h_{ii}) $, 
+and
+the HC3 variant modifies $\hat{\varepsilon}_i^2$ to $\hat{\varepsilon}_i^2/(1 - h_{ii})^2$, in the definition of $\hat{V}_\textsc{ehw}$. 
+
+ 
+
+
+\section{Frisch--Waugh--Lovell Theorem}
+\label{appendix::fwl-theorem}
+
+The Frisch--Waugh--Lovell (FWL) theorem has two versions: one at the population level and the other at the sample level. It reduces multivariate OLS to univariate OLS and therefore facilitates the understanding and calculation of the OLS coefficients. Below I will present special cases of the FWL theorem which are enough for this book. 
+
+\begin{theorem}
+[population FWL]\label{thm::population-FWL}
+The coefficient of $x_1$ in the OLS fit of $y$ on $(x_1, x_2, \ldots, x_p)$ equals the coefficient of $\tilde{x}_1$ in the OLS fit of $y$ or $\tilde{y}$ on $\tilde{x}_1$, where $\tilde{y}$ is the residual from the OLS fit of $y$ on $(x_2, \ldots, x_p)$ and $\tilde{x}_1$ is the residual from the OLS fit of $x_1$ on $(x_2, \ldots, x_p)$.
+\end{theorem}
+
+
+In Theorem \ref{thm::population-FWL},  residualizing $x_1$ is crucial but residualizing $y$ is not.   
+
+
+
+\begin{theorem}
+[sample FWL]\label{thm::sample-FWL}
+With data $(Y, X_1, X_2, \ldots, X_p)$ containing column vectors, the coefficient of $X_1$ in the OLS fit of $Y$ on $(X_1, X_2, \ldots, X_p)$  equals the coefficient of $\tilde{X}_1$ in the OLS fit of $Y$ or $\tilde{Y}$ on $\tilde{X}_1$, where $\tilde{Y}$ is the residual vector from the OLS fit of $Y$ on $(X_2, \ldots, X_p)$ and $\tilde{X}_1$ is the residual vector  from the OLS fit of $X_1$ on $(X_2, \ldots, X_p)$. 
+\end{theorem}
+
+
+Again, in Theorem \ref{thm::sample-FWL}, residualizing $X_1$ is crucial but residualizing $Y$ is not. 
+\citet{ding2021frisch} gives more numerical properties related to the sample FWL theorem.
+ 
+
+\section{Linear model}\label{section::linear-model-var}
+
+Sometimes, we impose a stronger model assumption which requires the conditional mean of $y$ given $x$ is linear:
+$$
+E(y\mid x)=x \tran \beta
+$$
+or, equivalently, 
+\[
+y=x \tran \beta+\varepsilon \qquad  \text{with} \qquad  E(\varepsilon\mid x)=0,
+\]
+which is called the restricted mean model. Under this model,  the population OLS coefficient is the true parameter of interest:
+\begin{align*}
+\left\{ E(xx \tran )\right\} ^{-1}E(xy) & =\left\{ E(xx \tran )\right\} ^{-1}E\left\{ xE(y\mid x)\right\} \\
+ & =\left\{ E(xx \tran )\right\} ^{-1}E(xx \tran \beta)\\
+ & =\beta.
+\end{align*}
+Moreover, the population OLS coefficient does not depend on the distribution
+of $x$. The asymptotic inference in Section \ref{sec::populationOLS} applies to this model too. 
+
+
+
+In the special case with $\var(\varepsilon \mid x) = \sigma^2$, 
+%$$
+%y_i = x_i\tran \beta + \varepsilon_i \quad (i=1, \ldots, n)
+%$$
+%where the $\varepsilon_i$'s have mean $0$ and variance $\sigma^2$, 
+the asymptotic variance of the OLS coefficient reduces to
+$$
+V = \sigma^2 \{ E(xx \tran ) \}^{-1}
+$$
+so a simpler moment estimator for the asymptotic variance of $\hat{\beta}$ is 
+\begin{equation}
+\hat{V}_\textsc{ols} = \hat\sigma^2 \left( \sumn x_{i}x_{i} \tran \right)^{-1}
+\label{eq::v-hat-ols}
+\end{equation}
+where $\hat\sigma^2 =  (n-p)^{-1}  \sum_{i=1}^n \hat{\varepsilon}_i^2$ is an unbiased estimator for $\sigma^2$, recalling that $n$ denotes the sample size and $p$ denotes the dimension of $x$. This is the standard covariance estimator from the \ri{lm} function. 
+
+
+
+
+Based on the \ri{BostonHousing} data, we first obtain the standard output from the \ri{lm} function. 
+
+\begin{lstlisting}
+> library("mlbench")
+> data(BostonHousing)
+> ols.fit = lm(medv ~ ., data = BostonHousing)
+> summary(ols.fit)
+
+Call:
+lm(formula = medv ~ ., data = BostonHousing)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-15.595  -2.730  -0.518   1.777  26.199 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  3.646e+01  5.103e+00   7.144 3.28e-12 ***
+crim        -1.080e-01  3.286e-02  -3.287 0.001087 ** 
+zn           4.642e-02  1.373e-02   3.382 0.000778 ***
+indus        2.056e-02  6.150e-02   0.334 0.738288    
+chas1        2.687e+00  8.616e-01   3.118 0.001925 ** 
+nox         -1.777e+01  3.820e+00  -4.651 4.25e-06 ***
+rm           3.810e+00  4.179e-01   9.116  < 2e-16 ***
+age          6.922e-04  1.321e-02   0.052 0.958229    
+dis         -1.476e+00  1.995e-01  -7.398 6.01e-13 ***
+rad          3.060e-01  6.635e-02   4.613 5.07e-06 ***
+tax         -1.233e-02  3.760e-03  -3.280 0.001112 ** 
+ptratio     -9.527e-01  1.308e-01  -7.283 1.31e-12 ***
+b            9.312e-03  2.686e-03   3.467 0.000573 ***
+lstat       -5.248e-01  5.072e-02 -10.347  < 2e-16 ***
+\end{lstlisting}
+
+
+In \ri{R}, the \ri{lm} function can compute $\hat{\beta}$, and the \ri{hccm} function in the package \ri{car} can compute $\hat{V}_\textsc{ehw} $ as well as its variants. Below we compare the $t$-statistics based on different choices of the standard errors. In this example, the EHW standard errors differ a lot for some regression coefficients. 
+
+\begin{lstlisting}
+> library("car")
+> ols.fit.hc0 = sqrt(diag(hccm(ols.fit, type = "hc0")))
+> ols.fit.hc1 = sqrt(diag(hccm(ols.fit, type = "hc1")))
+> ols.fit.hc2 = sqrt(diag(hccm(ols.fit, type = "hc2")))
+> ols.fit.hc3 = sqrt(diag(hccm(ols.fit, type = "hc3")))
+> tvalues = summary(ols.fit)$coef[,1]/
++   cbind(summary(ols.fit)$coef[,2], 
++         ols.fit.hc0, 
++         ols.fit.hc1, 
++         ols.fit.hc2, 
++         ols.fit.hc3)
+> colnames(tvalues) = c("ols", "hc0", "hc1", "hc2", "hc3")
+> round(tvalues, 2)
+               ols   hc0   hc1   hc2   hc3
+(Intercept)   7.14  4.62  4.56  4.48  4.33
+crim         -3.29 -3.78 -3.73 -3.48 -3.17
+zn            3.38  3.42  3.37  3.35  3.27
+indus         0.33  0.41  0.41  0.41  0.40
+chas1         3.12  2.11  2.08  2.05  2.00
+nox          -4.65 -4.76 -4.69 -4.64 -4.53
+rm            9.12  4.57  4.51  4.43  4.28
+age           0.05  0.04  0.04  0.04  0.04
+dis          -7.40 -6.97 -6.87 -6.81 -6.66
+rad           4.61  5.05  4.98  4.91  4.76
+tax          -3.28 -4.65 -4.58 -4.54 -4.43
+ptratio      -7.28 -8.23 -8.11 -8.06 -7.89
+b             3.47  3.53  3.48  3.44  3.34
+lstat       -10.35 -5.34 -5.27 -5.18 -5.01
+\end{lstlisting}
+
+
+
+
+\section{Weighted least squares}
+\label{sec::appendix-wls}
+
+
+Assuming that $(w_i, x_i, y_i) \iidsim (w, x, y)$ with $w\neq 0$. At the population level, we can define the weighted least squares (WLS) coefficient as
+$$
+\beta_w = \arg\min_b  E\{  w (y-x \tran b)^{2}    \},
+$$
+which satisfies
+$$
+E  \{  w x (y-x \tran \beta_w ) \} = 0
+$$
+and thus equals
+$$
+\beta_w  = \{  E  ( w xx\tran ) \}^{-1} E(  w xy )
+$$
+if $E  ( w xx\tran )$ is invertible. 
+
+At the sample level, we can define the WLS coefficient as
+$$
+\hat{\beta}_w = \arg\min_b \sumn w_i (y_i-x_i \tran b)^{2},
+$$
+which satisfies
+$$
+\sumn w_i x_i (y_i -x_i \tran \hat\beta_w ) = 0
+$$
+and thus equals
+$$
+\hat \beta_w  =  \left(  n^{-1} \sumn   w_i x_ix_i\tran \right)^{-1} \left(   n^{-1} \sumn   w_i x_i y_i \right)
+$$
+if $\sumn   w_i x_ix_i\tran$ is invertible. 
+
+In \ri{R}, we can specify \ri{weights} in the \ri{lm} function to implement WLS. 
+
+
+
+\section{Logistic regression}\label{sec::logistic-regression}
+
+
+
+
+ 
+  
+ \subsection{Model}
+Technically, we can apply the OLS procedure even if the outcome $y$ is binary. However, it is a little awkward to have predicted probabilities outside the range of $[0,1]$. This motivates us to consider the
+following model:
+\[
+\pr(y_{i}=1\mid x_{i})=g(x_{i} \tran \beta),
+\]
+where $g(\cdot):\mathbb{R}\rightarrow[0,1]$ is a monotone function,
+and its inverse is often called the {\it  link function}. The $g(\cdot)$ function can be any distribution function of a random variable, but we will focus on the logistic form:
+$$
+g(z) =  \frac{ e^z }{1 + e^z} = (1 + e^{-z})^{-1}. 
+$$
+We can also write the logistic model
+as
+$$
+\pr(y_{i}=1\mid x_{i}) =\frac{e^{x_{i} \tran \beta}}{1+e^{x_{i} \tran \beta}},
+$$
+or, equivalently, with the definition $\text{logit}(z) = \log\frac{z}{1-z}$, we have 
+\[
+\text{logit}\left\{ \pr(y_{i}=1\mid x_{i})\right\}  =x_{i} \tran \beta.
+\]
+
+Assume that $x_{i1}$ is binary. 
+Under the logistic model, we have
+\begin{eqnarray*}
+\beta_1 &=& \text{logit}\left\{ \pr(y_{i}=1\mid x_{i1} = 1,  \ldots )\right\}  - \text{logit}\left\{ \pr(y_{i}=1\mid x_{i1} = 0,\ldots)\right\}   \\
+&=& \log \frac{  \pr(y_{i}=1\mid x_{i1} = 1, \ldots)/\pr(y_{i}=0\mid x_{i1} = 1, \ldots)     }
+{  \pr(y_{i}=1\mid x_{i1} = 0, \ldots)/\pr(y_{i}=0\mid x_{i1} = 0, \ldots)    } ,
+\end{eqnarray*}
+where $\ldots$ contains all other regressor $ x_{i2}, \ldots, x_{ip} $.
+Therefore, the coefficient $\beta_1$ equals the log of the odds ratio of $x_{i1}$ on $y_i$ conditional on other regressors. 
+
+
+
+\subsection{Maximum likelihood estimate}\label{sec::mle-logistic}
+
+
+Let $\pr(y_{i}=1\mid x_{i}) = \pi(x_{i},\beta)$. 
+To estimate the parameter $\beta$, we can maximize the following likelihood function:
+\begin{align*}
+L(\beta)  
+&=\prod_{i=1}^{n}\left\{ \pi(x_{i},\beta)\right\} ^{y_{i}}\left\{ 1-\pi(x_{i},\beta)\right\} ^{1-y_{i}} \\
+& =\prod_{i=1}^{n}\left\{ \frac{\pi(x_{i},\beta)}{1-\pi(x_{i},\beta)}\right\} ^{y_{i}}\left\{ 1-\pi(x_{i},\beta)\right\} \\
+ & =\prod_{i=1}^{n}\left(e^{x_{i} \tran \beta}\right)^{y_{i}}\frac{1}{1+e^{x_{i} \tran \beta}}\\
+ & =\prod_{i=1}^{n}\frac{e^{y_{i}x_{i} \tran \beta}}{1+e^{x_{i} \tran \beta}}.
+\end{align*}
+Let $\hat{\beta}$ denote the maximizer, which is called the maximum likelihood estimate (MLE). Taking the log of $L(\beta)  $ and differentiating it with respect to $\beta$, we can show that the MLE must satisfy the first-order condition:
+$$
+\sumn  x_i  \{ y_i - \pi(x_{i}, \hat\beta)\} = 0.
+$$
+If $x_i$ contains the intercept, the MLE must satisfy 
+$$
+\sumn    \{ y_i - \pi(x_{i}, \hat\beta)\} = 0,
+$$ 
+that is, the average of the observed $y_i$'s must be identical to the average of the fitted probabilities $ \pi(x_{i}, \hat\beta)$'s.
+
+
+Using the general theory for the MLE, we can show that it is consistent for the true parameter $\beta$ and is asymptotically Normal:
+$$
+\sqrt{n}( \hat{\beta} -  \beta) \rightarrow \text{N}(0, V)
+$$
+in distribution, where 
+$
+V = E [  \pi(x_{i},\beta) \{1-  \pi(x_{i},\beta)\} x x\tran   ].
+$
+So we can approximate the covariance matrix of $\hat{\beta} $ by 
+$$
+n^{-1} \sumn \pi(x_{i}, \hat\beta) \{1-  \pi(x_{i},\hat\beta)\}   x_i x_i\tran.
+$$
+%$$
+%n^{-1} \sumn \frac{ e^{x_i\tran \hat\beta} }{(1 + e^{x_i\tran \hat\beta})^2}  x_i x_i\tran.
+%$$
+In \ri{R}, the \ri{glm} function can find the MLE and report the estimated covariance matrix. We use the \ri{lalonde} data to illustrate the logistic regression with the binary outcome indicating positive real earnings in 1978.
+
+
+
+\begin{lstlisting}
+> library(Matching)
+> data(lalonde)
+> logit.re78 = glm(I(re78>0) ~ ., family = binomial, 
++                  data = lalonde)
+> summary(logit.re78)
+
+Call:
+glm(formula = I(re78 > 0) ~ ., family = binomial, data = lalonde)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.1789  -1.3170   0.7568   0.9413   1.0882  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  1.910e+00  1.241e+00   1.539   0.1238  
+age         -2.812e-03  1.533e-02  -0.183   0.8545  
+educ        -2.179e-02  7.831e-02  -0.278   0.7808  
+black       -1.060e+00  5.041e-01  -2.103   0.0354 *
+hisp         2.741e-01  6.967e-01   0.393   0.6940  
+married      7.577e-02  3.057e-01   0.248   0.8042  
+nodegr      -1.984e-01  3.460e-01  -0.573   0.5664  
+re74         7.857e-06  3.173e-05   0.248   0.8044  
+re75         4.016e-05  6.058e-05   0.663   0.5074  
+u74         -6.177e-02  4.095e-01  -0.151   0.8801  
+u75          1.505e-02  3.518e-01   0.043   0.9659  
+treat        5.412e-01  2.222e-01   2.435   0.0149 *
+\end{lstlisting}
+
+ 
+
+\subsection{Extension to the case-control study}\label{sec::case-control}
+
+In case-control studies, sampling is conditional on the binary outcome, that is, units with outcomes $y_i=1$ and $y_i=0$ are sampled with different probabilities. Let $s_i$ be the sampling indicator. In case-control studies, we have
+$$
+\pr(s_i =1\mid x_i, y_i) = \pr(s_i =1\mid  y_i) 
+$$
+as a function of $y_i$, and we only observe units with $s_i = 1$. 
+
+
+Based on the model and the sampling mechanism of the case-control study, it does not seem obvious whether or not we can still use logistic regression to estimate the coefficients. Nevertheless, \citet{prentice1979logistic} proved a positive results. In case-control studies, logistic regression can still consistently estimate all the coefficients except for the intercept.
+
+
+
+
+\subsection{Logistic regression with weights}
+
+Sometimes, unit $i$ has weight $w_i$. Then we can fit a weighted logistic regression by solving
+$$
+\sumn  w_i x_i  \{ y_i - \pi(x_{i}, \hat\beta)\} = 0.
+$$
+In \ri{R}, we can specify \ri{weights} in the \ri{glm} function to implement weighted logistic regression. 
+
+
+
+
+
+
+
+\section{Homework problems}
+
+
+ 
+
+
+\paragraph{Sample WLS with the intercept}\label{hw::sample-ols-intercept}
+
+Assume the regressor $x_i$ contains the intercept. Show that 
+\begin{equation}\label{eq::OLS-mean-data}
+\bar{y}_w = \bar{x}_w\tran \hat{\beta}_w
+\end{equation}
+where $ \bar{x}_w =  \sumn w_i  x_i / \sumn w_i $ and $ \bar{y}_w =  \sumn w_i  y_i / \sumn w_i $ are the weighted averages of the $x_i$'s and $y_i$'s. 
+
+
+\paragraph{Population OLS with a binary regressor}\label{problem::pols-binary}
+
+
+Assume $x$ is binary. Define the population OLS: 
+$$
+(\alpha, \beta)  = \arg\min_{(a,b)} E \{  (y - a - bx)^2 \} .
+$$
+Show that $\beta = E(y\mid x=1) - E(y\mid x=0)$ and $\alpha = E(y\mid x=0)$. 
+
+
+\paragraph{Univariate WLS}\label{hw::wls-uni-binary}
+
+As a special case of WLS, define 
+$$
+(\hat \alpha_w, \hat \beta_w  ) = \arg\min_{(a,b)} \sumn w_i(y_i - a - b x_i)^2
+$$
+where $w_i\geq 0$. Show that
+\begin{eqnarray}\label{eq::wls-beta}
+ \hat \beta_w  = \frac{  \sumn w_i (x_i -  \bar{x}_w) (y_i - \bar{y}_w) }{  \sumn w_i (x_i - \bar{x}_w)^2 }
+\end{eqnarray}
+and 
+\begin{eqnarray}\label{eq::wls-alpha}
+\hat \alpha_w = \bar{y}_w -  \hat \beta_w \bar{x}_w,
+\end{eqnarray}
+where $ \bar{x}_w =  \sumn w_i  x_i / \sumn w_i $ and $ \bar{y}_w =  \sumn w_i  y_i / \sumn w_i $ are the weighted averages of the $x_i$'s and $y_i$'s. 
+
+
+
+Further assume that the $x_i$'s are binary. Show that  
+\begin{eqnarray}\label{eq::wls-10}
+\hat \beta_w  = \frac{ \sumn  w_i  x_i  y_i  }{ \sumn w_i  x_i  } - \frac{ \sumn w_i  (1-x_i)  y_i  }{ \sumn w_i  (1-x_i)  }.
+\end{eqnarray}
+That is, if the regressor is binary in the univariate WLS, the coefficient of the regressor equals the difference in the weighted means. 
+
+
+Remark: To prove \eqref{eq::wls-10}, use an appropriate reparametrization of the WLS problem. Otherwise, the derivation can be tedious. 
+
+
+
+
+\paragraph{OLS with orthogonal regressors}\label{hw::ols-orthogonal}
+
+
+Consider sample OLS fit of an $n$-vector $Y$ on an $n\times p$ matrix $X $, with coefficient $\hat{\beta}$. Partition $X$ into $X = (X_1, X_2)$, where $X_1$ is an $n\times k$ matrix and $X_2$ is an $n\times l$ matrix, with $p=k+l$. Correspondingly, partition $\hat{\beta}$ into 
+$$
+\hat{\beta} = \begin{pmatrix}
+\hat{\beta}_1\\
+\hat{\beta}_2
+\end{pmatrix} . 
+$$
+
+
+Assume $X_1$ and $X_2$ are orthogonal, that is, $X_1\tran X_2 = 0$. Show that $\hat{\beta}_1$ equals the coefficient from OLS of $Y$ on $X_1$ and $\hat{\beta}_2$ equals the coefficient from OLS of $Y$ on $X_2$, respectively. 
+
+
+
+
+
+\paragraph{OLS with a non-degenerate transformation of the regressors}\label{hw::ols-transform-regressors}
+
+
+
+Define $\hat{\beta}$ as the coefficient from the sample OLS fit of an $n$-vector $Y$ on an $n\times p$ matrix $X $. 
+Let $\Gamma$ be a $p\times p$ non-degenerate matrix, and define $X' = X\Gamma$. 
+Define $\hat{\beta} ' $ as the coefficient from the sample OLS fit of  $Y$ on $X' $. 
+
+Show that 
+$$
+ \hat{\beta}  =  \Gamma\hat{\beta} ' .
+$$
+
+
+
+\paragraph{Variances of the OLS estimator}\label{hw::variance-ols-estimator}
+
+
+Assume $(x_{i},y_{i})_{i=1}^{n} \iidsim (x,y)$ and 
+$$
+E(y\mid x) = x\tran \beta,\quad \var(y\mid x) = \sigma^2(x).
+$$
+Show that the OLS estimator $\hat{\beta}$ has conditional mean
+$$
+E( \hat{\beta} \mid x_1,\ldots, x_n ) = \beta 
+$$
+and conditional variance
+$$
+\var( \hat{\beta} \mid x_1,\ldots, x_n )
+= \left(\sumn x_{i}x_{i} \tran \right)^{-1}
+\left(\sumn \sigma^2(x_i) x_{i}x_{i} \tran \right)
+\left(\sumn x_{i}x_{i} \tran \right)^{-1}.
+$$
+
+ 
+
+
+Remark: This problem may provide some intuition for the variance estimators
+\eqref{eq::v-hat-ehw} and \eqref{eq::v-hat-ols}.
+

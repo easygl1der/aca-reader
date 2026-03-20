@@ -1,0 +1,686 @@
+ 
+\chapter{Disentangle Mixture Distributions and Instrumental Variable Inequalities}
+ \label{chapter::iv-inequalities}
+
+ 
+ The IV model in Chapter \ref{chapter::iv-experiment} imposes  Assumptions \ref{assume::random}--\ref{assume::ER}:
+ \begin{enumerate}
+ \item
+ $Z\ind \{D(1), D(0) ,Y(1), Y(0)   \}$;
+ \item
+ $\pr(U = \df) = 0$;
+ \item 
+ $Y(1) = Y(0)$ for $U=\at$ or  $\nt$. 
+ \end{enumerate}
+
+
+Table \ref{table::obs-latent} summarizes the observed groups and the corresponding latent groups under the monotonicity assumption. 
+
+
+\begin{table}[h]
+\centering
+\caption{Observed groups and latent groups under Assumption \ref{assume::Mono} }\label{table::obs-latent}
+\begin{tabular}{cccc}
+\hline 
+$Z$ & $D$ & $D(1)$ & latent groups \\
+\hline 
+$Z=1$ & $D=1$ & $D(1) = 1$ & $U = \cp$ or $\at$ \\
+$Z=1$ & $D=0$ & $D(1) = 0$ & $U = \nt$ \\ 
+$Z=0$ & $D=1$ & $D(0) = 1$ & $U = \at$  \\ 
+$Z=0$ & $D=0$ & $D(0) = 0$ & $U = \cp$ or $\nt$ \\
+\hline 
+\end{tabular}
+\end{table}
+
+
+Interestingly, Assumptions \ref{assume::random}--\ref{assume::ER} together have some testable implications. \citet{balke1997bounds} called them the {\it instrumental variable inequalities}. This chapter will give an intuitive derivation of a special case of these inequalities. The proof is a direct consequence of identifying the means of the potential outcomes for all latent groups defined by $U$. 
+
+\section{Disentangle Mixture Distributions}
+\label{sec::disentangle-mixtures}
+
+
+We summarize the main results in Theorem \ref{thm::cace-mixture-components} below. 
+Define 
+$$
+\pi_u = \pr(U = u) \quad  \quad  (u=\at, \nt, \cp) 
+$$ as the proportion of type $U=u$, and
+$$
+\mu_{zu} = E\{  Y(z) \mid U = u\}\quad  \quad (z=0,1;u=\at, \nt, \cp) .
+$$ 
+as the mean of the potential outcome $Y(z) $ for type $U=u$. 
+Exclusion restriction implies that $\mu_{1\nt} = \mu_{0\nt} $ and $\mu_{1\at} = \mu_{0\at} $. Let $\mu_{\nt}$ and $\mu_{\at} $ denote them, respectively.
+
+\begin{theorem}
+\label{thm::cace-mixture-components}
+Under Assumptions \ref{assume::random}--\ref{assume::ER}, we can identify the proportions of the latent types by
+\begin{eqnarray*}
+ \pi_\nt &=& \pr(D=0\mid Z=1)  ,\\
+  \pi_\at &=&\pr(D=1\mid Z=0) , \\
+  \pi_\cp &=& E(D\mid Z=1) - E(D\mid Z=0) ,
+\end{eqnarray*}
+and the type-specific means of the potential outcomes by
+\begin{eqnarray*}
+  \mu_{\nt} &=& E(Y\mid Z=1, D=0) ,\\
+ \mu_{\at} &=& E(Y\mid Z=0, D=1),\\
+ \mu_{1\cp} &=& \pi_\cp^{-1}\left\{   E(DY\mid Z=1 )  -  E(DY\mid Z=0)    \right\}, \\
+  \mu_{0\cp}  &=& \pi_\cp^{-1} \big[   E\{ (1-D)Y\mid Z=0 \}  -  E\{(1-D)Y\mid Z=1 \}    \big]. 
+\end{eqnarray*}
+\end{theorem}
+ 
+ 
+\begin{myproof}{Theorem}{\ref{thm::cace-mixture-components}}
+Part I: We first identify the proportions of the latent compliance types.
+We can identify the proportion of the never takers by
+\begin{eqnarray*}
+\pr(D=0\mid Z=1) 
+%&=& \pr\{ D(1) = 0\mid Z=1 \} = \pr\{ D(1) = 0, D(0) = 0 \mid Z=1 \} \\
+&=& \pr(U=\nt \mid Z=1)  \\
+&=& \pr(U=\nt) \\
+&=&  \pi_\nt ,
+\end{eqnarray*}
+and the proportion of the always takers by
+\begin{eqnarray*}
+\pr(D=1\mid Z=0) 
+%&=& \pr\{  D(0) = 1\mid Z=0 \} =  \pr\{ D(1)=1,  D(0) = 1\mid Z=0 \} \\
+&=& \pr(U=\at \mid Z=0)  \\
+&=& \pr(U=\at) =  \pi_\at . 
+\end{eqnarray*}
+Therefore, the proportion of compliers is
+\begin{eqnarray*}
+\pi_\cp &=& \pr(U=\cp) \\
+&=& 1-  \pi_\nt -  \pi_\at  \\
+&=& 1 - \pr(D=0\mid Z=1)  - \pr(D=1\mid Z=0) \\
+%&=&\pr(D=1\mid Z=1)  - \pr(D=1\mid Z=0) 
+&=& E(D\mid Z=1) - E(D\mid Z=0) \\
+&=& \tau_D,
+\end{eqnarray*}
+which is coherent with our previous discussion. Although we do not know individual latent compliance types for all units, we can identify the proportions of never-takers, always-takers, and compliers. 
+
+
+Part II: We then identify the means of the potential outcomes within latent compliance types. 
+%Under Assumption \ref{assume::ER}, 
+%$$
+%\mu_{1\at} = \mu_{0\at} \equiv \mu_{\at},\quad \mu_{1\nt} = \mu_{0\nt} \equiv \mu_{\nt} .
+%$$
+The observed group $(Z=1,D=0)$ only has never takers, so 
+$$
+E(Y\mid Z=1, D=0) = E\{  Y(1) \mid Z=1, U=\nt \} = E\{  Y(1) \mid   U=\nt \}  =
+\mu_{\nt}  . 
+$$
+The observed group $(Z=0,D=1)$ only has always takers, so 
+$$
+E(Y\mid Z=0, D=1) = E\{  Y(0) \mid Z=0, U=\at \} = E\{  Y(0) \mid   U=\at \}  =
+\mu_{\at} . 
+$$
+The observed group $(Z=1,D=1)$ has both compliers and always takers, so
+\begin{eqnarray*}
+E(Y\mid Z=1, D=1) &=& E\{ Y(1)\mid Z=1, D(1)=1\} \\
+&=& E\{ Y(1)\mid D(1)=1\}  \\   
+&=& \pr\{  D(0)=1 \mid D(1)=1 \} E\{ Y(1)\mid D(1)=1, D(0)=1\}  \\
+&&+ \pr\{  D(0)=0 \mid D(1)=1 \}E\{ Y(1)\mid D(1)=1, D(0)=0\}   \\
+&=& \frac{\pi_\cp}{\pi_\cp + \pi_\at} \mu_{1\cp} +  \frac{\pi_\at}{\pi_\cp + \pi_\at} \mu_{\at}.
+\end{eqnarray*}
+Solve the linear equation above to obtain
+\begin{eqnarray*}
+\mu_{1\cp} &=& \pi_\cp^{-1} \left\{  (\pi_\cp + \pi_\at)  E(Y\mid Z=1, D=1)  - \pi_\at    E(Y\mid Z=0, D=1)    \right\} \\
+&=& \pi_\cp^{-1} \left\{  \pr(D=1\mid Z=1)  E(Y\mid Z=1, D=1) \right.\\
+&&\left. \qquad  -\pr(D=1\mid Z=0) E(Y\mid Z=0, D=1)    \right\} \\
+&=&  \pi_\cp^{-1}\left\{   E(DY\mid Z=1 )  -  E(DY\mid Z=0)    \right\}.
+\end{eqnarray*}
+The observed group $(Z=0,D=0)$ has both compliers and never takers, so 
+\begin{eqnarray*}
+E(Y\mid Z=0,D=0) &=& E\{ Y(0)\mid Z=0, D(0)=0\} \\
+&=& E\{ Y(0)\mid D(0)=0\} \\ 
+&=& \pr\{  D(1)=1 \mid D(0)=0 \} E\{ Y(0)\mid D(1)=1, D(0)=0\}  \\
+&&+ \pr\{  D(1)=0 \mid D(0)= 0\}E\{ Y(0)\mid D(1)=0, D(0)=0\}   \\
+&=& \frac{\pi_\cp}{\pi_\cp + \pi_\nt} \mu_{0\cp} +  \frac{\pi_\nt}{\pi_\cp + \pi_\nt} \mu_{\nt}.
+\end{eqnarray*}
+Solve the linear equation above to obtain 
+\begin{eqnarray*}
+\mu_{0\cp}  &=& \pi_\cp^{-1} \left\{  (\pi_\cp + \pi_\nt)  E(Y\mid Z=0, D=0)  - \pi_\nt    E(Y\mid Z=1, D=0)    \right\} \\
+&=& \pi_\cp^{-1} \left\{ \pr(D=0\mid Z=0)  E(Y\mid Z=0, D=0)  \right.\\
+&&\left. \qquad  -\pr(D=0\mid Z=1)   E(Y\mid Z=1, D=0)    \right\} \\
+&=& \pi_\cp^{-1} \big[   E\{ (1-D)Y\mid Z=0 \}  -  E\{(1-D)Y\mid Z=1 \}    \big]. 
+\end{eqnarray*}
+\end{myproof}
+
+Based on the formulas of $\mu_{1\cp} $ and $\mu_{0\cp} $ in Theorem \ref{thm::cace-mixture-components}, we can simplify $\tau_\cp = \mu_{1\cp}  - \mu_{0\cp}  $ as 
+$$
+\tau_\cp =  \{  E(Y\mid Z=1) - E(Y\mid Z=0) \}/\pi_\cp ,
+$$
+which is the same as the formula in Theorem \ref{thm::CACE-identification} before. 
+
+Theorem \ref{thm::cace-mixture-components} focuses on identifying the means of the potential outcomes, $\mu_{zu} $. \citet{imbens1997estimating} derived more general identification formulas for the distribution of the potential outcomes; I leave the details to Problem \ref{hw::disentangle-mixture-distrubution}.
+
+
+
+\section{Testable implications: Instrumental Variable Inequalities}
+
+
+Is there any additional value of the detour to derive the formula of $\tau_\cp$ through Theorem \ref{thm::cace-mixture-components}? The answer is yes. For binary outcome, the following inequalities must be true: 
+$$
+0\leq \mu_{1\cp} \leq 1, \quad 
+0\leq \mu_{0\cp} \leq 1, 
+$$
+which implies four inequalities
+\begin{eqnarray*}
+E(DY\mid Z=1 )  -  E(DY\mid Z=0) &\geq & 0 ,\\
+E(DY\mid Z=1 )  -  E(DY\mid Z=0) &\leq  & E(D\mid Z=1) - E(D\mid Z=0)  ,\\ 
+E\{ (1-D)Y\mid Z=0 \}  -  E\{(1-D)Y\mid Z=1 \}   &\geq & 0,\\
+E\{ (1-D)Y\mid Z=0 \}  -  E\{(1-D)Y\mid Z=1 \}  &\leq & E(D\mid Z=1) - E(D\mid Z=0) . 
+\end{eqnarray*}
+Rearranging terms, we obtain the following unified inequalities.
+
+
+\begin{theorem}[Instrumental Variable Inequalities]\label{thm::iv-inequality}
+With a binary outcome $Y$, Assumptions \ref{assume::random}--\ref{assume::ER} imply 
+\begin{eqnarray}\label{eq::iv-inequalities}
+E(Q\mid Z=1) - E(Q\mid Z=0) \geq 0,  
+\end{eqnarray}
+where $Q = DY, D(1-Y), (D - 1)Y$ and $D+Y-DY$.
+\end{theorem}
+
+
+Under the IV assumptions \ref{assume::random}--\ref{assume::ER}, the difference in means for $Q = DY, D(1-Y), (D - 1)Y$ and $D+Y-DY$ must all be non-negative. Importantly, these implications only involve the distribution of the observed variables. Rejection of the IV inequalities leads to rejection of the  IV assumptions. 
+
+
+\citet{balke1997bounds} derived more general IV inequalities with and without assuming monotonicity. The proving strategy above is due to  \citet{jiang2020measurement} for a slightly more complex setting. Theorem \ref{thm::iv-inequality} states the testable implications only for a binary outcome. Problem \ref{hw::ivineq-binary} gives an equivalent form, and Problem \ref{hw::ivineq-general-Y} gives the result for a general outcome.
+
+
+
+\section{Examples}\label{section::binary-y-ivineq}
+
+
+For a binary outcome, we can estimate all the parameters by the method of moments below.
+
+
+\begin{lstlisting}
+IVbinary = function(n111, n110, n101, n100, 
+                    n011, n010, n001, n000){
+  
+  n_tr = n111 + n110 + n101 + n100
+  n_co = n011 + n010 + n001 + n000
+  n    = n_tr + n_co
+  
+  ## proportions of the latent strata
+  pi_n = (n101 + n100)/n_tr
+  pi_a = (n011 + n010)/n_co
+  pi_c = 1 - pi_n - pi_a
+  
+  ## four observed means of the outcomes (Z=z,D=d)
+  mean_y_11 = n111/(n111 + n110)
+  mean_y_10 = n101/(n101 + n100)
+  mean_y_01 = n011/(n011 + n010)
+  mean_y_00 = n001/(n001 + n000)
+  
+  ## means of the outcomes of two strata
+  mu_n1 = mean_y_10
+  mu_a0 = mean_y_01
+  ## ER implies the following two means
+  mu_n0 = mu_n1
+  mu_a1 = mu_a0
+  ## stratum (Z=1,D=1) is a mixture of c and a
+  mu_c1 = ((pi_c + pi_a)*mean_y_11 - pi_a*mu_a1)/pi_c
+  ## stratum (Z=0,D=0) is a mixture of c and n
+  mu_c0 = ((pi_c + pi_n)*mean_y_00 - pi_n*mu_n0)/pi_c
+  
+  ## identifiable quantities from the observed data
+  list(pi_c = pi_c, 
+       pi_n = pi_n, 
+       pi_a = pi_a, 
+       mu_c1= mu_c1,
+       mu_c0= mu_c0,
+       mu_n1= mu_n1,
+       mu_n0= mu_n0,
+       mu_a1= mu_a1,
+       mu_a0= mu_a0,
+       tau_c= mu_c1 - mu_c0)
+}
+\end{lstlisting}
+
+
+We then re-visit two canonical examples with binary data. 
+
+\begin{example}\label{eg::1-iv-inequalities}
+\citet{improve2014endovascular} assess the effectiveness of the emergency endovascular versus the open surgical repair strategies for patients with a clinical diagnosis of ruptured aortic aneurism. Patients are randomized to either the emergency endovascular or the open repair strategy. The primary outcome is the survival status after 30 days. Let $Z$ be the treatment assigned, with $Z=1$ for the endovascular strategy and $Z=0$ for the open repair. Let $D$ be the treatment received. 
+Let $Y$ be the survival status, with $Y=1$ for dead, and $Y=0$ for alive. Table \ref{tab::data1} summarizes the observed data.
+%The estimate of $\tau_\cp $ is $0.131$ with 95\% confidence interval $(-0.036, 0.298)$ including $0$.
+Using the \ri{IVbinary} function above, we can obtain the following estimates:
+\begin{lstlisting}
+> investigators_analysis = IVbinary(n111 = 107,
++                                   n110 = 42,
++                                   n101 = 68,
++                                   n100 = 42,
++                                   n011 = 24,
++                                   n010 = 8,
++                                   n001 = 131,
++                                   n000 = 79)
+>                         
+> investigators_analysis
+$pi_c
+[1] 0.4430582
+
+$pi_n
+[1] 0.4247104
+
+$pi_a
+[1] 0.1322314
+
+$mu_c1
+[1] 0.7086064
+
+$mu_c0
+[1] 0.6292042
+
+$mu_n1
+[1] 0.6181818
+
+$mu_n0
+[1] 0.6181818
+
+$mu_a1
+[1] 0.75
+
+$mu_a0
+[1] 0.75
+
+$tau_c
+[1] 0.07940223
+\end{lstlisting}
+There is no evidence of violating the IV assumptions. 
+\end{example}
+
+
+\begin{example}\label{eg::2-iv-inequalities}
+In \citet{hirano2000assessing}, physicians are randomly selected to receive a letter encouraging them to inoculate patients at risk for flu. The treatment is the actual flu shot, and the outcome is an indicator of flu-related hospital visits. However, some patients do not comply with their assignments. Let $Z_i$ be the indicator of encouragement to receive the flu shot, with $Z=1$ if the physician receives the encouragement letter, and  $Z=0$ otherwise. Let $D$ be the treatment received.
+Let $Y$ be the outcome, with $Y=0$ if for a flu-related hospitalization during the winter, and $Y=1$ otherwise. See Problem \ref{problem::flushot} for more details of the data. Table \ref{tab::data2} summarizes the observed data.
+%The estimate of $\tau_\cp $ is $0.116$ with 95\% confidence interval $(-0.061, 0.293)$ including $0$.
+Using the \ri{IVbinary} function above, we can obtain the following estimates:
+\begin{lstlisting}
+> flu_analysis = IVbinary(n111 = 31,
++                         n110 = 422,
++                         n101 = 84,
++                         n100 = 935,
++                         n011 = 30,
++                         n010 = 233,
++                         n001 = 99,
++                         n000 = 1027)
+> flu_analysis
+$pi_c
+[1] 0.1183997
+
+$pi_n
+[1] 0.6922554
+
+$pi_a
+[1] 0.1893449
+
+$mu_c1
+[1] -0.004548064
+
+$mu_c0
+[1] 0.1200094
+
+$mu_n1
+[1] 0.08243376
+
+$mu_n0
+[1] 0.08243376
+
+$mu_a1
+[1] 0.1140684
+
+$mu_a0
+[1] 0.1140684
+
+$tau_c
+[1] -0.1245575
+\end{lstlisting}
+Since $\hat\mu_{1\cp} < 0$, there is evidence of violating the IV assumptions. 
+\end{example} 
+
+
+
+
+ \begin{table}[t]
+\caption{Binary data and IV inequalities}
+\begin{center}
+\begin{subtable}{0.5\textwidth}
+\caption{ \citet{improve2014endovascular}'s study}
+\begin{tabular}{cccccc} 
+\hline 
+      &   \multicolumn{2}{c}{$Z=1$}  &  &  \multicolumn{2}{c}{$Z=0$}  \\  \cline{2-3} \cline{5-6} 
+      & $D=1$  &  $D=0$           &       &  $D=1$  &  $D=0$\\
+ $Y=1$ &   107    &      68         &      &    24       &    131        \\
+ $Y=0$ &   42    &     42            &      &     8         &     79           \\  
+ \hline
+\end{tabular}
+\label{tab::data1}
+\end{subtable}% 
+\vspace{0.1in}
+\begin{subtable}{0.5\textwidth}
+\caption{ \citet{hirano2000assessing}'s study}
+\begin{tabular}{cccccc}
+\hline 
+      &   \multicolumn{2}{c}{$Z=1$}  &  &  \multicolumn{2}{c}{$Z=0$}  \\  \cline{2-3} \cline{5-6} 
+      & $D=1$  &  $D=0$           &       &  $D=1$  &  $D=0$\\
+ $Y=1$ &   31    &     85         &      &     30       &    99       \\
+ $Y=0$ &   424   &     944            &      &     237         &    1041           \\  
+ \hline
+\end{tabular}
+\label{tab::data2}
+\end{subtable}
+\end{center}
+\end{table}%
+
+ 
+ 
+\section{Homework problems}
+
+\paragraph{More detailed data analysis}\label{hw::more-data-binary}
+
+Examples \ref{eg::1-iv-inequalities} and \ref{eg::2-iv-inequalities} ignored the uncertainty in the estimates. Calculate the confidence intervals for the true parameters. 
+ 
+
+
+
+\paragraph{Risk ratio for compliers}\label{hw::rr-compliers}
+
+
+With a binary outcome, we can define the risk ratio for compliers as
+$$
+\textsc{rr}_\cp = \frac{  \pr\{  Y(1) = 1\mid U = \cp \}  }{ \pr\{  Y(0) = 1\mid U = \cp \}   } .
+$$
+
+Show that under Assumptions \ref{assume::random}--\ref{assume::ER}, we can identify it by
+$$
+\textsc{rr}_\cp =  \frac{  E(DY\mid Z=1)  - E(DY\mid Z=0)  }{  E\{  (D-1)Y\mid Z=1 \}   - E\{ (D-1)Y\mid Z=0 \} }.
+$$
+
+
+
+Remark: Using Theorem \ref{thm::cace-mixture-components}, we can identify any comparisons between $E\{  Y(1) \mid U = \cp \} $ and $E\{  Y(0) \mid U = \cp \} $. 
+
+
+\paragraph{Disentangle the mixtures: distributional results}\label{hw::disentangle-mixture-distrubution}
+
+
+This problem extends Theorem \ref{thm::cace-mixture-components}. Define
+$$
+f_{zu}(y) = \pr\{  Y(z) = y  \mid U=u \},  \quad  (z=0,1;u=\at, \nt, \cp)
+$$
+as the density of $Y(z)$ for latent stratum $U=u$, and define 
+$$
+g_{zd}(y) = \pr(Y = y\mid Z=z, D=d)
+$$
+as the density of the outcome within the observed group $(Z=z, D=d)$. 
+Exclusion restriction implies that $f_{1\nt}(y) = f_{0\nt} (y) $ and $f_{1\at}(y) = f_{0\at}(y) $. Let $f_{\nt}(y)$ and $ f_{\at} (y) $ denote them, respectively. 
+
+
+
+Prove  Theorem \ref{thm::cace-mixture-components-distribution} below.  
+
+
+ 
+\begin{theorem}
+\label{thm::cace-mixture-components-distribution}
+Under Assumptions \ref{assume::random}--\ref{assume::ER}, we can identify the type-specific densities of the potential outcomes by
+\begin{eqnarray*}
+  f_{\nt}(y) &=& g_{10}(y) ,\\
+  f_{\at} (y) &=& g_{01}(y),\\
+f_{1\cp}(y) &=& \pi_\cp^{-1} \{   \pr(D=1\mid Z=1 )g_{11}(y)  -  \pr(D=1\mid Z=0) g_{01}(y)   \} , \\
+f_{0\cp} (y) &=& \pi_\cp^{-1} \{  \pr(D=0\mid Z=0)  g_{00}(y)  -  \pr(D=0\mid Z=1)  g_{10}(y)    \} . 
+\end{eqnarray*}
+\end{theorem}
+
+
+
+ 
+
+
+
+
+
+\paragraph{Alternative form of Theorem \ref{thm::iv-inequality}}
+\label{hw::ivineq-binary}
+
+The inequalities in \eqref{eq::iv-inequalities} can be re-written as
+\begin{eqnarray*}
+\pr(D=1, Y=y\mid Z=1) &\geq & \pr(D=1, Y=y\mid Z=0), \\
+\pr(D=0, Y=y\mid Z=0) &\geq & \pr(D=0, Y=y\mid Z=1)
+\end{eqnarray*}
+for both $y=0,1$. 
+
+
+
+\paragraph{IV inequalities for a general outcome}
+\label{hw::ivineq-general-Y}
+
+For a general outcome $Y$, show that Assumptions \ref{assume::random}--\ref{assume::ER} imply 
+\begin{eqnarray*}
+\pr(D=1, Y\geq y\mid Z=1) &\geq & \pr(D=1, Y\geq y\mid Z=0), \\
+\pr(D=1, Y <  y\mid Z=1) &\geq & \pr(D=1, Y <  y\mid Z=0), \\
+\pr(D=0, Y\geq y\mid Z=0) &\geq & \pr(D=0, Y\geq y\mid Z=1),\\
+\pr(D=0, Y <  y\mid Z=0) &\geq & \pr(D=0, Y <  y\mid Z=1)
+\end{eqnarray*}
+for all $y$. 
+ 
+Remark:  \citet{imbens1997estimating} and \citet{kitagawa2015test} discussed similar results.  We can test the first inequality based on an analog of the Kolmogorov--Smirnov statistic:
+$$
+\text{KS}_1 = \max_{y} \Big |
+\frac{  \sumn Z_i D_i  1(Y_i \leq y)  }{ \sumn Z_i D_i  } - \frac{  \sumn (1-Z_i) D_i  1(Y_i \leq y)  }{ \sumn (1-Z_i) D_i  }
+\Big |.
+$$
+
+
+
+\paragraph{Example for the IV inequalities}
+
+Give an example in which all the IV inequalities hold and another example in which not all the IV inequalities hold. You need to specify the joint distribution of $(Z,D,Y)$ with binary variables. 
+
+ 
+ 
+ \paragraph{Violations of the key assumptions}\label{eq::violations-of-IV}
+
+Theorem \ref{thm::CACE-identification} relies on randomization, monotonicity, and exclusion restriction. The latter two are not testable even in randomized experiments. When they are violated, the IV estimator no longer identifies the CACE. This problem gives two cases below, which are restatements of  Propositions 2 and 3 in \citet{angrist1996identification}. Recall $\pi_u = \pr(U=u)$ and $\tau_u = E\{  Y(1) - Y(0) \mid U=u \}$ for $u=\at, \nt, \cp, \df$. 
+
+
+\begin{theorem}
+\label{theorem::wald-violation-assumptions}
+(a) 
+Under Assumptions  \ref{assume::random} and \ref{assume::Mono} without the exclusion restriction, we have
+$$
+\frac{ E(Y\mid Z=1) - E(Y\mid Z=0) }{ E(D\mid Z=1) - E(D \mid Z=0) } - \tau_\cp 
+= \frac{  \pi_\at \tau_\at + \pi_\nt \tau_\nt  }{  \pi_\cp } .
+$$
+ 
+
+(b)
+Under Assumptions  \ref{assume::random} and \ref{assume::ER} without the monotonicity, we have 
+$$
+\frac{ E(Y\mid Z=1) - E(Y\mid Z=0) }{ E(D\mid Z=1) - E(D \mid Z=0) } - \tau_\cp 
+= \frac{  \pi_\df (\tau_\cp + \tau_\df )  }{   \pi_\cp - \pi_\df   }.
+$$
+\end{theorem}
+ 
+Prove Theorem \ref{theorem::wald-violation-assumptions}. 
+
+ 
+ \paragraph{Problems of other analyses}\label{problem::as-treated-analysis}
+
+In the process of deriving the IV inequalities in Section \ref{sec::disentangle-mixtures}, we disentangled the mixture distributions by identifying the proportions of the latent strata as well as the conditional means of their potential outcomes. These results help to understand the drawbacks of other seemingly reasonable analyses. I review three estimators below and suppose Assumptions \ref{assume::random}--\ref{assume::ER} hold.   
+
+
+\begin{enumerate}
+\item 
+The {\it as-treated analysis} compares the means of the outcomes among units receiving the treatment and control, yielding
+$$
+\tau_\textsc{at} = E(Y\mid D=1) - E(Y\mid D=0).
+$$
+Show that 
+$$
+\tau_\textsc{at} = \frac{  \pi_\at \mu_\at + \pr(Z=1)\pi_\cp \mu_{1\cp}   }{   \pr(D=1) } 
+- \frac{  \pi_\nt \mu_\nt + \pr(Z=0) \pi_\cp \mu_{0\cp}   }{   \pr(D=0) } .
+$$
+
+
+\item 
+The {\it per-protocol analysis} compares the units that comply with the treatment assigned in treatment and control groups, yielding
+$$
+\tau_\textsc{pp} = E(Y\mid Z=1, D=1) - E(Y\mid Z=0, D=0).
+$$
+Show that 
+$$
+\tau_\textsc{pp} =\frac{  \pi_\at \mu_\at + \pi_\cp \mu_{1\cp} }{  \pi_\at   + \pi_\cp }
+- \frac{  \pi_\nt \mu_\nt + \pi_\cp \mu_{0\cp} }{  \pi_\nt   + \pi_\cp }.
+$$
+
+
+\item 
+We may also want to compare the outcomes among units receiving the treatment and control, conditioning on their treatment assignment, yielding
+\begin{eqnarray*}
+\tau_{Z=1} &=& E(Y\mid Z=1, D=1) - E(Y\mid Z=1, D=0),\\ 
+\tau_{Z=0} &=& E(Y\mid Z=0, D=1) - E(Y\mid Z=0, D=0).
+\end{eqnarray*}
+Show that they reduce to
+$$
+\tau_{Z=1}  = \frac{  \pi_\at \mu_\at + \pi_\cp \mu_{1\cp} }{  \pi_\at   + \pi_\cp } - \mu_\nt,\quad
+\tau_{Z=0} = \mu_\at - \frac{  \pi_\nt \mu_\nt + \pi_\cp \mu_{0\cp} }{  \pi_\nt   + \pi_\cp }.
+$$
+\end{enumerate}
+ 
+ 
+\paragraph{Bounds on the average causal effect on the whole population}\label{para::bounds-ACE}
+
+
+Extend the discussion in Section \ref{sec::disentangle-mixtures} based on the notation in Section \ref{eq::interpret-iv-double}. With the potential outcome $Y(d)$, define the average causal effect of the treatment received on the outcome as
+$$
+\delta = E\{  Y(d=1) - Y(d=0) \},
+$$
+and modify the definition of $\mu_{zu} $ as 
+$$
+m_{du} = E\{  Y(d) \mid U = u\},\quad  (z=0,1;u=\at, \nt, \cp) 
+$$  
+due to the change of the notation. 
+They satisfy
+$$
+\delta = \sum_{u = \at, \nt, \cp}  \pi_u  (m_{1u} - m_{0u}).
+$$
+
+Section \ref{sec::disentangle-mixtures} identifies $\pi_\at$, $\pi_\nt$, $\pi_\cp$, $m_{1\at} = \mu_{1 \at}$, $m_{0\nt} = \mu_{0\nt }$, $m_{1\cp} = \mu_{1\cp}$ and $m_{0\cp} = \mu_{0\cp}$. But the data do not contain any information about $m_{0 \at}$ and $m_{1\nt }$. Therefore, we cannot identify $\delta$. With a bounded outcome, we can bound $\delta$.  
+
+\begin{theorem}
+\label{thm::bound-on-ACE}
+Under Assumptions \ref{assume::Mono}--\ref{assume::ER-double-index} with a bounded outcome in $[\underline{y}, \overline{y}]$, we have $\underline{\delta} \leq  \delta  \leq \overline{\delta}$, where
+$$
+\underline{\delta} =  \delta'  - \overline{y} \pr(D=1\mid Z=0) + \underline{y} \pr(D=0\mid Z=1)
+$$
+and
+$$
+\overline{\delta} = \delta'  -   \underline{y} \pr(D=1\mid Z=0) +  \overline{y}  \pr(D=0\mid Z=1) 
+$$
+with $\delta' = E(DY\mid Z=1) - E(Y-DY\mid Z=0) .$
+\end{theorem}
+
+Prove Theorem  \ref{thm::bound-on-ACE}. 
+ 
+ 
+Remark: In the special case with a binary outcome, the bounds simplify to 
+ $$
+\underline{\delta} =   E(DY\mid Z=1) - E( D+Y-DY\mid Z=0)  
+$$
+and
+$$
+\overline{\delta} =  E(DY+1-D\mid Z=1) - E(Y-DY\mid Z=0) .
+ $$
+ 
+ 
+ \paragraph{One-sided noncompliance and statistical inference}\label{para::15-onesidednoncompliance}
+ 
+Consider a randomized encouragement design where the units assigned to the control have no access to the treatment. For unit $i$, let $Z_i$ be the binary treatment assigned, $D_i$ be the binary treatment received, and $Y_i$ be the outcome of interest. One-sided noncompliance happens when 
+$$
+Z_i=0 \Longrightarrow  D_i = 0 \quad (i=1,\ldots, n). 
+$$
+Suppose that Assumption \ref{assume::random} holds. 
+ 
+ 
+\begin{enumerate}
+[(1)]
+\item 
+Does monotonicity Assumption \ref{assume::Mono} hold in this case? 
+How many latent strata defined by $\{ D_i(1), D_i(0)  \}$ are there in this problem? How do we identify their proportions by the observed data distribution?  
+
+\item 
+State the assumption of exclusion restriction. Under exclusion restriction, show that $E\{  Y(z) \mid U = u \}$ can be identified by the observed data distributions.
+Give the formulas for all possible values of $z$ and $u$. How do we identify the CACE in this case?  
+
+ 
+
+\item
+If we observe pretreatment covariates $X_i$ for all units $i$, how do we use the covariate information to improve the estimation efficiency of the CACE?  
+ 
+ 
+ \item 
+ Under Assumption \ref{assume::random}, the exclusion restriction Assumption \ref{assume::ER} has testable implications, which are the IV inequalities for one-sided noncompliance. State the IV inequalities.
+ 
+\item
+\citet{sommer1991estimating} provided the following dataset: 
+ 
+ \begin{center}
+\begin{tabular}{cccccc} 
+\hline 
+      &   \multicolumn{2}{c}{$Z=1$}  &  &  \multicolumn{2}{c}{$Z=0$}  \\  \cline{2-3} \cline{5-6} 
+      & $D=1$  &  $D=0$           &       &  $D=1$  &  $D=0$\\
+ $Y=1$ &   9663    &     2385         &      &     0       &    11514       \\
+ $Y=0$ &   12   &     34            &      &     0         &    74           \\  
+ \hline 
+\end{tabular}
+ \end{center}
+ 
+The treatment assigned $Z$ is whether or not the child was assigned to the vitamin A supplement, the treatment received indicator $D$ is whether or not the child received the vitamin A supplement, and the binary outcome $Y$ is the survival indicator. The original RCT was conducted in Indonesia. 
+Re-analyze the data. 
+ \end{enumerate}
+ 
+ 
+Remark: \citet{bloom1984accounting} first discussed one-sided noncompliance and proposed the estimator $\hat\tau_\cp = \hat\tau_Y / \hat\tau_D$, which is sometimes called the Bloom estimator.  \citet{bloom1984accounting}'s notation is different from this chapter. 
+
+ 
+ 
+ 
+ 
+  \paragraph{One-sided noncompliance with partial adherence}
+\label{para::one-sided-partial-adherence}
+ 
+\citet[][Table 3]{sanders2021incorporating} reported the following data from an RCT aiming to estimate the efficacy of smoking cessation interventions among individuals with psychotic disorders. 
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline  
+group assigned& treatment received &group size& \# positive outcomes \\
+\hline  
+Control & None& 151 &25 \\
+Treatment& None& 35 & 7 \\
+Treatment& Partial& 42& 17 \\
+Treatment& Full& 70& 40\\
+\hline 
+\end{tabular}
+\end{center}
+
+Three tiers of treatment received are defined as follows: ``full'' treatment corresponds to attending all $8$ treatment sessions, ``partial'' corresponds to attending $5$ to $7$ sessions, and ``none'' corresponds to $<5$ sessions. The outcome is
+defined as the binary indicator of smoking reduction of $50\%$ or greater relative to baseline, measured at three months.
+
+
+In this problem, the treatment assignment $Z$ is binary but the treatment received $D$ takes three values $0, 0.5, 1$ for ``none'', ``partial'', and ``full.''  The three-leveled $D$ causes complications, but it can only be 0 under the control assignment. How many latent strata $U = \{ D(1), D(0) \} $ do we have in this problem? Can we identify their proportions?
+
+How do we extend the exclusion restriction to this problem? What can be the causal effects of interest? Can we identify them? 
+
+Analyze the data based on the questions above. 
+
+
+
+  
+
+ \paragraph{Recommended reading}
+
+\citet{balke1997bounds} derived more general IV inequalities. 
+

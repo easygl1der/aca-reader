@@ -1,0 +1,731 @@
+
+\chapter{Principal Stratification}
+ \label{chapter::principal-stratification}
+
+Parts \ref{part::rcts}--\ref{part::instrumentalvariables} of this book focus on the causal effects of a treatment on an outcome, possibly adjusting for some observed pretreatment covariates. Many applications also have some post-treatment variable $M$ which happens after the treatment and is related to the outcome. An important question is how to use the post-treatment variable $M$ appropriately. I will start with several motivating examples and then introduce \citet{frangakis2002principal}'s formulation of this problem based on potential outcomes. 
+ 
+
+
+\section{Motivating Examples}
+
+
+
+\begin{example}[noncompliance]\label{eg::noncompliance}
+In randomized experiments with noncompliance, we can use $M$ to represent the treatment received, which is affected by the treatment assignment $Z$ and affects the outcome $Y$. 
+In this example, $M$ has the same meaning as $D$ in Chapter \ref{chapter::iv-experiment}.
+\end{example}
+
+
+\begin{example}[truncation by death]\label{eq::truncationbydeath}
+In randomized experiments to patients with severe diseases, some patients may die before the measurement of the outcome $Y$, e.g., the quality of life. The post-treatment variable $M$ in this example is the binary indicator of the survival status. 
+\end{example}
+
+
+
+
+\begin{example}[unemployment]\label{eg::unemployment}
+In job training programs, units are randomly assigned to treatment and control groups, and report their employment status $M$ and wage $Y$. Then the post-treatment variable is the binary indicator of the employment status $M$. 
+\end{example}
+
+
+
+
+\begin{example}
+[surrogate endpoint]\label{eg::surrogate-endpoints}
+In clinical trials, the outcomes of interest (e.g., 30 years of survival) require a long and costly follow-up. Practitioners instead collect data on some other variables early in the follow-up that are easy to measure. These variables are called the ``surrogate endpoints.'' A concrete example is from clinical trials on HIV patients, where the candidate surrogate endpoint $M$ is the CD4 cell count (recall that CD4 cells are white blood cells that fight infection). 
+\end{example}
+
+
+
+Examples \ref{eg::noncompliance}--\ref{eg::surrogate-endpoints} above have the similarity that a variable $M$ occurs after the treatment and is related to the outcome. It is possible that $M$ is on the causal pathway from $Z$ to $Y$. Figure \ref{fig::intermediate-diagram}(a) illustrates this mechanism. Example \ref{eg::noncompliance} corresponds to Figure \ref{fig::intermediate-diagram}(a). It is also possible that $M$ is not on the causal pathway from $Z$ to $Y$. Figure \ref{fig::intermediate-diagram}(b) illustrates this mechanism.  Examples \ref{eq::truncationbydeath} and \ref{eg::unemployment} correspond to Figure \ref{fig::intermediate-diagram}(b). Example \ref{eg::surrogate-endpoints} can correspond to Figure \ref{fig::intermediate-diagram}(a) or (b), depending on the choice of the surrogate endpoint. 
+
+ 
+
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}[]{\textwidth}
+                \centering
+$$
+\begin{xy}
+\xymatrix{
+&& & U \ar[dl]   \ar[dr] \\
+Z \ar[rr] \ar@/_1.5pc/[rrrr] & & M\ar[rr] & & Y\\
+}
+\end{xy}
+$$ 
+               \caption{$M$ is on the causal pathway from $Z$ to $Y$, with $Z$ randomized and $U$ representing unmeasured confounding}
+        \end{subfigure}%
+        
+        \begin{subfigure}[]{\textwidth}
+                \centering
+$$
+\begin{xy}
+\xymatrix{
+&& & U \ar[dl]   \ar[dr] \\
+Z \ar[rr] \ar@/_1.5pc/[rrrr] & & M  & & Y\\
+}
+\end{xy}
+$$
+                \caption{$M$ is not on the causal pathway from $Z$ to $Y$, with $Z$ randomized and $U$ representing unmeasured confounding}
+        \end{subfigure}%
+        
+\caption{Causal diagrams with a post-treatment variable $M$}\label{fig::intermediate-diagram}
+\end{figure}
+
+
+In practice, the underlying causal diagrams can be much more complex than those in Figure \ref{fig::intermediate-diagram}. This chapter follows \citet{frangakis2002principal}'s formulation which does not assume the underlying causal diagrams.
+
+
+
+
+
+\section{The Problem of Conditioning on the Post-Treatment Variable}
+
+A naive method to deal with the post-treatment variable $M$ is to condition on its observed value as if it were a pretreatment covariate. However, $M$ is fundamentally different from $X$, because $M$ is affected by the treatment in general whereas $X$ is not. It is also a ``rule of thumb'' that data analyzers should not condition on any post-treatment variables in evaluating the average causal effect of the treatment on the outcome \citep{cochran1957analysis, rosenbaum1984consquences}. Based on potential outcomes, \citet{frangakis2002principal} gave the following insightful explanation. 
+
+For simplicity, we focus on the CRE in this chapter.
+
+\begin{assumption}
+[CRE with an intermediate variable]
+\label{assume::complete-randomization-withM}
+We have
+$$
+Z \ind  \{ M(1), M(0), Y(1), Y(0), X \} . 
+$$
+\end{assumption}
+
+ 
+Conditioning on $M= m$, we compare
+\begin{equation}
+\pr(Y\mid Z=1, M=m)\label{eq::proby|z1m}
+\end{equation}
+and
+\begin{equation}
+\pr(Y\mid Z=0, M=m).\label{eq::proby|z0m}
+\end{equation}
+This comparison seems intuitive because it measures the difference in the outcome distributions in the treated and control groups given the same value of the post-treatment variable. When $M$ is a pre-treatment covariate, this comparison yields a reasonable subgroup effect. However, when $M$ is a post-treatment variable, the interpretation of this comparison is problematic. Under Assumption \ref{assume::complete-randomization-withM}, we can re-write the probabilities in \eqref{eq::proby|z1m} and \eqref{eq::proby|z0m} as 
+\begin{eqnarray*}
+\pr(Y\mid Z=1, M=m)  &=& \pr\{ Y(1)\mid Z=1, M(1) = m  \} \\
+&=& \pr\{ Y(1)\mid   M(1) = m  \}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\pr(Y\mid Z=0, M=m) &=&  \pr\{ Y(0)\mid Z=0, M(0) = m  \} \\
+&=& \pr\{ Y(0)\mid   M(0) = m  \} . 
+\end{eqnarray*}
+Therefore, under CRE, comparing \eqref{eq::proby|z1m} and \eqref{eq::proby|z0m} is equivalent to comparing the distributions of $Y(1)$ and $Y(0)$ for different subsets of units because the units with $M(1) = m$ are different from the units with $M(0) = m$ if the $Z$ affects $M$. Consequently, the comparison conditioning on $M=m$ does not have a causal interpretation in general unless $M(1) = M(0)$.\footnote{Based on the causal diagrams, we can reach the same conclusion.
+In Figure \ref{fig::intermediate-diagram}, even though $Z\ind U$ by randomization of $Z$, conditioning on $M$ introduces the ``collider bias'' that causes $Z\nind U$. 
+} 
+
+
+Revisit Example \ref{eg::noncompliance}. Comparing $\pr(Y\mid Z=1, M=1)$ and $\pr(Y\mid Z=0, M=1)$ is equivalent to comparing the treated potential outcomes for compliers and always-takers with the control potential outcomes for always-takers, under the monotonicity assumption that $M(1) \geq M(0)$. Part 3 of Problem \ref{problem::as-treated-analysis} has pointed out the drawbacks of this analysis. 
+
+
+Revisit Example \ref{eq::truncationbydeath}. If the treatment improves the survival status, the treatment can save more weak patients than the control. In this case, units with $M(1)=1$ are weaker than units with $M(0)=1$, so the naive comparison gives biased results that are in favor of the control. 
+
+\section{Conditioning on the Potential Values of the Post-Treatment Variable}
+
+
+\citet{frangakis2002principal} proposed to condition on the joint potential value of the post-treatment variable $U = \{ M(1), M(0) \}$ and compare
+$$
+\pr\{  Y(1) \mid M(1) = m_1, M(0) = m_0 \}
+$$
+and
+$$
+\pr\{  Y(0) \mid M(1) = m_1, M(0) = m_0 \}
+$$
+for some $(m_1, m_0)$. This is a comparison of the potential outcomes under treatment and control for the same subset of units with $M(1) = m_1$ and $ M(0) = m_0$. \citet{frangakis2002principal} called this strategy {\it principal stratification}, viewing $\{ M(1), M(0) \}$ as a pre-treatment covariate.  Based on this idea, we can define 
+$$
+\tau(m_1, m_0) = E\{  Y(1) - Y(0) \mid M(1) = m_1, M(0) = m_0\}
+$$
+as the principal stratification average causal effect for the subgroup with $M(1) = m_1, M(0) = m_0$. For a binary $M$, we have four subgroups
+\begin{equation}
+\label{eq::psace}
+\left\{ \begin{array}{rcl}
+\tau(1,1) &=& E\{  Y(1) - Y(0) \mid M(1) = 1, M(0) =1\} ,\\
+\tau(1,0) &=&E\{  Y(1) - Y(0) \mid M(1) = 1, M(0) =0\},\\
+\tau(0,1) &=&E\{  Y(1) - Y(0) \mid M(1) = 0, M(0) =1\},\\
+\tau(0,0) &=&E\{  Y(1) - Y(0) \mid M(1) = 0, M(0) = 0 \}.
+\end{array} 
+\right.
+\end{equation}
+Since  $\{ M(1), M(0) \}$ is unaffected by the treatment, it is a covariate so $\tau(m_1, m_0) $ is a subgroup causal effect. For subgroups with $M(1) = M(0)$, the treatment does not change the intermediate variable, so  $\tau(1,1) $ and $\tau(0,0)$ measure the {\it dissociative effects}. 
+For other subgroups with $m_1 \neq m_0$, the principal stratification average causal effects $\tau(m_1, m_0) $ measure the {\it associative effects}. The terminology is from \citet{frangakis2002principal}, which does not assume that $M$ is on the causal pathway from $Z$ to $Y$. When we have Figure \ref{fig::intermediate-diagram}(a), we can interpret the dissociative effects as direct effects of $Z$ on $Y$ that act independent of $M$, although we cannot simply interpret the associative effects as direct or indirect effects of $Z$ on $Y$. 
+
+ 
+
+\setcounter{example}{0}
+\begin{example}[noncompliance]
+With noncompliance, \eqref{eq::psace} consists of the average causal effects for always takers, compliers, defiers, and never takers \citep{imbens1994identification, angrist1996identification}. 
+\end{example}
+
+
+
+\begin{example}[truncation by death]
+Because the outcome is well-defined only if the patient survives, three subgroup causal effects in \eqref{eq::psace}  are not meaningful, and the only well-defined subgroup effect is
+\begin{eqnarray}
+\label{eq::survivor}
+\tau(1,1) = E\{  Y(1) - Y(0) \mid M(1) = 1, M(0) =1\} .
+\end{eqnarray}
+It is called the survivor average causal effect \citep{rubin2006causal}. It is the average causal effect of the treatment on the outcome for those units who survive regardless of the treatment status. 
+\end{example}
+
+
+
+\begin{example}[unemployment]
+The unemployment problem is isomorphic to the truncation-by-death problem because the wage is well-defined only if the unit is employed in the first place. Therefore, the only well-defined subgroup effect is \eqref{eq::survivor}, the employed average causal effect. Previously, \citet{heckman1979sample} proposed a model, now called the Heckman Selection Model, to deal with unemployment in modeling the wage, viewing the wages of those unemployed as missing values\footnote{Heckman won the Nobel prize of economics in 2000 ``for his development of theory and methods for analyzing selective samples.''
+His model contains two stages. First, the employment status is determined by a latent linear model
+$$
+M_i = 1(X_i\tran \beta + u_i \geq 0).
+$$
+Second, the latent log wage is determined by a linear model
+$$
+Y_i^* = W_i\tran \gamma + v_i
+$$
+and $Y_i^*$ is observed as $Y_i$ only if $M_i = 1$. In his two-stage model, the covariates $X_i$ and $W_i$ may differ, and the errors $(u_i , v_i)$ are correlated bivariate Normal. 
+}. However, \citet{zhang2003estimation} and \citet{zhang2009likelihood} argued that $\tau(1,1)$ is a more meaningful quantity under the potential outcomes framework. 
+\end{example} 
+
+
+
+\begin{example}[surrogate endpoint]
+Intuitively, we want to assess the effect of the treatment on the outcome via the effect of the treatment on the surrogate endpoint. Therefore, a good surrogate endpoint should satisfy two conditions: first, if the treatment does not affect the surrogate, then it does not affect the outcome either; second, if the treatment affects the surrogate, then it affects the outcome too. The first condition is called the ``causal necessity'' by \citet{frangakis2002principal}, and the second condition is called the ``causal sufficiency'' by \citet{gilbert2008evaluating}. Based on \eqref{eq::psace} for a binary surrogate endpoint, causal necessity requires that $\tau(1,1)$ and $\tau(0,0)$ are zero, and causal sufficiency requires that $\tau(1,0)$ and $\tau(0,1)$ are not zero. 
+\end{example}
+
+
+
+
+
+\section{Statistical Inference and Its Difficulty}
+\label{sec::difficulty-of-PS}
+
+In Example \ref{eg::noncompliance}, if we have randomization, monotonicity, and exclusion restriction, then we can identify the complier average causal effect $\tau(1, 0)$. This is the key result derived in Chapter \ref{chapter::iv-experiment}. 
+
+
+However, in other examples, we cannot impose the exclusion restriction assumption. For instance, $\tau(1,1)$ is the main parameter of interest in Examples \ref{eq::truncationbydeath} and \ref{eg::unemployment}, and $\tau(1,1)$ and $\tau(0,0)$ are both of interest in Example \ref{eg::surrogate-endpoints}. Without the exclusion restriction assumption, it is very challenging to identify the principal stratification average causal effect. Sometimes, we cannot even impose the monotonicity assumption, and thus cannot identify the proportions of the latent strata in the first place. 
+
+
+
+
+\subsection{Special case: truncation by death with binary outcome}
+I use the simple setting with a binary treatment, binary survival status, and binary outcome to illustrate the idea and especially the difficulty of statistical inference based on principal stratification.
+
+
+In addition to Assumption \ref{assume::complete-randomization-withM}, we impose the monotonicity.
+
+\begin{assumption}
+[monotonicity]\label{assume::monotonicity-ps}
+$M(1) \geq M(0)$.
+\end{assumption}
+
+
+Theorem \ref{thm::cace-mixture-components} demonstrates that under Assumptions \ref{assume::complete-randomization-withM} and \ref{assume::monotonicity-ps}, we can identify the proportions of the three latent strata by
+\begin{eqnarray*} 
+ \pi_{(1,1)} &=& \pr(M=1\mid Z=0), \\
+ \pi_{(0,0)} &=& \pr(M=0\mid Z=1), \\
+ \pi_{(1,0)} &=& \pr(M=1\mid Z=1) - \pr(M=1\mid Z=0). 
+\end{eqnarray*} 
+
+
+Our goal is to identify the survivor average causal effect $\tau(1,1)$. First, we can easily identify $E\{ Y(0)\mid M(1) = 1, M(0)=1 \}$ because the observed group $(Z=0,M=1)$ consists of only survivors:
+$$
+E\{ Y(0)\mid M(1) = 1, M(0)=1 \} = E(Y\mid Z=0, M=1). 
+$$
+The key is then to identify $E\{ Y(1)\mid M(1) = 1, M(0)=1 \}$. The observed group $(Z=1,M=1)$ is a mixture of two strata $(1,1)$ and $(1,0)$, therefore we have 
+\begin{eqnarray} 
+E(Y\mid Z=1,M=1) 
+&=& \frac{ \pi_{(1,1)}}{ \pi_{(1,1)} + \pi_{(1,0)}} E\{  Y(1)\mid   M(1)=1, M(0)=1 \} \nonumber  \\
+&&+ \frac{ \pi_{(1,0)}}{ \pi_{(1,1)} + \pi_{(1,0)}} E\{  Y(1)\mid  M(1)=1, M(0)=0 \}. \nonumber  \\
+&& \label{eq::bound-equation-basic}
+\end{eqnarray} 
+We have two unknown parameters but only one equation in \eqref{eq::bound-equation-basic}. So we cannot uniquely determine $E\{  Y(1)\mid   M(1)=1, M(0)=1 \}$ from the above equation \eqref{eq::bound-equation-basic}. Nevertheless, \eqref{eq::bound-equation-basic} contains some information about the quantity of interest. 
+That is, $E\{  Y(1)\mid   M(1)=1, M(0)=1 \}$  is partially identified by Definition \ref{def::partial-identification}. 
+
+
+
+For a binary outcome $Y$, we know that $E\{  Y(1)\mid  M(1)=1, M(0)=0 \}$ is bounded between 0 and 1, and consequently, $E\{  Y(1)\mid   M(1)=1, M(0)=1 \}$ is bounded between the solutions to the following two equations:
+\begin{eqnarray*}
+E(Y\mid Z=1,M=1) &=& \frac{ \pi_{(1,1)}}{ \pi_{(1,1)} + \pi_{(1,0)}} E\{  Y(1)\mid   M(1)=1, M(0)=1 \}  \\
+&&\qquad + \frac{ \pi_{(1,0)}}{ \pi_{(1,1)} + \pi_{(1,0)}}  
+\end{eqnarray*}
+and
+$$
+E(Y\mid Z=1,M=1) = \frac{ \pi_{(1,1)}}{ \pi_{(1,1)} + \pi_{(1,0)}} E\{  Y(1)\mid   M(1)=1, M(0)=1 \} .
+$$
+Therefore,  $E\{  Y(1)\mid   M(1)=1, M(0)=1 \}$ has lower bound
+$$
+\frac{  \{  \pi_{(1,1)} + \pi_{(1,0)} \} E(Y\mid Z=1,M=1) - \pi_{(1,0)}}{ \pi_{(1,1)}},
+$$
+and upper bound
+$$
+\frac{  \{  \pi_{(1,1)} + \pi_{(1,0)} \} E(Y\mid Z=1,M=1)  }{ \pi_{(1,1)}} . 
+$$
+We can then derive the bounds on $\tau(1,1)$, summarized in Theorem \ref{thm::bounds-on-SACE-binary-Y} below.
+
+
+
+\begin{theorem}
+\label{thm::bounds-on-SACE-binary-Y}
+Under Assumptions \ref{assume::complete-randomization-withM} and \ref{assume::monotonicity-ps} with a binary $Y$, we have
+\begin{eqnarray*}
+&&\frac{  \{  \pi_{(1,1)} + \pi_{(1,0)} \} E(Y\mid Z=1,M=1) - \pi_{(1,0)}}{ \pi_{(1,1)}} - E(Y\mid Z=0, M=1) \\
+&\leq & \tau(1,1) \\
+& \leq &\frac{  \{  \pi_{(1,1)} + \pi_{(1,0)} \} E(Y\mid Z=1,M=1)  }{ \pi_{(1,1)}}  - E(Y\mid Z=0, M=1). 
+\end{eqnarray*}
+\end{theorem}
+
+
+
+
+We can use \citet{imbens2004confidence}'s confidence interval for $\tau(1,1)$ which involves two steps: first, we obtain the estimated lower and upper bounds $[\hat{l}, \hat{u}]$ with estimated standard errors $(\text{se}_l, \text{se}_u)$; second, we construct the confidence interval as $[ \hat{l} - z_{1-\alpha}  \text{se}_l, \hat{u} + z_{1-\alpha}    \text{se}_u]$, where $z_{1-\alpha} $ is the $1-\alpha$ quantile of the standard Normal distribution. The validity of \citet{imbens2004confidence}'s confidence interval relies on some regularity conditions. In most truncation by death problems, those conditions hold because the lower and upper bounds are quite different, and they are bounded away from the extreme values $-1$ and $1$. I omit the technical details here. 
+
+
+
+To summarize, this is a challenging problem since we cannot identify the parameter based on the observed data even with an infinite sample size. We can derive large-sample bounds for $\tau(1,1)$ but the statistical inference based on the bounds is not standard. If we do not have monotonicity, the large-sample bounds have even more complex forms; see \citet{zhang2003estimation} and \citet[][Appendix A]{jiang2016principal}. 
+
+
+
+
+\subsection{An application}\label{section::ps-application}
+
+
+I use the data in \citet{yang2016using} from the Acute Respiratory Distress Syndrome Network study which involves 861 patients with lung injury and acute respiratory distress syndrome. Patients were randomized to receive mechanical ventilation with either lower tidal volumes or traditional tidal volumes. The outcome is the binary indicator for whether patients could breathe without assistance by day 28. Table \ref{tb::truncationbydeath} summarizes the observed data. 
+
+
+\begin{table} 
+\centering 
+\caption{Data truncated by death with * indicating the outcomes for dead patients}\label{tb::truncationbydeath}
+\begin{tabular}{cccc}
+\hline 
+\multicolumn{4}{c}{ Treatment $Z=1$} \\
+\hline 
+ & $Y=1$ & $Y=0$ &  total\\
+$M=1$ &    54 & 268& 322 \\
+$M=0$  & * & * & 109 \\
+\hline 
+\end{tabular}
+~~~~~
+\begin{tabular}{cccc}
+\hline 
+\multicolumn{4}{c}{ Control $Z=0$} \\
+\hline 
+ & $Y=1$ & $Y=0$ &total \\
+$M=1$ &    59 & 218&  277 \\
+$M=0$  & * & *& 152 \\
+\hline 
+\end{tabular}
+\end{table}
+
+% yang and small data
+% (Z, M, Y) = (1, 1, 1): 29 + 26 = 54
+% (Z, M Y) = (1, 1, 0): 258 + 10 = 268
+% (Z, M, Y) = (1, 0, *): 109
+% (Z, M, Y) = (0, 1, 1): 34 + 25 = 59
+% (Z, M, Y) = (0, 1, 0): 211 + 7 = 218
+% (Z, M, Y) = (0, 0, *): 152
+
+We first obtain the point estimators of the latent strata:
+\begin{eqnarray*} 
+ \hat{\pi}_{(1,1)} &=& \frac{277}{277+152} = 0.646, \\
+  \hat{\pi}_{(0,0)} &=&  \frac{109}{109+322} = 0.253,  \\ 
+\hat{\pi}_{(1,0)} &=& 1 -0.646 -  0.253 =   0.101. 
+\end{eqnarray*} 
+The sample means of the outcome for surviving patients are
+\begin{eqnarray*} 
+\hat{E}(Y\mid Z=1,M=1) &=& \frac{54}{302} = 0.168, \\ 
+\hat{E}(Y\mid Z=0, M=1) &=& \frac{59}{277} = 0.213.
+\end{eqnarray*} 
+The estimates for the bounds on $E\{  Y(1)\mid   M(1)=1, M(0)=1 \}$ are
+$$
+\left[ \frac{  ( 0.646 + 0.101 )\times  0.168-  0.101 }{  0.101 },  
+\frac{ ( 0.646 + 0.101 )\times  0.168}{0.101} \right]
+= [  0.037, 0.194],
+$$
+so the bounds on $\tau(1,1)$ are 
+$$
+[0.037- 0.213, 0.194- 0.213] = 
+[  -0.176, -0.019 ] . 
+$$
+Incorporating the sampling uncertainty based on the bootstrap, the confidence interval based on \citet{imbens2004confidence}'s method is $[-0.267,  0.039]$, which covers 0.
+
+
+
+
+\subsection{Extensions}
+
+
+\citet{zhang2003estimation} started the literature of large-sample bounds. \citet{imai2008sharp} and \citet{lee2009training} were two follow-up papers. \citet{cheng2006bounds} derived the bounds with multiple treatment arms. \citet{yang2016using} used a secondary outcome and \citet{yang2018using} used detailed survival information to sharpen the bounds on the survivor average causal effect. 
+
+ 
+ 
+ 
+\section{Principal score method} 
+ 
+ 
+ 
+ 
+Without additional assumptions, we can only derive bounds on the causal effects within principal strata, but cannot identify them in general. We must impose additional assumptions to achieve nonparametric identification of the $\tau(m_1, m_0)$'s. There is no consensus on the choice of the assumptions. Those additional assumptions are not testable, and their plausibility depends on the application. 
+
+A line of research based on the {\it principal score} under the {\it principal ignorability} assumption parallels causal inference with unconfounded observational studies. For simplicity, I focus on the case with strong monotonicity. 
+
+
+
+\subsection{Principal score method under strong monotonicity}
+
+\begin{assumption}
+[strong monotonicity]\label{assume::strong-monotonicity}
+ $M(0) = 0$. 
+\end{assumption}
+
+
+Similar to the ignorability assumption, we now assume the {\it principal ignorability} assumption. 
+
+
+\begin{assumption}
+[principal ignorability]\label{assume::principal-ignorability-SM}
+We have 
+$$
+E\{  Y(0) \mid M(1) = 1, X \} = E\{  Y(0) \mid M(1) = 0, X \} .
+$$ 
+\end{assumption}
+
+
+Assumption \ref{assume::principal-ignorability-SM} implies that
+$
+E\{  Y(0) \mid M(1)  , X \} = E\{  Y(0) \mid   X \} 
+$
+or, equivalently, 
+\begin{eqnarray}
+\label{eq::mean-independent}
+E\{  Y(0)  M(1)  \mid  X \}  =  E\{  Y(0) \mid   X \}  E\{     M(1)  \mid  X \}  ,
+\end{eqnarray}
+that is, $Y(0)$ and $M(1)$ are mean independent (or uncorrelated) given $X$. 
+
+Assumptions \ref{assume::complete-randomization-withM}, \ref{assume::strong-monotonicity} and \ref{assume::principal-ignorability-SM} ensure nonparametric identification of the causal effects within principal strata, as summarized by Theorem \ref{thm::identification-PCEs-pscore} below. 
+
+
+\begin{theorem}
+\label{thm::identification-PCEs-pscore}
+Under Assumptions \ref{assume::complete-randomization-withM}, \ref{assume::strong-monotonicity} and \ref{assume::principal-ignorability-SM}, 
+\begin{enumerate}
+[(a)]
+\item 
+the conditional and marginal probabilities of $M(1)$, 
+$\pi(X) =  \pr\{ M(1)=1\mid X \}  $ and $\pi =  \pr\{ M(1)=1\} $, can be identified by
+$$
+\pi(X)   =  \pr(M=1\mid Z=1, X ) 
+$$ 
+and 
+$$
+\pi  =   \pr(M=1\mid Z=1 ) 
+$$ 
+respectively; 
+\item
+the principal  stratification average causal effects can be identified by 
+$$
+\tau(1,0) = E(Y\mid Z=1, M=1)  - E\{  \pi(X) Y  \mid Z=0 \}/\pi 
+$$
+and
+$$
+\tau(0,0) = E(Y\mid Z=1, M=0)  - E\{ (1-\pi(X)) Y  \mid Z=0 \}/(1-\pi) . 
+$$
+\end{enumerate}
+\end{theorem}
+
+
+The conditional probability $\pi(X) =  \pr\{ M(1)=1\mid X \} $ is called the {\it principal score}. Theorem \ref{thm::identification-PCEs-pscore} states that $\tau(1,0) $ and  $\tau(0,0)$ can be identified by the difference in means with appropriate weights depending on the principal score. 
+
+
+
+ \begin{myproof}{Theorem}{\ref{thm::identification-PCEs-pscore}}
+ I will only prove the result for $\tau(1,0) $. 
+We have
+ $$
+ E(Y\mid Z=1, M=1)  = E\{ Y(1) \mid Z=1, M(1) = 1 \} =  E\{ Y(1) \mid   M(1) = 1 \} .
+ $$
+Moreover, 
+ \begin{eqnarray*}
+&& E  \{\pi(X) Y\mid Z=0   \}  /\pi  \\
+ &=& E  \{\pi(X) Y(0)  \mid Z=0 \}  /\pi  \\
+ &=&  E  \{\pi(X) Y(0)   \}  /\pi \qquad   (\text{Assumption } \ref{assume::complete-randomization-withM}) \\
+ &=&  E \left[    E\{\pi(X) Y(0) \mid X  \} \right]/\pi  \qquad (\text{tower property}) \\ 
+ &=& E \left[  \pi(X)  E\{ Y(0) \mid X  \} \right]/\pi  \\ 
+ &=& E \left[  E\{    M(1) \mid X\} E\{ Y(0) \mid X  \} \right]/\pi \\
+ &=&  E \left[  E\{    M(1)  Y(0) \mid X  \} \right]/\pi  \qquad  (\text{by } \eqref{eq::mean-independent}) \\
+ &=&  E\{    M(1) Y(0)  \}/\pi   \\
+ &=&  E\{ Y(0) \mid M(1) = 1 \}  .
+ \end{eqnarray*}
+% 
+%$$
+%E\{ Y(0) \mid M(1) = 1 \} = 
+%E\{  \pi(X) Y  \mid Z=0 \}/\pi 
+%$$
+%holds because 
+%\begin{eqnarray*}
+% E\{ Y(0) \mid M(1) = 1 \}  &=&   E\{    M(1) Y(0)  \}/\pi   \\
+%&=& E \left[  E\{    M(1) \mid X\} E\{ Y(0) \mid X  \} \right]/\pi   \qquad  (\text{by } \eqref{eq::mean-independent}) \\
+%&=& E \left[  \pi(X)  E\{ Y(0) \mid X  \} \right]/\pi  \\
+%&=& E \left[    E\{\pi(X) Y(0) \mid X  \} \right]/\pi  \\
+%&=& E  \{\pi(X) Y(0)   \}  /\pi  \qquad (\text{by the tower property}) \\
+%&=&  E  \{\pi(X) Y\mid Z=0   \}  /\pi. 
+%\end{eqnarray*}
+I relegate the proof of the result for $\tau(0,0) $ as Problem \ref{hw::proof-part2-identification-PCEs}. 
+ \end{myproof}
+
+ 
+Theorem \ref{thm::identification-PCEs-pscore} motivates the following simple estimators for  $\tau(1,0)$ and $\tau(0,0) $, respectively:
+\begin{enumerate}
+\item
+fit a logistic regression of $M$ on $X$ using only data from the treated group to obtain $\hat \pi(X_i)$;
+\item
+estimate $\pi$ by $\hat \pi =  \sumn Z_i M_i / \sumn Z_i$; 
+\item
+obtain moment estimators:
+$$
+\hat \tau(1,0) =  \frac{  \sumn Z_iM_iY_i  }{ \sumn Z_iM_i }   -   \frac{   \sumn (1-Z_i) \hat \pi(X_i) Y_i  }{ \hat \pi   \sumn (1-Z_i) }   
+$$
+and
+$$
+\hat \tau(0,0) =  \frac{  \sumn Z_i(1-M_i)Y_i  }{ \sumn Z_i (1-M_i) }  - \frac{  \sumn (1-Z_i)(1-\hat \pi(X_i)\} Y_i  }{  (1- \hat \pi )\sumn (1-Z_i)  }
+;
+$$
+\item
+use the bootstrap to approximate the variances of $\hat \tau(1,0) $ and $\hat \tau(0,0) $. 
+\end{enumerate}
+ 
+ 
+ 
+ 
+ \subsection{An example}
+
+The following function can compute the point estimates of $\hat \tau(1,0) $ and $\hat \tau(0,0) $. 
+
+  \begin{lstlisting}
+psw = function(Z, M, Y, X) {
+  ## probabilities of 10 and 00
+  pi.10 = mean(M[Z==1])
+  pi.00 = 1 - pi.10
+  
+  ## conditional probabilities of 10 and 00
+  ps.10 = glm(M ~ X, family = binomial, 
+              weights = Z)$fitted.values
+  ps.00 = 1 - ps.10
+  
+  ## PCEs 10 and 00 
+  tau.10 = mean(Y[Z==1&M==1]) - mean(Y[Z==0]*ps.10[Z==0])/pi.10
+  tau.00 = mean(Y[Z==1&M==0]) - mean(Y[Z==0]*ps.00[Z==0])/pi.00
+  c(tau.10, tau.00)
+}
+   \end{lstlisting}
+
+The following function can compute the point estimators as well as the bootstrap standard errors.
+  \begin{lstlisting}
+psw.boot = function(Z, M, Y, X, n.boot = 500){
+  ## point estimates
+  point.est = psw(Z, M, Y, X)
+  ## bootstrap standard errors
+  n = length(Z)  
+  boot.est = replicate(n.boot, {
+    id.boot = sample(1:n, n, replace = TRUE)
+    psw(Z[id.boot], M[id.boot], Y[id.boot], X[id.boot, ])
+  })
+  boot.se    = apply(boot.est, 1, sd)
+  ## results
+  res        = rbind(point.est, boot.se)
+  rownames(res) = c("est", "se")
+  colnames(res) = c("tau10", "tau00")
+  return(res)
+}
+    \end{lstlisting}
+    
+    
+Revisit the data used in Chapter \ref{sec::cace-application}. Previously, we assumed exclusion restriction for the IV analysis. Now, we drop the exclusion restriction but assume principal ignorability. The results are below. 
+
+
+ \begin{lstlisting}
+> jobsdata = read.csv("jobsdata.csv")
+> getX     = lm(treat ~ sex + age + marital 
++               + nonwhite + educ + income,
++               data = jobsdata)
+> X = model.matrix(getX)[, -1]
+> Z = jobsdata$treat
+> M = jobsdata$comply
+> Y = jobsdata$job_seek
+> table(Z, M)
+   M
+Z     0   1
+  0 299   0
+  1 228 372
+> psw.boot(Z, M, Y, X)
+        tau10       tau00
+est 0.1694979 -0.09904909
+se  0.1042405  0.15612983
+\end{lstlisting}
+        
+
+The point estimator       $\hat \tau(1,0) $ does not differ much from the one based on the   IV analysis. The point estimator $\hat \tau(0,0) $ is close to zero with a large standard error. In this example, exclusion restriction seems a reasonable assumption. 
+        
+               
+    
+\subsection{Extensions}
+
+ 
+ 
+ 
+ \citet{follmann2000effect}, \citet{hill2002differential}, \citet{jo2009use}, \citet{jo2011use} and \citet{stuart2015assessing} started the literature of using the principal score to identify causal effects within principal strata. \citet{ding2017principal} provided a theoretical foundation for this strategy. They proved Theorem \ref{thm::identification-PCEs-pscore} as well as a more general version under monotonicity; see Problem \ref{para::prinpscore-mono}.  
+
+ 
+
+\section{Other methods}
+
+
+To estimate principal stratification average causal effects without the exclusion restriction assumption,  \citet{zhang2009likelihood} proposed to use the Normal mixture models. However,   the inference based on the Normal mixture models can be quite fragile. A strategy is to use additional information to improve the inference under some restrictions \citep{ding2011identifiability, mealli2013using, mattei2013exploiting, jiang2016principal}.  
+ 
+ 
+Conceptually, the principal stratification framework works for general $M$. A multi-valued $M$ generates many latent principal strata, and a continuous $M$ generates infinitely many latent principal strata. In those cases, identifying the probability of the principal strata is non-trivial in the first place let alone identifying the principal stratification average causal effects.  \citet{jiang2020identification} reviewed some useful strategies. 
+ 
+
+
+\section{Homework problems}
+
+
+\paragraph{Complete the proof of Theorem \ref{thm::identification-PCEs-pscore}}\label{hw::proof-part2-identification-PCEs}
+
+Prove the result for $\tau(0,0) $ in Theorem \ref{thm::identification-PCEs-pscore}. 
+
+
+ 
+\paragraph{Principal score method under monotonicity}\label{para::prinpscore-mono}
+
+
+
+This problem extends Theorem \ref{thm::identification-PCEs-pscore}, with Assumption \ref{assume::strong-monotonicity} replaced by Assumption \ref{assume::monotonicity-ps} and Assumption \ref{assume::principal-ignorability-SM} replaced by Assumption \ref{assume::principal-ignorability-M} below. 
+
+\begin{assumption}
+[principal ignorability]\label{assume::principal-ignorability-M}
+We have 
+$$
+E\{  Y(1) \mid M(1) = 1, M(0) =0, X \} = E\{  Y(1) \mid M(1) = 1, M(0) =1, X \}
+$$
+and
+$$
+E\{  Y(0) \mid M(1) = 1, M(0) =0, X \} = E\{  Y(0) \mid M(1) = 0, M(0) =0, X \}. 
+$$
+\end{assumption}
+
+
+\begin{theorem}
+\label{thm::identification-PCEs-pscore-general-ding-lu}
+Under Assumptions \ref{assume::complete-randomization-withM}, \ref{assume::monotonicity-ps} and \ref{assume::principal-ignorability-M}, 
+\begin{enumerate}
+[(a)]
+\item
+ the conditional and marginal principal scores can be identified by
+\begin{eqnarray*}
+\pi_{(0,0)}(X) &=& \pr(M=0\mid Z=1, X),\\
+\pi_{(1,1)}(X) &=& \pr(M=1\mid Z=0, X),\\
+\pi_{(1,0)}(X) &=& \pr(M=1\mid Z=1, X) - \pr(M=1\mid Z=0, X).
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\pi_{(0,0)} &=& \pr(M=0\mid Z=1),\\
+\pi_{(1,1)} &=& \pr(M=1\mid Z=0),\\
+\pi_{(1,0)} &=& \pr(M=1\mid Z=1) - \pr(M=1\mid Z=0)
+\end{eqnarray*}
+respectively;
+\item
+the principal  stratification average causal effects can be identified by 
+\begin{eqnarray*}
+\tau(1,0) &=& E\left\{w_{1, (1,0)}(X) Y \mid Z=1, M=1\right\}  \\
+&& -E\left\{w_{0, (1,0)}(X) Y \mid Z=0, M=0\right\} , \\
+\tau(0,0) &=& E(Y \mid Z=1, M=0)-E\left\{w_{0, (0,0)}( X ) Y \mid Z=0, M=0\right\}, \\
+\tau(1,1) &=& E\left\{w_{1,  (1,1)}( X ) Y \mid Z=1, M=1\right\}-E(Y \mid Z=0, M=1)
+\end{eqnarray*}
+with 
+\begin{eqnarray*}
+w_{1, (1,0)}(X) &=&\frac{\pi_{(1,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(1,1)}(X)} \Big / \frac{\pi_{(1,0)}}{\pi_{(1,0)}+\pi_{(1,1)}} , \\
+w_{0, (1,0)}(X) &=& \frac{\pi_{(1,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(0,0)}(X)} \Big / \frac{\pi_{(1,0)}}{\pi_{(1,0)}+\pi_{(0,0)}} ,  \\
+w_{0, (0,0)}(X) &=&\frac{\pi_{(0,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(0,0)}(X)} \Big / \frac{\pi_{(0,0)}}{\pi_{(1,0)}+\pi_{(0,0)}} , \\
+w_{1, (1,1)}(X) &=&\frac{\pi_{(1,1)}(X)}{\pi_{(1,0)}(X)+\pi_{(1,1)}(X)} \Big / \frac{\pi_{(1,1)}}{\pi_{(1,0)}+\pi_{(1,1)}} .
+\end{eqnarray*}
+\end{enumerate}
+\end{theorem}
+
+
+
+Remark:
+Based on Theorem \ref{thm::identification-PCEs-pscore-general-ding-lu}, we can construct weighting estimators. Theorem \ref{thm::identification-PCEs-pscore-general-ding-lu} is Proposition 2 in \citet{ding2017principal}, which also provided more details for the estimation. 
+
+
+
+\paragraph{Principal score method in observational studies}
+\label{hw::principalscore-observational}
+
+This problem extends Theorem \ref{thm::identification-PCEs-pscore}, with Assumption \ref{assume::complete-randomization-withM} replaced by the ignorability assumption below.
+
+
+\begin{assumption}
+\label{assume::ignorabilitywithM}
+$
+Z\ind \{ M(1), M(0), Y(1) , Y(0) \} \mid X.
+$
+\end{assumption}
+
+Recall the definition of the propensity score $e(X) = \pr(Z=1\mid X)$. 
+We have the following identification result. 
+
+
+\begin{theorem}
+\label{thm::identification-PCEs-pscore-obs}
+Under Assumptions \ref{assume::ignorabilitywithM}, \ref{assume::strong-monotonicity} and \ref{assume::principal-ignorability-SM}, 
+\begin{enumerate}
+[(a)]
+\item 
+the conditional and marginal probabilities of $M(1)$, 
+$\pi(X) =  \pr\{ M(1)=1\mid X \}  $ and $\pi =  \pr\{ M(1)=1\} $, can be identified by
+$$
+\pi(X)   =  \pr(M=1\mid Z=1, X ) 
+$$ 
+and 
+$$
+\pi  =  E\{\pr(M=1\mid Z=1, X ) \}
+$$ 
+respectively; 
+\item
+the principal  stratification average causal effects can be identified by 
+$$
+\tau(1,0) = E\left\{   \frac{M}{\pi}   \frac{Z}{e(X)} Y \right\}
+- E\left\{   \frac{ \pi(X)  }{\pi}   \frac{1-Z}{1-e(X)} Y    \right\} 
+$$
+and
+$$
+\tau(0,0) = E\left\{   \frac{1-M}{1-\pi}   \frac{Z}{e(X)} Y \right\}
+- E\left\{   \frac{ 1- \pi(X)  }{1 - \pi}   \frac{1-Z}{1-e(X)} Y    \right\} .
+$$
+\end{enumerate}
+\end{theorem}
+
+
+Prove Theorem \ref{thm::identification-PCEs-pscore-obs}. 
+
+
+ 
+
+
+\paragraph{General principal score method}
+\label{hw::general-principal-score-jiangetal}
+
+Extend Theorems \ref{thm::identification-PCEs-pscore-general-ding-lu} and \ref{thm::identification-PCEs-pscore-obs} under Assumptions  \ref{assume::ignorabilitywithM}, \ref{assume::monotonicity-ps} and \ref{assume::principal-ignorability-M}. 
+
+
+Remark: See \citet{jiang2020multiply}. 
+
+
+\paragraph{Recommended reading}
+
+\citet{frangakis2002principal}  proposed the principal stratification framework. 
+\citet{zhang2003estimation} derived large-sample bounds on the survivor average causal effect. 
+\citet{jiang2020identification} reviewed various strategies to identify the causal effects within principal strata.
+\citet{jiang2020multiply} gave a unified discussion of this strategy for observational studies and proposed multiply robust estimators for causal effects within principal strata.  
+ 

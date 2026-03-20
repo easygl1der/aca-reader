@@ -1,0 +1,729 @@
+
+\chapter{The Completely Randomized Experiment and the Fisher Randomization Test}\label{ch::frt-cre}
+ \chaptermark{Completely Randomized Experiment and FRT}
+
+
+The potential outcomes framework has intrinsic connections with randomized experiments. Understanding causal inference in various randomized experiments is fundamental and helpful for understanding causal inference in more complicated non-experimental studies.  
+
+
+Part \ref{part::rcts} of this book focuses on randomized experiments. This chapter focuses on the simplest experiment, the completely randomized experiment (CRE). 
+
+\section{CRE}
+
+Consider an experiment with $n$ units, with $n_1$ receiving the treatment and $n_0$ receiving the control. We can define the CRE based on its treatment assignment mechanism\footnote{Readers may think that a CRE has $Z_i$'s as independent and identically distributed (IID) Bernoulli random variables with probability $\pi$, in which $n_1$ is a Binomial$(n,\pi)$ random variable. This is called the Bernoulli randomized experiment (BRE), which reduces to the CRE if we condition on $(n_1, n_0)$.
+I will give more details for the BRE in Problem \ref{hw::bre-inference} in Chapter \ref{chapter::neyman-cr}. 
+}.
+
+\begin{definition}
+[CRE]\label{def::CRE}
+Fix $n_1$ and $n_0$ with $n = n_1 + n_0$.
+A CRE has the treatment assignment mechanism:
+$$
+\pr(  \bm{Z} = \bm{z} ) = 1 \Big / \binom{n}{n_1},
+$$
+where $\bm{z} = (z_1,\ldots, z_n)$ satisfies $\sumn z_i  = n_1$ and $\sumn (1-z_i)  = n_0 . $
+\end{definition}
+
+
+In Definition \ref{def::CRE}, we assume that the potential outcome vector under treatment $\bm{Y}(1) = (Y_1(1), \ldots, Y_n(1) )$ and the potential outcome vector under control $\bm{Y}(0) = (Y_1(0), \ldots, Y_n(0) )$ are both fixed. Even if we view them as random, we can condition on them and the treatment assignment mechanism becomes 
+$$
+\pr\{    \bm{Z} = \bm{z} \mid \bm{Y}(1), \bm{Y}(0)  \} = 1 \Big / \binom{n}{n_1} 
+$$
+because $ \bm{Z} \ind \{\bm{Y}(1), \bm{Y}(0)\}$ in a CRE. In a CRE, the treatment vector $\bm{Z}$ is from a random permutation of $n_1$ 1's and $n_0$ 0's.
+
+In his seminal book {\it Design of Experiments}, \citet{Fisher:1935} pointed out the following advantages of randomization:
+\begin{enumerate}
+[(1)]
+\item\label{eq::comparable}
+It creates comparable treatment and control groups on average.
+
+\item\label{eq::reasonedbasis}
+It serves as a ``reasoned basis'' for statistical inference. 
+ \end{enumerate}
+ 
+ 
+Point \ref{eq::comparable} is intuitive because the random treatment assignment does not bias toward the treatment or the control. Most people understand point 1 well. Point \ref{eq::reasonedbasis} is more subtle. What Fisher meant is that randomization justifies a statistical test, which is now called the Fisher Randomization Test (FRT). This chapter illustrates the basic idea of the FRT  under a CRE.
+
+
+\section{FRT}
+\label{sec::frt-basics}
+
+\citet{Fisher:1935} was interested in testing the following null hypothesis:\footnote{Actually, \citet{Fisher:1935} did not use this form of $\HF$ since he did not use the notation of potential outcomes. This form was due to \citet{Rubin:1980}.}
+$$
+\HF: Y_i(1) = Y_i(0) \text{ for all units } i=1,\ldots, n.
+$$
+\citet{Rubin:1980} called it the {\it sharp null hypothesis} in the sense that it can determine all the potential outcomes based on the observed data: $\bm{Y}(1) = \bm{Y}(0) =  \bm{Y} = (Y_1, \ldots, Y_n)$, the vector of the observed outcomes. It is also called the {\it strong null hypothesis} \citep[e.g.,][]{wu2018randomization}. 
+
+
+Conceptually, under $\HF$, the FRT works for any test statistic 
+\begin{eqnarray}\label{eq::teststatistic}
+T = T( \bm{Z}, \bm{Y})  ,
+\end{eqnarray}
+which is a function of the observed data. The observed outcome vector $\bm{Y}$ is fixed under $\HF$, so the only random component in the test statistic $T$ is the treatment vector $\bm{Z}$. The experimenter determines the distribution of $\bm{Z}$, which in turn determines the distribution of $T$ under $\HF$. This is the basis for calculating the $p$-value. I will give more details below. 
+
+
+In a CRE, $\bm{Z}$ is uniform over the set
+$$
+\{  \bm{z}^1, \ldots, \bm{z}^M  \}
+$$
+where $M = \binom{n}{n_1}$, and the $ \bm{z}^m$'s are all possible vectors with $n_1$ $1$'s and $n_0$ $0$'s. 
+For instance, with $n=5$ and $n_1=3$, we can enumerate $M = \binom{5}{3} = 10$ vectors as follows:
+\begin{lstlisting}
+> permutation10 = function(n, n1){
++  M  = choose(n, n1)
++  treat.index = combn(n, n1)
++  Z = matrix(0, n, M)
++  for(m in 1:M){
++    treat  = treat.index[, m]
++    Z[treat, m] = 1
++  }
++  Z
++ }
+> 
+> permutation10(5, 3)
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    1    1    1    1    1    1    0    0    0     0
+[2,]    1    1    1    0    0    0    1    1    1     0
+[3,]    1    0    0    1    1    0    1    1    0     1
+[4,]    0    1    0    1    0    1    1    0    1     1
+[5,]    0    0    1    0    1    1    0    1    1     1
+\end{lstlisting}
+
+As a consequence, $T$ is uniform over the set (with possible duplications)
+$$
+\{   T(\bm{z}^1,\bm{Y}) , \ldots, T( \bm{z}^M, \bm{Y})  \}.
+$$
+That is, the distribution of $T$ is known due to the design of the CRE. We will call this distribution of $T$ the {\it randomization distribution}. 
+
+
+
+
+If larger values are more extreme for $T$, we can use the following tail probability to measure the extremeness of the test statistic with respect to its randomization distribution:\footnote{Because of this, the $p_\frt$ in \eqref{eq::exactpvalue} is one-sided. Sometimes, we may want to define two-sided $p$-values. One possibility is to use the absolute value of $T$ if it is distributed around $0$. }
+\begin{equation}\label{eq::exactpvalue}
+p_\frt = M^{-1} \sum_{m=1}^M   I\{ T(\bm{z}^m,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \},
+\end{equation}
+which is called the $p$-value by Fisher. Figure \ref{fig::frt} illustrates the computational process of $p_\frt $. 
+
+
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width =  \textwidth]{figures/frt_fig.pdf}
+\caption{Illustration of the FRT}\label{fig::frt}
+\end{figure}
+
+
+
+
+The $p$-value, $p_\frt$,  in \eqref{eq::exactpvalue} works for any choice of test statistic and any outcome-generating process. It also extends naturally to any experiment, which will be a topic repeatedly discussed in the following chapters. Importantly, it is finite-sample exact in the sense\footnote{This is the standard definition of the $p$-value in mathematical statistics. The inequality is often due to the discreteness of the test statistic, and when the equality holds, the $p$-value is Uniform$(0,1)$ under the null hypothesis. Let $F(\cdot)$ be the distribution function of $T(\bm{Z},\bm{Y})$. Even though it is a step function, we assume that it is continuous and strictly increasing as if it is the distribution function of a continuous random variable taking values on the whole real line.  So $p_\frt = 1- F(T)$, and  
+$$
+\pr(p_\frt \leq u) = \pr\{ 1-F(T) \leq u\} = \pr\{  T \geq F^{-1}(1-u)  \} = 1- F( F^{-1}(1-u)) = u.
+$$
+The discreteness of $T$ does cause some technical issues in the proof, yielding an inequality instead of an equality. I leave the technical details to Problem \ref{hw::exact-frt}.}  that under $\HF$,
+\begin{eqnarray}\label{eq::p-value-valid}
+\pr(p_\frt \leq u) \leq u \quad  \text{ for all } \quad 0 \leq u \leq 1.
+\end{eqnarray}
+
+
+
+
+In practice, $M$ is often too large (e.g., with $n=100, n_1=50$, we have $M > 10^{29}$), and it is computationally infeasible to enumerate all possible values of the treatment vector. We often approximate $p_\frt$ by Monte Carlo (see Section \ref{sec::monte-carlo-method} for a review of the basic Monte Carlo method). To be more specific, we take independent random draws from all possible values of the treatment vector, or, equivalently, we randomly permute $\bm{Z}$, and approximate $p_\frt$ by
+\begin{equation}\label{eq::mcpvalue}
+\hat p_\frt  =  R^{-1} \sum_{r=1}^R   I\{ T(\bm{z}^r,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \},
+\end{equation}
+where the $\bm{z}^r$'s are the $R$ random permutations of $\bm{Z}$.
+The $p$-value in \eqref{eq::mcpvalue} has Monte Carlo error decreasing fast with an increasing $R$; see Problem \ref{para::monte-carlo-error-pfrt}. Because the calculation of the $p$-value in \eqref{eq::mcpvalue} involves permutations of $\bm{Z}$, the FRT is sometimes called the {\it permutation test} in the context of the CRE. However, the idea of FRT is more general than the permutation test in more complex experiments. 
+
+
+
+\section{Canonical choices of the test statistic}
+\label{sec::frt-choiceofstatistic}
+
+From the above discussion, the FRT generates finite-sample exact $p$-value for any choice of the test statistic. This is a feature of the FRT. However, this feature should not encourage arbitrary choice of the test statistic. Intuitively, we must choose test statistics that give information for possible violations of $\HF$.  Below I will review some canonical choices. 
+
+
+\begin{example}[difference-in-means]\label{eq::frt-difference-in-means}
+The difference-in-means statistic is
+$$
+\hat{\tau}   = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)
+$$
+where
+$$
+ \hat{\bar{Y}}(1)  =  n_1^{-1} \sum_{Z_i=1} Y_i  = n_1^{-1} \sumn Z_iY_i 
+$$
+is the sample mean of the outcomes under the treatment and
+$$
+\hat{\bar{Y}}(0) = n_0^{-1}  \sum_{Z_i=0} Y_i   = n_0^{-1}  \sumn (1-Z_i) Y_i 
+$$
+is the sample mean of the outcomes under the control, respectively.
+%
+%\begin{eqnarray*}
+%\hat{\tau}  &=& n_1^{-1} \sum_{Z_i=1} Y_i - n_0^{-1}  \sum_{Z_i=0} Y_i  \\
+%&=&  n_1^{-1} \sumn Z_iY_i - n_0^{-1}  \sumn (1-Z_i) Y_i  \\
+%&\equiv & \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0).
+%\end{eqnarray*}
+Under $\HF$, it has mean 
+$$
+E(  \hat{\tau}    ) = n_1^{-1}\sumn E(Z_i)Y_i  - n_0^{-1}  \sumn E(1-Z_i) Y_i  = 0
+$$
+and variance
+\begin{eqnarray*}
+\var( \hat{\tau}   ) &=& \var\left\{  n_1^{-1} \sumn Z_iY_i - n_0^{-1}  \sumn (1-Z_i) Y_i  \right\} \\
+&=&\var\left(  \frac{n}{n_0}    \frac{1}{n_1} \sumn  Z_i Y_i         \right) \\
+&=_*& \frac{n^2}{n_0^2} \left( 1 - \frac{n_1}{n} \right) \frac{s^2}{n_1} \\ 
+&=& \frac{n}{n_1 n_0} s^2,
+\end{eqnarray*}
+where $=_*$ follows from Lemma  \ref{lemma::samplemean} for simple random sampling with
+$$
+\bar{Y} = n^{-1}  \sumn Y_i,\quad 
+s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2 .  
+$$ 
+Furthermore, the randomization distribution of $\hat{\tau}$ is approximately Normal due to the finite population central limit theorem (CLT) in Lemma \ref{lemma::finite-population-clt}: 
+\begin{equation}\label{eq::frt-tau-hat}
+\frac{  \hat{\tau}      }{  \sqrt{\frac{n}{n_1 n_0} s^2}    }  
+%= \frac{  n_1^{-1} \sum_{Z_i=1} Y_i - n_0^{-1}  \sum_{Z_i=0} Y_i  }{ \sqrt{   \frac{n}{n_1 n_0(n-1)}    \sumn (Y_i - \bar{Y})^2   }  }   
+\rightarrow  \N01 
+\end{equation}
+in distribution. Since $s^2$ is fixed under $\HF$, it is equivalent to use 
+$$
+\frac{  \hat{\tau}      }{  \sqrt{\frac{n}{n_1 n_0} s^2}    }  
+$$
+as the test statistic in the FRT, which is asymptotically $\textsc{N}(0,1)$ as shown in \eqref{eq::frt-tau-hat}. Then we can calculate an approximate $p$-value. 
+\end{example}
+
+
+The observed data are $\{  Y_i: Z_i = 1 \}$ and $\{ Y_i : Z_i = 0 \}$, so the problem is essentially a two-sample problem. 
+Under the assumption of independent and identically distributed (IID) Normal outcomes (see Section \ref{sec::bf-problem}), the classic two-sample $t$-test assuming equal variance is based on
+\begin{equation}\label{eq::two-sample-t-equalv}
+\frac{  \hat{\tau}      }{  \sqrt{\frac{n}{n_1 n_0(n-2)}  \left[  \sum_{Z_i=1}  \{Y_i - \hat{\bar{Y}}(1)\}^2
++ \sum_{Z_i=0}  \{Y_i - \hat{\bar{Y}}(0)\}^2
+    \right]  }    }   \sim t_{n-2}.
+\end{equation}
+Based on some algebra (see Problem \ref{hw::frt-algebraic-detail}), we have the expansion 
+\begin{equation}\label{eq::frt-algebra-difference-in-means}
+(n-1)s^2 = \sum_{Z_i=1}  \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0}  \{Y_i - \hat{\bar{Y}}(0)\}^2
++ \frac{n_1 n_0}{n} \hat{\tau}^2 .
+\end{equation}
+With a large sample size $n$, we can ignore the difference between $\N01$ and $t_{n-2}$ and the difference between $n-1$ and $n-2$.
+Moreover, under $\HF,$ $\hat{\tau}$ converges to zero in probability, so $ n_1 n_0 / n \hat{\tau}^2$ can be ignored asymptotically. Therefore, under $\HF,$ the approximate $p$-value in Example \ref{eq::frt-difference-in-means} is close to the $p$-value from the classic two-sample $t$-test assuming equal variance, which can be calculated by \ri{t.test} with \ri{var.equal = TRUE}. Under alternative hypotheses with nonzero $\tau$, the additional term $\frac{n_1 n_0}{n} \hat{\tau}^2$ in the expansion \eqref{eq::frt-algebra-difference-in-means} can make the FRT less powerful than the usual $t$-test; \citet{Ding:2014} made this point. 
+
+
+Based on the above discussion, the FRT with $\hat{\tau}$ effectively uses a pooled variance ignoring the heteroskedasticity between these two groups. In classical statistics, the two-sample problem with heteroskedastic Normal outcomes is called the Behrens--Fisher problem (see Section \ref{sec::bf-problem}). In the Behrens--Fisher problem, a standard choice of the test statistic is the studentized statistic below. 
+
+
+
+\begin{example}[studentized statistic]
+\label{eg::studentized-statistic}
+The studentized statistic\footnote{The $t$ notation is intentional because it is related to the $t$ distribution. But it should not be confused with the notation $t_\nu$, which denotes the $t$ distribution with degrees of freedom $\nu$.} is 
+$$
+t = \frac{    \hat{\bar{Y}}(1)  -   \hat{\bar{Y}}(0)    }{  \sqrt{  \frac{  \hat{S}^2(1)  }{n_1}  + \frac{\hat{S}^2(0)}{n_0}  }   },
+$$
+where 
+$$
+\hat{S}^2(1) = (n_1 - 1)^{-1} \sum_{Z_i =1} \{ Y_i  -\hat{\bar{Y}}(1)   \}^2,\quad
+\hat{S}^2(0) = (n_0 - 1)^{-1} \sum_{Z_i =0} \{ Y_i  -\hat{\bar{Y}}(0)   \}^2 
+$$
+are the sample variances of the observed outcomes under the treatment and control, respectively. Under $\HF$, the finite population CLT again implies that $t$ is asymptotically Normal: 
+$$
+t \rightarrow \N01 
+$$
+in distribution. 
+Then we can calculate an approximate $p$-value which is close to the $p$-value from \ri{t.test} with \ri{var.equal = FALSE}.
+\end{example}
+
+
+
+An extremely important point is that the FRT justifies the traditional $t$-tests using \ri{t.test} with either \ri{var.equal = TRUE} or \ri{var.equal = FALSE}, even if the underlying distributions are not Normal. Standard statistics textbooks motivate the $t$-tests based on the Normality assumption, but the assumption can be too strong in practice. Fortunately, the $t$-test procedures can still be used as long as the finite population CLTs hold. Even if we do not believe the CLTs, we can still use $\hat{\tau}$ and $t$ as test statistics in the FRT to obtain finite-sample exact $p$-values. 
+
+
+We will motivate this studentized statistic from another perspective in Chapter \ref{chapter::unification-fisher-neyman}. The theory there shows that using $t$ in FRT is more robust to heteroskedasticity across the two groups. 
+
+
+The following test statistic is robust to outliers resulting from heavy-tailed outcome data. 
+
+
+
+
+\begin{example}[Wilcoxon rank sum]\label{example::wilcoxon-cre}
+The difference-in-means statistic $ \hat{\tau} $ uses the sample means of the original outcomes, and its sampling distribution depends on the variances of the outcomes. The studentized statistic $t$ uses the sample means and variances of the original outcomes, and its sampling distribution depends on higher moments of the outcomes. 
+This makes $ \hat{\tau} $ and $t$ sensitive to outliers. 
+
+Another popular test statistic is based on the ranks of the pooled observed outcomes. Let $R_i$ denote the rank of $Y_i$ in the pooled samples $\bm{Y}$: 
+$$
+R_i = \#\{j : Y_j \leq Y_i  \}.
+$$ 
+The Wilcoxon rank sum statistic is the sum of the ranks under treatment:
+$$
+W = \sumn Z_i R_i.
+$$
+For algebraic simplicity, we assume that there are no ties in the outcomes.\footnote{ 
+The FRT can be applied regardless of the existence of ties. With ties, we can either add small random noises to the original outcomes or use the average ranks for the tied outcomes.
+For the case with ties, see \citet[][Chapter 1 Section 4]{lehmann2006nonparametrics}.
+}
+Because the sum of the ranks of the pooled samples is fixed at $1+2+\cdots + n = n(n+1)/2$, the Wilcoxon statistic is equivalent to the difference in the means of the ranks under the treatment and control. 
+Under $\HF$, the $R_i$'s are fixed, so
+%We can use Lemma \ref{lemma::samplemean} to calculate the moments of $W$ under $\HF$: because the $R_i$'s are fixed, 
+$W$ has mean
+$$
+E(W)  =  \sumn E(Z_i) R_i  =\frac{n_1}{n}  \sumn  i   = \frac{n_1}{n} \times \frac{n(n+1)}{2} = \frac{n_1(n+1)}{2} 
+$$
+and variance
+\begin{eqnarray*}
+\var(W) &=& \var\left( n_1 \frac{1}{n_1} \sumn Z_i R_i  \right) \\
+&=_*&  n_1^2  \left( 1-\frac{n_1}{n} \right)  \frac{1}{n_1}  \frac{1}{n-1} \sumn \left(R_i - \frac{n+1}{2}  \right)^2\\
+&=&  \frac{n_1 n_0}{n(n-1)} \sumn \left(i - \frac{n+1}{2}  \right)^2\\
+&=&   \frac{n_1 n_0}{n(n-1)}   \left\{ \sumn i^2 - n \left(  \frac{n+1}{2}\right)^2     \right\}\\
+&=&  \frac{n_1 n_0}{n(n-1)}  \left\{     \frac{n(n+1)(2n+1)}{6} -    n \left( \frac{n+1}{2}   \right)^2 \right\}  \\
+&=& \frac{n_1 n_0 (n+1)}{12},
+\end{eqnarray*}
+where $=_*$ follows from Lemma \ref{lemma::samplemean}. 
+Furthermore, under $\HF$, the finite population CLT ensures that the randomization distribution of $\widehat{\tau}$ is approximately Normal:
+\begin{eqnarray}
+\label{eq::wilcox-normal}
+\frac{  \sumn Z_i R_i - \frac{n_1(n+1)}{2}   }{  \sqrt{  \frac{n_1 n_0 (n+1)}{12}   }}   \rightarrow \N01 
+\end{eqnarray}
+in distribution. 
+Based on \eqref{eq::wilcox-normal}, we can conduct an asymptotic test. In \ri{R}, the function \ri{wilcox.test} can compute both exact and asymptotic $p$-values based on the statistic $W - n_1(n_1+1)/2$. Based on some asymptotic analyses, \citet{lehmann2006nonparametrics} showed that the FRT using $W$ has reasonable power over a wide range of data-generating processes.
+\end{example}
+
+
+
+
+
+\begin{example}
+ [Kolmogorov--Smirnov statistic]
+\label{eg::ks-CRE}
+The treatment may affect the outcome in different ways. It seems natural to summarize the treatment outcomes and control outcomes based on the empirical distributions:
+$$
+\hat{F}_1( y) = n_1^{-1} \sumn Z_i I(Y_i \leq y),\quad
+\hat{F}_0( y ) = n_0^{-1} \sumn (1-Z_i) I(Y_i \leq y) . 
+$$ 
+Comparing these two empirical distributions yields the famous Kolmogorov--Smirnov statistic
+$$
+D = \max_y  \Big |
+\hat{F}_1( y) 
+- \hat{F}_0( y ) 
+\Big |.
+$$
+It is a challenging mathematics problem to derive the distribution of $D$. With large sample sizes $n_1\rightarrow \infty$ and $n_0\rightarrow \infty$, its distribution function converges to
+$$
+\pr\left(  \frac{n_1 n_0}{n}  D \leq  x   \right  ) \rightarrow   \frac{\sqrt{2\pi}}{x}   \sum_{j=1}^\infty  e^{     - (2j-1)^2 \pi^2 / (8x^2) }     ,
+$$
+based on which we calculate an asymptotic $p$-value \citep{van2000asymptotic}. In \ri{R}, the function \ri{ks.test} can compute both exact and asymptotic $p$-values.
+\end{example}
+
+
+
+
+
+
+
+\section{A case study of the LaLonde experimental data}
+\label{sec::frt-lalonde-experiment}
+
+I use \citet{lalonde1986evaluating}'s experimental data to illustrate the FRT. The data are available in the \ri{Matching} package \citep{sekhon2011multivariate}: 
+
+\begin{lstlisting}
+> library(Matching)
+> data(lalonde)
+> z = lalonde$treat
+> y = lalonde$re78
+\end{lstlisting}
+
+In the above, \ri{z} denotes the binary treatment vector indicating whether a unit was randomly assigned to the job training program or not, and \ri{y} is the outcome vector representing a unit's real earnings in 1978. 
+Figure \ref{fig::lalonde-histograms} shows the histograms of the outcomes under the treatment and control. 
+
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width =  \textwidth]{figures/lalonde_histograms.pdf}
+\caption{Histograms of the outcomes in the LaLonde experimental data: the treatment in white and the control in grey. The vertical lines are the sample means of the outcomes: the solid line for the treatment and the dashed line for the control.}\label{fig::lalonde-histograms}
+\end{figure}
+
+
+
+The following code computes the observed values of the test statistics using existing functions:
+\begin{lstlisting}
+> tauhat = t.test(y[z == 1], y[z == 0], 
++                 var.equal = TRUE)$statistic
+> tauhat
+       t 
+2.835321 
+> student = t.test(y[z == 1], y[z == 0],
++                 var.equal = FALSE)$statistic
+> student
+       t 
+2.674146 
+> W = wilcox.test(y[z == 1], y[z == 0])$statistic
+> W
+      W 
+27402.5 
+> D = ks.test(y[z == 1], y[z == 0])$statistic
+> D
+        D 
+0.1321206 
+\end{lstlisting}
+
+By randomly permuting the treatment vector, we can obtain the Monte Carlo approximation of the randomization distributions of the test statistics, stored in four vectors \ri{Tauhat}, \ri{Student}, \ri{Wilcox}, and \ri{Ks}. 
+\begin{lstlisting}
+> MC = 10^4
+> Tauhat   = rep(0, MC)
+> Student  = rep(0, MC)
+> Wilcox   = rep(0, MC)
+> Ks       = rep(0, MC)
+> for(mc in 1:MC)
++ {
++   zperm       = sample(z)
++   Tauhat[mc]  = t.test(y[zperm == 1], y[zperm == 0], 
++                        var.equal = TRUE)$statistic 
++   Student[mc] = t.test(y[zperm == 1], y[zperm == 0], 
++                        var.equal = FALSE)$statistic
++   Wilcox[mc]  = wilcox.test(y[zperm == 1], 
++                             y[zperm == 0])$statistic 
++   Ks[mc]      = ks.test(y[zperm == 1], 
++                         y[zperm == 0])$statistic
++ }
+\end{lstlisting}
+
+
+
+The one-sided $p$-values based on the FRT are all smaller than 0.05: 
+\begin{lstlisting}
+> exact.pv = c(mean(Tauhat >= tauhat),
++              mean(Student >= student),
++              mean(Wilcox >= W),
++              mean(Ks >= D))
+> round(exact.pv, 3)
+[1] 0.002 0.002 0.006 0.040
+\end{lstlisting}
+Without using Monte Carlo, we can also compute the asymptotic $p$-values which are all smaller than 0.05: 
+\begin{lstlisting}
+> asym.pv = c(t.test(y[z == 1], y[z == 0], 
++                    var.equal = TRUE)$p.value, 
++             t.test(y[z == 1], y[z == 0], 
++                    var.equal = FALSE)$p.value,
++             wilcox.test(y[z == 1], y[z == 0])$p.value,
++             ks.test(y[z == 1], y[z == 0])$p.value)
+> round(asym.pv, 3)
+[1] 0.005 0.008 0.011 0.046
+\end{lstlisting}
+
+The differences between the $p$-values are due to the asymptotic approximations as well as the fact that the default choices for \ri{t.test} and \ri{wilcox.test} are two-sided tests. To make fair comparisons, we need to multiply the first three $p_\frt$'s by a factor of $2$. 
+
+
+Figure \ref{fig::randomizationdistribution-lalonde} shows the histograms of the randomization distributions of four test statistics, as well as their corresponding observed values. For the first three test statistics, the Normal approximations work quite well even though the underlying outcome data distribution is far from Normal as shown in Figure \ref{fig::lalonde-histograms}. In general, a figure like Figure \ref{fig::randomizationdistribution-lalonde} can give clearer information for testing the sharp null hypothesis. Recently, \citet{bind2020possible} proposes, in the title of their paper, that ``when possible, report a Fisher-exact  $p$-value and display its underlying null randomization distribution.'' I agree. 
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width =  \textwidth]{figures/FRT_lalonde.pdf}
+\caption{The randomization distributions of four test statistics based on the LaLonde experimental data} \label{fig::randomizationdistribution-lalonde}
+\end{figure}
+
+
+
+
+
+\section{Some history of randomized experiments and FRT}
+
+
+\subsection{James Lind's experiment}\label{section::lind}
+
+
+James Lind (1716---1794) was a Scottish doctor and a pioneer of naval hygiene in the Royal Navy. At his time,  scurvy was a major cause of death among sailors. He conducted one of the earliest randomized experiments with clear documentation of the details and concluded that citrus fruits cured scurvy before the discovery of Vitamin C. 
+
+
+In \citet{lind1753treatise}, he described the following randomized experiment with $12$ patients of scurvy assigned to $6$ groups. With some simplifications, the $6$ groups are:
+\begin{enumerate}
+[(1)]
+\item
+two received a quart of cider every day; 
+
+\item
+two received twenty-five drops of sulfuric acid three times every day;
+
+\item
+two received two spoonfuls of vinegar three times every day;
+
+\item
+two received half a pint of seawater every day;
+
+
+\item
+two received two oranges and one lemon every day;
+
+\item 
+two received a spicy paste plus a drink of barley water every day.
+\end{enumerate}
+
+After six days, patients in the fifth group recovered, but patients in other groups did not. If we simplify the treatment as
+$$
+Z_i  = 1(\text{unit } i \text{ received citrus fruits})
+$$
+and the outcome as
+$$
+Y_i = 1(\text{unit } i \text{ recovered after six days}),
+$$
+then we have a two-by-two table
+
+\begin{center}
+\begin{tabular}{lcc}
+\hline 
+      & $Y =1$ & $Y =0$\\\hline
+$Z =1$ & $2$ & $0$\\ 
+$Z =0$ & $0$ & $10$\\
+\hline 
+\end{tabular}
+\end{center}
+
+
+This is the extremest possible two-by-two table we can observe under this experiment, and the data contain strong evidence for the positive effect of citrus fruits for curing scurvy. Statistically, how do we measure the strength of the evidence?
+
+
+Following the logic of the FRT, if the treatment has no effect at all (under $\HF$), this extreme two-by-two table will occur with probability 
+$$
+ \frac{1}{\binom{12}{2}} = \frac{1}{66} = 0.015
+$$
+which is the $p_\frt$. 
+This seems a surprise under $\HF$: we can easily reject $\HF$ at the level of $0.05.$
+
+
+
+\subsection{Lady tasting tea}\label{section::lady-tasting-tea}
+
+
+\citet{Fisher:1935} described the following famous experiment of {\it Lady Tasting Tea}.\footnote{This later became the title of a book on the modern history of statistics by \citet{salsburg2001lady}.}  A lady claimed that she could tell the difference between the two ways of making milk tea: one with milk added first, and the other with tea added first. This might sound odd to most people. As a statistician, Fisher designed an experiment to test whether the lady could actually tell the difference between the two ways of making milk tea. 
+
+He made $8$ cups of tea, $4$ with milk added first and the other $4$ with tea added first. Then he presented these $8$ cups of tea in a random order to the lady and asked the lady to pick up the $4$ with milk added first. The final experiment result can be summarized in the following two-by-two table: 
+
+\begin{tabular}{lccc}
+\hline 
+      &    milk first (lady)&    tea first (lady) & column sum \\ \hline
+      milk first (Fisher) & $X$ & $4-X$ & 4\\ 
+   tea first (Fisher) & $4-X$ & $X$ & 4\\
+   row sum & 4 & 4 &8 \\
+   \hline 
+\end{tabular}
+
+The $X$ can be $0, 1, 2, 3, 4$. In the real experiment, $X = 4$, which is the most extreme data, strongly suggesting that the lady could tell the difference between the two ways of making milk tea. Again, how do we measure the strength of the evidence?
+
+
+Under the null hypothesis that the lady could not tell the difference, only one of the $\binom{8}{4} = 70$ possible orders yields the two-by-two table with $X=4$. So the $p$-value is
+$$
+p_\frt = \frac{1}{70} = 0.014.
+$$
+Given the significance level of $0.05$, we reject the null hypothesis. 
+
+
+
+\subsection{Two Fisherian principles for experiments}\label{sec::fisherian-principles-experiments}
+
+
+In the above two examples in Sections \ref{section::lind} and \ref{section::lady-tasting-tea}, the $p_\frt$'s are justified by the randomization of the experiments. This highlights the first Fisherian principle of experiments: {\it randomization}.
+
+
+
+
+ 
+ 
+ 
+
+
+Moreover, the above two experiments are in some sense the smallest possible experiments that can yield statistically meaningful results. For instance, if Lind only assigned one patient to each of the six groups, then the smallest $p$-value is
+$$
+\frac{1}{\binom{6}{1}}  =\frac{1}{6} = 0.167;
+$$
+if Fisher only made $6$ cups of tea, $3$ with milk added first and the other $3$ with tea added first, then the smallest $p$-value is
+$$
+\frac{1}{\binom{6}{3}} = \frac{1}{20} = 0.05.
+$$
+We can never reject the null hypotheses at the level of $0.05$. This highlights the second Fisherian principle of experiments: {\it replications}. This is, to ensure the FRT to have power, we must have enough units in experiments. 
+
+ 
+
+Chapter \ref{chapter::stratification-poststratification} will discuss the third Fisherian principle of experiments: {\it blocking}.
+
+
+ 
+
+ 
+
+\section{Discussion}
+
+\subsection{Other sharp null hypotheses and confidence intervals}\label{sec::frt-invert-interval}
+
+
+I focus on the sharp null hypothesis $\HF$ above. In fact, the logic of the FRT also works for other sharp null hypotheses. For instance, we can test
+$$
+H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \text{ for all } i=1,\ldots, n
+$$
+for a known vector $\bm{\tau} = (\tau_1, \ldots, \tau_n)$. Because the individual causal effects are all known under $H_0(\bm{\tau})$, we can impute all missing potential outcomes based on the observed data. With known potential outcomes, the distribution of any test statistic $T = T(\bm{Z}, \bm{Y}(1), \bm{Y}(0))$ is completely determined by the treatment assignment mechanism, and therefore, we can compute the corresponding $p_\frt$ as a function of $\bm{\tau} $, denoted by $p_\frt(\bm{\tau} )$. If we can specify all possible $\bm{\tau}$'s, then we can compute a series of $p_\frt(\bm{\tau} )$'s. By duality of hypothesis testing and confidence set (see Section \ref{section::duality-ci-testing}), we can obtain a $(1-\alpha)$-level confidence set for the average causal effect:
+$$
+\left \{ \tau = n^{-1}\sum_{i=1}^n \tau_i :  p_\frt(\bm{\tau} ) \geq \alpha \right \} .
+$$
+Although this strategy is conceptually straightforward, it has practical complexities due to the large number of all possible $\bm{\tau}$'s. In the special case of a binary outcome, \citet{Rigdon:2015} and \citet{li2016exact} proposed some computationally feasible approaches to constructing confidence intervals for $\tau$ based on the FRT. For general unbounded outcomes, this strategy is often computationally infeasible. 
+
+
+A canonical simplification \citep{rosenbaum2002design, Rosenbaum:2010} is to consider a subclass of the sharp null hypotheses with constant individual causal effects:
+$$
+H_0(c): Y_i(1) - Y_i(0) =  c\text{ for all } i=1,\ldots, n
+$$
+for a known constant $c$. Given $c$, we can compute $p_\frt(c)$. By duality, we can obtain 
+a $(1-\alpha)$-level confidence set for the average causal effect:
+$$
+\{ c :  p_\frt(c ) \geq \alpha \} .
+$$
+Because this procedure only involves a one-dimensional search, it is computationally feasible. 
+However, the constant individual causal effect assumption is too strong. In particular, it does not hold for binary outcomes unless all units have effects $0,$ $-1$, or $1$. In general, the constant individual causal effect assumption has testable implications that can be rejected by the observed data; \citet{ding2015randomization} proposed a formal statistical test. 
+
+
+
+\subsection{Other test statistics}\label{section::other-statistic}
+
+
+The FRT is a general strategy because it is applicable in any randomized experiment with any test statistic. 
+I have given several examples of test statistics in Section \ref{sec::frt-choiceofstatistic}. In fact, the definition of a test statistic can be much more general. For instance, with pre-treatment covariate matrix $\bm{X}$ with the $i$th row being $X_i$ for unit $i$ $(i = 1, \ldots, n)$ \footnote{In causal inference, we call $X_i$ a covariate if it is not affected by the treatment. That is, if the covariate has two potential outcomes $X_i(1)$ and $X_i(0)$, then they must satisfy $X_i(1) = X_i(0)$. Standard statistics books often do not distinguish the treatment and covariates because they often appear on the right-hand side of a regression model for the outcome. They are both called covariates in those statistical models. This book distinguishes the treatment and covariates because they play different roles in causal inference. }, we can allow the test statistic $T(\bm{Z}, \bm{Y}, \bm{X})$ to be a function of the treatment vector, outcome vector, and the covariate matrix.  Problem \ref{hw::frt-covariates} gives an example. 
+
+
+
+\subsection{Final remarks}
+For a general experiment, the probability distribution of $\bm{Z}$ is not uniform over all possible permutations of $n_1$ 1's and $n_0$ 0's. However, its distribution is completely known by the experimenter. Therefore, we can always simulate its distribution which in turn implies the distribution of any test statistic under the sharp null hypothesis. A finite-sample exact $p$-value equals 
+$$
+p_\textsc{frt} = \pr'\{  T(\bm{Z}', \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
+$$ 
+where $\pr'$ is average over the distribution of $\bm{Z}'$ conditional on data. I will discuss other experiments in the subsequent chapters and I want to emphasize that the FRT works beyond the specific experiments discussed in this book. 
+
+ 
+The FRT works with any test statistic. However, this does not answer the practical question of how to choose a test statistic in the data analysis. If the goal is to find surprises with respect to the sharp null hypothesis, it is desirable to choose a test statistic that yields high power under alternative hypotheses. In general, no test statistic can dominate others in terms of power because power depends on the alternative hypothesis. The four test statistics in Section \ref{sec::frt-choiceofstatistic} are motivated by different alternative hypotheses. For instance, $\hat{\tau}$ and $t$ are motivated by an alternative hypothesis with a nonzero average treatment effect; $W$ is motivated by an alternative hypothesis with a constant causal effect with heavy-tailed outcomes. Specifying a working alternative hypothesis is often helpful for constructing a test statistic although it does not have to be precise to guarantee the validity of the FRT. Problems \ref{hw::frt-covariates} and \ref{hw::frt-glm} illustrate the idea of using a working alternative hypothesis or statistical model to construct test statistics. 
+ 
+
+
+
+\section{Homework Problems}
+
+
+
+\paragraph{Exactness of $p_\frt$}
+\label{hw::exact-frt}
+
+Prove \eqref{eq::p-value-valid}. 
+
+
+
+\paragraph{Monte Carlo error of $\hat p_\frt$ }\label{para::monte-carlo-error-pfrt}
+
+Given data, $p_\frt$ is a fixed number while its Monte Carlo estimator $\hat p_\frt$ in \eqref{eq::mcpvalue} is random. 
+Show that
+$$
+E_{\text{mc}} (\hat p_\frt) =   p_\frt
+$$
+and
+$$
+\var_{\text{mc}} (\hat p_\frt)  \leq \frac{1}{4R},
+$$
+where the subscript ``mc'' signifies the randomness due to Monte Carlo, that is, $\hat p_\frt$ is random because $\bm{z}^r$'s are $R$ independent random draws from all possible values of $\bm{Z}$.
+
+
+Remark: $p_\frt$ is random because $\bm{Z}$ is random. But in this problem, we condition on data, so $p_\frt$ becomes a fixed number. $\hat p_\frt$ is random because the $\bm{z}^r$'s are random permutations of $\bm{Z}$.
+Problem \ref{para::monte-carlo-error-pfrt} shows that $\hat p_\frt$ is unbiased for $p_\frt$ over the Monte Carlo randomness and gives an upper bound on the variance of $\hat p_\frt$. \citet[][Theorem 2]{luo2021leveraging} gives a more delicate bound on the Monte Carlo error.
+
+
+
+
+\paragraph{A finite-sample valid Monte Carlo approximation of $p_\frt$ }\label{para::finite-sample-exact-monte-carlo-frt}
+
+
+Although $\hat p_\frt$ is unbiased for $p_\frt$ by the result in Problem \ref{para::monte-carlo-error-pfrt}, it may not be a valid $p$-value in the sense that $\pr(\hat p_\frt \leq u) \leq u$ for all $u\in (0,1)$ due to Monte Carlo error with a finite $R$. The following modified Monte Carlo approximation is always a finite-sample valid $p$-value. \citet{phipson2010permutation} pointed out this trick in the permutation test.
+
+
+
+Define 
+$$
+\tilde p_\frt  =  \frac{  1 + \sum_{r=1}^R   I\{ T(\bm{z}^r,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \}  }{1+R}
+$$ 
+where the $\bm{z}^r$'s the $R$ random permutations of $\bm{Z}$. Show that with an arbitrary $R$, the Monte Carlo approximation $\tilde p_\frt $ is always a finite-sample valid $p$-value in the sense that $\pr(\tilde p_\frt \leq u) \leq u$ for all $u\in (0,1)$.
+
+
+ 
+Remark: You can use the following two basic probability results to prove the claim in Problem \ref{para::finite-sample-exact-monte-carlo-frt}. 
+
+
+\begin{lemma}
+\label{lemma::binomial-order}
+For two Binomial random variables $X_1\sim \text{Binomial}(R, p_1)$ and $X_2\sim \text{Binomial}(R, p_2)$ with $p_1\geq p_2$, we have  $\pr(X_1\leq x) \leq  \pr(X_2\leq x) $ for all $x.$
+\end{lemma}
+
+\begin{lemma}
+\label{lemma::uniform}
+If $p\sim \text{Uniform}(0,1)$ and $X\mid p \sim \text{Binomial}(R, p)$, then, marginally, $X$ is a uniform random variable over $\{ 0,1,\ldots, R  \}$. 
+\end{lemma}
+
+ 
+
+
+\paragraph{Fisher's exact test}
+\label{hw::frt-fisherexacttest}
+
+Consider a CRE with a binary outcome, with data summarized in the following two-by-two table:
+ \begin{center}
+\begin{tabular}{lccc}
+\hline 
+        & $Y =1$ & $Y =0$& total\\\hline
+$Z =1$ & $n_{11}$ & $n_{10}$ & $n_1$\\ 
+$Z =0$ & $n_{01}$ & $n_{00}$ & $n_0$\\ 
+\hline 
+\end{tabular}
+\end{center}
+Under $\HF$, show that any test statistic $T(n_{11}, n_{10}, n_{01}, n_{00})$ is a function of $n_{11}$ and other non-random fixed constants, and the exact distribution of $n_{11}$ is Hypergeometric. Specify the parameters for the Hypergeometric distribution. 
+
+Remark: 
+\citet{barnard1947significance} and \citet{Ding:2015} pointed out the equivalence of Fisher's exact test (reviewed in Section \ref{sec::fisher-exact-test}) and the FRT under a CRE  with a binary outcome. 
+
+
+
+
+
+\paragraph{More details for lady tasting tea}
+\label{hw::more-tea}
+
+Recall the example in Section \ref{section::lady-tasting-tea}. Calculate $\pr(X=k)$ for $k=0,1,2,3,4$. 
+
+
+\paragraph{Covariate-adjusted FRT}
+\label{hw::frt-covariates}
+
+
+This problem gives more details for Section \ref{section::other-statistic}.  
+
+
+Section \ref{sec::frt-lalonde-experiment} re-analyzed the LaLonde experimental data using the FRT with four test statistics. With additional covariates, the FRT can be more general with at least the following two additional strategies. Assume all potential outcomes and covariates are fixed numbers. 
+
+First, we can use test statistics based on residuals from the linear regression. Run a linear regression of the outcomes on the covariates, and obtain the residuals (i.e., view the residuals as the ``pseudo outcomes''). Then define the four test statistics based on the residuals. Conduct the FRT using these four new test statistics. Report the corresponding $p$-values.
+
+
+Second, we can define the test statistic as the coefficient in the linear regression of the outcomes on the treatment and covariates. Conduct the FRT using this test statistic. Report the corresponding $p$-value. 
+
+
+Why are the five $p$-values from the above two strategies finite-sample exact? Justify them. 
+
+
+
+\paragraph{FRT with a generalized linear model}
+\label{hw::frt-glm}
+
+
+Use the same dataset as Problem \ref{hw::frt-covariates} but change the outcome to a binary indicator for whether \ri{re78} is positive or not. Run logistic regression of the outcome on the treatment and covariates. Is the coefficient of the treatment significant and what is the $p$-value? Calculate the $p$-value from the FRT using the coefficient of the treatment as the test statistic. 
+
+
+
+
+\paragraph{An algebraic detail}
+\label{hw::frt-algebraic-detail}
+
+Verify \eqref{eq::frt-algebra-difference-in-means}. 
+
+
+
+\paragraph{Recommended reading}
+
+\citet{bind2020possible} is a recent paper advocating the use of $p$-values as well as the display of the corresponding randomization distributions in analyzing complex experiments. 
+

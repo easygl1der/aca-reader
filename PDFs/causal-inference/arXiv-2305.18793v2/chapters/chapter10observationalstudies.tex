@@ -1,0 +1,538 @@
+\chapter{Observational Studies, Selection Bias, and Nonparametric Identification of Causal Effects}\label{chapter::observational-studies}
+ \chaptermark{Observational Studies}
+
+ 
+\citet{cochran1965planning} summarized  two common characteristics of observational studies:
+\begin{enumerate}
+\item
+the objective is to elucidate cause-and-effect relationships;
+\item 
+it is not feasible to use controlled experimentation. 
+\end{enumerate}
+
+The first characteristic is identical to that of randomized experiments discussed in Part \ref{part::rcts} of this book, but the second differs fundamentally from randomized experiments. 
+
+
+\citet{dorn1953philosophy} suggested that the planner of an observational study should always ask the following question:
+\begin{quote}
+How would the study be conducted if it were possible to do
+it by controlled experimentation?
+\end{quote}
+It is always helpful to follow \citet{dorn1953philosophy}'s suggestion because the potential outcomes framework has an intrinsic link to an experiment, either a real experiment or a thought experiment. Part \ref{part::observational-studies} of this book will discuss causal inference with observational studies. It will clarify the fundamental differences between observational studies and randomized experiments. Nevertheless, many ideas of causal inference with observational studies are deeply connected to those with randomized experiments. 
+
+ 
+
+
+\section{Motivating Examples}
+ 
+ \begin{example}
+ [job training program]\label{eg::job-training-obs}
+ \citet{lalonde1986evaluating} was interested in the causal effect of a job training program on earnings. He compared the results based on a randomized experiment to the results based on observational studies. We have used the experimental data before, which is the \ri{lalonde} dataset in the \ri{Matching} package. We have also used an observational counterpart \ri{cps1re74.csv} in Chapter \ref{section:correlatioandregressionintro} and Problem \ref{hw::lalonde-obs-reg}.  \citet{lalonde1986evaluating} found that many traditional statistical or econometric methods for observational studies gave quite different estimates compared with the estimates based on the experimental data. \cite{dehejia1999causal} re-analyzed the data using methods motivated by causal inference, and found that those methods can recover the experimental gold standard well. Since then, this has become a canonical example in causal inference with observational studies. 
+ \end{example}
+ 
+ 
+  \begin{example}
+ [smoking and homocysteine]\label{eg::nhanes2005-2006}
+ \citet{bazzano2003relationship} compared the homocysteine\footnote{Homocysteine is a type of amino acid. A high level of homocysteine in the blood is regarded as a marker of cardiovascular disease.} levels in daily smokers and non-smokers based on the data from the National Health and Nutrition Examination Survey (NHANES) 2005--2006. \citet{rosenbaum2018sensitivity} documented the data as \ri{homocyst} in the   package \ri{senstrat}. The dataset has the following important covariates:
+ 
+\begin{tabular}{ll}
+\hline 
+\texttt{female} &
+1=female, 0=male
+\\
+\texttt{age3} &
+three age categories: 20--39, 40--50, $\geq $60
+\\
+\texttt{ed3} &
+three education categories: $<$ high school, high school, some college
+\\
+\texttt{bmi3}&
+three BMI categories: $<$30, $[30,35)$, $\geq $ 35
+\\
+\texttt{pov2}&
+TRUE=income at least twice the poverty level, FALSE otherwise\\
+\hline 
+\end{tabular} 
+
+ \end{example}
+ 
+ 
+ 
+ 
+   \begin{example} 
+ [school meal program and body mass index]\label{eg::chan-bmi-ATE}
+ \citet{chan2016globally} used a subsample of the data from NHANES 2007--2008 to study whether participation in school meal programs led to an increase in BMI for school children. They documented the data as \ri{nhanes_bmi} in the package \ri{ATE}. The dataset has the following important covariates:
+ 
+\begin{tabular}{ll}
+\hline 
+\texttt{age}&
+Age  
+\\
+\texttt{ChildSex}&
+Sex (1: male, 0: female)
+\\
+\texttt{black}&
+Race (1: black, 0: otherwise) 
+\\
+\texttt{mexam}&
+Race (1: Hispanic: 0 otherwise)
+\\
+\texttt{pir200\_plus}&
+Family above 200\% of the federal poverty level  \\
+\texttt{WIC}&
+Participation in the special supplemental nutrition program \\
+\texttt{Food\_Stamp}&
+Participation in food stamp program   \\
+\texttt{fsdchbi}&
+Childhood food security  \\
+\texttt{AnyIns}&
+Any insurance \\
+\texttt{RefSex}&
+Sex of the adult respondent (1: male, 0: female) \\
+\texttt{RefAge}&
+Age of the adult respondent\\
+\hline 
+\end{tabular} 
+
+ \end{example}
+ 
+A common feature of Examples \ref{eg::job-training-obs}--\ref{eg::chan-bmi-ATE} is that we are interested in estimating the causal effect of a nonrandomized treatment on an outcome. They are all from observational studies. 
+ 
+ 
+\section{Causal effects and selection bias under the potential outcomes framework} 
+ \label{sec::selection-bias-randomization}
+
+ 
+ 
+For unit $i$ $(i=1,\ldots, n)$, we have  pretreatment covariates $X_i$, a binary treatment indicator $Z_i$, and an observed outcome $Y_i$ with two potential outcomes  $Y_i(1)$ and $Y_i(0)$ under the treatment and control, respectively. For simplicity, we assume   
+$$
+\{X_i, Z_i, Y_i(1),  Y_i(0)  \}_{i=1}^n \iidsim \{  X, Z, Y(1),  Y(0) \} .
+$$ 
+So we can drop the subscript $i$ for quantities of this population.  
+The causal effects of interest are the average causal effect
+$$
+\tau = E\{  Y(1) - Y(0)  \},
+$$
+the average causal effect on the treated units
+$$
+\tau_\textsc{T} =  E\{  Y(1) - Y(0)  \mid Z = 1 \},
+$$
+and the average causal effect on the control units:
+$$
+\tau_\textsc{C} =  E\{  Y(1) - Y(0)  \mid Z = 0 \}. 
+$$ 
+
+By the linearity of the expectation, we have
+\begin{eqnarray*}
+\tau_\textsc{T} &=&  E\{  Y(1)    \mid Z = 1 \} - E\{   Y(0)  \mid Z = 1 \}  \\
+&=&  E(  Y    \mid Z = 1 ) - E\{   Y(0)  \mid Z = 1 \}
+\end{eqnarray*}
+ and
+\begin{eqnarray*}
+ \tau_\textsc{C} &=&  E\{  Y(1)    \mid Z = 0 \} - E\{   Y(0)  \mid Z = 0 \} \\
+ &=&  E\{  Y(1)    \mid Z = 0 \} - E(  Y   \mid Z = 0 ).
+\end{eqnarray*}
+ In the above two formulas of $\tau_\textsc{T} $ and $\tau_\textsc{C} $, the quantities $E(Y    \mid Z = 1 ) $ and $E(   Y   \mid Z = 0 ) $ are directly estimable from the data, but the quantities $E\{   Y(0)  \mid Z = 1 \}$ and $E\{  Y(1)    \mid Z = 0 \}$ are not. The latter two are {\it counterfactuals} because they are the means of the potential outcomes corresponding to the treatment level that is the opposite of the actual received treatment. 
+ 
+
+The simple difference in means, also known as the {\it prima facie}\footnote{It is a Latin phrase, which means ``based on the first impression'' or ``accepted as correct until proved otherwise.'' 
+\citet{holland1986statistics} used this phrase. 
+} causal effect,
+\begin{eqnarray*}
+\tau_\textsc{PF} &=& E(  Y    \mid Z = 1 )  - E(   Y   \mid Z = 0 )   \\
+&=& E\{  Y(1)    \mid Z = 1 \}  - E\{   Y(0)  \mid Z = 0 \} 
+\end{eqnarray*}
+ is generally biased for the causal effects defined above. For example,
+ $$
+ \tau_\textsc{PF} - \tau_\textsc{T} = E\{   Y(0)  \mid Z = 1 \} - E\{   Y(0)  \mid Z = 0 \} 
+ $$
+ and
+ $$
+  \tau_\textsc{PF} - \tau_\textsc{C} =  E\{   Y(1)  \mid Z = 1 \} - E\{   Y(1)  \mid Z = 0 \} 
+ $$
+ are not zero in general, and they quantify the {\it selection bias}. They measure the differences in the means of the potential outcomes across the treatment and control groups. 
+ 
+ 
+ 
+ 
+ Why is randomization so important? \citet{rubin1978bayesian} first used potential outcomes to quantify the benefit of randomization. We have used the fact in Chapter \ref{chapter::bridging} that 
+\begin{equation}\label{eq::rubinrandomization}
+ Z  \ind \{ Y (1) , Y (0) \}
+\end{equation}
+in the CRE,  which implies that the selection bias terms are both zero:
+ $$
+  \tau_\textsc{PF} - \tau_\textsc{T}  = 
+ E\{   Y(0)  \mid Z = 1 \} - E\{   Y(0)  \mid Z = 0 \}  = 0
+ $$
+ and
+ $$
+   \tau_\textsc{PF} - \tau_\textsc{C} =
+ E\{   Y(1)  \mid Z = 1 \} - E\{   Y(1)  \mid Z = 0 \}  = 0. 
+ $$
+ So under the CRE in \eqref{eq::rubinrandomization},  we have 
+\begin{equation}
+\label{eq::no-selection-bias-all-equal}
+ \tau = \tau_\textsc{T} = \tau_\textsc{C} = \tau_\textsc{PF}.
+\end{equation}
+From the above discussion, the fundamental benefit of randomization is to balance the distributions of the potential outcomes across the treatment and control groups. This is a much stronger guarantee than balancing the distributions of the observed covariates. 
+ 
+
+Without randomization, the selection bias terms can be arbitrarily large, especially for unbounded outcomes. This highlights the fundamental difficulty of causal inference with observational studies. 
+
+
+\section{Sufficient conditions for nonparametric identification of causal effects} 
+ 
+ 
+ 
+\subsection{Identification}\label{sec::identification-ignorability}
+ 
+ 
+ Causal inference with observational studies is challenging. It relies on strong assumptions. A strategy is to use the information from the pretreatment covariates and assume that conditioning on the observed covariates $X$, the selection bias terms are zero, that is,
+\begin{eqnarray}
+\label{eq::meanind0} E\{   Y(0)  \mid Z = 1, X \} &=& E\{   Y(0)  \mid Z = 0, X \}  ,\\
+\label{eq::meanind1} E\{   Y(1)  \mid Z = 1 , X\} &=& E\{   Y(1)  \mid Z = 0, X \}   . 
+\end{eqnarray}
+The assumptions in \eqref{eq::meanind0} and \eqref{eq::meanind1} state that the differences in the means of the potential outcomes across the treatment and control groups are entirely due to the difference in the observed covariates. So given the same value of the covariates, the potential outcomes have the same means across the treatment and control groups. Mathematically, \eqref{eq::meanind0} and \eqref{eq::meanind1} ensure that the conditional versions of the effects in \eqref{eq::no-selection-bias-all-equal} are identical: 
+ $$
+ \tau(X) = \tau_\textsc{T}(X) =  \tau_\textsc{C}(X) = \tau_\textsc{PF}(X),
+ $$
+ where
+\begin{eqnarray*}
+ \tau(X)  &=& E\{ Y(1) - Y(0) \mid X  \}, \\
+ \tau_\textsc{T}(X) &=&  E\{ Y(1) - Y(0) \mid Z=1,  X  \},\\
+  \tau_\textsc{C}(X) &=& E\{ Y(1) - Y(0) \mid Z=0,  X  \},\\
+   \tau_\textsc{PF}(X) &=& E(Y\mid Z=1, X) - E(Y\mid Z=0, X).
+\end{eqnarray*}
+In particular, $ \tau(X) $ is often called the {\it conditional average causal effect} (CATE). 
+
+
+
+A key result in this chapter is that the average causal effect $\tau$ is {\it nonparametrically identifiable} under \eqref{eq::meanind0} and \eqref{eq::meanind1}. The notion of nonparametrically identifiability does not appear frequently in classic statistics, but it is key to causal inference with observational studies. I first give an abstract definition below. 
+
+\begin{definition}[identification]
+\label{def::nonparametric-identification}
+A parameter $\theta$ is identifiable if it can be written as a function of the distribution of the observed data under certain model assumptions. 
+A parameter $\theta$ is nonparametrically identifiable if it can be written as a function of the distribution of the observed data without any parametric model assumptions. 
+\end{definition}
+
+
+
+Definition \ref{def::nonparametric-identification} is too abstract at the moment. I will use more concrete examples in later chapters to illustrate its meaning. It is often neglected in classic statistics problems. For instance, the mean $\theta = E(Y)$ is nonparametrically identifiable if we have IID draws of $Y_i$'s; the Pearson correlation coefficient $\theta = \rho_{YX}$ is nonparametrically identifiable if we have IID draws of the pairs $(X_i, Y_i)$'s. In those examples, the parameters are nonparametrically identifiable automatically. However, Definition \ref{def::nonparametric-identification} is fundamental in causal inference with observational studies. In particular, the parameter of interest $\tau = E\{ Y(1)  - Y(0)\}$ depends on some unobserved random variables, so it is unclear whether it is nonparametrically identifiable based on observed data. Under the assumptions in \eqref{eq::meanind0} and \eqref{eq::meanind1}, it is nonparametrically identifiable, with details below. 
+
+
+ Because $   \tau_\textsc{PF}(X)$ depends only on the observables, it is nonparametrically identified by definition. Moreover, \eqref{eq::meanind0} and \eqref{eq::meanind1} ensure that the three causal effects are the same as $   \tau_\textsc{PF}(X)$, so $\tau(X) $, $\tau_\textsc{T}(X) $ and $  \tau_\textsc{C}(X)$ are all nonparametrically identified. Consequently, the unconditional versions are also nonparametrically identified under \eqref{eq::meanind0} and \eqref{eq::meanind1} due to the law of total expectation:
+ $$
+ \tau = E\{ \tau(X)\},\quad
+ \tau_\textsc{T} = E\{  \tau_\textsc{T}(X) \mid Z=1  \}, \quad
+   \tau_\textsc{C} = E\{   \tau_\textsc{C}(X) \mid Z=0 \}.
+ $$
+ From now on, I will focus on $\tau$ unless stated otherwise (Chapter \ref{chapter::ATT-and-other} will be an exception). The following theorem summarizes the identification formulas of $\tau$. 
+ 
+\begin{theorem}
+\label{thm::identification-formula}
+Under \eqref{eq::meanind0} and \eqref{eq::meanind1}, the average causal effect $\tau$ is identified by 
+ \begin{eqnarray} 
+ \tau &=& E\{ \tau(X)\} \\
+ &=& E\{  E(Y\mid Z=1, X) - E(Y\mid Z=0, X) \} \label{eq::nonparametric-identification-tau} \\
+ &=&  \int \{  E(Y\mid Z=1, X=x) - E(Y\mid Z=0, X=x)\} f(x) \diff x.
+ \end{eqnarray}
+\end{theorem} 
+ 
+ 
+ The formula \eqref{eq::nonparametric-identification-tau} was formally established by \citet{rosenbaum1983central}, which is also called the g-formula by Robins \citep[see][]{hernan2020causal}.
+ 
+ 
+ With a discrete covariate, we can write the identification formula in Theorem \ref{thm::identification-formula} as 
+\begin{eqnarray}
+ \tau  &=&  \sum_x  E(Y\mid Z=1, X=x)  \pr(X=x)  \nonumber \\
+ &&  - \sum_x E(Y\mid Z=0, X=x) \pr(X=x), \label{eq::nonparametric-identification-tau-discrete}
+\end{eqnarray}
+ and also the simple difference in means as
+  \begin{eqnarray}  
+ \tau_\textsc{PF} &=& \sum_x   E(Y\mid Z=1, X=x) \pr(X=x\mid Z=1) \nonumber  \\
+ &&- \sum_x   E(Y\mid Z=0, X=x) \pr(X=x\mid Z=0)  \label{eq::difference-in-means-discrete-x}
+  \end{eqnarray} 
+ by the law of total probability. Comparing \eqref{eq::nonparametric-identification-tau-discrete} and \eqref{eq::difference-in-means-discrete-x}, we can see that although both formulas compare the conditional expectations $ E(Y\mid Z=1, X=x) $ and $ E(Y\mid Z=0, X=x)$, they average over different distributions of the covariates. The causal parameter $\tau$ averages the conditional expectations over the common distribution of the covariates, but the difference in means $ \tau_\textsc{PF} $ averages the conditional expectations over two different distributions of the covariates in the treated and control groups. 
+ 
+ 
+ 
+ Usually, we impose a stronger assumption.
+ 
+ \begin{assumption}[ignorability]
+ \label{assume:weak-ignorability} 
+ We have 
+ \begin{eqnarray}
+ Y(z) \ind Z \mid X \quad (z=0,1) .
+ \label{eq::ignorability}
+\end{eqnarray}
+ \end{assumption}
+ 
+ 
+Assumption \ref{assume:weak-ignorability} has many names:
+\begin{enumerate}
+\item
+{\it ignorability}  due to \citet{rubin1978bayesian}\footnote{The reason for using this name is unclear based on the discussion in this book. In fact, it is from the Bayesian perspective of causal inference. It is beyond the scope of this book.};
+
+\item
+{\it unconfoundedness} which is popular among epidemiologists;
+
+\item
+{\it selection on observables} which is popular among social scientists;
+
+\item
+{\it conditional independence} which is merely a description of the notation $\ind$ in the assumption.
+\end{enumerate}
+
+
+Sometimes, we impose an even stronger assumption.
+
+\begin{assumption}[strong ignorability]
+\label{assume:strong-ignorability}
+We have 
+\begin{eqnarray}
+ \{  Y(1), Y(0)  \} \ind Z \mid X .
+  \label{eq::strong-ignorability}
+\end{eqnarray}
+\end{assumption}
+
+
+Assumption \ref{assume:strong-ignorability}  is called {\it strong ignorability} \citep{rubin1978bayesian, rosenbaum1983central}. If the parameter of interest is $\tau$, then the stronger Assumptions \ref{assume:weak-ignorability} and \ref{assume:strong-ignorability} are just imposed for notational simplicity thanks to the conditional independence notation $\ind$. They are not necessary for identifying $\tau$. However,  they can not be relaxed if the parameter of interest is the causal effects on other scales (for example, distribution, quantile, or some transformation of the outcome). 
+The  {\it strong ignorability} assumption requires that the potential outcomes vector be independent of the treatment given the covariates, but the {\it ignorability} assumption only requires each potential outcome be independent of the treatment given covariates. The former is stronger than the latter. However, their difference is rather technical and of pure theoretical interests; see Problem \ref{hw::ignorability-difference}. In most reasonable statistical models, they both hold; see Section \ref{sec::plausibility-ignorability} below. We will not distinguish them in this book and will simply use {\it ignorability} to refer to both. 
+ 
+ 
+ 
+ 
+ 
+ \subsection{Plausibility of the ignorability assumption} \label{sec::plausibility-ignorability}
+
+
+
+A fundamental problem of causal inference with observational studies is the plausibility of the ignorability assumption. The discussion in Chapter \ref{sec::identification-ignorability} may seem too mathematical in the sense that the ignorability assumption serves as a sufficient condition to ensure the nonparametric identification of the average causal effect. What is its scientific meaning? Intuitively, it rules out all unmeasured covariates that affect the treatment and outcome simultaneously. Those ``common causes'' of the treatment and outcome are called confounders. That is why the ignorability assumption is also called the unconfoundedness assumption. More transparently, we can interpret the ignorability assumption based on the outcome data-generating process. If
+\begin{eqnarray*}
+Y(1) &=& g_1(X, V_1),\\
+Y(0) &=& g_0(X, V_0), \\
+Z &=& 1\{ g(X,V)  \geq 0 \}
+\end{eqnarray*} 
+with $(V_1, V_0)\ind V$, then both Assumptions \ref{assume:weak-ignorability} and \ref{assume:strong-ignorability} hold. In the above data-generating process, the ``common causes'' $X$ of the treatment and the outcome are all observed, and the remaining random components are independent. If the data-generating process changes to
+\begin{eqnarray*}
+Y(1) &=& g_1(X, U, V_1),\\
+Y(0) &=& g_0(X, U, V_0), \\
+Z &=& 1\{ g(X, U, V)  \geq 0 \}
+\end{eqnarray*} 
+with $(V_1, V_0)\ind V$, then Assumptions \ref{assume:weak-ignorability} and \ref{assume:strong-ignorability} do not hold in general. The unmeasured ``common cause'' $U$ induces dependence between the treatment and the potential outcomes even conditional on the observed covariates $X$. If we do not have access to $U$ and analyze the data based only on $(Z,X,Y)$, the final estimator will be biased for the causal parameter in general. This type of bias is called the {\it omitted variable bias} in econometrics; see Problem \ref{hw::cochran+ovb} in a later chapter. 
+
+
+
+The ignorability assumption can be reasonable if we observe a rich set of covariates $X$ that affect the treatment and the outcome simultaneously. I start with this assumption to discuss identification and estimation strategies in Part \ref{part::observational-studies} of this book. However, it is fundamentally untestable. We may justify it based on the scientific background knowledge, but we are often not sure whether it holds or not. Parts \ref{part::challenges-os} and \ref{part::instrumentalvariables} of this book will discuss other strategies when the ignorability assumption is not plausible. 
+
+
+
+
+\section{Two simple estimation strategies and their limitations}
+
+
+\subsection{Stratification or standardization based on discrete covariates}
+
+If the covariate $X_i \in \{1, \ldots, K \}$ is discrete, then ignorability \eqref{eq::ignorability} reads as 
+ $$
+ Y(z) \ind Z \mid X = k \quad (z=0,1; k=1,\ldots, K),
+ $$
+which essentially assumes that the observational study is an SRE under the superpopulation framework in Chapter \ref{chapter::bridging}. Therefore, we can use the estimator
+$$
+\hat{\tau} = \sum_{k=1}^K \pi_{[k]} \left\{   \hat{\bar{Y}}_{[k]}(1) - \hat{\bar{Y}}_{[k]}(0)   \right\},
+$$
+which is identical to the stratified or post-stratified estimator discussed in Chapter \ref{chapter::stratification-poststratification}. 
+
+
+This method is still widely used in practice. Example \ref{eg::nhanes2005-2006} contains discrete covariates, and I relegate the analysis to
+Problem \ref{hw::stratification-example-rosenbaum}. However, there are several obvious difficulties in implementing this method. First, it works well for the case with small $K$. For large $K$, it is very likely that many strata have $n_{[k]1}  = 0$ or $n_{[k]0} = 0$, leading to the poorly defined $\hat{\tau}_{[k]}$'s for those strata. This is related to the issue of overlap which will be discussed in Chapter \ref{chapter::overlap} later. Second, it is not obvious how to apply this stratification method to multidimensional continuous or mixed covariates $X$. A standard method is to create strata based on the initial covariates and then apply the stratification method. This may result in arbitrariness in the analysis. 
+
+
+\subsection{Outcome regression}\label{sec::outcome-regression}
+
+
+The most commonly used method based on outcome regression is to run the OLS with an additive model of the observed outcome on the treatment indicator and covariates, which assumes
+$$
+E(Y\mid Z, X) = \beta_0 + \beta_z Z  + \beta_x \tran X .
+$$
+If the above linear model is correct, then we have
+\begin{eqnarray*}
+\tau(X) &=&  E(Y\mid Z=1, X) - E(Y\mid Z=0, X) \\
+&=& (\beta_0 + \beta_z   + \beta_x\tran  X ) - ( \beta_0    + \beta_x\tran  X )  \\
+&=& \beta_z,
+\end{eqnarray*}
+which implies that the causal effect is homogeneous with respect to the covariates. This, coupled with ignorability, implies that
+$$
+\tau = E\{ \tau(X)  \} = \beta_z.
+$$
+Therefore, if ignorability holds and the outcome model is linear, then the average causal effect equals the coefficient of $Z$. This is one of the most important applications of the linear model. However, the causal interpretation of the coefficient of $Z$ is valid only under two strong assumptions: ignorability and the linear model. 
+ 
+ 
+ 
+We have discussed in Chapter \ref{chapter:rerandomization-regression}, the above procedure is suboptimal even in CREs because it ignores the treatment effect heterogeneity induced by the covariates. 
+If we assume
+$$
+E(Y\mid Z, X) = \beta_0 + \beta_z Z  + \beta_x\tran  X  + \beta_{zx}\tran  X Z,
+$$
+we have
+\begin{eqnarray*}
+\tau(X) &=& 
+E(Y\mid Z=1, X) - E(Y\mid Z=0, X)  \\
+&=& (\beta_0 + \beta_z   + \beta_x\tran  X +\beta_{zx}\tran  X ) - ( \beta_0    + \beta_x\tran  X ) \\
+&=& \beta_z+  \beta_{zx}\tran  X,
+\end{eqnarray*}
+which, coupled with ignorability, implies that
+$$
+\tau = E\{ \tau(X)  \} =E(\beta_z+  \beta_{zx}\tran  X) = \beta_z + \beta_{zx}\tran E(X). 
+$$
+The estimator for $\tau$ is then $ \hat{\beta}_z + \hat{\beta}_{zx}\tran  \bar{X}$, where $\hat{\beta}_z$ is the regression coefficient of $Z$ and $\bar{X}$ is the sample mean of $X$. If we center the covariates to ensure $\bar{X}=0$, then the estimator is simply the regression coefficient of $Z$. To simplify the procedure, we usually center the covariates at the beginning; also recall \citet{lin2013}'s estimator introduced in Chapter \ref{chapter:rerandomization-regression}.  \citet{rosenbaum1983central} and \citet{hirano2001estimation} discussed this estimator. 
+
+
+
+In general, we can use other more complex models to estimate the causal effects. For example, if we build two predictors $\hat{\mu}_1(X)$ and $\hat{\mu}_0(X)$ based on the treated and control data, respectively, then we have an estimator for the conditional average causal effect 
+$$
+\hat\tau(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)
+$$
+and an estimator for the average causal effect: 
+$$
+\hat{\tau}^{\text{reg}} = n^{-1} \sumn \{ \hat{\mu}_1(X_i) - \hat{\mu}_0(X_i) \}  . 
+$$
+The estimator $\hat{\tau} $ above has the same form as the projective estimator discussed in Chapter \ref{chapter:rerandomization-regression}. It is sometimes called the {\it outcome regression} estimator. The OLS-based estimators above are special cases. We can use the nonparametric bootstrap (see Chapter \ref{sec::bootstrap}) to estimate the standard error of the outcome regression estimator. 
+
+
+I give another example for binary outcomes below. 
+
+ \begin{example}
+ [outcome regression estimator for binary outcomes]\label{eg::reg-binary}
+ With a binary outcome, we may model $Y$ using a logistic model
+$$
+E(Y\mid Z, X) = \pr(Y =1\mid Z, X) = \frac{   e^{\beta_0 + \beta_z Z + \beta_x \tran X}  }
+{ 1+ e^{\beta_0 + \beta_z Z + \beta_x \tran X} } ,
+$$
+then based on the estimators of the coefficients $ \hat \beta_0, \hat \beta_z, \hat{\beta}_x $, we have the following estimator for the average causal effect: 
+$$
+\hat{\tau} = n^{-1} \sumn \left\{  
+\frac{   e^{\hat\beta_0 +\hat \beta_z + \hat\beta_x \tran X_i}  }
+{ 1+ e^{\hat\beta_0 +\hat \beta_z  + \hat\beta_x \tran X_i} }  
+- \frac{   e^{\hat\beta_0 + \hat\beta_x \tran X_i}  }
+{ 1+ e^{\hat\beta_0   + \hat\beta_x \tran X_i} } 
+\right \}  . 
+$$
+This estimator is not simply the coefficient of the treatment in the logistic  model.\footnote{If the logistic outcome model is correct, then $\hat\beta_z$ estimates the conditional odds ratio of the treatment on the outcome given covariates, which does not equal $\tau$. 
+\citet{freedman2008randomization} gave a warning of using the logistic regression coefficient to estimate $\tau$ in CREs.
+See Chapter \ref{appendix::basic-linear-regression} for more details of the logistic regression.} It is a nonlinear function of all the coefficients as well as the empirical distribution of the covariates. In econometrics, this estimator is called the  ``average partial effect'' or ``average marginal effect'' of the treatment in the logistic model. Many econometric software packages can report this estimator associated with the standard error.  Similarly, we can also derive the corresponding estimator based on a fully interacted logistic model; see Problem \ref{hw::outcome-two-logit}. 
+ \end{example}
+
+
+
+
+
+ 
+
+The above predictors for the conditional means of the outcome can also be other machine learning tools. In particular, 
+\citet{hill2011bayesian} championed the use of tree methods for estimating $\tau$, and \citet{wager2018estimation} proposed to use them also for estimating $\tau(X) $. \citet{wager2018estimation}  also combined the tree methods with the idea of the {\it propensity score} in the next chapter. Since then, the intersection of machine learning and causal inference has been an active research area \citep[e.g.,][]{hahn2020bayesian, kunzel2019metalearners}. 
+
+
+The biggest problem with the above approach based on outcome regressions is its sensitivity to the specification of the outcome model. Problem \ref{hw::lalonde-obs-reg} gave such an example. Depending on the incentive of empirical research and publications, people might report their favorable causal effects estimates after searching over a wide set of candidate models, without confessing this model searching process. This is a major source of $p$-hacking in causal inference. Problem \ref{hw::lalonde-obs-reg} hinted at this issue. \citet{leamer1978specification} criticized this approach in empirical research.  
+
+ 
+
+
+\section{Homework Problems}
+
+
+\paragraph{A simple identity}\label{hw::simple-identity-taus}
+
+Show that $\tau = \pr(Z=1) \tau_\textsc{T} + \pr(Z=0)\tau_\textsc{C}$. 
+
+
+\paragraph{Nonparametric identification of other causal effects}\label{hw::nonparametric-identification-dce-qce}
+
+Under ignorability, show that
+\begin{enumerate}
+\item
+ the distributional causal effect
+ $$
+\textsc{DCE}_y = \pr\{  Y(1) > y  \} - \pr\{ Y(0) > y \} 
+$$
+is nonparametrically identifiable for all $y$;
+\item
+the quantile causal effect 
+$$
+\textsc{QCE}_q = \text{quantile}_q\{ Y(1) \} - \text{quantile}_q\{ Y(0) \},
+$$
+is nonparametrically identifiable for all $q$, where $\text{quantile}_q\{ \cdot \} $ is the $q$th quantile of a random variable. 
+\end{enumerate}
+
+
+
+Remark:
+In probability theory, $\pr\{  Y(z) \leq y \}$ is the cumulative distribution function and $\pr\{  Y(z) > y \}$ is the survival function of the potential outcome $Y(z)$.
+The distributional causal effect compares the survival functions of the potential outcomes under treatment and control. 
+ 
+The  quantile causal effect  compares the marginal quantiles of the potential outcomes, which is different from the quantile of the individual causal effect
+$$
+\tau_q =  \text{quantile}_q\{ Y(1)  - Y(0)\} .
+$$
+In fact,  $\tau_q$ is not identifiable in the sense that the marginal distributions $\pr\{  Y(1) \leq  y  \} $ and $ \pr\{ Y(0) \leq  y \} $ can not uniquely determine $\tau_q$. 
+
+
+\paragraph{Outcome imputation estimator in the fully interacted logistic model}\label{hw::outcome-two-logit}
+
+This problem extends Example \ref{eg::reg-binary}. 
+
+Assume that a binary outcome follows a logistic model
+$$
+E(Y\mid Z, X) = \pr(Y =1\mid Z, X) = \frac{   e^{\beta_0 + \beta_z Z + \beta_x \tran X + \beta_{xz}  \tran X Z }  }
+{ 1+ e^{\beta_0 + \beta_z Z + \beta_x \tran X + \beta_{xz}  \tran X Z} } .
+$$
+What is the corresponding outcome regression estimator for the average causal effect?
+
+\paragraph{Data analysis: stratification and regression}\label{hw::stratification-example-rosenbaum}
+
+Use the dataset \ri{homocyst} in the package \ri{senstrat}. 
+The outcome is \ri{homocysteine}, the homocysteine level, and the treatment is \ri{z}, where $z=1$ for a daily smoker and $z=0$ for a never smoker. Covariates are \ri{female, age3, ed3, bmi3, pov2} with detailed explanations in the package, and \ri{st} is a stratum indicator, defined by all the combinations of the discrete covariates.
+
+
+\begin{enumerate}
+[(1)]
+\item
+How many strata have only treated or control units? What is the proportion of the units in these strata? Drop these strata and perform a stratified analysis of the observational study. Report the point estimator, variance estimator, and 95\% confidence interval for the average causal effect.
+
+\item
+Run the OLS of the outcome on the treatment indicator and covariates without interactions. Report the coefficient of the treatment and the robust standard error.
+
+Drop the strata with only treated or control units. Re-run the OLS and report the result. 
+
+
+\item
+Apply \citet{lin2013}'s estimator of the average causal effect. Report the coefficient of the treatment and the robust standard error.
+
+If you do not drop the strata with only treated or control units, what will happen?
+
+
+\item
+Compare the results in the above three analyses. Which one is more credible?
+
+\end{enumerate} 
+
+
+
+\paragraph{Ignorability versus strong ignorability}\label{hw::ignorability-difference}
+
+
+Give an example such that the ignorability holds but the strong ignorability does not hold. 
+
+
+Remark: This is related to a classic probability problem of finding three random variables $A,B,C$ such that 
+$$
+A\ind C \text{ and } B\ind C \text{ but } (A,B) \nind C.
+$$
+
+
+\paragraph{Recommended reading}
+
+
+\citet{cochran1965planning} is a classic reference on observational studies. It contains many useful insights but does not use the formal potential outcomes framework.  
+Dylan Small founded a new journal called {\it Observational Studies} in 2015 \citep{small2015introduction} and reprinted an old article ``Observational Studies'' by W. G. Cochran as  \citet{cochran2015}.  Many leading researchers also made insightful comments on  \citet{cochran2015}. 
+

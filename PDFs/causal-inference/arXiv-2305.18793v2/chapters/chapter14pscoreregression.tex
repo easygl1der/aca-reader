@@ -1,0 +1,467 @@
+
+\chapter{Using the Propensity Score in Regressions for Causal Effects}\label{chapter::pscore-unification}
+ 
+
+Since \citet{rosenbaum1983central}'s seminal paper, many creative uses of the propensity score have appeared in the literature \citep[e.g.,][]{bang2005doubly, robins2007comment, van2011targeted, vansteelandt2014regression}. This chapter discusses two simple methods to use the propensity score: 
+\begin{enumerate}
+\item
+including the propensity score as a covariate in regressions;
+\item
+running regressions weighted by the inverse of the propensity score. 
+\end{enumerate}
+I choose to  focus on these two methods because of the following reasons: 
+\begin{enumerate}
+\item
+they are easy to implement, and involve only standard statistical software packages for regressions;
+\item
+their properties are comparable to many more complex methods;
+\item
+they can be easily extended to allow for flexible statistical models including machine learning algorithms.
+\end{enumerate}
+
+ 
+\section{Regressions with the propensity score as a covariate}
+\label{sec::regress-on-pscore}
+
+By Theorem \ref{thm::pscore-dimreduction}, if ignorability holds conditioning on $X$, then it also holds conditioning on $e(X)$: 
+$$
+Z\ind \{ Y(1) , Y(0)\} \mid e(X). 
+$$ 
+Analogous to \eqref{eq::nonparametric-identification-tau}, $\tau$ is also nonparametrically identified by
+$$
+\tau = E\Big[   E\{ Y\mid Z=1, e(X) \} - E\{ Y\mid Z=0, e(X) \} \Big] ,
+$$
+which motivates methods based on regressions of $Y$ on $Z$ and $e(X)$. 
+
+
+
+The simplest regression specification is the OLS fit of $Y$ on $\{1, Z, e(X)\}$, with the coefficient of $Z$ as an estimator, denoted by $\tau_{e}$. For simplicity, I will discuss the population OLS:
+$$
+\arg\min_{a,b,c}  E\{ Y - a - bZ - c  e(X)  \}^2
+$$
+with $\tau_{e}$ defined as the coefficient of $Z$.
+It is consistent for $\tau$ if we have a correct propensity score model and the outcome model is indeed linear in $Z$ and $e(X)$. The more interesting result is that $\tau_{e}$ estimates $\tau_\textsc{O}$ introduced in Chapter \ref{sec::other-estmand-overlap} if we have a correct propensity score model even if the outcome model is completely misspecified. 
+
+\begin{theorem}\label{thm::ols-pscore-tau-o}
+If $Z\ind \{  Y(1), Y(0) \} \mid X$, then the coefficient of $Z$ in the population OLS fit of $Y$ on $\{1, Z, e(X)\}$ equals
+$$
+\tau_e=  \tau_\textsc{O} = \frac{  E\{ h_\textsc{O}(X) \tau(X) \} }{ E\{ h_\textsc{O}(X) \} },
+$$
+recalling that $ h_\textsc{O}(X)  = e(X) \{ 1- e(X)  \} $ and $\tau(X) = E\{ Y(1) - Y(0) \mid X  \}$. 
+\end{theorem}
+
+
+An unusual feature of Theorem \ref{thm::ols-pscore-tau-o} is that the overlap condition is not needed anymore. Even if some units have propensity score $e(X)$ equaling $0$ or $1$, their associated weight $ e(X) \{ 1- e(X) \}$ is zero so they do not contribute anything to the final parameter $ \tau_\textsc{O} $. 
+
+
+\begin{myproof}{Theorem}{\ref{thm::ols-pscore-tau-o}}
+I will use the FWL theorem reviewed in Section \ref{appendix::fwl-theorem} to prove Theorem \ref{thm::ols-pscore-tau-o}. By the FWL theorem, we can obtain $\tau_e$ in two steps:
+\begin{enumerate}
+\item
+we obtain the residual $\tilde{Z}$ from the OLS fit of $Z$ on $\{1, e(X)\}$;
+\item
+we obtain $\tau_e$ from the OLS fit of $Y$ on $\tilde{Z}$. 
+\end{enumerate}
+
+%: first, we obtain the residual $\tilde{Z}$ from the OLS fit of $Z$ on $\{1, e(X)\}$; then, we obtain $\tau_e$ from the OLS fit of $Y$ on $\tilde{Z}$. 
+
+We can use the result on covariance in Chapter \ref{appendix::tower-property} to simplify the coefficient of $e(X)$ in the OLS fit of $Z$ on $\{1, e(X)\}$ is
+\begin{eqnarray*}
+\frac{ \cov\{Z, e(X)  \}  }{  \var\{ e(X) \} }
+&=&  \frac{  E [ \cov\{Z, e(X)  \mid X\}  ] + \cov\{  E(Z\mid X), e(X) \}   }{  \var\{ e(X) \}  } \\
+&=& \frac{0 +\var\{ e(X) \}  }{ \var\{ e(X) \} } = 1,
+\end{eqnarray*}
+so the intercept is $E(Z) - E\{e(X)\} = 0$ and the residual is $\tilde{Z} = Z - e(X)$. This makes sense since $Z - e(X)$ is uncorrelated with any function of $X$. 
+
+Therefore, we can obtain $\tau_e$ from the univariate OLS fit of $Y$ on a centered variable $Z - e(X)$:
+$$
+\tau_e = 
+\frac{ \cov\{  Z-e(X) , Y \}  }{  \var\{ Z - e(X) \} } .
+$$
+The denominator simplifies to 
+\begin{eqnarray*}
+\var\{ Z - e(X) \} &=& E\{ Z - e(X)\}^2 \\
+&=& E\{ Z + e(X)^2 - 2Ze(X)\} \\
+&=&E\{ e(X) + e(X)^2 - 2e(X)^2 \} \\
+&=&E\{ h_\textsc{O}(X) \} .
+\end{eqnarray*}
+The numerator simplifies to
+\begin{eqnarray*}
+&&\cov\{ Z-e(X)  , Y\} \\
+&=&  E[ \{ Z-e(X)  \} Y ] \\
+&=& E[ \{ Z-e(X)  \} ZY(1) ] + E[ \{ Z-e(X)  \} (1-Z)Y(0) ] \\
+&& \quad\quad\quad\quad (\text{by } Y = ZY(1)  + (1-Z)Y(0)) \\
+&=& E[ \{ Z- Ze(X)  \} Y(1)]  - E[  e(X)  (1-Z)Y(0) ]  \\
+&=&  E[  Z\{ 1- e(X)  \} Y(1) ] - E [ e(X)  (1-Z)Y(0) ] \\
+&=& E[  e(X)\{ 1- e(X)  \} \mu_1(X)]  - E[  e(X)  \{ 1- e(X)  \}  \mu_0(X) ]\\
+&&   \quad\quad\quad\quad (\text{tower property and ignorability}) \\
+&=& E\{ h_\textsc{O}(X) \tau(X) \} .
+\end{eqnarray*}
+The conclusion follows. 
+ \end{myproof}
+ 
+ 
+ From the proof of Theorem \ref{thm::ols-pscore-tau-o}, we can simply run the OLS of $Y$ on the centered treatment $ Z-e(X)$. \citet{lee2018simple} proposed this procedure. Moreover, we can also include $X$ in the OLS fit which may improve efficiency in finite samples. However, this does not change the estimand, which is still $\tau_\textsc{O}$. I summarize these two results in the corollary below.
+ 
+ \begin{corollary}\label{coro::regress-on-pscore}
+If $Z\ind \{  Y(1), Y(0) \} \mid X$, then 
+ \begin{enumerate}
+ \item[(1)]
+ the coefficient of $Z-e(X)$ in the population OLS fit of $Y$ on $Z-e(X)$ or $\{1, Z-e(X) \}$ equals $\tau_\textsc{O}$;
+ \item[(2)]
+ the coefficient of $Z$ in the population OLS fit of $Y$ on $\{1, Z, e(X), X\}$ equals $\tau_\textsc{O}$. 
+ \end{enumerate}
+ \end{corollary}
+ 
+ 
+ 
+\begin{myproof}{Corollary}{\ref{coro::regress-on-pscore}}
+(1) The first result is an intermediate step in the proof of Theorem \ref{thm::ols-pscore-tau-o}. The second result holds because regressing  $Y$ on $Z-e(X)$ or $\{1, Z-e(X) \}$ does not change the coefficient of $Z-e(X) $ since it has mean zero. 
+
+
+(2) We can use the FWL theorem again. We can first obtain the residual from the population OLS of $Z$ on $\{1, e(X), X\}$, which is $Z-e(X) $ because 
+$$
+Z-e(X) = Z-0 - 1\cdot e(X) - 0\tran X $$ 
+and $Z-e(X)$ is uncorrelated with any functions of $X$. 
+Then the coefficient of $Z$ in the population OLS fit of $Y$ on $\{1, Z, e(X), X\}$ equals the coefficient of $Z$ in the population OLS fit of $Y$  on $Z-e(X)$. 
+  \end{myproof}
+  
+  
+  
+  Theorem \ref{thm::ols-pscore-tau-o} motivates a two-step estimator for $\tau_\textsc{O} $:
+\begin{enumerate}
+\item
+fit a propensity score model to obtain $\hat e(X_i) $;
+\item
+run OLS of $Y_i$ on $(1,X_i, \hat e(X_i) )$ to obtain the coefficient of $Z_i$. 
+\end{enumerate}  
+Corollary \ref{coro::regress-on-pscore}(1) motivates a two-step estimator for $\tau_\textsc{O} $: 
+\begin{enumerate}
+\item
+fit a propensity score model to obtain $\hat e(X_i) $;
+\item
+run OLS of $Y_i$ on $Z_i - \hat e(X_i)$ to obtain the coefficient of $Z_i$.   
+\end{enumerate}
+Corollary \ref{coro::regress-on-pscore}(1) motivates another two-step estimator for $\tau_\textsc{O} $: 
+\begin{enumerate}
+\item
+fit a propensity score model to obtain $\hat e(X_i) $;
+\item
+run OLS of $Y_i$ on $(1, Z_i , \hat e(X_i),  X_i ) $ to obtain the coefficient of $Z_i$.   
+\end{enumerate}
+Although OLS is convenient for obtaining point estimators, the corresponding standard errors are incorrect due to the uncertainty in the first step estimation of the propensity score. We can use the bootstrap to approximate the standard errors. 
+  
+
+  
+  
+ 
+ 
+\citet{robins1992estimating} discussed many OLS estimators based on the propensity score. The above results seem special cases of their general theory although they did not point out the connection with the estimand under the overlap weight, which was resurrected by \citet{li2018balancing}. \citet{lee2018simple} proposed to regress $Y$ on $Z-e(X)$ from a different perspective without making connections to the existing results in \citet{robins1992estimating} and \citet{li2018balancing}.
+
+
+\citet{rosenbaum1983central} proposed to estimate the average causal effect based on the OLS fit of $Y$ on $\{1, Z, e(X), Ze(X)\}$. When this outcome model is correct, their estimator is consistent for the average causal effect. However, when the model is incorrect, the corresponding estimator has a much more complicated interpretation.  \citet{little2004robust} suggested constructing estimators based on the OLS of $Y$ on $Z$ and a flexible function\footnote{For example, we can include polynomial terms of $e(X)$ in the regression. \citet{little2004robust} suggested using splines.} of $e(X)$ and showed it enjoys certain double robustness property.  Due to the complexity of implementation, I omit the discussion. 
+
+
+
+\section{Regressions weighted by the inverse of the propensity score} 
+
+
+\subsection{Average causal effect}
+
+
+We first re-examine the Hajek estimator of $\tau$: 
+$$
+\hat{\tau}^\textup{hajek} = \frac{  \sumn \frac{Z_i Y_i}{ \hat{e}(X_i) }  }{  \sumn \frac{Z_i }{ \hat{e}(X_i) } }
+- \frac{  \sumn \frac{ (1-Z_i) Y_i}{ 1 - \hat{e}(X_i) }  }{  \sumn \frac{ 1-Z_i}{ 1 - \hat{e}(X_i) }  },
+$$
+which equals the difference between the weighted means of the outcomes in the treatment and control groups. Numerically, it is identical to the coefficient of $Z_i$ in the following weighted least squares (WLS) of $Y_i$ on $(1,Z_i)$.
+
+
+\begin{proposition}
+\label{prop::hajek-wls}
+$\hat{\tau}^\textup{hajek}$ equals $\hat{\beta}$ from the following WLS:
+$$
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{\alpha, \beta} \sum_{i=1}^n w_i(Y_i - \alpha - \beta Z_i)^2
+$$
+ with weights 
+\begin{eqnarray}\label{eq::weight-hajek}
+w_i =  \frac{Z_i}{   \hat{e}(X_i)  } + \frac{1-Z_i}{ 1-  \hat{e}(X_i) } 
+= 
+\begin{cases}
+\frac{1}{\hat{e}(X_i) } & \text{ if } Z_i=1;\\
+\frac{1}{ 1- \hat{e}(X_i) } & \text{ if } Z_i=0.
+\end{cases} 
+\end{eqnarray}
+\end{proposition}
+
+\citet{imbens2004nonparametric} pointed out the result in Proposition \ref{prop::hajek-wls}. I leave it as a Problem \ref{hw::ate-hajek-wls}.  
+By Proposition \ref{prop::hajek-wls}, it is convenient to obtain $\hat{\tau}^\textup{hajek}$ based on WLS. However, due to the uncertainty in the estimated propensity score, the standard error reported by WLS is incorrect for the true standard error of $\hat{\tau}^\textup{hajek}$. The bootstrap provides a convenient approximation to the true standard error. 
+
+ 
+
+
+
+Why does the WLS give a consistent estimator for $\tau$? Recall that in the CRE with a constant propensity score, we can simply use the coefficient of $Z_i$ in the OLS fit of $Y_i$ on $(1,Z_i)$ to estimate $\tau$. In observational studies, units have different probabilities of receiving the treatment and control, respectively. If we weight the treated units by $1/e(X_i)$ and the control units by $1/\{ 1-e(X_i)\}$, then both treated and control groups can represent the whole population. Thus, by weighting, we effectively have a pseudo-randomized experiment. Consequently, the difference between the weighted means is consistent for $\tau$. The numerical equivalence of $\hat{\tau}^\textup{hajek}$ and WLS is not only a fun numerical fact itself but also useful for motivating more complex estimators with covariate adjustment. I give one extension below.
+
+
+Recall that in the CRE, we can use the coefficient of $Z_i$ in the OLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ to estimate $\tau$, where the covariates are centered with $\bar{X} = 0$. This is \citet{lin2013}'s estimator which uses covariates to improve efficiency. A natural extension to observational studies is to estimate $\tau$ using the coefficient of $Z_i$ in the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ with weights defined in \eqref{eq::weight-hajek}. \citet{hirano2001estimation} used this estimator in an application.
+The fully interacted linear model is equivalent to two separate linear models for the treated and control groups. 
+If the linear models
+$$
+E(Y\mid Z=1, X) = \beta_{10} +  \beta_{1x}\tran X,\quad
+E(Y\mid Z=0, X) = \beta_{00} +  \beta_{0x}\tran X,
+$$
+are correctly specified, then both OLS and WLS give consistent estimators for the coefficients and the estimators of the coefficient of $Z$ are consistent for $\tau$. More interestingly, the estimator of the coefficient of $Z$ based on WLS is also consistent for $\tau$ if the propensity score model is correct and the outcome model is incorrect. That is, the estimator based on WLS is doubly robust. \citet{robins2007comment} discussed this property and attributed this result to M. Joffe's unpublished paper. I will give more details below. 
+
+
+
+Let $e(X_i, \hat{\alpha})$ be the fitted propensity score and $( \mu_1(X_i, \hat{\beta}_1),  \mu_0(X_i, \hat{\beta}_0)) $ be the fitted values of the outcome means based on the WLS. The outcome regression estimator is 
+$$
+\hat{\tau}^\text{reg}_\text{wls} = \frac{1}{n} \sumn \mu_1(X_i, \hat{\beta}_1) - \frac{1}{n} \sumn \mu_0(X_i, \hat{\beta}_0)
+$$
+and the doubly robust estimator for $\tau$ is 
+$$
+\hat{\tau}^\text{dr}_\text{wls}  = 
+\hat{\tau}^\text{reg}_\text{wls}  + \frac{1}{n} \sumn  \frac{Z_i \{ Y_i- \mu_1(X_i, \hat{\beta}_1)\}  }{  e(X_i, \hat{\alpha}) } 
+- \frac{1}{n} \sumn  \frac{(1-Z_i) \{ Y_i- \mu_0(X_i, \hat{\beta}_0)\}  }{  1- e(X_i, \hat{\alpha}) }   .
+$$
+An interesting result is that this doubly robust estimator equals the outcome regression estimator, which reduces to the coefficient of $Z_i$ in the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ if we use weights \eqref{eq::weight-hajek}. 
+
+
+
+
+ 
+
+\begin{theorem}
+\label{thm::numerical-equivalence-wls-dr}
+If $\bar{X}=0$ and $( \mu_1(X_i, \hat{\beta}_1),  \mu_0(X_i, \hat{\beta}_0)) = (  \hat \beta_{10} +   \hat \beta_{1x}\tran X_i ,   \hat \beta_{00} +   \hat\beta_{0x}\tran X_i )$ based on the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ with  weights \eqref{eq::weight-hajek}, then
+$$
+\hat{\tau}^\textup{dr}_\textup{wls}  = \hat{\tau}^\textup{reg}_\textup{wls} 
+%=  \frac{1}{n} \sumn (\hat \beta_{10} +   \hat \beta_{1x}\tran X_i)   - \frac{1}{n} \sumn (\hat \beta_{00} +   \hat\beta_{0x}\tran X_i) 
+= \hat \beta_{10} - \hat \beta_{00} ,
+$$
+which is the coefficient of $Z_i$ in the WLS fit. 
+\end{theorem}
+
+\begin{myproof}{Theorem}{\ref{thm::numerical-equivalence-wls-dr}}
+The WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ is equivalent to two WLS fits based on the treated and control data. Both WLS fits include intercepts, so the weighted residuals have mean 0 (see \eqref{eq::OLS-mean-data}): 
+$$
+\sumn  \frac{Z_i ( Y_i- \hat \beta_{10} -  \hat \beta_{1x}\tran X_i ) }{  \hat{e}(X_i) }   =0 
+$$
+and
+$$
+\sumn  \frac{(1-Z_i) (  Y_i-\hat \beta_{00}  -   \hat\beta_{0x}\tran X_i   ) }{  1-\hat{e}(X_i) }  = 0 .
+$$
+So the difference between $\hat{\tau}^\text{dr} $ and $\hat{\tau}^\text{reg}$ is exactly zero. Both reduces to
+\begin{eqnarray*}
+ \frac{1}{n} \sumn (\hat \beta_{10} +   \hat \beta_{1x}\tran X_i)   - \frac{1}{n} \sumn (\hat \beta_{00} +   \hat\beta_{0x}\tran X_i)  
+&=& \hat \beta_{10} - \hat \beta_{00}  + (\hat \beta_{1x} - \hat\beta_{0x})\tran \bar{X} \\
+&=&\hat \beta_{10} - \hat \beta_{00}
+\end{eqnarray*}
+with centered covariates. So they both equal the coefficient of $Z_i$ in the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$. 
+\end{myproof} 
+
+
+\citet{freedman2008weighting} discouraged the use of the WLS estimator above based on some simulation studies. They showed that when the outcome model is correct, the WLS estimator is worse than the OLS estimator since the WLS estimator has large variability in their simulation setting with homoskedastic outcomes. This may not be true in general. When the errors have variance proportional to the inverse of the propensity scores, the WLS estimator will be more efficient than the OLS estimator. 
+
+\citet{freedman2008weighting}  also showed that the estimated standard error based on the WLS fit is not consistent for the true standard error because it ignores the uncertainty in the estimated propensity score. This can be easily fixed by using the bootstrap to approximate the variance of the WLS estimator. 
+
+
+Nevertheless, \citet{freedman2008weighting}  found that ``weighting may help under some circumstances'' because when the outcome model is incorrect, the WLS estimator is still consistent if the propensity score model is correct. 
+
+
+
+I end this section with Table \ref{table::regression-causal-cre-obs} summarizing the regression estimators for causal effects in both randomized experiments and observational studies. 
+
+
+
+\begin{table}
+\caption{Regression estimators in  CREs and unconfounded observational studies. The weights $w_i$'s are defined in \eqref{eq::weight-hajek}.
+Assume covariates are centered at $\bar{X} = 0$.}\label{table::regression-causal-cre-obs}
+\begin{tabular}{|c|cc|}
+\hline 
+ & CRE & unconfounded observational studies \\
+ \hline 
+without $X$ &  $Y_i\sim (1, Z_i)$ & $Y_i\sim (1, Z_i)$ with weights $w_i$   \\
+with $X$ & $Y_i\sim (1, Z_i ,X_i, Z_i X_i ) $ & $Y_i\sim (1, Z_i ,X_i, Z_i X_i )$ with weights $w_i$  \\
+\hline 
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Average causal effect on the treated units}
+
+The results for $\tau_\textsc{T}$ parallel those for $\tau$. First, the Hajek estimator for $\tau_\textsc{T}$
+$$
+\hat{\tau}_\textsc{T}^\text{hajek} = \hat{\bar{Y}}(1) 
+- \frac{  \sumn \hat{o}(X_i) (1-Z_i) Y_i }{ \sumn \hat{o}(X_i) (1-Z_i) } ,
+$$
+with $\hat{o}(X_i) = \hat{e}(X_i) / \{ 1- \hat{e}(X_i) \}$, 
+equals the coefficient of $Z_i$ in the following WLS fit  $Y_i$ on $(1,Z_i)$.
+
+
+\begin{proposition}
+\label{prop::hajek-att}
+$\hat\tau_\textsc{T}^{\text{hajek}}$ is numerically identical to $\hat{\beta}$ in the following WLS:
+$$
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{\alpha, \beta} \sum_{i=1}^n  w_{\textsc{T}i}  (Y_i - \alpha - \beta Z_i)^2
+$$
+ with weights 
+\begin{eqnarray}\label{eq::weight-hajek-att}
+w_{\textsc{T}i} = Z_i +(1-Z_i )  \hat{o}(X_i)
+= 
+\begin{cases}
+1 & \text{ if } Z_i=1;\\
+ \hat{o}(X_i)   & \text{ if } Z_i=0.
+\end{cases} 
+\end{eqnarray}
+\end{proposition}
+
+Similar to Proposition \ref{prop::hajek-wls}, Proposition \ref{prop::hajek-att} is a pure linear algebra result. I relegate its proof to Problem \ref{hw::ate-hajek-wls}. 
+
+
+Second, if we center covariates at $\hat{\bar{X}}(1) = 0$, then we can estimate $\tau_\textsc{T}$ using the coefficient of $Z_i$ in the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ with weights defined in \eqref{eq::weight-hajek-att}. Similarly, this estimator equals the regression estimator 
+$$
+\hat{\tau}_{\textsc{T},\text{wls}}^\text{reg} = \hat{\bar{Y}}(1) - \frac{1}{n_1} \sumn Z_i \mu_0(X_i, \hat{\beta}_0),
+$$
+which also equals the doubly robust estimator
+$$
+\hat{\tau}_{\textsc{T},\text{wls}}^\text{dr} =\hat{\tau}_{\textsc{T},\text{wls}}^\text{reg} 
+- \frac{1}{n_1} \sumn  \hat{o}(X_i)  (1-Z_i) \{  Y_i- \mu_0(X_i, \hat{\beta}_0) \} .
+$$
+
+\begin{theorem}
+\label{thm::numerical-equivalence-wls-dr-att}
+If $\hat{\bar{X}}(1) = 0$ and $ \mu_0(X_i, \hat{\beta}_0) =  \hat \beta_{00} +   \hat\beta_{0x}\tran X_i$ based on the WLS fit of $Y_i$ on $(1,Z_i, X_i, Z_iX_i)$ with  weights \eqref{eq::weight-hajek-att}, then
+$$
+\hat{\tau}_{\textsc{T},\textup{wls}}^\textup{dr}  = \hat{\tau}_{\textsc{T},\textup{wls}}^\textup{reg} 
+= \hat \beta_{10} - \hat \beta_{00} ,
+$$
+which is the coefficient of $Z_i$ in the WLS fit. 
+\end{theorem}
+
+
+\begin{myproof}{Theorem}{\ref{thm::numerical-equivalence-wls-dr-att}}
+Based on the WLS fits in the treatment and control groups, we have
+\begin{eqnarray}
+\label{eq::wls-treated-att}
+\sumn Z_i ( Y_i -  \hat \beta_{10} -  \hat \beta_{1x}\tran X_i ) &=& 0 ,\\
+\label{eq::wls-control-att}
+ \sumn \hat{o}(X_i)  (1-Z_i) ( Y_i - \hat \beta_{00} - \hat\beta_{0x}\tran X_i ) &=& 0.
+\end{eqnarray}
+The second result \eqref{eq::wls-control-att}  ensures that $\hat{\tau}_{\textsc{T},\text{wls}}^\text{dr}  = \hat{\tau}_{\textsc{T},\text{wls}}^\text{reg} $. Both reduces to 
+$$
+ \hat{\bar{Y}}(1) 
+-  \frac{1}{n_1} \sumn Z_i   (\hat \beta_{00} +   \hat\beta_{0x}\tran X_i)
+= \frac{1}{n_1} \sumn  Z_i(Y_i - \hat \beta_{00} - \hat\beta_{0x}\tran X_i) .
+$$
+With covariates centered at $\hat{\bar{X}}(1) = 0$, the first result \eqref{eq::wls-treated-att} implies that $\hat{\bar{Y}}(1)  =  \hat \beta_{10} $ which further simplifies the estimator to $ \hat \beta_{10} - \hat \beta_{00}$. 
+\end{myproof}
+
+
+
+
+
+
+\section{Homework problems}
+
+\paragraph{Hajek estimators as WLS estimators}\label{hw::ate-hajek-wls}
+
+Prove Propositions \ref{prop::hajek-wls} and \ref{prop::hajek-att}. 
+
+Remark: These are special cases of Problem \ref{hw::wls-uni-binary} on the univariate WLS. 
+
+ 
+\paragraph{Predictive estimator and doubly robust estimator}\label{hw::dr-projective-estimator}
+
+Another outcome regression estimator is the predictive estimator
+$$
+\hat{\tau}^\text{pred} = 
+\hat{\mu}_1^\text{pred} - \hat{\mu}_0^\text{pred} 
+$$
+where
+$$
+\hat{\mu}_1^\text{pred} = 
+\frac{1}{n} \sumn \left\{  Z_i Y_i + (1-Z_i)  \mu_1(X_i, \hat{\beta}_1)   \right\}
+$$
+and
+$$
+\hat{\mu}_0^\text{pred}  = 
+\frac{1}{n} \sumn \left\{  Z_i \mu_0(X_i, \hat{\beta}_1) + (1-Z_i) Y_i  \right\} .
+$$
+It differs from the outcome regression estimator discussed before in that it only predicts the counterfactual outcomes but not the observed outcomes. 
+
+Show that the doubly robust estimator  equals $\hat{\tau}^\text{pred} $ if $(\mu_1(X_i, \hat{\beta}_1), \mu_0(X_i, \hat{\beta}_1) ) =  
+( \hat \beta_{10} +   \hat \beta_{1x}\tran X_i, \hat \beta_{00} +   \hat\beta_{0x}\tran X_i)$ are from the WLS fits of $Y_i$ on $(1, X_i)$ based on the treated and control data, respectively, with weights
+\begin{eqnarray}
+\label{eq::odds-weight-predictive}
+w_i =  Z_i/\hat{o}(X_i) + (1-Z_i) \hat{o}(X_i)
+= \begin{cases}
+\frac{1}{\hat{o}(X_i)} = \frac{ 1-  \hat{e}(X_i) }{ \hat{e}(X_i) } & \text{ if } Z_i=1;\\
+ \hat{o}(X_i) = \frac{  \hat{e}(X_i)  }{ 1-\hat{e}(X_i)} & \text{ if } Z_i=0.
+\end{cases} 
+\end{eqnarray}
+
+Remark: 
+\citet{cao2009improving} and  \citet{vermeulen2015bias} motivated the weights in \eqref{eq::odds-weight-predictive} from other more theoretical perspectives. 
+
+
+
+\paragraph{Weighted logistic regression  with a binary outcome}
+\label{hw::wlogit-dr}
+With a binary outcome, we can replace linear outcome models with logistic outcome models. Show that with weights in the logistic regressions, the doubly robust estimators equal the outcome regression estimator. The result holds for both $\tau$ and $\tau_\textsc{T}$. 
+
+
+
+\paragraph{Causal inference with a misspecified linear regression}
+
+
+
+
+Define the population OLS of $Y$ on $ (1, Z, X) $ as
+$$
+(\beta_0, \beta_1, \beta_2) = \arg\min_{b_0, b_1, b_2}   E(Y - b_0 - b_1 Z - b_2\tran X)^2. 
+$$
+Recall that $e(X) = \pr(Z=1\mid X)$ is the propensity score, and define $\tilde{e}(X) = \gamma_0+\gamma_1\tran X$ as the OLS projection of $Z$ on $X$ with% (see Chapter \ref{appendix::basic-linear-regression})
+$$
+(\gamma_0, \gamma_1) =  \arg\min_{c_0, c_1}   E(Z - c_0 -  c_1\tran X)^2. 
+$$
+
+\begin{enumerate}
+\item
+Show that
+$$
+\beta_1 = \frac{    E [  \tilde{w}(X) \{ \mu_1(X) - \mu_0(X) \} ]  }{   E \{ \tilde{w}(X) \} }
++ \frac{  E [  \{  e(X) - \tilde{e}(X)  \}  \mu_0(X)  ] }{  E \{ \tilde{w}(X) \}  }
+$$
+where $\tilde{w}(X) = e(X)\{ 1 - \tilde{e}(X)  \}$. 
+
+\item
+When $X$ contains the dummy variables for a discrete covariate, show that
+$$
+\beta_1 = \frac{    E [  w(X) \{ \mu_1(X) - \mu_0(X) \} ]  }{   E \{ w(X) \} }
+$$
+where $w(X) = e(X)\{ 1 - e(X)  \}$ is the overlap weight introduced in Chapter \ref{sec::other-estmand-overlap}. 
+
+\end{enumerate}
+
+
+Remark: \citet{vansteelandt2021assumption} gave the formula in part 1 without a detailed proof. The result in part 2 was derived many times in the literature \citep[e.g.,][]{angrist1998estimating, ding2021frisch}. 
+
+
+\paragraph{Analyzing a dataset from the Karolinska Institute}\label{hw::Karolinska-pscore}
+
+Revisit Problem \ref{hw::Karolinska-dr}. Estimate $\tau_\textsc{O}$ and $\tau$ based on the methods introduced in this Chapter. 
+
+
+ 
+ 
+
+
+ \paragraph{Recommended reading}
+\citet{kang2007demystifying} gave a critical review of the doubly robust estimator, using simulation to compare it with many other estimators. \citet{robins2007comment} gave a very insightful comment on \citet{kang2007demystifying}.   
+ 
+ 
+ 
+
