@@ -1,847 +1,281 @@
-\chapter{Distributions of Two Random Variables}\label{chap:distributions-two-rv}
+\chapter{二元随机变量分布}\label{chap:distributions-two-rv}
 
-\section{Distributions of Two Random Variables}\label{sec:distributions-two-rv}
+\section*{Chapter 2 概述}
 
-We begin the discussion of a pair of random variables with the following example. A coin is tossed three times and our interest is in the ordered number pair (number of H's on first two tosses, number of H's on all three tosses), where H and T represent, respectively, heads and tails. Let $\mathcal{C} = \{TTT,TTH,THT,HTT,THH,HTH,HHT,HHH\}$ denote the sample space. Let $X_{1}$ denote the number of H's on the first two tosses and $X_{2}$ denote the number of H's on all three flips. Then our interest can be represented by the pair of random variables $(X_{1},X_{2})$ . For example, $(X_{1}(HTH),X_{2}(HTH))$ represents the outcome $(1,2)$ . Continuing in this way, $X_{1}$ and $X_{2}$ are real-valued functions defined on the sample space $\mathcal{C}$ , which take us from the sample space to the space of ordered number pairs.
+在实际问题中，我们往往不只关心单个随机变量，而是关心它们之间的\textbf{相互作用}。例如，在金融中我们想研究两种资产收益的联合波动；在医学中想了解剂量与疗效的关系；在物理中想描述两个测量值的相关性。本章将一元推广到二元，建立联合分布理论。
 
-\[
-\mathcal{D} = \{(0,0), (0,1), (1,1), (1,2), (2,2), (2,3)\}.
-\]
+\textbf{本章路线图}：联合分布 $\to$ 边缘分布 $\to$ 条件分布 $\to$ 独立性 $\to$ 相关性 $\to$ 二元正态
 
-Thus $X_{1}$ and $X_{2}$ are two random variables defined on the space $\mathcal{C}$ , and, in this example, the space of these random variables is the two-dimensional set $\mathcal{D}$ , which is a subset of two-dimensional Euclidean space $R^{2}$ . Hence $(X_{1},X_{2})$ is a vector function from $\mathcal{C}$ to $\mathcal{D}$ . We now formulate the definition of a random vector.
+\section{2.1 从一元到二元}\label{sec:2.1}
 
-\begin{definition}[Random Vector]\label{def:random-vector}
-Given a random experiment with a sample space $\mathcal{C}$ , consider two random variables $X_{1}$ and $X_{2}$ , which assign to each element $c$ of $\mathcal{C}$ one and only one ordered pair of numbers $X_{1}(c) = x_{1}$ , $X_{2}(c) = x_{2}$ . Then we say that $(X_{1},X_{2})$ is a random vector. The space of $(X_{1},X_{2})$ is the set of ordered pairs $\mathcal{D} = \{(x_{1},x_{2}) : x_{1} = X_{1}(c), x_{2} = X_{2}(c), c \in \mathcal{C}\}$ .
+\subsection{为什么需要联合分布？}
+
+在一元情形，我们用 cdf $F_X(x) = \mathbb{P}(X \leq x)$ 描述单个随机变量的行为。但在许多场景中，\emph{单个变量的分布并不能回答我们的问题}——我们需要知道多个变量如何共同变化。这引导我们提出以下问题：
+
+\textbf{核心问题}：给定两个随机变量 $X_1$ 和 $X_2$，如何描述它们的联合行为？
+
+这促使我们定义随机向量和联合分布。
+
+\subsection{随机向量}
+
+\begin{definition}[随机向量]\label{def:random-vector-ch2}
+设样本空间为 $\mathcal{C}$，$X_1$ 和 $X_2$ 为定义在 $\mathcal{C}$ 上的两个随机变量。则 $(X_1, X_2)$ 称为随机向量，其取值空间为 $\mathcal{D} = \{(x_1, x_2) : x_1 = X_1(c), x_2 = X_2(c), c \in \mathcal{C}\}$。
 \end{definition}
 
-We often denote random vectors using vector notation $\mathbf{X} = (X_{1},X_{2})'$ , where the prime denotes the transpose of the row vector $(X_{1},X_{2})$ . Also, we often use $(X,Y)$ to denote random vectors.
+\textbf{为什么要用向量？} 因为 $(X_1, X_2)$ 的取值是一个有序对，用向量符号 $\mathbf{X} = (X_1, X_2)'$ 能更清晰地表示这种结构。
 
-Let $\mathcal{D}$ be the space associated with the random vector $(X_{1},X_{2})$ . Let $A$ be a subset of $\mathcal{D}$ . As in the case of one random variable, we speak of the event $A$ . We wish to define the probability of the event $A$ , which we denote by $P_{X_{1},X_{2}}[A]$ . As with random variables in Section 1.5 we can uniquely define $P_{X_{1},X_{2}}$ in terms of the cumulative distribution function (cdf), which is given by
+\subsection{联合分布}
 
-\begin{equation}\label{eq:joint-cdf}
-F_{X_{1},X_{2}}(x_{1},x_{2}) = P[X_{1} \leq x_{1}, X_{2} \leq x_{2}],
+\textbf{联合 cdf} 是一元 cdf 的自然推广：
+\begin{equation}\label{eq:joint-cdf-ch2}
+F_{X_1, X_2}(x_1, x_2) = \mathbb{P}(X_1 \leq x_1, X_2 \leq x_2).
 \end{equation}
 
-for all $(x_{1},x_{2}) \in R^{2}$ . Because $X_{1}$ and $X_{2}$ are random variables, each of the events in the above intersection and the intersection of the events are events in the original sample space $\mathcal{C}$ . Thus the expression is well defined.
-
-For all real constants $a < b$ , $c < d$ ,
-
-\[
-P(a_{1} < X_{1} \leq b_{1}, a_{2} < X_{2} \leq b_{2}) = F(b_{1},b_{2}) - F(a_{1},b_{2}) - F(b_{1},a_{2}) + F(a_{1},a_{2}).
-\tag{2.1.2}
-\]
-
-Hence, all induced probabilities of sets of the form $(a_{1},b_{1}] \times (a_{2},b_{2}]$ can be formulated in terms of the cdf. We often call this cdf the joint cumulative distribution function of $(X_{1},X_{2})$ .
-
-As with random variables, we are mainly concerned with two types of random vectors, namely discrete and continuous. We first discuss the discrete type.
-
-A random vector $(X_{1},X_{2})$ is a discrete random vector if its space $\mathcal{D}$ is finite or countable. Hence, $X_{1}$ and $X_{2}$ are both discrete also. The joint probability mass function (pmf) of $(X_{1},X_{2})$ is defined by
-
-\begin{equation}\label{eq:joint-pmf}
-p_{X_{1},X_{2}}(x_{1},x_{2}) = P[X_{1} = x_{1}, X_{2} = x_{2}],
+\textbf{离散型}：用 pmf 描述，
+\begin{equation}\label{eq:joint-pmf-ch2}
+p_{X_1, X_2}(x_1, x_2) = \mathbb{P}(X_1 = x_1, X_2 = x_2),
 \end{equation}
+满足 $p \geq 0$ 且 $\sum\sum_{\mathcal{D}} p = 1$。
 
-for all $(x_{1},x_{2}) \in \mathcal{D}$ . As with random variables, the pmf uniquely defines the cdf. It also is characterized by the two properties
-
-\begin{equation}\label{eq:pmf-properties}
-\text{(i) } 0 \leq p_{X_{1},X_{2}}(x_{1},x_{2}) \leq 1 \text{ and (ii)} \sum_{\mathcal{D}} \sum p_{X_{1},X_{2}}(x_{1},x_{2}) = 1.
+\textbf{连续型}：用 pdf 描述，
+\begin{equation}\label{eq:joint-pdf-ch2}
+F_{X_1, X_2}(x_1, x_2) = \int_{-\infty}^{x_1} \int_{-\infty}^{x_2} f(w_1, w_2) \, dw_1 \, dw_2,
 \end{equation}
+其中 $f \geq 0$ 且 $\int\int_{\mathcal{D}} f = 1$。
 
-For an event $B \in \mathcal{D}$ , we have
+\textbf{Warning}：与一元情形不同，这里的 $f(x_1, x_2)$ 可以大于 1！因为它是"密度"而非概率值。
 
-\[
-P[(X_{1},X_{2}) \in B] = \sum\sum_{B} p_{X_{1},X_{2}}(x_{1},x_{2}).
-\]
+\begin{remark}{几何直观}
+若把联合 pdf $z = f(x_1, x_2)$ 视作一张曲面，则 $\mathbb{P}((X_1, X_2) \in A)$ 就是该曲面下区域 $A$ 上的体积。这是一元情形"曲线下面积"在二维的推广。
+\end remark}
 
-\begin{example}\label{ex:coin-toss-joint-pmf}
-Consider the example at the beginning of this section where a fair coin is flipped three times and $X_{1}$ and $X_{2}$ are the number of heads on the first two flips and all 3 flips, respectively. We can conveniently table the pmf of $(X_{1},X_{2})$ as follows:
+\subsection{从联合到边缘：积分即求和}
 
-\begin{center}
-\begin{tabular}{c|cccc|c}
- & $x_{2}=0$ & $x_{2}=1$ & $x_{2}=2$ & $x_{2}=3$ & $p_{X_{1}}(x_{1})$ \\ \hline
-$x_{1}=0$ & $1/8$ & $1/8$ & $0$ & $0$ & $2/8$ \\
-$x_{1}=1$ & $0$ & $2/8$ & $2/8$ & $0$ & $4/8$ \\
-$x_{1}=2$ & $0$ & $0$ & $1/8$ & $1/8$ & $2/8$ \\ \hline
-$p_{X_{2}}(x_{2})$ & $1/8$ & $3/8$ & $3/8$ & $1/8$ &
-\end{tabular}
-\end{center}
+\textbf{核心问题}：已知 $(X_1, X_2)$ 的联合分布，如何得到单个 $X_1$ 的分布？
 
-For instance, $P(X_{1} \geq 2, X_{2} \geq 2) = p(2,2) + p(2,3) = 2/8$ .
-\end{example}
-
-At times it is convenient to speak of the support of a discrete random vector $(X_{1},X_{2})$ . These are all the points $(x_{1},x_{2})$ in the space of $(X_{1},X_{2})$ such that $p(x_{1},x_{2}) > 0$ . In the last example the support consists of the six points $\{(0,0),(0,1),(1,1),(1,2),(2,2),(2,3)\}$ .
-
-We say a random vector $(X_{1},X_{2})$ with space $\mathcal{D}$ is of the continuous type if its cdf $F_{X_{1},X_{2}}(x_{1},x_{2})$ is continuous. For the most part, the continuous random vectors in this book have cdfs that can be represented as integrals of nonnegative functions. That is, $F_{X_{1},X_{2}}(x_{1},x_{2})$ can be expressed as
-
-\begin{equation}\label{eq:joint-cdf-integral}
-F_{X_{1},X_{2}}(x_{1},x_{2}) = \int_{-\infty}^{x_{1}} \int_{-\infty}^{x_{2}} f_{X_{1},X_{2}}(w_{1},w_{2}) \, dw_{1} \, dw_{2},
-\end{equation}
-
-for all $(x_{1},x_{2}) \in R^{2}$ . We call the integrand the joint probability density function (pdf) of $(X_{1},X_{2})$ . Then
-
-\[
-\frac{\partial^{2} F_{X_{1},X_{2}}(x_{1},x_{2})}{\partial x_{1} \partial x_{2}} = f_{X_{1},X_{2}}(x_{1},x_{2}),
-\]
-
-except possibly on events that have probability zero. A pdf is essentially characterized by the two properties
-
-\begin{equation}\label{eq:pdf-properties}
-\text{(i) } f_{X_{1},X_{2}}(x_{1},x_{2}) \geq 0 \text{ and (ii)} \int\int_{\mathcal{D}} f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{1} \, dx_{2} = 1.
-\end{equation}
-
-For an event $A \in \mathcal{D}$ , we have
-
-\[
-P[(X_{1},X_{2}) \in A] = \int\int_{A} f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{1} \, dx_{2}.
-\]
-
-Note that $P[(X_{1},X_{2}) \in A]$ is just the volume under the surface $z = f_{X_{1},X_{2}}(x_{1},x_{2})$ over the set $A$ .
-
-\begin{remark}\label{rem:notation-abbreviations}
-As with univariate random variables, we often drop the subscript $(X_{1},X_{2})$ from joint cdfs, pdfs, and pmfs, when it is clear from the context. We also use notation such as $f_{12}$ instead of $f_{X_{1},X_{2}}$ . Besides $(X_{1},X_{2})$ , we often use $(X,Y)$ to express random vectors.
-\end{remark}
-
-\begin{example}\label{ex:uniform-circle}
-Consider a continuous random vector $(X,Y)$ which is uniformly distributed over the unit circle in $R^{2}$ . Since the area of the unit circle is $\pi$ , the joint pdf is
-
-\[
-f(x,y) = \begin{cases}
-\frac{1}{\pi} & -1 < y < 1, -\sqrt{1-y^{2}} < x < \sqrt{1-y^{2}} \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Probabilities of certain events follow immediately from geometry. For instance, let $A$ be the interior of the circle with radius $1/2$ . Then $P[(X,Y) \in A] = \pi(1/2)^{2}/\pi = 1/4$ . Next, let $B$ be the ring formed by the concentric circles with the respective radii of $1/2$ and $\sqrt{2}/2$ . Then $P[(X,Y) \in B] = \pi[(\sqrt{2}/2)^{2} - (1/2)^{2}]/\pi = 1/4$ .
-\end{example}
-
-\begin{example}\label{ex:battery-lifetimes}
-Suppose an electrical component has two batteries. Let $X$ and $Y$ denote the lifetimes in standard units of the respective batteries. Assume that the pdf of $(X,Y)$ is
-
-\[
-f(x,y) = \begin{cases}
-4xye^{-(x^{2}+y^{2})} & x > 0, y > 0 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-The surface $z = f(x,y)$ peaks at $(x,y) = (\sqrt{2}/2,\sqrt{2}/2)$ . For instance, the probability that both batteries survive beyond $\sqrt{2}/2$ units is given by
-
-\[
-P\!\left(X > \frac{\sqrt{2}}{2}, Y > \frac{\sqrt{2}}{2}\right) = \int_{\sqrt{2}/2}^{\infty} \int_{\sqrt{2}/2}^{\infty} 4xye^{-(x^{2}+y^{2})} \, dx \, dy = (e^{-1/2})^{2} \approx 0.3679.
-\]
-\end{example}
-
-For a continuous random vector $(X_{1},X_{2})$ , the support of $(X_{1},X_{2})$ contains all points $(x_{1},x_{2})$ for which $f(x_{1},x_{2}) > 0$ . We denote the support of a random vector by $\mathcal{S}$ . As in the univariate case, $\mathcal{S} \subset \mathcal{D}$ .
-
-\subsection{Marginal Distributions}\label{sub:marginal-distributions}
-
-Let $(X_{1},X_{2})$ be a random vector. Then both $X_{1}$ and $X_{2}$ are random variables. We can obtain their distributions in terms of the joint distribution of $(X_{1},X_{2})$ as follows. Recall that the event which defined the cdf of $X_{1}$ at $x_{1}$ is $\{X_{1} \leq x_{1}\}$ . However,
-
-\[
-\{X_{1} \leq x_{1}\} = \{X_{1} \leq x_{1}\} \cap \{-\infty < X_{2} < \infty\} = \{X_{1} \leq x_{1}, -\infty < X_{2} < \infty\}.
-\]
-
-Taking probabilities, we have
-
-\begin{equation}\label{eq:marginal-cdf}
-F_{X_{1}}(x_{1}) = P[X_{1} \leq x_{1}, -\infty < X_{2} < \infty].
-\end{equation}
-
-By Theorem 1.3.6 we can write this equation as $F_{X_{1}}(x_{1}) = \lim_{x_{2} \uparrow \infty} F(x_{1},x_{2})$ . Thus we have a relationship between the cdfs, which we can extend to either the pmf or pdf depending on whether $(X_{1},X_{2})$ is discrete or continuous.
-
-First consider the discrete case. Let $\mathcal{D}_{X_{1}}$ be the support of $X_{1}$ . For $x_{1} \in \mathcal{D}_{X_{1}}$ , Equation \eqref{eq:marginal-cdf} is equivalent to
-
-\[
-F_{X_{1}}(x_{1}) = \sum_{w_{1} \leq x_{1}} \left\{ \sum_{x_{2}} p_{X_{1},X_{2}}(w_{1},x_{2}) \right\}.
-\]
-
-By the uniqueness of cdfs, the quantity in braces must be the pmf of $X_{1}$ evaluated at $w_{1}$ ; that is,
-
-\begin{equation}\label{eq:marginal-pmf}
-p_{X_{1}}(x_{1}) = \sum_{x_{2}} p_{X_{1},X_{2}}(x_{1},x_{2}),
-\end{equation}
-
-for all $x_{1} \in \mathcal{D}_{X_{1}}$ . Hence, to find the probability that $X_{1}$ is $x_{1}$ , keep $x_{1}$ fixed and sum $p_{X_{1},X_{2}}$ over all of $x_{2}$ . In terms of a tabled joint pmf with rows comprised of $X_{1}$ support values and columns comprised of $X_{2}$ support values, this says that the distribution of $X_{1}$ can be obtained by the marginal sums of the rows. Likewise, the pmf of $X_{2}$ can be obtained by marginal sums of the columns.
-
-\begin{example}\label{ex:chip-drawing}
-Consider a random experiment that consists of drawing at random one chip from a bowl containing 10 chips of the same shape and size. Each chip has an ordered pair of numbers on it: one with $(1,1)$ , one with $(2,1)$ , two with $(3,1)$ , one with $(1,2)$ , two with $(2,2)$ , and three with $(3,2)$ . Let the random variables $X_{1}$ and $X_{2}$ be defined as the respective first and second values of the ordered pair. The joint pmf $p(x_{1},x_{2})$ of $X_{1}$ and $X_{2}$ can be given by the following table:
-
-\begin{center}
-\begin{tabular}{c|cc|c}
- & $x_{2}=1$ & $x_{2}=2$ & $p_{X_{1}}(x_{1})$ \\ \hline
-$x_{1}=1$ & $1/10$ & $1/10$ & $2/10$ \\
-$x_{1}=2$ & $1/10$ & $2/10$ & $3/10$ \\
-$x_{1}=3$ & $2/10$ & $3/10$ & $5/10$ \\ \hline
-$p_{X_{2}}(x_{2})$ & $4/10$ & $6/10$ &
-\end{tabular}
-\end{center}
-\end{example}
-
-We next consider the continuous case. Let $\mathcal{D}_{X_{1}}$ be the support of $X_{1}$ . For $x_{1} \in \mathcal{D}_{X_{1}}$ , Equation \eqref{eq:marginal-cdf} is equivalent to
-
-\[
-F_{X_{1}}(x_{1}) = \int_{-\infty}^{x_{1}} \left\{ \int_{-\infty}^{\infty} f_{X_{1},X_{2}}(w_{1},x_{2}) \, dx_{2} \right\} dw_{1}.
-\]
-
-By the uniqueness of cdfs, the quantity in braces must be the pdf of $X_{1}$ evaluated at $w_{1}$ ; that is,
-
-\begin{equation}\label{eq:marginal-pdf}
-f_{X_{1}}(x_{1}) = \int_{-\infty}^{\infty} f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{2},
-\end{equation}
-
-for all $x_{1} \in \mathcal{D}_{X_{1}}$ . Hence, in the continuous case the marginal pdf of $X_{1}$ is found by integrating out $x_{2}$ . Similarly, the marginal pdf of $X_{2}$ is found by integrating out $x_{1}$ .
-
-\begin{example}[Example \ref{ex:uniform-circle} continued]\label{ex:uniform-circle-marginal}
-Consider the vector of continuous random variables $(X,Y)$ discussed in Example \ref{ex:uniform-circle}. To find the marginal distribution of $X$ , fix $x$ between $-1$ and $1$ and then integrate out $y$ from $-\sqrt{1-x^{2}}$ to $\sqrt{1-x^{2}}$ . Hence, the marginal pdf of $X$ is
-
-\[
-f_{X}(x) = \int_{-\sqrt{1-x^{2}}}^{\sqrt{1-x^{2}}} \frac{1}{\pi} \, dy = \frac{2}{\pi}\sqrt{1-x^{2}}, \quad -1 < x < 1.
-\]
-
-Although $(X,Y)$ has a joint uniform distribution, the distribution of $X$ is unimodal with peak at 0. Because the joint pdf is symmetric in $x$ and $y$ , the marginal pdf of $Y$ is the same as that of $X$ .
-\end{example}
-
-\begin{example}\label{ex:triangular-region}
-Let $X_{1}$ and $X_{2}$ have the joint pdf
-
-\[
-f(x_{1},x_{2}) = \begin{cases}
-x_{1}+x_{2} & 0 < x_{1} < 1, 0 < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Notice the space of the random vector is the interior of the square with vertices $(0,0),(1,0),(1,1)$ and $(0,1)$ . The marginal pdf of $X_{1}$ is
-
-\[
-f_{1}(x_{1}) = \int_{0}^{1} (x_{1}+x_{2}) \, dx_{2} = x_{1} + \frac{1}{2}, \quad 0 < x_{1} < 1,
-\]
-
-zero elsewhere, and the marginal pdf of $X_{2}$ is
-
-\[
-f_{2}(x_{2}) = \int_{0}^{1} (x_{1}+x_{2}) \, dx_{1} = \frac{1}{2} + x_{2}, \quad 0 < x_{2} < 1,
-\]
-
-zero elsewhere.
-
-Suppose we want to find the probability $P(X_{1}+X_{2} \leq 1)$ . The region of integration is the interior of the triangle with vertices $(0,0)$ , $(1,0)$ and $(0,1)$ . Fixing $x_{1}$ and integrating with respect to $x_{2}$ , we have
-
-\[
-P(X_{1}+X_{2} \leq 1) = \int_{0}^{1} \left[ \int_{0}^{1-x_{1}} (x_{1}+x_{2}) \, dx_{2} \right] dx_{1} = \frac{1}{3}.
-\]
-\end{example}
-
-\begin{example}[Example \ref{ex:battery-lifetimes} continued]\label{ex:battery-marginal}
-Recall that the random variables $X$ and $Y$ of Example \ref{ex:battery-lifetimes} were the lifetimes of two batteries. Using the change-of-variable $w = y^{2}$ , the marginal pdf of $X$ is
-
-\[
-f_{X}(x) = \int_{0}^{\infty} 4xye^{-(x^{2}+y^{2})} \, dy = 2xe^{-x^{2}} \int_{0}^{\infty} e^{-w} \, dw = 2xe^{-x^{2}},
-\]
-
-for $x > 0$ . By the symmetry of $x$ and $y$ in the model, the pdf of $Y$ is the same as that of $X$ . To determine the median lifetime, $\theta$ , of these batteries, we need to solve
-
-\[
-\frac{1}{2} = \int_{0}^{\theta} 2xe^{-x^{2}} \, dx = 1 - e^{-\theta^{2}}.
-\]
-
-Solving this equation, we obtain $\theta = \sqrt{\log 2} \approx 0.8326$ .
-\end{example}
-
-\subsection{Expectation}\label{sub:expectation-two-rv}
-
-The concept of expectation extends in a straightforward manner. Let $(X_{1},X_{2})$ be a random vector and let $Y = g(X_{1},X_{2})$ for some real-valued function; i.e., $g:R^{2} \to R$ . Then $Y$ is a random variable and we could determine its expectation by obtaining the distribution of $Y$ . But Theorem 1.8.1 is true for random vectors also.
-
-Suppose $(X_{1},X_{2})$ is of the continuous type. Then $E(Y)$ exists if
-
-\[
-\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} |g(x_{1},x_{2})| f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{1} \, dx_{2} < \infty .
-\]
-
-Then
-
-\begin{equation}\label{eq:expectation-continuous}
-E(Y) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x_{1},x_{2}) f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{1} \, dx_{2}.
-\end{equation}
-
-Likewise if $(X_{1},X_{2})$ is discrete, then $E(Y)$ exists if
-
-\[
-\sum_{x_{1}} \sum_{x_{2}} |g(x_{1},x_{2})| p_{X_{1},X_{2}}(x_{1},x_{2}) < \infty .
-\]
-
-Then
-
-\begin{equation}\label{eq:expectation-discrete}
-E(Y) = \sum_{x_{1}} \sum_{x_{2}} g(x_{1},x_{2}) p_{X_{1},X_{2}}(x_{1},x_{2}).
-\end{equation}
-
-We can now show that $E$ is a linear operator.
-
-\begin{theorem}\label{thm:linearity-expectation}
-Let $(X_{1},X_{2})$ be a random vector. Let $Y_{1} = g_{1}(X_{1},X_{2})$ and $Y_{2} = g_{2}(X_{1},X_{2})$ be random variables whose expectations exist. Then for all real numbers $k_{1}$ and $k_{2}$ ,
-
-\begin{equation}\label{eq:linearity-expectation}
-E(k_{1}Y_{1}+k_{2}Y_{2}) = k_{1}E(Y_{1}) + k_{2}E(Y_{2}).
-\end{equation}
-\end{theorem}
-
-\begin{example}\label{ex:expectation-computation}
-Let $X_{1}$ and $X_{2}$ have the pdf
-
-\[
-f(x_{1},x_{2}) = \begin{cases}
-8x_{1}x_{2} & 0 < x_{1} < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Then
-
-\[
-E(X_{1}X_{2}^{2}) = \int_{0}^{1} \left[ \int_{0}^{x_{2}} 8x_{1}^{2}x_{2}^{3} \, dx_{1} \right] dx_{2} = \int_{0}^{1} \frac{8}{3}x_{2}^{6} \, dx_{2} = \frac{8}{21}.
-\]
-
-In addition,
-
-\[
-E(X_{2}) = \int_{0}^{1} \left[ \int_{0}^{x_{2}} x_{2}(8x_{1}x_{2}) \, dx_{1} \right] dx_{2} = \frac{4}{5}.
-\]
-
-Since $X_{2}$ has the pdf $f_{2}(x_{2}) = 4x_{2}^{3}$ , $0 < x_{2} < 1$ , zero elsewhere, the latter expectation can also be found by
-
-\[
-E(X_{2}) = \int_{0}^{1} x_{2}(4x_{2}^{3}) \, dx_{2} = \frac{4}{5}.
-\]
-
-Using Theorem \ref{thm:linearity-expectation},
-
-\[
-E(7X_{1}X_{2}^{2} + 5X_{2}) = 7E(X_{1}X_{2}^{2}) + 5E(X_{2}) = 7 \cdot \frac{8}{21} + 5 \cdot \frac{4}{5} = \frac{20}{3}.
-\]
-\end{example}
-
-We also note that the expected value of any function $g(X_{2})$ of $X_{2}$ can be found in two ways:
-
-\[
-E(g(X_{2})) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} g(x_{2}) f(x_{1},x_{2}) \, dx_{1} \, dx_{2} = \int_{-\infty}^{\infty} g(x_{2}) f_{X_{2}}(x_{2}) \, dx_{2},
-\]
-
-the latter single integral being obtained from the double integral by integrating on $x_{1}$ first.
-
-\begin{definition}[Moment Generating Function of a Random Vector]\label{def:mgf-random-vector}
-Let $\mathbf{X} = (X_{1},X_{2})'$ be a random vector. If $E(e^{t_{1}X_{1}+t_{2}X_{2}})$ exists for $|t_{1}| < h_{1}$ and $|t_{2}| < h_{2}$ , where $h_{1}$ and $h_{2}$ are positive, it is denoted by $M_{X_{1},X_{2}}(t_{1},t_{2})$ and is called the moment generating function (mgf) of $\mathbf{X}$ .
-\end{definition}
-
-As in the one-variable case, if it exists, the mgf of a random vector uniquely determines the distribution of the random vector.
-
-Let $\mathbf{t} = (t_{1},t_{2})'$ . Then we can write the mgf of $\mathbf{X}$ as
-
-\begin{equation}\label{eq:mgf-vector}
-M_{X_{1},X_{2}}(\mathbf{t}) = E\!\left[ e^{\mathbf{t}'\mathbf{X}} \right].
-\end{equation}
-
-Also, the mgfs of $X_{1}$ and $X_{2}$ are immediately seen to be $M_{X_{1},X_{2}}(t_{1},0)$ and $M_{X_{1},X_{2}}(0,t_{2})$ , respectively.
-
-\begin{example}\label{ex:mgf-computation}
-Let the continuous-type random variables $X$ and $Y$ have the joint pdf
-
-\[
-f(x,y) = \begin{cases}
-e^{-y} & 0 < x < y < \infty \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-The mgf of this joint distribution is
-
-\[
-M(t_{1},t_{2}) = \int_{0}^{\infty} \left[ \int_{x}^{\infty} \exp(t_{1}x + t_{2}y - y) \, dy \right] dx = \frac{1}{(1-t_{1}-t_{2})(1-t_{2})},
-\]
-
-provided that $t_{1}+t_{2} < 1$ and $t_{2} < 1$ . Furthermore, the moment-generating functions of the marginal distributions of $X$ and $Y$ are, respectively,
-
-\[
-M(t_{1},0) = \frac{1}{1-t_{1}}, \quad t_{1} < 1,
-\]
-\[
-M(0,t_{2}) = \frac{1}{(1-t_{2})^{2}}, \quad t_{2} < 1.
-\]
-
-These are respectively those of the marginal probability density functions
-
-\[
-f_{1}(x) = \int_{x}^{\infty} e^{-y} \, dy = e^{-x}, \quad 0 < x < \infty ,
-\]
-
-zero elsewhere, and
-
-\[
-f_{2}(y) = e^{-y}\int_{0}^{y} dx = ye^{-y}, \quad 0 < y < \infty ,
-\]
-
-zero elsewhere.
-\end{example}
-
-\begin{definition}[Expected Value of a Random Vector]\label{def:expected-value-vector}
-Let $\mathbf{X} = (X_{1},X_{2})'$ be a random vector. Then the expected value of $\mathbf{X}$ exists if the expectations of $X_{1}$ and $X_{2}$ exist. If it exists, then the expected value is given by
-
-\begin{equation}\label{eq:expected-value-vector}
-E[\mathbf{X}] = \begin{bmatrix} E(X_{1}) \\ E(X_{2}) \end{bmatrix}.
-\end{equation}
-\end{definition}
-
-\section{Transformations}\label{sec:transformations-two-rv}
-
-Let $(X_{1},X_{2})$ be a random vector with known distribution. Often we are interested in a function of $(X_{1},X_{2})$ such as $Y = u(X_{1},X_{2})$ . In this section we discuss the transformation technique for finding the distribution of $Y$ . We begin with a discussion of one-to-one transformations of random vectors.
-
-Suppose $(X_{1},X_{2})$ is a continuous type random vector with pdf $f_{X_{1},X_{2}}(x_{1},x_{2})$ defined on the support $\mathcal{S}$ . Let $Y_{1} = u_{1}(X_{1},X_{2})$ and $Y_{2} = u_{2}(X_{1},X_{2})$ define a transformation that maps $\mathcal{S}$ onto $\mathcal{T}$ . If this transformation is one-to-one, then there exists an inverse transformation $X_{1} = v_{1}(Y_{1},Y_{2})$ and $X_{2} = v_{2}(Y_{1},Y_{2})$ that maps $\mathcal{T}$ onto $\mathcal{S}$ . The joint pdf of $(Y_{1},Y_{2})$ is given by
-
-\begin{equation}\label{eq:transformation-joint-pdf}
-f_{Y_{1},Y_{2}}(y_{1},y_{2}) = f_{X_{1},X_{2}}(v_{1}(y_{1},y_{2}), v_{2}(y_{1},y_{2})) \cdot |J|,
-\end{equation}
-
-where $J$ is the Jacobian of the transformation:
-
-\[
-J = \det\begin{pmatrix}
-\frac{\partial x_{1}}{\partial y_{1}} & \frac{\partial x_{1}}{\partial y_{2}} \\
-\frac{\partial x_{2}}{\partial y_{1}} & \frac{\partial x_{2}}{\partial y_{2}}
-\end{pmatrix}
-= \frac{\partial x_{1}}{\partial y_{1}} \cdot \frac{\partial x_{2}}{\partial y_{2}} - \frac{\partial x_{1}}{\partial y_{2}} \cdot \frac{\partial x_{2}}{\partial y_{1}}.
-\]
-
-\begin{example}\label{ex:transformation-sum-difference}
-Let $X_{1}$ and $X_{2}$ have the joint pdf
-
-\[
-f_{X_{1},X_{2}}(x_{1},x_{2}) = \begin{cases}
-\frac{1}{8} & -2 < x_{1} < 2, -1 < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Suppose we want to find the joint pdf of $Y_{1} = X_{1}+X_{2}$ and $Y_{2} = X_{1}-X_{2}$ . The inverse transformation is $x_{1} = (y_{1}+y_{2})/2$ and $x_{2} = (y_{1}-y_{2})/2$ . The Jacobian is
-
-\[
-J = \det\begin{pmatrix}
-1/2 & 1/2 \\
-1/2 & -1/2
-\end{pmatrix} = -\frac{1}{2} - \frac{1}{2} = -1.
-\]
-
-The support $\mathcal{T}$ is determined by $|y_{1}+y_{2}| < 4$ and $|y_{1}-y_{2}| < 2$ . Hence, the joint pdf of $(Y_{1},Y_{2})$ is
-
-\[
-f_{Y_{1},Y_{2}}(y_{1},y_{2}) = \frac{1}{8} \cdot |J| = \frac{1}{8},
-\]
-
-over the region $\mathcal{T}$ .
-\end{example}
-
-\begin{example}\label{ex:transformation-product-quotient}
-Let $X_{1}$ and $X_{2}$ have the joint pdf
-
-\[
-f_{X_{1},X_{2}}(x_{1},x_{2}) = \begin{cases}
-8x_{1}x_{2} & 0 < x_{1} < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Suppose $Y_{1} = X_{1}/X_{2}$ and $Y_{2} = X_{2}$ . The inverse transformation is $x_{1} = y_{1}y_{2}$ and $x_{2} = y_{2}$ . The Jacobian is $J = y_{2}$ . The support of $(Y_{1},Y_{2})$ is $\mathcal{T} = \{(y_{1},y_{2}) : 0 < y_{1} < 1, 0 < y_{2} < 1\}$ . Hence, the joint pdf is
-
-\[
-f_{Y_{1},Y_{2}}(y_{1},y_{2}) = 8y_{1}y_{2} \cdot y_{2} = 8y_{1}y_{2}^{3},
-\]
-
-over $\mathcal{T}$ . The marginal pdfs are
-
-\[
-f_{Y_{1}}(y_{1}) = \int_{0}^{1} 8y_{1}y_{2}^{3} \, dy_{2} = 2y_{1}, \quad 0 < y_{1} < 1,
-\]
-
-and
-
-\[
-f_{Y_{2}}(y_{2}) = \int_{0}^{1} 8y_{1}y_{2}^{3} \, dy_{1} = 4y_{2}^{3}, \quad 0 < y_{2} < 1.
-\]
-\end{example}
-
-In addition to the change-of-variable and cdf techniques for finding distributions of functions of random variables, there is another method, called the moment generating function (mgf) technique, which works well for linear functions of random variables.
-
-\begin{example}\label{ex:mgf-technique-sum}
-Let $X_{1}$ and $X_{2}$ have the joint pmf
-
-\[
-p_{X_{1},X_{2}}(x_{1},x_{2}) = \begin{cases}
-\frac{\mu_{1}^{x_{1}}\mu_{2}^{x_{2}} e^{-\mu_{1}} e^{-\mu_{2}}}{x_{1}! \, x_{2}!} & x_{1}=0,1,2,\ldots, x_{2}=0,1,2,\ldots \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Let $Y = X_{1}+X_{2}$ and consider
-
-\[
-E(e^{tY}) = \sum_{x_{1}=0}^{\infty} \sum_{x_{2}=0}^{\infty} e^{t(x_{1}+x_{2})} p_{X_{1},X_{2}}(x_{1},x_{2}) = e^{(\mu_{1}+\mu_{2})(e^{t}-1)}.
-\]
-
-By the uniqueness of mgfs, the pmf of $Y$ must be
-
-\[
-p_{Y}(y) = e^{-(\mu_{1}+\mu_{2})} \frac{(\mu_{1}+\mu_{2})^{y}}{y!}, \quad y=0,1,2,\ldots,
-\]
-
-which is a Poisson distribution with parameter $\mu_{1}+\mu_{2}$ .
-\end{example}
-
-\section{Conditional Distributions and Expectations}\label{sec:conditional-distributions}
-
-In Section \ref{sec:distributions-two-rv} we introduced the joint probability distribution of a pair of random variables. We also showed how to recover the individual (marginal) distributions for the random variables from the joint distribution. In this section, we discuss conditional distributions, i.e., the distribution of one of the random variables when the other has assumed a specific value.
-
-Let $X_{1}$ and $X_{2}$ denote random variables of the discrete type, which have the joint pmf $p_{X_{1},X_{2}}(x_{1},x_{2})$ that is positive on the support set $\mathcal{S}$ and is zero elsewhere. Let $p_{X_{1}}(x_{1})$ and $p_{X_{2}}(x_{2})$ denote, respectively, the marginal probability mass functions of $X_{1}$ and $X_{2}$ . Let $x_{1}$ be a point in the support of $X_{1}$ ; hence, $p_{X_{1}}(x_{1}) > 0$ . Using the definition of conditional probability, we have
-
-\[
-P(X_{2}=x_{2} \mid X_{1}=x_{1}) = \frac{P(X_{1}=x_{1},X_{2}=x_{2})}{P(X_{1}=x_{1})} = \frac{p_{X_{1},X_{2}}(x_{1},x_{2})}{p_{X_{1}}(x_{1})}.
-\]
-
-Define this function as
-
-\begin{equation}\label{eq:conditional-pmf}
-p_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) = \frac{p_{X_{1},X_{2}}(x_{1},x_{2})}{p_{X_{1}}(x_{1})}, \quad x_{2} \in \mathcal{S}_{X_{2}}.
-\end{equation}
-
-For any fixed $x_{1}$ with $p_{X_{1}}(x_{1}) > 0$ , this function $p_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ satisfies the conditions of being a pmf of the discrete type because $p_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ is nonnegative and
-
-\[
-\sum_{x_{2}} p_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) = \frac{1}{p_{X_{1}}(x_{1})} \sum_{x_{2}} p_{X_{1},X_{2}}(x_{1},x_{2}) = \frac{p_{X_{1}}(x_{1})}{p_{X_{1}}(x_{1})} = 1.
-\]
-
-We call $p_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ the conditional pmf of the discrete type of random variable $X_{2}$ , given that the discrete type of random variable $X_{1} = x_{1}$ .
-
-Now let $X_{1}$ and $X_{2}$ denote random variables of the continuous type and have the joint pdf $f_{X_{1},X_{2}}(x_{1},x_{2})$ and the marginal probability density functions $f_{X_{1}}(x_{1})$ and $f_{X_{2}}(x_{2})$ , respectively. When $f_{X_{1}}(x_{1}) > 0$ , we define the symbol $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ by the relation
-
-\begin{equation}\label{eq:conditional-pdf}
-f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) = \frac{f_{X_{1},X_{2}}(x_{1},x_{2})}{f_{X_{1}}(x_{1})}.
-\end{equation}
-
-In this relation, $x_{1}$ is to be thought of as having a fixed (but any fixed) value for which $f_{X_{1}}(x_{1}) > 0$ . It is evident that $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ is nonnegative and that
-
-\[
-\int_{-\infty}^{\infty} f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) \, dx_{2} = \frac{1}{f_{X_{1}}(x_{1})} \int_{-\infty}^{\infty} f_{X_{1},X_{2}}(x_{1},x_{2}) \, dx_{2} = \frac{f_{X_{1}}(x_{1})}{f_{X_{1}}(x_{1})} = 1.
-\]
-
-That is, $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ has the properties of a pdf of one continuous type of random variable. It is called the conditional pdf of the continuous type of random variable $X_{2}$ , given that the continuous type of random variable $X_{1}$ has the value $x_{1}$ .
-
-Since each of $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ and $f_{X_{1}\mid X_{2}}(x_{1}\mid x_{2})$ is a pdf of one random variable, each has all the properties of such a pdf. If $u(X_{2})$ is a function of $X_{2}$ , the conditional expectation of $u(X_{2})$ , given that $X_{1} = x_{1}$ , if it exists, is given by
-
-\begin{equation}\label{eq:conditional-expectation}
-E[u(X_{2}) \mid x_{1}] = \int_{-\infty}^{\infty} u(x_{2}) f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) \, dx_{2}.
-\end{equation}
-
-Note that $E[u(X_{2})\mid x_{1}]$ is a function of $x_{1}$ . If they do exist, then $E(X_{2}\mid x_{1})$ is the mean and $\operatorname{Var}(X_{2}\mid x_{1})$ is the conditional variance of the conditional distribution of $X_{2}$ , given $X_{1} = x_{1}$ . Of course, we have
-
-\[
-\operatorname{Var}(X_{2}\mid x_{1}) = E(X_{2}^{2}\mid x_{1}) - [E(X_{2}\mid x_{1})]^{2}.
-\]
-
-\begin{example}\label{ex:conditional-distribution-triangular}
-Let $X_{1}$ and $X_{2}$ have the joint pdf
-
-\[
-f(x_{1},x_{2}) = \begin{cases}
-2 & 0 < x_{1} < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Then the marginal probability density functions are, respectively,
-
-\[
-f_{1}(x_{1}) = \begin{cases}
-\int_{x_{1}}^{1} 2 \, dx_{2} = 2(1-x_{1}) & 0 < x_{1} < 1 \\
-0 & \text{elsewhere},
-\end{cases}
-\]
-
-and
-
-\[
-f_{2}(x_{2}) = \begin{cases}
-\int_{0}^{x_{2}} 2 \, dx_{1} = 2x_{2} & 0 < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-The conditional pdf of $X_{1}$ , given $X_{2} = x_{2}$ , $0 < x_{2} < 1$ , is
-
-\[
-f_{1\mid 2}(x_{1}\mid x_{2}) = \frac{2}{2x_{2}} = \frac{1}{x_{2}}, \quad 0 < x_{1} < x_{2} < 1.
-\]
-
-Here the conditional mean and the conditional variance of $X_{1}$ , given $X_{2} = x_{2}$ , are respectively,
-
-\[
-E(X_{1}\mid x_{2}) = \int_{0}^{x_{2}} x_{1} \cdot \frac{1}{x_{2}} \, dx_{1} = \frac{x_{2}}{2}, \quad 0 < x_{2} < 1,
-\]
-
-and
-
-\[
-\operatorname{Var}(X_{1}\mid x_{2}) = \int_{0}^{x_{2}} \left(x_{1}-\frac{x_{2}}{2}\right)^{2} \cdot \frac{1}{x_{2}} \, dx_{1} = \frac{x_{2}^{2}}{12}, \quad 0 < x_{2} < 1.
-\]
-\end{example}
-
-\begin{theorem}\label{ex:law-total-expectation}
-Let $(X_{1},X_{2})$ be a random vector such that the variance of $X_{2}$ is finite. Then:
-
-\begin{enumerate}
-\item $E[E(X_{2}\mid X_{1})] = E(X_{2})$ .
-\item $\operatorname{Var}[E(X_{2}\mid X_{1})] \leq \operatorname{Var}(X_{2})$ .
-\end{enumerate}
-\end{theorem}
-
-\begin{remark}\label{rem:rao-blackwell}
-Intuitively, this result could have this useful interpretation. Both the random variables $X_{2}$ and $E(X_{2}\mid X_{1})$ have the same mean $\mu_{2}$ . If we did not know $\mu_{2}$ , we could use either of the two random variables to guess at the unknown $\mu_{2}$ . Since, however, $\operatorname{Var}(X_{2}) \geq \operatorname{Var}[E(X_{2}\mid X_{1})]$ , we would put more reliance on $E(X_{2}\mid X_{1})$ as a guess. That is, if we observe the pair $(X_{1},X_{2})$ to be $(x_{1},x_{2})$ , we could prefer to use $E(X_{2}\mid x_{1})$ to $x_{2}$ as a guess at the unknown $\mu_{2}$ . When studying the use of sufficient statistics in estimation in Chapter 7, we make use of this famous result, attributed to C. R. Rao and David Blackwell.
-\end{remark}
-
-\section{Independent Random Variables}\label{sec:independent-random-variables}
-
-Let $X_{1}$ and $X_{2}$ denote the random variables of the continuous type that have the joint pdf $f(x_{1},x_{2})$ and marginal probability density functions $f_{1}(x_{1})$ and $f_{2}(x_{2})$ , respectively. In accordance with the definition of the conditional pdf $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ , we may write the joint pdf $f(x_{1},x_{2})$ as
-
-\[
-f(x_{1},x_{2}) = f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) f_{1}(x_{1}).
-\]
-
-Suppose that we have an instance where $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ does not depend upon $x_{1}$ . Then the marginal pdf of $X_{2}$ is, for random variables of the continuous type,
-
-\[
-f_{2}(x_{2}) = \int_{-\infty}^{\infty} f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) f_{1}(x_{1}) \, dx_{1} = f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) \int_{-\infty}^{\infty} f_{1}(x_{1}) \, dx_{1} = f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}).
-\]
-
-Accordingly,
-
-\[
-f_{2}(x_{2}) = f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) \quad \text{and} \quad f(x_{1},x_{2}) = f_{1}(x_{1})f_{2}(x_{2}),
-\]
-
-when $f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1})$ does not depend upon $x_{1}$ . That is, if the conditional distribution of $X_{2}$ , given $X_{1} = x_{1}$ , is independent of any assumption about $x_{1}$ , then $f(x_{1},x_{2}) = f_{1}(x_{1})f_{2}(x_{2})$ .
-
-\begin{definition}[Independence]\label{def:independence}
-Let the random variables $X_{1}$ and $X_{2}$ have the joint pdf $f(x_{1},x_{2})$ [joint pmf $p(x_{1},x_{2})$ ] and the marginal pdfs [pmfs] $f_{1}(x_{1})$ $[p_{1}(x_{1})]$ and $f_{2}(x_{2})$ $[p_{2}(x_{2})]$ , respectively. The random variables $X_{1}$ and $X_{2}$ are said to be independent if, and only if, $f(x_{1},x_{2}) \equiv f_{1}(x_{1})f_{2}(x_{2})$ $[p(x_{1},x_{2}) \equiv p_{1}(x_{1})p_{2}(x_{2})]$ . Random variables that are not independent are said to be dependent.
-\end{definition}
-
-\begin{remark}\label{rem:independence-product-space}
-Two comments should be made about the preceding definition. First, the product of two positive functions $f_{1}(x_{1})f_{2}(x_{2})$ means a function that is positive on the product space. That is, if $f_{1}(x_{1})$ and $f_{2}(x_{2})$ are positive on, and only on, the respective spaces $\mathcal{S}_{1}$ and $\mathcal{S}_{2}$ , then the product of $f_{1}(x_{1})$ and $f_{2}(x_{2})$ is positive on, and only on, the product space $\mathcal{S} = \{(x_{1},x_{2}) : x_{1} \in \mathcal{S}_{1}, x_{2} \in \mathcal{S}_{2}\}$ .
-\end{remark}
-
-\begin{example}\label{ex:dependent-demonstration}
-Let the joint pdf of $X_{1}$ and $X_{2}$ be
-
-\[
-f(x_{1},x_{2}) = \begin{cases}
-x_{1}+x_{2} & 0 < x_{1} < 1, 0 < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-We show that $X_{1}$ and $X_{2}$ are dependent. Here the marginal probability density functions are
-
-\[
-f_{1}(x_{1}) = \begin{cases}
-\int_{0}^{1} (x_{1}+x_{2}) \, dx_{2} = x_{1}+\frac{1}{2} & 0 < x_{1} < 1 \\
-0 & \text{elsewhere},
-\end{cases}
-\]
-
-and
-
-\[
-f_{2}(x_{2}) = \begin{cases}
-\int_{0}^{1} (x_{1}+x_{2}) \, dx_{1} = \frac{1}{2}+x_{2} & 0 < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-
-Since $f(x_{1},x_{2}) \neq f_{1}(x_{1})f_{2}(x_{2})$ , the random variables $X_{1}$ and $X_{2}$ are dependent.
-\end{example}
-
-\begin{theorem}\label{ex:independence-factorization}
-Let the random variables $X_{1}$ and $X_{2}$ have supports $\mathcal{S}_{1}$ and $\mathcal{S}_{2}$ , respectively, and have the joint pdf $f(x_{1},x_{2})$ . Then $X_{1}$ and $X_{2}$ are independent if and only if $f(x_{1},x_{2})$ can be written as a product of a nonnegative function of $x_{1}$ and a nonnegative function of $x_{2}$ . That is,
-
-\[
-f(x_{1},x_{2}) \equiv g(x_{1})h(x_{2}),
-\]
-
-where $g(x_{1}) > 0$ , $x_{1} \in \mathcal{S}_{1}$ , zero elsewhere, and $h(x_{2}) > 0$ , $x_{2} \in \mathcal{S}_{2}$ , zero elsewhere.
-\end{theorem}
-
-The following theorem provides a useful criterion for establishing independence.
-
-\begin{theorem}\label{ex:independence-cdf}
-Let the random variables $X_{1}$ and $X_{2}$ have the joint cdf $F(x_{1},x_{2})$ and marginal cdfs $F_{1}(x_{1})$ and $F_{2}(x_{2})$ , respectively. Then $X_{1}$ and $X_{2}$ are independent if and only if
-
-\[
-F(x_{1},x_{2}) \equiv F_{1}(x_{1})F_{2}(x_{2}).
-\]
-
-In the discrete case, this is equivalent to $p(x_{1},x_{2}) \equiv p_{1}(x_{1})p_{2}(x_{2})$ . In the continuous case, this is equivalent to $f(x_{1},x_{2}) \equiv f_{1}(x_{1})f_{2}(x_{2})$ .
-\end{theorem}
-
-If $X_{1}$ and $X_{2}$ are independent, then the conditional distributions equal the marginal distributions:
-
-\[
-f_{X_{2}\mid X_{1}}(x_{2}\mid x_{1}) = f_{2}(x_{2}) \quad \text{and} \quad f_{X_{1}\mid X_{2}}(x_{1}\mid x_{2}) = f_{1}(x_{1}).
-\]
-
-Moreover, for any functions $g(X_{1})$ and $h(X_{2})$ ,
-
-\[
-E[g(X_{1})h(X_{2})] = E[g(X_{1})] \cdot E[h(X_{2})].
-\]
-
-In particular, if $X_{1}$ and $X_{2}$ are independent, then
-
-\[
-\operatorname{Cov}(X_{1},X_{2}) = 0.
-\]
-
-However, the converse is not true in general; zero covariance does not imply independence (unless the distribution is bivariate normal).
-
-\section{Correlation Coefficient}\label{sec:correlation-coefficient}
-
-In Section \ref{sec:distributions-two-rv} we defined the expected value of a random vector. Now we discuss measures of linear association between two random variables.
-
-\begin{definition}[Covariance]\label{def:covariance}
-The covariance between $X_{1}$ and $X_{2}$ is defined as
-
-\[
-\operatorname{Cov}(X_{1},X_{2}) = E[(X_{1}-E[X_{1}])(X_{2}-E[X_{2}])] = E(X_{1}X_{2}) - E(X_{1})E(X_{2}).
-\]
-\end{definition}
-
-The covariance has the following properties:
-
-\begin{enumerate}
-\item $\operatorname{Cov}(X_{1},X_{1}) = \operatorname{Var}(X_{1})$ .
-\item $\operatorname{Cov}(X_{1},X_{2}) = \operatorname{Cov}(X_{2},X_{1})$ .
-\item $\operatorname{Cov}(aX_{1},X_{2}) = a\operatorname{Cov}(X_{1},X_{2})$ .
-\item $\operatorname{Cov}(X_{1}+X_{2},Y) = \operatorname{Cov}(X_{1},Y) + \operatorname{Cov}(X_{2},Y)$ .
-\item If $X_{1}$ and $X_{2}$ are independent, then $\operatorname{Cov}(X_{1},X_{2}) = 0$ .
-\end{enumerate}
-
-From property (4), we have
-
-\[
-\operatorname{Var}(X_{1}+X_{2}) = \operatorname{Var}(X_{1}) + \operatorname{Var}(X_{2}) + 2\operatorname{Cov}(X_{1},X_{2}).
-\]
-
-\begin{definition}[Correlation Coefficient]\label{def:correlation-coefficient}
-The correlation coefficient between $X_{1}$ and $X_{2}$ is defined as
-
-\[
-\rho_{12} = \text{corr}(X_{1},X_{2}) = \frac{\operatorname{Cov}(X_{1},X_{2})}{\sqrt{\operatorname{Var}(X_{1})} \sqrt{\operatorname{Var}(X_{2})}} = \frac{\operatorname{Cov}(X_{1},X_{2})}{\sigma_{1}\sigma_{2}},
-\]
-
-provided $\sigma_{1} > 0$ and $\sigma_{2} > 0$ .
-\end{definition}
-
-The correlation coefficient satisfies $-1 \leq \rho_{12} \leq 1$ . Moreover, $|\rho_{12}| = 1$ if and only if $X_{1}$ and $X_{2}$ are linearly related; that is, there exist constants $a \neq 0$ and $b$ such that $X_{2} = aX_{1}+b$ with probability 1. When $\rho_{12} = 0$ , we say that $X_{1}$ and $X_{2}$ are uncorrelated.
-
-\begin{remark}\label{rem:covariance-vs-correlation}
-Note that covariance depends on the units of measurement, while the correlation coefficient is dimensionless. The correlation coefficient is a standardized measure of linear association.
-\end{remark}
-
-If $X_{1}$ and $X_{2}$ are independent, then they are uncorrelated ($\rho_{12}=0$ ). However, the converse is not generally true; uncorrelated random variables need not be independent.
-
-\section{The Bivariate Normal Distribution}\label{sec:bivariate-normal}
-
-One of the most important joint distributions is the bivariate normal distribution.
-
-\begin{definition}[Bivariate Normal Distribution]\label{def:bivariate-normal}
-We say that $(X_{1},X_{2})$ has a bivariate normal distribution if the joint pdf is given by
-
-\[
-f(x_{1},x_{2}) = \frac{1}{2\pi\sigma_{1}\sigma_{2}\sqrt{1-\rho^{2}}} \exp\left\{ -\frac{1}{2(1-\rho^{2})} \left[ \frac{(x_{1}-\mu_{1})^{2}}{\sigma_{1}^{2}} - 2\rho\frac{(x_{1}-\mu_{1})(x_{2}-\mu_{2})}{\sigma_{1}\sigma_{2}} + \frac{(x_{2}-\mu_{2})^{2}}{\sigma_{2}^{2}} \right] \right\},
-\]
-
-for $-\infty < x_{1} < \infty$ , $-\infty < x_{2} < \infty$ , where $\mu_{1} \in R$ , $\mu_{2} \in R$ , $\sigma_{1} > 0$ , $\sigma_{2} > 0$ , and $-1 < \rho < 1$ . We write $(X_{1},X_{2}) \sim N(\mu_{1},\mu_{2},\sigma_{1}^{2},\sigma_{2}^{2},\rho)$ .
-\end{definition}
-
-The parameters have the following interpretations:
+直觉上，我们需要"忽略" $X_2$ 的信息。具体做法是：
 \begin{itemize}
-\item $E(X_{1}) = \mu_{1}$ and $E(X_{2}) = \mu_{2}$ .
-\item $\operatorname{Var}(X_{1}) = \sigma_{1}^{2}$ and $\operatorname{Var}(X_{2}) = \sigma_{2}^{2}$ .
-\item $\rho$ is the correlation coefficient between $X_{1}$ and $X_{2}$ .
+\item \textbf{离散型}：对 $x_2$ 求和
+\item \textbf{连续型}：对 $x_2$ 积分
 \end{itemize}
 
-\begin{theorem}[Properties of Bivariate Normal]\label{ex:bivariate-normal-properties}
-If $(X_{1},X_{2}) \sim N(\mu_{1},\mu_{2},\sigma_{1}^{2},\sigma_{2}^{2},\rho)$ , then:
+这引导我们得到：
+
+\textbf{边缘 pmf}：
+\begin{equation}\label{eq:marginal-pmf-ch2}
+p_{X_1}(x_1) = \sum_{x_2} p_{X_1, X_2}(x_1, x_2).
+\end{equation}
+
+\textbf{边缘 pdf}：
+\begin{equation}\label{eq:marginal-pdf-ch2}
+f_{X_1}(x_1) = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2.
+\end{equation}
+
+\begin{remark}{为什么叫"边缘"？}
+在二维离散情形，将联合 pmf 列表，边缘分布恰好是每行（或每列）的"边缘"之和。这解释了名称的由来。
+\end remark}
+
+\subsection{期望的推广}
+
+同样的思想：$Y = g(X_1, X_2)$ 是新的随机变量，其期望为
+\[
+\mathbb{E}Y = \int\int g(x_1, x_2) f(x_1, x_2) \, dx_1 \, dx_2 \quad \text{（连续型）}.
+\]
+
+关键发现：期望算子 $E$ 对加法保持线性，无论 $X_1, X_2$ 是否独立：
+
+\begin{equation}\label{th:expectation-linear-ch2}
+\mathbb{E}(aY_1 + bY_2) = a\mathbb{E}Y_1 + b\mathbb{E}Y_2.
+\end{equation}
+
+\textbf{这为什么重要？} 在第1章我们学过独立随机变量之和的方差公式 $\text{var}(X_1 + X_2) = \text{var}(X_1) + \text{var}(X_2)$。期望的线性性是其基础——它无需独立性即可成立。
+
+\section{2.2 变换：寻找新视角}\label{sec:2.2}
+
+给定 $(X_1, X_2)$ 的分布，我们经常想研究其函数 $Y = u(X_1, X_2)$ 的分布。例如：
+\begin{itemize}
+\item 和 $Y = X_1 + X_2$（两个随机变量之和）
+\item 商 $Y = X_1 / X_2$（比值）
+\item 极坐标变换 $(R, \Theta) = (\sqrt{X_1^2 + X_2^2}, \arctan(X_2/X_1))$
+\end{itemize}
+
+对于连续型，一一对应的变换有简洁的公式：
+
+\begin{equation}\label{eq:transformation-joint-pdf-ch2}
+f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(v_1(y_1, y_2), v_2(y_1, y_2)) \cdot |J|.
+\end{equation}
+
+其中 Jacobian 行列式
+\begin{equation}\label{eq:jacobian-ch2}
+J = \det\begin{pmatrix}
+\frac{\partial x_1}{\partial y_1} & \frac{\partial x_1}{\partial y_2} \\
+\frac{\partial x_2}{\partial y_1} & \frac{\partial x_2}{\partial y_2}
+\end{pmatrix}
+= \frac{\partial x_1}{\partial y_1} \cdot \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \cdot \frac{\partial x_2}{\partial y_1}.
+\end{equation}
+
+\textbf{为什么有 $|J|$？} 这是面积元素的变换因子。在一元情形我们有 $f_Y(y) = f_X(h(y)) |h'(y)|$；二维情形类似，只是用行列式度量了面积缩放比例。
+
+\section{2.3 条件分布：信息的价值}\label{sec:2.3}
+
+\textbf{核心问题}：已知 $X_1$ 的值，$X_2$ 的分布会如何变化？
+
+这就是条件分布要回答的问题。条件分布本质上是在 $X_1 = x_1$ 的条件下，重新审视 $X_2$ 的行为。
+
+\textbf{离散型条件 pmf}：
+\begin{equation}\label{eq:conditional-pmf-ch2}
+p_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}, \quad p_{X_1}(x_1) > 0.
+\end{equation}
+
+\textbf{连续型条件 pdf}：
+\begin{equation}\label{eq:conditional-pdf-ch2}
+f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \quad f_{X_1}(x_1) > 0.
+\end{equation}
+
+\textbf{注意}：分子是联合密度，分母是边缘密度。这个比值衡量的是，在 $X_1 = x_1$ 的条件下，$(x_1, x_2)$ 这个"点"有多"典型"。
+
+由此可以定义条件期望：
+\begin{equation}\label{eq:conditional-expectation-ch2}
+\mathbb{E}[u(X_2) \mid x_1] = \int_{-\infty}^{\infty} u(x_2) f_{X_2 \mid X_1}(x_2 \mid x_1) \, dx_2.
+\end{equation}
+
+这里有一个深刻的定理，它连接了条件与边缘：
+
+\begin{equation}\label{th:law-total-expectation-ch2}
+\mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \mathbb{E}(X_2).
+\end{equation}
+
+这称为\textbf{全期望公式}。它的含义是：\emph{对条件均值再取期望，等于无条件期望}。直观上，无论我们按哪个 $x_1$ 分组计算均值，最终的平均仍然是总均值。
+
+更惊人的是方差的不等式：
+\[
+\text{var}[\mathbb{E}(X_2 \mid X_1)] \leq \text{var}(X_2).
+\]
+
+\textbf{Rao-Blackwell 定理}：若用 $X_2$ 估计 $\mu_2 = \mathbb{E}X_2$，则条件均值 $E(X_2 \mid x_1)$ 比 $X_2$ 本身更精确（方差更小）。这在统计推断中极其重要——它告诉我们如何利用辅助信息改进估计。
+
+\section{2.4 独立性：变量间的"无关系"}\label{sec:2.4}
+
+\textbf{核心问题}：什么时候 $X_1$ 和 $X_2$ 互不影响？
+
+若 $X_1$ 与 $X_2$ 独立，则知道 $X_1$ 的值不会改变我们对 $X_2$ 的认知。用条件分布的语言：
+\[
+f_{X_2 \mid X_1}(x_2 \mid x_1) = f_{X_2}(x_2) \quad \text{（不依赖于 } x_1 \text{）}.
+\]
+
+由此推出联合密度可分离：
+
+\begin{equation}\label{def:independence-ch2}
+X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv f_1(x_1) f_2(x_2).
+\end{equation}
+
+一个实用的判据：
+
+\begin{equation}\label{th:independence-factorization-ch2}
+X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad \text{（可分离变量）}.
+\end{equation}
+
+\textbf{独立性的后果}（这些在第1章学过，现在有了二元语境）：
+\begin{itemize}
+\item $\mathbb{E}[g(X_1) h(X_2)] = \mathbb{E}[g(X_1)] \cdot \mathbb{E}[h(X_2)]$
+\item $\text{cov}(X_1, X_2) = 0$
+\end{itemize}
+
+\begin{remark}{重要警告}
+\textbf{逆命题不成立！} $\text{cov}(X_1, X_2) = 0$ 并不意味着独立性（除二元正态分布外）。
+\end remark}
+
+这提醒我们：\textbf{不相关}（uncorrelated）和\textbf{独立}（independent）是两个不同概念。不相关只说明没有线性关系，但变量间可能存在非线性依赖。
+
+\section{2.5 相关性：线性关联的度量}\label{sec:2.5}
+
+我们已经知道 $\text{cov}(X_1, X_2) = 0$ 不能完全刻画独立性。那么如何量化 $X_1$ 与 $X_2$ 之间的"关联程度"？
+
+协方差 $\text{cov}(X_1, X_2)$ 存在一个问题：它依赖于 $X_1, X_2$ 的量纲。例如，身高（cm）和体重（kg）的协方差与换算成英寸和磅时不同。
+
+\textbf{解决方案}：先标准化，再求协方差：
+
+\begin{equation}\label{def:correlation-ch2}
+\rho_{12} = \text{corr}(X_1, X_2) = \frac{\text{cov}(X_1, X_2)}{\sqrt{\text{var}(X_1)} \sqrt{\text{var}(X_2)}} = \frac{\text{cov}(X_1, X_2)}{\sigma_1 \sigma_2}.
+\end{equation}
+
+这就是相关系数（correlation coefficient）。
+
+\textbf{核心性质}：
+\begin{itemize}
+\item $-1 \leq \rho_{12} \leq 1$
+\item $|\rho_{12}| = 1 \iff X_2 = aX_1 + b$（完美线性关系）
+\item $\rho_{12} = 0$ 称\textbf{不相关}
+\end{itemize}
+
+\textbf{为什么是 $[-1, 1]$？} 这来自 Cauchy-Schwarz 不等式：
+\[
+|\text{cov}(X_1, X_2)| = |\mathbb{E}[(X_1-\mu_1)(X_2-\mu_2)]| \leq \sqrt{\mathbb{E}[(X_1-\mu_1)^2] \cdot \mathbb{E}[(X_2-\mu_2)^2]} = \sigma_1 \sigma_2.
+\]
+
+\begin{remark}{相关 vs 协方差}
+协方差取决于量纲（"米的协方差"vs"厘米的协方差"数值不同）；相关系数是无量纲的，消除了单位影响。因此，相关系数是更通用的"关联程度"度量。
+\end remark}
+
+\section{2.6 二元正态：最重要的二元分布}\label{sec:2.6}
+
+在所有二元分布中，二元正态分布占据核心地位。它是一元正态分布在二维的自然推广。
+
+\textbf{为什么重要？}
+\begin{enumerate}
+\item 边缘分布和条件分布都是正态的
+\item 线性组合仍是正态
+\item 不相关 $\iff$ 独立（这是正态独有的优雅性质）
+\item 多元正态是计量经济学、信号处理等领域的基石
+\end{enumerate}
+
+\begin{definition}[二元正态分布]\label{def:bivariate-normal-ch2}
+$(X_1, X_2)$ 服从二元正态分布，若其联合 pdf 为
+\[
+f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{1}{2(1-\rho^2)} \left[ \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^2}{\sigma_2^2} \right] \right\},
+\]
+记作 $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$。
+\end{definition}
+
+\textbf{五个参数的含义}：
+\begin{itemize}
+\item $\mu_1, \mu_2$：边缘分布的均值
+\item $\sigma_1^2, \sigma_2^2$：边缘分布的方差
+\item $\rho$：相关系数
+\end{itemize}
+
+\begin{remark}{条件分布的几何直觉}
+在二元正态中，条件均值
+\[
+\mathbb{E}(X_2 \mid x_1) = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)
+\]
+是 $x_1$ 的线性函数。这意味着：给定 $X_1 = x_1$，$X_2$ 的最佳预测也是线性的，其斜率由相关系数 $\rho$ 决定。
+\end remark}
+
+\textbf{关键性质}：
 
 \begin{enumerate}
-\item The marginal distributions are $X_{1} \sim N(\mu_{1},\sigma_{1}^{2})$ and $X_{2} \sim N(\mu_{2},\sigma_{2}^{2})$ .
-\item The conditional distribution of $X_{2}$ given $X_{1}=x_{1}$ is normal with mean and variance:
+\item 边缘分布：$X_1 \sim N(\mu_1, \sigma_1^2)$，$X_2 \sim N(\mu_2, \sigma_2^2)$
+\item 条件分布：
 \[
-E(X_{2}\mid x_{1}) = \mu_{2} + \rho\frac{\sigma_{2}}{\sigma_{1}}(x_{1}-\mu_{1}), \quad \operatorname{Var}(X_{2}\mid x_{1}) = \sigma_{2}^{2}(1-\rho^{2}).
+X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1), \ \sigma_2^2(1-\rho^2)\right)
 \]
-\item $X_{1}$ and $X_{2}$ are independent if and only if $\rho = 0$ .
-\item Any linear combination $aX_{1}+bX_{2}$ has a normal distribution.
+\item $X_1 \Perp X_2 \iff \rho = 0$（正态独有的"不相关 $\Rightarrow$ 独立"）
+\item 任意线性组合 $aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, \text{var}(aX_1 + bX_2))$
 \end{enumerate}
-\end{theorem}
 
-A remarkable property of the bivariate normal distribution is that zero covariance (uncorrelatedness) implies independence.
-
-\begin{corollary}\label{cor:bivariate-normal-uncorrelated-independent}
-If $(X_{1},X_{2})$ has a bivariate normal distribution and $\rho = 0$ , then $X_{1}$ and $X_{2}$ are independent.
-\end{corollary}
-
-\section{Exercises}\label{sec:chapter2-exercises}
-
-\begin{exercise}{2.1.1}
-Let $f(x_{1},x_{2}) = 4x_{1}x_{2}$ , $0 < x_{1} < 1$ , $0 < x_{2} < 1$ , zero elsewhere, be the pdf of $X_{1}$ and $X_{2}$ . Find $P(0 < X_{1} < \frac{1}{2},\frac{1}{4} < X_{2} < 1)$ , $P(X_{1} = X_{2})$ , $P(X_{1} < X_{2})$ , and $P(X_{1}\leq X_{2})$ .
-\end{exercise}
-
-\begin{exercise}{2.1.3}
-Let $F(x,y)$ be the distribution function of $X$ and $Y$ . For all real constants $a < b$ , $c < d$ , show that
-\[
-P(a < X \leq b, c < Y \leq d) = F(b,d) - F(b,c) - F(a,d) + F(a,c).
-\]
-\end{exercise}
-
-\begin{exercise}{2.1.7}
-Let $f(x,y) = e^{-x-y}$ , $0 < x < \infty$ , $0 < y < \infty$ , zero elsewhere, be the pdf of $X$ and $Y$ . Then if $Z = X+Y$ , compute $P(Z \leq 0)$ , $P(Z \leq 6)$ , and, more generally, $P(Z \leq z)$ , for $0 < z < \infty$ . What is the pdf of $Z$ ?
-\end{exercise}
-
-\begin{exercise}{2.1.11}
-Let $X_{1}$ and $X_{2}$ have the joint pdf $f(x_{1},x_{2}) = 15x_{1}^{2}x_{2}$ , $0 < x_{1} < x_{2} < 1$ , zero elsewhere. Find the marginal pdfs and compute $P(X_{1}+X_{2}\leq 1)$ .
-\end{exercise}
-
-\begin{exercise}{2.2.5}
-Let $X_{1}$ and $X_{2}$ be continuous random variables with the joint probability density function $f_{X_{1},X_{2}}(x_{1},x_{2}), -\infty < x_{i} < \infty, i=1,2$ . Let $Y_{1} = X_{1}+X_{2}$ and $Y_{2} = X_{2}$ .
-
-\begin{enumerate}
-\item Find the joint pdf $f_{Y_{1},Y_{2}}$ .
-\item Show that
-\[
-f_{Y_{1}}(y_{1}) = \int_{-\infty}^{\infty} f_{X_{1},X_{2}}(y_{1}-y_{2},y_{2}) \, dy_{2},
-\]
-which is sometimes called the convolution formula.
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}{2.3.1}
-Let $X_{1}$ and $X_{2}$ have the joint pdf $f(x_{1},x_{2}) = x_{1}+x_{2}$ , $0 < x_{1} < 1$ , $0 < x_{2} < 1$ , zero elsewhere. Find the conditional mean and variance of $X_{2}$ , given $X_{1}=x_{1}$ , $0 < x_{1} < 1$ .
-\end{exercise}
-
-\begin{exercise}{2.4.1}
-Let the joint pdf of $X_{1}$ and $X_{2}$ be
-\[
-f(x_{1},x_{2}) = \begin{cases}
-2 & 0 < x_{1} < x_{2} < 1 \\
-0 & \text{elsewhere}.
-\end{cases}
-\]
-Are $X_{1}$ and $X_{2}$ independent? Why or why not?
-\end{exercise}
-
-\userannotation{Chapter 2 focuses on bivariate distributions: joint pmf/pdf, marginal distributions, conditional distributions, independence, transformations, and the correlation coefficient. Key formulas: (2.1.1) joint cdf, (2.1.8)/(2.1.9) marginal pmf/pdf, (2.1.10)/(2.1.11) expectation, (2.3.1)/(2.3.2) conditional pmf/pdf, (2.3.1)/(2.3.2) conditional expectation.}
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{概念} & \textbf{公式/描述} \\ \hline
+联合 cdf & $F_{X_1,X_2}(x_1,x_2) = \mathbb{P}(X_1\leq x_1, X_2\leq x_2)$ \\ \hline
+边缘 pmf & $p_{X_1}(x_1) = \sum_{x_2} p_{X_1,X_2}(x_1,x_2)$ \\ \hline
+边缘 pdf & $f_{X_1}(x_1) = \int_{-\infty}^{\infty} f(x_1,x_2)\,dx_2$ \\ \hline
+条件 pmf & $p_{X_2|X_1}(x_2|x_1) = p(x_1,x_2)/p_{X_1}(x_1)$ \\ \hline
+条件 pdf & $f_{X_2|X_1}(x_2|x_1) = f(x_1,x_2)/f_{X_1}(x_1)$ \\ \hline
+全期望 & $\mathbb{E}[\mathbb{E}(X_2|X_1)] = \mathbb{E}X_2$ \\ \hline
+独立性 & $f(x_1,x_2) = f_1(x_1)f_2(x_2)$ \\ \hline
+协方差 & $\text{cov} = \mathbb{E}(X_1X_2) - \mathbb{E}X_1\mathbb{E}X_2$ \\ \hline
+相关系数 & $\rho = \text{cov}/(\sigma_1\sigma_2)$，$-1 \leq \rho \leq 1$ \\ \hline
+\end{tabular}
+\end{center}
