@@ -1,0 +1,606 @@
+\chapter{Probability and Distributions}\label{chap:probability-distribution}
+
+\section*{Chapter 1 概述}
+
+本章建立概率论的基本框架，从集合论和概率公理出发，逐步过渡到随机变量、期望、方差等核心概念。
+
+\section{Motivation: Why Study Probability?}\label{sec:probability-motivation}
+
+统计学研究的是**不确定性现象**。在医学、经济学、农业等领域，研究者希望了解某些现象的规律，但这些现象的 outcome（结果）无法在实验前确定预测。
+
+\bigskip
+
+\textbf{The Big Question:} 如何量化"不确定性"？如何用数学语言描述"某事件发生的可能性大小"？
+
+\bigskip
+
+这正是概率论要回答的问题。概率论为统计学提供了理论基础，使我们能够在不确定性的框架下进行统计推断（statistical inference）——即从样本数据得出关于总体的结论。
+
+\section{Sample Space and Events}\label{sec:sample-space-events}
+
+\subsection{随机实验}\label{sub:random-experiment}
+
+\begin{Definition}[随机实验]\label{def:random-experiment}
+随机实验（random experiment）是指在本质上相同的条件下可以重复进行的实验。每次实验产生一个 outcome（结果），但无法在实验前预测具体是哪一个。
+\end{Definition}
+
+\textbf{Examples:}
+\begin{itemize}
+    \item 抛掷硬币：outcome 是 $H$（正面）或 $T$（反面）
+    \item 投掷两枚骰子：outcome 是 36 种有序对 $(i,j)$，其中 $i,j \in \{1,2,3,4,5,6\}$
+    \item 测量成年男性的身高
+\end{itemize}
+
+\subsection{样本空间}\label{sub:sample-space}
+
+\begin{Definition}[样本空间]\label{def:sample-space}
+样本空间（sample space）记为 $\mathcal{C}$，是随机实验所有可能 outcome 的集合。
+\end{Definition}
+
+\textbf{Examples:}
+\begin{itemize}
+    \item 抛硬币：$\mathcal{C} = \{H, T\}$
+    \item 两枚骰子：$\mathcal{C} = \{(1,1), (1,2), \ldots, (6,6)\}$，共 36 个元素
+\end{itemize}
+
+\subsection{事件}\label{sub:event}
+
+在实验中，我们常常关心某些特定 outcome 的集合——即某些 subset（子集）是否发生。
+
+\begin{Definition}[事件]\label{def:event}
+事件（event）是样本空间 $\mathcal{C}$ 的子集。若实验结果 $\omega \in A$，则称事件 $A$ 发生（occurred）。
+\end{Definition}
+
+\textbf{Examples:}
+\begin{itemize}
+    \item 抛硬币得到正面：$A = \{H\}$
+    \item 两枚骰子点数之和为 7 或 11：
+    \[
+    A = \{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1),(5,6),(6,5)\}
+    \]
+\end{itemize}
+
+\section{Set Theory Review}\label{sec:set-theory}
+
+我们用集合语言描述事件。设 $A, B, C$ 为 $\mathcal{C}$ 的子集。
+
+\subsection{集合运算}\label{sub:set-operations}
+
+\begin{enumerate}
+    \item \textbf{并（Union）}: $A \cup B = \{x: x \in A \text{ 或 } x \in B\}$
+    \item \textbf{交（Intersection）}: $A \cap B = \{x: x \in A \text{ 且 } x \in B\}$
+    \item \textbf{补（Complement）}: $A^c = \{x: x \notin A\}$
+    \item \textbf{差（Difference）}: $A - B = A \cap B^c$
+\end{enumerate}
+
+若 $A \cap B = \emptyset$，则称 $A$ 与 $B$ 互不相交（mutually disjoint）。
+
+\subsection{划分与德摩根定律}\label{sub:partition-demorgan}
+
+若 $\{A_i\}$ 两两不相交且 $\bigcup_i A_i = \mathcal{C}$，则 $\{A_i\}$ 是 $\mathcal{C}$ 的一个划分（partition）。
+
+\begin{Theorem}[德摩根定律]\label{eq:de-morgan}
+\[
+\left(\bigcup_{i=1}^{\infty} A_i\right)^c = \bigcap_{i=1}^{\infty} A_i^c, \quad
+\left(\bigcap_{i=1}^{\infty} A_i\right)^c = \bigcup_{i=1}^{\infty} A_i^c.
+\]
+\end{Theorem}
+
+可数并、可数交记作 $\cup_{i=1}^{\infty} A_i$ 和 $\cap_{i=1}^{\infty} A_i$。
+
+\section{The Probability Set Function}\label{sec:probability-function}
+
+\subsection{Why Do We Need Axioms?}\label{sub:why-axioms}
+
+我们已经知道：重复实验 $N$ 次，事件 $A$ 发生的频率为 $f_A = \#\{A\} / N$。
+
+频率有以下三个直观性质：
+\begin{enumerate}
+    \item $f_A \geq 0$
+    \item $f_{\mathcal{C}} = 1$
+    \item 若 $A_1, A_2$ 不交，则 $f_{A_1 \cup A_2} = f_{A_1} + f_{A_2}$
+\end{enumerate}
+
+概率的公理化定义正是从这三个性质抽象而来。
+
+\subsection{Probability Axioms}\label{sub:probability-axioms}
+
+\begin{Definition}[概率集函数]\label{def:probability-set-function}
+设 $\mathcal{C}$ 为样本空间，$\mathcal{B}$ 为事件域（$\sigma$-域）。函数 $P: \mathcal{B} \to \mathbb{R}$ 满足以下三条公理则称为概率集函数（probability set function）：
+
+\begin{enumerate}
+    \item \textbf{非负性}: $P(A) \geq 0$，对所有 $A \in \mathcal{B}$
+    \item \textbf{规范性}: $P(\mathcal{C}) = 1$
+    \item \textbf{可列可加性}: 若 $\{A_n\}$ 两两不相交，则
+    \[
+    P\left(\bigcup_{n=1}^{\infty} A_n\right) = \sum_{n=1}^{\infty} P(A_n)
+    \]
+\end{enumerate}
+\end{Definition}
+
+\textbf{Remark:} 概率公理与频率的三条性质一一对应。公理化的好处是：无论你对概率的哲学理解是"频率解释"还是"主观信念"，数学推导都是一致的。
+
+\subsection{Basic Properties}\label{sub:basic-properties}
+
+由公理可推出以下基本性质：
+
+\begin{Theorem}[概率的基本性质]\label{prop:probability-properties}
+设 $P$ 为概率集函数，则：
+\begin{enumerate}
+    \item $P(\emptyset) = 0$
+    \item $P(A^c) = 1 - P(A)$
+    \item 若 $A \subset B$，则 $P(A) \leq P(B)$（单调性）
+    \item $0 \leq P(A) \leq 1$
+    \item $P(A \cup B) = P(A) + P(B) - P(A \cap B)$（容斥原理）
+\end{enumerate}
+\end{Theorem}
+
+\begin{Proof}
+性质1: 取 $A = \emptyset$，则 $\mathcal{C} = \emptyset \cup \mathcal{C}$，由可列可加性得 $1 = P(\emptyset) + P(\mathcal{C}) = P(\emptyset) + 1$，故 $P(\emptyset) = 0$。
+
+性质2: $\mathcal{C} = A \cup A^c$ 且 $A \cap A^c = \emptyset$，故 $1 = P(A) + P(A^c)$。
+
+其余性质详见原文。
+\end{Proof}
+
+\textbf{直觉理解:} 性质2"补的概率"非常好用。当直接计算 $P(A)$ 困难时，往往计算 $P(A^c)$ 更容易。
+
+\section{Conditional Probability and Independence}\label{sec:conditional-independence}
+
+\subsection{Conditional Probability: Updating Information}\label{sub:conditional-probability}
+
+当我们已知某些信息发生时，事件的概率会如何变化？
+
+\begin{Definition}[条件概率]\label{def:conditional-probability}
+在事件 $B$ 已发生的条件下，事件 $A$ 的条件概率（conditional probability）定义为
+\[
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) > 0.
+\]
+\end{Definition}
+
+\textbf{直观理解:} 条件概率 $P(A \mid B)$ 相当于把样本空间"压缩"到 $B$ 上，然后计算 $A$ 在这个缩小后的空间中的概率。
+
+\subsection{Multiplication Rule}\label{sub:multiplication-rule}
+
+条件概率的定义直接给出乘法法则：
+\[
+P(A \cap B) = P(A) \cdot P(B \mid A) = P(B) \cdot P(A \mid B).
+\]
+
+推广到 $n$ 个事件：
+\[
+P\left(\bigcap_{i=1}^{n} A_i\right) = P(A_1) \cdot P(A_2 \mid A_1) \cdot P(A_3 \mid A_1 \cap A_2) \cdots P\left(A_n \mid \bigcap_{i=1}^{n-1} A_i\right).
+\]
+
+\subsection{Bayes' Theorem: From Effect to Cause}\label{sub:bayes-theorem}
+
+贝叶斯公式是统计学中最重要的公式之一。它让我们能够根据观察到的结果反推原因的概率。
+
+\begin{Theorem}[贝叶斯公式]\label{eq:bayes-theorem}
+设 $\{B_i\}$ 是样本空间的一个划分（两两不相交、$\cup_i B_i = \mathcal{C}$），$P(B_i) > 0$。则对任意事件 $A$（$P(A) > 0$）：
+\[
+P(B_j \mid A) = \frac{P(B_j) \cdot P(A \mid B_j)}{\sum_{i} P(B_i) \cdot P(A \mid B_i)}.
+\]
+\end{Theorem}
+
+\textbf{术语:}
+\begin{itemize}
+    \item $P(B_j)$：先验概率（prior probability）——在看到数据前对原因的信念
+    \item $P(B_j \mid A)$：后验概率（posterior probability）——在看到数据后更新后的信念
+    \item $P(A \mid B_j)$：似然（likelihood）
+\end{itemize}
+
+\textbf{Example (Medical Testing):} 设某疾病患病率为 $1\%$，检测准确率为 $99\%$（即患病者检测阳性的概率为 $0.99$，未患病者检测阴性的概率为 $0.99$）。若某人检测呈阳性，他真正患病的概率是多少？
+
+令 $D = \{\text{患病}\}$，$+ = \{\text{检测阳性}\}$。则
+\[
+P(D \mid +) = \frac{P(D) \cdot P(+ \mid D)}{P(D) \cdot P(+ \mid D) + P(D^c) \cdot P(+ \mid D^c)} = \frac{0.01 \cdot 0.99}{0.01 \cdot 0.99 + 0.99 \cdot 0.01} = \frac{1}{2}.
+\]
+
+\textbf{这个结果令人惊讶:} 即使检测准确率高达 $99\%$，但由于患病率很低，阳性结果只有 $50\%$ 的概率是真的！这就是为什么医学筛查需要非常高的准确率，或者需要多次检测。
+
+\subsection{Independence: When Knowing One Doesn't Affect Another}\label{sub:independence}
+
+\begin{Definition}[独立性]\label{def:independence}
+若 $P(A \cap B) = P(A) \cdot P(B)$，则称事件 $A$ 与 $B$ 相互独立（independent），记作 $A \perp\!\!\!\perp B$。
+\end{Definition}
+
+当 $P(A) > 0, P(B) > 0$ 时，独立性等价于：
+\[
+P(A \mid B) = P(A) \quad \text{或} \quad P(B \mid A) = P(B).
+\]
+
+即：知道其中一个事件发生，不影响另一个的概率。
+
+\begin{Proposition}[独立的性质]\label{prop:independence-properties}
+若 $A \perp\!\!\!\perp B$，则：
+\begin{enumerate}
+    \item $A \perp\!\!\!\perp B^c$
+    \item $A^c \perp\!\!\!\perp B$
+    \item $A^c \perp\!\!\!\perp B^c$
+\end{enumerate}
+\end{Proposition}
+
+\begin{Definition}[相互独立]\label{def:mutual-independence}
+事件序列 $\{A_i : i \in I\}$ 相互独立，若对任意有限子集 $\{i_1, \ldots, i_k\}$，
+\[
+P\left(\bigcap_{j=1}^{k} A_{i_j}\right) = \prod_{j=1}^{k} P(A_{i_j}).
+\]
+\end{Definition}
+
+\textbf{Warning:} 两两独立（pairwise independent）不一定意味着相互独立！
+
+\section{Random Variables}\label{sec:random-variables}
+
+\subsection{从实验结果到数值}\label{sub:rv-intuition}
+
+随机实验的 outcome 可能不是数（如硬币的 $\{H,T\}$）。但我们常常希望用数值描述实验结果，这就引入了随机变量。
+
+\begin{Definition}[随机变量]\label{def:random-variable}
+随机变量（random variable）是从样本空间 $\mathcal{C}$ 到实数的函数：$X: \mathcal{C} \to \mathbb{R}$。
+\end{Definition}
+
+通常用大写字母 $X, Y, Z$ 表示随机变量，用小写字母 $x, y, z$ 表示具体取值。
+
+\bigskip
+
+\textbf{Example:} 抛掷两枚硬币。样本空间 $\mathcal{C} = \{HH, HT, TH, TT\}$。定义 $X$ 为正面出现的次数：
+\[
+X(HH) = 2, \quad X(HT) = 1, \quad X(TH) = 1, \quad X(TT) = 0.
+\]
+则 $X$ 是随机变量，取值在 $\{0, 1, 2\}$。
+
+\subsection{离散与连续}\label{sub:discrete-continuous}
+
+随机变量分为两类：
+
+\begin{enumerate}
+    \item \textbf{离散随机变量（Discrete）}: 取值是可数的（如 $\{0,1,2,\ldots\}$ 或 $\{1,2,3,\ldots\}$）
+    \item \textbf{连续随机变量（Continuous）}: 取值充满区间，不可数（如 $(0, \infty)$ 或 $(-\infty, \infty)$）
+\end{enumerate}
+
+\section{Discrete Random Variables}\label{sec:discrete-rv}
+
+\subsection{Probability Mass Function}\label{sub:pmf}
+
+\begin{Definition}[概率质量函数]\label{def:pmf}
+设 $X$ 为离散随机变量。函数 $p_X(x) = P(X = x)$ 称为概率质量函数（probability mass function, pmf）。
+\end{Definition}
+
+pmf 满足：
+\begin{enumerate}
+    \item $p_X(x) \geq 0$ 对所有 $x$
+    \item $\sum_{x} p_X(x) = 1$
+\end{enumerate}
+
+\textbf{Example (Bernoulli):} $X \sim \text{Bernoulli}(p)$，取值 $\{0, 1\}$：
+\[
+p_X(1) = P(X = 1) = p, \quad p_X(0) = P(X = 0) = 1-p.
+\]
+
+\textbf{Example (Binomial):} $X \sim \text{Bin}(n, p)$，$n$ 次独立伯努利试验中成功的次数：
+\[
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n.
+\]
+
+\textbf{Example (Poisson):} $X \sim \text{Poisson}(\lambda)$：
+\[
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots.
+\]
+
+\bigskip
+
+\textbf{Poisson 的起源:} Poisson 分布最初是作为二项分布当 $n \to \infty$、$p \to 0$、$np = \lambda$ 固定时的极限分布发现的。在稀有事件（如交通事故、自然灾害）中常见。
+
+\section{Continuous Random Variables}\label{sec:continuous-rv}
+
+\subsection{Probability Density Function}\label{sub:pdf}
+
+对连续随机变量，单点概率为零，我们需要密度函数。
+
+\begin{Definition}[概率密度函数]\label{def:pdf}
+设 $X$ 为连续随机变量。若存在非负函数 $f_X(x)$ 使得
+\[
+P(a < X < b) = \int_a^b f_X(x) \, dx
+\]
+对任意 $a < b$ 成立，则称 $f_X(x)$ 为概率密度函数（probability density function, pdf）。
+\end{Definition}
+
+pdf 满足：
+\begin{enumerate}
+    \item $f_X(x) \geq 0$ 对所有 $x$
+    \item $\int_{-\infty}^{\infty} f_X(x) \, dx = 1$
+\end{enumerate}
+
+\textbf{Warning:} $f_X(x)$ 可以大于 1！例如均匀分布 $X \sim \text{Uniform}(0, 0.5)$ 的密度为 $f_X(x) = 2$（$0 < x < 0.5$ 时）。
+
+\bigskip
+
+\textbf{Example (Normal/Gaussian):} $X \sim N(\mu, \sigma^2)$：
+\[
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad -\infty < x < \infty.
+\]
+这是统计学中最重要的分布！稍后我们会详细讨论它的性质。
+
+\textbf{Example (Exponential):} $X \sim \text{Exp}(\lambda)$：
+\[
+f(x) = \lambda e^{-\lambda x}, \quad x > 0.
+\]
+指数分布描述了泊松过程中两次事件发生的间隔时间。
+
+\section{Cumulative Distribution Function}\label{sec:cdf}
+
+无论是离散还是连续，我们都可以用 CDF 统一描述。
+
+\begin{Definition}[累积分布函数]\label{def:cdf}
+随机变量 $X$ 的 CDF 定义为
+\[
+F_X(x) = P(X \leq x).
+\]
+\end{Definition}
+
+CDF 的性质：
+\begin{enumerate}
+    \item 单调非减
+    \item 右连续：$\lim_{x \to a^+} F_X(x) = F_X(a)$
+    \item $\lim_{x \to -\infty} F_X(x) = 0$，$\lim_{x \to \infty} F_X(x) = 1$
+    \item 对离散：$F_X(x) = \sum_{t \leq x} p_X(t)$
+    \item 对连续：$F_X(x) = \int_{-\infty}^x f_X(t) \, dt$，且 $f_X(x) = F_X'(x)$（几乎处处）
+\end{enumerate}
+
+\textbf{Quantiles:} $p$-分位数 $x_p$ 满足 $F_X(x_p) = p$。中位数是 $p = 0.5$ 的分位数。
+
+\section{Expectation: The Mean of a Distribution}\label{sec:expectation}
+
+\subsection{Definition of Expectation}\label{sub:expectation-def}
+
+\begin{Definition}[数学期望]\label{def:expectation}
+随机变量 $X$ 的期望（expected value）：
+\begin{itemize}
+    \item 离散型：$E[X] = \sum_{x} x \cdot p_X(x)$（要求级数绝对收敛）
+    \item 连续型：$E[X] = \int_{-\infty}^{\infty} x \cdot f_X(x) \, dx$（要求积分绝对收敛）
+\end{itemize}
+\end{Definition}
+
+\textbf{物理直觉:} 期望可以理解为密度（或质量）的"重心"位置。对于离散均匀分布 $X \sim \text{Uniform}\{1, 2, \ldots, n\}$，$E[X] = (n+1)/2$，正是物理意义上杆子的平衡点。
+
+\bigskip
+
+\textbf{为什么要求"绝对收敛"?} 如果不要求绝对收敛，期望可能不存在（无穷大或振荡）。例如 Cauchy 分布的"期望"就不存在。
+
+\subsection{Properties of Expectation}\label{sub:expectation-properties}
+
+\begin{Theorem}[期望的线性性]\label{prop:expectation-linearity}
+对任意随机变量 $X, Y$ 和常数 $a, b$：
+\[
+E[aX + bY] = aE[X] + bE[Y].
+\]
+\textbf{关键点:} 无需 $X, Y$ 相互独立！
+\end{Theorem}
+
+这是期望最重要的性质，也是"线性"一词的含义。
+
+\bigskip
+
+\textbf{Example:} 若 $X_1, \ldots, X_n$ 是独立同分布的 Bernoulli($p$)，且 $S_n = X_1 + \cdots + X_n$，则
+\[
+E[S_n] = E[X_1] + \cdots + E[X_n] = np.
+\]
+即使不知道 $S_n$ 的分布是二项分布，我们也能求出它的期望。
+
+\section{Variance: Measuring Spread}\label{sec:variance}
+
+\subsection{Definition}\label{sub:variance-def}
+
+期望给出了分布的"中心位置"，但两个分布可以有相同的期望却形态迥异。我们需要度量离散程度。
+
+\begin{Definition}[方差]\label{def:variance}
+方差（variance）定义为
+\[
+\operatorname{Var}(X) = E[(X - \mu)^2] = E[X^2] - (E[X])^2,
+\]
+其中 $\mu = E[X]$。标准差（standard deviation）为 $\sigma = \sqrt{\operatorname{Var}(X)}$。
+\end{Definition}
+
+\textbf{直觉:} 方差度量的是"随机变量偏离其均值的平方"的期望。平方确保了正负偏差不会相互抵消。
+
+\begin{Theorem}[方差的性质]\label{prop:variance-properties}
+\begin{enumerate}
+    \item $\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$
+    \item 若 $X_1, \ldots, X_n$ 相互独立，则
+    \[
+    \operatorname{Var}\left(\sum_{i=1}^{n} X_i\right) = \sum_{i=1}^{n} \operatorname{Var}(X_i).
+    \]
+\end{enumerate}
+\end{Theorem}
+
+\textbf{关键区别:}
+\begin{itemize}
+    \item 期望是线性的：$E[aX + b] = aE[X] + b$
+    \item 方差不是线性的：$\operatorname{Var}(aX + b) = a^2 \operatorname{Var}(X)$
+    \item 常数 $b$ 不影响方差，只影响期望
+\end{itemize}
+
+\section{Covariance and Correlation}\label{sec:covariance-correlation}
+
+\subsection{Covariance: Joint Variability}\label{sub:covariance}
+
+当有两个随机变量时，我们需要度量它们的"共同变化"趋势。
+
+\begin{Definition}[协方差]\label{def:covariance}
+\[
+\operatorname{Cov}(X, Y) = E[(X - E[X])(Y - E[Y])] = E[XY] - E[X] \cdot E[Y].
+\]
+\end{Definition}
+
+协方差的性质：
+\begin{enumerate}
+    \item $\operatorname{Cov}(X, X) = \operatorname{Var}(X)$
+    \item $\operatorname{Cov}(X, Y) = \operatorname{Cov}(Y, X)$
+    \item $\operatorname{Cov}(aX + b, Y) = a \operatorname{Cov}(X, Y)$
+    \item $\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2\operatorname{Cov}(X, Y)$
+    \item 若 $X \perp\!\!\!\perp Y$，则 $\operatorname{Cov}(X, Y) = 0$
+\end{enumerate}
+
+\subsection{Correlation Coefficient}\label{sub:correlation}
+
+协方差依赖于量纲。为了得到无量纲的度量，我们引入相关系数。
+
+\begin{Definition}[相关系数]\label{def:correlation}
+\[
+\rho_{XY} = \operatorname{Corr}(X, Y) = \frac{\operatorname{Cov}(X, Y)}{\sqrt{\operatorname{Var}(X) \cdot \operatorname{Var}(Y)}}.
+\]
+\end{Definition}
+
+\begin{Theorem}[相关系数的性质]\label{prop:correlation-properties}
+$-1 \leq \rho_{XY} \leq 1$，且 $|\rho_{XY}| = 1$ 当且仅当 $X$ 与 $Y$ 存在线性关系。
+\end{Theorem}
+
+\textbf{解释:}
+\begin{itemize}
+    \item $\rho_{XY} > 0$：正相关，$X$ 增大时 $Y$ 倾向于增大
+    \item $\rho_{XY} < 0$：负相关，$X$ 增大时 $Y$ 倾向于减小
+    \item $|\rho_{XY}| = 1$：完全线性相关
+    \item $\rho_{XY} = 0$：不相关（但不一定独立！）
+\end{itemize}
+
+\textbf{Warning:} 相关为零不一定意味着独立！但若 $(X, Y)$ 服从二元正态分布，不相关则意味着独立。
+
+\section{Transformations}\label{sec:transformations}
+
+设 $X$ 为随机变量，$Y = g(X)$ 为其变换（$g$ 是 Boreel 可测函数）。
+
+\begin{Theorem}[随机变量变换]\label{prop:transformation}
+\begin{enumerate}
+    \item \textbf{离散情形}: $p_Y(y) = P(Y = y) = \sum_{x: g(x)=y} p_X(x)$
+
+    \item \textbf{连续情形}: 若 $y = g(x)$ 严格单调且可导，则
+    \[
+    f_Y(y) = f_X(h(y)) \cdot |h'(y)|,
+    \]
+    其中 $x = h(y)$ 是 $y = g(x)$ 的反函数。
+\end{enumerate}
+\end{Theorem}
+
+\bigskip
+
+\textbf{Example (线性变换):} 若 $Y = aX + b$，则
+\[
+f_Y(y) = \frac{1}{|a|} f_X\left(\frac{y-b}{a}\right).
+\]
+正态分布的线性变换仍是正态分布：若 $X \sim N(\mu, \sigma^2)$，则 $aX + b \sim N(a\mu + b, a^2\sigma^2)$。
+
+\bigskip
+
+\textbf{Example (标准化):} 令 $Z = (X - \mu) / \sigma$。若 $X \sim N(\mu, \sigma^2)$，则 $Z \sim N(0, 1)$。这就是标准正态分布。
+
+\section{Special Distributions}\label{sec:special-distributions}
+
+本节总结第1章涉及的重要分布。
+
+\subsection{离散分布}\label{sub:discrete-distributions-summary}
+
+\begin{enumerate}
+    \item \textbf{伯努利分布} $X \sim \operatorname{Bernoulli}(p)$:
+    \[
+    P(X = 1) = p, \quad P(X = 0) = 1-p,
+    \]
+    $E[X] = p$，$\operatorname{Var}(X) = p(1-p)$.
+
+    \item \textbf{二项分布} $X \sim \operatorname{Bin}(n, p)$:
+    \[
+    P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \quad k = 0, 1, \ldots, n.
+    \]
+    $E[X] = np$，$\operatorname{Var}(X) = np(1-p)$.
+
+    \item \textbf{泊松分布} $X \sim \operatorname{Poisson}(\lambda)$:
+    \[
+    P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots.
+    \]
+    $E[X] = \lambda$，$\operatorname{Var}(X) = \lambda$.
+\end{enumerate}
+
+\subsection{连续分布}\label{sub:continuous-distributions-summary}
+
+\begin{enumerate}
+    \item \textbf{正态分布} $X \sim N(\mu, \sigma^2)$:
+    \[
+    f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right),
+    \]
+    $E[X] = \mu$，$\operatorname{Var}(X) = \sigma^2$.
+
+    \item \textbf{标准正态分布} $Z \sim N(0, 1)$:
+    \[
+    \phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}.
+    \]
+    任何正态变量可通过 $Z = (X - \mu) / \sigma$ 标准化。
+
+    \item \textbf{指数分布} $X \sim \operatorname{Exp}(\lambda)$:
+    \[
+    f(x) = \lambda e^{-\lambda x}, \quad x > 0.
+    \]
+    $E[X] = 1/\lambda$，$\operatorname{Var}(X) = 1/\lambda^2$.
+\end{enumerate}
+
+\section*{Summary}\label{sec:chapter1-summary}
+
+本章建立了概率论的基本框架：
+
+\begin{enumerate}
+    \item \textbf{概率公理化}: 从相对频率的直观性质出发，建立了概率的公理化定义
+    \item \textbf{条件概率与贝叶斯公式}: 提供了更新信息的数学工具
+    \item \textbf{独立性}: 刻画了两个事件之间的概率关系
+    \item \textbf{随机变量}: 从集合论过渡到数值函数，为分布理论奠定基础
+    \item \textbf{期望与方差}: 分别度量分布的中心位置和离散程度
+    \item \textbf{协方差与相关系数}: 度量两个随机变量的联合变化趋势
+\end{enumerate}
+
+这些概念构成了统计推断的理论基石。在后续章节中，我们将看到它们在参数估计、假设检验等统计方法中的广泛应用。
+
+\section*{Exercises}\label{sec:chapter1-exercises}
+
+\begin{exercise}{1.1}
+设 $A, B, C$ 为三个事件。试用集合运算表示：
+\begin{enumerate}
+    \item 至少有一个事件发生；
+    \item 恰好有一个事件发生；
+    \item 没有事件发生；
+    \item 至多有两个事件发生。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1.2}
+证明：若 $A \subset B$，则 $P(A) \leq P(B)$。
+\end{exercise}
+
+\begin{exercise}{1.3}
+设 $P(A) = 0.3$，$P(B) = 0.4$，$P(A \cap B) = 0.1$。求：
+\begin{enumerate}
+    \item $P(A \cup B)$；
+    \item $P(A \mid B)$；
+    \item $P(B \mid A)$；
+    \item $P(A^c \cup B^c)$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1.4}
+某箱中有 5 个红球和 3 个白球。无放回地抽取 3 个球。求恰好抽到 2 个红球的概率。
+\end{exercise}
+
+\begin{exercise}{1.5}
+设 $X \sim N(100, 225)$（即 $\mu = 100$，$\sigma^2 = 225$）。求：
+\begin{enumerate}
+    \item $P(X < 95)$；
+    \item $P(90 < X < 110)$；
+    \item $P(X > 115)$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1.6 (Bayes' Theorem)}
+某地区患有疾病 D 的比例为 $0.1\%$。有一种检测方法：
+\begin{itemize}
+    \item 若患病，检测阳性的概率为 $99\%$
+    \item 若未患病，检测阳性的概率为 $1\%$
+\end{itemize}
+若某人检测呈阳性，求他真正患病的概率。
+\end{exercise}

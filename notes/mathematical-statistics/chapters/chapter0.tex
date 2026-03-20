@@ -1,7 +1,75 @@
-\chapter*{引言：文献概述}\label{chap:introduction}
-\addcontentsline{toc}{chapter}{引言：文献概述}
+\chapter*{引言：数理统计基础}\label{chap:introduction}
+\addcontentsline{toc}{chapter}{引言：数理统计基础}
 
-本讲义学习的是 \textit{Introduction to Mathematical Statistics}（数理统计导论），这是一本经典的数理统计教材。
+本讲义学习的是 \textit{Introduction to Mathematical Statistics}（数理统计导论），这是一本经典的数理统计教材，由 Hogg, McKean 和 Craig 编著。
+
+\section{总述}
+
+数理统计（Mathematical Statistics）是研究如何通过数学方法从数据中提取信息的学科。与描述性统计不同，数理统计关注的是 \textbf{统计推断}（statistical inference）的数学基础——即如何利用概率论的工具，在存在随机性的情况下，对未知参数或总体特征做出严谨的推断。
+
+本课程的核心问题是：给定一组观测数据，我们如何估计某个未知量？如何判断我们的估计有多好？如何检验关于总体的某个假设是否成立？
+
+\section{核心定义}
+
+\subsection{随机变量与概率分布}
+
+\begin{Definition}[随机变量]
+设 $\Omega$ 为样本空间，$\mathcal{F}$ 为 $\sigma$-代数。定义在 $(\Omega, \mathcal{F})$ 上的实值可测函数 $X: \Omega \to \mathbb{R}$ 称为随机变量（random variable）。
+\end{Definition}
+
+随机变量 $X$ 的行为由其概率分布（probability distribution）描述。分布函数定义为
+\[
+F_X(x) = \mathbb{P}(X \leq x), \quad x \in \mathbb{R}.
+\]
+
+对于离散型随机变量，我们用概率质量函数（pmf）$p_X(x) = \mathbb{P}(X = x)$；对于连续型随机变量，我们用概率密度函数（pdf）$f_X(x)$，满足
+\[
+\mathbb{P}(a < X \leq b) = \int_a^b f_X(x) \, dx.
+\]
+
+\subsection{统计量与参数}
+
+\begin{Definition}[统计量]
+设 $X_1, X_2, \ldots, X_n$ 为来自某总体的独立同分布（i.i.d.）随机变量。任意关于这些随机变量的函数 $T = T(X_1, \ldots, X_n)$ 称为统计量（statistic）。
+\end{Definition}
+
+统计量不依赖于任何未知参数。例如，样本均值 $\bar{X} = \frac{1}{n} \sum_{i=1}^n X_i$ 和样本方差 $S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2$ 都是统计量。
+
+\begin{Definition}[参数]
+参数（parameter）是描述总体分布特征的固定（但可能未知）的数值。通常记作 $\theta$ 或 $\boldsymbol{\theta}$。
+\end{Definition}
+
+例如，对于正态分布 $N(\mu, \sigma^2)$，参数是 $\mu$（均值）和 $\sigma^2$（方差）；对于二项分布 $B(n, p)$，参数是 $p$（成功概率）。
+
+\subsection{估计量与估计值}
+
+\begin{Definition}[估计量]
+设 $\theta$ 为未知参数。基于样本 $X_1, \ldots, X_n$ 构建的统计量 $\hat{\theta} = \hat{\theta}(X_1, \ldots, X_n)$ 称为 $\theta$ 的估计量（estimator）。
+\end{Definition}
+
+我们用估计量的期望性质来评价其优劣：
+\begin{itemize}
+    \item \textbf{无偏性}: $\mathbb{E}(\hat{\theta}) = \theta$
+    \item \textbf{一致性}: 当 $n \to \infty$ 时，$\hat{\theta} \to \theta$（依概率收敛）
+    \item \textbf{有效性}: 在所有无偏估计量中，方差最小者称为有效估计量
+\end{itemize}
+
+\subsection{假设检验}
+
+\begin{Definition}[原假设与备择假设]
+在假设检验（hypothesis testing）中，我们通常建立两个对立的假设：
+\begin{itemize}
+    \item \textbf{原假设}（null hypothesis）$H_0$：通常是待检验的"无效应"或"无差异"假设
+    \item \textbf{备择假设}（alternative hypothesis）$H_1$：与 $H_0$ 对立，是我们希望证明的假设
+\end{itemize}
+\end{Definition}
+
+检验的结果由检验统计量（test statistic）和其抽样分布决定。常见的评价指标包括：
+\begin{itemize}
+    \item \textbf{第一类错误}: 当 $H_0$ 为真时我们却拒绝了它，概率记为 $\alpha$（显著性水平）
+    \item \textbf{第二类错误}: 当 $H_0$ 为假时我们却接受了它，概率记为 $\beta$
+    \item \textbf{功效}: $1 - \beta$，正确拒绝 $H_0$ 的概率
+\end{itemize}
 
 \section{教材信息}
 

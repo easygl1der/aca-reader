@@ -40,6 +40,53 @@
 \end{Exercise}
 ```
 
+## 数学符号习惯
+
+### 概率、期望、方差、协方差
+
+用户的个人习惯（优先级最高）：
+
+| 概念 | 符号 | 说明 |
+|------|------|------|
+| 概率 | `\mathbb{P}(A)` | 黑板粗体 P |
+| 期望 | `\mathbb{E}(X)` | 黑板粗体 E |
+| 单变量期望 | `\mathbb{E}X` | 无括号 |
+| 多变量期望 | `\mathbb{E}(XY)` | 有括号 |
+| 方差 | `\text{var}` | 正体 var |
+| 协方差 | `\text{cov}` | 正体 cov |
+| 相关系数 | `\text{corr}` | 正体 corr |
+| 独立性 | `$A \Perp B$` | 竖线符号 |
+| 示性函数 | `\mathbb{I}` | 黑板粗体 I |
+
+**示例：**
+```latex
+% 概率
+\mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B \mid A)
+
+% 期望（单个变量，无括号）
+\mathbb{E}X = \sum_{x} x \cdot p_X(x)
+
+% 期望（多个变量，有括号）
+\mathbb{E}(XY) = \sum_{x}\sum_{y} xy \cdot p_{XY}(x,y)
+
+% 方差
+\text{var}(X) = \mathbb{E}[(X - \mathbb{E}X)^2]
+
+% 协方差
+\text{cov}(X, Y) = \mathbb{E}(XY) - \mathbb{E}X \cdot \mathbb{E}Y
+
+% 相关系数
+\text{corr}(X, Y) = \frac{\text{cov}(X, Y)}{\sqrt{\text{var}(X) \cdot \text{var}(Y)}}
+
+% 独立性
+A \Perp B \quad \text{当且仅当} \quad \mathbb{P}(A \cap B) = \mathbb{P}(A)\mathbb{P}(B)
+
+% 示性函数（三种写法均可）
+\mathbb{I}_A(x) = \begin{cases} 1 & \text{if } x \in A \\ 0 & \text{if } x \notin A \end{cases}
+\mathbb{I}(X \in [a,b]) = \mathbb{I}_{[a,b]}(X)
+\mathbb{I}(a \leq X < b)
+```
+
 ## 文档模板
 
 ### 使用 amsbook
