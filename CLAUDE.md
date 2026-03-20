@@ -163,6 +163,7 @@ git worktree prune
 - **2026-03-18**: LaTeX 笔记中避免口语化表达（如"这里错了"、"让我重新计算"），直接给出正确推导即可
 - **2026-03-19**: 遇到文献中省略证明的定理，如果找不到证明或没有可行思路，必须使用 /gemini-browser-chat 询问 Gemini（必须使用 Pro 模式）
 - **2026-03-19**: Gemini browser chat 必须使用 Pro 模式
+- **2026-03-20**: LaTeX 中禁止使用 \renewcommand 简化符号，直接使用原始符号（如 \mathbb{I} 而非自定义 \I）
 
 ---
 
