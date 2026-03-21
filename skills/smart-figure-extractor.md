@@ -1,3 +1,8 @@
+---
+name: smart-figure-extractor
+description: 智能图表提取器 - 从教材 PDF 中提取图表，配合 Gemini 进行二次验证
+---
+
 # Smart Figure Extractor - 智能图表提取器
 
 ## 完整工作流
