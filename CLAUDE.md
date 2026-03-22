@@ -183,6 +183,7 @@ git worktree prune
 - **2026-03-19**: 遇到文献中省略证明的定理，如果找不到证明或没有可行思路，必须使用 /gemini-browser-chat 询问 Gemini（必须使用 Pro 模式）
 - **2026-03-19**: Gemini browser chat 必须使用 Pro 模式
 - **2026-03-20**: LaTeX 中禁止使用 \renewcommand 简化符号，直接使用原始符号（如 \mathbb{I} 而非自定义 \I）
+- **2026-03-22**: Python 字符串替换操作大文件（HTML）时极易损坏文件 → 对 HTML/大型文件进行字符串操作前，必须先备份；优先使用逐行读取+写入而非内存中全量替换
 
 ---
 
