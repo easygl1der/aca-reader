@@ -4,547 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe Research - 基于 Claude Code 的自动化科研工作流</title>
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* ===========================================
-           CSS CUSTOM PROPERTIES (GEEK LIGHT THEME)
-           Clean white background with vibrant accents
-           =========================================== */
         :root {
-            --bg-primary: #f8fafc;
-            --bg-secondary: #f1f5f9;
-            --bg-card: #ffffff;
-            --bg-card-hover: #f8fafc;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-            --text-muted: #94a3b8;
-            --accent-cyan: #0891b2;
-            --accent-blue: #2563eb;
-            --accent-purple: #7c3aed;
-            --accent-green: #059669;
-            --accent-orange: #d97706;
-            --accent-pink: #db2777;
-            --border: rgba(0, 0, 0, 0.08);
-            --shadow: rgba(0, 0, 0, 0.04);
-
-            /* Typography */
-            --font-display: 'Space Grotesk', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            --title-size: clamp(2.5rem, 6vw, 5rem);
-            --h2-size: clamp(1.5rem, 3vw, 2.5rem);
-            --h3-size: clamp(1.1rem, 2vw, 1.4rem);
-            --body-size: clamp(0.85rem, 1.3vw, 1.05rem);
+            --bg-primary: #f8fafc; --bg-secondary: #f1f5f9; --bg-card: #ffffff;
+            --text-primary: #0f172a; --text-secondary: #475569; --text-muted: #94a3b8;
+            --accent-cyan: #0891b2; --accent-blue: #2563eb; --accent-purple: #7c3aed;
+            --accent-green: #059669; --accent-orange: #d97706; --accent-pink: #db2777;
+            --border: rgba(0, 0, 0, 0.08); --shadow: rgba(0, 0, 0, 0.04);
+            --font-display: 'Space Grotesk', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --title-size: clamp(2.5rem, 6vw, 5rem); --h2-size: clamp(1.5rem, 3vw, 2.5rem);
+            --h3-size: clamp(1.1rem, 2vw, 1.4rem); --body-size: clamp(0.85rem, 1.3vw, 1.05rem);
             --small-size: clamp(0.7rem, 0.95vw, 0.8rem);
-
-            /* Spacing */
-            --slide-padding: clamp(2rem, 5vw, 5rem);
-            --content-gap: clamp(1rem, 2vw, 1.8rem);
-
-            /* Animation */
-            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-            --duration-normal: 0.6s;
+            --slide-padding: clamp(2rem, 5vw, 5rem); --content-gap: clamp(1rem, 2vw, 1.8rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); --duration-normal: 0.6s;
         }
-
-        /* ===========================================
-           BASE STYLES
-           =========================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-            font-family: var(--font-display);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        html {
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-        }
-
-        /* ===========================================
-           SLIDE BASE
-           =========================================== */
-        .slide {
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            overflow: hidden;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding: var(--slide-padding);
-            background: var(--bg-primary);
-        }
-
-        .slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse at 0% 0%, rgba(8, 145, 178, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 100% 100%, rgba(124, 58, 237, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .slide-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ===========================================
-           TYPOGRAPHY
-           =========================================== */
-        h1 {
-            font-size: var(--title-size);
-            font-weight: 700;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-            margin-bottom: var(--content-gap);
-        }
-
-        h2 {
-            font-size: var(--h2-size);
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: var(--content-gap);
-        }
-
-        h3 {
-            font-size: var(--h3-size);
-            font-weight: 500;
-            line-height: 1.3;
-            margin-bottom: calc(var(--content-gap) * 0.6);
-        }
-
-        p {
-            font-size: var(--body-size);
-            line-height: 1.6;
-            color: var(--text-secondary);
-        }
-
-        .mono {
-            font-family: var(--font-mono);
-        }
-
-        /* ===========================================
-           SLIDE NUMBER
-           =========================================== */
-        .slide-number {
-            position: absolute;
-            bottom: clamp(1rem, 2vw, 1.5rem);
-            right: clamp(1rem, 2vw, 1.5rem);
-            font-family: var(--font-mono);
-            font-size: var(--small-size);
-            color: var(--text-muted);
-            z-index: 10;
-        }
-
-        /* ===========================================
-           CARDS & GRIDS
-           =========================================== */
-        .card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: clamp(1.2rem, 2vw, 2rem);
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 20px var(--shadow);
-            transition: all 0.3s var(--ease-out-expo);
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--content-gap);
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--content-gap);
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--content-gap);
-        }
-
-        @media (max-width: 1024px) {
-            .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 640px) {
-            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-        }
-
-        /* ===========================================
-           BADGES & TAGS
-           =========================================== */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 0.75rem;
-            border-radius: 100px;
-            font-size: var(--small-size);
-            font-weight: 500;
-            background: var(--bg-secondary);
-            color: var(--text-secondary);
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; font-family: var(--font-display); background: var(--bg-primary); color: var(--text-primary); }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        .slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; padding: var(--slide-padding); background: var(--bg-primary); }
+        .slide::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 0% 0%, rgba(8, 145, 178, 0.03) 0%, transparent 50%), radial-gradient(ellipse at 100% 100%, rgba(124, 58, 237, 0.03) 0%, transparent 50%); pointer-events: none; }
+        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 1400px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+        h1 { font-size: var(--title-size); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: var(--content-gap); }
+        h2 { font-size: var(--h2-size); font-weight: 600; line-height: 1.2; margin-bottom: var(--content-gap); }
+        h3 { font-size: var(--h3-size); font-weight: 500; line-height: 1.3; margin-bottom: calc(var(--content-gap) * 0.6); }
+        p { font-size: var(--body-size); line-height: 1.6; color: var(--text-secondary); }
+        .slide-number { position: absolute; bottom: clamp(1rem, 2vw, 1.5rem); right: clamp(1rem, 2vw, 1.5rem); font-family: var(--font-mono); font-size: var(--small-size); color: var(--text-muted); z-index: 10; }
+        .card { background: var(--bg-card); border-radius: 16px; padding: clamp(1.2rem, 2vw, 2rem); border: 1px solid var(--border); box-shadow: 0 4px 20px var(--shadow); transition: all 0.3s var(--ease-out-expo); }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08); }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--content-gap); }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--content-gap); }
+        @media (max-width: 1024px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+        .badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.75rem; border-radius: 100px; font-size: var(--small-size); font-weight: 500; background: var(--bg-secondary); color: var(--text-secondary); }
         .badge-cyan { background: rgba(8, 145, 178, 0.1); color: var(--accent-cyan); }
         .badge-purple { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); }
         .badge-green { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); }
         .badge-orange { background: rgba(217, 119, 6, 0.1); color: var(--accent-orange); }
-        .badge-pink { background: rgba(219, 39, 119, 0.1); color: var(--accent-pink); }
-
-        /* ===========================================
-           HIGHLIGHT TEXT
-           =========================================== */
-        .highlight-cyan { color: var(--accent-cyan); }
-        .highlight-purple { color: var(--accent-purple); }
-        .highlight-green { color: var(--accent-green); }
-
-        /* ===========================================
-           CODE BLOCKS
-           =========================================== */
-        pre, code {
-            font-family: var(--font-mono);
-            font-size: var(--small-size);
-            background: var(--bg-secondary);
-            border-radius: 8px;
-        }
-
-        pre {
-            padding: clamp(1rem, 1.5vw, 1.5rem);
-            overflow-x: auto;
-            border: 1px solid var(--border);
-        }
-
-        code {
-            padding: 0.2em 0.4em;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-        }
-
-        /* ===========================================
-           LISTS
-           =========================================== */
-        ul, ol {
-            padding-left: 1.5em;
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-        }
-
-        li {
-            margin-bottom: 0.5em;
-            line-height: 1.6;
-        }
-
-        /* ===========================================
-           SECTION HEADERS
-           =========================================== */
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: var(--small-size);
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
+        pre, code { font-family: var(--font-mono); font-size: var(--small-size); background: var(--bg-secondary); border-radius: 8px; }
+        pre { padding: clamp(1rem, 1.5vw, 1.5rem); overflow-x: auto; border: 1px solid var(--border); }
+        code { padding: 0.2em 0.4em; }
+        pre code { background: none; padding: 0; }
+        ul, ol { padding-left: 1.5em; font-size: var(--body-size); color: var(--text-secondary); }
+        li { margin-bottom: 0.5em; line-height: 1.6; }
+        .section-label { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px; font-size: var(--small-size); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
         .section-cyan { background: rgba(8, 145, 178, 0.1); color: var(--accent-cyan); }
         .section-purple { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); }
         .section-green { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); }
-
-        /* ===========================================
-           ANIMATIONS
-           =========================================== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all var(--duration-normal) var(--ease-out-expo);
-        }
-
-        .slide.active .reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal:nth-child(1) { transition-delay: 0.1s; }
-        .reveal:nth-child(2) { transition-delay: 0.15s; }
-        .reveal:nth-child(3) { transition-delay: 0.2s; }
-        .reveal:nth-child(4) { transition-delay: 0.25s; }
-        .reveal:nth-child(5) { transition-delay: 0.3s; }
-        .reveal:nth-child(6) { transition-delay: 0.35s; }
-        .reveal:nth-child(7) { transition-delay: 0.4s; }
-        .reveal:nth-child(8) { transition-delay: 0.45s; }
-
-        /* ===========================================
-           SPECIAL SLIDES
-           =========================================== */
-        .slide-center {
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .slide-center .slide-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Title slide gradient */
-        .slide-title {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-        }
-
-        /* Section header slides */
-        .slide-section {
-            background: linear-gradient(135deg, var(--text-primary) 0%, #1e293b 100%);
-            color: white;
-        }
-
-        .slide-section h2 {
-            color: white;
-            font-size: var(--title-size);
-        }
-
-        .slide-section p {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* ===========================================
-           GRID BACKGROUND
-           =========================================== */
-        .grid-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-        }
-
-        /* ===========================================
-           LOGO / BRAND
-           =========================================== */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: var(--h3-size);
-            font-weight: 600;
-            margin-bottom: var(--content-gap);
-        }
-
-        .logo-icon {
-            width: clamp(2rem, 4vw, 3rem);
-            height: clamp(2rem, 4vw, 3rem);
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: clamp(1rem, 2vw, 1.5rem);
-        }
-
-        /* ===========================================
-           NAVIGATION DOTS
-           =========================================== */
-        .nav-dots {
-            position: fixed;
-            right: clamp(0.5rem, 1vw, 1rem);
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 100;
-        }
-
-        .nav-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            opacity: 0.3;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-dot:hover {
-            opacity: 0.6;
-        }
-
-        .nav-dot.active {
-            opacity: 1;
-            background: var(--accent-cyan);
-            transform: scale(1.3);
-        }
-
-        /* ===========================================
-           SKILL CARDS
-           =========================================== */
-        .skill-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: clamp(1rem, 1.5vw, 1.5rem);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .skill-card h3 {
-            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
-            margin-bottom: 0.25rem;
-        }
-
-        .skill-card p {
-            font-size: var(--small-size);
-            color: var(--text-muted);
-        }
-
-        .skill-tag {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            font-size: 0.65rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* ===========================================
-           STAT DISPLAY
-           =========================================== */
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 700;
-            color: var(--accent-cyan);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: var(--body-size);
-            color: var(--text-secondary);
-        }
-
-        /* ===========================================
-           IMAGE CONTAINER
-           =========================================== */
-        .img-container {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--border);
-        }
-
-        .img-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* ===========================================
-           RESPONSIVE
-           =========================================== */
-        @media (max-width: 768px) {
-            .slide {
-                padding: 1.5rem;
-            }
-
-            .nav-dots {
-                display: none;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .reveal {
-                opacity: 1;
-                transform: none;
-                transition: none;
-            }
-        }
+        .section-orange { background: rgba(217, 119, 6, 0.1); color: var(--accent-orange); }
+        .section-blue { background: rgba(37, 99, 235, 0.1); color: var(--accent-blue); }
+        .section-pink { background: rgba(219, 39, 119, 0.1); color: var(--accent-pink); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all var(--duration-normal) var(--ease-out-expo); }
+        .slide.active .reveal { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(1) { transition-delay: 0.1s; } .reveal:nth-child(2) { transition-delay: 0.15s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; } .reveal:nth-child(4) { transition-delay: 0.25s; }
+        .reveal:nth-child(5) { transition-delay: 0.3s; } .reveal:nth-child(6) { transition-delay: 0.35s; }
+        .slide-center { text-align: center; justify-content: center; align-items: center; }
+        .slide-center .slide-content { display: flex; flex-direction: column; align-items: center; }
+        .slide-title { background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); }
+        .slide-section { background: linear-gradient(135deg, var(--text-primary) 0%, #1e293b 100%); color: white; }
+        .slide-section h2 { color: white; font-size: var(--title-size); }
+        .slide-section p { color: rgba(255, 255, 255, 0.7); }
+        .grid-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; font-size: var(--h3-size); font-weight: 600; margin-bottom: var(--content-gap); }
+        .logo-icon { width: clamp(2rem, 4vw, 3rem); height: clamp(2rem, 4vw, 3rem); background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: clamp(1rem, 2vw, 1.5rem); }
+        .nav-dots { position: fixed; right: clamp(0.5rem, 1vw, 1rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); opacity: 0.3; cursor: pointer; transition: all 0.3s ease; }
+        .nav-dot:hover { opacity: 0.6; }
+        .nav-dot.active { opacity: 1; background: var(--accent-cyan); transform: scale(1.3); }
+        .skill-card { background: var(--bg-card); border-radius: 12px; padding: clamp(1rem, 1.5vw, 1.5rem); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
+        .skill-card h3 { font-size: clamp(0.9rem, 1.2vw, 1.1rem); margin-bottom: 0.25rem; }
+        .skill-card p { font-size: var(--small-size); color: var(--text-muted); }
+        .skill-tag { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat { text-align: center; }
+        .stat-value { font-size: clamp(2rem, 5vw, 4rem); font-weight: 700; color: var(--accent-cyan); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: var(--body-size); color: var(--text-secondary); }
+        @media (max-width: 768px) { .slide { padding: 1.5rem; } .nav-dots { display: none; } }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
     </style>
 </head>
 <body>
-    <!-- Navigation Dots -->
     <nav class="nav-dots" id="navDots"></nav>
 
-    <!-- ============================================
-         SLIDE 01: TITLE
-         =========================================== -->
+    <!-- SLIDE 01: TITLE -->
     <section class="slide slide-title slide-center" data-slide="1">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <div class="logo reveal">
-                <div class="logo-icon">VR</div>
-                <span>Vibe Research</span>
-            </div>
+            <div class="logo reveal"><div class="logo-icon">VR</div><span>Vibe Research</span></div>
             <h1 class="reveal">基于 Claude Code 的<br>自动化科研工作流</h1>
-            <p class="reveal" style="font-size: var(--h3-size); margin-top: 1rem; color: var(--text-secondary);">
-                AI 驱动的学术文献阅读与讲义生成系统
-            </p>
+            <p class="reveal" style="font-size: var(--h3-size); margin-top: 1rem; color: var(--text-secondary);">AI 驱动的学术文献阅读与讲义生成系统</p>
             <div class="reveal" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
                 <span class="badge badge-cyan">Claude Code</span>
-                <span class="badge badge-purple">自动化工作流</span>
-                <span class="badge badge-green">科研加速</span>
+                <span class="badge badge-purple">25+ Skills</span>
+                <span class="badge badge-green">自动化工作流</span>
             </div>
         </div>
-        <span class="slide-number">01 / 48</span>
+        <span class="slide-number">01 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 02: WHAT IS VIBE RESEARCH
-         =========================================== -->
+    <!-- SLIDE 02: WHAT IS VIBE RESEARCH -->
     <section class="slide" data-slide="2">
         <div class="grid-bg"></div>
         <div class="slide-content">
@@ -560,616 +120,131 @@
                     <p>"Vibe" 强调的是流畅的体验 —— 让研究者专注于思考本身，而非工具操作。</p>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--accent-green);">核心能力</h3>
-                    <p>智能 PDF 解析、上下文感知笔记、跨文献符号统一、自动化学位论文产出。</p>
+                    <h3 style="color: var(--accent-green);">Skills 系统</h3>
+                    <p>25+ 领域特定技能，即插即用，涵盖阅读、写作、研究、开发全流程。</p>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--accent-orange);">技术栈</h3>
-                    <p>Claude Code + Obsidian + LaTeX + MinerU + 自定义 Skills 系统。</p>
+                    <h3 style="color: var(--accent-orange);">代表成果</h3>
+                    <p>已累计调用 <strong>28 亿</strong> MiniMax Tokens，持续迭代验证工作流有效性。</p>
                 </div>
             </div>
         </div>
-        <span class="slide-number">02 / 48</span>
+        <span class="slide-number">02 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 03: PROBLEM
-         =========================================== -->
+    <!-- SLIDE 03: PROBLEM -->
     <section class="slide" data-slide="3">
         <div class="grid-bg"></div>
         <div class="slide-content">
             <span class="section-label section-purple reveal">Problem</span>
             <h2 class="reveal">学术研究的核心痛点</h2>
             <div class="grid-3 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">📚</div>
-                    <h3>文献阅读效率低</h3>
-                    <p>大量时间消耗在论文扫描而非深度理解，技术细节容易遗忘。</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">✍️</div>
-                    <h3>笔记碎片化</h3>
-                    <p>跨文献的概念、符号不统一，后期整理工作量大到令人沮丧。</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">📝</div>
-                    <h3>讲义编写耗时</h3>
-                    <p>从理解到形成正式讲义需要反复润色，格式调整消耗精力。</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔀</div>
-                    <h3>符号体系混乱</h3>
-                    <p>不同论文符号约定不同，交叉引用时容易混淆和出错。</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔄</div>
-                    <h3>版本管理困难</h3>
-                    <p>笔记、讲义、文献散落各处，版本迭代难以追溯。</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 2rem; margin-bottom: 1rem;">🤖</div>
-                    <h3>AI 利用不足</h3>
-                    <p>现有 AI 工具缺乏领域深度集成，无法真正理解学术上下文。</p>
-                </div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">📚</div><h3>文献阅读效率低</h3><p>大量时间消耗在论文扫描而非深度理解。</p></div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">✍️</div><h3>笔记碎片化</h3><p>跨文献概念、符号不统一，整理工作量大。</p></div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">📝</div><h3>讲义编写耗时</h3><p>从理解到形成正式讲义需要反复润色。</p></div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">🔀</div><h3>符号体系混乱</h3><p>不同论文符号约定不同，容易混淆出错。</p></div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">🔄</div><h3>版本管理困难</h3><p>笔记、讲义、文献散落各处。</p></div>
+                <div class="card"><div style="font-size: 2rem; margin-bottom: 1rem;">🤖</div><h3>AI 利用不足</h3><p>现有 AI 工具缺乏领域深度集成。</p></div>
             </div>
         </div>
-        <span class="slide-number">03 / 48</span>
+        <span class="slide-number">03 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 04: SOLUTION
-         =========================================== -->
+    <!-- SLIDE 04: SOLUTION -->
     <section class="slide" data-slide="4">
         <div class="grid-bg"></div>
         <div class="slide-content">
             <span class="section-label section-green reveal">Solution</span>
-            <h2 class="reveal">Vibe Research 解决方案</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">智能工作流</h3>
-                    <ul>
-                        <li><strong>MinerU</strong> — 高精度 PDF 转录，保留原有结构</li>
-                        <li><strong>Claude Code</strong> — 深度理解论文，建立知识图谱</li>
-                        <li><strong>Obsidian</strong> — 双向链接，构建知识网络</li>
-                        <li><strong>LaTeX</strong> — 产出专业级讲义，Springer 风格</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">质量保障</h3>
-                    <ul>
-                        <li><strong>MEMORY.md</strong> — 跨会话持久记忆</li>
-                        <li><strong>CLAUDE.md</strong> — 项目规范强制执行</li>
-                        <li><strong>Skill System</strong> — 领域特定最佳实践</li>
-                        <li><strong>符号约定</strong> — 多文献符号统一管理</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">04 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 05: PHILOSOPHY
-         =========================================== -->
-    <section class="slide" data-slide="5">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Philosophy</span>
-            <h2 class="reveal">设计哲学</h2>
-            <div class="reveal" style="margin-top: 2rem;">
-                <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                    <p style="font-size: var(--h3-size); font-style: italic; color: var(--text-primary); margin-bottom: 1.5rem;">
-                        "让研究者专注于思考的火花，而非工具的摩擦。"
-                    </p>
-                    <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
-                        <div>
-                            <div style="color: var(--accent-cyan); font-weight: 600;">自动化</div>
-                            <div style="color: var(--text-muted); font-size: var(--small-size);">重复性工作交给 AI</div>
-                        </div>
-                        <div>
-                            <div style="color: var(--accent-purple); font-weight: 600;">一致性</div>
-                            <div style="color: var(--text-muted); font-size: var(--small-size);">符号、格式、引用规范化</div>
-                        </div>
-                        <div>
-                            <div style="color: var(--accent-green); font-weight: 600;">可追溯</div>
-                            <div style="color: var(--text-muted); font-size: var(--small-size);">完整的知识演化路径</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">05 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 06: TOOLCHAIN
-         =========================================== -->
-    <section class="slide" data-slide="6">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-purple reveal">Toolchain</span>
-            <h2 class="reveal">核心技术栈</h2>
-            <div class="grid-4 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🤖</div>
-                    <h3>Claude Code</h3>
-                    <p>AI 能力核心，执行复杂推理和代码生成</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📄</div>
-                    <h3>MinerU</h3>
-                    <p>PDF 高精度转录，保留公式和图表</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">💎</div>
-                    <h3>Obsidian</h3>
-                    <p>知识管理，双向链接网络</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📐</div>
-                    <h3>LaTeX</h3>
-                    <p>专业排版，学术级讲义输出</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">⚡</div>
-                    <h3>Skills</h3>
-                    <p>领域特定工作流自动化</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🧠</div>
-                    <h3>MEMORY</h3>
-                    <p>跨会话持久知识库</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">📋</div>
-                    <h3>CLAUDE.md</h3>
-                    <p>项目规范与规则引擎</p>
-                </div>
-                <div class="card">
-                    <div style="font-size: 1.5rem; margin-bottom: 0.75rem;">🔗</div>
-                    <h3>Git</h3>
-                    <p>版本控制与协作</p>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">06 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 07: MINIMAX TOKENS (NEW)
-         =========================================== -->
-    <section class="slide" data-slide="7">
-        <div class="grid-bg"></div>
-        <div class="slide-content" style="max-width: 1100px; margin: 0 auto; text-align: center;">
-            <p class="reveal" style="color: var(--accent-cyan); font-size: var(--small-size); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.8rem; font-weight: 500;">MiniMax API 使用统计</p>
-            <h2 class="reveal" style="justify-content: center; font-size: var(--h2-size);">已累计调用 <span style="color: var(--accent-cyan);">28 亿</span> Tokens</h2>
-            <p class="reveal" style="margin-top: 0.5rem; margin-bottom: 1.5rem;">持续迭代优化，推动自动化科研工作流演进</p>
-            <div class="reveal" style="border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 1px solid var(--border);">
-                <img src="https://minimax-algeng-chat-tts.oss-cn-wulanchabu.aliyuncs.com/ccv2%2F2026-03-22%2FMiniMax-M2.7%2F2027069428285313025%2Ff3833159f475bd42b84ec5d2057145d147b87f5084ae03a50b7c0bad90ddc602..png?Expires=1774204899&OSSAccessKeyId=LTAI5tGLnRTkBjLuYPjNcKQ8&Signature=eD%2B%2B5cdzjgqw1mR6pLUWgEztCfc%3D"
-                     alt="MiniMax Token 消耗统计"
-                     style="width: 100%; max-height: 55vh; object-fit: contain; background: #f8fafc; display: block;">
-            </div>
-        </div>
-        <span class="slide-number">07 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 08: SECTION 2 - LOCAL AI
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="8">
-        <div class="slide-content">
-            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 02</span>
-            <h2 class="reveal">Local AI 能力</h2>
-            <p class="reveal" style="margin-top: 1rem;">本地模型 + 云端模型协同</p>
-        </div>
-        <span class="slide-number">08 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 09: CLAUDE CODE LOCAL
-         =========================================== -->
-    <section class="slide" data-slide="9">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Local AI</span>
-            <h2 class="reveal">Claude Code 本地能力</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan);">代码执行</h3>
-                    <p>直接在沙箱环境中运行 Python、R、Julia 等代码，实时验证数学推导。</p>
-                    <pre style="margin-top: 1rem;"><code># 示例：验证概率不等式
-import numpy as np
-from scipy import stats
-
-def verify_hoeffding(n=10000):
-    # Monte Carlo 验证 Hoeffding 不等式
-    X = np.random.uniform(-1, 1, n)
-    delta = 0.1
-    P = np.mean(np.abs(X) > delta)
-    bound = 2 * np.exp(-2 * n * delta**2)
-    return P, bound</code></pre>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple);">文件系统</h3>
-                    <p>完整访问项目结构，自动化文件读写、批量重命名、目录整理。</p>
-                    <pre style="margin-top: 1rem;"><code># 批量处理文献 PDF
-for pdf in literature/*.pdf; do
-    python extract_figures.py "$pdf" -o figures/
-done</code></pre>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-green);">工具调用</h3>
-                    <p>使用 Tool Calling 访问外部 API，获取论文元数据、引用信息。</p>
-                    <pre style="margin-top: 1rem;"><code># CrossRef API 查询
-curl "https://api.crossref.org/works/$DOI"
-  -H "Accept: application/json"</code></pre>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-orange);">多模型支持</h3>
-                    <p>Claude + Gemini + MiniMax 多模型协作，各取所长。</p>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">09 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 10: MINERU
-         =========================================== -->
-    <section class="slide" data-slide="10">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">PDF Processing</span>
-            <h2 class="reveal">MinerU 高精度 PDF 转录</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心能力</h3>
-                    <ul>
-                        <li>600 DPI 高清渲染，保留数学公式细节</li>
-                        <li>自动识别并提取 Figure 边界框</li>
-                        <li>保留原始目录结构和章节层级</li>
-                        <li>支持表格、公式、交叉引用识别</li>
-                        <li>支持中文、日文、英文多语言</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">工作流程</h3>
-                    <pre><code># MinerU 转录流程
-python mineru.py paper.pdf \
-    --output transcript/ \
-    --dpi 600 \
-    --extract-figures
-
-# 提取结果
-transcript/
-├── content.md      # 完整文本
-├── images/         # 提取的图表
-└── metadata.json   # 元数据</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">10 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 11: SECTION 3 - MEMORY SYSTEM
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="11">
-        <div class="slide-content">
-            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 03</span>
-            <h2 class="reveal">记忆系统</h2>
-            <p class="reveal" style="margin-top: 1rem;">跨会话持久知识与项目规范</p>
-        </div>
-        <span class="slide-number">11 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 12: MEMORY SYSTEM OVERVIEW
-         =========================================== -->
-    <section class="slide" data-slide="12">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Memory</span>
-            <h2 class="reveal">记忆系统架构</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan);">MEMORY.md</h3>
-                    <p style="margin-bottom: 1rem;">跨会话持久记忆</p>
-                    <ul>
-                        <li>项目进度追踪</li>
-                        <li>关键决策记录</li>
-                        <li>经验教训归档</li>
-                        <li>符号约定汇总</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple);">CLAUDE.md</h3>
-                    <p style="margin-bottom: 1rem;">项目规范引擎</p>
-                    <ul>
-                        <li>写作风格规则</li>
-                        <li>数学符号约定</li>
-                        <li>目录结构规范</li>
-                        <li>Git 提交习惯</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">12 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 13: MEMORY.MD CONTENT
-         =========================================== -->
-    <section class="slide" data-slide="13">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">Memory</span>
-            <h2 class="reveal">MEMORY.md 内容</h2>
-            <div class="reveal" style="margin-top: 1.5rem;">
-                <pre style="max-height: 60vh; overflow: auto;"><code># 项目记忆
-
-## 项目概述
-- 文献阅读与讲义生成工作流系统
-- 阅读 Peng Ding 的 "A First Course in Causal Inference"
-
-## 核心规范
-### LaTeX 格式（禁止 Markdown！）
-- ❌ 禁止 Markdown 列表、加粗、斜体、代码块
-- ✅ 必须用 \begin{enumerate}、\textbf{}、\textit{}
-
-### 符号约定
-- $\hat{X}$ = 样本估计量
-- $X$ = 总体真值/有限总体量
-
-## 进度记录
-### 因果推断
-- 书籍: A First Course in Causal Inference
-- 笔记: notes/A-First-Course-in-Causal-Inference/
-- 状态: 1-4章 ✅，5-18章 ⭕
-
-## 经验教训
-- 2025-03-14: 混淆符号导致定理错误 → 直接读原文对照
-- 2026-03-15: 未先读目录页导致章节编号错误
-- 2026-03-21: **总是忘记把问答记录到 qa.tex**</code></pre>
-            </div>
-        </div>
-        <span class="slide-number">13 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 14: CLAUDE.MD CONTENT
-         =========================================== -->
-    <section class="slide" data-slide="14">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-purple reveal">Config</span>
-            <h2 class="reveal">CLAUDE.md 内容</h2>
-            <div class="reveal" style="margin-top: 1.5rem;">
-                <pre style="max-height: 60vh; overflow: auto;"><code># CLAUDE.md
-
-## 重要规则
-1. **"记住" 规则**: 用户说"记住 XXX"时，必须写入 CLAUDE.md
-2. **LaTeX 格式严格性**: 禁止 Markdown 格式，必须使用纯 LaTeX
-3. **先读原文再写笔记**: 禁止凭想象编写数学证明
-4. **作业路径**: Google Drive 相应目录
-5. **Unicode 禁止规则**: 禁止 n₁ 等 unicode 下标，必须用 $n_1$
-
-## 数学符号习惯
-- 概率: $\mathbb{P}(A)$
-- 期望: $\mathbb{E}X$
-- 方差: $\text{var}$
-- 协方差: $\text{cov}$
-- 独立性: $A \Perp B$
-
-## 写作风格
-- 动机优先: 每个概念引入前先解释"为什么需要它"
-- 历史脉络: 注重概念的起源和发展历史
-- 叙事流畅: Stein《傅里叶分析》风格</code></pre>
-            </div>
-        </div>
-        <span class="slide-number">14 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 15: SECTION 4 - SKILLS
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="15">
-        <div class="slide-content">
-            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 04</span>
-            <h2 class="reveal">Skills 系统</h2>
-            <p class="reveal" style="margin-top: 1rem;">领域特定工作流自动化</p>
-        </div>
-        <span class="slide-number">15 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 16: SKILLS OVERVIEW
-         =========================================== -->
-    <section class="slide" data-slide="16">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skills</span>
-            <h2 class="reveal">Skills 系统概述</h2>
-            <p class="reveal" style="margin-top: 1rem; margin-bottom: 2rem;">40+ 领域特定技能，即插即用</p>
-            <div class="grid-3 reveal">
+            <h2 class="reveal">Skills 系统解决方案</h2>
+            <div class="grid-3 reveal" style="margin-top: 2rem;">
                 <div class="skill-card">
                     <span class="skill-tag" style="background: rgba(8,145,178,0.1); color: var(--accent-cyan);">Reading</span>
-                    <h3>阅读技能</h3>
-                    <p>pdf-reader, video-summary, skim-jump, reading-workflow</p>
+                    <h3>阅读与笔记</h3>
+                    <p>latex-notes, skim-jump, obsidian-cli, literature-notes-template</p>
                 </div>
                 <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(124,58,237,0.1); color: var(--accent-purple);">Writing</span>
-                    <h3>写作技能</h3>
-                    <p>latex-notes, obsidian-markdown, beamer-chinese</p>
+                    <span class="skill-tag" style="background: rgba(124,58,237,0.1); color: var(--accent-purple);">Research</span>
+                    <h3>研究与引用</h3>
+                    <p>gs-search, paper-references-generator, citation-bibliography-generator</p>
                 </div>
                 <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(5,150,105,0.1); color: var(--accent-green);">Research</span>
-                    <h3>研究技能</h3>
-                    <p>paper-references, gs-search, literature-reference</p>
+                    <span class="skill-tag" style="background: rgba(5,150,105,0.1); color: var(--accent-green);">Figure</span>
+                    <h3>图表提取</h3>
+                    <p>pdf-figure-extractor, figure-extractor, gemini-image-analyzer</p>
                 </div>
                 <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(217,119,6,0.1); color: var(--accent-orange);">Media</span>
-                    <h3>媒体技能</h3>
-                    <p>bilibili-subtitle, youtube-transcript, gemini-video</p>
+                    <span class="skill-tag" style="background: rgba(217,119,6,0.1); color: var(--accent-orange);">Writing</span>
+                    <h3>写作与模板</h3>
+                    <p>beamer-chinese, homework-workflow, chapter0-template</p>
                 </div>
                 <div class="skill-card">
                     <span class="skill-tag" style="background: rgba(219,39,119,0.1); color: var(--accent-pink);">Dev</span>
-                    <h3>开发技能</h3>
-                    <p>frontend-slides, document-skills, mcp-builder</p>
+                    <h3>开发与调试</h3>
+                    <p>frontend-slides, auto-commit-push, latex-debug</p>
                 </div>
                 <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(37,99,235,0.1); color: var(--accent-blue);">Productivity</span>
-                    <h3>效率技能</h3>
-                    <p>auto-commit-push, weather-collector, json-canvas</p>
+                    <span class="skill-tag" style="background: rgba(37,99,235,0.1); color: var(--accent-blue);">AI</span>
+                    <h3>AI 专家</h3>
+                    <p>gemini-browser-chat, r-expert, interactive-qa-schubert</p>
                 </div>
             </div>
         </div>
-        <span class="slide-number">16 / 48</span>
+        <span class="slide-number">04 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 17: SKILL - PDF READER
-         =========================================== -->
-    <section class="slide" data-slide="17">
+    <!-- SLIDE 05: SECTION - READING -->
+    <section class="slide slide-section slide-center" data-slide="5">
+        <div class="slide-content">
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 01</span>
+            <h2 class="reveal">阅读与笔记 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">latex-notes · skim-jump · reading-progress · interactive-qa · obsidian-cli · literature-notes-template</p>
+        </div>
+        <span class="slide-number">05 / 36</span>
+    </section>
+
+    <!-- SLIDE 06: latex-notes -->
+    <section class="slide" data-slide="6">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: pdf-reader</span>
-            <h2 class="reveal">pdf-reader - PDF 文献解析</h2>
+            <span class="section-label section-cyan reveal">Skill 01</span>
+            <h2 class="reveal">latex-notes — LaTeX 讲义生成</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>解析 PDF 文献结构</li>
-                        <li>提取章节框架</li>
-                        <li>理解内容脉络</li>
-                        <li>输出结构化摘要</li>
+                        <li>生成 LaTeX 格式学习讲义</li>
+                        <li>包含用户注解和问题</li>
+                        <li>Stein《傅里叶分析》风格的 motivation 写作</li>
+                        <li>自动交叉引用</li>
+                        <li>文献符号统一管理</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code># 直接解析 PDF
-Skill: pdf-reader
-文件: /path/to/paper.pdf
-
-# 提取章节结构
-Skill: pdf-reader
-文件: /path/to/paper.pdf
-操作: extract-outline</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">17 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 18: SKILL - LATEX NOTES
-         =========================================== -->
-    <section class="slide" data-slide="18">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: latex-notes</span>
-            <h2 class="reveal">latex-notes - LaTeX 讲义生成</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>生成 LaTeX 格式学习讲义</li>
-                        <li>包含用户注解和问题</li>
-                        <li>Stein 风格的 motivation 写作</li>
-                        <li>自动交叉引用</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">生成流程</h3>
                     <pre><code>Skill: latex-notes
 书籍: A First Course in Causal Inference
 章节: Chapter 3 - Potential Outcomes
-风格: Stein《傅里叶分析》动机优先</code></pre>
+风格: Stein motivation</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">18 / 48</span>
+        <span class="slide-number">06 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 19: SKILL - PAPER REFERENCES
-         =========================================== -->
-    <section class="slide" data-slide="19">
+    <!-- SLIDE 07: skim-jump -->
+    <section class="slide" data-slide="7">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-purple reveal">Skill: paper-references</span>
-            <h2 class="reveal">paper-references - 参考文献管理</h2>
+            <span class="section-label section-green reveal">Skill 02</span>
+            <h2 class="reveal">skim-jump — PDF 与笔记双向联动</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>自动提取论文参考文献列表</li>
-                        <li>CrossRef API 搜索 DOI</li>
-                        <li>生成 BibTeX 引用格式</li>
-                        <li>批量添加到笔记</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: paper-references
-文件: transcript/chapter3.md
-格式: BibTeX
-输出: references.bib</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">19 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 20: SKILL - READING WORKFLOW
-         =========================================== -->
-    <section class="slide" data-slide="20">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: reading-workflow</span>
-            <h2 class="reveal">reading-workflow - 主工作流</h2>
-            <div class="reveal" style="margin-top: 2rem;">
-                <div class="card" style="max-width: 900px; margin: 0 auto;">
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">三阶段阅读流程</h3>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center;">
-                        <div>
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔍</div>
-                            <h4>扫描阶段</h4>
-                            <p style="font-size: var(--small-size);">快速浏览目录、摘要、结论</p>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📖</div>
-                            <h4>逐章阅读</h4>
-                            <p style="font-size: var(--small-size);">深入理解，笔记整理</p>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✍️</div>
-                            <h4>讲义生成</h4>
-                            <p style="font-size: var(--small-size);">LaTeX 编排，交叉引用</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">20 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 21: SKILL - SKIM JUMP
-         =========================================== -->
-    <section class="slide" data-slide="21">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: skim-jump</span>
-            <h2 class="reveal">skim-jump - PDF 笔记联动</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
                         <li>Skim PDF 阅读器集成</li>
-                        <li>TeX 行号跳转</li>
-                        <li>双向定位：PDF ↔ 笔记</li>
+                        <li>TeX 行号跳转到 PDF</li>
+                        <li>PDF 位置跳转到笔记</li>
+                        <li>双向定位：PDF ↔ 笔记同步</li>
                     </ul>
                 </div>
                 <div class="card">
@@ -1177,342 +252,204 @@ Skill: pdf-reader
                     <pre><code># 从笔记跳转到 PDF
 Skill: skim-jump
 笔记行号: 145
-PDF: Do Carmo - Curves and Surfaces
+PDF: Do Carmo - Curves
 
-# 从 PDF 跳转到笔记
-在 Skim 中 Cmd+Shift+点击
+# 在 Skim 中 Cmd+Shift+点击
 自动打开对应笔记位置</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">21 / 48</span>
+        <span class="slide-number">07 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 22: SKILL - BILIBILI SUBTITLE
-         =========================================== -->
-    <section class="slide" data-slide="22">
+    <!-- SLIDE 08: reading-progress -->
+    <section class="slide" data-slide="8">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-orange reveal">Skill: bilibili-subtitle</span>
-            <h2 class="reveal">bilibili-subtitle - B站字幕处理</h2>
+            <span class="section-label section-purple reveal">Skill 03</span>
+            <h2 class="reveal">reading-progress — 阅读进度管理</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>提取 B站视频字幕</li>
-                        <li>转录无字幕视频</li>
-                        <li>生成结构化摘要</li>
-                        <li>支持 BV ID 直接解析</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: bilibili-subtitle
-URL: https://www.bilibili.com/video/BV1xxx
-
-# 输出
-- 完整字幕文本
-- 时间戳对应
-- 关键内容摘要</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">22 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 23: SKILL - GEMINI VIDEO
-         =========================================== -->
-    <section class="slide" data-slide="23">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-pink reveal">Skill: gemini-video</span>
-            <h2 class="reveal">gemini-video-understanding - 视频理解</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>视频内容深度理解</li>
-                        <li>音频转文字 + 视觉描述</li>
-                        <li>时间戳参考</li>
-                        <li>视频片段剪辑</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: gemini-video
-视频: lecture.mp4
-任务: 总结核心概念
-输出: 结构化笔记</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">23 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 24: SKILL - FRONTEND SLIDES
-         =========================================== -->
-    <section class="slide" data-slide="24">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: frontend-slides</span>
-            <h2 class="reveal">frontend-slides - HTML 演示生成</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>零依赖单文件 HTML 演示</li>
-                        <li>动画丰富的交互效果</li>
-                        <li>浏览器直接运行</li>
-                        <li>支持 PPT 转换</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">工作流程</h3>
-                    <pre><code>Skill: frontend-slides
-输入: 演讲内容大纲
-风格: geek-light
-输出: presentation.html
-
-# 特性
-- 滚动吸附
-- 键盘导航
-- 动画揭示</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">24 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 25: SKILL - FRONTEND DESIGN
-         =========================================== -->
-    <section class="slide" data-slide="25">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-purple reveal">Skill: frontend-design</span>
-            <h2 class="reveal">frontend-design - 界面设计</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>生产级前端界面</li>
-                        <li>独特设计美学</li>
-                        <li>组件化架构</li>
+                        <li>当前阅读位置追踪</li>
+                        <li>历史提问记录</li>
+                        <li>章节状态管理 (✅/⭕)</li>
+                        <li>进度可视化</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: frontend-design
-任务: 创建数据可视化仪表盘
-风格: modern-dashboard</code></pre>
+                    <pre><code>Skill: reading-progress
+书籍: 因果推断
+状态: Chapter 3 / 18
+问题: 12 个待解答</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">25 / 48</span>
+        <span class="slide-number">08 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 26: SKILL - MCP BUILDER
-         =========================================== -->
-    <section class="slide" data-slide="26">
+    <!-- SLIDE 09: interactive-qa -->
+    <section class="slide" data-slide="9">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: mcp-builder</span>
-            <h2 class="reveal">mcp-builder - MCP 服务器构建</h2>
+            <span class="section-label section-cyan reveal">Skill 04</span>
+            <h2 class="reveal">interactive-qa — 交互式问答</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>Model Context Protocol 服务</li>
-                        <li>外部服务集成</li>
-                        <li>工具设计最佳实践</li>
+                        <li>理解当前阅读位置</li>
+                        <li>实时回答问题</li>
+                        <li>同步更新讲义</li>
+                        <li>问答记录归档到 qa.tex</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: mcp-builder
-目标: 构建 arxiv 查询服务
-协议: MCP v1.0</code></pre>
+                    <pre><code>Skill: interactive-qa
+位置: Chapter 3, Page 45
+问题: Rosenbaum 因果推断的距离相关性</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">26 / 48</span>
+        <span class="slide-number">09 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 27: SKILL - FIGURE EXTRACTOR
-         =========================================== -->
-    <section class="slide" data-slide="27">
+    <!-- SLIDE 10: obsidian-cli -->
+    <section class="slide" data-slide="10">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-orange reveal">Skill: figure-extractor</span>
-            <h2 class="reveal">figure-extractor - 数学插图提取</h2>
+            <span class="section-label section-orange reveal">Skill 05</span>
+            <h2 class="reveal">obsidian-cli — Obsidian 命令行</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>PDF 高清图表提取 (600 DPI)</li>
-                        <li>PNG 图表处理 (400 DPI)</li>
-                        <li>Gemini Vision 边界框识别</li>
-                        <li>断点续传支持</li>
+                        <li>笔记 CRUD 操作</li>
+                        <li>Vault 管理</li>
+                        <li>插件和主题开发</li>
+                        <li>搜索功能</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>python figure_extractor.py \
-    path/to/image.png \
-    -o output/ \
-    --dpi 400 \
-    --model gemini-2.5-flash</code></pre>
+                    <pre><code>Skill: obsidian-cli
+操作: create
+文件名: chapter3-summary.md
+位置: notes/causal-inference/</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">27 / 48</span>
+        <span class="slide-number">10 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 28: SKILL - VIDEO SUMMARY
-         =========================================== -->
-    <section class="slide" data-slide="28">
+    <!-- SLIDE 11: literature-notes-template -->
+    <section class="slide" data-slide="11">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: video-summary</span>
-            <h2 class="reveal">video-summary - 视频笔记生成</h2>
+            <span class="section-label section-green reveal">Skill 06</span>
+            <h2 class="reveal">literature-notes-template — 文献笔记模板</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>字幕驱动的结构化总结</li>
-                        <li>关键概念提取</li>
-                        <li>时间戳标注</li>
+                        <li>标准化文献笔记结构</li>
+                        <li>自动生成元数据</li>
+                        <li>预设思考问题</li>
+                        <li>符号约定占位</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: video-summary
-视频: lecture.mp4
-格式: Obsidian markdown
-包含: 时间戳 + 要点</code></pre>
+                    <pre><code>Skill: literature-notes-template
+书籍: A First Course in Causal Inference
+输出: notes/literature/ch3_template.md</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">28 / 48</span>
+        <span class="slide-number">11 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 29: SKILL - OBSIDIAN MARKDOWN
-         =========================================== -->
-    <section class="slide" data-slide="29">
-        <div class="grid-bg"></div>
+    <!-- SLIDE 12: SECTION - RESEARCH -->
+    <section class="slide slide-section slide-center" data-slide="12">
         <div class="slide-content">
-            <span class="section-label section-purple reveal">Skill: obsidian-markdown</span>
-            <h2 class="reveal">obsidian-markdown - Obsidian 笔记</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>Obsidian 格式支持</li>
-                        <li>双向链接语法</li>
-                        <li>Callout 嵌入</li>
-                        <li>属性元数据</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">语法示例</h3>
-                    <pre><code>---
-tags: [causal-inference, chapter3]
-created: 2026-03-22
----
-
-> [!example] 潜在结果框架
-> $Y_i(1)$ 表示 unit $i$ 接受 treatment 的结果
-
-![[figure_3_1.png]]
-[[Chapter 2|上一章回顾]]</code></pre>
-                </div>
-            </div>
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 02</span>
+            <h2 class="reveal">研究与引用 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">gs-search · paper-references-generator · literature-reference-manager · citation-bibliography-generator</p>
         </div>
-        <span class="slide-number">29 / 48</span>
+        <span class="slide-number">12 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 30: SKILL - WEATHER COLLECTOR
-         =========================================== -->
-    <section class="slide" data-slide="30">
+    <!-- SLIDE 13: gs-search -->
+    <section class="slide" data-slide="13">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: weather-collector</span>
-            <h2 class="reveal">weather-collector - 天气数据采集</h2>
+            <span class="section-label section-blue reveal">Skill 07</span>
+            <h2 class="reveal">gs-search — Google Scholar 搜索</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>Open-Meteo API 获取</li>
-                        <li>24小时完整预报</li>
-                        <li>不受时区影响</li>
-                        <li>自动保存到 Obsidian</li>
+                        <li>学术论文搜索</li>
+                        <li>标题、作者、期刊、年份</li>
+                        <li>引用次数统计</li>
+                        <li>全文链接获取</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: weather-collector
-城市: 北京
-输出: Obsidian daily note</code></pre>
+                    <pre><code>Skill: gs-search
+关键词: causal inference potential outcomes
+年份: 2020-2024
+数量: 10</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">30 / 48</span>
+        <span class="slide-number">13 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 31: SKILL - GEMINI IMAGE GENERATION
-         =========================================== -->
-    <section class="slide" data-slide="31">
+    <!-- SLIDE 14: paper-references-generator -->
+    <section class="slide" data-slide="14">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-pink reveal">Skill: gemini-image</span>
-            <h2 class="reveal">gemini-image-generation - 图片生成</h2>
+            <span class="section-label section-purple reveal">Skill 08</span>
+            <h2 class="reveal">paper-references-generator — 参考文献生成</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>FLUX Dev/Pro 模型</li>
-                        <li>Gemini 3 Pro</li>
-                        <li>Grok Imagine</li>
-                        <li>Seedream 专业级</li>
+                        <li>从论文 md 转录提取参考文献</li>
+                        <li>CrossRef API 搜索 DOI</li>
+                        <li>生成标准 BibTeX 引用</li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: gemini-image-generation
-提示词: 因果图示意 - 混淆结构
-风格: technical diagram
-输出: causal-diagram.png</code></pre>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: paper-references-generator
+文件: transcript/chapter3.md
+输出: references.bib</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">31 / 48</span>
+        <span class="slide-number">14 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 32: SKILL - LITERATURE REFERENCE MANAGER
-         =========================================== -->
-    <section class="slide" data-slide="32">
+    <!-- SLIDE 15: literature-reference-manager -->
+    <section class="slide" data-slide="15">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: literature-ref</span>
-            <h2 class="reveal">literature-reference-manager - 文献引用</h2>
+            <span class="section-label section-green reveal">Skill 09</span>
+            <h2 class="reveal">literature-reference-manager — 文献引用管理</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
                         <li>文献库扫描</li>
                         <li>参考文献提取</li>
                         <li>CrossRef/Scholar 查询</li>
-                        <li>标准 BibTeX 生成</li>
+                        <li>批量 BibTeX 生成</li>
                     </ul>
                 </div>
                 <div class="card">
@@ -1523,20 +460,176 @@ created: 2026-03-22
                 </div>
             </div>
         </div>
-        <span class="slide-number">32 / 48</span>
+        <span class="slide-number">15 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 33: SKILL - BEAMER CHINESE
-         =========================================== -->
-    <section class="slide" data-slide="33">
+    <!-- SLIDE 16: citation-bibliography-generator -->
+    <section class="slide" data-slide="16">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-orange reveal">Skill: beamer-chinese</span>
-            <h2 class="reveal">beamer-chinese-presentation - 中文 Beamer</h2>
+            <span class="section-label section-orange reveal">Skill 10</span>
+            <h2 class="reveal">citation-bibliography-generator — 引用格式化</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>多格式引用生成</li>
+                        <li>APA / MLA / Chicago / IEEE / Harvard</li>
+                        <li>DOI/ISBN 查询</li>
+                        <li>自动排序</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: citation-bibliography-generator
+论文: DOI: 10.1234/example
+格式: APA 7th
+输出: bibliography.bib</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">16 / 36</span>
+    </section>
+
+    <!-- SLIDE 17: SECTION - FIGURE -->
+    <section class="slide slide-section slide-center" data-slide="17">
+        <div class="slide-content">
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 03</span>
+            <h2 class="reveal">图表提取 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">pdf-figure-extractor · figure-extractor · gemini-image-analyzer · minimax-vision</p>
+        </div>
+        <span class="slide-number">17 / 36</span>
+    </section>
+
+    <!-- SLIDE 18: pdf-figure-extractor -->
+    <section class="slide" data-slide="18">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-cyan reveal">Skill 11</span>
+            <h2 class="reveal">pdf-figure-extractor — PDF 图表提取</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>600 DPI 高清渲染</li>
+                        <li>Gemini Vision API 边界框识别</li>
+                        <li>自动裁剪输出</li>
+                        <li>断点续传</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>python figure_extractor.py \
+    path/to/image.png \
+    -o output/ --dpi 400 \
+    --model gemini-2.5-flash</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">18 / 36</span>
+    </section>
+
+    <!-- SLIDE 19: figure-extractor -->
+    <section class="slide" data-slide="19">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-green reveal">Skill 12</span>
+            <h2 class="reveal">figure-extractor — 数学插图提取</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>PDF 图表提取 (600 DPI)</li>
+                        <li>PNG 处理 (400 DPI)</li>
+                        <li>Gemini Vision 边界框识别</li>
+                        <li>工业级断点续传</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>python figure_extractor.py \
+    /path/to/diagram.png \
+    -o ./figures/ --force \
+    --model gemini-2.5-flash</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">19 / 36</span>
+    </section>
+
+    <!-- SLIDE 20: gemini-image-analyzer -->
+    <section class="slide" data-slide="20">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-purple reveal">Skill 13</span>
+            <h2 class="reveal">gemini-image-analyzer — 图像理解分析</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>图表内容提取</li>
+                        <li>数学公式识别</li>
+                        <li>Figure 描述生成</li>
+                        <li>OCR 文字识别</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: gemini-image-analyzer
+图片: figure_3_1.png
+任务: 描述因果图结构</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">20 / 36</span>
+    </section>
+
+    <!-- SLIDE 21: minimax-vision -->
+    <section class="slide" data-slide="21">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-orange reveal">Skill 14</span>
+            <h2 class="reveal">minimax-vision — MiniMax 视觉理解</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>MiniMax 模型视觉理解</li>
+                        <li>图表解析</li>
+                        <li>OCR 文字识别</li>
+                        <li>多语言支持</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: minimax-vision
+图片: scan.pdf
+任务: 提取表格数据</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">21 / 36</span>
+    </section>
+
+    <!-- SLIDE 22: SECTION - WRITING -->
+    <section class="slide slide-section slide-center" data-slide="22">
+        <div class="slide-content">
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 04</span>
+            <h2 class="reveal">写作与模板 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">beamer-chinese-presentation · homework-workflow · chapter0-template · note-content-verifier</p>
+        </div>
+        <span class="slide-number">22 / 36</span>
+    </section>
+
+    <!-- SLIDE 23: beamer-chinese-presentation -->
+    <section class="slide" data-slide="23">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-blue reveal">Skill 15</span>
+            <h2 class="reveal">beamer-chinese-presentation — 中文 Beamer</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-blue); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
                         <li>LaTeX Beamer 中文支持</li>
                         <li>SYPSTYLE 主题</li>
@@ -1553,78 +646,226 @@ created: 2026-03-22
                 </div>
             </div>
         </div>
-        <span class="slide-number">33 / 48</span>
+        <span class="slide-number">23 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 34: SKILL - JSON CANVAS
-         =========================================== -->
-    <section class="slide" data-slide="34">
+    <!-- SLIDE 24: homework-workflow -->
+    <section class="slide" data-slide="24">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-purple reveal">Skill: json-canvas</span>
-            <h2 class="reveal">json-canvas - 视觉画布</h2>
+            <span class="section-label section-purple reveal">Skill 16</span>
+            <h2 class="reveal">homework-workflow — 作业工作流</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>.canvas 文件创建</li>
-                        <li>节点与连接编辑</li>
-                        <li>思维导图生成</li>
-                        <li>流程图设计</li>
+                        <li>作业模板生成</li>
+                        <li>Google Drive 集成</li>
+                        <li>格式规范化</li>
+                        <li>提交前检查</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: json-canvas
-类型: mind-map
-主题: 因果推断概念图
-输出: causal-inference.canvas</code></pre>
+                    <pre><code>Skill: homework-workflow
+课程: 离散数学
+作业: hw2
+截止: 2026-03-25</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">34 / 48</span>
+        <span class="slide-number">24 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 35: SKILL - AI AGENT RESEARCH
-         =========================================== -->
-    <section class="slide" data-slide="35">
+    <!-- SLIDE 25: chapter0-template -->
+    <section class="slide" data-slide="25">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: ai-agent</span>
-            <h2 class="reveal">ai-agent-research - AI Agent 研究</h2>
+            <span class="section-label section-green reveal">Skill 17</span>
+            <h2 class="reveal">chapter0-template — 章节模板</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>AI Agent 前沿研究</li>
-                        <li>论文解读与分析</li>
-                        <li>代码实现验证</li>
+                        <li>章节笔记预结构</li>
+                        <li>动机引入模板</li>
+                        <li>定义/定理格式</li>
+                        <li>符号约定占位</li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">研究流程</h3>
-                    <pre><code>1. 论文搜索 → 2. 深度阅读
-3. 代码复现 → 4. 改进实验
-5. 笔记整理</code></pre>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: chapter0-template
+章节: Chapter 4 - Confounding
+风格: Stein motivation</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">35 / 48</span>
+        <span class="slide-number">25 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 36: SKILL - GEMINI BROWSER CHAT
-         =========================================== -->
-    <section class="slide" data-slide="36">
+    <!-- SLIDE 26: note-content-verifier -->
+    <section class="slide" data-slide="26">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-cyan reveal">Skill: gemini-browser</span>
-            <h2 class="reveal">gemini-browser-chat - 数学专家</h2>
+            <span class="section-label section-orange reveal">Skill 18</span>
+            <h2 class="reveal">note-content-verifier — 笔记内容校验</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>检查笔记完整性</li>
+                        <li>公式一致性验证</li>
+                        <li>引用完整性检查</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: note-content-verifier
+文件: notes/chapter3.tex
+检查: formulas, references</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">26 / 36</span>
+    </section>
+
+    <!-- SLIDE 27: SECTION - DEV -->
+    <section class="slide slide-section slide-center" data-slide="27">
+        <div class="slide-content">
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 05</span>
+            <h2 class="reveal">开发与调试 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">frontend-slides · auto-commit-push · latex-label-ref-verifier · latex-debug</p>
+        </div>
+        <span class="slide-number">27 / 36</span>
+    </section>
+
+    <!-- SLIDE 28: frontend-slides -->
+    <section class="slide" data-slide="28">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-cyan reveal">Skill 19</span>
+            <h2 class="reveal">frontend-slides — HTML 演示生成</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>零依赖单文件 HTML 演示</li>
+                        <li>动画丰富的交互效果</li>
+                        <li>浏览器直接运行</li>
+                        <li>支持 PPT 转换</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: frontend-slides
+内容: 演讲大纲
+风格: geek-light
+输出: presentation.html</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">28 / 36</span>
+    </section>
+
+    <!-- SLIDE 29: auto-commit-push -->
+    <section class="slide" data-slide="29">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-green reveal">Skill 20</span>
+            <h2 class="reveal">auto-commit-push — 自动 Git 提交</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>自动 stage + commit + push</li>
+                        <li>大文件检查</li>
+                        <li>错误处理</li>
+                        <li>Co-Authored-By 规范</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: auto-commit-push
+消息: fix: 修复 LaTeX 引用错误
+分支: main</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">29 / 36</span>
+    </section>
+
+    <!-- SLIDE 30: latex-label-ref-verifier -->
+    <section class="slide" data-slide="30">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-purple reveal">Skill 21</span>
+            <h2 class="reveal">latex-label-ref-verifier — LaTeX 引用检查</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>检查 \label 和 \ref 一致性</li>
+                        <li>发现悬空引用</li>
+                        <li>报告缺失标签</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: latex-label-ref-verifier
+文件: chapter3.tex
+检查: all</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">30 / 36</span>
+    </section>
+
+    <!-- SLIDE 31: latex-debug -->
+    <section class="slide" data-slide="31">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-pink reveal">Skill 22</span>
+            <h2 class="reveal">latex-debug — LaTeX 调试工具</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">核心功能</h3>
+                    <ul>
+                        <li>LaTeX 编译错误诊断</li>
+                        <li>常见错误修复建议</li>
+                        <li>日志分析</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
+                    <pre><code>Skill: latex-debug
+错误: Missing $ inserted
+位置: line 145</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">31 / 36</span>
+    </section>
+
+    <!-- SLIDE 32: SECTION - AI -->
+    <section class="slide slide-section slide-center" data-slide="32">
+        <div class="slide-content">
+            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 06</span>
+            <h2 class="reveal">AI 专家 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">gemini-browser-chat · r-expert</p>
+        </div>
+        <span class="slide-number">32 / 35</span>
+    </section>
+
+    <!-- SLIDE 33: gemini-browser-chat -->
+    <section class="slide" data-slide="33">
+        <div class="grid-bg"></div>
+        <div class="slide-content">
+            <span class="section-label section-cyan reveal">Skill 23</span>
+            <h2 class="reveal">gemini-browser-chat — 数学专家问答</h2>
+            <div class="grid-2 reveal" style="margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
                         <li>Playwright 浏览器集成</li>
                         <li>复杂数学推理</li>
@@ -1634,433 +875,89 @@ created: 2026-03-22
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用场景</h3>
-                    <pre><code># 复杂定理证明
-Skill: gemini-browser-chat
+                    <pre><code>Skill: gemini-browser-chat
 模式: Pro
 问题: 证明 Hoeffding 不等式
 上下文: 有限总体抽样</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">36 / 48</span>
+        <span class="slide-number">33 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 37: SKILL - DIGITAL GARDEN
-         =========================================== -->
-    <section class="slide" data-slide="37">
+    <!-- SLIDE 34: r-expert -->
+    <section class="slide" data-slide="34">
         <div class="grid-bg"></div>
         <div class="slide-content">
-            <span class="section-label section-purple reveal">Skill: digital-garden</span>
-            <h2 class="reveal">digital-garden-publisher - 数字花园</h2>
+            <span class="section-label section-orange reveal">Skill 24</span>
+            <h2 class="reveal">r-expert — R 语言统计分析</h2>
             <div class="grid-2 reveal" style="margin-top: 2rem;">
                 <div>
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">功能</h3>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">核心功能</h3>
                     <ul>
-                        <li>Markdown 发布到数字花园</li>
-                        <li>主页自动更新</li>
-                        <li>双向链接保留</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: digital-garden-publisher
-文件: notes/causal-inference/ch3.md
-更新: homepage</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">37 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 38: SKILL - FIND SKILLS
-         =========================================== -->
-    <section class="slide" data-slide="38">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">Skill: find-skills</span>
-            <h2 class="reveal">find-skills - 技能发现</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-green); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>发现可用技能</li>
-                        <li>技能安装管理</li>
-                        <li>使用指引</li>
+                        <li>统计分析代码生成</li>
+                        <li>数据可视化</li>
+                        <li>统计推断</li>
                     </ul>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code># 发现技能
-Skill: find-skills
-查询: "做 PPT"
-
-# 安装技能
-Skill: find-skills
-操作: install
-技能: frontend-slides</code></pre>
+                    <pre><code>Skill: r-expert
+任务: 回归诊断图
+数据: causal_data.csv</code></pre>
                 </div>
             </div>
         </div>
-        <span class="slide-number">38 / 48</span>
+        <span class="slide-number">34 / 36</span>
     </section>
 
-    <!-- ============================================
-         SLIDE 39: SKILL - CITATION BIBLIOGRAPHY
-         =========================================== -->
-    <section class="slide" data-slide="39">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-orange reveal">Skill: citation</span>
-            <h2 class="reveal">citation-bibliography-generator - 引用格式化</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-orange); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>多格式引用生成</li>
-                        <li>APA / MLA / Chicago</li>
-                        <li>IEEE / Harvard</li>
-                        <li>DOI/ISBN 查询</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: citation-bibliography-generator
-论文: DOI: 10.1234/example
-格式: APA 7th
-输出: bibliography.bib</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">39 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 40: SKILL - YOUTUBE
-         =========================================== -->
-    <section class="slide" data-slide="40">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-pink reveal">Skill: youtube</span>
-            <h2 class="reveal">youtube-transcript - YouTube 字幕</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <h3 style="color: var(--accent-pink); margin-bottom: 1rem;">功能</h3>
-                    <ul>
-                        <li>字幕下载</li>
-                        <li>自动转录</li>
-                        <li>评论抓取</li>
-                        <li>趋势分析</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple); margin-bottom: 1rem;">使用方式</h3>
-                    <pre><code>Skill: youtube-transcript
-URL: https://youtube.com/watch?v=xxx
-任务: 获取字幕并总结</code></pre>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">40 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 41: SKILL - MORE (Obsidian CLI, etc.)
-         =========================================== -->
-    <section class="slide" data-slide="41">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">More Skills</span>
-            <h2 class="reveal">更多实用技能</h2>
-            <div class="grid-3 reveal" style="margin-top: 2rem;">
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(8,145,178,0.1); color: var(--accent-cyan);">CLI</span>
-                    <h3>obsidian-cli</h3>
-                    <p>Obsidian 命令行操作，笔记 CRUD</p>
-                </div>
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(124,58,237,0.1); color: var(--accent-purple);">R</span>
-                    <h3>r-expert</h3>
-                    <p>R 语言统计分析，可视化</p>
-                </div>
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(5,150,105,0.1); color: var(--accent-green);">PDF</span>
-                    <h3>pdf-merger</h3>
-                    <p>合并多个 PDF 文件</p>
-                </div>
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(217,119,6,0.1); color: var(--accent-orange);">DOC</span>
-                    <h3>document-skills</h3>
-                    <p>文档格式转换处理</p>
-                </div>
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(219,39,119,0.1); color: var(--accent-pink);">VIDEO</span>
-                    <h3>polymarket</h3>
-                    <p>预测市场数据采集</p>
-                </div>
-                <div class="skill-card">
-                    <span class="skill-tag" style="background: rgba(37,99,235,0.1); color: var(--accent-blue);">GIT</span>
-                    <h3>auto-commit-push</h3>
-                    <p>自动 Git 提交推送</p>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">41 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 42: SECTION 5 - WORKFLOW
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="42">
-        <div class="slide-content">
-            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 05</span>
-            <h2 class="reveal">完整工作流</h2>
-            <p class="reveal" style="margin-top: 1rem;">端到端自动化科研流程</p>
-        </div>
-        <span class="slide-number">42 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 43: COMPLETE WORKFLOW
-         =========================================== -->
-    <section class="slide" data-slide="43">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Workflow</span>
-            <h2 class="reveal">端到端工作流程</h2>
-            <div class="reveal" style="margin-top: 2rem;">
-                <div class="card" style="max-width: 1000px; margin: 0 auto;">
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-cyan); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">1</div>
-                            <div>
-                                <h4>PDF 上传 & 转录</h4>
-                                <p style="color: var(--text-muted);">MinerU 高精度提取，保留公式图表</p>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-purple); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">2</div>
-                            <div>
-                                <h4>AI 深度理解</h4>
-                                <p style="color: var(--text-muted);">Claude Code 建立知识图谱，MEMORY 跨会话追踪</p>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-green); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">3</div>
-                            <div>
-                                <h4>Obsidian 笔记</h4>
-                                <p style="color: var(--text-muted);">双向链接，Callout 标注，符号统一</p>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-orange); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">4</div>
-                            <div>
-                                <h4>LaTeX 讲义生成</h4>
-                                <p style="color: var(--text-muted);">Stein 风格动机写作，交叉引用</p>
-                            </div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent-pink); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; flex-shrink: 0;">5</div>
-                            <div>
-                                <h4>版本控制 & 发布</h4>
-                                <p style="color: var(--text-muted);">Git 管理，数字花园发布</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">43 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 44: REAL CASES
-         =========================================== -->
-    <section class="slide" data-slide="44">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-green reveal">Cases</span>
-            <h2 class="reveal">实际案例</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan);">因果推断</h3>
-                    <p style="margin-bottom: 1rem;">Peng Ding - A First Course in Causal Inference</p>
-                    <ul>
-                        <li>已覆盖 1-4 章完整笔记</li>
-                        <li>包含 30+ 习题解答</li>
-                        <li>跨文献符号统一</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple);">微分几何</h3>
-                    <p style="margin-bottom: 1rem;">Do Carmo - Curves and Surfaces</p>
-                    <ul>
-                        <li>Chapter 1-2 笔记完成</li>
-                        <li>Figure 提取并标注</li>
-                        <li>定理证明详注</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">44 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 45: SECTION 6 - FUTURE
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="45">
-        <div class="slide-content">
-            <span class="section-label reveal" style="background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);">Section 06</span>
-            <h2 class="reveal">未来规划</h2>
-            <p class="reveal" style="margin-top: 1rem;">持续迭代，能力扩展</p>
-        </div>
-        <span class="slide-number">45 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 46: FUTURE ROADMAP
-         =========================================== -->
-    <section class="slide" data-slide="46">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-cyan reveal">Roadmap</span>
-            <h2 class="reveal">发展路线图</h2>
-            <div class="grid-3 reveal" style="margin-top: 2rem;">
-                <div class="card">
-                    <h3 style="color: var(--accent-cyan);">Q2 2026</h3>
-                    <ul>
-                        <li>多语言支持扩展</li>
-                        <li>协作功能</li>
-                        <li>API 开放</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-purple);">Q3 2026</h3>
-                    <ul>
-                        <li>多模态理解增强</li>
-                        <li>自动幻灯片生成</li>
-                        <li>知识图谱可视化</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3 style="color: var(--accent-green);">Q4 2026</h3>
-                    <ul>
-                        <li>跨平台同步</li>
-                        <li>社区模板市场</li>
-                        <li>商业化支持</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">46 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 47: KEY TAKEAWAYS
-         =========================================== -->
-    <section class="slide" data-slide="47">
-        <div class="grid-bg"></div>
-        <div class="slide-content">
-            <span class="section-label section-purple reveal">Summary</span>
-            <h2 class="reveal">核心要点</h2>
-            <div class="grid-2 reveal" style="margin-top: 2rem;">
-                <div>
-                    <ul style="font-size: var(--h3-size); line-height: 2;">
-                        <li><span style="color: var(--accent-cyan);">🤖</span> AI 深度集成，而非简单调用</li>
-                        <li><span style="color: var(--accent-purple);">🧠</span> 记忆系统实现跨会话连续性</li>
-                        <li><span style="color: var(--accent-green);">⚡</span> Skills 系统按需扩展能力</li>
-                        <li><span style="color: var(--accent-orange);">📚</span> 领域特定优化，非通用方案</li>
-                        <li><span style="color: var(--accent-pink);">🔄</span> 端到端自动化，零手动整理</li>
-                    </ul>
-                </div>
-                <div class="card" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
-                    <h3 style="color: var(--accent-cyan); margin-bottom: 1rem;">28 亿+ Tokens</h3>
-                    <p style="font-size: var(--h3-size); margin-bottom: 0.5rem;">持续迭代验证</p>
-                    <p style="color: var(--text-muted);">推动自动化科研工作流演进</p>
-                </div>
-            </div>
-        </div>
-        <span class="slide-number">47 / 48</span>
-    </section>
-
-    <!-- ============================================
-         SLIDE 48: THANK YOU
-         =========================================== -->
-    <section class="slide slide-section slide-center" data-slide="48">
+    <!-- SLIDE 35: THANK YOU -->
+    <section class="slide slide-section slide-center" data-slide="35">
         <div class="slide-content">
             <div class="logo reveal" style="justify-content: center; margin-bottom: 2rem;">
                 <div class="logo-icon">VR</div>
                 <span style="color: white;">Vibe Research</span>
             </div>
             <h2 class="reveal" style="font-size: var(--title-size);">感谢聆听</h2>
-            <p class="reveal" style="margin-top: 1.5rem; font-size: var(--h3-size);">
-                期待与你共同探索 AI 驱动的科研新范式
-            </p>
+            <p class="reveal" style="margin-top: 1.5rem; font-size: var(--h3-size);">24 Skills · AI 增强 · 自动化工作流</p>
             <div class="reveal" style="margin-top: 3rem; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">🤖 Claude Code</span>
-                <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">🧠 Memory System</span>
-                <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">⚡ Skills</span>
+                <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">28 亿 Tokens</span>
+                <span class="badge" style="background: rgba(255,255,255,0.1); color: white;">持续迭代</span>
             </div>
         </div>
-        <span class="slide-number">48 / 48</span>
+        <span class="slide-number">35 / 35</span>
     </section>
 
-    <!-- ============================================
-         JAVASCRIPT: NAVIGATION
-         =========================================== -->
     <script>
-        // Generate navigation dots
         const slides = document.querySelectorAll('.slide');
         const navDots = document.getElementById('navDots');
-
         slides.forEach((slide, index) => {
             const dot = document.createElement('div');
             dot.className = 'nav-dot';
-            dot.addEventListener('click', () => {
-                slide.scrollIntoView({ behavior: 'smooth' });
-            });
+            dot.addEventListener('click', () => { slide.scrollIntoView({ behavior: 'smooth' }); });
             navDots.appendChild(dot);
         });
-
-        // Update active dot on scroll
         const dots = document.querySelectorAll('.nav-dot');
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    // Remove active from all
                     dots.forEach(d => d.classList.remove('active'));
-                    // Add active to current
                     const index = Array.from(slides).indexOf(entry.target);
-                    if (dots[index]) {
-                        dots[index].classList.add('active');
-                    }
-                    // Add active class to slide
+                    if (dots[index]) dots[index].classList.add('active');
                     entry.target.classList.add('active');
                 }
             });
-        }, {
-            threshold: 0.5
-        });
-
+        }, { threshold: 0.5 });
         slides.forEach(slide => observer.observe(slide));
-
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             const currentSlide = document.querySelector('.slide.active');
             const index = Array.from(slides).indexOf(currentSlide);
-
             if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
                 e.preventDefault();
-                if (index < slides.length - 1) {
-                    slides[index + 1].scrollIntoView({ behavior: 'smooth' });
-                }
+                if (index < slides.length - 1) slides[index + 1].scrollIntoView({ behavior: 'smooth' });
             } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
                 e.preventDefault();
-                if (index > 0) {
-                    slides[index - 1].scrollIntoView({ behavior: 'smooth' });
-                }
+                if (index > 0) slides[index - 1].scrollIntoView({ behavior: 'smooth' });
             } else if (e.key === 'Home') {
                 e.preventDefault();
                 slides[0].scrollIntoView({ behavior: 'smooth' });

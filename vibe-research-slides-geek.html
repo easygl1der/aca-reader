@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Research - AI 驱动的学术研究工作流</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (GEEK DARK THEME)
+           Deep dark background with cyan/blue accents
+           =========================================== */
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2235;
+            --bg-card-hover: #243049;
+            --text-primary: #f0f4f8;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-cyan: #00d4ff;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-pink: #ec4899;
+            --border: rgba(0, 212, 255, 0.15);
+            --glow: rgba(0, 212, 255, 0.3);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --title-size: clamp(2.5rem, 6vw, 5rem);
+            --h2-size: clamp(1.5rem, 3vw, 2.5rem);
+            --h3-size: clamp(1.1rem, 2vw, 1.4rem);
+            --body-size: clamp(0.85rem, 1.3vw, 1.05rem);
+            --small-size: clamp(0.7rem, 0.95vw, 0.8rem);
+
+            /* Spacing */
+            --slide-padding: clamp(2rem, 5vw, 5rem);
+            --content-gap: clamp(1rem, 2vw, 1.8rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            font-family: var(--font-display);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* ===========================================
+           SLIDE BASE
+           =========================================== */
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: var(--slide-padding);
+            background: var(--bg-primary);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 700;
+            line-height: 1.05;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: var(--content-gap);
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        h2::before {
+            content: '';
+            width: clamp(20px, 3vw, 30px);
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), transparent);
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5em;
+        }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 1.8vw, 1.4rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* ===========================================
+           DECORATIVE ELEMENTS
+           =========================================== */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .glow-orb-1 {
+            top: -100px;
+            right: -100px;
+            background: var(--accent-cyan);
+        }
+
+        .glow-orb-2 {
+            bottom: -100px;
+            left: -100px;
+            background: var(--accent-purple);
+        }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .slide-title {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide-title h1 {
+            font-size: clamp(3rem, 8vw, 7rem);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 50%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-title .glow-orb-1 {
+            opacity: 0.2;
+        }
+
+        /* ===========================================
+           CONTENT LISTS
+           =========================================== */
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding-left: 1.5em;
+            position: relative;
+            margin-bottom: 0.6em;
+        }
+
+        li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+            font-size: 0.9em;
+        }
+
+        li strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           GRIDS & CARDS
+           =========================================== */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+            margin-top: var(--content-gap);
+        }
+
+        .three-column {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: clamp(1rem, 2vw, 1.5rem);
+            margin-top: var(--content-gap);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: clamp(1rem, 1.5vw, 1.3rem);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
+            color: var(--accent-cyan);
+        }
+
+        .card p {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ===========================================
+           HIGHLIGHT BOX
+           =========================================== */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-cyan);
+            padding: clamp(0.8rem, 1.2vw, 1rem);
+            margin: var(--content-gap) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .highlight-box p {
+            font-size: var(--body-size);
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           CODE BLOCK
+           =========================================== */
+        .code-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: clamp(0.8rem, 1.2vw, 1rem);
+            font-family: var(--font-mono);
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: var(--content-gap) 0;
+            max-height: 35vh;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: 'TERMINAL';
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 0.2em 0.5em;
+            border-radius: 0 8px 0 4px;
+        }
+
+        .code-block .comment { color: #6b7280; }
+        .code-block .keyword { color: var(--accent-cyan); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .prompt { color: var(--accent-orange); }
+
+        /* ===========================================
+           STAT GRID
+           =========================================== */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(0.8rem, 1.5vw, 1.2rem);
+            margin-top: var(--content-gap);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: clamp(1rem, 1.5vw, 1.5rem);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            margin-top: 0.3em;
+        }
+
+        /* ===========================================
+           WORKFLOW DIAGRAM
+           =========================================== */
+        .workflow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(0.3rem, 0.6vw, 0.5rem);
+            margin: var(--content-gap) 0;
+            flex-wrap: wrap;
+        }
+
+        .workflow-step {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: clamp(0.5rem, 0.8vw, 0.7rem) clamp(0.9rem, 1.3vw, 1.1rem);
+            border-radius: 6px;
+            font-size: var(--small-size);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .workflow-step:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .workflow-arrow {
+            color: var(--accent-cyan);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           TAG / BADGE
+           =========================================== */
+        .tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 0.15em 0.6em;
+            border-radius: 4px;
+            font-size: var(--small-size);
+            margin-right: 0.3em;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .tag-blue { background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); border-color: rgba(59, 130, 246, 0.2); }
+        .tag-green { background: rgba(16, 185, 129, 0.1); color: var(--accent-green); border-color: rgba(16, 185, 129, 0.2); }
+        .tag-purple { background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border-color: rgba(168, 85, 247, 0.2); }
+        .tag-orange { background: rgba(245, 158, 11, 0.1); color: var(--accent-orange); border-color: rgba(245, 158, 11, 0.2); }
+        .tag-pink { background: rgba(236, 72, 153, 0.1); color: var(--accent-pink); border-color: rgba(236, 72, 153, 0.2); }
+
+        /* ===========================================
+           NAVIGATION
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            z-index: 100;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: var(--accent-cyan);
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: clamp(1rem, 2vw, 1.5rem);
+            right: clamp(1.5rem, 3vw, 2.5rem);
+            font-family: var(--font-mono);
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===========================================
+           INLINE EDITING
+           =========================================== */
+        .edit-hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60px;
+            height: 60px;
+            z-index: 10000;
+            cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .edit-toggle.show,
+        .edit-toggle.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        [contenteditable] {
+            outline: none;
+        }
+
+        [contenteditable]:focus {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .two-column, .three-column, .stat-grid {
+                grid-template-columns: 1fr;
+            }
+            .workflow {
+                flex-direction: column;
+            }
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+            .grid-bg {
+                display: none;
+            }
+        }
+
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2rem);
+                --content-gap: clamp(0.6rem, 1.5vw, 1rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            .nav-dots, .edit-toggle, .edit-hotzone {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progress"></div>
+
+    <!-- Navigation Dots -->
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- Edit Mode Toggle -->
+    <div class="edit-hotzone" id="editHotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
+
+    <!-- ===========================================
+         SLIDE 1: TITLE
+         =========================================== -->
+    <section class="slide slide-title" data-slide="1">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <p class="reveal" style="color: var(--accent-cyan); font-size: var(--small-size); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; font-weight: 500;">// Academic Research Workflow</p>
+            <h1 class="reveal">Vibe Research</h1>
+            <p class="subtitle reveal" style="margin-top: 1.5rem;">AI 驱动的学术研究工作流</p>
+            <p class="reveal" style="margin-top: 1.5rem; font-size: var(--body-size); color: var(--text-muted);">用自动化工具加快学习速度，做好学习记录</p>
+        </div>
+        <span class="slide-number">01 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 2: WHAT IS VIBE RESEARCH
+         =========================================== -->
+    <section class="slide" data-slide="2">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">什么是 Vibe Research？</h2>
+            <ul>
+                <li class="reveal"><strong>Vibe Research</strong> = 氛围研究 → 借助 AI 工具营造高效学术研究氛围</li>
+                <li class="reveal">核心理念：<strong>让 AI 处理繁琐工作，专注核心思考</strong></li>
+                <li class="reveal">三大目标：
+                    <ul style="margin-top: 0.6em; margin-left: 1em;">
+                        <li class="reveal"><span class="tag">📚</span> <strong>加快文献阅读</strong> — 自动化提取、总结论文要点</li>
+                        <li class="reveal"><span class="tag">📝</span> <strong>做好学习记录</strong> — 结构化笔记、跨会话记忆</li>
+                        <li class="reveal"><span class="tag">🔄</span> <strong>工作流自动化</strong> — 从 PDF 到 LaTeX 一键生成</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <span class="slide-number">02 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 3: PROBLEM
+         =========================================== -->
+    <section class="slide" data-slide="3">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">传统研究流程的痛点</h2>
+            <div class="two-column">
+                <div class="card reveal">
+                    <h3>⏱️ 时间消耗</h3>
+                    <ul>
+                        <li>手动复制 PDF 内容</li>
+                        <li>逐页阅读，效率低下</li>
+                        <li>重复查找相似文献</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <h3>📦 信息碎片化</h3>
+                    <ul>
+                        <li>笔记分散在不同工具</li>
+                        <li>引用格式需要手动维护</li>
+                        <li>难以追踪阅读进度</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">03 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 4: SOLUTION
+         =========================================== -->
+    <section class="slide" data-slide="4">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">AI 辅助研究方案</h2>
+            <div class="stat-grid reveal">
+                <div class="stat-item">
+                    <div class="stat-number">10x</div>
+                    <div class="stat-label">阅读效率提升</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">笔记结构化</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">手动引用格式</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">跨会话记忆</div>
+                </div>
+            </div>
+            <div class="highlight-box reveal">
+                <p>💡 <strong>关键洞察</strong>：不是用 AI 替代思考，而是用 AI 处理 <strong>重复性工作</strong>——格式整理、文献查找、进度追踪。</p>
+            </div>
+        </div>
+        <span class="slide-number">04 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 5: CORE PHILOSOPHY
+         =========================================== -->
+    <section class="slide" data-slide="5">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="slide-content" style="max-width: 850px; margin: 0 auto; text-align: center;">
+            <h2 class="reveal" style="justify-content: center;">核心哲学</h2>
+            <p class="reveal" style="font-family: var(--font-display); font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 600; line-height: 1.5; margin: 2rem 0; color: var(--text-primary);">
+                "让 AI 处理繁琐工作，<br>人类专注于<span style="color: var(--accent-cyan);">创造性思考</span>"
+            </p>
+            <div class="workflow reveal">
+                <div class="workflow-step">📄 PDF 输入</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">🤖 AI 处理</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📝 结构化笔记</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📚 知识库</div>
+            </div>
+        </div>
+        <span class="slide-number">05 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 6: TOOLCHAIN OVERVIEW
+         =========================================== -->
+    <section class="slide" data-slide="6">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 950px; margin: 0 auto;">
+            <h2 class="reveal">核心工具链</h2>
+            <div class="three-column">
+                <div class="card reveal">
+                    <h3>🤖 AI 助手</h3>
+                    <p>Claude Code — 理解项目上下文，长期记忆</p>
+                </div>
+                <div class="card reveal">
+                    <h3>📄 文档处理</h3>
+                    <p>minerU — PDF 转录为 Markdown</p>
+                </div>
+                <div class="card reveal">
+                    <h3>📝 笔记系统</h3>
+                    <p>LaTeX — 标准化学术格式</p>
+                </div>
+                <div class="card reveal">
+                    <h3>⚡ 自动化</h3>
+                    <p>Skill 系统 — 20+ 封装好的工作流</p>
+                </div>
+                <div class="card reveal">
+                    <h3>🔍 学术搜索</h3>
+                    <p>Google Scholar / CrossRef</p>
+                </div>
+                <div class="card reveal">
+                    <h3>💾 知识管理</h3>
+                    <p>Obsidian — 本地知识库（可选）</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">06 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 7: CLAUDE CODE
+         =========================================== -->
+    <section class="slide" data-slide="7">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">Claude Code 基础</h2>
+            <ul>
+                <li class="reveal"><strong>项目认知</strong> — 读取 CLAUDE.md 理解项目规范和用户偏好</li>
+                <li class="reveal"><strong>长期记忆</strong> — MEMORY.md 跨会话记住偏好设置</li>
+                <li class="reveal"><strong>Skill 调用</strong> — 用 <code style="background: var(--bg-card); padding: 0.1em 0.4em; border-radius: 3px; color: var(--accent-cyan);">/skill-name</code> 触发专用能力</li>
+                <li class="reveal"><strong>代码执行</strong> — 读取、编辑、创建文件</li>
+            </ul>
+            <div class="code-block reveal"><span class="prompt">$</span> <span class="keyword">/reading-workflow</span>    <span class="comment"># 启动文献阅读流程</span>
+<span class="prompt">$</span> <span class="keyword">/latex-notes</span>        <span class="comment"># 生成 LaTeX 格式笔记</span>
+<span class="prompt">$</span> <span class="keyword">/pdf-reader</span>         <span class="comment"># 解析 PDF 文献</span>
+<span class="prompt">$</span> <span class="keyword">/gs-search</span>          <span class="comment"># 搜索学术论文</span></div>
+        </div>
+        <span class="slide-number">07 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 8: PROJECT MEMORY
+         =========================================== -->
+    <section class="slide" data-slide="8">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">项目记忆系统</h2>
+            <div class="two-column">
+                <div class="card reveal">
+                    <h3>📋 CLAUDE.md</h3>
+                    <p>项目核心规范文档，包含：</p>
+                    <ul style="margin-top: 0.5em;">
+                        <li>项目概述与目录结构</li>
+                        <li>写作风格与格式规范</li>
+                        <li>符号约定与引用格式</li>
+                        <li>工具使用偏好</li>
+                    </ul>
+                </div>
+                <div class="card reveal">
+                    <h3>🧠 MEMORY.md</h3>
+                    <p>跨会话长期记忆，包含：</p>
+                    <ul style="margin-top: 0.5em;">
+                        <li>用户偏好设置</li>
+                        <li>项目进度追踪</li>
+                        <li>经验教训记录</li>
+                        <li>重要决策历史</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">08 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 9: SKILL SYSTEM
+         =========================================== -->
+    <section class="slide" data-slide="9">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">Skill 系统</h2>
+            <p class="reveal" style="margin-bottom: var(--content-gap);">Skill = 封装好的自动化工作流，让 AI 自动选择合适的工具</p>
+            <div class="three-column">
+                <div class="card reveal">
+                    <h3>📄 PDF 处理</h3>
+                    <p><span class="tag">minerU</span><span class="tag">pdf-reader</span><span class="tag">pdf-merger</span></p>
+                </div>
+                <div class="card reveal">
+                    <h3>📝 笔记生成</h3>
+                    <p><span class="tag">latex-notes</span><span class="tag">obsidian</span><span class="tag tag-purple">reading</span></p>
+                </div>
+                <div class="card reveal">
+                    <h3>🎨 演示制作</h3>
+                    <p><span class="tag tag-blue">slides</span><span class="tag">pptx</span><span class="tag">beamer</span></p>
+                </div>
+                <div class="card reveal">
+                    <h3>🔍 学术搜索</h3>
+                    <p><span class="tag tag-green">gs-search</span><span class="tag tag-orange">references</span></p>
+                </div>
+                <div class="card reveal">
+                    <h3>💬 问答系统</h3>
+                    <p><span class="tag tag-pink">qa</span><span class="tag">video</span><span class="tag tag-purple">subtitle</span></p>
+                </div>
+                <div class="card reveal">
+                    <h3>🖼️ 图片处理</h3>
+                    <p><span class="tag tag-blue">gemini</span><span class="tag tag-green">ai-image</span></p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">09 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 10: PDF PROCESSING
+         =========================================== -->
+    <section class="slide" data-slide="10">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">PDF 处理流程</h2>
+            <div class="workflow reveal">
+                <div class="workflow-step">📄 原始 PDF</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">⚡ minerU 转录</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📝 Markdown</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">🖼️ + 图片</div>
+            </div>
+            <div class="highlight-box reveal">
+                <p><strong>mimerU</strong> 在 Google Colab 中运行，将 PDF 转换为带完整目录结构的 Markdown，支持：</p>
+                <ul style="margin-top: 0.5em;">
+                    <li>表格和图片自动提取</li>
+                    <li>数学公式完美保留</li>
+                    <li>章节结构智能识别</li>
+                </ul>
+            </div>
+            <div class="two-column reveal" style="margin-top: var(--content-gap);">
+                <div class="card">
+                    <h3>📊 figure-extractor</h3>
+                    <p>从 PDF/图片中提取数学插图，自动裁剪边界</p>
+                </div>
+                <div class="card">
+                    <h3>📑 pdf-merger</h3>
+                    <p>合并多个 PDF 为一个（简历、申请材料等）</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">10 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 11: NOTE-TAKING
+         =========================================== -->
+    <section class="slide" data-slide="11">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">笔记工作流</h2>
+            <div class="two-column">
+                <div class="reveal">
+                    <h3 style="color: var(--accent-cyan);">LaTeX 讲义</h3>
+                    <ul>
+                        <li>标准学术格式，支持交叉引用</li>
+                        <li>数学公式、图表、参考文献</li>
+                        <li>编译为 PDF 方便阅读</li>
+                        <li>每章独立编译脚本</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 1em;"><span class="prompt">$</span> <span class="keyword">./compile.sh</span>  <span class="comment"># xelatex 3次编译</span></div>
+                </div>
+                <div class="reveal">
+                    <h3 style="color: var(--accent-purple);">Obsidian 笔记</h3>
+                    <ul>
+                        <li>快速捕捉灵感想法</li>
+                        <li>双向链接知识网络</li>
+                        <li>Callout 格式（定义、定理、例子）</li>
+                        <li>可选：最终导出为 LaTeX</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">11 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 12: ACADEMIC WRITING
+         =========================================== -->
+    <section class="slide" data-slide="12">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">学术写作支持</h2>
+            <div class="three-column">
+                <div class="card reveal">
+                    <h3>📚 BibTeX 管理</h3>
+                    <p>自动生成参考文献规范格式</p>
+                </div>
+                <div class="card reveal">
+                    <h3>🔍 文献搜索</h3>
+                    <p><span class="tag tag-green">gs-search</span> 直连 Google Scholar</p>
+                </div>
+                <div class="card reveal">
+                    <h3>📎 引用提取</h3>
+                    <p><span class="tag tag-orange">paper-references</span> 从 md 提取</p>
+                </div>
+            </div>
+            <div class="code-block reveal" style="margin-top: var(--content-gap);"><span class="comment">% LaTeX 符号规范示例（严格遵守 CLAUDE.md）</span>
+<span class="keyword">\mathbb</span>{P}(A)          <span class="comment">% 概率</span>
+<span class="keyword">\mathbb</span>{E}X          <span class="comment">% 期望</span>
+A <span class="keyword">\Perp</span> B           <span class="comment">% 独立性</span></div>
+        </div>
+        <span class="slide-number">12 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 13: SLIDE GENERATION
+         =========================================== -->
+    <section class="slide" data-slide="13">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">幻灯片生成魔法</h2>
+            <p class="reveal" style="margin-bottom: var(--content-gap);"><span class="tag tag-blue">frontend-slides</span> Skill：零依赖纯 HTML 演示生成</p>
+            <div class="three-column">
+                <div class="card reveal">
+                    <h3>🎨 风格选择</h3>
+                    <p>12+ 预设风格，从商务到学术</p>
+                </div>
+                <div class="card reveal">
+                    <h3>✨ CSS 动画</h3>
+                    <p>平滑过渡、卡片浮现动效</p>
+                </div>
+                <div class="card reveal">
+                    <h3>📝 内联编辑</h3>
+                    <p>浏览器中直接修改文字</p>
+                </div>
+            </div>
+            <div class="workflow reveal" style="margin-top: var(--content-gap);">
+                <div class="workflow-step">📋 内容规划</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">🎨 风格选择</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">⚡ 自动生成</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">🚀 浏览器预览</div>
+            </div>
+        </div>
+        <span class="slide-number">13 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 14: COMPLETE WORKFLOW
+         =========================================== -->
+    <section class="slide" data-slide="14">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 950px; margin: 0 auto;">
+            <h2 class="reveal">完整工作流全景</h2>
+            <div class="workflow reveal" style="flex-wrap: wrap; justify-content: center;">
+                <div class="workflow-step">📄 PDF</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📝 Markdown</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">🤖 AI 阅读</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">💬 问答</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📓 笔记</div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">📚 讲义</div>
+            </div>
+            <div class="two-column reveal" style="margin-top: var(--content-gap);">
+                <div class="highlight-box">
+                    <p><strong>📖 阅读阶段</strong>：PDF → minerU 转录 → 语义分割 → 逐章阅读</p>
+                </div>
+                <div class="highlight-box">
+                    <p><strong>📝 笔记阶段</strong>：问答记录 → LaTeX 讲义 → 编译 PDF → 最终归档</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">14 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 15: REAL CASES
+         =========================================== -->
+    <section class="slide" data-slide="15">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">实际案例落地</h2>
+            <div class="three-column">
+                <div class="card reveal">
+                    <h3>📊 因果推断</h3>
+                    <p>A First Course in Causal Inference (Peng Ding)</p>
+                    <div style="margin-top: 0.5em;"><span class="tag tag-green">已完成 1-4 章</span></div>
+                </div>
+                <div class="card reveal">
+                    <h3>📐 微分几何</h3>
+                    <p>Do Carmo - Differential Geometry</p>
+                    <div style="margin-top: 0.5em;"><span class="tag tag-blue">已完成 1-2 章</span></div>
+                </div>
+                <div class="card reveal">
+                    <h3>🔢 Schubert 多项式</h3>
+                    <p>旗流形与 Schubert 多项式研究</p>
+                    <div style="margin-top: 0.5em;"><span class="tag tag-purple">火热进行中</span></div>
+                </div>
+            </div>
+            <ul class="reveal" style="margin-top: var(--content-gap);">
+                <li>贝叶斯统计：<em>Bayesian Data Analysis</em> (Gelman et al.)</li>
+                <li>信息几何：<em>Information Geometry</em> (Amari)</li>
+            </ul>
+        </div>
+        <span class="slide-number">15 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 16: PROGRESS TRACKING
+         =========================================== -->
+    <section class="slide" data-slide="16">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">进度追踪系统</h2>
+            <div class="stat-grid reveal">
+                <div class="stat-item">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">本教材在读</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6+</div>
+                    <div class="stat-label">核心章节完成</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">实用 Skills 上线</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">知识持续积累</div>
+                </div>
+            </div>
+            <div class="highlight-box reveal" style="margin-top: var(--content-gap);">
+                <p><span class="tag tag-blue">reading-progress</span> Skill：精准管理当前阅读位置、保留历史提问、更新章节状态</p>
+            </div>
+        </div>
+        <span class="slide-number">16 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 17: CURRENT STATUS
+         =========================================== -->
+    <section class="slide" data-slide="17">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">当前建设状态</h2>
+            <div class="two-column">
+                <div class="reveal">
+                    <h3 style="color: var(--accent-green);">✅ 已完成</h3>
+                    <ul>
+                        <li>完整的笔记工作流</li>
+                        <li>核心 Skill 系统框架</li>
+                        <li>标准 LaTeX 讲义模板</li>
+                        <li>自动化 PDF 处理流程</li>
+                        <li>多主题笔记产出</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <h3 style="color: var(--accent-orange);">🔄 进行中</h3>
+                    <ul>
+                        <li>Schubert 多项式深入研究</li>
+                        <li>信息几何专研</li>
+                        <li>幻灯片模版深化制作</li>
+                        <li>自动化极速优化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">17 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 18: FUTURE ROADMAP
+         =========================================== -->
+    <section class="slide" data-slide="18">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="slide-content" style="max-width: 900px; margin: 0 auto;">
+            <h2 class="reveal">未来规划蓝图</h2>
+            <ul>
+                <li class="reveal"><span class="tag tag-blue">📚</span> <strong>扩大领域文献库</strong> — 覆盖更多数学领域</li>
+                <li class="reveal"><span class="tag tag-purple">🤖</span> <strong>多智能体自动化增强</strong> — 更多工作流一键触发</li>
+                <li class="reveal"><span class="tag tag-green">🔗</span> <strong>外部实用工具集成</strong> — 与更多学术工具对接</li>
+                <li class="reveal"><span class="tag tag-orange">📊</span> <strong>个性化知识图谱构建</strong> — 概念间的有机联系可视化</li>
+                <li class="reveal"><span class="tag tag-pink">🌐</span> <strong>多人协作功能</strong> — 多用户共享工作流</li>
+            </ul>
+            <div class="highlight-box reveal" style="margin-top: var(--content-gap);">
+                <p>🎯 核心目标：让研究者绝对专注<span style="color: var(--accent-cyan);">思考</span>，而非被<span style="color: var(--accent-pink);">工具</span>框死</p>
+            </div>
+        </div>
+        <span class="slide-number">18 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 19: KEY TAKEAWAYS
+         =========================================== -->
+    <section class="slide" data-slide="19">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="reveal" style="justify-content: center;">核心要点总结</h2>
+            <div class="reveal" style="margin-top: 2rem; text-align: left;">
+                <div class="card" style="margin-bottom: 1em; border-left: 3px solid var(--accent-cyan);">
+                    <h3 style="color: var(--accent-cyan);">1. AI 定位：是助手，不是替代者</h3>
+                    <p>处理一切重复性搬砖工作，让人类专注创造性思考</p>
+                </div>
+                <div class="card" style="margin-bottom: 1em; border-left: 3px solid var(--accent-purple);">
+                    <h3 style="color: var(--accent-purple);">2. 结构化认知：统一格式、自动化引用</h3>
+                    <p>建立全局跨会话长时记忆系统</p>
+                </div>
+                <div class="card" style="border-left: 3px solid var(--accent-green);">
+                    <h3 style="color: var(--accent-green);">3. 闭环工作流：一次点击完成</h3>
+                    <p>从凌乱 PDF 到专业讲义的全自动化</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">19 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 20: Q&A
+         =========================================== -->
+    <section class="slide slide-title" data-slide="20">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <h1 class="reveal" style="font-size: clamp(3rem, 8vw, 6rem);">Q & A</h1>
+            <p class="subtitle reveal" style="margin-top: 1.5rem;">感谢各位聆听，欢迎现场提问交流</p>
+            <div class="reveal" style="margin-top: 3rem;">
+                <p style="color: var(--text-muted); font-size: var(--body-size);"><span class="tag">GitHub</span> aca-workflow</p>
+            </div>
+        </div>
+        <span class="slide-number">20 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 21: RESOURCES
+         =========================================== -->
+    <section class="slide" data-slide="21">
+        <div class="grid-bg"></div>
+        <div class="slide-content" style="max-width: 850px; margin: 0 auto;">
+            <h2 class="reveal">相关资源与鸣谢</h2>
+            <div class="two-column">
+                <div class="reveal">
+                    <h3>🔧 工具链接</h3>
+                    <ul>
+                        <li><span class="tag tag-blue">Claude Code</span> — AI 编程助手</li>
+                        <li><span class="tag tag-green">minerU</span> — PDF 转录工具</li>
+                        <li><span class="tag">LaTeX</span> — 学术排版系统</li>
+                        <li><span class="tag tag-purple">Obsidian</span> — 知识管理</li>
+                    </ul>
+                </div>
+                <div class="reveal">
+                    <h3>📚 项目笔记产出</h3>
+                    <ul>
+                        <li>因果推断笔记</li>
+                        <li>微分几何笔记</li>
+                        <li>信息几何笔记</li>
+                        <li>Schubert 多项式研究</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">21 / 22</span>
+    </section>
+
+    <!-- ===========================================
+         SLIDE 22: THANK YOU
+         =========================================== -->
+    <section class="slide slide-title" data-slide="22">
+        <div class="grid-bg"></div>
+        <div class="glow-orb glow-orb-1"></div>
+        <div class="glow-orb glow-orb-2"></div>
+        <div class="slide-content" style="align-items: center; text-align: center;">
+            <h1 class="reveal" style="font-size: clamp(3rem, 8vw, 6rem);">谢谢</h1>
+            <p class="subtitle reveal">Vibe Research — 让学术研究更高效、更具沉浸感</p>
+            <p class="reveal" style="margin-top: 3rem; color: var(--text-muted); font-size: var(--small-size);">
+                Built with Claude Code
+            </p>
+        </div>
+        <span class="slide-number">22 / 22</span>
+    </section>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           =========================================== */
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.totalSlides = this.slides.length;
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupProgressBar();
+                this.setupNavDots();
+                this.setupEditMode();
+            }
+
+            setupIntersectionObserver() {
+                const options = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const slideIndex = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = slideIndex;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, options);
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key) {
+                        case 'ArrowDown':
+                        case 'ArrowRight':
+                        case ' ':
+                            e.preventDefault();
+                            this.nextSlide();
+                            break;
+                        case 'ArrowUp':
+                        case 'ArrowLeft':
+                            e.preventDefault();
+                            this.prevSlide();
+                            break;
+                        case 'Home':
+                            e.preventDefault();
+                            this.goToSlide(0);
+                            break;
+                        case 'End':
+                            e.preventDefault();
+                            this.goToSlide(this.totalSlides - 1);
+                            break;
+                    }
+                });
+            }
+
+            setupProgressBar() {
+                this.progressBar = document.getElementById('progress');
+            }
+
+            updateProgress() {
+                const progress = ((this.currentSlide + 1) / this.totalSlides) * 100;
+                this.progressBar.style.width = progress + '%';
+            }
+
+            setupNavDots() {
+                const navDots = document.getElementById('navDots');
+                this.slides.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    navDots.appendChild(dot);
+                });
+                this.navDots = navDots.querySelectorAll('.nav-dot');
+            }
+
+            updateNavDots() {
+                this.navDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.totalSlides - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(index) {
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            setupEditMode() {
+                const editHotzone = document.getElementById('editHotzone');
+                const editToggle = document.getElementById('editToggle');
+                this.isEditMode = false;
+                let hideTimeout = null;
+
+                const toggleEdit = () => {
+                    this.isEditMode = !this.isEditMode;
+                    editToggle.classList.toggle('active', this.isEditMode);
+                    document.body.contentEditable = this.isEditMode;
+                };
+
+                editToggle.addEventListener('click', toggleEdit);
+                editHotzone.addEventListener('click', toggleEdit);
+
+                editHotzone.addEventListener('mouseenter', () => {
+                    clearTimeout(hideTimeout);
+                    editToggle.classList.add('show');
+                });
+
+                editHotzone.addEventListener('mouseleave', () => {
+                    hideTimeout = setTimeout(() => {
+                        if (!this.isEditMode) editToggle.classList.remove('show');
+                    }, 400);
+                });
+
+                editToggle.addEventListener('mouseenter', () => {
+                    clearTimeout(hideTimeout);
+                });
+
+                editToggle.addEventListener('mouseleave', () => {
+                    hideTimeout = setTimeout(() => {
+                        if (!this.isEditMode) editToggle.classList.remove('show');
+                    }, 400);
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                        toggleEdit();
+                    }
+                    if (e.key === 'Escape' && this.isEditMode) {
+                        toggleEdit();
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+        });
+    </script>
+</body>
+</html>

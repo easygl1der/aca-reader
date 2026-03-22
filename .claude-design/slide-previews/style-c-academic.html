@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style C: Academic Paper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fefefe; --bg-secondary: #f8f6f3; --bg-card: #ffffff;
+            --text-primary: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8a8a8a;
+            --accent-red: #c0392b; --accent-blue: #2980b9; --accent-gold: #d4a017;
+            --accent-dark: #2c3e50; --accent-light: #7f8c8d;
+            --border: rgba(0, 0, 0, 0.06); --shadow: rgba(0, 0, 0, 0.03);
+            --font-display: 'Source Serif', Georgia, serif; --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --title-size: clamp(2rem, 5vw, 4rem); --h2-size: clamp(1.3rem, 2.5vw, 2rem);
+            --h3-size: clamp(1rem, 1.8vw, 1.3rem); --body-size: clamp(0.8rem, 1.2vw, 1rem);
+            --small-size: clamp(0.7rem, 0.9vw, 0.85rem);
+            --slide-padding: clamp(2rem, 4vw, 4rem); --content-gap: clamp(0.8rem, 1.5vw, 1.5rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); --duration-normal: 0.8s;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        .slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; padding: var(--slide-padding); background: var(--bg-primary); }
+        .slide::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(192, 57, 43, 0.02) 0%, transparent 30%, transparent 70%, rgba(41, 128, 185, 0.02) 100%); pointer-events: none; }
+        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+        h1 { font-family: var(--font-display); font-size: var(--title-size); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        h2 { font-family: var(--font-display); font-size: var(--h2-size); font-weight: 600; line-height: 1.3; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        h3 { font-family: var(--font-display); font-size: var(--h3-size); font-weight: 600; line-height: 1.4; margin-bottom: calc(var(--content-gap) * 0.5); color: var(--accent-dark); }
+        p { font-size: var(--body-size); line-height: 1.7; color: var(--text-secondary); }
+        .slide-number { position: absolute; bottom: clamp(0.8rem, 1.5vw, 1.2rem); right: clamp(1rem, 2vw, 1.5rem); font-family: var(--font-mono); font-size: var(--small-size); color: var(--text-muted); z-index: 10; }
+        .card { background: var(--bg-card); border-radius: 8px; padding: clamp(1rem, 1.5vw, 1.5rem); border: 1px solid var(--border); box-shadow: 0 2px 8px var(--shadow); border-left: 3px solid var(--accent-red); transition: all 0.3s var(--ease-out-expo); }
+        .card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--content-gap); }
+        .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: var(--small-size); font-weight: 500; background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); }
+        .badge-red { background: rgba(192, 57, 43, 0.08); color: var(--accent-red); border-color: rgba(192, 57, 43, 0.2); }
+        .badge-blue { background: rgba(41, 128, 185, 0.08); color: var(--accent-blue); border-color: rgba(41, 128, 185, 0.2); }
+        .badge-gold { background: rgba(212, 160, 23, 0.08); color: var(--accent-gold); border-color: rgba(212, 160, 23, 0.2); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all var(--duration-normal) var(--ease-out-expo); }
+        .slide.active .reveal { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(1) { transition-delay: 0.15s; } .reveal:nth-child(2) { transition-delay: 0.25s; }
+        .reveal:nth-child(3) { transition-delay: 0.35s; } .reveal:nth-child(4) { transition-delay: 0.45s; }
+        .reveal:nth-child(5) { transition-delay: 0.55s; } .reveal:nth-child(6) { transition-delay: 0.65s; }
+        .slide-center { text-align: center; justify-content: center; align-items: center; }
+        .slide-center .slide-content { display: flex; flex-direction: column; align-items: center; }
+        .slide-title { background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); }
+        .decorative-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold)); margin: 1.5rem 0; border-radius: 2px; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-display); font-size: var(--h3-size); font-weight: 600; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        .logo-icon { width: clamp(2rem, 4vw, 2.5rem); height: clamp(2rem, 4vw, 2.5rem); background: var(--accent-dark); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.2rem); }
+        @media (max-width: 768px) { .slide { padding: 1.5rem; } .grid-2 { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+    </style>
+</head>
+<body>
+    <!-- SLIDE 01: TITLE -->
+    <section class="slide slide-title slide-center" data-slide="1">
+        <div class="slide-content">
+            <div class="logo reveal"><div class="logo-icon">VR</div><span>Vibe Research</span></div>
+            <h1 class="reveal">基于 Claude Code 的<br>自动化科研工作流</h1>
+            <div class="decorative-line reveal"></div>
+            <p class="reveal" style="font-size: var(--h3-size); color: var(--text-secondary); max-width: 600px;">AI 驱动的学术文献阅读与讲义生成系统</p>
+            <div class="reveal" style="margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                <span class="badge badge-red">Claude Code</span>
+                <span class="badge badge-blue">25+ Skills</span>
+                <span class="badge badge-gold">自动化工作流</span>
+            </div>
+        </div>
+        <span class="slide-number">01 / 03</span>
+    </section>
+
+    <!-- SLIDE 02: WHAT IS VIBE RESEARCH -->
+    <section class="slide" data-slide="2">
+        <div class="slide-content">
+            <h2 class="reveal">什么是 Vibe Research?</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card">
+                    <h3 style="color: var(--accent-red);">核心定位</h3>
+                    <p>将 AI 能力深度融入学术研究全流程，实现文献阅读、笔记整理、讲义生成的高度自动化。</p>
+                </div>
+                <div class="card" style="border-left-color: var(--accent-blue);">
+                    <h3 style="color: var(--accent-blue);">设计哲学</h3>
+                    <p>"Vibe" 强调的是流畅的体验 —— 让研究者专注于思考本身，而非工具操作。</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">02 / 03</span>
+    </section>
+
+    <!-- SLIDE 03: PROBLEM -->
+    <section class="slide" data-slide="3">
+        <div class="slide-content">
+            <h2 class="reveal">学术研究的核心痛点</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card" style="border-left-color: var(--accent-gold);">
+                    <h3 style="color: var(--accent-gold);">痛点 1: AI 不读文献库</h3>
+                    <p>网页端对话框的知识来源过于 general，AI 不知道文献库已有的符号和技巧。</p>
+                </div>
+                <div class="card" style="border-left-color: var(--accent-light);">
+                    <h3 style="color: var(--accent-light);">痛点 2: 笔记风格不连贯</h3>
+                    <p>复制粘贴的回答不符合已有笔记风格，希望风格统一、可追溯。</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">03 / 03</span>
+    </section>
+</body>
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.5 });
+    slides.forEach(slide => observer.observe(slide));
+</script>
+</html>
