@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Research - 基于 Claude Code 的自动化科研工作流</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #fefefe; --bg-secondary: #f8f6f3; --bg-card: #ffffff;
+            --text-primary: #1a1a1a; --text-secondary: #4a4a4a; --text-muted: #8a8a8a;
+            --accent-red: #c0392b; --accent-blue: #2980b9; --accent-gold: #d4a017;
+            --accent-dark: #2c3e50; --accent-light: #7f8c8d; --accent-cyan: #0891b2;
+            --accent-purple: #7c3aed; --accent-green: #059669; --accent-orange: #d97706;
+            --border: rgba(0, 0, 0, 0.06); --shadow: rgba(0, 0, 0, 0.03);
+            --font-display: 'Source Serif', Georgia, serif; --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --title-size: clamp(2rem, 5vw, 4rem); --h2-size: clamp(1.3rem, 2.5vw, 2rem);
+            --h3-size: clamp(1rem, 1.8vw, 1.3rem); --body-size: clamp(0.8rem, 1.2vw, 1rem);
+            --small-size: clamp(0.7rem, 0.9vw, 0.85rem);
+            --slide-padding: clamp(2rem, 4vw, 4rem); --content-gap: clamp(0.8rem, 1.5vw, 1.5rem);
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); --duration-normal: 0.8s;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow-x: hidden; font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        .slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; padding: var(--slide-padding); background: var(--bg-primary); }
+        .slide::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(192, 57, 43, 0.02) 0%, transparent 30%, transparent 70%, rgba(41, 128, 185, 0.02) 100%); pointer-events: none; }
+        .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-width: 1200px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
+        h1 { font-family: var(--font-display); font-size: var(--title-size); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        h2 { font-family: var(--font-display); font-size: var(--h2-size); font-weight: 600; line-height: 1.3; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        h3 { font-family: var(--font-display); font-size: var(--h3-size); font-weight: 600; line-height: 1.4; margin-bottom: calc(var(--content-gap) * 0.5); color: var(--accent-dark); }
+        p { font-size: var(--body-size); line-height: 1.7; color: var(--text-secondary); }
+        .slide-number { position: absolute; bottom: clamp(0.8rem, 1.5vw, 1.2rem); right: clamp(1rem, 2vw, 1.5rem); font-family: var(--font-mono); font-size: var(--small-size); color: var(--text-muted); z-index: 10; }
+        .card { background: var(--bg-card); border-radius: 8px; padding: clamp(1rem, 1.5vw, 1.5rem); border: 1px solid var(--border); box-shadow: 0 2px 8px var(--shadow); border-left: 3px solid var(--accent-red); transition: all 0.3s var(--ease-out-expo); }
+        .card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); }
+        .card-blue { border-left-color: var(--accent-blue); }
+        .card-gold { border-left-color: var(--accent-gold); }
+        .card-cyan { border-left-color: var(--accent-cyan); }
+        .card-purple { border-left-color: var(--accent-purple); }
+        .card-green { border-left-color: var(--accent-green); }
+        .card-orange { border-left-color: var(--accent-orange); }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--content-gap); }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--content-gap); }
+        @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+        .badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.6rem; border-radius: 4px; font-size: var(--small-size); font-weight: 500; background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); }
+        .badge-red { background: rgba(192, 57, 43, 0.08); color: var(--accent-red); border-color: rgba(192, 57, 43, 0.2); }
+        .badge-blue { background: rgba(41, 128, 185, 0.08); color: var(--accent-blue); border-color: rgba(41, 128, 185, 0.2); }
+        .badge-gold { background: rgba(212, 160, 23, 0.08); color: var(--accent-gold); border-color: rgba(212, 160, 23, 0.2); }
+        .badge-cyan { background: rgba(8, 145, 178, 0.1); color: var(--accent-cyan); }
+        .badge-purple { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); }
+        .badge-green { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); }
+        .badge-orange { background: rgba(217, 119, 6, 0.1); color: var(--accent-orange); }
+        .section-label { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: var(--small-size); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+        .label-red { background: rgba(192, 57, 43, 0.1); color: var(--accent-red); }
+        .label-blue { background: rgba(41, 128, 185, 0.1); color: var(--accent-blue); }
+        .label-gold { background: rgba(212, 160, 23, 0.1); color: var(--accent-gold); }
+        .label-cyan { background: rgba(8, 145, 178, 0.1); color: var(--accent-cyan); }
+        .label-purple { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); }
+        .label-green { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); }
+        .label-orange { background: rgba(217, 119, 6, 0.1); color: var(--accent-orange); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all var(--duration-normal) var(--ease-out-expo); }
+        .slide.active .reveal { opacity: 1; transform: translateY(0); }
+        .reveal:nth-child(1) { transition-delay: 0.1s; } .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; } .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; } .reveal:nth-child(6) { transition-delay: 0.6s; }
+        .reveal:nth-child(7) { transition-delay: 0.7s; } .reveal:nth-child(8) { transition-delay: 0.8s; }
+        .slide-center { text-align: center; justify-content: center; align-items: center; }
+        .slide-center .slide-content { display: flex; flex-direction: column; align-items: center; }
+        .slide-title { background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); }
+        .slide-section { background: linear-gradient(135deg, var(--accent-dark) 0%, #1a252f 100%); }
+        .slide-section h2 { color: white; font-size: var(--title-size); }
+        .slide-section p { color: rgba(255, 255, 255, 0.7); }
+        .slide-section .section-label { background: rgba(255, 255, 255, 0.15); color: white; }
+        .decorative-line { width: 60px; height: 3px; background: linear-gradient(90deg, var(--accent-red), var(--accent-gold)); margin: 1rem 0; border-radius: 2px; }
+        .decorative-line-center { margin: 1rem auto; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-display); font-size: var(--h3-size); font-weight: 600; margin-bottom: var(--content-gap); color: var(--accent-dark); }
+        .logo-icon { width: clamp(2rem, 4vw, 2.5rem); height: clamp(2rem, 4vw, 2.5rem); background: var(--accent-dark); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: clamp(0.9rem, 1.5vw, 1.2rem); }
+        pre, code { font-family: var(--font-mono); font-size: var(--small-size); background: var(--bg-secondary); border-radius: 6px; }
+        pre { padding: clamp(0.8rem, 1.2vw, 1.2rem); overflow-x: auto; border: 1px solid var(--border); }
+        code { padding: 0.15em 0.35em; }
+        pre code { background: none; padding: 0; }
+        ul, ol { padding-left: 1.5em; font-size: var(--body-size); color: var(--text-secondary); }
+        li { margin-bottom: 0.4em; line-height: 1.6; }
+        .skill-card { background: var(--bg-card); border-radius: 8px; padding: clamp(0.8rem, 1.2vw, 1.2rem); border: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.5rem; }
+        .skill-card h3 { font-size: clamp(0.85rem, 1.1vw, 1rem); margin-bottom: 0.2rem; }
+        .skill-card p { font-size: var(--small-size); color: var(--text-muted); }
+        .stat { text-align: center; }
+        .stat-value { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 600; color: var(--accent-red); line-height: 1; margin-bottom: 0.5rem; }
+        .stat-label { font-size: var(--body-size); color: var(--text-secondary); }
+        .nav-dots { position: fixed; right: clamp(0.5rem, 1vw, 1rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; z-index: 100; }
+        .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-muted); opacity: 0.3; cursor: pointer; transition: all 0.3s ease; }
+        .nav-dot:hover { opacity: 0.6; }
+        .nav-dot.active { opacity: 1; background: var(--accent-red); transform: scale(1.4); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--content-gap); align-items: start; }
+        @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } .nav-dots { display: none; } }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+    </style>
+</head>
+<body>
+    <nav class="nav-dots" id="navDots"></nav>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 01: TITLE -->
+    <!-- ============================================ -->
+    <section class="slide slide-title slide-center" data-slide="1">
+        <div class="slide-content">
+            <div class="logo reveal"><div class="logo-icon">VR</div><span>Vibe Research</span></div>
+            <h1 class="reveal">基于 Claude Code 的<br>自动化科研工作流</h1>
+            <div class="decorative-line decorative-line-center reveal"></div>
+            <p class="reveal" style="font-size: var(--h3-size); color: var(--text-secondary); max-width: 600px;">AI 驱动的学术文献阅读与讲义生成系统</p>
+            <div class="reveal" style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                <span class="badge badge-red">Claude Code</span>
+                <span class="badge badge-blue">25+ Skills</span>
+                <span class="badge badge-gold">自动化工作流</span>
+            </div>
+            <p class="reveal" style="margin-top: 2rem; font-size: var(--small-size); color: var(--text-muted);">
+                报告人：乐绎华 · 中山大学 数学学院 · 2026
+            </p>
+        </div>
+        <span class="slide-number">01 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 02: WHAT IS VIBE RESEARCH -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="2">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Overview</span>
+            <h2 class="reveal">什么是 Vibe Research?</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card">
+                    <h3 style="color: var(--accent-red);">核心定位</h3>
+                    <p>将 AI 能力深度融入学术研究全流程，实现文献阅读、笔记整理、讲义生成的高度自动化。</p>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">设计哲学</h3>
+                    <p>"Vibe" 强调的是流畅的体验 —— 让研究者专注于思考本身，而非工具操作。</p>
+                </div>
+                <div class="card card-gold">
+                    <h3 style="color: var(--accent-gold);">Skills 系统</h3>
+                    <p>25+ 领域特定技能，即插即用，涵盖阅读、写作、研究、开发全流程。</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3 style="color: var(--accent-cyan);">代表成果</h3>
+                    <p>已累计调用 <strong>28 亿</strong> MiniMax Tokens，持续迭代验证工作流有效性。</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">02 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 03: PROBLEM -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="3">
+        <div class="slide-content">
+            <span class="section-label label-orange reveal">Problem</span>
+            <h2 class="reveal">学术研究的核心痛点</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-orange">
+                    <h3 style="color: var(--accent-orange);">痛点 1: AI 不读文献库</h3>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>网页端对话框的知识来源过于 general</li>
+                        <li>AI 不知道文献库已有的符号和技巧</li>
+                        <li>不会引用文献库内容</li>
+                        <li>每次要重新输入提示词</li>
+                    </ul>
+                </div>
+                <div class="card card-purple">
+                    <h3 style="color: var(--accent-purple);">痛点 2: 笔记风格不连贯</h3>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>复制粘贴的回答不符合已有笔记风格</li>
+                        <li>希望开头讲背景、motivation、前置知识</li>
+                        <li>希望风格统一：定理历史、前因后果</li>
+                        <li>格式需要反复手动调整</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">03 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 04: SOLUTION -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="4">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Solution</span>
+            <h2 class="reveal">解决方案：三层架构</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">CLAUDE.md</h3>
+                    <p>提示词引擎，预先设定写作风格、符号约定、规范规则</p>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">MEMORY.md</h3>
+                    <p>跨会话持久记忆，进度追踪，经验教训归档</p>
+                </div>
+                <div class="card card-gold">
+                    <h3 style="color: var(--accent-gold);">Skills</h3>
+                    <p>24 个领域特定技能，即插即用，自动化工作流</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">04 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 05: PHILOSOPHY -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="5">
+        <div class="slide-content">
+            <span class="section-label label-green reveal">Philosophy</span>
+            <h2 class="reveal">设计哲学</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">自动化</h3>
+                    <p>重复性工作交给 AI，让研究者专注思考</p>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">一致性</h3>
+                    <p>符号、格式、引用全程规范化</p>
+                </div>
+                <div class="card card-gold">
+                    <h3 style="color: var(--accent-gold);">可追溯</h3>
+                    <p>完整的知识演化路径记录</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">05 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 06: TOOLCHAIN -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="6">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Toolchain</span>
+            <h2 class="reveal">核心技术栈</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3>Claude Code</h3>
+                    <p>AI 能力核心，工具调用、代码执行、文件系统</p>
+                </div>
+                <div class="card card-blue">
+                    <h3>MinerU</h3>
+                    <p>PDF → Markdown 高精度转换，保留公式图表</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>Obsidian</h3>
+                    <p>知识管理，双向链接，笔记组织</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3>LaTeX</h3>
+                    <p>专业排版，学术讲义生成</p>
+                </div>
+                <div class="card card-purple">
+                    <h3>Skills</h3>
+                    <p>领域特定工作流自动化</p>
+                </div>
+                <div class="card card-green">
+                    <h3>Git</h3>
+                    <p>版本控制，历史备份</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">06 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 07: MINIMAX STATS -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="7">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Stats</span>
+            <h2 class="reveal">MiniMax 使用统计</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 2rem;">
+                <div class="stat">
+                    <div class="stat-value">28 亿+</div>
+                    <div class="stat-label">Tokens 累计调用</div>
+                </div>
+            </div>
+            <div class="reveal" style="margin-top: 1.5rem; text-align: center;">
+                <img src="./figures/PixPin_2026-03-22_02-38-00.png" alt="MiniMax Token 使用统计" style="max-width: 100%; max-height: 45vh; border-radius: 8px; border: 1px solid var(--border); object-fit: contain;">
+            </div>
+            <p class="reveal" style="margin-top: 1rem; text-align: center; color: var(--text-muted); font-size: var(--small-size);">
+                持续迭代验证工作流有效性
+            </p>
+        </div>
+        <span class="slide-number">07 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 08: SECTION - LOCAL AI -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="8">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 2</span>
+            <h2 class="reveal">Local AI 能力</h2>
+            <p class="reveal" style="margin-top: 1rem;">Claude Code 本地集成</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">08 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 09: CLAUDE CODE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="9">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Core</span>
+            <h2 class="reveal">Claude Code 本地能力</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">Skills</h3>
+                    <p>即插即用的领域特定提示词</p>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">Subagent</h3>
+                    <p>每个文献库专属子代理</p>
+                </div>
+                <div class="card card-gold">
+                    <h3 style="color: var(--accent-gold);">Memory</h3>
+                    <p>CLAUDE.md + MEMORY.md 持久化</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3 style="color: var(--accent-cyan);">History</h3>
+                    <p>完整会话历史记录</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">09 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 10: SKILLS SYSTEM STRUCTURE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="10">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Skills</span>
+            <h2 class="reveal">Skills 系统结构</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <h3 style="color: var(--accent-dark); margin-bottom: 0.5rem;">Skills 文件结构</h3>
+                    <pre style="font-size: var(--small-size);"><code>~/.claude/skills/   # 全局 Skills
+project/.claude/skills/  # 项目级 Skills</code></pre>
+                    <h3 style="color: var(--accent-dark); margin-top: 1rem; margin-bottom: 0.5rem;">24 Skills 5 大类</h3>
+                    <ul style="font-size: var(--small-size);">
+                        <li><strong>阅读与笔记 (6)</strong> — latex-notes, skim-jump...</li>
+                        <li><strong>研究与引用 (4)</strong> — gs-search, paper-refs...</li>
+                        <li><strong>图表提取 (4)</strong> — pdf-figure, figure...</li>
+                        <li><strong>写作与模板 (4)</strong> — beamer, homework...</li>
+                        <li><strong>开发与AI (6)</strong> — slides, git, latex...</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-dark); margin-bottom: 0.5rem;">Skills 调用方式</h3>
+                    <pre style="font-size: var(--small-size);"><code>/skill-name        # 触发 Skill
+/skim-jump        # PDF 双向联动
+/gs-search        # Google Scholar
+/latex-debug      # LaTeX 调试</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">10 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 11: MINERU -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="11">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Tool</span>
+            <h2 class="reveal">MinerU — PDF 转 Markdown</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">核心优势</h3>
+                    <ul style="margin-top: 0.5rem;">
+                        <li>PDF → Markdown 高精度转换</li>
+                        <li>保留数学公式 LaTeX 格式</li>
+                        <li>自动提取图表并保留引用路径</li>
+                        <li>保留目录结构</li>
+                    </ul>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">输出结构</h3>
+                    <pre style="font-size: var(--small-size); margin-top: 0.5rem;"><code>transcript/
+├── book.md
+├── images/
+│   └── page-XX_fig.png
+├── content_list.json
+└── layout.pdf</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">11 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 12: SECTION - MEMORY SYSTEM -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="12">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 3</span>
+            <h2 class="reveal">Memory System</h2>
+            <p class="reveal" style="margin-top: 1rem;">跨会话持久记忆</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">12 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 13: MEMORY SYSTEM OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="13">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Memory</span>
+            <h2 class="reveal">Memory System 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">MEMORY.md</h3>
+                    <ul style="margin-top: 0.5rem; font-size: var(--small-size);">
+                        <li>跨会话持久记忆</li>
+                        <li>项目进度追踪</li>
+                        <li>经验教训归档</li>
+                        <li>符号约定汇总</li>
+                    </ul>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">CLAUDE.md</h3>
+                    <ul style="margin-top: 0.5rem; font-size: var(--small-size);">
+                        <li>提示词引擎</li>
+                        <li>写作风格规则</li>
+                        <li>数学符号约定</li>
+                        <li>Git 提交习惯</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">13 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 14: MEMORY.MD DETAILS -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="14">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Memory</span>
+            <h2 class="reveal">MEMORY.md 详解</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <h3 style="color: var(--accent-dark);">核心功能</h3>
+                    <ul style="margin-top: 0.5rem; font-size: var(--small-size);">
+                        <li><strong>跨会话持久</strong> — 关闭后重启仍保留</li>
+                        <li><strong>项目进度</strong> — 记录当前阅读位置</li>
+                        <li><strong>经验教训</strong> — 错误记录避免重复</li>
+                        <li><strong>符号约定</strong> — 统一文献符号</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-dark);">数据结构</h3>
+                    <pre style="font-size: var(--small-size);"><code>{
+  "project": "因果推断",
+  "progress": "第3章 / 18章",
+  "lessons": ["符号混淆问题"],
+  "conventions": {
+    "potential_outcome": "Y_i(1)"
+  }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">14 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 15: CLAUDE.MD DETAILS -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="15">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Prompt</span>
+            <h2 class="reveal">CLAUDE.md 详解</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <h3 style="color: var(--accent-dark);">核心功能</h3>
+                    <ul style="margin-top: 0.5rem; font-size: var(--small-size);">
+                        <li><strong>提示词引擎</strong> — 每次会话自动加载</li>
+                        <li><strong>写作风格</strong> — Stein 风格 motivation</li>
+                        <li><strong>符号约定</strong> — 数学符号规范化</li>
+                        <li><strong>规范规则</strong> — LaTeX/Git/引用</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-dark);">示例规则</h3>
+                    <pre style="font-size: var(--small-size);"><code>期望：\mathbb{E}X
+概率：\mathbb{P}(A)
+独立性：A \Perp B</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">15 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 16: SECTION - SKILLS OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="16">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 4</span>
+            <h2 class="reveal">Skills 系统</h2>
+            <p class="reveal" style="margin-top: 1rem;">24 个领域特定技能</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">16 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 17: SKILL SYSTEM OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="17">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skills</span>
+            <h2 class="reveal">Skill System Overview</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3>阅读与笔记 (6)</h3>
+                    <p style="font-size: var(--small-size);">latex-notes, skim-jump, reading-progress, interactive-qa, obsidian-cli, literature-notes-template</p>
+                </div>
+                <div class="card card-blue">
+                    <h3>研究与引用 (4)</h3>
+                    <p style="font-size: var(--small-size);">gs-search, paper-references-generator, literature-reference-manager, citation-bibliography-generator</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>图表提取 (4)</h3>
+                    <p style="font-size: var(--small-size);">pdf-figure-extractor, figure-extractor, gemini-image-analyzer, minimax-vision</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3>写作与模板 (4)</h3>
+                    <p style="font-size: var(--small-size);">beamer-chinese-presentation, homework-workflow, chapter0-template, note-content-verifier</p>
+                </div>
+                <div class="card card-purple">
+                    <h3>开发与AI (6)</h3>
+                    <p style="font-size: var(--small-size);">frontend-slides, auto-commit-push, latex-label-ref-verifier, latex-debug, gemini-browser-chat, r-expert</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">17 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 18: SECTION - READING & NOTES -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="18">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 5</span>
+            <h2 class="reveal">阅读与笔记 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">Reading & Notes</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">18 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 19: READING & NOTES OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="19">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skills 5.1</span>
+            <h2 class="reveal">阅读与笔记 Skills 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="skill-card card card-red">
+                    <h3>latex-notes</h3>
+                    <p>Stein 风格 motivation 写作</p>
+                </div>
+                <div class="skill-card card card-blue">
+                    <h3>skim-jump</h3>
+                    <p>PDF ↔ 笔记双向联动</p>
+                </div>
+                <div class="skill-card card card-gold">
+                    <h3>reading-progress</h3>
+                    <p>阅读进度管理</p>
+                </div>
+                <div class="skill-card card card-cyan">
+                    <h3>interactive-qa</h3>
+                    <p>交互式问答归档</p>
+                </div>
+                <div class="skill-card card card-purple">
+                    <h3>obsidian-cli</h3>
+                    <p>Obsidian 命令行</p>
+                </div>
+                <div class="skill-card card card-green">
+                    <h3>literature-notes-template</h3>
+                    <p>文献笔记模板</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">19 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 20: SKILL - LATEX-NOTES -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="20">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skill 01</span>
+            <h2 class="reveal">latex-notes</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">生成 LaTeX 格式学习讲义</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">阅读学术论文时自动生成讲义</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">Stein《傅里叶分析》风格</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>% 用户注解命令
+\newcommand{\userannotation}[2]{%
+  \begin{trivlist}
+    \item[\textbf{用户注解:}] #1
+    \textit{#2}
+  \end{trivlist}
+}
+
+% 定义环境禁止使用 itemize！
+\begin{Definition}[完全随机实验]
+设有 $n$ 个样本，其中 $n_1$ 个被分配到治疗组...
+\end{Definition}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">20 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 21: SKILL - SKIM-JUMP -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="21">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skill 02</span>
+            <h2 class="reveal">skim-jump</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">PDF 与笔记双向联动</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">Mac 上用 Skim 阅读 PDF</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">Cmd+Shift+点击跳转到笔记</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># Skim displayline 跳转命令
+/Applications/Skim.app/Contents/SharedSupport/displayline \
+  -r -g [行号] "[PDF路径]" "[TeX源文件]"
+
+# 示例：跳转到第 584 行
+/Applications/Skim.app/Contents/SharedSupport/displayline \
+  -r -g 584 "notes.pdf" "chapters/chapter1.tex"</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">21 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 22: SKILL - READING-PROGRESS -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="22">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skill 03</span>
+            <h2 class="reveal">reading-progress</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">阅读进度管理</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">追踪多章节书籍阅读位置</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">进度记录到 JSON</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>{
+  "book": "A First Course in Causal Inference",
+  "current_position": {
+    "chapter": 3,
+    "section": 2,
+    "page": 45
+  },
+  "questions": [
+    {
+      "date": "2026-03-22",
+      "chapter": 3,
+      "question": "为什么需要引入潜在结果？"
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">22 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 23: SKILL - INTERACTIVE-QA -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="23">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skill 04</span>
+            <h2 class="reveal">interactive-qa</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">交互式问答</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">阅读中即时提问</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">回答记录到附录</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 每次问答后的自动 Git 提交
+git add notes/ .claude/skills/reading-progress/progress.json
+git commit -m "QA: 第3章 - 潜在结果定义"
+
+# 或使用脚本
+./scripts/commit_notes.sh "更新讲义"</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">23 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 24: SKILL - OBSIDIAN-CLI -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="24">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Skill 05</span>
+            <h2 class="reveal">obsidian-cli</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">Obsidian 命令行</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">批量创建笔记、搜索</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">笔记 CRUD、属性管理</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 创建笔记
+obsidian create name="新笔记" content="# Hello"
+
+# 搜索笔记
+obsidian search query="因果推断" limit=10
+
+# 追加内容
+obsidian append file="笔记名" content="新行内容"
+
+# 管理任务
+obsidian tasks daily todo</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">24 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 25: SKILL - LITERATURE-NOTES-TEMPLATE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="25">
+        <div class="slide-content">
+            <span class="section-label label-green reveal">Skill 06</span>
+            <h2 class="reveal">literature-notes-template</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">文献笔记模板</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">开始阅读新文献时</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">元数据、符号约定</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>notes/<主题>/
+├── <主题>-notes.tex  # 主文件
+├── compile.sh        # 编译脚本
+├── references.bib    # BibTeX
+├── chapters/
+│   ├── chapter0.tex  # 文献概述
+│   └── chapter1.tex  # 第一章
+└── appendix/
+    └── qa.tex        # 问答记录</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">25 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 26: SECTION - RESEARCH & CITATION -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="26">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 6</span>
+            <h2 class="reveal">研究与引用 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">Research & Citation</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">26 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 27: RESEARCH & CITATION OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="27">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skills 6.1</span>
+            <h2 class="reveal">研究与引用 Skills 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="skill-card card card-red">
+                    <h3>gs-search</h3>
+                    <p>Google Scholar 搜索</p>
+                </div>
+                <div class="skill-card card card-blue">
+                    <h3>paper-references-generator</h3>
+                    <p>CrossRef API 参考文献提取</p>
+                </div>
+                <div class="skill-card card card-gold">
+                    <h3>literature-reference-manager</h3>
+                    <p>文献库批量管理</p>
+                </div>
+                <div class="skill-card card card-cyan">
+                    <h3>citation-bibliography-generator</h3>
+                    <p>多格式引用生成</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">27 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 28: SKILL - GS-SEARCH -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="28">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skill 07</span>
+            <h2 class="reveal">gs-search</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">Google Scholar 搜索</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">查找相关论文</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">标题、作者、期刊、引用数</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>// Google Scholar DOM 抓取
+const items = document.querySelectorAll('#gs_res_ccl .gs_r.gs_or');
+const results = Array.from(items).map(item => ({
+  title: item.querySelector('.gs_rt a')?.textContent,
+  authors: item.querySelector('.gs_a')?.textContent,
+  citedBy: item.querySelector('.gs_fl a[href*="cites"]')
+    ?.textContent.match(/\d+/)?.[0] || '0'
+}));</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">28 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 29: SKILL - PAPER-REFERENCES-GENERATOR -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="29">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skill 08</span>
+            <h2 class="reveal">paper-references-generator</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">参考文献提取</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">扫描 transcript 提取</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">CrossRef API → BibTeX</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 使用方法
+python paper_references_generator.py <md文件路径>
+
+# CrossRef API 查询
+https://api.crossref.org/works?query=<关键词>
+
+# 输出 BibTeX
+@article{author2023,
+  author = {Author, First},
+  title = {Paper Title},
+  year = {2023},
+  doi = {10.xxx/xxx}
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">29 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 30: SKILL - LITERATURE-REFERENCE-MANAGER -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="30">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skill 09</span>
+            <h2 class="reveal">literature-reference-manager</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">文献库管理</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">批量管理大量文献</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">文献库扫描，批量 BibTeX</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 扫描文献库
+/文献引用管理器 bayesian
+
+# 生成引用库
+/文献引用管理器 bayesian --generate-bib
+
+# 处理指定文献
+/文献引用管理器 PDFs/bayesian/textbook/Book.pdf</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">30 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 31: SKILL - CITATION-BIBLIOGRAPHY-GENERATOR -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="31">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skill 10</span>
+            <h2 class="reveal">citation-bibliography-generator</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">多格式引用生成</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">按期刊要求格式化</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">APA/MLA/Chicago/IEEE/Harvard</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>from scripts.citation_generator import CitationGenerator
+
+gen = CitationGenerator(style='apa')
+citation = gen.cite_book(
+    authors=["Smith, John", "Doe, Jane"],
+    title="Research Methods",
+    year=2020,
+    publisher="Academic Press"
+)
+print(citation)
+# Output: Smith, J., & Doe, J. (2020). Research methods. Academic Press.</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">31 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 32: SECTION - FIGURE EXTRACTION -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="32">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 7</span>
+            <h2 class="reveal">图表提取 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">Figure Extraction</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">32 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 33: FIGURE EXTRACTION OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="33">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skills 7.1</span>
+            <h2 class="reveal">图表提取 Skills 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="skill-card card card-red">
+                    <h3>pdf-figure-extractor</h3>
+                    <p>600 DPI 高清，Gemini Vision</p>
+                </div>
+                <div class="skill-card card card-blue">
+                    <h3>figure-extractor</h3>
+                    <p>数学插图提取，400 DPI</p>
+                </div>
+                <div class="skill-card card card-gold">
+                    <h3>gemini-image-analyzer</h3>
+                    <p>图表内容提取，公式识别</p>
+                </div>
+                <div class="skill-card card card-cyan">
+                    <h3>minimax-vision</h3>
+                    <p>OCR 识别，表格提取</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">33 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 34: SKILL - PDF-FIGURE-EXTRACTOR -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="34">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skill 11</span>
+            <h2 class="reveal">pdf-figure-extractor</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">PDF 图表提取</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">提取论文中的 figure</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">600 DPI，边界框识别</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 快速提取 Chapter 2 figures
+uv run figure_extractor.py --chapter 2
+
+# 强制重刷
+uv run figure_extractor.py --chapter 2 --force
+
+# 仅裁剪模式
+uv run figure_extractor.py --chapter 2 --crop-only</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">34 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 35: SKILL - FIGURE-EXTRACTOR -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="35">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skill 12</span>
+            <h2 class="reveal">figure-extractor</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">数学插图提取</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">提取教材中的图表</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">400 DPI，断点续传</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># Gemini 边界框识别
+PROMPT = f"""看这张教材原图，找出以下 figures 的精确位置：
+Figure: Figure X-Y
+Bounding Box: x1=0.XX, y1=0.XX, x2=0.XX, y2=0.XX
+
+规则：
+- 坐标以图片整体宽高为基准，0.00 ~ 1.00
+- 必须包含完整的图注文字
+- 四周留 0.02 边距"""
+
+# 裁剪保存
+crop = img.crop((int(W * x1), int(H * y1), int(W * x2), int(H * y2)))
+crop.save(f"fig_{figure_id}.png", quality=95)</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">35 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 36: SKILL - GEMINI-IMAGE-ANALYZER -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="36">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skill 13</span>
+            <h2 class="reveal">gemini-image-analyzer</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">图像理解</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">理解复杂图表含义</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">数学公式识别</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 分析本地图片
+echo "请详细描述这张图片的所有内容" | gemini /path/to/image.png
+
+# 分析网络图片
+gemini "https://example.com/image.png"</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">36 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 37: SKILL - MINIMAX-VISION -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="37">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skill 14</span>
+            <h2 class="reveal">minimax-vision</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">MiniMax 视觉理解</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">OCR、表格提取</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">多语言支持</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 命令行分析
+python3 ~/.claude/skills/minimax-vision/analyze.py /path/to/image.png
+
+# 自定义问题
+python3 ~/.claude/skills/minimax-vision/analyze.py \
+  /path/to/image.png "这张图片有什么特别之处？"</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">37 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 38: SECTION - WRITING & TEMPLATES -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="38">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 8</span>
+            <h2 class="reveal">写作与模板 Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">Writing & Templates</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">38 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 39: WRITING & TEMPLATES OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="39">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skills 8.1</span>
+            <h2 class="reveal">写作与模板 Skills 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="skill-card card card-red">
+                    <h3>beamer-chinese-presentation</h3>
+                    <p>Beamer 演示文稿</p>
+                </div>
+                <div class="skill-card card card-blue">
+                    <h3>homework-workflow</h3>
+                    <p>作业规范化</p>
+                </div>
+                <div class="skill-card card card-gold">
+                    <h3>chapter0-template</h3>
+                    <p>章节笔记框架</p>
+                </div>
+                <div class="skill-card card card-cyan">
+                    <h3>note-content-verifier</h3>
+                    <p>笔记校验</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">39 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 40: SKILL - BEAMER-CHINESE-PRESENTATION -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="40">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skill 15</span>
+            <h2 class="reveal">beamer-chinese-presentation</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">Beamer 演示文稿</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">创建学术报告</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">SYPSTYLE/CambridgeUS 主题</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>\documentclass[]{beamer}
+\usetheme{CambridgeUS}
+\usepackage{xeCJK}
+\setCJKmainfont{Source Han Serif SC}
+
+\begin{document}
+\maketitle
+\section{Section Name}
+\begin{frame}
+  \begin{block}{Block Title}content\end{block}
+  \begin{alertblock}{Alert}important\end{alertblock}
+\end{frame}
+\end{document}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">40 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 41: SKILL - HOMEWORK-WORKFLOW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="41">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skill 16</span>
+            <h2 class="reveal">homework-workflow</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">作业工作流</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">规范化提交作业</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">Google Drive 集成</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>> [!exr] Problem 3.1
+> **Section 3.2** — *Randomized Block Design*
+>
+> 完整习题内容...
+
+> [!example] Referenced Background: Section 2.5
+> 被引用的背景内容
+
+> [!note] Data Information
+> 数据变量说明...</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">41 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 42: SKILL - CHAPTER0-TEMPLATE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="42">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skill 17</span>
+            <h2 class="reveal">chapter0-template</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">章节模板</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">开始新章节</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">动机引入，定义/定理格式</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>\chapter*{引言：文献概述}\label{chap:introduction}
+\addcontentsline{toc}{chapter}{引言：文献概述}
+
+\section{总述}
+介绍学习该主题的背景、意义和研究动机。
+
+\section{文献摘要总结}
+\subsection{论文标题}
+\begin{enumerate}
+    \item \textbf{作者:} 作者姓名
+    \item \textbf{链接:} \url{https://arxiv.org/abs/xxxx}
+    \item \textbf{核心贡献:}
+\end{enumerate}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">42 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 43: SKILL - NOTE-CONTENT-VERIFIER -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="43">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skill 18</span>
+            <h2 class="reveal">note-content-verifier</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">笔记校验</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">提交前检查</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">公式一致性，引用完整</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 检查 label 定义
+grep -nE '\\\\label\{[^}]+\}' notes.tex | grep -v '^(eq:|rem:)'
+
+# 检查 cref 引用
+grep -nE '\\\\cref\{[^}]+\}' notes.tex
+
+# 对照原论文验证编号
+# Theorem 1.1 → label{def:thm:11}</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">43 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 44: SECTION - DEVELOPMENT & AI -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="44">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 9</span>
+            <h2 class="reveal">开发与 AI Skills</h2>
+            <p class="reveal" style="margin-top: 1rem;">Development & AI</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">44 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 45: DEVELOPMENT & AI OVERVIEW -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="45">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Skills 9.1</span>
+            <h2 class="reveal">开发与 AI Skills 概览</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="skill-card card card-red">
+                    <h3>frontend-slides</h3>
+                    <p>HTML 演示生成</p>
+                </div>
+                <div class="skill-card card card-blue">
+                    <h3>auto-commit-push</h3>
+                    <p>Git 自动提交</p>
+                </div>
+                <div class="skill-card card card-gold">
+                    <h3>latex-label-ref-verifier</h3>
+                    <p>Label/Ref 检查</p>
+                </div>
+                <div class="skill-card card card-cyan">
+                    <h3>latex-debug</h3>
+                    <p>LaTeX 调试</p>
+                </div>
+                <div class="skill-card card card-purple">
+                    <h3>gemini-browser-chat</h3>
+                    <p>Gemini 数学专家</p>
+                </div>
+                <div class="skill-card card card-green">
+                    <h3>r-expert</h3>
+                    <p>R 语言专家</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">45 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 46: SKILL - FRONTEND-SLIDES -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="46">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skill 19</span>
+            <h2 class="reveal">frontend-slides</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">HTML 演示</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">快速创建演示</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">动画丰富，零依赖</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>&lt;!-- 单文件 HTML 演示 -->
+&lt;section class="slide" data-slide="1">
+  &lt;h1>标题&lt;/h1>
+  &lt;p class="reveal">渐入内容&lt;/p>
+&lt;/section>
+
+&lt;style>
+.slide { height: 100vh; overflow: hidden; }
+.reveal { animation: fadeIn 1s ease-out; }
+&lt;/style></code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">46 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 47: SKILL - AUTO-COMMIT-PUSH -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="47">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Skill 20</span>
+            <h2 class="reveal">auto-commit-push</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">Git 自动提交</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">保存工作时自动 commit</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">大文件检查，Co-Authored-By</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 自动提交流程
+git status --short
+git add -A
+git commit -m "更新讲义
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+git push origin main</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">47 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 48: SKILL - LATEX-LABEL-REF-VERIFIER -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="48">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Skill 21</span>
+            <h2 class="reveal">latex-label-ref-verifier</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">LaTeX 引用检查</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">检查 \label 和 \ref</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">发现悬空引用</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 提取所有 label 定义
+grep -nE '\\\\label\{[^}]+\}' <笔记文件>
+
+# 提取所有 cref 引用
+grep -nE '\\\\cref\{[^}]+\}' <笔记文件>
+
+# 对照原论文检查编号一致性</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">48 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 49: SKILL - LATEX-DEBUG -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="49">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Skill 22</span>
+            <h2 class="reveal">latex-debug</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">LaTeX 调试</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">修复编译错误</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">标准流程诊断</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code># 编译检测
+xelatex -interaction=nonstopmode main.tex
+
+# 常见错误处理：
+# - Undefined reference → 检查 label
+# - Missing $ → 检查公式
+# - Extra } → 检查括号配对
+
+# 每次修复后提交
+git add -A && git commit -m "fix: 修复 LaTeX 错误"</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">49 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 50: SKILL - GEMINI-BROWSER-CHAT -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="50">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Skill 23</span>
+            <h2 class="reveal">gemini-browser-chat</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">Gemini Pro 数学专家</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">复杂数学定理证明</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">Playwright 集成，Pro 模式</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>// Playwright MCP 工作流
+browser_navigate("https://gemini.google.com")
+
+// 找到输入框
+browser_type(element: "question input",
+  ref: "e350",
+  text: "Solve: 复杂数学问题",
+  submit: true)
+
+// 等待响应
+browser_wait_for(text: "Gemini said", time: 15)</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">50 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 51: SKILL - R-EXPERT -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="51">
+        <div class="slide-content">
+            <span class="section-label label-green reveal">Skill 24</span>
+            <h2 class="reveal">r-expert</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="two-col reveal" style="margin-top: 1rem;">
+                <div>
+                    <table style="width: 100%; font-size: var(--small-size);">
+                        <tr><td style="padding: 0.3rem;"><strong>描述</strong></td><td style="padding: 0.3rem;">R 语言专家</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>使用场景</strong></td><td style="padding: 0.3rem;">复现教材 R 代码</td></tr>
+                        <tr><td style="padding: 0.3rem;"><strong>效果</strong></td><td style="padding: 0.3rem;">命令行运行，统计可视化</td></tr>
+                    </table>
+                </div>
+                <div>
+                    <pre style="font-size: calc(var(--small-size) * 0.9);"><code>library(dplyr)
+library(ggplot2)
+
+# 数据处理
+df %>%
+  filter(age > 28) %>%
+  select(name, age, salary) %>%
+  mutate(salary_bonus = salary * 1.1) %>%
+  ggplot(aes(x = age, y = salary)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+# 统计检验
+t.test(salary ~ group, data = df)</code></pre>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">51 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 52: SECTION - COMPLETE WORKFLOW -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="52">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 10</span>
+            <h2 class="reveal">完整工作流</h2>
+            <p class="reveal" style="margin-top: 1rem;">Complete Workflow</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">52 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 53: COMPLETE WORKFLOW DIAGRAM -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="53">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Workflow</span>
+            <h2 class="reveal">全流程图</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 2rem; text-align: center;">
+                <div style="font-size: var(--h3-size); font-family: var(--font-mono); background: var(--bg-secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+                    PDF → MinerU → Markdown → AI 阅读 → 问答 → 笔记 → 讲义
+                </div>
+            </div>
+            <div class="grid-3 reveal" style="margin-top: 2rem;">
+                <div class="card card-red">
+                    <h3>输入</h3>
+                    <p style="font-size: var(--small-size);">学术 PDF 文献</p>
+                </div>
+                <div class="card card-blue">
+                    <h3>处理</h3>
+                    <p style="font-size: var(--small-size);">AI 深度理解 + 问答</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>输出</h3>
+                    <p style="font-size: var(--small-size);">LaTeX 讲义 PDF</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">53 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 54: READING PHASE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="54">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Phase 1</span>
+            <h2 class="reveal">阅读阶段</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 1.5rem; text-align: center;">
+                <div style="font-size: var(--body-size); font-family: var(--font-mono); background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px;">
+                    PDF → MinerU → 语义分割 → 逐章阅读
+                </div>
+            </div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3>MinerU 转录</h3>
+                    <ul style="font-size: var(--small-size);">
+                        <li>PDF 高精度转 Markdown</li>
+                        <li>保留数学公式</li>
+                        <li>提取图表引用</li>
+                    </ul>
+                </div>
+                <div class="card card-blue">
+                    <h3>逐章阅读</h3>
+                    <ul style="font-size: var(--small-size);">
+                        <li>语义分割定位</li>
+                        <li>reading-progress 追踪</li>
+                        <li>interactive-qa 问答</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">54 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 55: NOTES PHASE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="55">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Phase 2</span>
+            <h2 class="reveal">笔记阶段</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 1.5rem; text-align: center;">
+                <div style="font-size: var(--body-size); font-family: var(--font-mono); background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px;">
+                    问答记录 → LaTeX → 编译 PDF → 归档
+                </div>
+            </div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-cyan">
+                    <h3>latex-notes 生成</h3>
+                    <ul style="font-size: var(--small-size);">
+                        <li>Stein 风格 motivation</li>
+                        <li>自动交叉引用</li>
+                        <li>用户注解命令</li>
+                    </ul>
+                </div>
+                <div class="card card-purple">
+                    <h3>编译归档</h3>
+                    <ul style="font-size: var(--small-size);">
+                        <li>latex-debug 调试</li>
+                        <li>auto-commit-push 提交</li>
+                        <li>Git 历史追溯</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">55 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 56: SECTION - REAL CASES -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="56">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 11</span>
+            <h2 class="reveal">实际案例</h2>
+            <p class="reveal" style="margin-top: 1rem;">Real Cases</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">56 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 57: SCHUBERT CASE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="57">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Case Study</span>
+            <h2 class="reveal">Schubert 演算案例</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 1rem;">
+                <h3 style="color: var(--accent-dark);">Schubert Polynomials 的 Positivity 问题</h3>
+            </div>
+            <div class="grid-2 reveal" style="margin-top: 1rem;">
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">历史脉络</h3>
+                    <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
+                        <li><strong>Schubert (1879)</strong>: 计数几何起源</li>
+                        <li><strong>Bernstein (1973)</strong>: 拓扑观点</li>
+                        <li><strong>Demazure (1974)</strong>: 泛性子群</li>
+                        <li><strong>Lascoux-Schützenberger (1982)</strong>: Schubert 多项式</li>
+                    </ul>
+                </div>
+                <div class="card card-gold">
+                    <h3 style="color: var(--accent-gold);">成果</h3>
+                    <p style="font-size: var(--small-size);">已生成完整讲义笔记</p>
+                    <p style="font-size: var(--small-size); color: var(--text-muted); margin-top: 0.5rem;">
+                        GitHub: easygl1der/aca-reader<br>
+                        notes/Schubert-Polynomials/
+                    </p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">57 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 58: SECTION - SUBAGENT -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="58">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 12</span>
+            <h2 class="reveal">Subagent 概念</h2>
+            <p class="reveal" style="margin-top: 1rem;">Per-Library Specialized Agents</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">58 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 59: SUBAGENT CONCEPT -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="59">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Concept</span>
+            <h2 class="reveal">Subagent 设想</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">核心思想</h3>
+                    <p>为每个文献库配置专属 Subagent，拥有独立的记忆和提示词</p>
+                </div>
+            </div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-blue">
+                    <h3>独立记忆</h3>
+                    <p style="font-size: var(--small-size);">每个 Subagent 维护自己的 MEMORY.md</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>个性化提示词</h3>
+                    <p style="font-size: var(--small-size);">针对领域的写作风格</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3>领域专长</h3>
+                    <p style="font-size: var(--small-size);">几何/统计/代码各有专长</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">59 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 60: SUBAGENT FEATURES -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="60">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Features</span>
+            <h2 class="reveal">Subagent 特性</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">共性</h3>
+                    <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
+                        <li>统一的 CLAUDE.md 基础规则</li>
+                        <li>相同的 Skills 调用方式</li>
+                        <li>一致的 Git 提交习惯</li>
+                    </ul>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">个性</h3>
+                    <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
+                        <li>领域特定的写作风格</li>
+                        <li>不同的符号约定优先级</li>
+                        <li>专属的图表处理偏好</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">60 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 61: SUBAGENT EXAMPLES -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="61">
+        <div class="slide-content">
+            <span class="section-label label-gold reveal">Examples</span>
+            <h2 class="reveal">Subagent 示例</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-purple">
+                    <h3 style="color: var(--accent-purple);">Geometry Subagent</h3>
+                    <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
+                        <li><strong>领域</strong>: 几何、计数</li>
+                        <li><strong>专长</strong>: 图片解释、图示理解</li>
+                        <li><strong>风格</strong>: 注重图形化解释</li>
+                        <li><strong>Skills</strong>: skim-jump, figure-extractor</li>
+                    </ul>
+                </div>
+                <div class="card card-green">
+                    <h3 style="color: var(--accent-green);">统计学 Subagent</h3>
+                    <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
+                        <li><strong>领域</strong>: 统计、因果推断</li>
+                        <li><strong>专长</strong>: R 代码复现</li>
+                        <li><strong>风格</strong>: 注重计算验证</li>
+                        <li><strong>Skills</strong>: r-expert, gemini-browser-chat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">61 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 62: SECTION - FUTURE WORK -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="62">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 13</span>
+            <h2 class="reveal">Future Work</h2>
+            <p class="reveal" style="margin-top: 1rem;">未来发展方向</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">62 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 63: FUTURE ROADMAP -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="63">
+        <div class="slide-content">
+            <span class="section-label label-cyan reveal">Roadmap</span>
+            <h2 class="reveal">Future Roadmap</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-3 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3>扩大文献库</h3>
+                    <p style="font-size: var(--small-size);">覆盖更多数学领域</p>
+                </div>
+                <div class="card card-blue">
+                    <h3>自动化增强</h3>
+                    <p style="font-size: var(--small-size);">更多 AI 模型集成</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>工具集成</h3>
+                    <p style="font-size: var(--small-size);">深化现有工具链</p>
+                </div>
+                <div class="card card-cyan">
+                    <h3>知识图谱</h3>
+                    <p style="font-size: var(--small-size);">构建概念关联网络</p>
+                </div>
+                <div class="card card-purple">
+                    <h3>协作功能</h3>
+                    <p style="font-size: var(--small-size);">多用户协作支持</p>
+                </div>
+                <div class="card card-green">
+                    <h3>Subagent</h3>
+                    <p style="font-size: var(--small-size);">每个文献库专属代理</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">63 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 64: KEY TAKEAWAYS -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="64">
+        <div class="slide-content">
+            <span class="section-label label-green reveal">Summary</span>
+            <h2 class="reveal">Key Takeaways</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 2rem; text-align: center;">
+                <h1 style="font-size: var(--h2-size); color: var(--accent-dark);">
+                    让研究者专注思考，<br>而非工具
+                </h1>
+            </div>
+            <div class="grid-3 reveal" style="margin-top: 2rem;">
+                <div class="card card-red">
+                    <h3>自动化</h3>
+                    <p style="font-size: var(--small-size);">重复性工作交给 AI</p>
+                </div>
+                <div class="card card-blue">
+                    <h3>一致性</h3>
+                    <p style="font-size: var(--small-size);">符号格式全程规范</p>
+                </div>
+                <div class="card card-gold">
+                    <h3>可追溯</h3>
+                    <p style="font-size: var(--small-size);">完整知识演化路径</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">64 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 65: SECTION - SUMMARY -->
+    <!-- ============================================ -->
+    <section class="slide slide-section" data-slide="65">
+        <div class="slide-content">
+            <span class="section-label reveal">Section 14</span>
+            <h2 class="reveal">Skills 总览</h2>
+            <p class="reveal" style="margin-top: 1rem;">24 Skills 5 大类</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.5);">65 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 66: SKILLS OVERVIEW TABLE -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="66">
+        <div class="slide-content">
+            <span class="section-label label-red reveal">Skills</span>
+            <h2 class="reveal">Skills 总览表</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="reveal" style="margin-top: 1rem; font-size: var(--small-size);">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr style="background: var(--bg-secondary);">
+                        <th style="padding: 0.5rem; text-align: left;">类别</th>
+                        <th style="padding: 0.5rem; text-align: left;">数量</th>
+                        <th style="padding: 0.5rem; text-align: left;">Skills</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.4rem;">阅读与笔记</td>
+                        <td style="padding: 0.4rem;">6</td>
+                        <td style="padding: 0.4rem;">latex-notes, skim-jump, reading-progress, interactive-qa, obsidian-cli, literature-notes-template</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 0.4rem;">研究与引用</td>
+                        <td style="padding: 0.4rem;">4</td>
+                        <td style="padding: 0.4rem;">gs-search, paper-references-generator, literature-reference-manager, citation-bibliography-generator</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.4rem;">图表提取</td>
+                        <td style="padding: 0.4rem;">4</td>
+                        <td style="padding: 0.4rem;">pdf-figure-extractor, figure-extractor, gemini-image-analyzer, minimax-vision</td>
+                    </tr>
+                    <tr style="background: var(--bg-secondary);">
+                        <td style="padding: 0.4rem;">写作与模板</td>
+                        <td style="padding: 0.4rem;">4</td>
+                        <td style="padding: 0.4rem;">beamer-chinese-presentation, homework-workflow, chapter0-template, note-content-verifier</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.4rem;">开发与AI</td>
+                        <td style="padding: 0.4rem;">6</td>
+                        <td style="padding: 0.4rem;">frontend-slides, auto-commit-push, latex-label-ref-verifier, latex-debug, gemini-browser-chat, r-expert</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <span class="slide-number">66 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 67: Q&A -->
+    <!-- ============================================ -->
+    <section class="slide slide-center" data-slide="67">
+        <div class="slide-content">
+            <span class="section-label label-purple reveal">Q&A</span>
+            <h2 class="reveal" style="font-size: var(--title-size);">问答环节</h2>
+            <div class="decorative-line decorative-line-center reveal"></div>
+            <p class="reveal" style="margin-top: 1.5rem; font-size: var(--body-size); color: var(--text-secondary); max-width: 600px;">
+                欢迎提出想法和建议！
+            </p>
+            <div class="reveal" style="margin-top: 2rem;">
+                <p style="font-size: var(--small-size); color: var(--text-muted);">
+                    联系邮箱：yueyh@mail2.sysu.edu.cn
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">67 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 68: RELATED RESOURCES -->
+    <!-- ============================================ -->
+    <section class="slide" data-slide="68">
+        <div class="slide-content">
+            <span class="section-label label-blue reveal">Resources</span>
+            <h2 class="reveal">相关资源</h2>
+            <div class="decorative-line reveal"></div>
+            <div class="grid-2 reveal" style="margin-top: 1.5rem;">
+                <div class="card card-red">
+                    <h3 style="color: var(--accent-red);">Vibe Research</h3>
+                    <p style="font-size: var(--small-size);">让学术研究更高效</p>
+                    <p style="font-size: var(--small-size); color: var(--text-muted); margin-top: 0.5rem;">
+                        基于 Claude Code 的自动化科研工作流
+                    </p>
+                </div>
+                <div class="card card-blue">
+                    <h3 style="color: var(--accent-blue);">Built with Claude Code</h3>
+                    <p style="font-size: var(--small-size);">AI 驱动的学术文献阅读与讲义生成</p>
+                </div>
+            </div>
+            <div class="reveal" style="margin-top: 1.5rem; text-align: center;">
+                <p style="font-size: var(--small-size); color: var(--text-muted);">
+                    GitHub: <a href="https://github.com/easygl1der/aca-reader" style="color: var(--accent-blue);">github.com/easygl1der/aca-reader</a>
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">68 / 69</span>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- SLIDE 69: THANK YOU -->
+    <!-- ============================================ -->
+    <section class="slide slide-title slide-center" data-slide="69">
+        <div class="slide-content">
+            <div class="logo reveal"><div class="logo-icon">VR</div><span>Vibe Research</span></div>
+            <h1 class="reveal" style="margin-top: 2rem;">感谢聆听</h1>
+            <div class="decorative-line decorative-line-center reveal"></div>
+            <p class="reveal" style="margin-top: 1.5rem; font-size: var(--h3-size); color: var(--text-secondary);">
+                期待交流
+            </p>
+            <div class="reveal" style="margin-top: 2rem;">
+                <p style="font-size: var(--small-size); color: var(--text-muted);">
+                    乐绎华 · 中山大学 数学学院
+                </p>
+                <p style="font-size: var(--small-size); color: var(--text-muted); margin-top: 0.5rem;">
+                    yueyh@mail2.sysu.edu.cn
+                </p>
+            </div>
+        </div>
+        <span class="slide-number">69 / 69</span>
+    </section>
+
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const slides = document.querySelectorAll('.slide');
+        const currentSlide = Array.from(slides).findIndex(slide => 
+            slide.getBoundingClientRect().top >= 0 && 
+            slide.getBoundingClientRect().top < window.innerHeight / 2
+        );
+        
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            if (currentSlide < slides.length - 1) {
+                slides[currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (currentSlide > 0) {
+                slides[currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+
+</body>
+<script>
+    // Navigation dots
+    const slides = document.querySelectorAll('.slide');
+    const navDots = document.getElementById('navDots');
+    slides.forEach((slide, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'nav-dot';
+        dot.onclick = () => slides[i].scrollIntoView({ behavior: 'smooth' });
+        navDots.appendChild(dot);
+    });
+
+    // Intersection Observer for active slide and nav dots
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Remove active from all slides first
+                slides.forEach(s => s.classList.remove('active'));
+                // Add active to current slide
+                entry.target.classList.add('active');
+                // Update nav dots
+                const idx = Array.from(slides).indexOf(entry.target);
+                document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === idx);
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+    slides.forEach(slide => observer.observe(slide));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const currentSlide = document.querySelector('.slide.active');
+        const index = Array.from(slides).indexOf(currentSlide);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            if (index < slides.length - 1) slides[index + 1].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            if (index > 0) slides[index - 1].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            slides[0].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+</script>
+</html>
