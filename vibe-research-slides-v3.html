@@ -1817,7 +1817,7 @@ t.test(salary ~ group, data = df)</code></pre>
             <div class="decorative-line reveal"></div>
             <div class="grid-2 reveal" style="margin-top: 1.5rem;">
                 <div class="card card-purple">
-                    <h3 style="color: var(--accent-purple);">Schubert Subagent</h3>
+                    <h3 style="color: var(--accent-purple);">Geometry Subagent</h3>
                     <ul style="font-size: var(--small-size); margin-top: 0.5rem;">
                         <li><strong>领域</strong>: 几何、计数</li>
                         <li><strong>专长</strong>: 图片解释、图示理解</li>
@@ -2089,6 +2089,9 @@ t.test(salary ~ group, data = df)</code></pre>
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                // Remove active from all slides first
+                slides.forEach(s => s.classList.remove('active'));
+                // Add active to current slide
                 entry.target.classList.add('active');
                 // Update nav dots
                 const idx = Array.from(slides).indexOf(entry.target);
@@ -2099,5 +2102,24 @@ t.test(salary ~ group, data = df)</code></pre>
         });
     }, { threshold: 0.5 });
     slides.forEach(slide => observer.observe(slide));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const currentSlide = document.querySelector('.slide.active');
+        const index = Array.from(slides).indexOf(currentSlide);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            if (index < slides.length - 1) slides[index + 1].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            if (index > 0) slides[index - 1].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            slides[0].scrollIntoView({ behavior: 'smooth' });
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+        }
+    });
 </script>
 </html>
