@@ -24,7 +24,7 @@ This file provides guidance to Claude Code when working with this literature stu
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
 9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
-11. **习题格式规则（仅 book 模板）**: 微分几何笔记（do Carmo book 模板）中的习题必须使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
+11. **习题格式规则**: 不同模板有不同格式。book 模板（do Carmo）使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
 
 ---
 
