@@ -24,6 +24,7 @@ This file provides guidance to Claude Code when working with this literature stu
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
 9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
+11. **习题格式规则**: 微分几何笔记（do Carmo）中的习题必须使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
 
 ---
 
@@ -67,6 +68,14 @@ This file provides guidance to Claude Code when working with this literature stu
 - **定义后置**: 详细定义放到第一节背景知识中
 - **注解脚注**: 较长的说明性注解使用 `\footnote{}`，不要用 Remark 环境
 - **减少交叉引用**: 引言中避免过多 `\cref{}` 引用，让读者专注于核心内容
+
+### Chapter 0（背景知识）写作风格
+**参考 Schubert 笔记的 Chapter 0 风格：**
+- **动机明确**: 开篇简要说明本章目的和用途（如"学习曲线理论所需的预备知识"）
+- **去专业化**: 不写成教科书式的定义-定理-证明，而是用流畅的叙述性文字
+- **定义集中**: 将分散的预备知识（向量代数、链式法则等）集中到一章
+- **习题适当**: Chapter 0 习题应偏向计算性质，验证读者对基础运算的掌握
+- **引用清晰**: 声明"本章大部分内容来自本科线性代数与微积分课程"
 
 ### 定义格式规则
 - **关键术语加粗下划线**: 在 Definition 环境中，被定义的关键术语/概念使用 `\textbf{\underline{术语}}` 格式
@@ -123,7 +132,8 @@ This file provides guidance to Claude Code when working with this literature stu
 ### 微分几何
 - 书籍: Do Carmo - Differential Geometry
 - 笔记: `notes/differential-geometry/do-carmo-curves-surfaces/`
-- 状态: Chapter 1-2 ✅
+- 状态: Chapter 1-2 ✅，Chapter 3-7 ✅（Stein风格重写中）
+- **习题格式**: 使用 `docs/exercise-format.md` 规范
 
 ### 贝叶斯统计
 - 书籍: Bayesian Data Analysis (Gelman et al.)
