@@ -1,30 +1,54 @@
 \chapter{Curves}\label{chap:curves}
 
-微分几何研究的是曲线和曲面的几何性质。与微积分研究函数变化不同，微分几何研究空间中曲线和曲面的"形状"——弯曲程度、扭曲程度等内在几何量。
-
 % ==================== Section 1-1: Introduction ====================
 \section{Introduction}\label{sec:intro}
 
-微分几何有两个基本方面。一种可称为\textbf{经典微分几何}，它始于微积分诞生之时。粗略地说，经典微分几何研究曲线和曲面的\textbf{局部性质}（local properties）。所谓局部性质，是指那些仅依赖于曲线或曲面在一点附近行为的几何性质。研究这种性质所使用的主要工具是微分计算。因此，微分几何中研究的曲线和曲面是由可微函数定义的。
+\textbf{The problem we face.} 我们生活在一个三维空间中，而视觉是我们感知世界的主要方式之一。当我们观察一条曲线——无论是一条道路、一条河流的轮廓、还是行星在天空中的运动轨迹——我们的大脑本能地识别它的"弯曲程度"。这种对弯曲的直观感知，引导我们提出一个根本性的问题：
 
-另一种是\textbf{整体微分几何}（global differential geometry）。这里我们研究局部几何性质如何影响整条曲线或整个曲面的行为。本书后面会回到这个方面。
+\textit{如何用精确的数学语言来描述曲线的弯曲程度？}
 
-或许经典微分几何中最有趣且最具代表性的部分是曲面的研究。然而，在研究曲面时，曲线的某些局部性质会自然出现。因此，我们用这第一章来简要处理曲线理论。
+这个问题看似简单，却贯穿了整个微分几何的发展历程。从欧几里得几何中直线与圆的基本定义，到高斯研究曲面的内在几何，再到达布（Darboux）建立曲线与曲面的局部理论，这个问题的答案逐渐清晰：曲线的弯曲程度可以通过其在一点处的加速度来度量。
 
-\begin{Remark}
-本章的组织方式使得只想学习曲面的读者可以只阅读 1-2 节到 1-5 节。
-\begin{itemize}
-\item 1-2 节到 1-4 节包含基础内容（参数曲线、弧长、向量积），这些内容在其他课程中可能已经学过，这里仅作复习；
-\item 1-5 节是本章的核心，包含学习曲面所需的曲线理论；
-\item 1-6 节和 1-7 节是可选的进一步内容。
-\end{itemize}
-\end{Remark}
+\textbf{The main theme.} 微分几何研究的是曲线和曲面的几何性质。与微积分研究函数变化不同，微分几何关注的是空间中曲线和曲面的"形状"——弯曲程度、扭曲程度等内在几何量。
+
+经典微分几何始于微积分诞生之时，其核心是研究曲线和曲面的\textbf{局部性质}（local properties）——即那些仅依赖于曲线或曲面在一点附近行为的几何性质。使用的工具正是微分计算。我们将会看到，一个出人意料的事实是：空间曲线的形状完全由两个函数决定——曲率（curvature）和挠率（torsion）。
+
+\textbf{A guiding example.} 在学习曲线的理论时，一个例子将贯穿始终，这就是圆柱螺旋线（cylindrical helix）。想象一条弹簧从空中掉落，它在空中划出的轨迹就是螺旋线。螺旋线的非凡之处在于：它在弯曲的同时保持恒定的扭转率。这种"均匀弯曲 + 均匀扭曲"的特性，使其成为理解曲率与挠率概念的完美载体。
+
+\textbf{Organization of this chapter.} 本章的组织方式如下。1-2 节到 1-4 节包含基础内容（参数曲线、弧长、向量积），可作为复习；1-5 节是核心，引入曲率和挠率的概念；1-6 节和 1-7 节讨论局部标准形式和整体性质。若只想学习曲面，可以跳过 1-6、1-7 节。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 1-1. 圆柱螺旋线 (helix) — 弯曲与扭曲的完美结合]{\label{fig:helix}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1368896b0e1df27036554e8c66d6bc05c3fbc6b6c2bca19cecb0d396544dfb0a.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.50\textwidth}
+\centering
+\subfloat[Figure 1-2. 奇异点例子 — 曲线在尖点处不可微]{\label{fig:trace1}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/fe1d17628a3c9bb1e6afbeeae0fdac47edd92f0cb4651af800c230be43509433.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 1-3. 非单射曲线例子 — 同一点被多次经过]{\label{fig:trace2}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/cb0e93ccd913afbcf8adab5178a99f0ac4808db3b32ad2dbe4971ce9b314a9aa.jpg}}
+\end{minipage}
+\end{figure}
 
 % ==================== Section 1-2: Parametrized Curves ====================
 \section{Parametrized Curves}\label{sec:parametrized-curves}
 
+\textbf{Why parametrization?} 在我们提出"如何描述曲线的弯曲程度"这个问题之后，自然的下一步是找到描述曲线的数学工具。我们已经知道，微积分是研究函数变化的有力武器——那么，是否可以将曲线视为某种"函数"，从而运用微分学的工具？
+
+这个想法引导我们引入\textbf{参数化}的概念。其核心思想简单而优雅：将曲线看作一个从区间到空间的映射。例如，当我们说"质点沿曲线运动"时，时间 $t$ 是参数，位置 $\alpha(t)$ 是 $t$ 的函数。这种视角不仅统一了古代对圆、椭圆等特殊曲线的研究，更为重要的是，它让我们能够使用导数来研究曲线的局部几何性质。
+
+接下来，我们首先回顾 $\mathbb{R}^3$ 中向量内积的基本性质，这对后续讨论至关重要。
+
 \begin{Remark}
-接下来我们简要回顾 $\mathbb{R}^3$ 中向量内积的性质。设 $u = (u_1, u_2, u_3) \in \mathbb{R}^3$，定义其范数（或长度）为
+设 $u = (u_1, u_2, u_3) \in \mathbb{R}^3$，定义其范数（或长度）为
 \[
 |u| = \sqrt{u_1^2 + u_2^2 + u_3^2}.
 \]
@@ -52,7 +76,23 @@ u \cdot v = |u| |v| \cos\theta.
 \end{minipage}
 \end{figure}
 
-我们用 $\mathbb{R}^3$ 表示所有三元实数有序组 $(x, y, z)$ 的集合。我们的目标是刻画 $\mathbb{R}^3$ 的某些子集（称为\textbf{曲线}），它们在某种意义上是一维的，并且微积分的方法可以应用其上。定义这种子集的一种自然方式是通过可微函数。
+\textbf{The central notion.} 我们用 $\mathbb{R}^3$ 表示所有三元实数有序组 $(x, y, z)$ 的集合。现在，我们正式引入参数化曲线的概念。
+
+\begin{Definition}[可微参数曲线]\label{def:parametrized-curve}
+\textbf{可微参数曲线}是一个可微映射
+\[
+\alpha: \mathbf{I} \to \mathbb{R}^3,
+\]
+其中 $\mathbf{I} = (\mathbf{a}, \mathbf{b})$ 是实数直线 $\mathbb{R}$ 上的一个开区间。
+\end{Definition}
+
+可微意味着 $\alpha$ 将每个 $t \in I$ 映射到点 $\alpha(t) = (x(t), y(t), z(t)) \in \mathbb{R}^3$，其中函数 $x(t), y(t), z(t)$ 都是可微的。变量 $t$ 称为曲线的\textbf{参数}。
+
+如果记 $x(t)$ 在 $t$ 处的一阶导数为 $x'(t)$$，$等等，则向量
+\[
+(x'(t), y'(t), z'(t)) = \alpha'(t) \in \mathbb{R}^3
+\]
+称为曲线 $\alpha$ 在 $t$ 处的\textbf{切向量}（tangent vector）或\textbf{速度向量}（velocity vector）。像集 $\alpha(I) \subset \mathbb{R}^3$ 称为 $\alpha$ 的\textbf{迹}（trace）。如下面的例 5 所示，我们必须注意区分参数曲线（它是一个映射）和它的迹（它是 $\mathbb{R}^3$ 的一个子集）。
 
 \begin{Definition}[可微参数曲线]\label{def:parametrized-curve}
 \textbf{可微参数曲线}是一个可微映射
@@ -74,18 +114,18 @@ u \cdot v = |u| |v| \cos\theta.
 术语说明：许多人用"无限可微"来表示具有各阶导数（且自动连续）的函数，而用"可微"仅表示一阶导数的存在性。我们不采用这种用法——本书中"可微"意味着所有阶导数都存在。
 \end{Remark}
 
+\textbf{Examples.} 为了建立直觉，我们来看几个关键的例子，它们将贯穿本章的讨论。
+
 \begin{figure}[H]
 \centering
-\begin{minipage}{0.30\textwidth}
+\begin{minipage}{0.40\textwidth}
 \centering
 \subfloat[Figure 1-1. 圆柱螺旋线 (helix)]{\label{fig:helix}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1368896b0e1df27036554e8c66d6bc05c3fbc6b6c2bca19cecb0d396544dfb0a.jpg}}
 \end{minipage}
 \hfill
-\begin{minipage}{0.35\textwidth}
+\begin{minipage}{0.50\textwidth}
 \centering
 \subfloat[Figure 1-2. 奇异点例子]{\label{fig:trace1}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/fe1d17628a3c9bb1e6afbeeae0fdac47edd92f0cb4651af800c230be43509433.jpg}}
-\newline
-\subfloat[Figure 1-3. 非单射曲线例子]{\label{fig:trace2}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/cb0e93ccd913afbcf8adab5178a99f0ac4808db3b32ad2dbe4971ce9b314a9aa.jpg}}
 \end{minipage}
 \end{figure}
 
@@ -97,16 +137,32 @@ u \cdot v = |u| |v| \cos\theta.
 在 $\mathbb{R}^3$ 中的迹是圆柱面 $x^2 + y^2 = a^2$ 上的螺旋线（helix），螺距（pitch）为 $2\pi b$。这里参数 $t$ 测量的是 $x$ 轴与从原点 $O$ 到点 $\alpha(t)$ 在 $xy$ 平面上投影点的连线之间的夹角（见 \cref{fig:helix}，教材 Figure 1-1）。
 \end{Example}
 
+正如本章引言所述，螺旋线将成为我们理解曲率与挠率的完美载体——它的"均匀弯曲 + 均匀扭曲"特性，使其在后续讨论中反复出现。
+
 \begin{Example}[奇异点]\label{ex:singular-point}
 映射 $\alpha: \mathbb{R} \to \mathbb{R}^2$，$\alpha(t) = (t^3, t^2)$，是一条可微参数曲线（见 \cref{fig:trace1}，教材 Figure 1-2）。注意 $\alpha'(0) = (0, 0)$——即 $t = 0$ 处的速度向量为零。这样的点称为\textbf{奇异点}（singular point）。
+
+奇异点的出现提醒我们：可微的参数方程并不保证曲线在每一点都有"良好"的行为。
 \end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 1-3. 非单射曲线例子]{\label{fig:trace2}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/cb0e93ccd913afbcf8adab5178a99f0ac4808db3b32ad2dbe4971ce9b314a9aa.jpg}}
+\end{minipage}
+\end{figure}
 
 \begin{Example}[非单射曲线]\label{ex:non-injective}
 映射 $\alpha: \mathbb{R} \to \mathbb{R}^2$，$\alpha(t) = (t^3 - 4t,\; t^2 - 4)$，是一条可微参数曲线（见 \cref{fig:trace2}，教材 Figure 1-3）。注意 $\alpha(2) = \alpha(-2) = (0, 0)$——即映射 $\alpha$ 不是单射。
+
+这个例子说明一个重要事实：参数化与曲线本身是不同的概念。同一条曲线可以有多种参数化方式。
 \end{Example}
 
 \begin{Example}[不可微曲线]\label{ex:nondifferentiable}
 映射 $\alpha: \mathbb{R} \to \mathbb{R}^2$，$\alpha(t) = (t, |t|)$，$t \in \mathbb{R}$，不是可微参数曲线，因为 $|t|$ 在 $t = 0$ 处不可微（见 \cref{fig:fig1-4}，教材 Figure 1-4）。
+
+这个例子表明我们的定义排除了"带尖角"的曲线——这正是微分几何研究平滑曲线的自然选择。
 \end{Example}
 
 \begin{figure}[H]
@@ -128,40 +184,52 @@ u \cdot v = |u| |v| \cos\theta.
 \alpha(t) = (\cos t, \sin t),\quad \beta(t) = (\cos 2t, \sin 2t),
 \]
 其中 $t \in (-\epsilon, 2\pi + \epsilon)$，$\epsilon > 0$，具有相同的迹——即单位圆 $x^2 + y^2 = 1$。但第二条曲线的速度向量是第一条的两倍（见 \cref{fig:fig1-5}，教材 Figure 1-5）。
+
+这引出一个关键观察：曲线的"形状"（迹）与描述它的"方式"（参数化）是不同的概念。这种区别在后续引入弧长参数化时将变得尤为重要。
 \end{Example}
 
 \subsection*{1-2 节练习}
 
-\begin{exercise}{1-2, 1}
+\begin{exercise}{1-2, 1 — do Carmo, Exercise 1-2, 1}
 Find a parametrized curve $\alpha(t)$ whose trace is the circle $x^2 + y^2 = 1$ such that $\alpha(t)$ runs clockwise around the circle with $\alpha(0) = (0, 1)$.
 \end{exercise}
 
-\begin{exercise}{1-2, 2}
+\begin{exercise}{1-2, 2 — do Carmo, Exercise 1-2, 2}
 Let $\alpha(t)$ be a parametrized curve which does not pass through the origin. If $\alpha(t_0)$ is a point of the trace of $\alpha$ closest to the origin and $\alpha'(t_0) \neq 0$, show that the position vector $\alpha(t_0)$ is orthogonal to $\alpha'(t_0)$.
 \end{exercise}
 
-\begin{exercise}{1-2, 3}
+\begin{exercise}{1-2, 3 — do Carmo, Exercise 1-2, 3}
 A parametrized curve $\alpha(t)$ has the property that its second derivative $\alpha''(t)$ is identically zero. What can be said about $\alpha$?
 \end{exercise}
 
-\begin{exercise}{1-2, 4}
+\begin{exercise}{1-2, 4 — do Carmo, Exercise 1-2, 4}
 Let $\alpha: I \to \mathbb{R}^3$ be a parametrized curve and let $v \in \mathbb{R}^3$ be a fixed vector. Assume that $\alpha'(t)$ is orthogonal to $v$ for all $t \in I$ and that $\alpha(0)$ is also orthogonal to $v$. Prove that $\alpha(t)$ is orthogonal to $v$ for all $t \in I$.
 \end{exercise}
 
-\begin{exercise}{1-2, 5}
+\begin{exercise}{1-2, 5 — do Carmo, Exercise 1-2, 5}
 Let $\alpha: I \to \mathbb{R}^3$ be a parametrized curve, with $\alpha'(t) \neq 0$ for all $t \in I$. Show that $|\alpha(t)|$ is a nonzero constant if and only if $\alpha(t)$ is orthogonal to $\alpha'(t)$ for all $t \in I$.
 \end{exercise}
 
 % ==================== Section 1-3: Regular Curves; Arc Length ====================
 \section{Regular Curves; Arc Length}\label{sec:regular-arc-length}
 
-设 $\alpha: I \to \mathbb{R}^3$ 是一条可微参数曲线。对于每个满足 $\alpha'(t) \neq 0$ 的 $t \in I$，存在一条唯一定义直线，它经过点 $\alpha(t)$ 且与向量 $\alpha'(t)$ 平行。这条直线称为曲线 $\alpha$ 在 $t$ 处的\textbf{切线}（tangent line）。因此，研究曲线的微分几何时，关键是每一点都存在这样的切线。于是我们把 $\alpha'(t) = 0$ 的点称为 $\alpha$ 的\textbf{奇异点}（singular point），并把注意力限制在没有奇异点的曲线上。注意例 2 中 $t = 0$ 就是一个奇异点。
+\textbf{The need for regular curves.} 当我们引入参数化曲线的概念后，自然会问：是否每个可微参数曲线都能用微分学的工具来研究？
+
+答案并非总是肯定的。我们已经看到，奇异点（如 $\alpha(t) = (t^3, t^2)$ 在 $t=0$ 处）的出现会导致切向量为零，这会给后续的微分运算带来麻烦。更根本的是：如果 $\alpha'(t) = 0$，那么在该点处就不存在确定的切线——这对于研究曲线的"弯曲程度"是致命的。
+
+因此，在研究曲线的微分几何时，我们必须把注意力限制在每一点都有良好定义的切线的曲线上。这引导我们引入正则曲线的概念。
+
+设 $\alpha: I \to \mathbb{R}^3$ 是一条可微参数曲线。对于每个满足 $\alpha'(t) \neq 0$ 的 $t \in I$，存在一条唯一定义直线，它经过点 $\alpha(t)$ 且与向量 $\alpha'(t)$ 平行。这条直线称为曲线 $\alpha$ 在 $t$ 处的\textbf{切线}（tangent line）。
 
 \begin{Definition}[正则曲线]\label{def:regular-curve}
 如果 $\alpha'(t) \neq 0$ 对所有 $t \in \mathbf{I}$ 成立，则称可微参数曲线 $\alpha: \mathbf{I} \to \mathbb{R}^3$ 为\textbf{正则曲线}（regular curve）。
 \end{Definition}
 
-现在考虑曲线的长度概念。
+\textbf{Why arc length?} 在有了正则曲线的概念之后，我们转向一个更基本的问题：如何测量曲线的长度？
+
+这个问题看似简单，却揭示了微分几何的一个核心思想。直观上，曲线的长度应该是其"内在"属性——它不应该依赖于我们如何参数化这条曲线。果真如此吗？
+
+答案是肯定的，这正是弧长公式的非凡之处。
 
 \begin{Definition}[弧长]\label{def:arc-length}
 设 $\alpha: [a,b] \to \mathbb{R}^3$ 是一条可微曲线。$\alpha$ 从 $t = a$ 到 $t$ 的\textbf{弧长}（arc length）定义为
@@ -242,11 +310,11 @@ s(t) = \int_0^t \|\alpha'(u)\| \, du = \int_0^t a \, du = at,
 
 \subsection*{1-3 节练习}
 
-\begin{exercise}{1-3, 1}
+\begin{exercise}{1-3, 1 — do Carmo, Exercise 1-3, 1}
 Show that the tangent lines to the regular parametrized curve $\alpha(t) = (3t, 3t^2, 2t^3)$ make a constant angle with the line $y = 0,\; z = x$.
 \end{exercise}
 
-\begin{exercise}{1-3, 2}
+\begin{exercise}{1-3, 2 — do Carmo, Exercise 1-3, 2}
 A circular disk of radius 1 in the plane $xy$ rolls without slipping along the $x$ axis. The figure described by a point of the circumference of the disk is called a cycloid (见 \cref{fig:cycloid}，教材 Figure 1-7)。
 \begin{enumerate}
 \item[a.] Obtain a parametrized curve $\alpha: \mathbb{R} \to \mathbb{R}^2$ the trace of which is the cycloid, and determine its singular points.
@@ -254,7 +322,7 @@ A circular disk of radius 1 in the plane $xy$ rolls without slipping along the $
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-3, 3}
+\begin{exercise}{1-3, 3 — do Carmo, Exercise 1-3, 3}
 Let $0A = 2a$ be the diameter of a circle $S^1$. Prove that:
 \begin{enumerate}
 \item[a.] The trace of $\alpha(t) = \left(\frac{2at^2}{1+t^2}, \frac{2at^3}{1+t^2}\right)$, $t \in \mathbb{R}$, is the cissoid of Diocles (见 \cref{fig:cissoid}，教材 Figure 1-8).
@@ -263,7 +331,7 @@ Let $0A = 2a$ be the diameter of a circle $S^1$. Prove that:
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-3, 4}
+\begin{exercise}{1-3, 4 — do Carmo, Exercise 1-3, 4}
 Let $\alpha: (0, \pi) \to \mathbb{R}^2$ be given by $\alpha(t) = \left(\sin t, \cos t + \log \tan \frac{t}{2}\right)$. The trace of $\alpha$ is called the tractrix (见 \cref{fig:tractrix}，教材 Figure 1-9). Show that:
 \begin{enumerate}
 \item[a.] $\alpha$ is a differentiable parametrized curve, regular except at $t = \pi/2$.
@@ -271,10 +339,97 @@ Let $\alpha: (0, \pi) \to \mathbb{R}^2$ be given by $\alpha(t) = \left(\sin t, \
 \end{enumerate}
 \end{exercise}
 
+\begin{exercise}{1-3, 5 — do Carmo, Exercise 1-3, 5}
+Let $\alpha: (-1, +\infty) \to \mathbb{R}^2$ be given by
+\[
+\alpha(t) = \left(\frac{3at}{1+t^3}, \frac{3at^2}{1+t^3}\right).
+\]
+Prove that:
+\begin{enumerate}
+\item[a.] For $t = 0$, $\alpha$ is tangent to the $x$ axis.
+\item[b.] As $t \to +\infty$, $\alpha(t) \to (0,0)$ and $\alpha'(t) \to (0,0)$.
+\item[c.] Take the curve with the opposite orientation. Now, as $t \to -1$, the curve and its tangent approach the line $x + y + a = 0$.
+\end{enumerate}
+The figure obtained by completing the trace of $\alpha$ in such a way that it becomes symmetric relative to the line $y = x$ is called the \textbf{folium of Descartes} (笛卡尔叶形线, 见 \cref{fig:folium}，教材 Figure 1-10).
+\end{exercise}
+
+\begin{exercise}{1-3, 6 — do Carmo, Exercise 1-3, 6}
+Let $\alpha(t) = (ae^{bt}\cos t, ae^{bt}\sin t)$, $t \in \mathbb{R}$, $a$ and $b$ constants, $a > 0$, $b < 0$, be a parametrized curve.
+\begin{enumerate}
+\item[a.] Show that as $t \to +\infty$, $\alpha(t)$ approaches the origin $\mathbf{0}$, spiraling around it (because of this, the trace of $\alpha$ is called the \textbf{logarithmic spiral}，对数螺旋线, 见 \cref{fig:log-spiral}，教材 Figure 1-11).
+\item[b.] Show that $\alpha'(t) \to (0,0)$ as $t \to +\infty$ and that
+\[
+\lim_{t \to +\infty} \int_{t_0}^t \|\alpha'(t)\| dt
+\]
+is finite; that is, $\alpha$ has finite arc length in $[t_0, \infty)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-3, 7 — do Carmo, Exercise 1-3, 7}
+A map $\alpha: I \to \mathbb{R}^3$ is called a curve of class $C^k$ if each of the coordinate functions in the expression $\alpha(t) = (x(t), y(t), z(t))$ has continuous derivatives up to order $k$. If $\alpha$ is merely continuous, we say that $\alpha$ is of class $C^0$. A curve $\alpha$ is called \textbf{simple} if the map $\alpha$ is one-to-one.
+
+Let $\alpha: I \to \mathbb{R}^3$ be a simple curve of class $C^0$. We say that $\alpha$ has a \textbf{weak tangent} at $t = t_0 \in I$ if the line determined by $\alpha(t_0 + h)$ and $\alpha(t_0)$ has a limit position when $h \to 0$. We say that $\alpha$ has a \textbf{strong tangent} at $t = t_0$ if the line determined by $\alpha(t_0 + h)$ and $\alpha(t_0 + k)$ has a limit position when $h, k \to 0$. Show that
+\begin{enumerate}
+\item[a.] $\alpha(t) = (t^3, t^2)$, $t \in \mathbb{R}$, has a weak tangent but not a strong tangent at $t = 0$.
+\item[b.] If $\alpha: I \to \mathbb{R}^3$ is of class $C^1$ and regular at $t = t_0$, then it has a strong tangent at $t = t_0$.
+\item[c.] The curve given by
+\[
+\alpha(t) = \begin{cases} (t^2, t^2), & t \geq 0, \\ (t^2, -t^2), & t \leq 0, \end{cases}
+\]
+is of class $C^1$ but not of class $C^2$. Draw a sketch of the curve and its tangent vectors.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-3, 8* — do Carmo, Exercise 1-3, 8}
+Let $\alpha: I \to \mathbb{R}^3$ be a differentiable curve and let $[a, b] \subset I$ be a closed interval. For every partition
+\[
+a = t_0 < t_1 < \dots < t_n = b
+\]
+of $[a, b]$, consider the sum $\sum_{i=1}^n |\alpha(t_i) - \alpha(t_{i-1})| = l(\alpha, P)$, where $P$ stands for the given partition. The norm $|P|$ of a partition $P$ is defined as
+\[
+|P| = \max(t_i - t_{i-1}), \quad i = 1, \dots, n.
+\]
+Geometrically, $l(\alpha, P)$ is the length of a polygon inscribed in $\alpha([a, b])$ with vertices in $\alpha(t_i)$. Prove that given $\epsilon > 0$ there exists $\delta > 0$ such that if $|P| < \delta$ then
+\[
+\left| \int_a^b |\alpha'(t)| dt - l(\alpha, P) \right| < \epsilon.
+\]
+\end{exercise}
+
+\begin{exercise}{1-3, 9 — do Carmo, Exercise 1-3, 9}
+\begin{enumerate}
+\item[a.] Let $\alpha: I \to \mathbb{R}^3$ be a curve of class $C^0$. Use the approximation by polygons described in Exercise 8 to give a reasonable definition of arc length of $\alpha$.
+
+\item[b.] (\textbf{A Nonrectifiable Curve.}) The following example shows that, with any reasonable definition, the arc length of a $C^0$ curve in a closed interval may be unbounded. Let $\alpha: [0,1] \to \mathbb{R}^2$ be given as $\alpha(t) = (t, t\sin(\pi/t))$ if $t \neq 0$, and $\alpha(0) = (0,0)$. Show, geometrically, that the arc length of the portion of the curve corresponding to $1/(n+1) \leq t \leq 1/n$ is at least $2/(n + 1/2)$. Use this to show that the length of the curve in the interval $1/N \leq t \leq 1$ is greater than $2\sum_{n=1}^N 1/(n+1)$, and thus it tends to infinity as $N \to \infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-3, 10* — do Carmo, Exercise 1-3, 10}
+\textbf{(Straight Lines as Shortest.)} Let $\alpha: I \to \mathbb{R}^3$ be a parametrized curve. Let $[a, b] \subset I$ and set $\alpha(a) = p$, $\alpha(b) = q$.
+\begin{enumerate}
+\item[a.] Show that, for any constant vector $v$, $|v| = 1$,
+\[
+(q - p) \cdot v = \int_a^b \alpha'(t) \cdot v dt \leq \int_a^b |\alpha'(t)| dt.
+\]
+\item[b.] Set
+\[
+v = \frac{q - p}{|q - p|}
+\]
+and show that
+\[
+|\alpha(b) - \alpha(a)| \leq \int_a^b |\alpha'(t)| dt;
+\]
+that is, the curve of shortest length from $\alpha(a)$ to $\alpha(b)$ is the straight line joining these points.
+\end{enumerate}
+\end{exercise}
+
 % ==================== Section 1-4: The Vector Product in R3 ====================
 \section{The Vector Product in $\mathbb{R}^3$}\label{sec:vector-product-ch1}
 
-向量积（或叉积、外积）是 $\mathbb{R}^3$ 中特有的运算，在曲线与曲面的理论中起关键作用。
+\textbf{A new operation unique to three dimensions.} 在我们研究 $\mathbb{R}^3$ 中的曲线时，内积已经给了我们测量长度和角度的工具。然而，仅仅有内积是不够的。考虑一个问题：给定曲线的切向量 $\alpha'(t)$ 和二阶导数 $\alpha''(t)$，我们如何构造一个与两者都垂直的向量？这个向量对于建立曲线的局部标架（如后续将引入的 Frenet 标架）至关重要。
+
+在 $\mathbb{R}^2$ 中，这是不可能的——两个不平行的向量张成整个平面，不存在第三个同时垂直于两者的非零向量。但在 $\mathbb{R}^3$ 中，一个新的运算应运而生：向量积。
+
+向量积（或叉积、外积）是 $\mathbb{R}^3$ 中特有的运算，它的引入不是人为的，而是由几何需求驱动的。我们将会看到，向量积在曲线与曲面的理论中起着关键作用。
 
 \begin{Definition}[向量积]\label{def:cross-product-ch1}
 设 $\mathbf{u} = (u_1, u_2, u_3)$ 和 $\mathbf{v} = (v_1, v_2, v_3)$ 是 $\mathbb{R}^3$ 中的向量。定义\textbf{向量积}（cross product）$\mathbf{u} \times \mathbf{v} \in \mathbb{R}^3$ 为
@@ -337,6 +492,105 @@ v_1 & v_2 & v_3
 \subfloat[Figure 1-12. 弧长逼近的几何意义]{\label{fig:arc-length-approx}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/a9b16e888308f3816e421a0b7d3bfe30d5b264884d0cead14690e87b887aef3e.jpg}}
 \end{minipage}
 \end{figure}
+
+\subsection*{1-4 节练习}
+
+\begin{exercise}{1-4, 1 — do Carmo, Exercise 1-4, 1}
+Check whether the following bases are positive:
+\begin{enumerate}
+\item[a.] The basis $\{(1,3),(4,2)\}$ in $\mathbb{R}^2$.
+\item[b.] The basis $\{(1,3,5),(2,3,7),(4,8,3)\}$ in $\mathbb{R}^3$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-4, 2* — do Carmo, Exercise 1-4, 2}
+A plane $P$ contained in $\mathbb{R}^3$ is given by the equation $ax + by + cz + d = 0$. Show that the vector $v = (a, b, c)$ is perpendicular to the plane and that $|d| / \sqrt{a^2 + b^2 + c^2}$ measures the distance from the plane to the origin $(0, 0, 0)$.
+\end{exercise}
+
+\begin{exercise}{1-4, 3* — do Carmo, Exercise 1-4, 3}
+Determine the angle of intersection of the two planes $5x + 3y + 2z - 4 = 0$ and $3x + 4y - 7z = 0$.
+\end{exercise}
+
+\begin{exercise}{1-4, 4* — do Carmo, Exercise 1-4, 4}
+Given two planes $a_i x + b_i y + c_i z + d_i = 0$, $i = 1, 2$, prove that a necessary and sufficient condition for them to be parallel is
+\[
+\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2},
+\]
+where the convention is made that if a denominator is zero, the corresponding numerator is also zero.
+\end{exercise}
+
+\begin{exercise}{1-4, 5 — do Carmo, Exercise 1-4, 5}
+Show that an equation of a plane passing through three noncollinear points $p_1 = (x_1, y_1, z_1)$, $p_2 = (x_2, y_2, z_2)$, $p_3 = (x_3, y_3, z_3)$ is given by
+\[
+(p - p_1) \wedge (p - p_2) \cdot (p - p_3) = 0,
+\]
+where $p = (x, y, z)$ is an arbitrary point of the plane.
+\end{exercise}
+
+\begin{exercise}{1-4, 6* — do Carmo, Exercise 1-4, 6}
+Given two nonparallel planes $a_i x + b_i y + c_i z + d_i = 0$, $i = 1, 2$, show that their line of intersection may be parametrized as
+\[
+x - x_0 = u_1 t, \quad y - y_0 = u_2 t, \quad z - z_0 = u_3 t,
+\]
+where $(x_0, y_0, z_0)$ belongs to the intersection and $u = (u_1, u_2, u_3)$ is the vector product $u = v_1 \wedge v_2$, $v_i = (a_i, b_i, c_i)$, $i = 1, 2$.
+\end{exercise}
+
+\begin{exercise}{1-4, 7* — do Carmo, Exercise 1-4, 7}
+Prove that a necessary and sufficient condition for the plane $ax + by + cz + d = 0$ and the line $x - x_0 = u_1 t$, $y - y_0 = u_2 t$, $z - z_0 = u_3 t$ to be parallel is $a u_1 + b u_2 + c u_3 = 0$.
+\end{exercise}
+
+\begin{exercise}{1-4, 8* — do Carmo, Exercise 1-4, 8}
+Prove that the distance $\rho$ between the nonparallel lines
+\[
+\begin{array}{l}
+x - x_0 = u_1 t, \quad y - y_0 = u_2 t, \quad z - z_0 = u_3 t, \\
+x - x_1 = v_1 t, \quad y - y_1 = v_2 t, \quad z - z_1 = v_3 t
+\end{array}
+\]
+is given by
+\[
+\rho = \frac{|(u \wedge v) \cdot r|}{|u \wedge v|},
+\]
+where $u = (u_1, u_2, u_3)$, $v = (v_1, v_2, v_3)$, $r = (x_0 - x_1, y_0 - y_1, z_0 - z_1)$.
+\end{exercise}
+
+\begin{exercise}{1-4, 9 — do Carmo, Exercise 1-4, 9}
+Determine the angle of intersection of the plane $3x + 4y + 7z + 8 = 0$ and the line $x - 2 = 3t$, $y - 3 = 5t$, $z - 5 = 9t$.
+\end{exercise}
+
+\begin{exercise}{1-4, 10 — do Carmo, Exercise 1-4, 10}
+The natural orientation of $\mathbb{R}^2$ makes it possible to associate a sign to the area $A$ of a parallelogram generated by two linearly independent vectors $u, v \in \mathbb{R}^2$. Show that $A^2 = \left| \begin{smallmatrix} u_1 & u_2 \\ v_1 & v_2 \end{smallmatrix} \right|^2$.
+\end{exercise}
+
+\begin{exercise}{1-4, 11 — do Carmo, Exercise 1-4, 11}
+\begin{enumerate}
+\item[a.] Show that the volume $V$ of a parallelepiped generated by three linearly independent vectors $u, v, w \in \mathbb{R}^3$ is given by $V = |(u \wedge v) \cdot w|$, and introduce an oriented volume in $\mathbb{R}^3$.
+\item[b.] Prove that
+\[
+V^2 = \left| \begin{array}{ccc}
+u \cdot u & u \cdot v & u \cdot w \\
+v \cdot u & v \cdot v & v \cdot w \\
+w \cdot u & w \cdot v & w \cdot w
+\end{array} \right|.
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-4, 12 — do Carmo, Exercise 1-4, 12}
+Given the vectors $v \neq 0$ and $w$, show that there exists a vector $u$ such that $u \wedge v = w$ if and only if $v$ is perpendicular to $w$. Is this vector $u$ uniquely determined? If not, what is the most general solution?
+\end{exercise}
+
+\begin{exercise}{1-4, 13 — do Carmo, Exercise 1-4, 13}
+Let $u(t) = (u_1(t), u_2(t), u_3(t))$ and $v(t) = (v_1(t), v_2(t), v_3(t))$ be differentiable maps from the interval $(a, b)$ into $\mathbb{R}^3$. If the derivatives $u'(t)$ and $v'(t)$ satisfy the conditions
+\[
+u'(t) = a u(t) + b v(t), \quad v'(t) = c u(t) - a v(t),
+\]
+where $a, b$, and $c$ are constants, show that $u(t) \wedge v(t)$ is a constant vector.
+\end{exercise}
+
+\begin{exercise}{1-4, 14 — do Carmo, Exercise 1-4, 14}
+Find all unit vectors which are perpendicular to the vector $(2, 2, 1)$ and parallel to the plane determined by the points $(0, 0, 0)$, $(1, -2, 1)$, $(-1, 1, 1)$.
+\end{exercise}
 
 % ==================== Section 1-5: The Local Theory of Curves ====================
 \section{The Local Theory of Curves Parametrized by Arc Length}\label{sec:local-theory-ch1}
@@ -510,27 +764,201 @@ Frenet-Serret 公式表明，如果我们知道曲率 $k(s)$ 和挠率 $\tau(s)$
 
 \subsection*{1-5 节练习}
 
-\begin{exercise}{1-5, 1}
-Compute the curvature and torsion of the helix $\alpha(t) = (a\cos t, a\sin t, bt)$.
-\end{exercise}
+除非特别说明，$\alpha: \mathbf{I} \to \mathbf{R}^3$ 是单位速度曲线，曲率 $k(s) \neq 0$。
 
-\begin{exercise}{1-5, 2}
-Show that if all normal lines of a connected curve pass through a fixed point, then the curve is contained in a circle.
-\end{exercise}
-
-\begin{exercise}{1-5, 3}
-Let $\alpha(s)$ be a unit speed curve with $k(s) > 0$. Show that $k(s) = \dfrac{|\alpha' \times \alpha''|}{|\alpha'|^3}$ for any parametrization.
-\end{exercise}
-
-\begin{exercise}{1-5, 4}
-A curve has constant curvature $k > 0$ and constant torsion $\tau$. Show that it is a helix (circular helix).
-\end{exercise}
-
-\begin{exercise}{1-5, 5}
-Show that the curvature of a plane curve can be written as
+\begin{exercise}{1-5, 1 — do Carmo, Exercise 1-5, 1}
+Given the parametrized curve (helix)
 \[
-k = \frac{|x'y'' - y'x''|}{(x'^2 + y'^2)^{3/2}}.
+\alpha(s) = \left(a\cos\frac{s}{c}, a\sin\frac{s}{c}, b\frac{s}{c}\right), \quad s \in \mathbb{R},
 \]
+where $c^2 = a^2 + b^2$,
+\begin{enumerate}
+\item[a.] Show that the parameter $s$ is the arc length.
+\item[b.] Determine the curvature and the torsion of $\alpha$.
+\item[c.] Determine the osculating plane of $\alpha$.
+\item[d.] Show that the lines containing $n(s)$ and passing through $\alpha(s)$ meet the $z$ axis under a constant angle equal to $\pi/2$.
+\item[e.] Show that the tangent lines to $\alpha$ make a constant angle with the $z$ axis.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 2* — do Carmo, Exercise 1-5, 2}
+Show that the torsion $\tau$ of $\alpha$ is given by
+\[
+\tau(s) = - \frac{\alpha'(s) \wedge \alpha''(s) \cdot \alpha'''(s)}{|k(s)|^2}.
+\]
+\end{exercise}
+
+\begin{exercise}{1-5, 3 — do Carmo, Exercise 1-5, 3}
+Assume that $\alpha(I) \subset \mathbb{R}^2$ (i.e., $\alpha$ is a plane curve) and give $k$ a sign. Transport the vectors $t(s)$ parallel to themselves so that the origins of $t(s)$ agree with the origin of $\mathbb{R}^2$; the end points of $t(s)$ then describe a parametrized curve $s \to t(s)$ called the indicatrix of tangents of $\alpha$. Let $\theta(s)$ be the angle from $e_1$ to $t(s)$ in the orientation of $\mathbb{R}^2$. Prove:
+\begin{enumerate}
+\item[a.] The indicatrix of tangents is a regular parametrized curve.
+\item[b.] $dt/ds = (d\theta/ds)n$, that is, $k = d\theta/ds$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 4* — do Carmo, Exercise 1-5, 4}
+Assume that all normals of a parametrized curve pass through a fixed point. Prove that the trace of the curve is contained in a circle.
+\end{exercise}
+
+\begin{exercise}{1-5, 5 — do Carmo, Exercise 1-5, 5}
+A regular parametrized curve $\alpha$ has the property that all its tangent lines pass through a fixed point.
+\begin{enumerate}
+\item[a.] Prove that the trace of $\alpha$ is a (segment of a) straight line.
+\item[b.] Does the conclusion in part a still hold if $\alpha$ is not regular?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 6 — do Carmo, Exercise 1-5, 6}
+A translation by a vector $v$ in $\mathbb{R}^3$ is the map $A: \mathbb{R}^3 \to \mathbb{R}^3$ that is given by $A(p) = p + v$, $p \in \mathbb{R}^3$. A linear map $\rho: \mathbb{R}^3 \to \mathbb{R}^3$ is an orthogonal transformation when $\rho u \cdot \rho v = u \cdot v$ for all vectors $u, v \in \mathbb{R}^3$. A rigid motion in $\mathbb{R}^3$ is the result of composing a translation with an orthogonal transformation with positive determinant.
+\begin{enumerate}
+\item[a.] Demonstrate that the norm of a vector and the angle $\theta$ between two vectors, $0 \leq \theta \leq \pi$, are invariant under orthogonal transformations with positive determinant.
+\item[b.] Show that the vector product of two vectors is invariant under orthogonal transformations with positive determinant. Is the assertion still true if we drop the condition on the determinant?
+\item[c.] Show that the arc length, the curvature, and the torsion of a parametrized curve are (whenever defined) invariant under rigid motions.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 7* — do Carmo, Exercise 1-5, 7}
+Let $\alpha: I \to \mathbb{R}^2$ be a regular parametrized plane curve (arbitrary parameter), and define $n = n(t)$ and $k = k(t)$. Assume that $k(t) \neq 0$, $t \in I$. In this situation, the curve
+\[
+\beta(t) = \alpha(t) + \frac{1}{k(t)} n(t), \quad t \in I,
+\]
+is called the \textbf{evolute} of $\alpha$ (渐伸线, 见 \cref{fig:evolute-ch1}，教材 Figure 1-17).
+\begin{enumerate}
+\item[a.] Show that the tangent at $t$ of the evolute of $\alpha$ is the normal to $\alpha$ at $t$.
+\item[b.] Consider the normal lines of $\alpha$ at two neighboring points $t_1, t_2$, $t_1 \neq t_2$. Let $t_1$ approach $t_2$ and show that the intersection points of the normals converge to a point on the trace of the evolute of $\alpha$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 8 — do Carmo, Exercise 1-5, 8}
+The trace of the parametrized curve (arbitrary parameter)
+\[
+\alpha(t) = (t, \cosh t), \quad t \in \mathbb{R},
+\]
+is called the \textbf{catenary} (悬链线).
+\begin{enumerate}
+\item[a.] Show that the signed curvature of the catenary is
+\[
+k(t) = \frac{1}{\cosh^2 t}.
+\]
+\item[b.] Show that the evolute of the catenary is
+\[
+\beta(t) = (t - \sinh t \cosh t, 2\cosh t).
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 9 — do Carmo, Exercise 1-5, 9}
+Given a differentiable function $k(s)$, $s \in I$, show that the parametrized plane curve having $k(s) = k$ as curvature is given by
+\[
+\alpha(s) = \left(\int \cos\theta(s) ds + a, \int \sin\theta(s) ds + b\right),
+\]
+where
+\[
+\theta(s) = \int k(s) ds + \varphi,
+\]
+and that the curve is determined up to a translation of the vector $(a, b)$ and a rotation of the angle $\varphi$.
+\end{exercise}
+
+\begin{exercise}{1-5, 10 — do Carmo, Exercise 1-5, 10}
+Consider the map
+\[
+\alpha(t) = \begin{cases}
+(t, 0, e^{-1/t^2}), & t > 0, \\
+(t, e^{-1/t^2}, 0), & t < 0, \\
+(0, 0, 0), & t = 0.
+\end{cases}
+\]
+\begin{enumerate}
+\item[a.] Prove that $\alpha$ is a differentiable curve.
+\item[b.] Prove that $\alpha$ is regular for all $t$ and that the curvature $k(t) \neq 0$, for $t \neq 0, t \neq \pm\sqrt{2/3}$, and $k(0) = 0$.
+\item[c.] Show that the limit of the osculating planes as $t \to 0$, $t > 0$, is the plane $y = 0$ but that the limit of the osculating planes as $t \to 0$, $t < 0$, is the plane $z = 0$ (this implies that the normal vector is discontinuous at $t = 0$ and shows why we excluded points where $k = 0$).
+\item[d.] Show that $\tau$ can be defined so that $\tau \equiv 0$, even though $\alpha$ is not a plane curve.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 11 — do Carmo, Exercise 1-5, 11}
+One often gives a plane curve in polar coordinates by $\rho = \rho(\theta)$, $a \leq \theta \leq b$.
+\begin{enumerate}
+\item[a.] Show that the arc length is
+\[
+\int_a^b \sqrt{\rho^2 + (\rho')^2} d\theta,
+\]
+where the prime denotes the derivative relative to $\theta$.
+\item[b.] Show that the curvature is
+\[
+k(\theta) = \frac{2(\rho')^2 - \rho\rho'' + \rho^2}{\{((\rho')^2 + \rho^2\}^{3/2}}.
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 12* — do Carmo, Exercise 1-5, 12}
+Let $\alpha: I \to \mathbb{R}^3$ be a regular parametrized curve (not necessarily by arc length) and let $\beta: J \to \mathbb{R}^3$ be a reparametrization of $\alpha(I)$ by the arc length $s = s(t)$, measured from $t_0 \in I$. Let $t = t(s)$ be the inverse function of $s$ and set $d\alpha/dt = \alpha'$, $d^2\alpha/dt^2 = \alpha''$, etc. Prove:
+\begin{enumerate}
+\item[a.] $dt/ds = 1/|\alpha'|$, $d^2t/ds^2 = -(\alpha' \cdot \alpha'' / |\alpha'|^4)$.
+\item[b.] The curvature of $\alpha$ at $t \in I$ is
+\[
+k(t) = \frac{|\alpha' \wedge \alpha''|}{|\alpha'|^3}.
+\]
+\item[c.] The torsion of $\alpha$ at $t \in I$ is
+\[
+\tau(t) = - \frac{(\alpha' \wedge \alpha'') \cdot \alpha'''}{|\alpha' \wedge \alpha''|^2}.
+\]
+\item[d.] If $\alpha: I \to \mathbb{R}^2$ is a plane curve $\alpha(t) = (x(t), y(t))$, the signed curvature of $\alpha$ at $t$ is
+\[
+k(t) = \frac{x'y'' - x''y'}{((x')^2 + (y')^2)^{3/2}}.
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 13* — do Carmo, Exercise 1-5, 13}
+Assume that $\tau(s) \neq 0$ and $k'(s) \neq 0$ for all $s \in I$. Show that a necessary and sufficient condition for $\alpha(I)$ to lie on a sphere is that
+\[
+R^2 + (R')^2 T^2 = \mathrm{const.},
+\]
+where $R = 1/k$, $T = 1/\tau$, and $R'$ is the derivative of $R$ relative to $s$.
+\end{exercise}
+
+\begin{exercise}{1-5, 14 — do Carmo, Exercise 1-5, 14}
+Let $\alpha: (a, b) \to \mathbb{R}^2$ be a regular parametrized plane curve. Assume that there exists $t_0$, $a < t_0 < b$, such that the distance $|\alpha(t)|$ from the origin to the trace of $\alpha$ will be a maximum at $t_0$. Prove that the curvature $k$ of $\alpha$ at $t_0$ satisfies $|k(t_0)| \geq 1/|\alpha(t_0)|$.
+\end{exercise}
+
+\begin{exercise}{1-5, 15* — do Carmo, Exercise 1-5, 15}
+Show that the knowledge of the vector function $b = b(s)$ (binormal vector) of a curve $\alpha$, with nonzero torsion everywhere, determines the curvature $k(s)$ and the absolute value of the torsion $\tau(s)$ of $\alpha$.
+\end{exercise}
+
+\begin{exercise}{1-5, 16* — do Carmo, Exercise 1-5, 16}
+Show that the knowledge of the vector function $n = n(s)$ (normal vector) of a curve $\alpha$, with nonzero torsion everywhere, determines the curvature $k(s)$ and the torsion $\tau(s)$ of $\alpha$.
+\end{exercise}
+
+\begin{exercise}{1-5, 17 — do Carmo, Exercise 1-5, 17}
+In general, a curve $\alpha$ is called a \textbf{helix} if the tangent lines of $\alpha$ make a constant angle with a fixed direction. Assume that $\tau(s) \neq 0$, $s \in I$, and prove that:
+\begin{enumerate}
+\item[a.] $\alpha$ is a helix if and only if $k/\tau = \mathrm{const}$.
+\item[b.*] $\alpha$ is a helix if and only if the lines containing $n(s)$ and passing through $\alpha(s)$ are parallel to a fixed plane.
+\item[c.*] $\alpha$ is a helix if and only if the lines containing $b(s)$ and passing through $\alpha(s)$ make a constant angle with a fixed direction.
+\item[d.] The curve
+\[
+\alpha(s) = \left(\frac{a}{c}\int\sin\theta(s) ds, \frac{a}{c}\int\cos\theta(s) ds, \frac{b}{c}s\right),
+\]
+where $c^2 = a^2 + b^2$, is a helix, and that $k/\tau = a/b$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{1-5, 18* — do Carmo, Exercise 1-5, 18}
+Let $\alpha: I \to \mathbb{R}^3$ be a parametrized regular curve (not necessarily by arc length) with $k(t) \neq 0$, $\tau(t) \neq 0$, $t \in I$. The curve $\alpha$ is called a \textbf{Bertrand curve} if there exists a curve $\bar{\alpha}: I \to \mathbb{R}^3$ such that the normal lines of $\alpha$ and $\bar{\alpha}$ at $t \in I$ are equal. In this case, $\bar{\alpha}$ is called a \textbf{Bertrand mate} of $\alpha$, and we can write
+\[
+\bar{\alpha}(t) = \alpha(t) + r n(t).
+\]
+Prove that:
+\begin{enumerate}
+\item[a.] $r$ is constant.
+\item[b.] $\alpha$ is a Bertrand curve if and only if there exists a linear relation
+\[
+Ak(t) + B\tau(t) = 1, \quad t \in I,
+\]
+where $A, B$ are nonzero constants and $k$ and $\tau$ are the curvature and torsion of $\alpha$, respectively.
+\item[c.] If $\alpha$ has more than one Bertrand mate, it has infinitely many Bertrand mates. This case occurs if and only if $\alpha$ is a circular helix.
+\end{enumerate}
 \end{exercise}
 
 % ==================== Section 1-6: The Local Canonical Form ====================
@@ -569,14 +997,26 @@ k = \frac{|x'y'' - y'x''|}{(x'^2 + y'^2)^{3/2}}.
 
 \begin{figure}[H]
 \centering
-\begin{minipage}{0.8\textwidth}
+\begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Figure 1-18. 局部标准形式的投影]{\label{fig:local-canonical-projections}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1e6a547641b1e28e3c702fb6e34f46c8a858b466f072c85a849afa6b33da9d72.jpg}}
-\newline
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
 \subfloat[投影到 $tb$ 平面]{\label{fig:local-canonical-tb}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/559bd128ff198b162ce66c9ee7c9a939cc608cb17870f0e37b55f457b9d26c95.jpg}}
-\newline
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
 \subfloat[投影到 $nb$ 平面]{\label{fig:local-canonical-nb}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1889978426007c61cdf45a97ae5a1a5a5accffabdac10b46b3f8f73f04ef5f86.jpg}}
-\newline
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
 \subfloat[投影到 $tn$ 平面]{\label{fig:local-canonical-tn}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1fb0809e26dc4c3d9b71f6f2f4f516ba37417a1ad2f25349083242b67d20e8fe.jpg}}
 \end{minipage}
 \end{figure}
@@ -596,36 +1036,25 @@ k = \frac{|x'y'' - y'x''|}{(x'^2 + y'^2)^{3/2}}.
 
 \subsection*{1-6 节练习}
 
-\begin{exercise}{1-6, 1}
-Write the local canonical form of the helix $\alpha(t) = (a\cos t, a\sin t, bt)$ at $t = 0$.
+\begin{exercise}{1-6, 1 — do Carmo, Exercise 1-6, 1}
+Let $\alpha: I \to \mathbb{R}^3$ be a curve parametrized by arc length with curvature $k(s) \neq 0$, $s \in I$. Let $P$ be a plane satisfying both of the following conditions:
+\begin{enumerate}
+\item $P$ contains the tangent line at $s$.
+\item Given any neighborhood $J \subset I$ of $s$, there exist points of $\alpha(J)$ in both sides of $P$.
+\end{enumerate}
+Prove that $P$ is the osculating plane of $\alpha$ at $s$.
 \end{exercise}
 
-\begin{exercise}{1-6, 2}
-Show that the curve $\alpha(s) = (s, \frac{k_0}{2}s^2, \frac{k_0\tau_0}{6}s^3)$ has curvature $k(s) = k_0 + o(s)$ and torsion $\tau(s) = \tau_0 + o(s)$.
+\begin{exercise}{1-6, 2 — do Carmo, Exercise 1-6, 2}
+Let $\alpha: I \to \mathbb{R}^3$ be a curve parametrized by arc length, with curvature $k(s) \neq 0$, $s \in I$. Show that:
+\begin{enumerate}
+\item[a.] The osculating plane at $s$ is the limit position of the plane passing through $\alpha(s)$, $\alpha(s + h_1)$, $\alpha(s + h_2)$ when $h_1, h_2 \to 0$.
+\item[b.] The limit position of the circle passing through $\alpha(s)$, $\alpha(s + h_1)$, $\alpha(s + h_2)$ when $h_1, h_2 \to 0$ is a circle in the osculating plane at $s$, the center of which is on the line that contains $n(s)$ and the radius of which is the radius of curvature $1/k(s)$; this circle is called the osculating circle at $s$.
+\end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-6, 3}
-Find the third-order approximation of the curve $\alpha(t) = (t, \sin t)$ at $t = 0$.
-\end{exercise}
-
-\begin{exercise}{1-6, 4}
-Prove that the osculating circle at a point has radius $1/k$ and center at $\alpha(s) + \frac{1}{k}\mathbf{n}$.
-\end{exercise}
-
-\begin{exercise}{1-6, 5}
-Show that the osculating circle and the curve have the same tangent direction at the point of contact.
-\end{exercise}
-
-\begin{exercise}{1-6, 6}
-Find the equation of the osculating circle for the ellipse $\alpha(t) = (a\cos t, b\sin t)$ at $t = 0$.
-\end{exercise}
-
-\begin{exercise}{1-6, 7}
-Prove that the osculating plane is the limit of the planes through three points $\alpha(s_0)$, $\alpha(s_0 + h)$, $\alpha(s_0 + 2h)$ as $h \to 0$.
-\end{exercise}
-
-\begin{exercise}{1-6, 8}
-Determine the shape of a curve near a point where $k > 0$ and $\tau = 0$.
+\begin{exercise}{1-6, 3 — do Carmo, Exercise 1-6, 3}
+Show that the curvature $k(t) \neq 0$ of a regular parametrized curve $\alpha: I \to \mathbb{R}^3$ is the curvature at $t$ of the plane curve $\pi \circ \alpha$, where $\pi$ is the normal projection of $\alpha$ over the osculating plane at $t$.
 \end{exercise}
 
 % ==================== Section 1-7: Global Properties of Plane Curves ====================
@@ -755,17 +1184,20 @@ n = \frac{1}{2\pi} \int_0^L k(s) \, ds.
 
 \begin{figure}[H]
 \centering
-\begin{minipage}{0.35\textwidth}
+\begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Figure 1-27 (a). 旋转指数为 1]{\label{fig:rotation-index-1}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/c1056d2b6a48d0190f210c9a7fdeba0fa262e8791d59f8252ee8a071b806c76f.jpg}}
 \end{minipage}
 \hfill
-\begin{minipage}{0.30\textwidth}
+\begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Figure 1-27 (b). 旋转指数为 2]{\label{fig:rotation-index-2}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/bfcd46a1040027336d83edcb81d47775141684cb0bba7c3dda59703c841db26b.jpg}}
 \end{minipage}
-\hfill
-\begin{minipage}{0.30\textwidth}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.80\textwidth}
 \centering
 \subfloat[Figure 1-27 (c). 旋转指数为 -1]{\label{fig:rotation-index-neg}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/4344fb6535e6e590751cfcb71fc7a04ab9c88b236c3504c6bb25fafcfc9c5319.jpg}}
 \end{minipage}
@@ -793,8 +1225,11 @@ n = \frac{1}{2\pi} \int_0^L k(s) \, ds.
 \centering
 \subfloat[Figure 1-29 (a). 三个不同顶点情况]{\label{fig:four-vertex-a}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/2797eca07f5b8cd6e2426a408534d07b5f1671cf8aa13f28a1b57bab08ecd395.jpg}}
 \end{minipage}
-\hfill
-\begin{minipage}{0.60\textwidth}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.85\textwidth}
 \centering
 \subfloat[Figure 1-29 (b). 直线段情况]{\label{fig:four-vertex-b}\includegraphics[width=\textwidth]{../../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/ce7874597bf7b56abe143614c8510607de566ea4819d497bea3b17078bf3fa4f.jpg}}
 \end{minipage}
@@ -826,27 +1261,27 @@ n = \frac{1}{2\pi} \int_0^L k(s) \, ds.
 
 \subsection*{1-7 节练习}
 
-\begin{exercise}{1-7, 1}
+\begin{exercise}{1-7, 1* — do Carmo, Exercise 1-7, 1}
 Is there a simple closed curve in the plane with length equal to 6 feet and bounding an area of 3 square feet?
 \end{exercise}
 
-\begin{exercise}{1-7, 2}
+\begin{exercise}{1-7, 2* — do Carmo, Exercise 1-7, 2}
 Let $\overline{AB}$ be a segment of straight line and let $l > \text{length of } AB$. Show that the curve $C$ joining $A$ and $B$, with length $l$, and such that together with $\overline{AB}$ bounds the largest possible area is an arc of a circle passing through $A$ and $B$ (见 \cref{fig:isoperimetric-config}、\cref{fig:isoperimetric-proof}，教材 Figure 1-23、1-24)。
 \end{exercise}
 
-\begin{exercise}{1-7, 3}
+\begin{exercise}{1-7, 3 — do Carmo, Exercise 1-7, 3}
 Compute the curvature of the ellipse $x = a\cos t$, $y = b\sin t$, $t \in [0, 2\pi]$, $a \neq b$, and show that it has exactly four vertices, namely, $(a, 0)$, $(-a, 0)$, $(0, b)$, $(0, -b)$.
 \end{exercise}
 
-\begin{exercise}{1-7, 4}
+\begin{exercise}{1-7, 4* — do Carmo, Exercise 1-7, 4}
 Let $C$ be a plane curve and let $T$ be the tangent line at a point $p \in C$. Draw a line $L$ parallel to the normal line at $p$ and at a distance $d$ of $p$. Let $h$ be the length of the segment determined on $L$ by $C$ and $T$. Prove that $|k(p)| = \lim_{d \to 0} \frac{2h}{d^2}$.
 \end{exercise}
 
-\begin{exercise}{1-7, 5}
+\begin{exercise}{1-7, 5* — do Carmo, Exercise 1-7, 5}
 If a closed plane curve $C$ is contained inside a disk of radius $r$, prove that there exists a point $p \in C$ such that the curvature $k$ of $C$ at $p$ satisfies $|k| \geq 1/r$.
 \end{exercise}
 
-\begin{exercise}{1-7, 6}
+\begin{exercise}{1-7, 6 — do Carmo, Exercise 1-7, 6}
 Let $\alpha(s)$, $s \in [0, l]$ be a closed convex plane curve positively oriented. The curve $\beta(s) = \alpha(s) - r\mathbf{n}(s)$, where $r$ is a positive constant and $\mathbf{n}$ is the normal vector, is called a parallel curve to $\alpha$. Show that:
 \begin{enumerate}
 \item[a.] Length of $\beta = $ length of $\alpha + 2\pi r$.
@@ -855,7 +1290,7 @@ Let $\alpha(s)$, $s \in [0, l]$ be a closed convex plane curve positively orient
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-7, 7}
+\begin{exercise}{1-7, 7 — do Carmo, Exercise 1-7, 7}
 Let $\alpha: \mathbb{R} \to \mathbb{R}^2$ be a plane curve defined in the entire real line. Assume that $\alpha$ does not pass through the origin and that both $\lim_{t \to +\infty} |\alpha(t)| = \infty$ and $\lim_{t \to -\infty} |\alpha(t)| = \infty$.
 \begin{enumerate}
 \item[a.] Prove that there exists a point $t_0 \in \mathbb{R}$ such that $|\alpha(t_0)| \leq |\alpha(t)|$ for all $t \in \mathbb{R}$.
@@ -863,30 +1298,30 @@ Let $\alpha: \mathbb{R} \to \mathbb{R}^2$ be a plane curve defined in the entire
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-7, 8}
+\begin{exercise}{1-7, 8* — do Carmo, Exercise 1-7, 8}
 \begin{enumerate}
 \item[a.] Let $\alpha(s)$, $s \in [0, l]$, be a plane simple closed curve. Assume that the curvature $k(s)$ satisfies $0 < k(s) \leq c$. Prove that $\text{length of } \alpha \geq 2\pi/c$.
 \item[b.] In part a replace the assumption of being simple by "$\alpha$ has rotation index $N$". Prove that $\text{length of } \alpha \geq 2\pi N/c$.
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-7, 9}
+\begin{exercise}{1-7, 9* — do Carmo, Exercise 1-7, 9}
 A set $K \subset \mathbb{R}^2$ is convex if given any two points $p, q \in K$ the segment of straight line $\overline{pq}$ is contained in $K$ (见 \cref{fig:fig1-38}，教材 Figure 1-38). Prove that a simple closed convex curve bounds a convex set.
 \end{exercise}
 
-\begin{exercise}{1-7, 10}
+\begin{exercise}{1-7, 10 — do Carmo, Exercise 1-7, 10}
 Let $C$ be a convex plane curve. Prove geometrically that $C$ has no self-intersections.
 \end{exercise}
 
-\begin{exercise}{1-7, 11}
+\begin{exercise}{1-7, 11* — do Carmo, Exercise 1-7, 11}
 Given a nonconvex simple closed plane curve $C$, we can consider its convex hull $H$ (见 \cref{fig:fig1-39}，教材 Figure 1-39). Use this to show that, in the isoperimetric problem, we can restrict ourselves to convex curves.
 \end{exercise}
 
-\begin{exercise}{1-7, 12}
+\begin{exercise}{1-7, 12* — do Carmo, Exercise 1-7, 12}
 Consider a unit circle $S^1$ in the plane. Show that the ratio $M_1/M_2 = 1/2$, where $M_2$ is the measure of the set of straight lines in the plane that meet $S^1$ and $M_1$ is the measure of all such lines that determine in $S^1$ a chord of length $> \sqrt{3}$ (见 \cref{fig:fig1-40}，教材 Figure 1-40)。
 \end{exercise}
 
-\begin{exercise}{1-7, 13}
+\begin{exercise}{1-7, 13 — do Carmo, Exercise 1-7, 13}
 Let $C$ be an oriented plane closed curve with curvature $k > 0$. Assume that $C$ has at least one point $p$ of self-intersection. Prove that:
 \begin{enumerate}
 \item[a.] There is a point $p' \in C$ such that the tangent line $T'$ at $p'$ is parallel to some tangent at $p$.
@@ -895,14 +1330,14 @@ Let $C$ be an oriented plane closed curve with curvature $k > 0$. Assume that $C
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-7, 14}
+\begin{exercise}{1-7, 14 — do Carmo, Exercise 1-7, 14}
 \begin{enumerate}
 \item[a.] Show that if a straight line $L$ meets a closed convex curve $C$, then either $L$ is tangent to $C$ or $L$ intersects $C$ in exactly two points.
 \item[b.] Use part a to show that the measure of the set of lines that meet $C$ (without multiplicities) is equal to the length of $C$.
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}{1-7, 15}
+\begin{exercise}{1-7, 15 — do Carmo, Exercise 1-7, 15}
 Green's theorem in the plane: Let a simple closed plane curve be given by $\alpha(t) = (x(t), y(t))$, $t \in [a, b]$. Assume that $\alpha$ is positively oriented, let $C$ be its trace, and let $R$ be the interior of $C$. Let $p = p(x, y)$, $q = q(x, y)$ be real functions. Then
 \[
 \iint_R (q_x - p_y) \, dx \, dy = \int_C (p \, dx + q \, dy).
