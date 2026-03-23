@@ -70,6 +70,17 @@ This file provides guidance to Claude Code when working with this literature stu
 - **关键术语加粗下划线**: 在 Definition 环境中，被定义的关键术语/概念使用 `\textbf{\underline{术语}}` 格式
 - 例如：`\textbf{\underline{旗流形}} $Fl_n(\mathbb{C})$ 是...`
 
+### 公式推导格式规则
+**长公式推导偏好 `underbrace` / `underbracket`**：
+- 使用 `mathtools` 宏包支持 `underbracket`
+- 长公式每一步推导使用 `underbrace` 或 `underbracket` 标注该步的含义
+- 示例：
+  ```latex
+  &= \frac{1}{n} \sum_{i=1}^n \big[ \mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) \big] \{Y_i(1) - Y_i(0)\}
+  \tag*{\underbracket[0.5pt]{\hphantom{\mathbb{I}(X_i=1) + \mathbb{I}(X_i=0)}}_{\text{每单元满足 } \mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) = 1}}
+  ```
+- 分步推导用 `underbrace` 标注各分组含义（如 treatment 组、control 组）
+
 ### 问答记录规则 ⚠️
 **每次用户提问后必须执行以下步骤：**
 1. 口语化回答用户
@@ -184,6 +195,7 @@ git worktree prune
 - **2026-03-19**: Gemini browser chat 必须使用 Pro 模式
 - **2026-03-20**: LaTeX 中禁止使用 \renewcommand 简化符号，直接使用原始符号（如 \mathbb{I} 而非自定义 \I）
 - **2026-03-22**: Python 字符串替换操作大文件（HTML）时极易损坏文件 → 对 HTML/大型文件进行字符串操作前，必须先备份；优先使用逐行读取+写入而非内存中全量替换
+- **2026-03-23**: 打开 PDF 默认用 Skim（不是其他 PDF 阅读器）
 
 ---
 

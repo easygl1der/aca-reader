@@ -10,6 +10,9 @@ FILE="causal-inference-notes"
 echo "=== 第一次编译 ==="
 xelatex -interaction=nonstopmode -synctex=1 ${FILE}.tex
 
+echo "=== 编译参考文献 ==="
+bibtex ${FILE}.aux
+
 echo "=== 第二次编译 ==="
 xelatex -interaction=nonstopmode -synctex=1 ${FILE}.tex
 

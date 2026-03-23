@@ -1,120 +1,310 @@
 % Chapter 2: Potential Outcomes
 % A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style with textbook formulas
 
 \chapter{潜在结果框架}
 
-\section{为什么需要潜在结果？}
+\section{从相关到因果：为什么关联不够？}
 
-上一章我们看到了相关性与因果性的区别，以及 Yule-Simpson 悖论警告我们不要轻易从关联推断因果。
+在第一章中，我们见证了一个令人不安的现象：Yule-Simpson 悖论向我们展示了关联可以与因果相悖。两组数据分别显示的正向效应，在合并后可能变为负向——这警告我们，从关联推断因果是危险的。
 
-现在我们要问：\textbf{有没有一种方法可以清晰地定义因果效应？}
+但我们不禁要问：\textbf{关联毕竟是我们能观察到的，而因果是我们真正想知道的。那么，因果效应能否被清晰地定义，甚至被估计？}
 
-答案是肯定的，这就是\textbf{潜在结果框架（Potential Outcomes Framework）}，也被称为\textbf{Neyman-Rubin 因果模型}。
+这个问题引导我们走向一个优雅而强大的框架——\textbf{潜在结果框架（Potential Outcomes Framework）}，也被称为 \textbf{Neyman-Rubin 因果模型}。
 
-这个框架的核心思想其实很简单：我们需要比较同一个个体在接受治疗和不接受治疗时的不同结果。
+这个框架的起源可以追溯到 Neyman 在 1923 年的开创性工作，以及 Rubin 在 1970 年代对其的进一步发展。它的核心思想其实出奇地简单：要谈论因果，我们必须想象（counterfactual）如果事情有所不同会发生什么。
 
-\section{基本定义}
+\section{一个思想实验}
 
-考虑一个最简单的场景：我们想研究某种治疗（treatment）對 outcome 的因果效应。
+让我们从一个最简单的场景开始：假设我们想研究某种新药对患者康复的因果效应。
 
+考虑第 $i$ 个患者。我们记：
 \begin{itemize}
-  \item 对于每个个体 $i$，我们有一个二元治疗变量 $T_i$:
-    \begin{itemize}
-      \item $T_i = 1$: 接受治疗（treatment group）
-      \item $T_i = 0$: 未接受治疗（control group）
-    \end{itemize}
-  \item $Y_i$: 观察到的结果（observed outcome）
+  \item $T_i = 1$：患者接受了治疗
+  \item $T_i = 0$：患者未接受治疗（对照组）
 \end{itemize}
 
-关键概念是\textbf{潜在结果（Potential Outcomes）}：
+现在，关键的问题来了：这个患者的结果会是什么？
+
+在现实中，我们只能观察到一种情况——要么患者接受了治疗，要么没有。但为了谈论因果，我们必须同时考虑两种可能性：
 
 \begin{itemize}
-  \item $Y_i(1)$: 如果个体 $i$ 接受治疗，会观察到的结果
-  \item $Y_i(0)$: 如果个体 $i$ 未接受治疗，会观察到的结果
+  \item $Y_i(1)$：\textbf{如果}患者接受治疗，会观察到的结果
+  \item $Y_i(0)$：\textbf{如果}患者未接受治疗，会观察到的结果
 \end{itemize}
 
-注意：对于每个个体，我们只能观察到一种情况下的结果，另一种是潜在的（potential）而非现实的。
+这里，$Y_i(1)$ 和 $Y_i(0)$ 就是\textbf{潜在结果}——它们描述了在不同治疗状态下可能发生的结果，但我们永远无法同时观察到两者。
+
+\begin{Remark}[注 2.1 — 什么是反事实]
+\textbf{反事实}（counterfactual）指的是未被观测到的潜在结果。具体而言：
+\begin{itemize}
+  \item 对于治疗组个体 $i$（$Z_i=1$），我们观察到 $Y_i(1)$，而 $Y_i(0)$ 是反事实
+  \item 对于对照组个体 $i$（$Z_i=0$），我们观察到 $Y_i(0)$，而 $Y_i(1)$ 是反事实
+\end{itemize}
+正因为潜在结果框架讨论的是"如果接受相反治疗会怎样"，所以它也被称为\textbf{反事实框架}（counterfactual framework）。这个名字可能造成混淆——在实验前，两种潜在结果都客观存在；只有在实验后，其中一个变为现实，另一个才成为反事实。
+\end{Remark}
+
+\userannotation{为什么叫"潜在"结果？}{因为它们描述的是"如果...会怎样"的情形，这种结果是"潜在的"而非"现实的"。这正是 counterfactual（反事实）思维的本质。}
+
+\section{科学表（Science Table）}
+
+\citet{rubin2005} 将潜在结果组成的 $n \times 2$ 矩阵称为\textbf{科学表（Science Table）}：
+
+\begin{center}
+\begin{tabular}{ccc}
+\hline
+$i$ & $Y_i(1)$ & $Y_i(0)$ \\
+\hline
+$1$ & $Y_1(1)$ & $Y_1(0)$ \\
+$2$ & $Y_2(1)$ & $Y_2(0)$ \\
+$\vdots$ & $\vdots$ & $\vdots$ \\
+$n$ & $Y_n(1)$ & $Y_n(0)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+这个表包含了所有我们需要知道的关于因果效应的信息——但问题是，我们永远只能观察到每一行的其中一个值。
 
 \section{个体因果效应}
 
-对于个体 $i$，\textbf{个体因果效应（Individual Treatment Effect, ITE）}定义为：
+有了潜在结果，我们终于可以清晰地定义因果效应了。
 
+对于个体 $i$，定义\textbf{个体因果效应（Individual Treatment Effect, ITE）}为：
 \[
 \tau_i = Y_i(1) - Y_i(0)
 \]
 
-这衡量了治疗对这一个体的效果。
+这是治疗相对于对照的"净效果"。
 
-但是，这里有一个根本性的困难——\textbf{因果推断的根本问题（Fundamental Problem of Causal Inference）}：
+但是，这里出现了一个根本性的困难。1923 年，Jerzy Neyman 在一篇关于田间试验的论文中首次明确指出了这个问题：
 
 \begin{center}
-\textit{我们无法同时观察到同一个体的 $Y_i(1)$ 和 $Y_i(0)$。}
+\textit{对于每个个体，我们只能观察到一种潜在结果——实际发生的那种。另一种潜在结果是潜在的、永不可见的。}
 \end{center}
+
+这被称为\textbf{因果推断的根本问题（Fundamental Problem of Causal Inference）}。
+
+\userannotation{为什么这个困难如此根本？}{因为科学上感兴趣的大多数因果问题，都涉及将现实与反事实进行比较。我们可以问"这种药对这个患者有效吗？"——但这个问题要求我们同时知道患者吃药和不吃药的结果，而这是不可能的。}
 
 \section{平均因果效应}
 
-由于我们无法观察到个体因果效应，我们退而求其次，关注\textbf{平均因果效应（Average Causal Effect, ACE）}：
-
+既然个体因果效应不可测量，我们退而求其次，关注\textbf{平均因果效应（Average Causal Effect, ACE）}：
 \[
-\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]
+\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \bar{Y}(1) - \bar{Y}(0)
 \]
 
-这是所有个体因果效应的期望值。
+用更精确的有限总体记号：
+\[
+\tau = \frac{1}{n} \sum_{i=1}^n \{ Y_i(1) - Y_i(0) \} = \frac{1}{n} \sum_{i=1}^n Y_i(1) - \frac{1}{n} \sum_{i=1}^n Y_i(0)
+\]
 
-类似地，我们还可以定义：
+\textbf{一个关键恒等式}：平均因果效应等于个体因果效应的均值：
+\[
+\tau = \bar{Y}(1) - \bar{Y}(0) = \frac{1}{n} \sum_{i=1}^n \tau_i
+\]
+
+\section{亚组与亚组因果效应}
+
+\textbf{亚组（subgroup）}是由某个协变量（通常是二元变量 $X_i$）分割出来的子群体。例如：
 \begin{itemize}
-  \item \textbf{治疗组的平均因果效应}（Average Treatment Effect on the Treated, ATT）
-  \item \textbf{对照组的平均因果效应}（Average Treatment Effect on the Control, ATC）
+  \item 按性别分割：男性亚组（$X_i=1$）和女性亚组（$X_i=0$）
+  \item 按年龄分割：老年人/年轻人
+  \item 按收入分割：高收入/低收入
 \end{itemize}
 
-\section{为什么要定义"潜在"结果？}
+\textbf{亚组因果效应（Subgroup Causal Effect）}衡量的是在该亚组内的平均因果效应：
+\[
+\tau_x = \frac{\sum_{i=1}^n \mathbb{I}(X_i = x) \{ Y_i(1) - Y_i(0) \}}{\sum_{i=1}^n \mathbb{I}(X_i = x)}, \quad (x = 0, 1)
+\]
 
-也许你会问：为什么不直接定义"实际发生的结果"？
+\section{亚组因果效应与 Yule-Simpson 悖论的不存在}
 
-原因是：\textbf{因果效应本质上是一个反事实（counterfactual）概念}。
+一个简单的恒等式是：
+\[
+\tau = \pi_1 \tau_1 + \pi_0 \tau_0
+\]
+其中 $\pi_x = \frac{1}{n} \sum_{i=1}^n \mathbb{I}(X_i = x)$ 是 $X_i = x$ 的单元比例。
 
-当我们问"这种药是否有效"时，我们实际上是在问："如果这个患者吃了药，结果会怎样？"但现实是，这个患者可能没有吃药，所以我们只能想象（counterfactual）另一种情况。
+\begin{Proof}[推导]
+根据定义：
+\[
+\begin{aligned}
+\tau
+&= \frac{1}{n} \sum_{i=1}^n \{Y_i(1) - Y_i(0)\} \\[6pt]
+&= \frac{1}{n} \sum_{i=1}^n \big[ \mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) \big] \{Y_i(1) - Y_i(0)\}
+\tag*{\underbracket[0.5pt]{\hphantom{\mathbb{I}(X_i=1) + \mathbb{I}(X_i=0)}}_{\text{每单元满足 } \mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) = 1}} \\[6pt]
+&= \underbrace{\frac{1}{n} \sum_{i=1}^n \mathbb{I}(X_i=1) \{Y_i(1) - Y_i(0)\}}_{\text{treatment 组}}
+   + \underbrace{\frac{1}{n} \sum_{i=1}^n \mathbb{I}(X_i=0) \{Y_i(1) - Y_i(0)\}}_{\text{control 组}} \\[6pt]
+&= \frac{n_1}{n} \cdot \underbrace{\frac{\sum_{i=1}^n \mathbb{I}(X_i=1) \{Y_i(1) - Y_i(0)\}}{n_1}}_{\tau_1}
+   + \frac{n_0}{n} \cdot \underbrace{\frac{\sum_{i=1}^n \mathbb{I}(X_i=0) \{Y_i(1) - Y_i(0)\}}{n_0}}_{\tau_0} \\[6pt]
+&= \pi_1 \tau_1 + \pi_0 \tau_0.
+\end{aligned}
+\]
+其中 $n_1 = \sum_{i=1}^n \mathbb{I}(X_i=1)$，$n_0 = \sum_{i=1}^n \mathbb{I}(X_i=0)$。
+\end{Proof}
 
-这种潜在结果的思维方式，帮助我们澄清了因果效应的本质。
+\textbf{关键推论}：如果 $\tau_1 > 0$ 且 $\tau_0 > 0$，则必有 $\tau > 0$。因此，\textbf{Yule-Simpson 悖论在因果效应层面不可能发生！} 这澄清了第一章的困惑。
 
-\section{稳定单位治疗值假设（SUTVA）}
+\section{治疗分配机制与基本恒等式}
 
-使用潜在结果框架需要一些假设，其中最重要的是 SUTVA（Stable Unit Treatment Value Assumption）：
+设 $Z_i$ 是单元 $i$ 的二元治疗指示变量，观测结果 $Y_i$ 是潜在结果和治疗分配的函数：
 
-\begin{Theorem}[SUTVA]\label{thm:sutva}
-  \begin{enumerate}
-    \item \textbf{一致性（Consistency）}: 对于每个个体，观察到的结果等于其对应治疗下的潜在结果：
-      \[
-      Y_i = T_i \cdot Y_i(1) + (1 - T_i) \cdot Y_i(0)
-      \]
-    \item \textbf{互不干扰（No interference）}: 一个个体的潜在结果不受其他个体治疗分配的影响：
-      \[
-      Y_i(t_1, \ldots, t_n) = Y_i(t_i) \quad \text{对所有 } t_1, \ldots, t_n
-      \]
-  \end{enumerate}
-\end{Theorem}
+\begin{align}
+Y_i &= \begin{cases}
+Y_i(1), & \text{if } Z_i = 1 \\
+Y_i(0), & \text{if } Z_i = 0
+\end{cases} \label{eq:observed-y} \\
+&= Z_i Y_i(1) + (1 - Z_i) Y_i(0) \label{eq:fundamental-bridge} \\
+&= Y_i(0) + Z_i \{ Y_i(1) - Y_i(0) \} \label{eq:treatment-effect} \\
+&= Y_i(0) + Z_i \tau_i \label{eq:treatment-effect-2}
+\end{align}
 
-简单来说，SUTVA 假设：
-\begin{itemize}
-  \item 治疗效果是稳定的
-  \item 你的结果不受他人治疗的影响
-\end{itemize}
+\citet{pearl2010brief} 将 \cref{eq:fundamental-bridge} 视为潜在结果与观测结果之间的\textbf{基本桥梁}。这些方程强调了 个体因果效应 $\tau_i = Y_i(1) - Y_i(0)$ 可能在不同单元间存在异质性。
 
-这些假设在很多实际场景中可能不成立（例如，疫苗的群体免疫效应就违反了互不干扰假设），我们需要根据具体情况判断是否适用。
+\section{SUTVA：使框架有效的必要假设}
+
+使用潜在结果框架需要一些技术性假设。其中最重要的是\textbf{稳定单位治疗值假设（Stable Unit Treatment Value Assumption, SUTVA）}。
+
+\begin{Assumption}[无干扰]\label{assump:sutva1}
+单元 $i$ 的潜在结果不依赖于其他单元的治疗分配。这有时被称为\textbf{无干扰}假设。
+\end{Assumption}
+
+\begin{Assumption}[一致性]\label{assump:sutva2}
+治疗水平没有其他版本。等价地，我们要求治疗水平是良好定义的，至少对关注的结局是如此。这有时被称为\textbf{一致性}假设。
+\end{Assumption}
+
+\begin{Assumption}[SUTVA]\label{assump:sutva-complete}
+假设 \ref{assump:sutva1} 和 \ref{assump:sutva2} 同时成立。
+\end{Assumption}
+
+\textbf{违反 SUTVA 的例子}：
+
+\textbf{无干扰假设（no-interference assumption）违反的情形}：
+
+\begin{enumerate}
+  \item \textbf{传染病与疫苗接种（infectious diseases and vaccination）}：当疾病具有传染性时，一个人是否接种疫苗不仅影响他自己的患病风险，还影响他周围人被感染的概率。例如，如果我的同事接种了流感疫苗，我患流感的概率也会降低——即使我自己没有接种。在这种情况下，单元 $i$ 的潜在结果 $Y_i(1)$ 和 $Y_i(0)$ 都依赖于其他人的治疗分配。
+
+  \item \textbf{网络效应实验（network experiments）}：在社交网络实验中，如果一个人收到 Facebook 广告（treatment），他的朋友看到这条广告并受到影响后，可能也会购买该产品——即使朋友本人没有直接收到广告。这就是所谓的\textbf{溢出效应（spillover effect）}。
+
+  \item \textbf{随机区组实验中的相邻地块（neighboring plots in randomized block experiments）}：农业实验中，相邻地块的作物可能相互影响——如果相邻地块使用了肥料，可能会通过土壤渗透影响本地块的产量。
+\end{enumerate}
+
+\textbf{一致性假设（consistency assumption）违反的情形}：
+
+\begin{enumerate}
+  \item \textbf{复合治疗（composite treatments）}：当治疗本身有复杂组成部分时，相同的"治疗"标签可能对应不同的实际干预。例如：
+  \begin{itemize}
+    \item 研究吸烟（smoking）对肺癌的影响时，"吸烟"这个治疗有多种形式——香烟类型、吸烟频率、吸入深度等，这些都可能导致不同的潜在结果。
+    \item 研究大学教育（college education）对收入的影响时，"上大学"这个治疗包括大学类型（985/211 vs 普通院校）、专业、文凭等级等，这些差异会造成潜在结果的不一致。
+  \end{itemize}
+
+  \item \textbf{剂量效应（dosage effects）}：在医学研究中，相同的药物名称可能对应不同剂量，而剂量直接影响疗效。例如"服用阿司匹林"作为治疗，但不同剂量的阿司匹林会产生完全不同的潜在结果。
+
+  \item \textbf{实施变异（implementation variation）}：即使治疗名义上相同，不同实施者可能引入差异。例如，心理治疗研究中，不同治疗师的风格和技能可能导致相同的"心理治疗"产生不同效果。
+\end{enumerate}
+
+当 SUTVA 不成立时，潜在结果框架需要修正。\textbf{现代因果推断文献}（如 Hudgens and Halloran, 2008）正在积极研究如何处理存在干扰或治疗版本多样的情形。
+
+\userannotation{SUTVA 的历史重要性}{Rubin (1980) 将 SUTVA 确立为潜在结果框架的基础假设，没有 SUTVA，因果推断的数学化是不可能的。}
+
+\section{反事实思维的逻辑}
+
+也许你会好奇：为什么不能简单地问"实际发生的结果是什么"？
+
+答案是：\textbf{因果效应本质上是一个反事实（counterfactual）概念}。当我们问"这种药是否有效"时，我们实际上是在问：
+
+\begin{center}
+\textit{"如果这个患者吃了药，结果会怎样？但现实是，他可能没有吃药..."}
+\end{center}
+
+这种思维方式可能让人觉得抽象甚至哲学化，但它是我们谈论因果的唯一严谨方式。潜在结果框架的价值在于，它将这种哲学洞察转化为清晰的数学语言。
+
+\section{实验单元定义的微妙性}
+
+我讨论一个与实验单元定义相关的微妙之处。简单来说，\textbf{实验单元可能不同于物理单元}。
+
+例如，如果我在服药前没有服用阿司匹林且头痛没有消失，但我现在服用阿司匹林后头痛消失了，你可能认为我们可以同时观察到我的两种潜在结果。但这是对实验单元定义的误解！在不同时刻，我是同一个物理人，但成为了两个不同的实验单元。
+
+因此，我们有四个潜在结果，其中两个被观察到，两个缺失。这说明，即使观察到的数据显示治疗"有效"，我们也无法确定地说阿司匹林就是原因——因为在"治疗后"的状态下，可能存在其他因素（如时间效应）导致头痛消失。
+
+\section{非线性因果参数}
+
+平均因果效应是一个\textbf{线性}因果参数，因为潜在结果的平均差等于个体差别的平均。其他参数可能不是线性的。
+
+例如，中位数治疗效应：
+\[
+\delta_1 = \text{median}\{ Y_i(1) \}_{i=1}^n - \text{median}\{ Y_i(0) \}_{i=1}^n
+\]
+通常不同于个体治疗效应的中位数：
+\[
+\delta_2 = \text{median}\{ Y_i(1) - Y_i(0) \}_{i=1}^n
+\]
+
+这两个量在某些情况下可能相差很大。
 
 \section{本章小结}
 
-本章我们建立了因果推断的数学基础：
+本章建立因果推断的数学语言：
 
 \begin{enumerate}
-  \item \textbf{潜在结果框架}：为每个个体定义 $Y_i(1)$ 和 $Y_i(0)$
+  \item \textbf{潜在结果}：为每个个体定义 $Y_i(1)$ 和 $Y_i(0)$
+  \item \textbf{科学表}：$n \times 2$ 矩阵 $\{Y_i(1), Y_i(0)\}_{i=1}^n$
   \item \textbf{个体因果效应}：$\tau_i = Y_i(1) - Y_i(0)$
-  \item \textbf{平均因果效应}：$\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]$
-  \item \textbf{根本问题}：我们无法同时观察到两种潜在结果
-  \item \textbf{SUTVA 假设}：保证潜在结果框架的有效性
+  \item \textbf{平均因果效应}：$\tau = \bar{Y}(1) - \bar{Y}(0) = n^{-1}\sum_{i=1}^n \tau_i$
+  \item \textbf{根本问题}：我们只能观察到一种潜在结果
+  \item \textbf{基本桥梁方程}：$Y_i = Z_i Y_i(1) + (1 - Z_i) Y_i(0)$
+  \item \textbf{SUTVA}：一致性 + 无干扰
+  \item \textbf{Yule-Simpson 悖论}在因果框架下不可能发生
 \end{enumerate}
 
-下一章我们将学习\textbf{随机实验（Randomized Experiments）}——在某些情况下，我们可以绕过因果推断的根本问题，直接识别因果效应。
+下一章我们将看到，\textbf{随机实验}提供了一种绕过根本问题的优雅方式——通过随机分配治疗，我们可以建立组间可比性，从而识别因果效应。
+
+\section{习题}
+
+\begin{Exercise}{\ref{ex:2.1} 完美的医生}\label{ex:2.1}
+假设潜在结果由以下模型生成：
+\[
+Y(0) \sim N(0, 1), \quad \tau = -0.5 + Y(0), \quad Y(1) = Y(0) + \tau
+\]
+治疗分配为 $Z = \mathbb{I}(\tau \geq 0)$，观测结果为 $Y = ZY(1) + (1-Z)Y(0)$。
+
+计算条件均值差 $\mathbb{E}(Y \mid Z=1) - \mathbb{E}(Y \mid Z=0)$。
+
+\textbf{提示}：需要使用截断正态分布的均值公式。当 $X \sim N(\mu, \sigma^2)$ 时，
+\[
+\mathbb{E}(X \mid a < X < b) = \mu - \sigma \frac{\phi\left(\frac{b-\mu}{\sigma}\right) - \phi\left(\frac{a-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a-\mu}{\sigma}\right)}
+\]
+其中 $\phi$ 和 $\Phi$ 分别是标准正态分布的密度函数和分布函数。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:2.2} 非线性因果参数}\label{ex:2.2}
+证明平均因果效应是线性因果参数的例子，即 $\bar{Y}(1) - \bar{Y}(0) = n^{-1}\sum_{i=1}^n \{Y_i(1) - Y_i(0)\}$。
+
+其他参数可能不是线性的。例如，定义中位数治疗效应为：
+\[
+\delta_1 = \text{median}\{Y_i(1)\} - \text{median}\{Y_i(0)\}
+\]
+这通常不同于个体治疗效应的中位数：
+\[
+\delta_2 = \text{median}\{Y_i(1) - Y_i(0)\}
+\]
+
+\begin{enumerate}
+  \item 给出数值例子分别满足 $\delta_1 = \delta_2$、$\delta_1 > \delta_2$ 和 $\delta_1 < \delta_2$。
+  \item 哪个参数更有意义？为什么？请用例子来证明你的结论。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:2.3} 平均效应与个体效应}\label{ex:2.3}
+给出一个数值例子，其中 $\tau = n^{-1}\sum_{i=1}^n \{Y_i(1) - Y_i(0)\} > 0$，但有不到一半的单元满足 $Y_i(1) > Y_i(0)$。即平均因果效应为正，但治疗对不到一半的单元有益。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:2.4} 推荐阅读}\label{ex:2.4}
+\begingroup
+\parskip=0pt
+\textbf{推荐阅读}：\cite{holland1986statistics} 是统计因果推断领域的经典综述文章，它推广了"Rubin 因果模型"这一名称。在 UC Berkeley，我们称之为"Neyman 模型"——原因显而易见。
+\endgroup
+\end{Exercise}
 
 % === 用户问答记录 ===
 % (后续通过 interactive-qa 更新)

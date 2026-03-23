@@ -6,6 +6,10 @@
 - ❌ Markdown 斜体（`*text*`）
 - ❌ Markdown 代码块（```）
 
+## 中文标点
+- **引号**：使用 ``` `` '' ```（反引号 + 单引号），而非中文弯引号
+  - 示例：`` ``因果推断'' ``` 渲染为 **"因果推断"**
+
 ## 必须使用
 - ✅ `\begin{enumerate}...\end{enumerate}` 或 `\begin{itemize}...\end{itemize}`
 - ✅ `\textbf{text}`
@@ -30,6 +34,17 @@
 \newtheorem{Example}{例}[chapter]
 \newtheorem{Remark}{注}[chapter]
 ```
+
+## Proof 环境（无编号但支持可选标题）
+```latex
+\newtheorem*{Proof}{证明}
+
+\begin{Proof}[Neyman 1923 定理]
+证明内容...
+\end{Proof}
+```
+- 使用 `*` 的 `\newtheorem*` 创建无编号环境
+- 支持 `[]` 可选参数作为证明标题
 
 ## 习题环境
 ```latex

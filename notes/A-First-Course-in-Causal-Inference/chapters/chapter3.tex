@@ -1,122 +1,172 @@
 % Chapter 3: Randomized Experiments
 % A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style with textbook formulas
 
-\chapter{完全随机实验与 FRT}
+\chapter{完全随机实验与费舍尔随机化检验}
 
-\section{为什么需要随机实验？}
+\section{一个根本困难及其解决思路}
 
-在上一章中，我们学习了潜在结果框架，知道了因果效应的定义：
+在上一章中，我们建立了潜在结果框架，学会了如何清晰地定义因果效应。平均因果效应定义为：
 \[
-\tau_{ATE} = \mathbb{E}[Y_i(1) - Y_i(0)]
+\tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \bar{Y}(1) - \bar{Y}(0)
 \]
 
-但我们也认识到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，无法同时观察到 $Y_i(1)$ 和 $Y_i(0)$。
+但我们也清楚地看到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，$Y_i(1)$ 和 $Y_i(0)$ 无法同时被观测。
 
-那么，如何解决这个问题？如何才能识别（identify）因果效应？
+那么，一个自然的问题是：\textbf{我们能否设计某种数据收集过程，使得即使无法观察反事实，我们仍然可以估计因果效应？}
 
-\textbf{答案就是：随机实验。}
+这个问题的答案是肯定的，而解决方案就是\textbf{随机实验（Randomized Experiment）}——统计学的黄金标准。
 
-\section{随机实验的基本思想}
+\section{Fisher 的洞见：随机化的两个原则}
 
-随机实验的核心思想非常简单但极其强大：
+Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出了随机化的两个优势：
 
-\begin{center}
-\textbf{通过随机分配治疗，使得治疗组和对照组在平均意义上是"可比"的。}
-\end{center}
+\begin{enumerate}
+  \item \textbf{可比性}：它创造了在平均意义上可比的 treatment 和 control 组。
+  \item \textbf{推理基础}：它作为统计推断的"合理基础"。
+\end{enumerate}
 
-当我们随机分配治疗时，治疗分配 $T_i$ 与潜在结果 $Y_i(0), Y_i(1)$ 是独立的：
-\[
-T_i \perp Y_i(0), Y_i(1)
-\]
-
-这意味着，随机分配能够自动平衡两组之间的所有混杂因素（无论是我们已知的还是未知的）。
+第一点直观易懂——随机治疗分配不会偏向 treatment 或 control。第二点更微妙：Fisher 的意思是，随机化 为统计检验提供了正当理由，这就是现在所谓的\textbf{费舍尔随机化检验（Fisher Randomization Test, FRT）}。
 
 \section{完全随机实验的定义}
 
-\begin{Definition}[完全随机实验]\label{def:cre}
-设有 $n$ 个样本，其中 $n_1$ 个被分配到治疗组，$n_0 = n - n_1$ 个被分配到对照组。完全随机实验（Completely Randomized Experiment）满足以下条件：
-\begin{enumerate}
-  \item 每个个体被分配到治疗组的概率为 $n_1/n$；
-  \item 治疗组总人数固定为 $n_1$；
-  \item 个体之间相互独立。
-\end{enumerate}
+\begin{Definition}[完全随机实验，CRE]\label{def:cre}
+固定 $n_1$ 和 $n_0$（其中 $n = n_1 + n_0$）。完全随机实验的治疗分配机制为：
+\[
+\mathbb{P}(\bm{Z} = \bm{z}) = \frac{1}{\binom{n}{n_1}}
+\]
+其中 $\bm{z} = (z_1, \ldots, z_n)$ 满足 $\sum_{i=1}^n z_i = n_1$ 和 $\sum_{i=1}^n (1 - z_i) = n_0$。
 \end{Definition}
 
-在 \cref{def:cre} 下，我们可以证明：
+在这个定义中，我们假设潜在结果向量 $\bm{Y}(1) = (Y_1(1), \ldots, Y_n(1))$ 和 $\bm{Y}(0) = (Y_1(0), \ldots, Y_n(0))$ 都是固定的。即使我们将它们视为随机的，我们可以在其上条件化，治疗分配机制变为：
 \[
-\mathbb{E}[\bar{Y}(1) - \bar{Y}(0)] = \tau_{ATE}
+\mathbb{P}\{\bm{Z} = \bm{z} \mid \bm{Y}(1), \bm{Y}(0)\} = \frac{1}{\binom{n}{n_1}}
+\]
+因为在 CRE 中 $\bm{Z} \perp \{\bm{Y}(1), \bm{Y}(0)\}$。
+
+\textbf{关键含义}：在 CRE 中，$\bm{Z}$ 是从 $n_1$ 个 1 和 $n_0$ 个 0 的随机排列中产生的。
+
+\section{Sharp Null 假设与 FRT 逻辑}
+
+Fisher (1935) 感兴趣检验的零假设是：
+\[
+H_{\mathbf{F}}: Y_i(1) = Y_i(0) \quad \text{对所有 } i = 1, \ldots, n
 \]
 
-也就是说，\textbf{观察到的组间差异就是平均因果效应的无偏估计}！这正是随机实验的魔力所在。
+\citet{rubin1980} 称其为\textbf{sharp null 假设}，因为它可以基于观测数据确定所有潜在结果：$\bm{Y}(1) = \bm{Y}(0) = \bm{Y}$。它也被称为\textbf{强零假设}。
 
-\section{费舍尔随机化检验（FRT）}
-
-虽然随机实验可以估计因果效应，但我们还需要统计检验来判断观察到的效应是否是真实的，而不是随机波动造成的。
-
-\textbf{费舍尔（Ronald Fisher）} 提出了一个优雅的解决方案——费舍尔随机化检验（Fisher's Randomization Test, FRT）。
-
-\subsection{为什么需要 FRT？}
-
-传统统计方法依赖于"正态分布假设"——假设数据来自正态分布。但在因果推断中，我们的"总体"是有限的（finite population），而且我们关心的是特定处理分配的随机性，而不是从某个分布中抽样。
-
-FRT 的核心思想是：\textbf{在零假设下，所有可能的治疗分配都是等可能的}。因此，我们可以精确计算检验的 p 值，而不需要任何分布假设。
-
-\subsection{零假设}
-
-FRT 的零假设是：
+概念上，在 $H_{\mathbf{F}}$ 下，FRT 适用于任何检验统计量：
 \[
-H_0: Y_i(0) = Y_i(1) \quad \text{对所有 } i
+T = T(\bm{Z}, \bm{Y})
 \]
-也就是说，治疗没有任何效果（所有个体的潜在结果都相等）。
+它是观测数据的函数。观测结果向量 $\bm{Y}$ 在 $H_{\mathbf{F}}$ 下是固定的，所以 $T$ 中唯一的随机成分是治疗向量 $\bm{Z}$。实验者决定 $\bm{Z}$ 的分布，进而决定 $T$ 的分布——这就是计算 p 值的基础。
 
-在这个零假设下，观察到的结果 $Y_i$ 就等于 $Y_i(0) = Y_i(1)$，与治疗分配无关。
+在 CRE 中，$\bm{Z}$ 在集合 $\{ \bm{z}^1, \ldots, \bm{z}^M \}$ 上是均匀分布的，其中 $M = \binom{n}{n_1}$。
 
-\section{检验统计量的选择}
+\section{随机化分布与精确 p 值}
 
-在 FRT 框架下，我们可以选择不同的检验统计量。不同的统计量对不同的备择假设有不同的功效（power）。
+如果较大的 $T$ 值更极端，我们可以使用以下尾概率来衡量检验统计量相对于其随机化分布的极端性：
+\begin{equation}\label{eq:exact-pvalue}
+p_\text{frt} = \frac{1}{M} \sum_{m=1}^M I\{ T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
+\end{equation}
 
-\subsection{差值均值（Difference-in-means）}
+这就是 Fisher 的 p 值。% \cref{fig:frt} 阐释了 $p_\text{frt}$ 的计算过程。
 
-最直观的统计量是差值均值：
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.8\textwidth]{figures/frt_fig.pdf}
+%   \caption{FRT 示意图}
+%   \label{fig:frt}
+% \end{figure}
+
+重要的是，p 值 $p_\text{frt}$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $H_{\mathbf{F}}$ 下是有限样本精确的：
 \[
-\hat{\tau} = \bar{Y}(1) - \bar{Y}(0)
+\mathbb{P}(p_\text{frt} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
 \]
 
-在零假设下，$\hat{\tau}$ 的期望为 0，方差为：
+\userannotation{为什么叫"有限样本精确"？}{这意味着 p 值的分布（虽然在离散情况下是阶梯函数）满足上式，因此 p 值在 $[0,1]$ 上均匀分布（对于连续情况）。}
+
+\section{Monte Carlo 近似}
+
+在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\text{frt}$：
+\begin{equation}\label{eq:mc-pvalue}
+\hat{p}_\text{frt} = \frac{1}{R} \sum_{r=1}^R I\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
+\end{equation}
+其中 $\bm{z}^r$ 是 $\bm{Z}$ 的 $R$ 次随机置换。
+
+\textbf{修正的有限样本有效近似}：
 \[
-\text{Var}(\hat{\tau}) = \frac{s^2}{n_1 n_0}
+\tilde{p}_\text{frt} = \frac{1 + \sum_{r=1}^R I\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}}{1 + R}
 \]
-其中 $s^2$ 是合并的样本方差。
+这个修正在任意有限的 $R$ 下都是有限样本有效的 p 值。
 
-利用有限总体中心极限定理（Finite Population CLT），我们可以得到：
+\section{检验统计量的规范选择}
+
+FRT 的一个特点是它对任何检验统计量都生成有限样本精确 p 值。但我们应该选择能够给出 $H_{\mathbf{F}}$ 可能违背信息的检验统计量。
+
+\subsection{差值均值统计量}
+
+差值均值统计量是：
 \[
-\frac{\hat{\tau}}{\sqrt{s^2/(n_1 n_0)}} \xrightarrow{d} N(0, 1)
+\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)
 \]
-
-有趣的是，这个统计量与经典的方差相等的 t 检验统计量非常接近！
-
-\subsection{学生化统计量（Studentized statistic）}
-
-差值均值假设两组方差相等。如果两组方差不相等（异方差），我们需要使用学生化统计量：
+其中
 \[
-t = \frac{\bar{Y}(1) - \bar{Y}(0)}{\sqrt{\hat{S}^2(1)/n_1 + \hat{S}^2(0)/n_0}}
+\hat{\bar{Y}}(1) = n_1^{-1} \sum_{Z_i=1} Y_i = n_1^{-1} \sum_{i=1}^n Z_i Y_i
+\]
+是 treatment 组的样本均值，
+\[
+\hat{\bar{Y}}(0) = n_0^{-1} \sum_{Z_i=0} Y_i = n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i
+\]
+是 control 组的样本均值。
+
+在 $H_{\mathbf{F}}$ 下，它有均值 $0$ 和方差：
+\[
+\text{var}(\hat{\tau}) = \frac{n}{n_1 n_0} s^2
+\]
+其中
+\[
+s^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i - \bar{Y})^2, \quad \bar{Y} = n^{-1} \sum_{i=1}^n Y_i
 \]
 
-这个统计量与方差不等的 t 检验统计量（\texttt{t.test(var.equal = FALSE)}）渐近等价。
+\textbf{渐近分布}：由于有限总体中心极限定理，随机化分布近似正态：
+\[
+\frac{\hat{\tau}}{\sqrt{\frac{n}{n_1 n_0} s^2}} \xrightarrow{d} N(0, 1)
+\]
 
-\userannotation{为什么需要学生化统计量？}{当治疗组和对照组的方差差异较大时，差值均值的检验可能失效。学生化统计量通过分别估计两组的方差，能够更好地处理这种异方差情况。}
+\textbf{与经典 t 检验的联系}：在 $H_{\mathbf{F}}$ 下，近似 p 值接近经典两样本 t 检验（假设等方差）的 p 值。
+
+\userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
+
+\subsection{学生化统计量}
+
+差值均值隐含地假设两组方差相等。如果治疗可能影响结果的变异性（异方差），我们需要使用学生化统计量：
+\[
+t = \frac{\hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)}{\sqrt{\frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}}}
+\]
+其中
+\[
+\hat{S}^2(1) = (n_1 - 1)^{-1} \sum_{Z_i=1} \{ Y_i - \hat{\bar{Y}}(1) \}^2, \quad
+\hat{S}^2(0) = (n_0 - 1)^{-1} \sum_{Z_i=0} \{ Y_i - \hat{\bar{Y}}(0) \}^2
+\]
+
+在 $H_{\mathbf{F}}$ 下，有限总体 CLT 再次意味着 $t$ 渐近正态：$t \xrightarrow{d} N(0, 1)$。
+
+这个统计量与 \texttt{t.test(var.equal = FALSE)} 的 p 值接近。
+
+\userannotation{学生化为什么更稳健？}{当 treatment 组和 control 组的方差差异较大时，差值均值的检验可能失效。学生化通过分别估计两组的方差，能够更好地处理异方差情况。}
 
 \subsection{Wilcoxon 秩和统计量}
 
-差值均值和学生化统计量都使用原始观测值，因此对异常值（outliers）敏感。一个更稳健的选择是 Wilcoxon 秩和统计量：
-
+差值均值和学生化统计量都关注均值差异，且对异常值敏感。Wilcoxon 秩和统计量基于合并观测结果的秩：
 \[
 W = \sum_{i=1}^n Z_i R_i
 \]
-
 其中 $R_i$ 是 $Y_i$ 在合并样本中的秩。
 
-Wilcoxon 秩和统计量的优点是：
+在 $H_{\mathbf{F}}$ 下，$W$ 有均值 $\frac{n_1(n+1)}{2}$ 和方差 $\frac{n_1 n_0 (n+1)}{12}$，且渐近正态。
+
+这个统计量的优点是：
 \begin{itemize}
   \item 对异常值稳健
   \item 只依赖于数据的秩次信息
@@ -125,155 +175,47 @@ Wilcoxon 秩和统计量的优点是：
 
 \subsection{Kolmogorov-Smirnov 统计量}
 
-上述统计量主要关注均值差异。但治疗效应可能以其他方式体现（例如改变分布的形状）。KS 统计量衡量两个分布之间的最大差距：
+上述统计量主要关注均值差异。KS 统计量衡量两个分布之间的最大距离：
 \[
 D = \max_y |\hat{F}_1(y) - \hat{F}_0(y)|
 \]
+其中 $\hat{F}_1(y) = n_1^{-1} \sum_{i=1}^n Z_i I(Y_i \leq y)$。
 
 这个统计量能够检测分布形状的差异，而不仅仅是均值差异。
 
-\section{LaLonde 实验数据案例}
+\section{FRT 与传统 t 检验的关系}
 
-LaLonde (1986) 的实验数据是因果推断领域的经典案例。
+一个重要的理论发现是：
 
-\subsection{背景}
+\begin{center}
+\textbf{FRT 为传统 t 检验提供了更坚实的基础。}
+\end{center}
 
-LaLonde 研究了一项职业培训项目（National Supported Work Demonstration）对参与者收入的影响。实验将参与者随机分配到治疗组（接受培训）或对照组（不接受培训），观察他们在 1978 年的真实收入（re78）。
+传统 t 检验假设"数据来自正态分布的无限总体"。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序可以在"有限总体 + 随机化"的情境下使用。
 
-\subsection{R 语言分析基础}
+这意味着，在随机实验中，我们可以不那么担心正态性假设——CLT 会为我们处理这个问题。
 
-本案例使用 R 语言的 \texttt{Matching} 包进行 FRT 分析。数据可以直接从 R 中加载：
+\section{LaLonde 实验数据案例}\label{sec:lalonde-data}
+
+1986 年，Robert LaLonde 发表了一项影响深远的研究，探讨职业培训项目（National Supported Work Demonstration）对参与者收入的影响。
+
+使用 R 进行 FRT 分析：
 
 \begin{verbatim}
-# 加载必要的包
 library(Matching)
-library(ggplot2)
-library(dplyr)
-
-# 加载数据
 data(lalonde)
-
-# 查看数据基本信息
-str(lalonde)
-head(lalonde)
-dim(lalonde)  # 样本量
+z <- lalonde$treat
+y <- lalonde$re78
 \end{verbatim}
 
-其中：
-\begin{itemize}
-  \item \texttt{z}: 二元治疗向量（1 = 治疗组，0 = 对照组）
-  \item \texttt{y}: 1978 年真实收入（outcome）
-\end{itemize}
-
-提取处理变量和结果变量：
-
-\begin{verbatim}
-# 提取变量
-z <- lalonde\$treat    # 处理变量
-y <- lalonde\$re78     # 结果变量（1978年真实收入）
-
-# 检查样本量
-n <- length(z)
-n1 <- sum(z)           # 处理组样本量
-n0 <- n - n1           # 对照组样本量
-
-cat("总样本量:", n, "\n")
-cat("处理组样本量:", n1, "\n")
-cat("对照组样本量:", n0, "\n")
-\end{verbatim}
-
-\subsection{FRT 检验统计量计算}
-
-\begin{verbatim}
-# 计算各种检验统计量
-
-# 1. 差值均值 (Difference-in-means)
-tauhat <- mean(y[z == 1]) - mean(y[z == 0])
-cat("差值均值 tauhat:", tauhat, "\n")
-
-# 2. 学生化统计量 (Studentized statistic)
-# t = (Ybar_1 - Ybar_0) / sqrt(S^2(1)/n1 + S^2(0)/n0)
-s1_sq <- var(y[z == 1])
-s0_sq <- var(y[z == 0])
-t_stat <- tauhat / sqrt(s1_sq / n1 + s0_sq / n0)
-cat("学生化统计量 t:", t_stat, "\n")
-
-# 3. Wilcoxon 秩和统计量
-# W = sum of ranks in treatment group
-ranks <- rank(y)
-W <- sum(ranks[z == 1])
-cat("Wilcoxon 秩和 W:", W, "\n")
-
-# 4. Kolmogorov-Smirnov 统计量
-# D = max|F_1(y) - F_0(y)|
-treatment_y <- y[z == 1]
-control_y <- y[z == 0]
-
-# 使用 ks.test 计算
-ks_result <- ks.test(treatment_y, control_y)
-D <- ks_result\$statistic
-cat("KS 统计量 D:", D, "\n")
-\end{verbatim}
-
-\subsection{FRT 置换检验}
-
-\begin{verbatim}
-# FRT 置换检验（精确推断）
-# 在零假设下，所有可能的治疗分配都是等可能的
-
-# 设置随机种子
-set.seed(42)
-
-# 置换次数
-B <- 10000
-
-# 存储置换后的统计量
-perm_tauhat <- numeric(B)
-
-# 置换检验
-for (b in 1:B) {
-  # 随机置换治疗分配
-  z_perm <- sample(z)
-
-  # 计算置换后的差值均值
-  perm_tauhat[b] <- mean(y[z_perm == 1]) - mean(y[z_perm == 0])
-}
-
-# 计算 p 值（双侧检验）
-p_value <- mean(abs(perm_tauhat) >= abs(tauhat))
-
-cat("观测到的 tauhat:", tauhat, "\n")
-cat("置换检验 p 值:", p_value, "\n")
-
-# 可视化置换分布
-hist(perm_tauhat, breaks = 50,
-     main = "FRT 置换分布",
-     xlab = "置换后的差值均值")
-abline(v = tauhat, col = "red", lwd = 2)
-abline(v = -tauhat, col = "red", lwd = 2, lty = 2)
-legend("topright", c("观测值"), col = "red", lty = 1)
-\end{verbatim}
-
-实际运行结果：
-\begin{verbatim}
-=== 4. FRT 检验统计量 ===
-差值均值 tauhat: 1794.343
-学生化统计量 t: 2.674146
-Wilcoxon 秩和 W: 44607.5
-KS 统计量 D: 0.1321206
-
-=== 5. FRT 置换检验 ===
-置换检验 p 值 (双侧): 0.0046
-\end{verbatim}
-
-使用 R 语言进行 FRT 分析的结果：
+通过随机置换治疗向量，我们可以得到检验统计量的随机化分布：
 
 \begin{center}
 \begin{tabular}{c|c|c}
 \hline
 统计量 & 观测值 & 描述 \\
 \hline
-$\hat{\tau}$ & 1794.34 & 差值均值 \\
+$\hat{\tau}$ & 1794.34 & 差值均值（t 统计量）\\
 $t$ & 2.67 & 学生化统计量 \\
 $W$ & 44607.5 & Wilcoxon 秩和 \\
 $D$ & 0.132 & KS 统计量 \\
@@ -281,114 +223,149 @@ $D$ & 0.132 & KS 统计量 \\
 \end{tabular}
 \end{center}
 
-通过随机置换治疗向量 $10{,}000$ 次，我们可以得到这些统计量的随机化分布，进而计算精确 p 值。
+Monte Carlo 置换检验的结果：
 
-\subsection{可视化分析}
+\begin{verbatim}
+> exact.pv = c(mean(Tauhat >= tauhat),
++               mean(Student >= student),
++               mean(Wilcox >= W),
++               mean(Ks >= D))
+> round(exact.pv, 3)
+[1] 0.002 0.002 0.006 0.040
+\end{verbatim}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{R/figures/03_permutation_distribution.png}
-  \caption{FRT 置换分布：展示了在零假设下，差值均值的随机分布。红色实线表示观测到的处理效应，红色虚线表示其相反数}
-  \label{fig:permutation_distribution}
-\end{figure}
+所有单侧 p 值都小于 0.05——这提供了治疗效应显著的强有力证据。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{R/figures/04_cdf_comparison.png}
-  \caption{累积分布函数 (CDF) 比较：展示了处理组与对照组的累积分布差异，KS 统计量衡量两条 CDF 曲线的最大垂直距离}
-  \label{fig:cdf_comparison}
-\end{figure}
+\section{历史侧边栏：Lind 的实验与女士品茶}\label{sec:tea-history}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{R/figures/05_density_comparison.png}
-  \caption{核密度估计：处理组与对照组收入的概率密度函数比较}
-  \label{fig:density_comparison}
-\end{figure}
+FRT 的逻辑可以追溯到早期的历史实例。
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{R/figures/06_qq_comparison.png}
-  \caption{Q-Q 图：检验处理组与对照组收入分布的正态性假设}
-  \label{fig:qq_comparison}
-\end{figure}
+\textbf{James Lind (1716-1794)} 是苏格兰医生和皇家海军卫生学的先驱。他进行了最早有清晰文献记录的随机实验之一，研究柑橘类水果对坏血病的影响。在 12 名坏血病患者被分配到 6 组后，接受柑橘类水果的组在六天后康复，而其他组没有。
 
-\section{FRT 与传统 t 检验的关系}
+如果将治疗简化为二元指示变量，观测到的极端 $2 \times 2$ 表格在 $H_{\mathbf{F}}$ 下出现的概率为：
+\[
+p_\text{frt} = \frac{1}{\binom{12}{2}} = \frac{1}{66} = 0.015
+\]
 
-一个非常重要的洞察是：
+\textbf{Fisher 的女士品茶实验}：Fisher 描述了一个著名实验，一位女士声称能区分先加茶还是先加牛奶制成的奶茶。他制作了 8 杯茶（4 杯先加茶，4 杯先加牛奶），随机顺序呈现给女士。在她的全部猜对（$X = 4$）的情况下，p 值为：
+\[
+p_\text{frt} = \frac{1}{70} = 0.014
+\]
 
-\begin{center}
-\textbf{FRT 为传统 t 检验提供了理论依据！}
-\end{center}
-
-传统 t 检验基于"数据来自正态分布"的假设。但在 FRT 框架下，即使数据不服从正态分布，只要有限总体中心极限定理成立，t 检验程序仍然可以使用！
-
-这是因为 FRT 的渐近性质只依赖于有限总体 CLT，而 CLT 对很多分布都是成立的。
-
-\userannotation{FRT 的意义是什么？}{FRT 证明了传统统计方法在因果推断中的合理性。我们不需要担心正态性假设是否满足，只需要关注随机化分配是否正确执行。}
-
-\subsection{FRT 与 t 检验的对比}
-
-在实际应用中，我们需要理解两者在什么情况下相同、什么情况下不同。
-
-\textbf{相同的时候：}
+这些例子强调了 Fisher 的两个原则：
 \begin{enumerate}
-  \item \textbf{大样本下渐近等价}：当样本量足够大时，差值均值 $\hat{\tau}$ 与方差相等的 t 检验渐近等价；学生化统计量 $t$ 与方差不等的 t 检验渐近等价。
-  \item \textbf{零假设 $H_0: Y_i(0) = Y_i(1)$ 时}：两者都检验"治疗没有任何效果"。
+  \item \textbf{随机化}：实验的随机分配保证了 p 值的有效性
+  \item \textbf{重复}：必须有足够的单元以确保 FRT 有功效
 \end{enumerate}
 
-\textbf{不同的时候：}
-\begin{enumerate}
-  \item \textbf{理论基础不同}：t 检验假设数据来自正态分布（无限总体），而 FRT 基于治疗分配的随机性（有限总体）。
-  \item \textbf{小样本时}：FRT 可以给出精确的有限样本 p 值，而 t 检验依赖正态性假设，在小样本时可能不准确。
-  \item \textbf{异方差情况下}：当两组方差不相等时，FRT 的功效可能低于方差不等的 t 检验。
-\end{enumerate}
+\section{Sharp Null 假设的置信区间}
 
-\textbf{实际选择建议：}
-\begin{itemize}
-  \item 大样本、正态/近似正态：两者皆可，结果相近；
-  \item 小样本、非正态：FRT 更可靠；
-  \item 已知两组方差不等：t 检验（\texttt{var.equal=FALSE}）可能更有效；
-  \item 需要精确 p 值：优先使用 FRT。
-\end{itemize}
+FRT 的逻辑不仅限于 $H_{\mathbf{F}}$。我们还可以检验更一般的 sharp null 假设：
+\[
+H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i
+\]
 
-\section{3.6 讨论}
-
-\subsection{其他 Sharp Null 假设与置信区间}
-
-除了之前讨论的 sharp null 假设 $H_0: Y_i(0) = Y_i(1)$（所有个体的治疗效应为零），FRT 框架还可以应用于其他假设。
-
-例如，我们可以检验弱 null 假设 $H_0: \tau_{ATE} = 0$（平均因果效应为零，但个体效应可能不为零）。在这种情况下，我们需要更多假设来构建置信区间。
-
-\subsection{FRT 的优势与局限}
-
-\textbf{优势：}
-\begin{itemize}
-  \item 不需要任何分布假设；
-  \item 提供精确的有限样本 p 值；
-  \item 理论基础稳固——完全基于随机化设计。
-\end{itemize}
-
-\textbf{局限：}
-\begin{itemize}
-  \item 计算复杂度高（当样本量大时）；
-  \item 只能检验 sharp null 假设；
-  \item 对于连续型结果，精确检验可能功效较低。
-\end{itemize}
+通过检验与置信集的对偶性，我们可以构建 $\tau$ 的 $(1-\alpha)$ 置信集。
 
 \section{本章小结}
 
-本章我们学习了因果推断的"金标准"——随机实验：
+本章建立了随机实验的理论与实践：
 
 \begin{enumerate}
-  \item \textbf{随机实验}：通过随机分配平衡混杂因素，使得观察到的组间差异可以直接解释为因果效应
-  \item \textbf{费舍尔随机化检验（FRT）}：基于治疗分配随机性的精确检验方法
-  \item \textbf{多种检验统计量}：差值均值、学生化统计量、Wilcoxon 秩和、KS 统计量
-  \item \textbf{LaLonde 案例}：经典的实际应用示例
-  \item \textbf{理论意义}：FRT 为传统 t 检验提供了更坚实的基础
+  \item \textbf{CRE 定义}：$\mathbb{P}(\bm{Z} = \bm{z}) = 1 / \binom{n}{n_1}$
+  \item \textbf{随机化的两个原则}：可比性 + 推理基础
+  \item \textbf{Sharp null}：$Y_i(1) = Y_i(0)$ 对所有 $i$
+  \item \textbf{精确 p 值}：$p_\text{frt} = M^{-1} \sum_{m=1}^M I\{T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}$
+  \item \textbf{多种统计量}：差值均值、学生化、Wilcoxon、KS
+  \item \textbf{理论联系}：FRT 为传统 t 检验提供基础
+  \item \textbf{历史起源}：Lind 的坏血病实验、Fisher 的女士品茶
 \end{enumerate}
 
-下一章我们将学习如何在观察性研究（observational study）中估计因果效应——这需要更多的假设和方法。
+下一章我们将学习 Neymanian 推断——另一种基于渐近理论的方法，它可以更方便地构建置信区间。
+
+\section{习题}
+
+\begin{Exercise}{\ref{ex:3.1} $p_\text{frt}$ 的精确性}\label{ex:3.1}
+证明在 sharp null 下，$p_\text{frt}$ 满足：
+\[
+\mathbb{P}(p_\text{frt} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
+\]
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.2} Monte Carlo 误差}\label{ex:3.2}
+设 $p_\text{frt}$ 是固定值，$\hat{p}_\text{frt}$ 是其 Monte Carlo 估计（见 \cref{eq:mc-pvalue}）。证明：
+\[
+\mathbb{E}_{\text{mc}}(\hat{p}_\text{frt}) = p_\text{frt}, \quad \text{var}_{\text{mc}}(\hat{p}_\text{frt}) \leq \frac{1}{4R}
+\]
+其中下标 "mc" 表示由于 Monte Carlo 的随机性。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.3} 有限样本有效的 Monte Carlo 近似}\label{ex:3.3}
+证明修正的 Monte Carlo 近似
+\[
+\tilde{p}_\text{frt} = \frac{1 + \sum_{r=1}^R I\{T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}}{1+R}
+\]
+在任意有限的 $R$ 下都是有限样本有效的 p 值（即 $\mathbb{P}(\tilde{p}_\text{frt} \leq u) \leq u$ 对所有 $u \in (0,1)$ 成立）。
+
+\textbf{提示}：可以利用以下两个基本概率结果：
+\begin{enumerate}
+  \item 对于两个二项分布 $X_1 \sim \text{Binomial}(R, p_1)$ 和 $X_2 \sim \text{Binomial}(R, p_2)$，若 $p_1 \geq p_2$，则 $\mathbb{P}(X_1 \leq x) \leq \mathbb{P}(X_2 \leq x)$。
+  \item 若 $p \sim \text{Uniform}(0,1)$ 且 $X \mid p \sim \text{Binomial}(R, p)$，则 $X$ 在 $\{0, 1, \ldots, R\}$ 上均匀分布。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.4} Fisher 精确检验}\label{ex:3.4}
+考虑二元结局的 CRE，数据汇总为 $2 \times 2$ 列联表：
+
+\[
+\begin{tabular}{lccc}
+\hline
+        & $Y =1$ & $Y =0$& 合计\\\hline
+$Z =1$ & $n_{11}$ & $n_{10}$ & $n_1$\\
+$Z =0$ & $n_{01}$ & $n_{00}$ & $n_0$\\
+\hline
+\end{tabular}
+\]
+
+在 $H_{\mathbf{F}}$ 下，证明任何检验统计量 $T(n_{11}, n_{10}, n_{01}, n_{00})$ 是 $n_{11}$ 的函数，且 $n_{11}$ 的精确分布是超几何分布。请说明超几何分布的参数。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.5} 女士品茶详细计算}\label{ex:3.5}
+回忆女士品茶实验（见 \cref{sec:tea-history}）。计算 $\mathbb{P}(X = k)$，其中 $X$ 是女士正确识别 $k$ 杯先加牛奶的茶的个数，$k = 0, 1, 2, 3, 4$。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.6} 协变量调整的 FRT}\label{ex:3.6}
+使用 LaLonde 数据集（见 \cref{sec:lalonde-data}），添加协变量进行 FRT 分析。假设所有潜在结果和协变量都是固定数值。
+
+有两种策略：
+\begin{enumerate}
+  \item 运行结局对协变量的线性回归，得到残差（即"伪结局"）。基于残差定义四种检验统计量，进行 FRT 并报告 p 值。
+  \item 定义检验统计量为结局对治疗和协变量线性回归中治疗系数的 FRT。
+\end{enumerate}
+
+解释为什么上述两种策略的五个 p 值都是有限样本精确的。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.7} FRT 与广义线性模型}\label{ex:3.7}
+使用与 \cref{ex:3.6} 相同的数据集，但将结局改为 \texttt{re78 > 0} 的二元指示变量。运行结局对治疗和协变量的 logistic 回归。治疗系数是否显著？FRT p 值是多少？
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.8} 代数细节}\label{ex:3.8}
+验证以下等式：
+\[
+(n-1)s^2 = \sum_{Z_i=1} \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0} \{Y_i - \hat{\bar{Y}}(0)\}^2 + \frac{n_1 n_0}{n} \hat{\tau}^2
+\]
+其中 $s^2$ 是合并样本的方差。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:3.9} 推荐阅读}\label{ex:3.9}
+\begingroup
+\parskip=0pt
+\textbf{推荐阅读}：\cite{lin2013agnostic} 讨论了随机化实验中协变量调整的灵活性。\cite{lu2016matching} 研究了因果推断中的匹配方法。
+
+\textbf{历史注记}：《Design of Experiments》\cite{fisher1937design} 是 Fisher 1935 年著作的重印版，收录了他关于实验设计的开创性论文。
+\endgroup
+\end{Exercise}
 
 % === 用户问答记录 ===
 % (后续通过 interactive-qa 更新)

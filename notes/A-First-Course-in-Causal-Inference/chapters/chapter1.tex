@@ -45,6 +45,48 @@
 
 关键洞察：\textit{相关性可以是因果的，也可以是非因果的。}
 
+\section{二维列联表与关联度量}
+
+将 $Z$ 视为治疗或暴露，$Y$ 视为结果，可以定义以下关联度量：
+
+\[
+\begin{tabular}{lcc}
+\hline
+        & $Y =1$ & $Y =0$\\\hline
+$Z =1$ & $p_{11}$ & $p_{10}$\\
+$Z =0$ & $p_{01}$ & $p_{00}$\\
+\hline
+\end{tabular}
+\]
+
+\textbf{风险差（Risk Difference）}：
+\[
+\text{RD} = \mathbb{P}(Y=1 \mid Z=1) - \mathbb{P}(Y=1 \mid Z=0)
+= \frac{p_{11}}{p_{11} + p_{10}} - \frac{p_{01}}{p_{01} + p_{00}}
+\]
+
+\textbf{风险比（Risk Ratio）}：
+\[
+\text{RR} = \frac{\mathbb{P}(Y=1 \mid Z=1)}{\mathbb{P}(Y=1 \mid Z=0)}
+= \frac{p_{11}}{p_{11} + p_{10}} \Big / \frac{p_{01}}{p_{01} + p_{00}}
+\]
+
+\textbf{优势比（Odds Ratio）}：
+\[
+\text{OR} = \frac{\mathbb{P}(Y=1 \mid Z=1)/\mathbb{P}(Y=0 \mid Z=1)}{\mathbb{P}(Y=1 \mid Z=0)/\mathbb{P}(Y=0 \mid Z=0)}
+= \frac{p_{11} p_{00}}{p_{10} p_{01}}
+\]
+
+\textbf{关于记号}：本书使用符号 $\Perp$ 表示随机变量的独立性或条件独立性。
+
+\begin{Proposition}[二维列联表中的独立性]\label{prop:2x2-independence}
+\begin{enumerate}
+  \item 以下命题等价：$Z \Perp Y$、$\text{RD} = 0$、$\text{RR} = 1$、$\text{OR} = 1$。
+  \item 若所有 $p_{zy} > 0$，则 $\text{RD} > 0$ 等价于 $\text{RR} > 1$，也等价于 $\text{OR} > 1$。
+  \item 若 $\mathbb{P}(Y=1 \mid Z=1)$ 和 $\mathbb{P}(Y=1 \mid Z=0)$ 都很小，则 $\text{OR} \approx \text{RR}$。
+\end{enumerate}
+\end{Proposition}
+
 \section{Yule-Simpson 悖论}
 
 悖论的核心思想：在总体中观察到的关联方向，可能与分层后各组中的关联方向相反。
@@ -77,16 +119,99 @@ B & 63\% (28/44) & 68\% (24/35) \\
 
 这个例子揭示了一个深刻的问题：\textit{如果我们不控制混杂因素（confounding factors），就可能得出完全错误的因果结论}。
 
+\section{偏相关系数与 Yule-Simpson 悖论}
+
+考虑三维正态随机向量：
+\[
+\begin{pmatrix}
+X \\ Y \\ Z
+\end{pmatrix}
+\sim N\left(
+\begin{pmatrix}
+0 \\ 0 \\ 0
+\end{pmatrix},
+\begin{pmatrix}
+1 & \rho_{XY} & \rho_{XZ} \\
+\rho_{XY} & 1 & \rho_{YZ} \\
+\rho_{XZ} & \rho_{YZ} & 1
+\end{pmatrix}
+\right)
+\]
+
+$Y$ 和 $Z$ 的偏相关系数 $\rho_{YZ|X}$ 定义为在条件分布 $(Y, Z) \mid X$ 中的相关系数。
+
+\begin{Proposition}[偏相关系数公式]\label{prop:partial-correlation}
+\[
+\rho_{YZ|X} = \frac{\rho_{YZ} - \rho_{YX}\rho_{ZX}}{\sqrt{1-\rho_{YX}^2}\sqrt{1-\rho_{ZX}^2}}
+\]
+\end{Proposition}
+
+\textbf{重要含义}：即使 $\rho_{YZ} > 0$，偏相关系数 $\rho_{YZ|X}$ 仍可能为负！这正是正态随机向量情形下的 Yule-Simpson 悖论。
+
+\section{LaLonde 数据与规格搜索问题}
+
+LaLonde 数据集包含参与职业培训项目（National Supported Work Demonstration）的参与者的结果。在观察性研究中，协变量选择的敏感性是一个重要问题。
+
+当我们运行 $2^{10} = 1024$ 种可能的协变量子集回归时，treatment 系数的显著性可能对模型规格高度敏感。这提醒我们：在观察性研究中，规格搜索可能导致误导性结论。
+
+\section{种族歧视的简历实验}
+
+Bertrand and Mullainathan (2004) 通过随机改变简历上的名字来研究种族歧视。这些名字被设计成听起来像非裔美国人或白人的名字。实验显示，有黑人名字的简历回调率显著较低。
+
+当我们分别对男性和女性进行分析时，可能会发现有趣的亚组差异——这进一步说明"平均效应"可能掩盖了重要的异质性。
+
 \section{本章小结与下节预告}
 
 本章的核心要点：
 \begin{enumerate}
   \item \textbf{相关性 $\neq$ 因果性}：观察到的关联可能是由于混杂因素造成的
+  \item \textbf{关联度量}：$\text{RD}$、$\text{RR}$、$\text{OR}$ 及它们与独立性的关系
   \item \textbf{Yule-Simpson 悖论}：总体关联可能与分层关联方向相反
+  \item \textbf{偏相关}：即使边际相关为正，偏相关仍可能为负
   \item \textbf{因果推断的必要性}：我们需要系统性的方法来区分真实的因果效应
 \end{enumerate}
 
 下一章我们将学习因果推断的基石——\textbf{潜在结果框架（Potential Outcomes Framework）}，这将为我们的因果分析提供坚实的数学基础。
+
+\section{习题}
+
+\begin{Exercise}{\ref{ex:1.1} 独立性命题的证明}\label{ex:1.1}
+证明 Proposition \ref{prop:2x2-independence} 中的命题 (1) 和 (2)。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:1.2} Yule-Simpson 悖论的更多例子}\label{ex:1.2}
+\begin{enumerate}
+  \item 给出一个 $2 \times 2 \times 2$ 列联表的数值例子，其中出现 Yule-Simpson 悖论。
+  \item 找一个现实生活中的 Yule-Simpson 悖论例子。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:1.3} 相关与偏相关}\label{ex:1.3}
+考虑三维正态随机向量 $(X, Y, Z)^\top \sim N(\bm{0}, \Sigma)$。
+
+证明偏相关系数公式（见 Proposition \ref{prop:partial-correlation}）。
+
+给出一个 $\rho_{YZ} > 0$ 但 $\rho_{YZ|X} < 0$ 的数值例子。
+
+\textbf{注}：这是正态随机向量情形下的 Yule-Simpson 悖论。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:1.4} 规格搜索}\label{ex:1.4}
+重做 Hainmueller (2012) 的数据分析。使用结局 \texttt{re78} 和治疗 \texttt{treat}。数据集还包含 10 个协变量，共有 $2^{10} = 1024$ 种可能的协变量子集组合。运行所有可能的线性回归子集，并报告 treatment 系数的分布：有多少是正显著、负显著、不显著的？
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:1.5} 种族歧视的进一步分析}\label{ex:1.5}
+重做 Bertrand and Mullainathan (2004) 的简历数据分析。分别对男性和女性进行分析，讨论亚组分析的结果与总体结论的差异。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:1.6} 推荐阅读}\label{ex:1.6}
+\begingroup
+\parskip=0pt
+\textbf{推荐阅读}：\cite{bickel1975sex} 是关于 Berkeley 录取数据悖论的原始论文。\cite{pearl2018book} 从因果推断角度重新审视了该研究。
+
+\textbf{历史注记}：\cite{holland1986statistics} 是统计因果推断领域的经典综述文章，它推广了"Rubin 因果模型"这一名称。在 UC Berkeley，我们称之为"Neyman 模型"——原因显而易见。
+\endgroup
+\end{Exercise}
 
 % === 用户问答记录 ===
 % (后续通过 interactive-qa 更新)
