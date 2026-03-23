@@ -16,16 +16,21 @@ PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves
 
 ## 图片引用格式
 
-**要求**：同时使用 `\cref{}` 和教材位置标注：
+**强制要求**：每处图片引用必须同时包含 `\cref{}` 和"教材 Figure X-X"：
 
 ```latex
+% 单图引用
 如图 \cref{fig:helix}（教材 Figure 1-1）所示
+见 \cref{fig:fig1-6}，教材 Figure 1-6
+
+% 多图引用
+见 \cref{fig:isoperimetric-config}、\cref{fig:isoperimetric-proof}，教材 Figure 1-23、1-24
 ```
 
-**注意**：
-- `\cref{}` 用于 LaTeX 交叉引用
-- 文本中必须注明"教材 Figure X-X"
-- 两者缺一不可
+**格式规则**：
+- `\cref{}` 放在前面，使用中文括号 `（...）`
+- "教材 Figure X-X" 紧跟其后
+- 如果引用多张图片，用`、`分隔 label，用`、`分隔 figure 编号
 
 ## 图片排版规则
 
