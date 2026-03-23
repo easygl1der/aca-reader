@@ -72,6 +72,7 @@
 | 相关系数 | `\text{corr}` | 正体 corr |
 | 独立性 | `$A \Perp B$` | 竖线符号 |
 | 示性函数 | `\mathbb{I}` | 黑板粗体 I |
+| p 值 | `\text{p}_{}` | 下标为空 |
 
 **示例：**
 ```latex
@@ -100,6 +101,9 @@ A \Perp B \quad \text{当且仅当} \quad \mathbb{P}(A \cap B) = \mathbb{P}(A)\m
 \mathbb{I}_A(x) = \begin{cases} 1 & \text{if } x \in A \\ 0 & \text{if } x \notin A \end{cases}
 \mathbb{I}(X \in [a,b]) = \mathbb{I}_{[a,b]}(X)
 \mathbb{I}(a \leq X < b)
+
+% p 值（使用 \text{p}_{}，下标为空）
+\text{p}_{} = 0.03
 ```
 
 ## 文档模板

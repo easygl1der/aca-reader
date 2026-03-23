@@ -67,10 +67,10 @@ T = T(\bm{Z}, \bm{Y})
 
 如果较大的 $T$ 值更极端，我们可以使用以下尾概率来衡量检验统计量相对于其随机化分布的极端性：
 \begin{equation}\label{eq:exact-pvalue}
-p_\text{frt} = \frac{1}{M} \sum_{m=1}^M I\{ T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
+\text{p}_{\text{frt}} = \frac{1}{M} \sum_{m=1}^M \mathbb{I}\{ T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
 \end{equation}
 
-这就是 Fisher 的 p 值。% \cref{fig:frt} 阐释了 $p_\text{frt}$ 的计算过程。
+这就是 Fisher 的 p 值。% \cref{fig:frt} 阐释了 $\text{p}_{\text{frt}}$ 的计算过程。
 
 % \begin{figure}[H]
 %   \centering
@@ -79,24 +79,24 @@ p_\text{frt} = \frac{1}{M} \sum_{m=1}^M I\{ T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \
 %   \label{fig:frt}
 % \end{figure}
 
-重要的是，p 值 $p_\text{frt}$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $H_{\mathbf{F}}$ 下是有限样本精确的：
+重要的是，p 值 $\text{p}_{\text{frt}}$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $H_{\mathbf{F}}$ 下是有限样本精确的：
 \[
-\mathbb{P}(p_\text{frt} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
+\mathbb{P}(\text{p}_{\text{frt}} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
 \]
 
 \userannotation{为什么叫"有限样本精确"？}{这意味着 p 值的分布（虽然在离散情况下是阶梯函数）满足上式，因此 p 值在 $[0,1]$ 上均匀分布（对于连续情况）。}
 
 \section{Monte Carlo 近似}
 
-在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\text{frt}$：
+在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $\text{p}_{\text{frt}}$：
 \begin{equation}\label{eq:mc-pvalue}
-\hat{p}_\text{frt} = \frac{1}{R} \sum_{r=1}^R I\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
+\hat{\text{p}}_{\text{frt}} = \frac{1}{R} \sum_{r=1}^R \mathbb{I}\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}
 \end{equation}
 其中 $\bm{z}^r$ 是 $\bm{Z}$ 的 $R$ 次随机置换。
 
 \textbf{修正的有限样本有效近似}：
 \[
-\tilde{p}_\text{frt} = \frac{1 + \sum_{r=1}^R I\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}}{1 + R}
+\tilde{\text{p}}_{\text{frt}} = \frac{1 + \sum_{r=1}^R \mathbb{I}\{ T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y}) \}}{1 + R}
 \]
 这个修正在任意有限的 $R$ 下都是有限样本有效的 p 值。
 
@@ -135,6 +135,11 @@ s^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i - \bar{Y})^2, \quad \bar{Y} = n^{-1} \sum_{i=
 \]
 
 \textbf{与经典 t 检验的联系}：在 $H_{\mathbf{F}}$ 下，近似 p 值接近经典两样本 t 检验（假设等方差）的 p 值。
+
+基于代数运算（见习题 \ref{ex:3.8}），我们有如下展开式：
+\begin{equation}\label{eq:frt-algebra}
+(n-1)s^2 = \sum_{Z_i=1} \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0} \{Y_i - \hat{\bar{Y}}(0)\}^2 + \frac{n_1 n_0}{n} \hat{\tau}^2
+\end{equation}
 
 \userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
 
@@ -179,7 +184,7 @@ W = \sum_{i=1}^n Z_i R_i
 \[
 D = \max_y |\hat{F}_1(y) - \hat{F}_0(y)|
 \]
-其中 $\hat{F}_1(y) = n_1^{-1} \sum_{i=1}^n Z_i I(Y_i \leq y)$。
+其中 $\hat{F}_1(y) = n_1^{-1} \sum_{i=1}^n Z_i \mathbb{I}(Y_i \leq y)$。
 
 这个统计量能够检测分布形状的差异，而不仅仅是均值差异。
 
@@ -244,12 +249,12 @@ FRT 的逻辑可以追溯到早期的历史实例。
 
 如果将治疗简化为二元指示变量，观测到的极端 $2 \times 2$ 表格在 $H_{\mathbf{F}}$ 下出现的概率为：
 \[
-p_\text{frt} = \frac{1}{\binom{12}{2}} = \frac{1}{66} = 0.015
+\text{p}_{\text{frt}} = \frac{1}{\binom{12}{2}} = \frac{1}{66} = 0.015
 \]
 
 \textbf{Fisher 的女士品茶实验}：Fisher 描述了一个著名实验，一位女士声称能区分先加茶还是先加牛奶制成的奶茶。他制作了 8 杯茶（4 杯先加茶，4 杯先加牛奶），随机顺序呈现给女士。在她的全部猜对（$X = 4$）的情况下，p 值为：
 \[
-p_\text{frt} = \frac{1}{70} = 0.014
+\text{p}_{\text{frt}} = \frac{1}{70} = 0.014
 \]
 
 这些例子强调了 Fisher 的两个原则：
@@ -275,7 +280,7 @@ H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i
   \item \textbf{CRE 定义}：$\mathbb{P}(\bm{Z} = \bm{z}) = 1 / \binom{n}{n_1}$
   \item \textbf{随机化的两个原则}：可比性 + 推理基础
   \item \textbf{Sharp null}：$Y_i(1) = Y_i(0)$ 对所有 $i$
-  \item \textbf{精确 p 值}：$p_\text{frt} = M^{-1} \sum_{m=1}^M I\{T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}$
+  \item \textbf{精确 p 值}：$\text{p}_{\text{frt}} = M^{-1} \sum_{m=1}^M I\{T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}$
   \item \textbf{多种统计量}：差值均值、学生化、Wilcoxon、KS
   \item \textbf{理论联系}：FRT 为传统 t 检验提供基础
   \item \textbf{历史起源}：Lind 的坏血病实验、Fisher 的女士品茶
@@ -285,17 +290,17 @@ H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i
 
 \section{习题}
 
-\begin{Exercise}{\ref{ex:3.1} $p_\text{frt}$ 的精确性}\label{ex:3.1}
-证明在 sharp null 下，$p_\text{frt}$ 满足：
+\begin{Exercise}{\ref{ex:3.1} $\text{p}_{\text{frt}}$ 的精确性}\label{ex:3.1}
+证明在 sharp null 下，$\text{p}_{\text{frt}}$ 满足：
 \[
-\mathbb{P}(p_\text{frt} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
+\mathbb{P}(\text{p}_{\text{frt}} \leq u) \leq u \quad \text{对所有 } 0 \leq u \leq 1
 \]
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:3.2} Monte Carlo 误差}\label{ex:3.2}
-设 $p_\text{frt}$ 是固定值，$\hat{p}_\text{frt}$ 是其 Monte Carlo 估计（见 \cref{eq:mc-pvalue}）。证明：
+设 $\text{p}_{\text{frt}}$ 是固定值，$\hat{\text{p}}_{\text{frt}}$ 是其 Monte Carlo 估计（见 \cref{eq:mc-pvalue}）。证明：
 \[
-\mathbb{E}_{\text{mc}}(\hat{p}_\text{frt}) = p_\text{frt}, \quad \text{var}_{\text{mc}}(\hat{p}_\text{frt}) \leq \frac{1}{4R}
+\mathbb{E}_{\text{mc}}(\hat{\text{p}}_{\text{frt}}) = \text{p}_{\text{frt}}, \quad \text{var}_{\text{mc}}(\hat{\text{p}}_{\text{frt}}) \leq \frac{1}{4R}
 \]
 其中下标 "mc" 表示由于 Monte Carlo 的随机性。
 \end{Exercise}
@@ -303,9 +308,9 @@ H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i
 \begin{Exercise}{\ref{ex:3.3} 有限样本有效的 Monte Carlo 近似}\label{ex:3.3}
 证明修正的 Monte Carlo 近似
 \[
-\tilde{p}_\text{frt} = \frac{1 + \sum_{r=1}^R I\{T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}}{1+R}
+\tilde{\text{p}}_{\text{frt}} = \frac{1 + \sum_{r=1}^R I\{T(\bm{z}^r, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}}{1+R}
 \]
-在任意有限的 $R$ 下都是有限样本有效的 p 值（即 $\mathbb{P}(\tilde{p}_\text{frt} \leq u) \leq u$ 对所有 $u \in (0,1)$ 成立）。
+在任意有限的 $R$ 下都是有限样本有效的 p 值（即 $\mathbb{P}(\tilde{\text{p}}_{\text{frt}} \leq u) \leq u$ 对所有 $u \in (0,1)$ 成立）。
 
 \textbf{提示}：可以利用以下两个基本概率结果：
 \begin{enumerate}
@@ -351,11 +356,7 @@ $Z =0$ & $n_{01}$ & $n_{00}$ & $n_0$\\
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:3.8} 代数细节}\label{ex:3.8}
-验证以下等式：
-\[
-(n-1)s^2 = \sum_{Z_i=1} \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0} \{Y_i - \hat{\bar{Y}}(0)\}^2 + \frac{n_1 n_0}{n} \hat{\tau}^2
-\]
-其中 $s^2$ 是合并样本的方差。
+验证 \cref{eq:frt-algebra}。
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:3.9} 推荐阅读}\label{ex:3.9}

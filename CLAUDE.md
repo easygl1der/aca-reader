@@ -43,8 +43,7 @@ This file provides guidance to Claude Code when working with this literature stu
 | 相关系数 | `\text{corr}` |
 | 独立性 | `$A \Perp B$` |
 | 示性函数 | `\mathbb{I}(X \in A)` 或 `\mathbb{I}_A(X)` 或 `\mathbb{I}(a \leq X < b)` |
-
-详见 `docs/latex-style.md` 的"数学符号习惯"章节。
+| p 值 | `\text{p}_{}` |
 
 ### 语言风格
 - **英文文献**：尽量保持英文原文叙述（用语、习惯、单词层面）
