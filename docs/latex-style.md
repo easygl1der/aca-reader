@@ -5,6 +5,7 @@
 - ❌ Markdown 加粗（`**text**`）
 - ❌ Markdown 斜体（`*text*`）
 - ❌ Markdown 代码块（```）
+- ❌ `\bm` 命令：向量用 `\mathbf`，矩阵用 `\boldsymbol`
 
 ## 中文标点
 - **引号**：使用 ``` `` '' ```（反引号 + 单引号），而非中文弯引号

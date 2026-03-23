@@ -45,6 +45,9 @@ This file provides guidance to Claude Code when working with this literature stu
 | 示性函数 | `\mathbb{I}(X \in A)` 或 `\mathbb{I}_A(X)` 或 `\mathbb{I}(a \leq X < b)` |
 | p 值 | `\text{p}_{}` |
 
+### 禁止使用的宏包/命令
+- **禁止 `\bm`**：向量用 `\mathbf`，矩阵用 `\boldsymbol`
+
 ### 语言风格
 - **英文文献**：尽量保持英文原文叙述（用语、习惯、单词层面）
 - **中文叙述**：专业名词保持用英文，加括号标注原文
