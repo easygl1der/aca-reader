@@ -121,7 +121,7 @@ FRT 的一个特点是它对任何检验统计量都生成有限样本精确 p �
 s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2, \quad \bar{Y} = n^{-1} \sumn Y_i.
 \]
 
-\textbf{渐近分布}：由于有限总体中心极限定理，随机化分布近似正态：
+\textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem\footnote{有限总体 CLT 是随机化推断的核心工具。传统统计学的中心极限定理研究的是 i.i.d. 样本的分布，而有限总体 CLT 研究的是从固定有限总体中进行随机抽样时，样本均值（或更一般的统计量）的分布。其核心结论是：对于从有限总体中随机抽取的样本，在一定正则条件下，当样本量增大时，样本均值的随机化分布会收敛到正态分布。关键在于，这个正态性**不依赖于潜在结果的分布**（即 $Y_i$ 本身可以是任意分布），而只依赖于随机化机制。这正是 FRT 能为 t 检验提供理论基础的原因。})，随机化分布近似正态：
 \begin{equation}\label{eq:frt-tau-hat}
 \frac{ \hat{\tau} }{ \sqrt{\frac{n}{n_1 n_0} s^2} } \rightarrow \mathcal{N}(0,1)
 \end{equation}
@@ -133,6 +133,10 @@ in distribution.
 \begin{equation}\label{eq:frt-algebra}
 (n-1)s^2 = \sum_{Z_i=1} \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0} \{Y_i - \hat{\bar{Y}}(0)\}^2 + \frac{n_1 n_0}{n} \hat{\tau}^2 .
 \end{equation}
+
+\textbf{这个展开式的意义}：这本质上是一个\textit{方差分解}（ANOVA 分解）。将每个单元的偏差 $Y_i - \bar{Y}$ 分解为组内偏差 $(Y_i - \hat{\bar{Y}}(Z_i))$ 和组间偏差 $(\hat{\bar{Y}}(Z_i) - \bar{Y})$，平方求和后交叉项消失，留下三项：treatment 组内部变异、control 组内部变异，以及由治疗效应解释的变异 $\frac{n_1 n_0}{n} \hat{\tau}^2$。
+
+在 FRT 中，这个分解揭示了 $s^2$ 不仅捕捉"误差方差"，还包含了潜在的治疗效应信息。当我们用 $\hat{\tau} / \sqrt{\frac{n}{n_1 n_0} s^2}$ 作为标准化统计量时，分母中的 $s^2$ 混入的 $\hat{\tau}^2$ 项使得随机化分布的推导需要借助 \cref{eq:frt-algebra}——这正是 \ref{ex:3.8} 的动机。
 
 \userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
 
