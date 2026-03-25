@@ -18,13 +18,26 @@ This file provides guidance to Claude Code when working with this literature stu
 2. **LaTeX 格式严格性**: 禁止 Markdown 格式，必须使用纯 LaTeX（详见 `docs/latex-style.md`）
 3. **先读原文再写笔记**: 禁止凭想象编写数学证明
 4. **作业路径**: `/Users/yueyh/Library/CloudStorage/GoogleDrive-easyglider458@gmail.com/My Drive/homework`
-5. **作业模板**: 使用 `> [!exr]` callout 格式，每个题目单独一个 block。参考 `离散数学/hw2.md`
+5. **作业模板**: 使用 `> [!exr]` callout 格式，每个题目单独一个 block。详见 `docs/obsidian-blocks.md`
 6. **Unicode 禁止规则**: 写作 markdown/LaTeX 时，禁止使用 n₁ 等 unicode 下标，必须使用 `$n_1$` 格式
 7. **Tex 优先规则**: 查看教材时，如果有 .tex 版本则优先使用（因为有更好的 label/cref 引用跳转功能）
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
 9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
 11. **习题格式规则**: 不同模板有不同格式。book 模板（do Carmo）使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
+
+---
+
+## Obsidian Callout 块格式
+
+作业和笔记使用 Obsidian callout 块格式。详细规则见 `docs/obsidian-blocks.md`。
+
+**常用块类型：**
+- `> [!exr]` — 习题题目
+- `> [!solution]` — 习题解答
+- `> [!def]` — 重要定义
+- `> [!thm]` — 定理
+- `> [!rmk]` — 备注/解释
 
 ---
 
