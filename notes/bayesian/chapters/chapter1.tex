@@ -58,7 +58,7 @@
 p(\theta, y) = p(\theta) \times p(y|\theta)
 \]
 
-使用条件概率的基本性质（贝叶斯定理），得到后验密度：
+使用条件概率的基本性质（贝叶斯定理），得到后验密度：\footnote{推导见附录 \cref{sec:bayes-theorem-derivation}}
 \[
 p(\theta|y) = \frac{p(\theta) \times p(y|\theta)}{p(y)}
 \]
@@ -74,7 +74,7 @@ p(\theta|y) \propto p(\theta) \times p(y|\theta)
 
 \textbf{为什么可以省略 $p(y)$？}
 
-关键在于：后验分布的\textbf{核}（kernel）包含了所有关于 $\theta$ 的信息，而 $p(y)$ 作为归一化常数不包含任何关于 $\theta$ 的新信息。
+关键在于：后验分布的\textbf{核}（kernel）\footnote{关于"核"概念的详细解释，见附录 \cref{sec:qa:DistributionKernel}}包含了所有关于 $\theta$ 的信息，而 $p(y)$ 作为归一化常数不包含任何关于 $\theta$ 的新信息。
 
 以正态分布为例：后验密度 $p(\theta|y) \propto \exp\left(-\frac{(\theta-\mu)^2}{2\sigma^2}\right)$，我们只凭这个指数函数的形式就能识别出这是正态分布 $N(\mu, \sigma^2)$——因为已知核是二次型的指数，就能确定完整分布。
 
@@ -86,13 +86,13 @@ p(\theta|y) \propto p(\theta) \times p(y|\theta)
 
 \subsection{预测}
 
-在数据 $y$ 被观测之前，未知但可观测的 $\tilde{y}$ 的分布是边际分布：
+在数据 $y$ 被观测之前，未知但可观测的 $\tilde{y}$ 的分布是边际分布：\footnote{推导见附录 \cref{sec:predictive-distributions-derivation}}
 \[
 p(y) = \int p(y|\theta) \times p(\theta) \, d\theta
 \]
 这被称为先验预测分布（prior predictive distribution）。
 
-在观测到数据 $y$ 之后，预测 $\tilde{y}$ 的分布是后验预测分布（posterior predictive distribution）：
+在观测到数据 $y$ 之后，预测 $\tilde{y}$ 的分布是后验预测分布（posterior predictive distribution）：\footnote{推导见附录 \cref{sec:predictive-distributions-derivation}}
 \[
 p(\tilde{y}|y) = \int p(\tilde{y}|\theta) \times p(\theta|y) \, d\theta
 \]
@@ -111,7 +111,7 @@ p(\tilde{y}|y) = \int p(\tilde{y}|\theta) \times p(\theta|y) \, d\theta
 
 这样，贝叶斯推断服从所谓的似然原理：对于给定的数据样本，任何具有相同似然函数的概率模型 $p(y|\theta)$ 对 $\theta$ 产生相同的推断。
 
-后验密度 $p(\theta|y)$ 在 $\theta_1$ 和 $\theta_2$ 处取值的比率称为后验优势比。优势比提供了一个概率的替代表示，并且具有贝叶斯定理用优势比表示特别简单的形式：
+后验密度 $p(\theta|y)$ 在 $\theta_1$ 和 $\theta_2$ 处取值的比率称为后验优势比。优势比提供了一个概率的替代表示，并且具有贝叶斯定理用优势比表示特别简单的形式：\footnote{推导见附录 \cref{sec:posterior-odds-derivation}}
 \[
 \frac{p(\theta_1|y)}{p(\theta_2|y)} = \frac{p(\theta_1)}{p(\theta_2)} \times \frac{p(y|\theta_1)}{p(y|\theta_2)}
 \]

@@ -12,6 +12,26 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ---
 
+## 学习理念（核心宗旨）
+
+**做这个笔记工作流的真正目的，是让人获得真正的学习快乐。**
+
+在对话、思考、写作的过程中加深对知识的理解和掌握——这才是学习的本质。而不是为了某个世俗意义上的考试或考核去学知识。
+
+理解知识的脉络，比死记硬背更重要。在不经意间，反而能获得更好的学习效果。
+
+**核心思想**：
+- 🎯 **真正的学习**：通过对话、思考、写作来深入理解知识
+- 🔍 **理解脉络**：知道知识从哪里来、到哪里去、为什么需要
+- 💡 **学习的快乐**：在探索过程中自然获得成就感
+- 🌱 **水到渠成**：当理解足够深入，考试和成绩只是副产品
+
+★ Insight ─────────────────────────────────────
+这个理念暗合了**建构主义学习观**：知识不是被动接受的，而是主动建构的。对话（QA）、思考（理解脉络）、写作（外化理解）都是主动建构的过程，恰恰是最高效的学习方式。
+─────────────────────────────────────────────────
+
+---
+
 ## 重要规则
 
 1. **"记住" 规则**: 用户说"记住 XXX"时，必须写入 CLAUDE.md
@@ -26,6 +46,8 @@ This file provides guidance to Claude Code when working with this literature stu
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
 11. **习题格式规则**: 不同模板有不同格式。book 模板（do Carmo）使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
 
+12. **学习原则（核心思想）**: 从学习数学知识的角度，公式推导是必要学习的；但在理解思想、了解脉络、抓住重点的目的下，公式推导/定理证明反而不是最重要的，所以可以放到附录。在正文中抓住重点，以防被过长的数学公式分散了注意力。
+
 ---
 
 ## Obsidian Callout 块格式
@@ -38,6 +60,22 @@ This file provides guidance to Claude Code when working with this literature stu
 - `> [!def]` — 重要定义
 - `> [!thm]` — 定理
 - `> [!rmk]` — 备注/解释
+
+---
+
+## R 作业工作流
+
+当作业涉及 R 数据分析时，遵循以下流程：
+
+1. **读取作业文件**：了解题目要求
+2. **编写 R 代码**：保存到作业目录的 `R/` 子目录
+3. **运行分析**：生成可视化图表（保存到 `R/` 目录）
+4. **整理结果**：将解答写入作业文件的 `> [!solution]` 块
+5. **插入图表**：使用 `![[R/图片.png]]` 将图表放到对应小题位置
+
+**R 代码命名规范**：`hw{N}_part{N}.R`
+
+**图表格式**：PNG，保存在 `R/` 目录
 
 ---
 
@@ -104,6 +142,37 @@ This file provides guidance to Claude Code when working with this literature stu
   \tag*{\underbracket[0.5pt]{\hphantom{\mathbb{I}(X_i=1) + \mathbb{I}(X_i=0)}}_{\text{每单元满足 } \mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) = 1}}
   ```
 - 分步推导用 `underbrace` 标注各分组含义（如 treatment 组、control 组）
+
+### 附录公式推导规范 ⚠️
+
+**核心思想**（学习原则）：从学习数学知识的角度，公式推导是必要学习的；但在理解思想、了解脉络、抓住重点的目的下，公式推导/定理证明反而不是最重要的，所以可以放到附录。在正文中抓住重点，以防被过长的数学公式分散了注意力。
+
+**核心原则**：
+1. **不省略教材公式完整推导**
+2. **按板块读取**：不切割证明/推导，要完整传输给 AI
+3. **附录引用**：正文中用 `\footnote{推导见附录 \cref{sec:xxx}}`
+
+**附录章节结构**：
+```latex
+\section{附录：公式推导}\label{sec:appendix-derivation}
+
+\subsection{Beta-Binomial 共轭后验均值推导}\label{sec:beta-binomial-posterior-mean}
+\textbf{背景（Background）}：...
+
+\textbf{参数定义（Parameter Definitions）}：
+- $\theta$：成功概率
+...
+
+\textbf{已知条件（Given）}：
+- 似然：$p(y|\theta) = \binom{n}{y}\theta^y(1-\theta)^{n-y}$
+- 先验：$\theta \sim \text{Beta}(\alpha, \beta)$
+...
+
+\textbf{目标（Goal）}：求后验均值 $\mathbb{E}(\theta|y)$
+
+\textbf{推导步骤（Derivation Steps）}：
+1. ...
+```
 
 ### 问答记录规则 ⚠️
 **每次用户提问后必须执行以下步骤：**
@@ -221,6 +290,7 @@ git worktree prune
 - **2026-03-20**: LaTeX 中禁止使用 \renewcommand 简化符号，直接使用原始符号（如 \mathbb{I} 而非自定义 \I）
 - **2026-03-22**: Python 字符串替换操作大文件（HTML）时极易损坏文件 → 对 HTML/大型文件进行字符串操作前，必须先备份；优先使用逐行读取+写入而非内存中全量替换
 - **2026-03-23**: 打开 PDF 默认用 Skim（不是其他 PDF 阅读器）
+- **2026-03-27**: 笔记省略了教材公式完整推导 → 必须在附录添加完整推导
 
 ---
 

@@ -18,7 +18,7 @@ p(y|\theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}
 
 为了执行贝叶斯推断，我们必须为 $\theta$ 指定先验分布。作为简单开始，我们假设先验分布是 $[0, 1]$ 上的均匀分布：$\theta \sim \text{Uniform}(0, 1)$，即 $p(\theta) = 1$。
 
-应用贝叶斯定理，得到后验密度：
+应用贝叶斯定理，得到后验密度：\footnote{推导见附录 \cref{sec:beta-binomial-posterior-derivation}}
 \[
 p(\theta|y) \propto \theta^y (1-\theta)^{n-y}
 \]
@@ -41,7 +41,7 @@ p(\theta|y) \propto \theta^y (1-\theta)^{n-y}
 
 在均匀先验下，先验预测分布可以直接计算。在模型下，所有可能的 $y$ 值在先验下同等可能。
 
-令 $\tilde{y}$ 表示与前 $n$ 次试验可交换的一次新试验的结果：
+令 $\tilde{y}$ 表示与前 $n$ 次试验可交换的一次新试验的结果：\footnote{推导见附录 \cref{sec:laplace-succession-derivation}}
 \[
 P(\tilde{y} = 1 | y) = \int_0^1 \theta \cdot p(\theta|y) \, d\theta = \mathbb{E}(\theta|y) = \frac{y+1}{n+2}
 \]
@@ -50,7 +50,7 @@ P(\tilde{y} = 1 | y) = \int_0^1 \theta \cdot p(\theta|y) \, d\theta = \mathbb{E}
 
 \section{后验作为数据与先验信息的折中}
 
-贝叶斯推断的过程涉及从先验分布 $p(\theta)$ 到后验分布 $p(\theta|y)$ 的转化。以下两个式子描述了先验与后验之间的一般关系：
+贝叶斯推断的过程涉及从先验分布 $p(\theta)$ 到后验分布 $p(\theta|y)$ 的转化。以下两个式子描述了先验与后验之间的一般关系：\footnote{推导见附录 \cref{sec:law-of-total-expectation-variance-derivation}}
 
 \[
 \mathbb{E}(\theta) = \mathbb{E}\left[\mathbb{E}(\theta|y)\right]
@@ -112,7 +112,7 @@ p(\theta) \propto \theta^{\alpha-1}(1-\theta)^{\beta-1}
 
 将 $p(\theta)$ 与 $p(y|\theta)$ 比较，可以看出这个先验等价于 $\alpha-1$ 次先验成功和 $\beta-1$ 次先验失败。
 
-\textbf{共轭性}：后验分布与先验分布属于同一参数形式。Beta 先验分布是二项似然的共轭族。共轭族在计算上是方便的，因为后验分布遵循已知参数形式。
+\textbf{共轭性}：后验分布与先验分布属于同一参数形式。Beta 先验分布是二项似然的共轭族。共轭族在计算上是方便的，因为后验分布遵循已知参数形式。\footnote{推导见附录 \cref{sec:beta-binomial-moments-derivation}}
 
 后验均值：
 \[
@@ -143,7 +143,7 @@ p(y|\theta) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y-\theta)^2}{2\sig
 p(\theta) \propto \exp(A\theta^2 + B\theta + C), \quad A < 0
 \]
 
-参数化为 $\theta \sim \text{Normal}(\mu_0, \tau_0^2)$，其中 $\mu_0$ 和 $\tau_0^2$ 是超参数。
+参数化为 $\theta \sim \text{Normal}(\mu_0, \tau_0^2)$，其中 $\mu_0$ 和 $\tau_0^2$ 是超参数。\footnote{推导见附录 \cref{sec:normal-mean-posterior-derivation}}
 
 经过配方法，得到后验分布 $\theta|y \sim \text{Normal}(\mu_1, \tau_1^2)$，其中：
 \[
@@ -161,7 +161,7 @@ p(\theta) \propto \exp(A\theta^2 + B\theta + C), \quad A < 0
 
 每种形式都表示后验均值是先验均值和观测值之间的折中。
 
-\subsection{后验预测分布}
+\subsection{后验预测分布}\footnote{推导见附录 \cref{sec:predictive-mean-variance-derivation}}
 
 未来观测 $\tilde{y}$ 的后验预测分布：
 \[
@@ -213,7 +213,7 @@ Jeffreys 的一般原则是：任何确定先验密度 $p(\theta)$ 的规则，�
 
 考虑在 $\theta$ 上使用均匀先验 $p(\theta) = 1$，但在 logit 变换 $\phi = \log(\theta/(1-\theta))$ 下，这会导致不均匀的先验。这说明均匀先验在参数变换下不是不变的。
 
-Jeffreys 提出可接受的非信息先验发现原则应该在参数的单调变换下是不变的。他描述了如何基于 Fisher 信息函数构建这样的先验：
+Jeffreys 提出可接受的非信息先验发现原则应该在参数的单调变换下是不变的。他描述了如何基于 Fisher 信息函数构建这样的先验：\footnote{推导见附录 \cref{sec:jeffreys-prior-derivation}}
 
 \[
 p(\theta) \propto [J(\theta)]^{1/2}

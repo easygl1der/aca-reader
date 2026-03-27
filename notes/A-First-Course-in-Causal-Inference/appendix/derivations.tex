@@ -1,0 +1,184 @@
+% Appendix: Detailed Derivations
+% Complete algebraic derivations referenced from main text
+
+\appendix
+\chapter{公式推导}
+
+\section{差值均值统计量的方差分解}\label{sec:frt-algebra-derivation}
+
+\textbf{背景}：在 \cref{eq:frt-algebra} 中，我们声称
+\[
+(n-1)s^2 = \sum_{Z_i=1} \{Y_i - \hat{\bar{Y}}(1)\}^2 + \sum_{Z_i=0} \{Y_i - \hat{\bar{Y}}(0)\}^2 + \frac{n_1 n_0}{n} \hat{\tau}^2 .
+\tag{3.7}
+\]
+本节给出完整的代数推导。
+
+\textbf{第一步}：从定义出发。
+\[
+(n-1)s^2 = \sumn (Y_i - \bar{Y})^2 = \sumn \big[ (Y_i - \bar{Y}) \big]^2 .
+\]
+
+\textbf{第二步}：对每个单元 $i$，将偏差 $Y_i - \bar{Y}$ 写成：
+\[
+Y_i - \bar{Y} = \underbrace{(Y_i - \hat{\bar{Y}}(Z_i))}_{\text{组内偏差}} + \underbrace{(\hat{\bar{Y}}(Z_i) - \bar{Y})}_{\text{组间偏差}} .
+\]
+
+\textbf{第三步}：平方展开：
+\[
+(Y_i - \bar{Y})^2 = (Y_i - \hat{\bar{Y}}(Z_i))^2 + (\hat{\bar{Y}}(Z_i) - \bar{Y})^2 + 2(Y_i - \hat{\bar{Y}}(Z_i))(\hat{\bar{Y}}(Z_i) - \bar{Y}) .
+\]
+
+\textbf{第四步}：对所有单元求和。关键观察是交叉项求和为零：
+\[
+\sum_{i=1}^n 2(Y_i - \hat{\bar{Y}}(Z_i))(\hat{\bar{Y}}(Z_i) - \bar{Y}) = 2 \sum_{i=1}^n (Y_i - \hat{\bar{Y}}(Z_i)) \cdot (\hat{\bar{Y}}(Z_i) - \bar{Y}) .
+\]
+
+当 $Z_i = 1$ 时，这个和化为：
+\[
+2 \sum_{Z_i=1} (Y_i - \hat{\bar{Y}}(1)) \cdot (\hat{\bar{Y}}(1) - \bar{Y}) = 2 (\hat{\bar{Y}}(1) - \bar{Y}) \underbrace{\sum_{Z_i=1} (Y_i - \hat{\bar{Y}}(1))}_{=0} = 0 ,
+\]
+因为 $\sum_{Z_i=1} Y_i = n_1 \hat{\bar{Y}}(1)$，所以 $\sum_{Z_i=1} (Y_i - \hat{\bar{Y}}(1)) = 0$。
+
+同理，当 $Z_i = 0$ 时：
+\[
+2 \sum_{Z_i=0} (Y_i - \hat{\bar{Y}}(0)) \cdot (\hat{\bar{Y}}(0) - \bar{Y}) = 2 (\hat{\bar{Y}}(0) - \bar{Y}) \underbrace{\sum_{Z_i=0} (Y_i - \hat{\bar{Y}}(0))}_{=0} = 0 .
+\]
+
+因此交叉项全部抵消。
+
+\textbf{第五步}：整理得到：
+\[
+\sumn (Y_i - \bar{Y})^2 = \underbrace{\sum_{Z_i=1} (Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i=0} (Y_i - \hat{\bar{Y}}(0))^2}_{\text{组内平方和}} + \underbrace{\sum_{i=1}^n (\hat{\bar{Y}}(Z_i) - \bar{Y})^2}_{\text{组间平方和}} .
+\]
+
+\textbf{第六步}：计算组间平方和：
+\[
+\sum_{i=1}^n (\hat{\bar{Y}}(Z_i) - \bar{Y})^2 = n_1 (\hat{\bar{Y}}(1) - \bar{Y})^2 + n_0 (\hat{\bar{Y}}(0) - \bar{Y})^2 .
+\]
+
+利用以下两个事实：
+\begin{enumerate}
+  \item $\hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) = \hat{\tau}$
+  \item $n_1 \hat{\bar{Y}}(1) + n_0 \hat{\bar{Y}}(0) = n \bar{Y}$（加权平均的性质）
+\end{enumerate}
+
+展开并化简：
+\[
+\begin{aligned}
+& n_1 (\hat{\bar{Y}}(1) - \bar{Y})^2 + n_0 (\hat{\bar{Y}}(0) - \bar{Y})^2 \\
+&= n_1 \hat{\bar{Y}}(1)^2 - 2 n_1 \hat{\bar{Y}}(1)\bar{Y} + n_1 \bar{Y}^2 + n_0 \hat{\bar{Y}}(0)^2 - 2 n_0 \hat{\bar{Y}}(0)\bar{Y} + n_0 \bar{Y}^2 \\
+&= n_1 \hat{\bar{Y}}(1)^2 + n_0 \hat{\bar{Y}}(0)^2 - n \bar{Y}^2 .
+\end{aligned}
+\]
+
+利用 $(n_1 \hat{\bar{Y}}(1) + n_0 \hat{\bar{Y}}(0))^2 = n^2 \bar{Y}^2$，展开得：
+\[
+n_1^2 \hat{\bar{Y}}(1)^2 + 2 n_1 n_0 \hat{\bar{Y}}(1)\hat{\bar{Y}}(0) + n_0^2 \hat{\bar{Y}}(0)^2 = n^2 \bar{Y}^2 .
+\]
+
+代入上式并利用 $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$，最终化简为：
+\[
+n_1 (\hat{\bar{Y}}(1) - \bar{Y})^2 + n_0 (\hat{\bar{Y}}(0) - \bar{Y})^2 = \frac{n_1 n_0}{n} \hat{\tau}^2 .
+\]
+
+\textbf{结论}：代入即得 \cref{eq:frt-algebra}。
+
+\section{Wilcoxon 秩和统计量的方差推导}\label{sec:wilcoxon-variance-derivation}
+
+\textbf{背景}：在 \ref{ex:wilcoxon-mean-var} 中，我们声称在 $\HF$ 下
+\[
+\text{var}(W) = \frac{n_1 n_0 (n+1)}{12} .
+\]
+本节给出完整的代数推导。
+
+\textbf{第一步}：回忆 $W = \sumn Z_i R_i$，其中 $R_i$ 是 $Y_i$ 在合并样本中的秩（固定值），$Z_i$ 是随机化的治疗指示变量。
+
+\textbf{方差分解}：
+\[
+\text{var}(W) = \text{var}\left( \sumn Z_i R_i \right) = \sumn R_i^2 \, \text{var}(Z_i) + \sum_{i \neq j} R_i R_j \, \text{cov}(Z_i, Z_j) .
+\]
+
+\textbf{计算 $\text{var}(Z_i)$}：在 CRE 中，$Z_i \sim \text{Bernoulli}(n_1/n)$，所以
+\[
+\text{var}(Z_i) = \frac{n_1}{n} \cdot \frac{n_0}{n} = \frac{n_1 n_0}{n^2} .
+\]
+
+\textbf{计算 $\text{cov}(Z_i, Z_j)$ for $i \neq j$}：由于 $\sumn Z_i = n_1$（固定），我们有
+\[
+\text{cov}(Z_i, Z_j) = -\frac{n_1 n_0}{n^2(n-1)} \quad (i \neq j) .
+\]
+
+\textbf{代入}：
+\[
+\begin{aligned}
+\text{var}(W) &= \left( \sumn R_i^2 \right) \frac{n_1 n_0}{n^2} + \sum_{i \neq j} R_i R_j \left( -\frac{n_1 n_0}{n^2(n-1)} \right) \\
+&= \frac{n_1 n_0}{n^2} \left[ \sumn R_i^2 - \frac{1}{n-1} \sum_{i \neq j} R_i R_j \right] .
+\end{aligned}
+\]
+
+注意 $\sum_{i \neq j} R_i R_j = \left( \sumn R_i \right)^2 - \sumn R_i^2$，代入得：
+\[
+\text{var}(W) = \frac{n_1 n_0}{n^2} \left[ \sumn R_i^2 - \frac{1}{n-1} \left( \left( \sumn R_i \right)^2 - \sumn R_i^2 \right) \right] .
+\]
+
+\textbf{计算 $\sumn R_i$ 和 $\sumn R_i^2$}：假设无 ties，则 $\{R_i\}$ 是 $1, 2, \ldots, n$ 的一个排列。
+\[
+\sumn R_i = 1 + 2 + \cdots + n = \frac{n(n+1)}{2} .
+\]
+\[
+\sumn R_i^2 = 1^2 + 2^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6} .
+\]
+
+代入并化简：
+\[
+\begin{aligned}
+\text{var}(W) &= \frac{n_1 n_0}{n^2} \left[ \frac{n(n+1)(2n+1)}{6} - \frac{1}{n-1} \left( \frac{n^2(n+1)^2}{4} - \frac{n(n+1)(2n+1)}{6} \right) \right] \\
+&= \frac{n_1 n_0 (n+1)}{12} .
+\end{aligned}
+\]
+
+\textbf{结论}：得证。
+
+\section{女士品茶实验的超几何分布}\label{sec:lady-tea-hypergeometric}
+
+\textbf{背景}：在 \ref{ex:lady-tea-hypergeometric} 中，我们讨论了 Fisher 的女士品茶实验。本节给出超几何分布的完整推导。
+
+\textbf{设置}：
+\begin{itemize}
+  \item 8 杯茶中有 4 杯是"先加奶"($K=4$)，4 杯是"先加茶"
+  \item 女士随机猜测其中 4 杯为"先加奶"
+  \item 记 $X$ 为她猜对"先加奶"的杯数
+\end{itemize}
+
+\textbf{为什么是超几何分布？}
+
+在 $\HF$ 下，女士的猜测是固定的（她选 4 杯作为"先加奶"的猜测）。实验者随机排列 8 杯茶的顺序呈现给女士。这等价于：从含有 $K=4$ 个"成功"的总体 $N=8$ 中，不放回抽取 $n=4$ 个，$X$ 是抽到的成功个数。
+
+\textbf{超几何分布的概率质量函数}：
+\[
+\mathbb{P}(X = k) = \frac{\binom{K}{k} \binom{N-K}{n-k}}{\binom{N}{n}}, \quad k = 0, 1, 2, 3, 4 .
+\]
+
+\textbf{验证}：超几何分布的概率之和为 1。
+\[
+\sum_{k=0}^{4} \mathbb{P}(X = k) = \frac{1}{\binom{8}{4}} \sum_{k=0}^{4} \binom{4}{k} \binom{4}{4-k} = \frac{1}{70} \cdot \binom{8}{4} = 1 ,
+\]
+其中利用了组合恒等式 $\sum_{k} \binom{a}{k} \binom{b}{n-k} = \binom{a+b}{n}$。
+
+\textbf{各概率的数值}：
+\[
+\begin{aligned}
+\mathbb{P}(X = 0) &= \frac{\binom{4}{0}\binom{4}{4}}{\binom{8}{4}} = \frac{1 \cdot 1}{70} = \frac{1}{70}, \\
+\mathbb{P}(X = 1) &= \frac{\binom{4}{1}\binom{4}{3}}{\binom{8}{4}} = \frac{4 \cdot 4}{70} = \frac{16}{70}, \\
+\mathbb{P}(X = 2) &= \frac{\binom{4}{2}\binom{4}{2}}{\binom{8}{4}} = \frac{6 \cdot 6}{70} = \frac{36}{70}, \\
+\mathbb{P}(X = 3) &= \frac{\binom{4}{3}\binom{4}{1}}{\binom{8}{4}} = \frac{4 \cdot 4}{70} = \frac{16}{70}, \\
+\mathbb{P}(X = 4) &= \frac{\binom{4}{4}\binom{4}{0}}{\binom{8}{4}} = \frac{1 \cdot 1}{70} = \frac{1}{70}.
+\end{aligned}
+\]
+
+\textbf{与二项分布的比较}：如果"抽取放回"（即女士每次猜测后被告知答案），则 $X \sim \text{Binomial}(4, 1/2)$，此时
+\[
+\mathbb{P}(X = 4) = \binom{4}{4} (1/2)^4 = 1/16 = 0.0625 > 0.014 .
+\]
+
+超几何分布（不放回）的尾部概率更小，使得 Fisher 的检验在零假设下更精确——这正是 FRT"精确"的含义。

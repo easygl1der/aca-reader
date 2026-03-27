@@ -121,7 +121,7 @@ FRT 的一个特点是它对任何检验统计量都生成有限样本精确 p �
 s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2, \quad \bar{Y} = n^{-1} \sumn Y_i.
 \]
 
-\textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem\footnote{有限总体 CLT 是随机化推断的核心工具。传统统计学的中心极限定理研究的是 i.i.d. 样本的分布，而有限总体 CLT 研究的是从固定有限总体中进行随机抽样时，样本均值（或更一般的统计量）的分布。其核心结论是：对于从有限总体中随机抽取的样本，在一定正则条件下，当样本量增大时，样本均值的随机化分布会收敛到正态分布。关键在于，这个正态性**不依赖于潜在结果的分布**（即 $Y_i$ 本身可以是任意分布），而只依赖于随机化机制。这正是 FRT 能为 t 检验提供理论基础的原因。})，随机化分布近似正态：
+\textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem\footnote{有限总体 CLT 是随机化推断的核心工具。传统统计学的中心极限定理研究的是 i.i.d. 样本的分布，而有限总体 CLT 研究的是从固定有限总体中进行随机抽样时，样本均值（或更一般的统计量）的分布。其核心结论是：对于从有限总体中随机抽取的样本，在一定正则条件下，当样本量增大时，样本均值的随机化分布会收敛到正态分布。关键在于，这个正态性\textbf{不依赖于潜在结果的分布}（即 $Y_i$ 本身可以是任意分布），而只依赖于随机化机制。这正是 FRT 能为 t 检验提供理论基础的原因。})，随机化分布近似正态：
 \begin{equation}\label{eq:frt-tau-hat}
 \frac{ \hat{\tau} }{ \sqrt{\frac{n}{n_1 n_0} s^2} } \rightarrow \mathcal{N}(0,1)
 \end{equation}
@@ -136,7 +136,22 @@ in distribution.
 
 \textbf{这个展开式的意义}：这本质上是一个\textit{方差分解}（ANOVA 分解）。将每个单元的偏差 $Y_i - \bar{Y}$ 分解为组内偏差 $(Y_i - \hat{\bar{Y}}(Z_i))$ 和组间偏差 $(\hat{\bar{Y}}(Z_i) - \bar{Y})$，平方求和后交叉项消失，留下三项：treatment 组内部变异、control 组内部变异，以及由治疗效应解释的变异 $\frac{n_1 n_0}{n} \hat{\tau}^2$。
 
-在 FRT 中，这个分解揭示了 $s^2$ 不仅捕捉"误差方差"，还包含了潜在的治疗效应信息。当我们用 $\hat{\tau} / \sqrt{\frac{n}{n_1 n_0} s^2}$ 作为标准化统计量时，分母中的 $s^2$ 混入的 $\hat{\tau}^2$ 项使得随机化分布的推导需要借助 \cref{eq:frt-algebra}——这正是 \ref{ex:3.8} 的动机。
+\begin{Example}[ANOVA 分解的代数推导]\label{ex:frt-algebra-detail}
+\textbf{核心思想}：将偏差 $Y_i - \bar{Y}$ 分解为组内偏差与组间偏差之和，平方后交叉项因正交性而消失。
+
+\textbf{关键步骤}：
+\begin{enumerate}
+  \item $(Y_i - \bar{Y}) = (Y_i - \hat{\bar{Y}}(Z_i)) + (\hat{\bar{Y}}(Z_i) - \bar{Y})$
+  \item 平方展开后，交叉项 $\sum 2(Y_i - \hat{\bar{Y}}(Z_i))(\hat{\bar{Y}}(Z_i) - \bar{Y}) = 0$（因为 $\sum_{Z_i=1}(Y_i - \hat{\bar{Y}}(1)) = 0$）
+  \item 组间平方和化简为 $\frac{n_1 n_0}{n} \hat{\tau}^2$
+\end{enumerate}
+
+完整推导见附录 \cref{sec:frt-algebra-derivation}。\qed
+\end{Example}
+
+★ Insight ─────────────────────────────────────
+\textbf{ANOVA 分解的几何直觉}：将 $n$ 维向量 $\bm{Y}$ 投影到 treatment 组和 control 组形成的两个正交子空间。组内平方和是残差平方和，组间平方和 $\frac{n_1 n_0}{n} \hat{\tau}^2$ 是由治疗分配解释的变异。关键发现：$s^2$ 中混入了治疗效应信息，这解释了为什么 FRT 的 $t$ 统计量在 $\HF$ 下能精确分布。
+─────────────────────────────────────────────────
 
 \userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
 
@@ -167,11 +182,19 @@ W = \sumn Z_i R_i,
 \]
 其中 $R_i$ 是 $Y_i$ 在合并样本中的秩。
 
-在 $\HF$ 下，$W$ 有均值 $\frac{n_1(n+1)}{2}$ 和方差 $\frac{n_1 n_0 (n+1)}{12}$，且渐近正态。
+\begin{Example}[Wilcoxon 秩和统计量的均值与方差]\label{ex:wilcoxon-mean-var}
+\textbf{核心思想}：在 $\HF$ 下，随机性只来自治疗分配 $\bm{Z}$，秩 $R_i$ 是固定值。
+
+\textbf{均值}：利用 $\mathbb{E}(Z_i) = n_1/n$ 和 $\sumn R_i = n(n+1)/2$，得 $\mathbb{E}(W) = n_1(n+1)/2$。
+
+\textbf{方差}：利用 $\text{var}(Z_i) = n_1n_0/n^2$ 和 $\text{cov}(Z_i,Z_j) = -n_1n_0/[n^2(n-1)]$，以及 $\sumn R_i^2 = n(n+1)(2n+1)/6$，化简得 $\text{var}(W) = n_1n_0(n+1)/12$。
+
+完整推导见附录 \cref{sec:wilcoxon-variance-derivation}。\qed
+\end{Example}
 
 这个统计量的优点是：
 \begin{itemize}
-  \item 对异常值稳健
+  \item 对异常值稳健（只使用秩次信息，不依赖具体数值）
   \item 只依赖于数据的秩次信息
   \item 在许多备择假设下都有较好的功效
 \end{itemize}
@@ -260,6 +283,21 @@ p_\frt = \frac{1}{\binom{12}{2}} = \frac{1}{66} = 0.015.
 \[
 p_\frt = \frac{1}{70} = 0.014.
 \]
+
+\begin{Example}[女士品茶的超几何分布]\label{ex:lady-tea-hypergeometric}
+\textbf{核心思想}：$X$ 服从超几何分布 $\text{Hypergeometric}(N=8, K=4, n=4)$——这是"不放回抽样"的结果。
+
+\textbf{概率质量函数}：
+\[
+\mathbb{P}(X = k) = \frac{\binom{4}{k} \binom{4}{4-k}}{\binom{8}{4}}, \quad k = 0,1,2,3,4 .
+\]
+
+\textbf{关键概率}：$\mathbb{P}(X = 4) = 1/70$，故单侧 p 值 $p_\frt = 1/70 \approx 0.014$。
+
+\textbf{直觉}：在 70 种可能排列中只有 1 种能让 Lady 全部猜对。
+
+完整推导与二项分布比较见附录 \cref{sec:lady-tea-hypergeometric}。\qed
+\end{Example}
 
 这些例子强调了 Fisher 的两个原则：
 \begin{enumerate}

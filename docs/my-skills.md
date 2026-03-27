@@ -70,6 +70,7 @@
 |-------|------|------|
 | `auto-commit-push` | 自动提交 | 自动 git add/commit/push，大文件自动检查，规范提交信息 |
 | `latex-debug` | LaTeX 调试 | 检测并修复 LaTeX 编译错误，修复后自动提交 |
+| `latex-writing-check` | 写作检查 | 检查并修复 LaTeX 中的 Markdown 格式错误（加粗、斜体、列表、下标等） |
 | `latex-label-ref-verifier` | 标签验证 | 验证 LaTeX 文档中的 label 和引用 |
 | `note-content-verifier` | 内容验证 | 验证笔记内容完整性 |
 | `chapter0-template` | 章节模板 | 生成章节模板 |
