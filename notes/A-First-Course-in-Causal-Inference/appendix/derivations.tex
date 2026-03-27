@@ -182,3 +182,92 @@ n_1 (\hat{\bar{Y}}(1) - \bar{Y})^2 + n_0 (\hat{\bar{Y}}(0) - \bar{Y})^2 = \frac{
 \]
 
 超几何分布（不放回）的尾部概率更小，使得 Fisher 的检验在零假设下更精确——这正是 FRT"精确"的含义。
+
+\section{差值均值统计量的期望与方差推导}\label{sec:tau-hat-variance-derivation}
+
+\textbf{背景}：在 \cref{eq:teststatistic} 中，我们定义了差值均值统计量
+\[
+\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) .
+\]
+本节推导在 $\HF$ 下 $\hat{\tau}$ 的期望和方差。
+
+\subsection*{期望的推导}
+
+回忆在 CRE 中，治疗分配 $\bm{Z}$ 与潜在结果 $\{\bm{Y}(1), \bm{Y}(0)\}$ 独立，且每个单元被分配到治疗组的概率为 $n_1/n$：
+\[
+\mathbb{E}(Z_i) = \frac{n_1}{n}, \quad \mathbb{E}(1 - Z_i) = \frac{n_0}{n} .
+\]
+
+因此
+\begin{align*}
+\mathbb{E}(\hat{\tau})
+&= \mathbb{E}\left( n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i \right) \\
+&= n_1^{-1} \sum_{i=1}^n \mathbb{E}(Z_i) Y_i - n_0^{-1} \sum_{i=1}^n \mathbb{E}(1 - Z_i) Y_i \\
+&= n_1^{-1} \sum_{i=1}^n \frac{n_1}{n} Y_i - n_0^{-1} \sum_{i=1}^n \frac{n_0}{n} Y_i \\
+&= \frac{1}{n} \sum_{i=1}^n Y_i - \frac{1}{n} \sum_{i=1}^n Y_i = 0 .
+\end{align*}
+
+\subsection*{方差的推导}
+
+\textbf{第一步}：简化表达式。注意到
+\[
+\hat{\tau} = n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i = \frac{n}{n_0} \cdot n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n Y_i .
+\]
+
+由于 $\sum_{i=1}^n Y_i$ 是常数（不依赖 $\bm{Z}$），我们只需计算
+\[
+\text{var}(\hat{\tau}) = \frac{n^2}{n_0^2 n_1^2} \cdot \text{var}\left( \sum_{i=1}^n Z_i Y_i \right) .
+\]
+
+\textbf{第二步}：计算 $\text{var}(Z_i)$ 和 $\text{cov}(Z_i, Z_j)$。在 CRE 中，
+\[
+Z_i \sim \text{Bernoulli}\left(\frac{n_1}{n}\right), \quad \text{var}(Z_i) = \frac{n_1}{n} \cdot \frac{n_0}{n} = \frac{n_1 n_0}{n^2} .
+\]
+
+由于 $\sum_{i=1}^n Z_i = n_1$（固定），对于 $i \neq j$，
+\[
+\text{cov}(Z_i, Z_j) = -\frac{n_1 n_0}{n^2 (n-1)} .
+\]
+
+\textbf{第三步}：计算 $\text{var}\left( \sum_{i=1}^n Z_i Y_i \right)$：
+\begin{align*}
+\text{var}\left( \sum_{i=1}^n Z_i Y_i \right)
+&= \sum_{i=1}^n Y_i^2 \, \text{var}(Z_i) + \sum_{i \neq j} Y_i Y_j \, \text{cov}(Z_i, Z_j) \\
+&= \left( \sum_{i=1}^n Y_i^2 \right) \frac{n_1 n_0}{n^2} + \sum_{i \neq j} Y_i Y_j \left( -\frac{n_1 n_0}{n^2 (n-1)} \right) .
+\end{align*}
+
+注意 $\sum_{i \neq j} Y_i Y_j = \left( \sum_{i=1}^n Y_i \right)^2 - \sum_{i=1}^n Y_i^2 = n^2 \bar{Y}^2 - \sum_{i=1}^n Y_i^2$，代入得：
+\begin{align*}
+\text{var}\left( \sum_{i=1}^n Z_i Y_i \right)
+&= \frac{n_1 n_0}{n^2} \sum_{i=1}^n Y_i^2 - \frac{n_1 n_0}{n^2 (n-1)} \left( n^2 \bar{Y}^2 - \sum_{i=1}^n Y_i^2 \right) \\
+&= \frac{n_1 n_0}{n^2 (n-1)} \left[ (n-1) \sum_{i=1}^n Y_i^2 - n^2 \bar{Y}^2 + \sum_{i=1}^n Y_i^2 \right] \\
+&= \frac{n_1 n_0}{n^2 (n-1)} \left[ n \sum_{i=1}^n Y_i^2 - n^2 \bar{Y}^2 \right] \\
+&= \frac{n_1 n_0}{n (n-1)} \left( \sum_{i=1}^n Y_i^2 - n \bar{Y}^2 \right) .
+\end{align*}
+
+\textbf{第四步}：利用 $s^2$ 的定义：
+\[
+s^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i - \bar{Y})^2 = (n-1)^{-1} \left( \sum_{i=1}^n Y_i^2 - n \bar{Y}^2 \right) .
+\]
+
+因此
+\[
+\text{var}\left( \sum_{i=1}^n Z_i Y_i \right) = \frac{n_1 n_0}{n} \cdot s^2 .
+\]
+
+\textbf{第五步}：代回 $\text{var}(\hat{\tau})$：
+\[
+\text{var}(\hat{\tau}) = \frac{n^2}{n_0^2 n_1^2} \cdot \frac{n_1 n_0}{n} \cdot s^2 = \frac{n}{n_1 n_0} \cdot s^2 .
+\]
+
+\textbf{结论}：
+\[
+\boxed{ \text{var}(\hat{\tau}) = \frac{n}{n_1 n_0} \cdot s^2 } .
+\]
+
+\textbf{直观理解}：
+\begin{itemize}
+  \item 方差与总样本量 $n$ 成正比——样本越大，估计越精确
+  \item 方差与 $n_1 n_0$ 成反比——当 $n_1 = n_0 = n/2$ 时方差最小
+  \item 这与直觉一致：治疗组和对照组越平衡，我们越能准确估计因果效应
+\end{itemize}

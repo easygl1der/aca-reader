@@ -44,9 +44,13 @@ This file provides guidance to Claude Code when working with this literature stu
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
 9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
-11. **习题格式规则**: 不同模板有不同格式。book 模板（do Carmo）使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`，详见 `docs/exercise-format.md`
+11. **习题格式规则**: 不同模板有不同格式，详见 `docs/exercise-format.md`。
+    - **book 模板**（do Carmo）：使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`
+    - **因果推断模板**（Peng Ding）：使用 `Exercise` 环境，**必须用 `\eqref{}` 引用教材公式编号**。先给公式加 `\label{}`（如 `\label{eq:balance-discrete-CRE}`），再在习题中引用（如 `证明 \eqref{eq:balance-discrete-CRE}`）。标签命名：`eq:{描述性名称}`
 
 12. **学习原则（核心思想）**: 从学习数学知识的角度，公式推导是必要学习的；但在理解思想、了解脉络、抓住重点的目的下，公式推导/定理证明反而不是最重要的，所以可以放到附录。在正文中抓住重点，以防被过长的数学公式分散了注意力。
+
+13. **问答引用规则**: 问答结果记录到 `appendix/qa.tex` 后，必须使用**有编号的小节**（`\subsection{标题}\label{sec:qa-xxx}`），在正文相应位置用 `\footnote{问：...？见附录 \cref{sec:qa-xxx}}` 引用，使读者可以跳转到详细解答。**footnote 中必须标出问题是什么**。
 
 ---
 
@@ -96,6 +100,7 @@ This file provides guidance to Claude Code when working with this literature stu
 | 独立性 | `$A \Perp B$` |
 | 示性函数 | `\mathbb{I}(X \in A)` 或 `\mathbb{I}_A(X)` 或 `\mathbb{I}(a \leq X < b)` |
 | p 值 | `\text{p}_{}` |
+| 正态分布 | `\mathcal{N}(\mu, \sigma^2)` |
 
 ### 禁止使用的宏包/命令
 - **禁止 `\bm`**：向量用 `\mathbf`，矩阵用 `\boldsymbol`
@@ -291,6 +296,7 @@ git worktree prune
 - **2026-03-22**: Python 字符串替换操作大文件（HTML）时极易损坏文件 → 对 HTML/大型文件进行字符串操作前，必须先备份；优先使用逐行读取+写入而非内存中全量替换
 - **2026-03-23**: 打开 PDF 默认用 Skim（不是其他 PDF 阅读器）
 - **2026-03-27**: 笔记省略了教材公式完整推导 → 必须在附录添加完整推导
+- **2026-03-27**: 符号不一致（同一概念用不同符号）→ 使用 /latex-writing-check 检查全笔记符号统一
 
 ---
 

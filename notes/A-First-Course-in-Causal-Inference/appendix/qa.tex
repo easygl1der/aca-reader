@@ -9,23 +9,152 @@
 % === 用户问答记录 ===
 % 本节记录阅读过程中的问答内容
 
-\subsection*{亚组的定义}
+\subsection{亚组的定义}\label{sec:qa-subgroup}
+
 \textbf{问}：什么是亚组？
 
 \textbf{答}：亚组（subgroup）是由某个协变量（通常是二元变量 $X_i$）分割出来的子群体。例如按性别、年龄、收入等分割。亚组因果效应衡量的是在该亚组内的平均因果效应。
 
-\subsection*{恒等式 $\tau = \pi_1 \tau_1 + \pi_0 \tau_0$ 的推导}
+\subsection{恒等式 $\tau = \pi_1 \tau_1 + \pi_0 \tau_0$ 的推导}\label{sec:qa-tau-decomposition}
+
 \textbf{问}：如何推导 $\tau = \pi_1 \tau_1 + \pi_0 \tau_0$？
 
 \textbf{答}：利用指示函数的完备性 $\mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) = 1$，将总体求和拆分为两个亚组求和，再除以对应的亚组样本量即可得到。
 
-\subsection*{为什么在 $H_{0F}$ 下 $\bm{Y}$ 是固定的？}
+\subsection{为什么在 $H_{0F}$ 下 $\bm{Y}$ 是固定的？}\label{sec:qa-Y-fixed-under-H0F}
 
 \textbf{问}：为什么在 Fisher's sharp null ($H_{0F}: Y_i(1) = Y_i(0)$) 下，潜在结果向量 $\bm{Y}$ 是固定的？
 
 \textbf{答}：$H_{0F}$ 断言 treatment 对每个单元都没有效应，即 $Y_i(1) = Y_i(0) = Y_i$ 对所有 $i$。这意味着整个 $\bm{Y}(1) = \bm{Y}(0) = \bm{Y}$ 向量是确定的（固定值），不再有随机性。
 
 在 FRT 中，我们 condition on 这个固定的 $\bm{Y}$，只让治疗分配 $\bm{Z}$ 有随机性。因此，随机化分布可以精确枚举（$M = \binom{n}{n_1}$ 种可能），不依赖任何渐近假设——这就是 FRT"有限样本精确"的本质。
+
+\subsection{p\_frt 是什么？为什么要用 Monte Carlo 近似？}\label{sec:qa-pfrt-mc}
+
+\textbf{问}：$p_{frt}$ 是什么意思？为什么要用 Monte Carlo 来近似它？
+
+\textbf{答}：$p_{frt}$ 是 Fisher Randomization Test 的 p 值，衡量的是：如果 treatment 是随机分配的，观察到的治疗组与对照组之间的差异，有多大可能是纯粹由随机性造成的？
+
+\textbf{精确计算的问题}：精确计算 $p_{frt}$ 需要枚举所有 $M$ 种可能的治疗分配
+$$M = \binom{n}{n_1}$$
+当 $n=100, n_1=50$ 时，$M \approx 10^{29}$——这在计算上是不可行的。
+
+\textbf{Monte Carlo 近似}（\cref{eq:mc-pvalue}）：
+$$\hat{p}_{frt} = \frac{1}{R}\sum_{r=1}^R \mathbb{I}\{T(\bm{z}^r,\bm{Y}) \geq T(\bm{Z},\bm{Y})\}$$
+就是随机置换 $R$ 次，看有多少次产生的统计量比实际观察到的还大。
+
+\textbf{修正公式}（有限样本有效）：
+$$\tilde{p}_{frt} = \frac{1 + \sum_{r=1}^R \mathbb{I}\{T(\bm{z}^r) \geq T_{obs}\}}{1+R}$$
+
+加了 1 在分子和分母，确保在任何有限的 $R$ 下都满足有限样本有效性（$\mathbb{P}(p \leq u) \leq u$）。
+
+\subsection{为什么叫"有限样本精确"？}\label{sec:qa-finite-sample-exact}
+
+\textbf{问}：FRT 的 p 值为什么被称为"有限样本精确"？
+
+\textbf{答}：关键在于 \cref{eq:p-value-valid} 给出的不等式：
+$$\mathbb{P}(p_{frt} \leq u) \leq u \quad \text{for all } u \in [0,1]$$
+
+这叫做\textbf{有限样本有效性}（finite-sample validity）。意思是：无论样本量多小、数据分布如何，$p_{frt}$ 的分布永远不会偏离均匀分布太多。
+
+对比传统 t 检验：它需要大样本下才近似有效（渐近性质），小样本时可能失效。FRT 的精确性只依赖于随机化机制，不依赖于任何渐近假设。
+
+\subsection{Fisher 方法 vs 传统方法}\label{sec:qa-fisher-vs-classical}
+
+\textbf{问}：Fisher 的思路和传统统计推断有什么本质区别？
+
+\textbf{答}：
+
+\begin{itemize}
+  \item \textbf{传统方法问}：``数据有多极端？''——依赖数据分布假设
+  \item \textbf{Fisher 方法问}：``如果随机化，会产生多极端的数据？''——只依赖随机化机制
+\end{itemize}
+
+Fisher 方法的哲学：在 sharp null（无因果效应）假设下，潜在结果完全已知。观察到的差异完全来自随机分配。我们可以枚举所有可能的置换，计算每个置换产生的统计量。传统方法则依赖于数据的原始分布假设（如正态性），而 FRT 给经典 t 检验提供了理论justify——不需要正态性假设。
+
+\subsection{经典 t 检验之前没有理论基础吗？}\label{sec:qa-t-test-before-frt}
+
+\textbf{问}：经典 t 检验之前没有理论 justify 吗？一定要 FRT 给出吗？
+
+\textbf{答}：经典 t 检验\textbf{有}理论基础，但 FRT 提供了\textbf{更坚实}的理论基础。
+
+\textbf{经典 t 检验的理论基础}：
+\begin{itemize}
+  \item \textbf{正态性假设下}（Fisher 原始推导）：如果 $Y_i \sim \text{i.i.d. } \mathcal{N}(\mu, \sigma^2)$，则 t 统计量精确服从 t 分布
+  \item \textbf{渐近理论}（后来发展）：大样本下，CLT 保证 t 统计量近似正态分布——即使数据不正态
+\end{itemize}
+
+\textbf{FRT 的新贡献}：FRT 并不是说经典 t 检验"没有理论依据"，而是提供了\textbf{另一种理论框架}：
+
+\begin{itemize}
+  \item 经典方法：关注"\textbf{数据的分布}"（假设数据来自正态分布）
+  \item FRT：关注"\textbf{随机化的机制}"（治疗是如何分配的）
+\end{itemize}
+
+\textbf{关键区别}：在随机实验中，我们\textbf{知道}治疗是如何分配的（CRE），所以可以基于随机化机制来计算 p 值——这比假设"数据来自正态分布"更可靠。
+
+\textbf{准确的说法}：FRT 为经典 t 检验在随机实验中的应用提供了\textbf{更直接、更不依赖分布假设}的理论基础。
+
+\subsection{经典 t 检验需要正态性假设吗？}\label{sec:qa-t-test-normality}
+
+\textbf{问}：经典 t 检验需要正态性假设吗？为什么 FRT 说"不需要"？
+
+\textbf{答}：经典 t 检验有两种情况：
+
+\begin{itemize}
+  \item \textbf{精确版本}：如果数据来自正态分布的总体，t 统计量的精确抽样分布是 t 分布
+  \item \textbf{渐近版本}：在大样本下，即使数据不正态，CLT 保证 t 统计量近似正态分布
+\end{itemize}
+
+\textbf{FRT 的贡献}：它证明了在随机实验 + sharp null 下，t 统计量的\textbf{随机化分布}可以直接计算（精确或 Monte Carlo 近似），不依赖任何分布假设。
+
+\textbf{关键区别}：
+\begin{itemize}
+  \item 传统方法问："如果数据来自正态分布，观察到的差异有多极端？"
+  \item FRT 问："如果 treatment 是随机分配的，观察到这种差异的概率有多大？"
+\end{itemize}
+
+FRT 的理论基础是有限总体 CLT，它保证\textbf{随机化分布}收敛到正态，而不是数据本身正态。因此在大样本下，即使数据不正态，FRT 给出的 p 值也是有效的。
+
+\textbf{总结}：FRT 并没有说经典 t 检验"不需要"正态性假设，而是说在随机实验框架下，可以用不依赖正态性的方法（FRT）来获得精确的 p 值。
+
+\subsection{什么是潜在结果？}\label{sec:qa-potential-outcomes}
+
+\textbf{问}：在 Fisher 随机化检验框架下，什么是潜在结果？
+
+\textbf{答}：潜在结果（Potential Outcomes）是每个单元在两种 treatment 状态下的可能结果：
+
+\begin{itemize}
+  \item $Y_i(1)$：单元 $i$ 如果接受 treatment 的结果
+  \item $Y_i(0)$：单元 $i$ 如果接受 control 的结果
+\end{itemize}
+
+\textbf{关键洞察}：每个单元只能实际接受一种 treatment，因此我们只能观测到其中一个潜在结果，另一个是"反事实"（counterfactual）——它从未发生，无法被观测。
+
+\textbf{观测结果与潜在结果的关系}：
+\[
+Y_i^{obs} = Z_i Y_i(1) + (1 - Z_i) Y_i(0)
+\]
+即：如果 $Z_i=1$（接受 treatment），我们观测到 $Y_i(1)$；如果 $Z_i=0$，我们观测到 $Y_i(0)$。
+
+\textbf{因果推断的根本问题}：我们想估计 $Y_i(1) - Y_i(0)$（单元 $i$ 的因果效应），但只能观测到其中一个值。
+
+\subsection{随机化的两个原则是什么？}\label{sec:qa-randomization-principles}
+
+\textbf{问}：Fisher 随机化的两个原则——可比性和推理基础——是什么意思？
+
+\textbf{原则一：可比性（Comparability）}。随机化保证了 treatment 组和 control 组在平均意义下是可比的。如果没有随机化，治疗分配可能受到选择偏差（selection bias）的影响。例如，如果病人自己选择是否接受治疗，那么接受治疗的群体可能本身就比对照组更健康。随机化通过强制分配机制打破了这种联系，使得两组在所有可观测和不可观测的特质上趋于平衡。
+
+\textbf{原则二：推理基础（Inference Basis）}。随机化提供了推断因果效应的理论基础。在没有随机化的情况下，我们无法区分"因果效应"和"选择偏差"。但在随机实验中，我们知道治疗分配是如何进行的（randomization mechanism），因此可以基于这个已知的分配机制来计算 p 值。具体而言：
+
+\begin{enumerate}
+  \item 假设 $H_{0F}$：treatment 对每个人都无效（$Y_i(1) = Y_i(0)$）
+  \item 在这个假设下，治疗分配是唯一的随机来源
+  \item 枚举所有可能的随机分配（或者 Monte Carlo 近似）
+  \item 计算在每种分配下，检验统计量有多极端
+\end{enumerate}
+
+\textbf{总结}：可比性解决"选择偏差"——确保组间可比较。推理基础解决"随机变异"——知道观察到的差异有多极端。两者结合，使得因果推断成为可能。
 
 \textit{当你在阅读过程中提出问题时，回答将被记录在此处。}
 

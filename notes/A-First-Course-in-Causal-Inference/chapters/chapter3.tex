@@ -11,7 +11,7 @@
 \tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \bar{Y}(1) - \bar{Y}(0)
 \]
 
-但我们也清楚地看到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，$Y_i(1)$ 和 $Y_i(0)$ 无法同时被观测。
+但我们也清楚地看到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，$Y_i(1)$ 和 $Y_i(0)$ 无法同时被观测。\footnote{问：什么是潜在结果？见附录 \cref{sec:qa-potential-outcomes}。}
 
 那么，一个自然的问题是：我们能否设计某种数据收集过程，使得即使无法观察反事实，我们仍然可以估计因果效应？
 
@@ -26,7 +26,7 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
   \item \textbf{推理基础}：它作为统计推断的"合理基础"。
 \end{enumerate}
 
-第一点直观易懂——随机治疗分配不会偏向 treatment 或 control。第二点更微妙：Fisher 的意思是，随机化为统计检验提供了正当理由，这就是现在所谓的\textbf{费舍尔随机化检验（Fisher Randomization Test, FRT）}。
+第一点直观易懂——随机治疗分配不会偏向 treatment 或 control。第二点更微妙：Fisher 的意思是，随机化为统计检验提供了正当理由，这就是现在所谓的\textbf{费舍尔随机化检验（Fisher Randomization Test, FRT）}。\footnote{问：Fisher 随机化检验与经典假设检验有何不同？见附录 \cref{sec:qa-fisher-vs-classical}。}
 
 \section{完全随机实验的定义}
 
@@ -54,7 +54,7 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
 \[
 \HF: Y_i(1) = Y_i(0) \text{ 对所有单元 } i=1,\ldots, n.
 \]
-\citet{Rubin:1980} 称其为\textbf{sharp null 假设}，因为它可以基于观测数据确定所有潜在结果：$\bm{Y}(1) = \bm{Y}(0) = \bm{Y} = (Y_1, \ldots, Y_n)$，即观测结果向量。它也被称为\textbf{强零假设}。
+\citet{Rubin:1980} 称其为\textbf{sharp null 假设}，因为它可以基于观测数据确定所有潜在结果：$\bm{Y}(1) = \bm{Y}(0) = \bm{Y} = (Y_1, \ldots, Y_n)$，即观测结果向量。它也被称为\textbf{强零假设}。\footnote{问：为什么在 $H_{0F}$ 下 $\bm{Y}$ 是固定的？见附录 \cref{sec:qa-Y-fixed-under-H0F}。}
 
 概念上，在 $\HF$ 下，FRT 适用于任何检验统计量：
 \begin{equation}\label{eq:teststatistic}
@@ -71,7 +71,7 @@ T = T(\bm{Z}, \bm{Y}) ,
 p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\bm{z}^m,\bm{Y}) \geq T(\bm{Z},\bm{Y}) \}.
 \end{equation}
 
-这就是 Fisher 的 p 值。重要的是，$p_\frt$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $\HF$ 下是有限样本精确的（finite-sample exact）：
+这就是 Fisher 的 p 值。重要的是，$p_\frt$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $\HF$ 下是有限样本精确的（finite-sample exact）。\footnote{问：什么是有限样本精确？见附录 \cref{sec:qa-finite-sample-exact}。}
 \begin{equation}\label{eq:p-value-valid}
 \mathbb{P}(p_\frt \leq u) \leq u \quad \text{for all} \quad 0 \leq u \leq 1.
 \end{equation}
@@ -80,7 +80,7 @@ p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\bm{z}^m,\bm{Y}) \geq T(\bm{Z},\bm{Y}
 
 \section{Monte Carlo 近似}
 
-在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$：
+在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$。\footnote{问：$p_{frt}$ 是什么？为什么要用 Monte Carlo 近似？见附录 \cref{sec:qa-pfrt-mc}。}
 \begin{equation}\label{eq:mc-pvalue}
 \hat p_\frt  =  R^{-1} \sum_{r=1}^R   \mathbb{I}\{T(\bm{z}^r,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \},
 \end{equation}
@@ -112,16 +112,29 @@ FRT 的一个特点是它对任何检验统计量都生成有限样本精确 p �
 \]
 是 control 组的样本均值。
 
-在 $\HF$ 下，它有均值 $0$ 和方差：
-\[
-\text{var}(\hat{\tau})  = \frac{n}{n_1 n_0} s^2,
-\]
-其中
-\[
-s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2, \quad \bar{Y} = n^{-1} \sumn Y_i.
-\]
+在 $\HF$ 下，首先计算期望：
+\begin{align*}
+\mathbb{E}(\hat{\tau})
+&= n_1^{-1} \sum_{i=1}^n \mathbb{E}(Z_i) Y_i - n_0^{-1} \sum_{i=1}^n \mathbb{E}(1 - Z_i) Y_i \\
+&= n_1^{-1} \sum_{i=1}^n \frac{n_1}{n} Y_i - n_0^{-1} \sum_{i=1}^n \frac{n_0}{n} Y_i \\
+&= \frac{1}{n} \sum_{i=1}^n Y_i - \frac{1}{n} \sum_{i=1}^n Y_i = 0 .
+\end{align*}
 
-\textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem\footnote{有限总体 CLT 是随机化推断的核心工具。传统统计学的中心极限定理研究的是 i.i.d. 样本的分布，而有限总体 CLT 研究的是从固定有限总体中进行随机抽样时，样本均值（或更一般的统计量）的分布。其核心结论是：对于从有限总体中随机抽取的样本，在一定正则条件下，当样本量增大时，样本均值的随机化分布会收敛到正态分布。关键在于，这个正态性\textbf{不依赖于潜在结果的分布}（即 $Y_i$ 本身可以是任意分布），而只依赖于随机化机制。这正是 FRT 能为 t 检验提供理论基础的原因。})，随机化分布近似正态：
+然后计算方差。记 $s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2$，其中 $\bar{Y} = n^{-1} \sumn Y_i$。利用简单随机抽样中 $\text{var}(Z_i) = n_1 n_0 / n^2$ 和 $\text{cov}(Z_i, Z_j) = -n_1 n_0 / [n^2 (n-1)]$（对于 $i \neq j$），我们有：
+\begin{align*}
+\text{var}(\hat{\tau})
+&= \text{var}\left\{ n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i \right\} \\
+&= \text{var}\left\{ \frac{n}{n_0} \cdot n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n Y_i \right\} \\
+&= \frac{n^2}{n_0^2} \cdot \frac{1}{n_1^2} \cdot \text{var}\left( \sum_{i=1}^n Z_i Y_i \right) \quad (\text{第二项是常数}) \\
+&= \frac{n^2}{n_0^2 n_1^2} \cdot \left( \sum_{i=1}^n Y_i^2 \cdot \frac{n_1 n_0}{n} - \frac{n_1 n_0}{n(n-1)} \sum_{i=1}^n Y_i^2 \right) \\
+&= \frac{n^2}{n_0^2 n_1^2} \cdot \frac{n_1 n_0}{n(n-1)} \left( (n-1)\sum_{i=1}^n Y_i^2 - \sum_{i=1}^n Y_i^2 \right) \\
+&= \frac{n}{n_1 n_0} \cdot \frac{1}{n-1} \left( \sum_{i=1}^n Y_i^2 - n\bar{Y}^2 \right) \\
+&= \frac{n}{n_1 n_0} \cdot s^2 .
+\end{align*}
+
+其中 $\text{var}(Z_i) = n_1 n_0 / n^2$ 来自超几何分布的性质，而 $\sum_{i \neq j} \text{cov}(Z_i, Z_j) = -n_1 n_0 / (n-1)$ 用于化简。\footnote{差值均值统计量期望与方差的完整推导见附录 \cref{sec:tau-hat-variance-derivation}。}
+
+\textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem），随机化分布近似正态：
 \begin{equation}\label{eq:frt-tau-hat}
 \frac{ \hat{\tau} }{ \sqrt{\frac{n}{n_1 n_0} s^2} } \rightarrow \mathcal{N}(0,1)
 \end{equation}
@@ -146,12 +159,11 @@ in distribution.
   \item 组间平方和化简为 $\frac{n_1 n_0}{n} \hat{\tau}^2$
 \end{enumerate}
 
-完整推导见附录 \cref{sec:frt-algebra-derivation}。\qed
-\end{Example}
-
-★ Insight ─────────────────────────────────────
+\qed
+\end{Example}\footnote{ANOVA 分解的完整代数推导见附录 \cref{sec:frt-algebra-derivation}。}
+ 
 \textbf{ANOVA 分解的几何直觉}：将 $n$ 维向量 $\bm{Y}$ 投影到 treatment 组和 control 组形成的两个正交子空间。组内平方和是残差平方和，组间平方和 $\frac{n_1 n_0}{n} \hat{\tau}^2$ 是由治疗分配解释的变异。关键发现：$s^2$ 中混入了治疗效应信息，这解释了为什么 FRT 的 $t$ 统计量在 $\HF$ 下能精确分布。
-─────────────────────────────────────────────────
+ 
 
 \userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
 
@@ -189,8 +201,8 @@ W = \sumn Z_i R_i,
 
 \textbf{方差}：利用 $\text{var}(Z_i) = n_1n_0/n^2$ 和 $\text{cov}(Z_i,Z_j) = -n_1n_0/[n^2(n-1)]$，以及 $\sumn R_i^2 = n(n+1)(2n+1)/6$，化简得 $\text{var}(W) = n_1n_0(n+1)/12$。
 
-完整推导见附录 \cref{sec:wilcoxon-variance-derivation}。\qed
-\end{Example}
+\qed
+\end{Example}\footnote{ Wilcoxon 秩和统计量的均值与方差完整推导见附录 \cref{sec:wilcoxon-variance-derivation}。}
 
 这个统计量的优点是：
 \begin{itemize}
@@ -296,8 +308,8 @@ p_\frt = \frac{1}{70} = 0.014.
 
 \textbf{直觉}：在 70 种可能排列中只有 1 种能让 Lady 全部猜对。
 
-完整推导与二项分布比较见附录 \cref{sec:lady-tea-hypergeometric}。\qed
-\end{Example}
+\qed
+\end{Example}\footnote{女士品茶实验的超几何分布推导及与二项分布的比较见附录 \cref{sec:lady-tea-hypergeometric}。}
 
 这些例子强调了 Fisher 的两个原则：
 \begin{enumerate}

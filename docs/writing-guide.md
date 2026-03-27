@@ -115,6 +115,37 @@ A \Perp B \quad \text{当且仅当} \quad \mathbb{P}(A \cap B) = \mathbb{P}(A)\m
 \text{p}_{} = 0.03
 ```
 
+### 符号一致性检查 ⚠️
+
+**全笔记符号必须统一**。除了上述符号习惯外，还需检查同一概念在不同位置是否使用不同符号：
+
+**必须避免的符号混用：**
+| 概念 | ✅ 统一 | ❌ 混用示例 |
+|------|---------|------------|
+| 概率 | `\mathbb{P}` | `P`, `Pr`, `p` |
+| 期望 | `\mathbb{E}` | `E`, `Exp` |
+| 方差 | `\text{var}` | `Var`, `var` |
+| 协方差 | `\text{cov}` | `Cov`, `cov` |
+| 示性函数 | `\mathbb{I}` | `I`, `1_` |
+| p 值 | `\text{p}_{}` | `p-value`, `pvalue` |
+| 独立性 | `\Perp` | `⊥`, `⟂` |
+| 向量 | `\mathbf{x}` | `\bm{x}`, `\vec{x}` |
+| 矩阵 | `\boldsymbol{X}` | `\bm{X}` |
+
+**检查方法**：在 `chapters/` 和 `appendix/` 目录下搜索可能的不一致符号：
+```bash
+# 检查 P( vs \mathbb{P}(
+grep -rn "P(" --include="*.tex" notes/<topic>/ | grep -v "mathbb"
+
+# 检查 var( vs \text{var}(
+grep -rn "var(" --include="*.tex" notes/<topic>/ | grep -v "text{var"
+
+# 检查 \bm{（禁止）
+grep -rn "\\bm{" --include="*.tex" notes/<topic>/
+```
+
+**注意**：在 R 代码的 `verbatim` 环境中（如 `\begin{verbatim}...\end{verbatim}`）的符号不受此限制。
+
 ---
 
 ## 第三部分：Example 环境使用规范（动机优先原则）
@@ -137,12 +168,18 @@ A \Perp B \quad \text{当且仅当} \quad \mathbb{P}(A \cap B) = \mathbb{P}(A)\m
   $\theta = (\mu, \sigma^2)$ 为物体的真实重量和测量方差。
   ...
 \end{Example}
+ footnote{推导见附录 \cref{sec:xxx}。}
 ```
+
+**重要规范**：
+- Example 环境内**不写**"完整推导见附录"等文字
+- 在 `\end{Example}` **之后**用 `\footnote{...}` 引用附录推导
+- footnote 放在 Example 结束后立即引用，格式统一为：`\footnote{推导见附录 \cref{sec:xxx}。}`
 
 ### 与正文/附录的关系
 
-- **正文**：保持流畅叙述，例子作为"润滑剂"，用例子自然引出概念
-- **详细推导**：放附录，用 `\footnote{推导见附录 \cref{sec:xxx}}` 引用
+- **Example**：放真正的例子（数值演示、应用场景、历史典故等），**不放推导摘要**
+- **详细推导**：放附录，在 Example 结束后用 `\footnote{推导见附录 \cref{sec:xxx}}` 引用
 - **★ Insight**：必要时在例子后加"★ Insight"总结要点
 
 ---

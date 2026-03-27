@@ -6,14 +6,17 @@
 
 | 模板 | 习题格式 | 说明 |
 |------|----------|------|
-| **book 模板** (do Carmo) | `exercise` 环境，`{章节编号, 题号 — do Carmo, ...}` | 见本规范 |
+| **book 模板** (do Carmo) | `exercise` 环境，`{章节编号, 题号 — do Carmo, ...}` | 见本规范 §1 |
+| **因果推断模板** (Peng Ding) | `Exercise` 环境，`{\ref{标签} 英文标题}` | 见本规范 §2 |
 | **其他模板** | 各自格式 | 详见对应笔记规范 |
-
-本规范定义 **book 模板**（do Carmo 微分几何笔记）中的习题引用格式。
 
 ---
 
-## 格式模板
+## §1 Book 模板 (do Carmo)
+
+本节定义 **book 模板**（do Carmo 微分几何笔记）中的习题引用格式。
+
+### 格式模板
 
 ```latex
 \begin{exercise}{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}
@@ -146,3 +149,106 @@ of Diocles (见 \cref{fig:cissoid}，教材 Figure 1-8).
 - 章节编号：对应 do Carmo 教材的节号，如 `1-2` 表示第1章第2节
 - 题号：教材中的实际习题编号
 - 图片引用：使用 transcript md 文件中的图片标签
+
+---
+
+## §2 因果推断模板 (Peng Ding)
+
+本节定义 **因果推断模板**（Peng Ding - A First Course in Causal Inference 笔记）中的习题格式。
+
+### 格式模板
+
+```latex
+\section{习题}\label{sec:chapter5-exercises}
+
+\begin{Exercise}{\ref{exr:5-1} 英文标题}\label{exr:5-1}
+习题内容（中英文均可，英文优先）。
+\end{Exercise}
+```
+
+### 格式说明
+
+1. **环境名称**：使用 `Exercise` 环境（已定义在文档宏中，大写首字母）
+
+2. **参数格式**：
+   ```
+   {\ref{标签} 英文标题}
+   ```
+   - `{\ref{exr:5-1} Covariate balance in the CRE}`
+
+3. **标签命名规范**：`exr:{章号}-{题号}`，如 `exr:5-1`、`exr:5-7`
+
+4. **习题标题**：使用教材原文的英文标题，保持学术规范性
+
+5. **\textbf{公式引用规则}**：\textbf{必须用 `\eqref{}` 引用教材公式编号}，格式为 `\eqref{eq:标签}`
+
+6. **内容语言**：
+   - 理论题：优先使用英文原文描述
+   - 计算/应用题：可使用中文描述题目背景
+   - 公式：使用 LaTeX 行内或行间公式
+
+### 正确示例
+
+```latex
+\begin{Exercise}{\ref{exr:5-1} Covariate balance in the CRE}\label{exr:5-1}
+证明 \eqref{eq:balance-discrete-CRE}：在 CRE 下，
+\[
+\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0.
+\]
+\end{Exercise}
+```
+
+```latex
+\begin{Exercise}{\ref{exr:5-3} Consequence of constant individual causal effects}\label{exr:5-3}
+假设个体因果效应是常数 $\tau_i = \tau$（对所有 $i = 1, \ldots, n$）。考虑以下 $\tau$ 的加权估计量类：
+\[
+\hat\tau_w = \sum_{k=1}^K w_{[k]} \hat\tau_{[k]},
+\]
+其中权重 $w_{[k]}$ 对所有 $k$ 非负。
+
+\begin{enumerate}
+  \item 找出使 $\hat\tau_w$ 对 $\tau$ 无偏的 $w_{[k]}$ 条件。
+  \item 在所有无偏估计量中，找出使 $\hat\tau_w$ 方差最小的权重。
+\end{enumerate}
+\end{Exercise}
+```
+
+### 错误示例
+
+❌ **错误：缺少标签引用**
+```latex
+\begin{Exercise}{5.1 Covariate balance}\label{exr:5-1}  % 缺少 \ref{}
+```
+
+❌ **错误：标签格式错误**
+```latex
+\begin{Exercise}{\ref{ex:5.1} Covariate balance}\label{exr:5-1}  % 标签名不一致
+```
+
+❌ **错误：中文标题**
+```latex
+\begin{Exercise}{\ref{exr:5-1} CRE 中的协变量平衡}\label{exr:5-1}  % 不应用中文标题
+```
+
+### 分部题目格式
+
+当题目包含多个小问时，使用 `enumerate` 环境：
+
+```latex
+\begin{Exercise}{\ref{exr:5-9} Data re-analyses}\label{exr:5-9}
+重新分析第 4 章使用的 LaLonde 数据。
+
+\begin{enumerate}
+  \item 将实验视为按种族分层的 SRE，重新分析数据。
+  \item 将实验视为按婚姻状况分层的 SRE，重新分析数据。
+  \item 将实验视为按高中文凭指标分层的 SRE，重新分析数据。
+\end{enumerate}
+与 CRE 下的结果进行比较。
+\end{Exercise}
+```
+
+### 参考
+
+- 标签命名：`exr:{章号}-{题号}`（与 chapter4.tex 保持一致）
+- 习题编号：对应教材章内习题编号（如 5.1, 5.2, ..., 5.9）
+- 题目来源：Peng Ding 教材章后习题
