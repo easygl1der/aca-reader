@@ -26,7 +26,7 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
   \item \textbf{推理基础}：它作为统计推断的"合理基础"。
 \end{enumerate}
 
-第一点直观易懂——随机治疗分配不会偏向 treatment 或 control。第二点更微妙：Fisher 的意思是，随机化为统计检验提供了正当理由，这就是现在所谓的\textbf{费舍尔随机化检验（Fisher Randomization Test, FRT）}。\footnote{问：Fisher 随机化检验与经典假设检验有何不同？见附录 \cref{sec:qa-fisher-vs-classical}。}
+第一点直观易懂——随机治疗分配不会偏向 treatment 或 control。第二点更微妙：Fisher 的意思是，随机化为统计检验提供了正当理由，这就是现在所谓的\textbf{费舍尔随机化检验（Fisher Randomization Test, FRT）}\footnote{问：什么是 Fisher Randomization Test？见附录 \cref{sec:qa-fisher-randomization-test}。}。\footnote{问：Fisher 随机化检验与经典假设检验有何不同？见附录 \cref{sec:qa-fisher-vs-classical}。}
 
 \section{完全随机实验的定义}
 
@@ -35,18 +35,18 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
 \begin{Definition}[CRE]\label{def:cre}
 固定 $n_1$ 和 $n_0$（其中 $n = n_1 + n_0$）。完全随机实验的治疗 assignment 机制为：
 \[
-\mathbb{P}(\bm{Z} = \bm{z}) = 1 \Big / \binom{n}{n_1},
+\mathbb{P}(\mathbf{Z} = \mathbf{z}) = 1 \Big / \binom{n}{n_1},
 \]
-其中 $\bm{z} = (z_1,\ldots, z_n)$ 满足 $\sumn z_i = n_1$ 和 $\sumn (1-z_i) = n_0$。
+其中 $\mathbf{z} = (z_1,\ldots, z_n)$ 满足 $\sumn z_i = n_1$ 和 $\sumn (1-z_i) = n_0$。
 \end{Definition}
 
-在这个定义中，我们假设潜在结果向量 $\bm{Y}(1) = (Y_1(1), \ldots, Y_n(1))$ 和 $\bm{Y}(0) = (Y_1(0), \ldots, Y_n(0))$ 都是固定的。即使我们将它们视为随机的，我们可以在其上条件化，治疗分配机制变为：
+在这个定义中，我们假设潜在结果向量 $\mathbf{Y}(1) = (Y_1(1), \ldots, Y_n(1))$ 和 $\mathbf{Y}(0) = (Y_1(0), \ldots, Y_n(0))$ 都是固定的。即使我们将它们视为随机的，我们可以在其上条件化，治疗分配机制变为：
 \[
-\mathbb{P}\{\bm{Z} = \bm{z} \mid \bm{Y}(1), \bm{Y}(0)\} = 1 \Big / \binom{n}{n_1}
+\mathbb{P}\{\mathbf{Z} = \mathbf{z} \mid \mathbf{Y}(1), \mathbf{Y}(0)\} = 1 \Big / \binom{n}{n_1}
 \]
-因为在 CRE 中 $\bm{Z} \ind \{\bm{Y}(1), \bm{Y}(0)\}$。
+因为在 CRE 中 $\mathbf{Z} \ind \{\mathbf{Y}(1), \mathbf{Y}(0)\}$。
 
-\textbf{关键含义}：在 CRE 中，$\bm{Z}$ 是从 $n_1$ 个 1 和 $n_0$ 个 0 的随机排列中产生的。
+\textbf{关键含义}：在 CRE 中，$\mathbf{Z}$ 是从 $n_1$ 个 1 和 $n_0$ 个 0 的随机排列中产生的。
 
 \section{Sharp Null 假设与 FRT 逻辑}
 
@@ -54,21 +54,21 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
 \[
 \HF: Y_i(1) = Y_i(0) \text{ 对所有单元 } i=1,\ldots, n.
 \]
-\citet{Rubin:1980} 称其为\textbf{sharp null 假设}，因为它可以基于观测数据确定所有潜在结果：$\bm{Y}(1) = \bm{Y}(0) = \bm{Y} = (Y_1, \ldots, Y_n)$，即观测结果向量。它也被称为\textbf{强零假设}。\footnote{问：为什么在 $H_{0F}$ 下 $\bm{Y}$ 是固定的？见附录 \cref{sec:qa-Y-fixed-under-H0F}。}
+\citet{Rubin:1980} 称其为\textbf{sharp null 假设}，因为它可以基于观测数据确定所有潜在结果：$\mathbf{Y}(1) = \mathbf{Y}(0) = \mathbf{Y} = (Y_1, \ldots, Y_n)$，即观测结果向量。它也被称为\textbf{强零假设}。\footnote{问：为什么在 $H_{0F}$ 下 $\mathbf{Y}$ 是固定的？见附录 \cref{sec:qa-Y-fixed-under-H0F}。}
 
 概念上，在 $\HF$ 下，FRT 适用于任何检验统计量：
 \begin{equation}\label{eq:teststatistic}
-T = T(\bm{Z}, \bm{Y}) ,
+T = T(\mathbf{Z}, \mathbf{Y}) ,
 \end{equation}
-它是观测数据的函数。观测结果向量 $\bm{Y}$ 在 $\HF$ 下是固定的，所以 $T$ 中唯一的随机成分是治疗向量 $\bm{Z}$。实验者决定 $\bm{Z}$ 的分布，进而决定 $T$ 的分布——这就是计算 p 值的基础。
+它是观测数据的函数。观测结果向量 $\mathbf{Y}$ 在 $\HF$ 下是固定的，所以 $T$ 中唯一的随机成分是治疗向量 $\mathbf{Z}$。实验者决定 $\mathbf{Z}$ 的分布，进而决定 $T$ 的分布——这就是计算 p 值的基础。
 
-在 CRE 中，$\bm{Z}$ 在集合 $\{\bm{z}^1, \ldots, \bm{z}^M\}$ 上是均匀分布的，其中 $M = \binom{n}{n_1}$，$\bm{z}^m$ 是所有可能的包含 $n_1$ 个 1 和 $n_0$ 个 0 的向量。
+在 CRE 中，$\mathbf{Z}$ 在集合 $\{\mathbf{z}^1, \ldots, \mathbf{z}^M\}$ 上是均匀分布的，其中 $M = \binom{n}{n_1}$，$\mathbf{z}^m$ 是所有可能的包含 $n_1$ 个 1 和 $n_0$ 个 0 的向量。\footnote{问：$\{\mathbf{z}^1, \ldots, \mathbf{z}^M\}$ 的含义是什么？见附录 \cref{sec:qa-z-set-meaning}。}
 
 \section{随机化分布与精确 p 值}
 
 如果较大的 $T$ 值更极端，我们可以使用以下尾概率来衡量检验统计量相对于其随机化分布的极端性：
 \begin{equation}\label{eq:exact-pvalue}
-p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\bm{z}^m,\bm{Y}) \geq T(\bm{Z},\bm{Y}) \}.
+p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\mathbf{z}^m,\mathbf{Y}) \geq T(\mathbf{Z},\mathbf{Y}) \}.
 \end{equation}
 
 这就是 Fisher 的 p 值。重要的是，$p_\frt$ 在 \cref{eq:exact-pvalue} 中对任何检验统计量和任何结果生成过程都有效。它在 $\HF$ 下是有限样本精确的（finite-sample exact）。\footnote{问：什么是有限样本精确？见附录 \cref{sec:qa-finite-sample-exact}。}
@@ -80,15 +80,15 @@ p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\bm{z}^m,\bm{Y}) \geq T(\bm{Z},\bm{Y}
 
 \section{Monte Carlo 近似}
 
-在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$。\footnote{问：$p_{frt}$ 是什么？为什么要用 Monte Carlo 近似？见附录 \cref{sec:qa-pfrt-mc}。}
+在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$，并用修正公式 $\tilde p_\frt$ 保证有限样本有效性。\footnote{问：为什么 Monte Carlo 近似需要修正？见附录 \cref{sec:qa-pfrt-mc}。}
 \begin{equation}\label{eq:mc-pvalue}
-\hat p_\frt  =  R^{-1} \sum_{r=1}^R   \mathbb{I}\{T(\bm{z}^r,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \},
+\hat p_\frt  =  R^{-1} \sum_{r=1}^R   \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y})   \geq T(\mathbf{Z},\mathbf{Y})   \},
 \end{equation}
-其中 $\bm{z}^r$ 是 $\bm{Z}$ 的 $R$ 次随机置换。由于计算 $p_\frt$ 涉及对 $\bm{Z}$ 的置换，FRT 有时在 CRE 语境下被称为\textbf{置换检验（permutation test）}。
+其中 $\mathbf{z}^r$ 是 $\mathbf{Z}$ 的 $R$ 次随机置换。由于计算 $p_\frt$ 涉及对 $\mathbf{Z}$ 的置换，FRT 有时在 CRE 语境下被称为\textbf{置换检验（permutation test）}。
 
 \textbf{修正的有限样本有效近似}：
 \[
-\tilde p_\frt  =  \frac{  1 + \sum_{r=1}^R   \mathbb{I}\{T(\bm{z}^r,\bm{Y})   \geq T(\bm{Z},\bm{Y})   \}  }{1+R}
+\tilde p_\frt  =  \frac{  1 + \sum_{r=1}^R   \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y})   \geq T(\mathbf{Z},\mathbf{Y})   \}  }{1+R}
 \]
 这个修正在任意有限的 $R$ 下都是有限样本有效的 p 值。
 
@@ -112,27 +112,11 @@ FRT 的一个特点是它对任何检验统计量都生成有限样本精确 p �
 \]
 是 control 组的样本均值。
 
-在 $\HF$ 下，首先计算期望：
-\begin{align*}
-\mathbb{E}(\hat{\tau})
-&= n_1^{-1} \sum_{i=1}^n \mathbb{E}(Z_i) Y_i - n_0^{-1} \sum_{i=1}^n \mathbb{E}(1 - Z_i) Y_i \\
-&= n_1^{-1} \sum_{i=1}^n \frac{n_1}{n} Y_i - n_0^{-1} \sum_{i=1}^n \frac{n_0}{n} Y_i \\
-&= \frac{1}{n} \sum_{i=1}^n Y_i - \frac{1}{n} \sum_{i=1}^n Y_i = 0 .
-\end{align*}
-
-然后计算方差。记 $s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2$，其中 $\bar{Y} = n^{-1} \sumn Y_i$。利用简单随机抽样中 $\text{var}(Z_i) = n_1 n_0 / n^2$ 和 $\text{cov}(Z_i, Z_j) = -n_1 n_0 / [n^2 (n-1)]$（对于 $i \neq j$），我们有：
-\begin{align*}
-\text{var}(\hat{\tau})
-&= \text{var}\left\{ n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i \right\} \\
-&= \text{var}\left\{ \frac{n}{n_0} \cdot n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n Y_i \right\} \\
-&= \frac{n^2}{n_0^2} \cdot \frac{1}{n_1^2} \cdot \text{var}\left( \sum_{i=1}^n Z_i Y_i \right) \quad (\text{第二项是常数}) \\
-&= \frac{n^2}{n_0^2 n_1^2} \cdot \left( \sum_{i=1}^n Y_i^2 \cdot \frac{n_1 n_0}{n} - \frac{n_1 n_0}{n(n-1)} \sum_{i=1}^n Y_i^2 \right) \\
-&= \frac{n^2}{n_0^2 n_1^2} \cdot \frac{n_1 n_0}{n(n-1)} \left( (n-1)\sum_{i=1}^n Y_i^2 - \sum_{i=1}^n Y_i^2 \right) \\
-&= \frac{n}{n_1 n_0} \cdot \frac{1}{n-1} \left( \sum_{i=1}^n Y_i^2 - n\bar{Y}^2 \right) \\
-&= \frac{n}{n_1 n_0} \cdot s^2 .
-\end{align*}
-
-其中 $\text{var}(Z_i) = n_1 n_0 / n^2$ 来自超几何分布的性质，而 $\sum_{i \neq j} \text{cov}(Z_i, Z_j) = -n_1 n_0 / (n-1)$ 用于化简。\footnote{差值均值统计量期望与方差的完整推导见附录 \cref{sec:tau-hat-variance-derivation}。}
+在 $\HF$ 下，$\hat{\tau}$ 有均值 $0$ 和方差
+\[
+\text{var}(\hat{\tau}) = \frac{n}{n_1 n_0} s^2,
+\]
+其中 $s^2 = (n-1)^{-1} \sumn (Y_i - \bar{Y})^2$，$\bar{Y} = n^{-1} \sumn Y_i$。\footnote{完整推导见附录 \cref{sec:tau-hat-variance-derivation}。}
 
 \textbf{渐近分布}：由于有限总体中心极限定理（Finite Population Central Limit Theorem），随机化分布近似正态：
 \begin{equation}\label{eq:frt-tau-hat}
@@ -162,7 +146,7 @@ in distribution.
 \qed
 \end{Example}\footnote{ANOVA 分解的完整代数推导见附录 \cref{sec:frt-algebra-derivation}。}
  
-\textbf{ANOVA 分解的几何直觉}：将 $n$ 维向量 $\bm{Y}$ 投影到 treatment 组和 control 组形成的两个正交子空间。组内平方和是残差平方和，组间平方和 $\frac{n_1 n_0}{n} \hat{\tau}^2$ 是由治疗分配解释的变异。关键发现：$s^2$ 中混入了治疗效应信息，这解释了为什么 FRT 的 $t$ 统计量在 $\HF$ 下能精确分布。
+\textbf{ANOVA 分解的几何直觉}：将 $n$ 维向量 $\mathbf{Y}$ 投影到 treatment 组和 control 组形成的两个正交子空间。组内平方和是残差平方和，组间平方和 $\frac{n_1 n_0}{n} \hat{\tau}^2$ 是由治疗分配解释的变异。关键发现：$s^2$ 中混入了治疗效应信息，这解释了为什么 FRT 的 $t$ 统计量在 $\HF$ 下能精确分布。
  
 
 \userannotation{为什么 FRT 能证明 t 检验的合理性？}{传统 t 检验需要正态性假设。但 FRT 框架表明，只要随机化分配正确执行，t 检验程序在有限总体 + 随机化情境下可以使用——渐近理论只依赖于有限总体 CLT，而不依赖于数据的原始分布。}
@@ -195,7 +179,7 @@ W = \sumn Z_i R_i,
 其中 $R_i$ 是 $Y_i$ 在合并样本中的秩。
 
 \begin{Example}[Wilcoxon 秩和统计量的均值与方差]\label{ex:wilcoxon-mean-var}
-\textbf{核心思想}：在 $\HF$ 下，随机性只来自治疗分配 $\bm{Z}$，秩 $R_i$ 是固定值。
+\textbf{核心思想}：在 $\HF$ 下，随机性只来自治疗分配 $\mathbf{Z}$，秩 $R_i$ 是固定值。
 
 \textbf{均值}：利用 $\mathbb{E}(Z_i) = n_1/n$ 和 $\sumn R_i = n(n+1)/2$，得 $\mathbb{E}(W) = n_1(n+1)/2$。
 
@@ -321,7 +305,7 @@ p_\frt = \frac{1}{70} = 0.014.
 
 FRT 的逻辑不仅限于 $\HF$。我们还可以检验更一般的 sharp null 假设：
 \[
-H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i.
+H_0(\boldsymbol{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i.
 \]
 
 通过检验与置信集的对偶性，我们可以构建 $\tau$ 的 $(1-\alpha)$ 置信集。
@@ -331,10 +315,10 @@ H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i.
 本章建立了随机实验的理论与实践：
 
 \begin{enumerate}
-  \item \textbf{CRE 定义}：$\mathbb{P}(\bm{Z} = \bm{z}) = 1 / \binom{n}{n_1}$
+  \item \textbf{CRE 定义}：$\mathbb{P}(\mathbf{Z} = \mathbf{z}) = 1 / \binom{n}{n_1}$
   \item \textbf{随机化的两个原则}：可比性 + 推理基础
   \item \textbf{Sharp null}：$\HF: Y_i(1) = Y_i(0)$ 对所有 $i$
-  \item \textbf{精确 p 值}：$p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\bm{z}^m, \bm{Y}) \geq T(\bm{Z}, \bm{Y})\}$
+  \item \textbf{精确 p 值}：$p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\mathbf{z}^m, \mathbf{Y}) \geq T(\mathbf{Z}, \mathbf{Y})\}$
   \item \textbf{多种统计量}：差值均值 $\hat{\tau}$、学生化 $t$、Wilcoxon $W$、KS $D$
   \item \textbf{理论联系}：FRT 为传统 t 检验提供基础
   \item \textbf{历史起源}：Lind 的坏血病实验、Fisher 的女士品茶
@@ -366,7 +350,7 @@ H_0(\bm{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i.
 \label{ex:3.3}
 证明修正的 Monte Carlo 近似
 \[
-\tilde p_\frt  =  \frac{ 1 + \sum_{r=1}^R \mathbb{I}\{T(\bm{z}^r,\bm{Y}) \geq T(\bm{Z},\bm{Y}) \} }{1+R}
+\tilde p_\frt  =  \frac{ 1 + \sum_{r=1}^R \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y}) \geq T(\mathbf{Z},\mathbf{Y}) \} }{1+R}
 \]
 在任意有限的 $R$ 下都是有限样本有效的 p 值。
 

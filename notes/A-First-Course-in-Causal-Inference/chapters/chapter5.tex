@@ -72,7 +72,7 @@ e_{[k]} = \frac{n_{[k]1}}{n_{[k]}}
 H_{0\Fisher}: Y_i(1) = Y_i(0) \text{ 对所有单元 } i = 1, \dots, n.
 \]
 
-FRT 的基本思想适用于任何随机实验：我们可以用任何检验统计量 $T = T(\bm{Z}, \bm{Y}, \bm{X})$，其中 $\bm{Z}, \bm{Y}, \bm{X}$ 分别是治疗向量、观测结果向量和协变量矩阵。在 SRE 和 $H_{0\Fisher}$ 下，$T$ 具有已知分布，因为 $\bm{Z}$ 在 SRE 下有已知分布。
+FRT 的基本思想适用于任何随机实验：我们可以用任何检验统计量 $T = T(\mathbf{Z}, \mathbf{Y}, \mathbf{X})$，其中 $\mathbf{Z}, \mathbf{Y}, \mathbf{X}$ 分别是治疗向量、观测结果向量和协变量矩阵。在 SRE 和 $H_{0\Fisher}$ 下，$T$ 具有已知分布，因为 $\mathbf{Z}$ 在 SRE 下有已知分布。
 
 \textbf{两个关键细节}：
 \begin{enumerate}
@@ -144,14 +144,14 @@ SRE 的统计推断建立在一个事实之上：它本质上由 $K$ 个独立�
 
 在第 $k$ 层内，差值均值 $\hat\tau_{[k]}$ 是 $\tau_{[k]}$ 的无偏估计，其方差为：
 \[
-\var(\hat\tau_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}},
+\text{var}(\hat\tau_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}},
 \tag{5.8}
 \]
 其中 $S_{[k]}^2(1), S_{[k]}^2(0), S_{[k]}^2(\tau)$ 分别是潜在结果和个体因果效应在第 $k$ 层内的方差。
 
 因此，分层估计量 $\hat\tau_\SRE = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]}$ 是 $\tau$ 的无偏估计，方差为：
 \[
-\var(\hat\tau_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \var(\hat\tau_{[k]}).
+\text{var}(\hat\tau_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat\tau_{[k]}).
 \tag{5.9}
 \]
 
@@ -224,17 +224,17 @@ CRE 下差值均值估计量的方差分解为：
 
 \section{CRE 中的后分层}\label{sec:post-stratification}
 
-在具有离散协变量 $X$ 的 CRE 中，第 $k$ 层内接受治疗和对照的单元数是随机的。在 SRE 中，这些数字是固定的。但如果我们在给定 $\bm n = \{n_{[k]1}, n_{[k]0}\}_{k=1}^K$ 的条件下进行条件推断，那么 CRE 就变成了 SRE。
+在具有离散协变量 $X$ 的 CRE 中，第 $k$ 层内接受治疗和对照的单元数是随机的。在 SRE 中，这些数字是固定的。但如果我们在给定 $\mathbf{n} = \{n_{[k]1}, n_{[k]0}\}_{k=1}^K$ 的条件下进行条件推断，那么 CRE 就变成了 SRE。
 
-数学上，如果 $\bm n$ 的所有分量都不为零，那么：
+数学上，如果 $\mathbf{n}$ 的所有分量都不为零，那么：
 \[
-\Pr_{\CRE}(\bm Z = \bm z \mid \bm n) = \frac{\Pr_{\CRE}(\bm Z = \bm z, \bm n)}{\Pr_{\CRE}(\bm n)} = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
+\Pr_{\CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{\Pr_{\CRE}(\mathbf{Z} = \mathbf{z}, \mathbf{n})}{\Pr_{\CRE}(\mathbf{n})} = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
 \label{eq:condition-to-SRE}
 \tag{5.5}
 \]
-即，$\bm Z$ 在给定 $\bm n$ 条件下从 CRE 得到的条件分布与从 SRE 得到的分布相同。
+即，$\mathbf{Z}$ 在给定 $\mathbf{n}$ 条件下从 CRE 得到的条件分布与从 SRE 得到的分布相同。
 
-因此，在给定 $\bm n$ 的条件下，我们可以像分析 SRE 一样分析带有离散协变量 $X$ 的 CRE。FRT 变为\textbf{条件 FRT}，Neymanian 分析变为\textbf{后分层（post-stratification）}：
+因此，在给定 $\mathbf{n}$ 的条件下，我们可以像分析 SRE 一样分析带有离散协变量 $X$ 的 CRE。FRT 变为\textbf{条件 FRT}，Neymanian 分析变为\textbf{后分层（post-stratification）}：
 \[
 \hat\tau_\PS = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]},
 \tag{5.13}
@@ -304,7 +304,7 @@ CRE 下差值均值估计量的方差分解为：
 \begin{Exercise}{\ref{exr:5-5} From the CRE to the SRE}\label{exr:5-5}
 证明 \eqref{eq:condition-to-SRE}：
 \[
-\Pr_{\CRE}(\bm Z = \bm z \mid \bm n) = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
+\Pr_{\CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
 \]
 \end{Exercise}
 

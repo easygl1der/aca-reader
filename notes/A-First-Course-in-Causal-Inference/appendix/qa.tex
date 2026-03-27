@@ -21,32 +21,45 @@
 
 \textbf{答}：利用指示函数的完备性 $\mathbb{I}(X_i=1) + \mathbb{I}(X_i=0) = 1$，将总体求和拆分为两个亚组求和，再除以对应的亚组样本量即可得到。
 
-\subsection{为什么在 $H_{0F}$ 下 $\bm{Y}$ 是固定的？}\label{sec:qa-Y-fixed-under-H0F}
+\subsection{为什么在 $H_{0F}$ 下 $\mathbf{Y}$ 是固定的？}\label{sec:qa-Y-fixed-under-H0F}
 
-\textbf{问}：为什么在 Fisher's sharp null ($H_{0F}: Y_i(1) = Y_i(0)$) 下，潜在结果向量 $\bm{Y}$ 是固定的？
+\textbf{问}：为什么在 Fisher's sharp null ($H_{0F}: Y_i(1) = Y_i(0)$) 下，潜在结果向量 $\mathbf{Y}$ 是固定的？
 
-\textbf{答}：$H_{0F}$ 断言 treatment 对每个单元都没有效应，即 $Y_i(1) = Y_i(0) = Y_i$ 对所有 $i$。这意味着整个 $\bm{Y}(1) = \bm{Y}(0) = \bm{Y}$ 向量是确定的（固定值），不再有随机性。
+\textbf{答}：$H_{0F}$ 断言 treatment 对每个单元都没有效应，即 $Y_i(1) = Y_i(0) = Y_i$ 对所有 $i$。这意味着整个 $\mathbf{Y}(1) = \mathbf{Y}(0) = \mathbf{Y}$ 向量是确定的（固定值），不再有随机性。
 
-在 FRT 中，我们 condition on 这个固定的 $\bm{Y}$，只让治疗分配 $\bm{Z}$ 有随机性。因此，随机化分布可以精确枚举（$M = \binom{n}{n_1}$ 种可能），不依赖任何渐近假设——这就是 FRT"有限样本精确"的本质。
+在 FRT 中，我们 condition on 这个固定的 $\mathbf{Y}$，只让治疗分配 $\mathbf{Z}$ 有随机性。因此，随机化分布可以精确枚举（$M = \binom{n}{n_1}$ 种可能），不依赖任何渐近假设——这就是 FRT"有限样本精确"的本质。
 
-\subsection{p\_frt 是什么？为什么要用 Monte Carlo 近似？}\label{sec:qa-pfrt-mc}
+\subsection{p\_frt 的 Monte Carlo 近似与修正}\label{sec:qa-pfrt-mc}
 
-\textbf{问}：$p_{frt}$ 是什么意思？为什么要用 Monte Carlo 来近似它？
+\textbf{问}：为什么 \cref{eq:mc-pvalue} 需要修正为 $\tilde p_{frt}$？
 
-\textbf{答}：$p_{frt}$ 是 Fisher Randomization Test 的 p 值，衡量的是：如果 treatment 是随机分配的，观察到的治疗组与对照组之间的差异，有多大可能是纯粹由随机性造成的？
+\textbf{答}：
 
-\textbf{精确计算的问题}：精确计算 $p_{frt}$ 需要枚举所有 $M$ 种可能的治疗分配
-$$M = \binom{n}{n_1}$$
-当 $n=100, n_1=50$ 时，$M \approx 10^{29}$——这在计算上是不可行的。
-
-\textbf{Monte Carlo 近似}（\cref{eq:mc-pvalue}）：
-$$\hat{p}_{frt} = \frac{1}{R}\sum_{r=1}^R \mathbb{I}\{T(\bm{z}^r,\bm{Y}) \geq T(\bm{Z},\bm{Y})\}$$
-就是随机置换 $R$ 次，看有多少次产生的统计量比实际观察到的还大。
+\textbf{原始 Monte Carlo 近似}：
+$$\hat{p}_{frt} = \frac{1}{R}\sum_{r=1}^R \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y}) \geq T(\mathbf{Z},\mathbf{Y})\}$$
+这个估计量的问题是：当 $R$ 有限时，它可能是\textbf{反保守的}——低估真实的 p 值，导致错误地宣称显著。
 
 \textbf{修正公式}（有限样本有效）：
-$$\tilde{p}_{frt} = \frac{1 + \sum_{r=1}^R \mathbb{I}\{T(\bm{z}^r) \geq T_{obs}\}}{1+R}$$
+$$\tilde{p}_{frt} = \frac{1 + \sum_{r=1}^R \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y}) \geq T(\mathbf{Z},\mathbf{Y})\}}{1+R}$$
 
-加了 1 在分子和分母，确保在任何有限的 $R$ 下都满足有限样本有效性（$\mathbb{P}(p \leq u) \leq u$）。
+\textbf{修正的本质是"自我包含"}：分子加 1 相当于把"观测到的这一次"也算作一次置换结果。
+
+\textbf{为什么需要修正}：
+
+当 $R=99$ 次置换中，只有 0 次超过观测值时：
+$$\hat{p}_{frt} = \frac{0}{99} = 0$$
+
+这就错了！因为观测到的这一次（自身）必然是 $M$ 种可能之一，p 值至少应该是 $1/M$，而不是 0。
+
+加了 1 在分子和分母：
+$$\tilde{p}_{frt} = \frac{1}{100}$$
+
+这保证了：
+\begin{enumerate}
+  \item p 值不会为 0（分子至少是 1）
+  \item 在任何有限的 $R$ 下都满足有限样本有效性：$\mathbb{P}(p \leq u) \leq u$
+  \item 当 $R \to \infty$ 时，$\tilde p_{frt} \to \hat p_{frt}$
+\end{enumerate}
 
 \subsection{为什么叫"有限样本精确"？}\label{sec:qa-finite-sample-exact}
 
@@ -155,6 +168,45 @@ Y_i^{obs} = Z_i Y_i(1) + (1 - Z_i) Y_i(0)
 \end{enumerate}
 
 \textbf{总结}：可比性解决"选择偏差"——确保组间可比较。推理基础解决"随机变异"——知道观察到的差异有多极端。两者结合，使得因果推断成为可能。
+
+\subsection{什么是 Fisher Randomization Test？}\label{sec:qa-fisher-randomization-test}
+
+\textbf{问}：什么是 Fisher Randomization Test（Fisher 随机化检验）？
+
+\textbf{答}：Fisher Randomization Test (FRT) 是 Ronald Fisher 在 1935 年《Design of Experiments》中提出的统计检验框架。它的核心创新是：不再依赖数据分布假设（如正态性），而是\textbf{仅依赖随机化机制本身}。
+
+\textbf{核心思想}：
+
+\begin{enumerate}
+  \item 在 \textbf{sharp null} 假设 $H_{0F}: Y_i(1) = Y_i(0)$（所有单元的治疗效应都为零）下，潜在结果向量 $\mathbf{Y}$ 是完全确定的（固定的）
+  \item 唯一的随机来源是治疗分配机制 $\mathbf{Z}$
+  \item 在完全随机实验（CRE）中，$\mathbf{Z}$ 的分布是已知的（均匀分布于所有 $\binom{n}{n_1}$ 种可能的分配）
+  \item 因此，我们可以枚举所有可能的治疗分配，计算在每种分配下检验统计量的取值
+  \item p 值就是在所有可能分配中，观察到的统计量至少与实际观测值一样极端的比例
+\end{enumerate}
+
+\textbf{★ Insight}：FRT 的本质是"条件推断"——我们 condition on 固定的潜在结果 $\mathbf{Y}$，只让治疗分配 $\mathbf{Z}$ 有随机性。这与经典统计推断不同：经典方法 condition on 数据，假设数据的分布已知；FRT 则 condition on 潜在结果，利用随机化机制计算精确的 p 值。
+
+\textbf{为什么叫"随机化检验"？}因为它完全基于随机化机制——不假设任何参数分布，不依赖正态性假设，只依赖"治疗是如何随机分配的"这一事实。这使得 FRT 在随机实验中具有"有限样本精确性"（finite-sample exactness）。
+
+\subsection{$\{\mathbf{z}^1, \ldots, \mathbf{z}^M\}$ 的含义}\label{sec:qa-z-set-meaning}
+
+\textbf{问}：在 CRE 中，$\mathbf{Z}$ 在集合 $\{\mathbf{z}^1, \ldots, \mathbf{z}^M\}$ 上是均匀分布的。这句话是什么意思？
+
+\textbf{答}：
+
+\textbf{先理解 $\mathbf{Z}$ 是什么}。$\mathbf{Z} = (Z_1, \ldots, Z_n)$ 是治疗分配向量，其中 $Z_i = 1$ 表示单元 $i$ 接受治疗，$Z_i = 0$ 表示单元 $i$ 接受对照。
+
+\textbf{再理解 $\{\mathbf{z}^1, \ldots, \mathbf{z}^M\}$}。这是所有可能的治疗分配构成的集合。例如当 $n=3, n_1=1$ 时，所有可能的分配有：
+$$\mathbf{z}^1 = (1,0,0), \mathbf{z}^2 = (0,1,0), \mathbf{z}^3 = (0,0,1)$$
+即 $M = \binom{3}{1} = 3$ 种可能。
+
+\textbf{"均匀分布"的意思}。在 CRE 中，治疗分配是完全随机的。这意味着每一种可能的分配 $\mathbf{z}^m$ 被选中的概率相等：
+$$\mathbb{P}(\mathbf{Z} = \mathbf{z}^m) = \frac{1}{M} = \frac{1}{\binom{n}{n_1}}$$
+
+例如当 $n=100, n_1=50$ 时，$M \approx 10^{29}$ 种可能的分配，每一种被选中的概率都完全相同（约 $10^{-29}$）。
+
+\textbf{关键直觉}：在 CRE 下，treatment 组和 control 组的成员身份是随机决定的，而非实验者主观选择。这就是 Fisher 说的"randomization provides a valid basis for inference"——随机化本身保证了推断的有效性。
 
 \textit{当你在阅读过程中提出问题时，回答将被记录在此处。}
 
