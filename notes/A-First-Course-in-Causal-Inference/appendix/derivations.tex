@@ -271,3 +271,330 @@ s^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i - \bar{Y})^2 = (n-1)^{-1} \left( \sum_{i=1}^n
   \item 方差与 $n_1 n_0$ 成反比——当 $n_1 = n_0 = n/2$ 时方差最小
   \item 这与直觉一致：治疗组和对照组越平衡，我们越能准确估计因果效应
 \end{itemize}
+
+\section{CRE 中分层平衡性的推导}\label{sec:appendix-5-2-balance}
+
+\textbf{背景（Background）}：在完全随机实验（CRE）中，我们固定总的治疗组和对照组样本量 $n_1$ 和 $n_0$，但各层内的分配数量 $n_{[k]1}$ 和 $n_{[k]0}$ 是随机的。本节证明各层治疗组和对照组比例之差的期望为零。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $n$：总单元数
+  \item $n_{[k]}$：第 $k$ 层的单元数
+  \item $n_1$：总治疗组单元数
+  \item $n_0$：总对照组单元数（$n_0 = n - n_1$）
+  \item $n_{[k]1}$：第 $k$ 层中分配到治疗组的单元数
+  \item $n_{[k]0}$：第 $k$ 层中分配到对照组的单元数（$n_{[k]0} = n_{[k]} - n_{[k]1}$）
+  \item $\pi_{[k]} = n_{[k]}/n$：第 $k$ 层在总体中的比例
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+  \item 在 CRE 下，治疗分配向量 $\mathbf{Z}$ 是从所有 $\binom{n}{n_1}$ 种分配中等概率随机选取的
+  \item 各单元被分配到治疗组的概率为 $n_1/n$
+\end{itemize}
+
+\textbf{目标（Goal）}：证明
+\[
+\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0.
+\]
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：建立 $n_{[k]1}$ 的期望。
+
+在 CRE 下，每个单元被分配到治疗组的概率为 $n_1/n$。因此，对于第 $k$ 层中的任意单元 $i$（满足 $X_i = k$）：
+\[
+\mathbb{E}(Z_i) = \frac{n_1}{n}.
+\]
+
+第 $k$ 层中分配到治疗组的单元数为：
+\[
+n_{[k]1} = \sum_{i: X_i = k} Z_i.
+\]
+
+由于该层有 $n_{[k]}$ 个单元，且 $Z_i$ 之间是负相关的（总和固定为 $n_1$），我们有：
+\[
+\mathbb{E}(n_{[k]1}) = \sum_{i: X_i = k} \mathbb{E}(Z_i) = n_{[k]} \cdot \frac{n_1}{n} = \pi_{[k]} \cdot n_1.
+\]
+
+\textbf{第二步}：计算比例的期望。
+
+由于 $n_{[k]0} = n_{[k]} - n_{[k]1}$，我们有：
+\[
+\mathbb{E}(n_{[k]0}) = n_{[k]} - \mathbb{E}(n_{[k]1}) = n_{[k]} - \pi_{[k]} n_1 = n_{[k]} - \frac{n_{[k]}}{n} n_1 = n_{[k]} \left(1 - \frac{n_1}{n}\right) = n_{[k]} \cdot \frac{n_0}{n} = \pi_{[k]} \cdot n_0.
+\]
+
+\textbf{第三步}：计算比例之差的期望。
+
+\[
+\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = \frac{\mathbb{E}(n_{[k]1})}{n_1} - \frac{\mathbb{E}(n_{[k]0})}{n_0} = \frac{\pi_{[k]} n_1}{n_1} - \frac{\pi_{[k]} n_0}{n_0} = \pi_{[k]} - \pi_{[k]} = 0.
+\]
+
+\textbf{结论}：得证 $\mathbb{E}\left( n_{[k]1}/n_1 - n_{[k]0}/n_0 \right) = 0$。
+
+\textbf{直观理解}：这个结果表明，虽然在一次实现中 $n_{[k]1}/n_1 - n_{[k]0}/n_0$ 可能显著非零（由于随机波动），但这种波动在期望意义下是平衡的。随机化保证了渐近公平性——各层在治疗组和对照组中的比例在期望上与总体比例一致。
+
+\section{分层估计量的期望与方差推导}\label{sec:appendix-5-8}
+
+\textbf{背景（Background）}：在分层随机实验（SRE）中，我们使用学生化分层估计量
+\[
+t_\SRE = \frac{\hat{\tau}_\SRE}{\sqrt{\hat{V}_\SRE}}
+\]
+作为 Fisher 随机化检验的统计量。本节推导在 sharp null $H_{0\Fisher}: Y_i(1) = Y_i(0)$ 下 $t_\SRE$ 的期望和方差。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $\hat{\tau}_\SRE = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]}$：分层估计量
+  \item $\hat{\tau}_{[k]} = \bar{Y}_{[k]}(1) - \bar{Y}_{[k]}(0)$：第 $k$ 层的差值均值
+  \item $\hat{V}_\SRE = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{\hat{S}_{[k]}^2(1)}{n_{[k]1}} + \frac{\hat{S}_{[k]}^2(0)}{n_{[k]0}} \right)$：方差估计量
+  \item $\hat{S}_{[k]}^2(1)$、$\hat{S}_{[k]}^2(0)$：第 $k$ 层内治疗组和对照组的样本方差
+\end{itemize}
+
+\textbf{目标（Goal）}：推导 $\hat{\tau}_\SRE$ 和 $\hat{V}_\SRE$ 在 $H_{0\Fisher}$ 下的期望和方差。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：$\hat{\tau}_{[k]}$ 的期望。
+
+在 $H_{0\Fisher}$ 下，所有 $Y_i(1) = Y_i(0) = Y_i$。因此，
+\[
+\hat{\tau}_{[k]} = \bar{Y}_{[k]}(1) - \bar{Y}_{[k]}(0) = \frac{\sum_{i: X_i=k} Z_i Y_i}{n_{[k]1}} - \frac{\sum_{i: X_i=k} (1-Z_i) Y_i}{n_{[k]0}}.
+\]
+
+利用 $\mathbb{E}(Z_i) = n_1/n$ 和 $\mathbb{E}(1-Z_i) = n_0/n$，以及 $Y_i$ 是固定值（不依赖 $Z$），我们有：
+\[
+\mathbb{E}(\hat{\tau}_{[k]}) = \frac{n_{[k]}}{n_{[k]1}} \cdot \frac{n_1}{n} \cdot \bar{Y}_{[k]} - \frac{n_{[k]}}{n_{[k]0}} \cdot \frac{n_0}{n} \cdot \bar{Y}_{[k]} = \bar{Y}_{[k]} \left( \frac{n_{[k]}}{n_{[k]1}} \cdot \frac{n_1}{n} - \frac{n_{[k]}}{n_{[k]0}} \cdot \frac{n_0}{n} \right).
+\]
+
+由于 $n_{[k]1}/n_{[k]} = e_{[k]}$（层别倾向得分）和 $n_{[k]0}/n_{[k]} = 1 - e_{[k]}$，以及 $n_1/n$ 和 $n_0/n$ 是常数，上述表达式可简化为 $\bar{Y}_{[k]} \cdot (\text{常数} - \text{常数}) = 0$。
+
+更直接地：由于 $\mathbb{E}(Z_i) = n_1/n$ 对所有单元成立，在 $H_{0\Fisher}$ 下，
+\[
+\mathbb{E}(\hat{\tau}_{[k]}) = \frac{1}{n_{[k]1}} \sum_{i: X_i=k} \mathbb{E}(Z_i) Y_i - \frac{1}{n_{[k]0}} \sum_{i: X_i=k} \mathbb{E}(1-Z_i) Y_i = \frac{n_1}{n} \bar{Y}_{[k]} - \frac{n_0}{n} \bar{Y}_{[k]} = 0.
+\]
+
+\textbf{第二步}：$\hat{\tau}_\SRE$ 的期望。
+
+由于 $\hat{\tau}_\SRE = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]}$ 且 $\pi_{[k]}$ 是常数，
+\[
+\mathbb{E}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]} \mathbb{E}(\hat{\tau}_{[k]}) = \sum_{k=1}^K \pi_{[k]} \cdot 0 = 0.
+\]
+
+\textbf{第三步}：$\hat{\tau}_{[k]}$ 的方差。
+
+利用 Neyman (1923) 的方差公式（见 \cref{sec:tau-hat-variance-derivation}），在第 $k$ 层内，
+\[
+\text{var}(\hat{\tau}_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}}.
+\]
+
+在 $H_{0\Fisher}$ 下，$S_{[k]}^2(\tau) = 0$，所以
+\[
+\text{var}(\hat{\tau}_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}}.
+\]
+
+\textbf{第四步}：$\hat{\tau}_\SRE$ 的方差。
+
+由于各层之间的随机化是独立的，
+\[
+\text{var}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat{\tau}_{[k]}) = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} \right).
+\]
+
+\textbf{第五步}：$\hat{V}_\SRE$ 的期望。
+
+利用 $\mathbb{E}(\hat{S}_{[k]}^2(1)) = S_{[k]}^2(1)$ 和 $\mathbb{E}(\hat{S}_{[k]}^2(0)) = S_{[k]}^2(0)$，
+\[
+\mathbb{E}(\hat{V}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} \right) = \text{var}(\hat{\tau}_\SRE) + \sum_{k=1}^K \pi_{[k]}^2 \frac{S_{[k]}^2(\tau)}{n_{[k]}}.
+\]
+
+在 $H_{0\Fisher}$ 下，$S_{[k]}^2(\tau) = 0$，所以 $\mathbb{E}(\hat{V}_\SRE) = \text{var}(\hat{\tau}_\SRE)$。
+
+\textbf{结论}：在 $H_{0\Fisher}$ 下，$\hat{\tau}_\SRE$ 的期望为零，方差为 $\hat{V}_\SRE$ 的期望。因此 $t_\SRE = \hat{\tau}_\SRE / \sqrt{\hat{V}_\SRE}$ 是一个合理的学生化统计量。
+
+\section{分层 Neymanian 方差的推导}\label{sec:appendix-5-10}
+
+\textbf{背景（Background）}：在分层随机实验（SRE）中，本节推导第 $k$ 层差值均值估计量 $\hat{\tau}_{[k]}$ 的方差公式，以及分层估计量 $\hat{\tau}_\SRE$ 的方差公式。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $S_{[k]}^2(1)$、$S_{[k]}^2(0)$：第 $k$ 层内潜在结果 $Y(1)$ 和 $Y(0)$ 的有限总体方差
+  \item $S_{[k]}^2(\tau)$：第 $k$ 层内个体因果效应 $\tau_i = Y_i(1) - Y_i(0)$ 的有限总体方差
+  \item $\hat{\tau}_{[k]} = \bar{Y}_{[k]}(1) - \bar{Y}_{[k]}(0)$：第 $k$ 层的差值均值
+  \item $\hat{\tau}_\SRE = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]}$：分层估计量
+\end{itemize}
+
+\textbf{目标（Goal）}：
+\begin{enumerate}
+  \item 证明 \eqref{eq:5-10}：$\text{var}(\hat{\tau}_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}}$
+  \item 证明 \eqref{eq:5-11}：$\text{var}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat{\tau}_{[k]})$
+\end{enumerate}
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\subsection*{式 \eqref{eq:5-10} 的推导}
+
+\textbf{第一步}：应用 Neyman (1923) 定理于第 $k$ 层。
+
+第 $k$ 层本质上是一个独立的 CRE，只是总体大小为 $n_{[k]}$ 而非 $n$。直接应用 Neyman 的方差公式（见 \cref{sec:tau-hat-variance-derivation}）：
+\[
+\text{var}(\hat{\tau}_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}}.
+\]
+
+\textbf{直观解释}：这个方差公式与 CRE 中的方差公式结构相同，只是将总体量替换为层别总体量。
+
+\subsection*{式 \eqref{eq:5-11} 的推导}
+
+\textbf{第二步}：利用层间独立性。
+
+在 SRE 中，各层内的治疗分配是独立进行的。因此，$\hat{\tau}_{[1]}, \ldots, \hat{\tau}_{[K]}$ 之间相互独立。
+
+\textbf{第三步}：计算分层估计量的方差。
+
+\[
+\text{var}(\hat{\tau}_\SRE) = \text{var}\left( \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]} \right) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat{\tau}_{[k]}) + \sum_{k \neq j} \pi_{[k]} \pi_{[j]} \text{cov}(\hat{\tau}_{[k]}, \hat{\tau}_{[j]}).
+\]
+
+由于各层之间的独立性，$\text{cov}(\hat{\tau}_{[k]}, \hat{\tau}_{[j]}) = 0$（对 $k \neq j$）。因此，
+\[
+\text{var}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat{\tau}_{[k]}).
+\]
+
+\textbf{结论}：代入 \eqref{eq:5-10} 即得
+\[
+\text{var}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}} \right).
+\]
+
+\section{CRE 与 SRE 方差差异的推导}\label{sec:appendix-5-14}
+
+\textbf{背景（Background）}：本节推导在常数倾向得分条件下，CRE 估计量 $\hat{\tau}$ 与 SRE 估计量 $\hat{\tau}_\SRE$ 方差差异的近似公式。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $\hat{\tau} = \bar{Y}(1) - \bar{Y}(0)$：CRE 的差值均值估计量
+  \item $\hat{\tau}_\SRE = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{[k]}$：SRE 的分层估计量
+  \item $S^2(1)$、$S^2(0)$：总体的潜在结果有限总体方差
+  \item $S_{[k]}^2(1)$、$S_{[k]}^2(0)$：第 $k$ 层的潜在结果有限总体方差
+  \item $\bar{Y}(1)$、$\bar{Y}(0)$：总体的潜在结果均值
+  \item $\bar{Y}_{[k]}(1)$、$\bar{Y}_{[k]}(0)$：第 $k$ 层的潜在结果均值
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+  \item 在 CRE 下：$\text{var}_{CRE}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$
+  \item 在 SRE 下：$\text{var}_{SRE}(\hat{\tau}_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}} \right)$
+  \item 方差分析分解：$S^2(1) = \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(1) + \sum_{k=1}^K \pi_{[k]} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\}^2 - \text{层内变异}$
+\end{itemize}
+
+\textbf{目标（Goal）}：证明方差差异约为
+\[
+\sum_{k=1}^K \frac{\pi_{[k]}}{n} \left\{ \sqrt{\frac{n_0}{n_1}} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\} + \sqrt{\frac{n_1}{n_0}} \{\bar{Y}_{[k]}(0) - \bar{Y}(0)\} \right\}^2 \geq 0.
+\]
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：方差分析分解。
+
+对 $S^2(1)$ 进行层间分解：
+\[
+\begin{aligned}
+S^2(1) & = (n-1)^{-1} \sum_{i=1}^n \{Y_i(1) - \bar{Y}(1)\}^2 \\
+& = \sum_{k=1}^K \frac{n_{[k]}-1}{n-1} \cdot \frac{1}{n_{[k]}-1} \sum_{i: X_i=k} \{Y_i(1) - \bar{Y}_{[k]}(1)\}^2 \\
+& \quad + \sum_{k=1}^K \frac{n_{[k]}}{n-1} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\}^2.
+\end{aligned}
+\]
+
+当 $n_{[k]}$ 较大时，$(n_{[k]}-1)/(n-1) \approx n_{[k]}/n = \pi_{[k]}$，于是
+\[
+S^2(1) \approx \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(1) + \sum_{k=1}^K \pi_{[k]} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\}^2.
+\]
+
+同理对 $S^2(0)$ 和 $S^2(\tau)$ 进行分解。
+
+\textbf{第二步}：代入 CRE 方差公式。
+
+\[
+\text{var}_{CRE}(\hat{\tau}) = \frac{1}{n_1} \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(1) + \frac{1}{n_0} \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(0) - \frac{1}{n} \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(\tau) + \text{层间变异项}.
+\]
+
+\textbf{第三步}：识别差异项。
+
+层间变异项为：
+\[
+\frac{1}{n_1} \sum_{k=1}^K \pi_{[k]} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\}^2 + \frac{1}{n_0} \sum_{k=1}^K \pi_{[k]} \{\bar{Y}_{[k]}(0) - \bar{Y}(0)\}^2 - \frac{1}{n} \sum_{k=1}^K \pi_{[k]} (\tau_{[k]} - \tau)^2.
+\]
+
+\textbf{第四步}：近似简化。
+
+当层样本量较大时，利用 $n_{[k]1} \approx \pi_{[k]} n_1$ 和 $n_{[k]0} \approx \pi_{[k]} n_0$，层间变异项近似为：
+\[
+\sum_{k=1}^K \frac{\pi_{[k]}}{n} \left\{ \sqrt{\frac{n_0}{n_1}} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\} + \sqrt{\frac{n_1}{n_0}} \{\bar{Y}_{[k]}(0) - \bar{Y}(0)\} \right\}^2.
+\]
+
+\textbf{结论}：由于每一项都是平方和，该表达式非负。当且仅当对所有 $k$ 都有
+\[
+\sqrt{\frac{n_0}{n_1}} \{\bar{Y}_{[k]}(1) - \bar{Y}(1)\} + \sqrt{\frac{n_1}{n_0}} \{\bar{Y}_{[k]}(0) - \bar{Y}(0)\} = 0
+\]
+时（即协变量不能预测潜在结果），差异为零。这证明了 SRE 在协变量能预测结果时比 CRE 更有效。
+
+\section{CRE 条件分布的推导}\label{sec:appendix-5-5}
+
+\textbf{背景（Background）}：本节证明在给定各层治疗分配数量 $\mathbf{n} = \{n_{[k]1}, n_{[k]0}\}_{k=1}^K$ 的条件下，CRE 的治疗分配向量 $\mathbf{Z}$ 的条件分布与 SRE 的分布相同。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $\mathbf{Z} = (Z_1, \ldots, Z_n)$：治疗分配向量
+  \item $n_{[k]1}$：第 $k$ 层中分配到治疗组的单元数
+  \item $n_{[k]0}$：第 $k$ 层中分配到对照组的单元数
+  \item $\mathbf{n} = \{n_{[k]1}, n_{[k]0}\}_{k=1}^K$：所有层的分配数量向量
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+  \item 在 CRE 下：$\mathbb{P}(\mathbf{Z} = \mathbf{z}) = \frac{1}{\binom{n}{n_1}}$ 对所有满足 $\sum Z_i = n_1$ 的分配 $\mathbf{z}$
+  \item 在 SRE 下：第 $k$ 层的分配概率为 $\frac{1}{\binom{n_{[k]}}{n_{[k]1}}}$
+\end{itemize}
+
+\textbf{目标（Goal）}：证明
+\[
+\Pr_{CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
+\]
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：计算联合概率。
+
+在 CRE 下，治疗分配向量 $\mathbf{Z}$ 的概率为：
+\[
+\Pr_{CRE}(\mathbf{Z} = \mathbf{z}) = \frac{1}{\binom{n}{n_1}}.
+\]
+
+\textbf{第二步}：计算条件概率。
+
+给定 $\mathbf{n}$ 条件下 $\mathbf{Z} = \mathbf{z}$ 的条件概率为：
+\[
+\Pr_{CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{\Pr_{CRE}(\mathbf{Z} = \mathbf{z}, \mathbf{n})}{\Pr_{CRE}(\mathbf{n})}.
+\]
+
+事件 $\{\mathbf{Z} = \mathbf{z}, \mathbf{n}\}$ 意味着第 $k$ 层恰好有 $n_{[k]1}$ 个单元被分配到治疗组。由于各层的分配是独立的，这个联合事件的概率为：
+\[
+\Pr_{CRE}(\mathbf{Z} = \mathbf{z}, \mathbf{n}) = \prod_{k=1}^K \frac{1}{\binom{n_{[k]}}{n_{[k]1}}}.
+\]
+
+\textbf{第三步}：计算边际概率。
+
+为了计算 $\Pr_{CRE}(\mathbf{n})$，我们对所有满足第 $k$ 层有 $n_{[k]1}$ 个治疗组单元的分配 $\mathbf{z}$ 求和：
+\[
+\Pr_{CRE}(\mathbf{n}) = \sum_{\mathbf{z}: n_{[k]1}(\mathbf{z}) = n_{[k]1}} \Pr_{CRE}(\mathbf{Z} = \mathbf{z}) = \sum_{\mathbf{z}: n_{[k]1}(\mathbf{z}) = n_{[k]1}} \frac{1}{\binom{n}{n_1}}.
+\]
+
+满足该条件的分配数量为 $\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}$，因此
+\[
+\Pr_{CRE}(\mathbf{n}) = \prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}} \cdot \frac{1}{\binom{n}{n_1}}.
+\]
+
+\textbf{第四步}：代入条件概率公式。
+
+\[
+\Pr_{CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{\prod_{k=1}^K \frac{1}{\binom{n_{[k]}}{n_{[k]1}}}}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}} \cdot \frac{1}{\binom{n}{n_1}}} = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
+\]
+
+\textbf{结论}：得证 CRE 在给定各层分配数量条件下的条件分布与 SRE 的分布相同。这建立了分层与后分层的对偶性：分层在设计阶段使用协变量，后分层在分析阶段使用协变量。

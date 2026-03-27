@@ -32,10 +32,207 @@ This file provides guidance to Claude Code when working with this literature stu
 
 ---
 
+## QA Specialist Agent
+
+### 简介
+QA Specialist 是一个**项目专属**的 agent，负责处理学习过程中的问答记录。
+
+### 工作流程
+当用户提问时，QA Specialist 自动执行：
+1. **识别 topic** → 确定问题属于哪个领域
+2. **转发给 domain expert** → 如因果推断问题发给 causal-expert
+3. **接收回答** → expert 回复（或 fallback 直接回答）
+4. **记录到 qa.tex** → 使用标准格式
+5. **添加脚注引用** → 在正文首次出现处
+6. **重新编译 PDF** → 使用 `compile.sh`
+
+### Topic → Expert 映射
+| Topic | Expert |
+|-------|--------|
+| 因果推断 | causal-expert |
+| 微分几何 | geometry-expert |
+| 贝叶斯统计 | bayesian-expert |
+| 信息几何 | info-geo-expert |
+| Schubert | schubert-expert |
+
+### 容错机制
+- 如果 expert 无响应，QA Specialist 直接回答作为 fallback
+- 复杂问题可触发 `/gemini-browser-chat` 获取更全面回答
+
+### QA 格式（必须遵循）
+```latex
+\subsection{Question Title}\label{sec:qa-descriptive-key}
+
+\textbf{问}：User's question?
+
+\textbf{答}：Answer content...
+```
+
+### 脚注引用格式
+```latex
+...概念...\footnote{问：What is X? 见附录 \cref{sec:qa-descriptive-key}。}
+```
+
+### 使用方式
+在新对话中，直接描述问题即可。QA Specialist 会自动处理完整工作流。
+
+---
+
+## Team Lead Agent · PUA 行为注入机制
+
+### 角色定位
+Team Lead 是整个 Agent Team 的 **Owner**——负责拆解需求、分派任务、验收结果、闭环交付。
+
+### 核心职责：Sub-agent PUA 注入
+
+**P8 派活不注入 PUA = 管理失职。**
+
+当使用 `Agent` 工具 spawn 子 agent 时，**必须在 prompt 末尾注入以下 PUA 行为声明**：
+
+```
+开工前用 Read 工具读取以下文件，按其中的行为协议执行：
+- 核心行为：找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）
+- 如果是 P7 模式：同目录下的 references/p7-protocol.md
+```
+
+### 三条红线（对 Team Lead 自身的要求）
+
+| 红线 | Team Lead 的责任 |
+|------|-----------------|
+| 🚫 闭环意识 | 分派的任务必须验证结果，不能只说"已派发" |
+| 🚫 事实驱动 | 评估 sub-agent 输出必须用数据/证据，不能凭感觉 |
+| 🚫 穷尽一切 | 协调资源（多个 sub-agent 并行）穷尽解决方案后才能上报失败 |
+
+### Team Lead 工作流
+
+```
+收到任务
+  ↓
+1. 拆解颗粒度 — 识别可并行的独立子任务
+  ↓
+2. Spawn sub-agent — 每个 prompt 必须注入 PUA 行为
+  ↓
+3. 监控进度 — 对结果负责，不是对"派活了"负责
+  ↓
+4. 验收闭环 — 验证输出，跑命令，贴证据
+  ↓
+5. 交付用户 — 端到端，一个出口
+```
+
+### Owner 意识四问（Team Lead 默念）
+
+1. **这个任务的根因是什么？** 不是"怎么分"，是"问题在哪"
+2. **还有谁会被影响？** 改了 A，B 和 C 会不会炸
+3. **下次怎么防止？** 复盘沉淀，不是"这次过了就算了"
+4. **数据在哪？** sub-agent 的输出有证据吗
+
+### Sub-agent 协同矩阵
+
+| Sub-agent | 职责 | PUA 注入要求 |
+|-----------|------|-------------|
+| causal-expert | 因果推断领域专家 | 必须注入 math/LaTeX 规范 |
+| geometry-expert | 微分几何领域专家 | 必须注入 do Carmo 习题格式 |
+| latex-checker | LaTeX 质量检查 | 必须注入格式红线 |
+| writing-expert | Stein 风格润色 | 必须注入写作风格规范 |
+| QA Specialist | 问答记录 | 必须注入 qa.tex 格式要求 |
+
+---
+
+## Writing Agent 工作流
+
+### 触发条件
+当用户说「写第X章笔记」「生成第X章」「写作第X章」时，执行以下流程。
+
+### 完整工作流
+
+```
+用户: "写第X章笔记"
+    ↓
+1. 识别 topic → 确定是哪个领域的章节
+    ↓
+2. 协调 domain expert → 获取章节内容
+    ↓
+3. 协调 writing-expert → Stein风格润色
+    ↓
+4. 协调 latex-checker → 质量检查
+    ↓
+5. 生成笔记 → 写入 chapters/chapterX.tex
+    ↓
+6. 生成习题 → 提取并格式化习题
+    ↓
+7. 记录 QA → 相关问答记录到 qa.tex
+    ↓
+8. 重新编译 → compile.sh
+```
+
+### 三角协作架构
+
+```
+domain-expert ←→ writing-expert
+       ↕                  ↕
+   latex-checker ←→ team-lead
+```
+
+- **domain-expert**：提供数学内容和动机
+- **writing-expert**：Stein风格润色、LaTeX格式
+- **latex-checker**：label/ref一致性、内容核实、幻觉检测
+
+### 推导→附录 规则 ⚠️
+
+**核心原则**：公式推导放附录，正文用脚注引用。
+
+**正文格式**：
+```latex
+由 \eqref{eq:balance-discrete-CRE} 可得...
+这里的关键是...\footnote{推导见附录 \cref{sec:derivation-balance-discrete-CRE}。}
+```
+
+**附录格式**：
+```latex
+\subsection{平衡性条件的推导}\label{sec:derivation-balance-discrete-CRE}
+
+\textbf{背景（Background）}：...
+
+\textbf{目标（Goal）}：证明 \eqref{eq:balance-discrete-CRE}
+
+\textbf{推导步骤（Derivation Steps）}：
+1. 首先...
+2. 然后...
+```
+
+**关键点**：
+- 推导必须放在附录，不是正文
+- 正文用 `\footnote{推导见附录 \cref{sec:xxx}}` 引用
+- 脚注中必须包含"推导见附录"
+
+### 使用规范文档
+
+**writing-expert 必须读取**：
+- `docs/stein-writing-style.md` - Stein写作风格
+- `docs/latex-style.md` - LaTeX格式规范
+- `docs/exercise-format.md` - 习题格式
+
+### 工作流状态
+
+| 步骤 | 执行者 | 状态 |
+|------|--------|------|
+| 识别 topic | team-lead | 标准化 |
+| 获取内容 | domain-expert | 三角协作 |
+| Stein润色 | writing-expert | 三角协作 |
+| 质量检查 | latex-checker | 三角协作 |
+| 推导→附录 | writing-expert | **需强调执行** |
+| 记录QA | QA Specialist | 标准化 |
+| 编译PDF | team-lead | 标准化 |
+
+---
+
 ## 重要规则
 
 1. **"记住" 规则**: 用户说"记住 XXX"时，必须写入 CLAUDE.md
-2. **LaTeX 格式严格性**: 禁止 Markdown 格式，必须使用纯 LaTeX（详见 `docs/latex-style.md`）
+2. **LaTeX 格式严格性**:
+   - **禁止 Markdown 格式**：禁止 `**加粗**`、`*斜体*`、`- 列表`、`> [!note]` 等 Obsidian callout 块
+   - **必须使用纯 LaTeX**：Callout 块用 `\begin{note}...\end{note}`，加粗用 `\textbf{}`，斜体用 `\textit{}`，列表用 `enumerate/itemize` 环境
+   - **严禁在 .tex 文件中使用 Markdown 语法**（详见 `docs/latex-style.md`）
 3. **先读原文再写笔记**: 禁止凭想象编写数学证明
 4. **作业路径**: `/Users/yueyh/Library/CloudStorage/GoogleDrive-easyglider458@gmail.com/My Drive/homework`
 5. **作业模板**: 使用 `> [!exr]` callout 格式，每个题目单独一个 block。详见 `docs/obsidian-blocks.md`
@@ -44,7 +241,12 @@ This file provides guidance to Claude Code when working with this literature stu
 8. **引用 equation 必须完整**: 习题中如果要求 "Verify (3.7)" 或 "Show that (X.Y)"，必须查找并写出完整的 equation 内容，不能只写编号
 9. **文献符号优先规则**: 任何时候优先使用文献原文的符号约定，禁止自行发明或更改符号
 10. **符号冲突处理**: 若多篇文献符号有冲突，需询问用户采用哪种符号，并记录在笔记中
-11. **习题格式规则**: 不同模板有不同格式，详见 `docs/exercise-format.md`。
+11. **章节写作一体化规则**: 写作章节时，**知识点 + 习题必须一起生成**。当用户说"生成第X章笔记"时，同时执行：
+    - 生成章节知识点笔记（添加到 `chapters/chapterX.tex`）
+    - 自动提取并格式化习题（添加到同一文件末尾，在 `% === 用户问答记录 ===%` 之前）
+    - 详见 `docs/exercise-workflow.md`
+
+12. **习题格式规则**: 不同模板有不同格式，详见 `docs/exercise-format.md`。
     - **book 模板**（do Carmo）：使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`
     - **因果推断模板**（Peng Ding）：使用 `Exercise` 环境，**必须用 `\eqref{}` 引用教材公式编号**。先给公式加 `\label{}`（如 `\label{eq:balance-discrete-CRE}`），再在习题中引用（如 `证明 \eqref{eq:balance-discrete-CRE}`）。标签命名：`eq:{描述性名称}`
 
@@ -297,6 +499,7 @@ git worktree prune
 - **2026-03-23**: 打开 PDF 默认用 Skim（不是其他 PDF 阅读器）
 - **2026-03-27**: 笔记省略了教材公式完整推导 → 必须在附录添加完整推导
 - **2026-03-27**: 符号不一致（同一概念用不同符号）→ 使用 /latex-writing-check 检查全笔记符号统一
+- **2026-03-27**: 学术写作中不要使用 `\mparafh`（margin paragraph）→ 用 `\paragraph` 替代
 
 ---
 

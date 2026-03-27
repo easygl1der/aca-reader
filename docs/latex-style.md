@@ -1,10 +1,15 @@
 # LaTeX 格式规范
 
-## 禁止使用
+## 禁止使用（LaTeX 文件中严禁 Markdown 语法）
+
+**⚠️ 重要：`.tex` 文件中绝对禁止使用任何 Markdown 语法**
+
 - ❌ Markdown 列表（`-`、`1.`）
 - ❌ Markdown 加粗（`**text**`）
 - ❌ Markdown 斜体（`*text*`）
 - ❌ Markdown 代码块（```）
+- ❌ **Obsidian Callout 块**（`> [!note]`、`> [!example]`、`> [!thm]` 等）
+  - 必须用 LaTeX 原生环境：`\begin{note}...\end{note}`、`\begin{Example}...\end{Example}` 等
 - ❌ `\bm` 命令：向量用 `\mathbf`，矩阵用 `\boldsymbol`
 
 ## 中文标点
@@ -16,6 +21,20 @@
 - ✅ `\textbf{text}`
 - ✅ `\textit{text}`
 - ✅ `\begin{verbatim}...\end{verbatim}` 或 `\texttt{text}`
+
+## Obsidian Callout → LaTeX 对照表
+
+| Obsidian 语法 | LaTeX 环境 |
+|-------------|-------------|
+| `> [!note]` | `\begin{note}...\end{note}` |
+| `> [!example]` | `\begin{Example}[名称]...\end{Example}` |
+| `> [!thm]` | `\begin{Theorem}[名称]...\end{Theorem}` |
+| `> [!def]` | `\begin{Definition}[名称]...\end{Definition}` |
+| `> [!exr]` | `\begin{Exercise}{题号}...\end{Exercise}` |
+| `> [!solution]` | `\begin{Proof}...\end{Proof}` 或直接写解答 |
+| `> [!rmk]` | `\begin{Remark}...\end{Remark}` |
+
+**注意**：Callout 内容直接写在 LaTeX 环境中，不需要 `> [!xxx]` 标记
 
 ## Theorem 环境
 - **禁止在 Definition/Theorem 环境中使用 itemize**，使用 enumerate 替代

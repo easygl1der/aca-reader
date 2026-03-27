@@ -185,7 +185,7 @@ Y_i^{obs} = Z_i Y_i(1) + (1 - Z_i) Y_i(0)
   \item p 值就是在所有可能分配中，观察到的统计量至少与实际观测值一样极端的比例
 \end{enumerate}
 
-\textbf{★ Insight}：FRT 的本质是"条件推断"——我们 condition on 固定的潜在结果 $\mathbf{Y}$，只让治疗分配 $\mathbf{Z}$ 有随机性。这与经典统计推断不同：经典方法 condition on 数据，假设数据的分布已知；FRT 则 condition on 潜在结果，利用随机化机制计算精确的 p 值。
+$\star$ \textbf{Insight}：FRT 的本质是"条件推断"——我们 condition on 固定的潜在结果 $\mathbf{Y}$，只让治疗分配 $\mathbf{Z}$ 有随机性。这与经典统计推断不同：经典方法 condition on 数据，假设数据的分布已知；FRT 则 condition on 潜在结果，利用随机化机制计算精确的 p 值。
 
 \textbf{为什么叫"随机化检验"？}因为它完全基于随机化机制——不假设任何参数分布，不依赖正态性假设，只依赖"治疗是如何随机分配的"这一事实。这使得 FRT 在随机实验中具有"有限样本精确性"（finite-sample exactness）。
 
@@ -207,6 +207,52 @@ $$\mathbb{P}(\mathbf{Z} = \mathbf{z}^m) = \frac{1}{M} = \frac{1}{\binom{n}{n_1}}
 例如当 $n=100, n_1=50$ 时，$M \approx 10^{29}$ 种可能的分配，每一种被选中的概率都完全相同（约 $10^{-29}$）。
 
 \textbf{关键直觉}：在 CRE 下，treatment 组和 control 组的成员身份是随机决定的，而非实验者主观选择。这就是 Fisher 说的"randomization provides a valid basis for inference"——随机化本身保证了推断的有效性。
+
+\subsection{蒙特卡洛公式中的 $\mathbf{Z}$ 是什么？}\label{sec:qa-z-in-monte-carlo}
+
+\textbf{问}：蒙特卡洛公式里面的 $\mathbf{Z}$ 到底是什么意思？他说是一个均匀分布，但我不知道 $\mathbf{Z}$ 是什么意思？
+
+\textbf{答}：
+
+\textbf{为什么需要理解 $\mathbf{Z}$？}在 Fisher 随机化检验中，我们感兴趣的问题是："如果 treatment 真的是随机分配的，观察到的差异有多极端？"要回答这个问题，我们需要知道"随机分配"是如何进行的——而 $\mathbf{Z}$ 正是描述这种分配机制的核心工具。
+
+\textbf{$\mathbf{Z}$ 的定义}。在 $n$ 个单元的实验中，$\mathbf{Z} = (Z_1, Z_2, \ldots, Z_n)$ 是一个长度为 $n$ 的向量，其中：
+\begin{itemize}
+  \item $Z_i = 1$：单元 $i$ 接受 treatment（治疗组）
+  \item $Z_i = 0$：单元 $i$ 接受 control（对照组）
+\end{itemize}
+
+例如当 $n=5, n_1=2$ 时，一个可能的分配是 $\mathbf{Z} = (1, 0, 0, 1, 0)$，表示第 1、4 号单元接受治疗，第 2、3、5 号单元接受对照。
+
+\textbf{为什么是"均匀分布"？}在完全随机实验（CRE）中，治疗分配是完全随机的——每个可能的 $\mathbf{Z}$ 被选中的概率相等。这就是"均匀分布"的含义。
+
+具体来说，所有可能的分配有 $M = \binom{n}{n_1}$ 种，每种被选中的概率都是 $1/M$。例如：
+\begin{itemize}
+  \item $n=3, n_1=1$ 时，$M=3$，三种可能：$(1,0,0)$、$(0,1,0)$、$(0,0,1)$，概率各为 $1/3$
+  \item $n=100, n_1=50$ 时，$M \approx 10^{29}$，每种概率约为 $10^{-29}$
+\end{itemize}
+
+\textbf{$\mathbf{z}^r$ 是什么？}在 Monte Carlo 近似中，我们无法枚举全部 $M$ 种分配。因此我们进行 $R$ 次随机置换，每次得到一个 $\mathbf{z}^r$。每个 $\mathbf{z}^r$ 都是对真实 $\mathbf{Z}$ 的一次模拟。
+
+$\star$ \textbf{Insight}：理解 $\mathbf{Z}$ 的关键是：它是一个指示函数向量（indicator vector），而不是一个普通的数。它告诉我们"谁在接受治疗，谁在对照"。Monte Carlo 方法通过重复模拟这个随机分配过程，来近似在所有可能分配下的检验统计量分布。
+
+\subsection{什么是潜在结果（Potential Outcomes）？}\label{sec:qa-potential-outcomes-general}
+
+\textbf{问}：什么是因果推断中的"潜在结果"（Potential Outcomes）？
+
+\textbf{答}：潜在结果（Potential Outcomes）是指每个研究单元在**不同处理条件下**可能观测到的所有结果。对于单元 $i$：
+\begin{itemize}
+  \item $Y_i(1)$：单元 $i$ 接受 treatment 后的结果（如吃药后的康复情况）
+  \item $Y_i(0)$：单元 $i$ 接受 control 的结果（如不服药的情况）
+\end{itemize}
+
+\textbf{核心问题}：我们只能同时观测到**一个**潜在结果，另一个是反事实（counterfactual）。这被称为"因果推断基本问题"（Fundamental Problem of Causal Inference）。
+
+\subsection{第一基本形式的意义}\label{sec:qa-first-fundamental-form}
+
+\textbf{问}：什么是第一基本形式（First Fundamental Form）？
+
+\textbf{答}：第一基本形式是曲面上用来度量弧长、面积以及角度的工具，本质上是曲面自带的一种"度量结构"——它告诉我们如何在曲面上测量距离和角度。
 
 \textit{当你在阅读过程中提出问题时，回答将被记录在此处。}
 

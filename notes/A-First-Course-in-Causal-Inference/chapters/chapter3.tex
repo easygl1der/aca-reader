@@ -40,7 +40,7 @@ Ronald Fisher 在 1935 年的开创性著作《Design of Experiments》中指出
 其中 $\mathbf{z} = (z_1,\ldots, z_n)$ 满足 $\sumn z_i = n_1$ 和 $\sumn (1-z_i) = n_0$。
 \end{Definition}
 
-在这个定义中，我们假设潜在结果向量 $\mathbf{Y}(1) = (Y_1(1), \ldots, Y_n(1))$ 和 $\mathbf{Y}(0) = (Y_1(0), \ldots, Y_n(0))$ 都是固定的。即使我们将它们视为随机的，我们可以在其上条件化，治疗分配机制变为：
+在这个定义中，我们假设潜在结果向量 $\mathbf{Y}(1)$ 和 $\mathbf{Y}(0)$ 都是固定的。即使将它们视为随机的，我们可以在其上条件化，治疗分配机制变为：
 \[
 \mathbb{P}\{\mathbf{Z} = \mathbf{z} \mid \mathbf{Y}(1), \mathbf{Y}(0)\} = 1 \Big / \binom{n}{n_1}
 \]
@@ -80,7 +80,7 @@ p_\frt = M^{-1} \sum_{m=1}^M \mathbb{I}\{T(\mathbf{z}^m,\mathbf{Y}) \geq T(\math
 
 \section{Monte Carlo 近似}
 
-在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$，并用修正公式 $\tilde p_\frt$ 保证有限样本有效性。\footnote{问：为什么 Monte Carlo 近似需要修正？见附录 \cref{sec:qa-pfrt-mc}。}
+在实践中，$M$ 通常太大（例如当 $n=100, n_1=50$ 时，$M > 10^{29}$），枚举所有可能的治疗向量在计算上是不可行的。我们经常用 Monte Carlo 来近似 $p_\frt$，并用修正公式 $\tilde p_\frt$ 保证有限样本有效性。\footnote{问：为什么 Monte Carlo 近似需要修正？见附录 \cref{sec:qa-pfrt-mc}。}\footnote{问：蒙特卡洛公式里面的 $\mathbf{Z}$ 到底是什么意思？见附录 \cref{sec:qa-z-in-monte-carlo}。}
 \begin{equation}\label{eq:mc-pvalue}
 \hat p_\frt  =  R^{-1} \sum_{r=1}^R   \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y})   \geq T(\mathbf{Z},\mathbf{Y})   \},
 \end{equation}
