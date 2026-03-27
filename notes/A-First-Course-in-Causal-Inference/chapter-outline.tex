@@ -1,0 +1,241 @@
+% !TEX root = causal-inference-notes.tex
+% Chapter 5 Outline: Stratification and Post-Stratification
+% ~30% filled - prepared for full draft
+
+%======================================================================
+\chapter{分层与后分层随机实验}\label{ch:5}
+%======================================================================
+
+%======================================================================
+\section{引言：随机化的艺术}\label{sec:5-intro}
+%====================================================================--
+
+\textbf{Motivation}：在完全随机实验（CRE）中，治疗分配完全由 chance 决定...
+这个问题引导我们提出一个核心问题：\textbf{如何在有限样本中控制协变量不平衡？}
+
+\textbf{历史脉络}：
+\begin{enumerate}
+\item Box et al. (1978): ``Block what you can and randomize what you cannot''
+\item Fisher (1935): Fisher 随机化检验
+\item Neyman (1923): 方差公式的首次提出
+\end{enumerate}
+
+\textbf{本章结构概览}：
+\begin{enumerate}
+\item \S\ref{sec:5-sre-definition} 引入 SRE 的定义和记号
+\item \S\ref{sec:5-sre-frt} 讨论 SRE 中的 Fisher 随机化检验
+\item \S\ref{sec:5-sre-neymanian} 建立 Neymanian 推断框架
+\item \S\ref{sec:5-sre-cre-comparison} 比较 SRE 与 CRE 的效率
+\item \S\ref{sec:5-post-stratification} 介绍后分层方法
+\item \S\ref{sec:5-practice} 讨论实践问题
+\end{enumerate}
+
+%======================================================================
+\section{SRE 的定义与记号}\label{sec:5-sre-definition}
+%====================================================================--
+
+\subsection{从 Covariate Imbalance 谈起}
+
+\textbf{核心问题}：CRE 中，即使各层治疗组和对照组比例之差的期望为零，
+单次随机化实现中仍可能存在显著的不平衡。
+
+\textbf{动机例子}：考虑一个按性别分层的实验...
+这个问题引导我们自然地提出...
+
+\begin{Definition}[5.1 — 分层随机实验 (SRE)]\label{def:5-1}
+固定 $n_{[k]1}$ 或 $n_{[k]0}$（$k = 1, \dots, K$）。
+我们在离散的协变量 $X$ 的每一层内独立进行 CRE。
+\end{Definition}
+
+\textbf{记号}：
+\[
+n_{[k]} = \#\{i: X_i = k\}, \quad \pi_{[k]} = n_{[k]} / n
+\]
+分别表示第 $k$ 层的单元数和比例。
+
+\textbf{层别倾向得分}：
+\[
+e_{[k]} = \frac{n_{[k]1}}{n_{[k]}}
+\]
+这个概念将在第 \ref{ch:propensity-score} 章讨论观测性研究时扮演核心角色。
+
+\subsection{Covariate Balance in CRE}
+
+\textbf{关键观察}（\cref{eq:5-2-balance}）：
+\begin{equation}
+\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0,
+\quad \text{但} \quad
+\frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \neq 0 \text{ 以高概率成立}.
+\label{eq:5-2-balance}
+\end{equation}
+
+\textbf{直观理解}：期望为零说明随机化保证了\textbf{渐近公平性}，
+但有限样本中的随机波动可能导致\textbf{显著的不平衡}。
+
+\par\Notes{完整推导见附录 \cref{sec:appendix-5-2-balance}。}
+
+%======================================================================
+\section{层别平均因果效应}\label{sec:5-stratified-ace}
+%====================================================================--
+
+第 $k$ 层的层别平均因果效应：
+\[
+\tau_{[k]} = n_{[k]}^{-1} \sum_{X_i = k} \tau_i.
+\]
+
+总体平均因果效应是各层别平均因果效应的加权平均：
+\[
+\tau = n^{-1} \sum_{i=1}^n \tau_i = \sum_{k=1}^K \pi_{[k]} \tau_{[k]}.
+\tag{5.6}
+\]
+
+\textbf{SRE 估计量}：
+\[
+\hat\tau_\SRE = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]},
+\tag{5.7}
+\]
+其中 $\hat\tau_{[k]}$ 是第 $k$ 层内治疗组和对照组结果均值之差。
+
+\par\Notes{方差分析推导见附录 \cref{sec:appendix-5-7}。}
+
+%======================================================================
+\section{SRE 中的 Fisher 随机化检验}\label{sec:5-sre-frt}
+%====================================================================--
+
+Sharp null 假设：
+\[
+H_{0\Fisher}: Y_i(1) = Y_i(0) \text{ 对所有 } i = 1, \dots, n.
+\]
+
+\textbf{两个关键细节}：
+\begin{enumerate}
+\item 模拟治疗向量时，必须在各层内对治疗指标进行置换；
+\item 选择能够反映 SRE 本质的检验统计量。
+\end{enumerate}
+
+\subsection{检验统计量的规范选择}
+
+\mparafh{SRE 中的差值均值估计量}
+
+受估计 $\tau$ 的启发，我们可以使用分层估计量 $\hat\tau_\SRE$ 作为 FRT 的检验统计量。
+
+\mparafh{学生化分层估计量}
+
+\[
+t_\SRE = \frac{\hat\tau_\SRE}{\sqrt{\hat V_\SRE}},
+\tag{5.8}
+\]
+其中
+\[
+\hat V_\SRE = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{\hat S_{[k]}^2(1)}{n_{[k]1}} + \frac{\hat S_{[k]}^2(0)}{n_{[k]0}} \right).
+\tag{5.9}
+\]
+
+\par\Notes{方差估计量的期望推导见附录 \cref{sec:appendix-5-8}。}
+
+%======================================================================
+\section{Neymanian 推断}\label{sec:5-sre-neymanian}
+%====================================================================--
+
+SRE 本质上由 $K$ 个独立的 CRE 组成，因此我们可以将 Neyman (1923) 的结果推广到 SRE。
+
+\subsection{点估计与方差估计}
+
+第 $k$ 层内，$\hat\tau_{[k]}$ 是 $\tau_{[k]}$ 的无偏估计：
+\[
+\text{var}(\hat\tau_{[k]}) = \frac{S_{[k]}^2(1)}{n_{[k]1}} + \frac{S_{[k]}^2(0)}{n_{[k]0}} - \frac{S_{[k]}^2(\tau)}{n_{[k]}}.
+\tag{5.10}
+\]
+
+分层估计量 $\hat\tau_\SRE$ 的方差：
+\[
+\text{var}(\hat\tau_\SRE) = \sum_{k=1}^K \pi_{[k]}^2 \text{var}(\hat\tau_{[k]}).
+\tag{5.11}
+\]
+
+保守方差估计量：
+\[
+\hat V_\SRE = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{\hat S_{[k]}^2(1)}{n_{[k]1}} + \frac{\hat S_{[k]}^2(0)}{n_{[k]0}} \right).
+\tag{5.12}
+\]
+
+\subsection{Wald 型置信区间}
+
+基于 $\hat\tau_\SRE$ 的正态近似，$\tau$ 的 $1 - \alpha$ 置信区间为：
+\[
+\hat\tau_\SRE \pm z_{1-\alpha/2} \sqrt{\hat V_\SRE}.
+\tag{5.13}
+\]
+
+\par\Notes{渐近正态性推导见附录 \cref{sec:appendix-5-13}。}
+
+%======================================================================
+\section{SRE 与 CRE 的效率比较}\label{sec:5-sre-cre-comparison}
+%====================================================================--
+
+与 CRE 相比，SRE 有什么好处？\textbf{更好的 covariate balance 会带来更好的估计精度。}
+
+\textbf{关键假设}：$e_{[k]} = e$（对所有 $k$），这保证了 $\hat\tau = \hat\tau_\SRE$。
+
+\textbf{方差分解}：利用方差分析技术...
+\[
+\var_{\CRE}(\hat\tau) = \underbrace{\sum_{k=1}^K [\cdots]}_{\text{与 SRE 相同}} + \underbrace{\sum_{k=1}^K [\cdots]}_{\text{SRE 消除的项}}.
+\tag{5.14}
+\]
+
+\textbf{效率增益}：当协变量能预测潜在结果时，SRE 的方差严格小于 CRE 的方差。
+
+\par\Notes{完整方差分解和效率比较推导见附录 \cref{sec:appendix-5-14}。}
+
+%======================================================================
+\section{CRE 中的后分层}\label{sec:5-post-stratification}
+%====================================================================--
+
+\textbf{核心思想}：在 CRE 中给定分层数量条件下，分析方法与 SRE 相同。
+
+\textbf{数学刻画}：
+\[
+\Pr_{\CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}}.
+\tag{5.15}
+\]
+
+\textbf{后分层估计量}：
+\[
+\hat\tau_\PS = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]},
+\tag{5.16}
+\]
+其形式与 $\hat\tau_\SRE$ 相同。
+
+\textbf{对偶性}：\textit{分层在设计阶段使用 $X$，后分层在分析阶段使用 $X$。它们是使用 $X$ 的对偶方法。}
+
+%======================================================================
+\section{实践中的问题}\label{sec:5-practice}
+%====================================================================--
+
+\subsection{如何选择 $X$ 构建 SRE？}
+
+理论上，$X$ 应该能预测潜在结果...
+
+经验法则：$K = 5$ 通常足以获得效率增益。
+
+\subsection{多维连续协变量怎么办？}
+
+\textbf{重随机化（rerandomization）}：这将是第 \ref{ch:rerandomization} 章的主题。
+
+%======================================================================
+\section{本章小结}\label/sec:5-summary}
+%====================================================================--
+
+本章主要结果：
+
+\begin{enumerate}
+\item \textbf{SRE 的动机}：CRE 可能产生不期望的治疗分配，通过分层可以主动避免 covariate imbalance。
+\item \textbf{SRE 定义}：在离散协变量的各层内独立进行 CRE，固定各层的治疗分配数量。
+\item \textbf{效率增益}：当协变量能预测潜在结果时，SRE 比 CRE 更有效。
+\item \textbf{推断方法}：FRT 和 Neymanian 推断都可以推广到 SRE。
+\item \textbf{后分层}：CRE 中给定分层数量条件后，分析方法与 SRE 相同——使用协变量的对偶方法。
+\end{enumerate}
+
+\par\Notes{主要定理的完整证明见附录 \crefrange{sec:appendix-5-2-balance}{sec:appendix-5-14}。}
+
+\endinput
