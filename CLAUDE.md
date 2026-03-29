@@ -114,6 +114,8 @@ Team Lead 是整个 Agent Team 的 **Owner**——负责拆解需求、分派任
   ↓
 3. 监控进度 — 对结果负责，不是对"派活了"负责
   ↓
+3.5. Agent 无响应 → 立即 respawn，不等；Team Lead 直接顶上闭环
+  ↓
 4. 验收闭环 — 验证输出，跑命令，贴证据
   ↓
 5. 交付用户 — 端到端，一个出口
@@ -500,6 +502,7 @@ git worktree prune
 - **2026-03-27**: 笔记省略了教材公式完整推导 → 必须在附录添加完整推导
 - **2026-03-27**: 符号不一致（同一概念用不同符号）→ 使用 /latex-writing-check 检查全笔记符号统一
 - **2026-03-27**: 学术写作中不要使用 `\mparafh`（margin paragraph）→ 用 `\paragraph` 替代
+- **2026-03-29**: Agent 无响应/不工作时 → 立即 respawn，不要等；Team Lead 直接顶上闭环，不要卡在 agent 状态上
 
 ---
 
@@ -605,6 +608,47 @@ python figure_extractor.py <图片路径> -o <输出目录>
 | 贝叶斯 | `PDFs/bayesian/` | |
 | 信息几何 | `PDFs/information-geometry/` | 24个文件 |
 | Stein 系列 | `PDFs/Stein系列/` | ⚠️ 2026-03-19 丢失，需从 minerU 重新生成 |
+
+### PDF 文件命名规范
+
+**命名格式**：`{作者标识}-{年份}-{简短标题}`
+
+| 场景 | 格式 | 示例 |
+|------|------|------|
+| 单作者 | `{姓}-{年份}-{简短标题}` | `Samuel-2024-MolevSaganFormula` |
+| 双作者 | `{姓1姓2}-{年份}-{简短标题}` | `GaoXiong-2025-TripleSchubertPositivity` |
+| 多作者 | `{姓1姓2...}-{年份}-{简短标题}` | `BilleyGaoPawlowski-2023-IntroductionToCohomology` |
+
+**规则说明**：
+- 作者标识：姓连写，首字母大写（如 `GaoXiong`、`MolevSagan`）
+- 年份：4位数字（如 `2024`、`2025`）
+- 标题：取 2-4 个关键词，CamelCase（如 `QuantumSchubertPositivity`）
+- 分隔符：`-`（连字符）
+- 文件后缀：`.pdf`
+
+**正确示例**：
+```
+Li-2024-QuantumSchubertIdentities.pdf
+Buch-2022-QuantumCohomologyGrassmannians.pdf
+AndersonFulton-2023-EquivariantCohomology.pdf
+```
+
+**错误示例**：
+```
+Samuel-2024-MolevSaganFormula.pdf  ❌（标题含空格）
+Li-QuantumSchubertIdentities.pdf   ❌（缺少年份）
+Molev-Sagan-Formula.pdf            ❌（作者分隔符应为连写）
+```
+
+### Transcript 目录命名
+
+**格式**：`{作者标识}-{年份}-{简短标题}/`
+
+与 PDF 命名一致，便于对应。例如：
+```
+PDFs/quantum-schubert/Samuel-2024-MolevSaganFormula.pdf
+PDFs/quantum-schubert/transcript/Samuel-2024-MolevSaganFormula/
+```
 
 ### Stein 系列恢复指南
 

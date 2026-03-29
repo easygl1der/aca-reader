@@ -11,7 +11,7 @@
 
 这是 George Box 继``所有模型都是错的，但有些有用''之后第二著名的名言。本章将解释它的含义。
 
-在完全随机实验（CRE）中，治疗分配完全由 chance 决定。这种设计在样本量趋于无穷时表现优异，但在有限样本中，治疗组和对照组可能在某些协变量上出现不平衡。这种 covariate imbalance（协变量不平衡）会使实验结果的解释变得困难——观察到的结果差异可能归因于治疗，也可能归因于协变量的不平衡。
+在完全随机实验（CRE）中，治疗分配完全由 chance 决定。这种设计在样本量趋于无穷时表现优异，但在有限样本中，治疗组和对照组可能在某些协变量上出现不平衡。这种 covariate imbalance（协变量不平衡）会使实验结果的解释变得困难——观察到的结果差异可能归因于治疗，也可能归因于协变量的不平衡。% TEST HOOK v2
 
 \textbf{分层随机实验（Stratified Randomized Experiment, SRE）}正是为了主动避免这种 covariate imbalance 而设计的。
 
@@ -103,6 +103,18 @@ FRT 的基本思想适用于任何随机实验：我们可以用任何检验统�
 
 受估计 $\tau$ 的启发（见 \cref{sec:5-sre-neymanian}），我们可以在 FRT 中使用分层估计量 $\hat\tau_\SRE$ 作为检验统计量。
 
+\begin{Example}[Example 5.1 — 分层估计量]\label{ex:5-1}
+ Motivated by estimating $\tau$ (see Chapter 5.3 below), we can use the following stratified estimator in the FRT:
+\[
+\hat{\tau}_{\mathrm{S}} = \sum_{k=1}^{K} \pi_{[k]} \hat{\tau}_{[k]},
+\]
+where
+\[
+\hat{\tau}_{[k]} = n_{[k]1}^{-1} \sum_{i=1}^{n} I(X_i = k, Z_i = 1) Y_i - n_{[k]0}^{-1} \sum_{i=1}^{n} I(X_i = k, Z_i = 0) Y_i
+\]
+is the stratum-specific difference-in-means within stratum $k$.
+\end{Example}
+
 \paragraph{学生化分层估计量}
 
 受简单两样本问题中学生化统计量的启发，我们可以在 FRT 中使用以下学生化统计量：
@@ -120,6 +132,18 @@ t_\SRE = \frac{\hat\tau_\SRE}{\sqrt{\hat V_\SRE}},
 
 这里 $\hat S_{[k]}^2(1)$ 和 $\hat S_{[k]}^2(0)$ 分别是治疗组和对照组结果在第 $k$ 层内的样本方差。这个统计量的精确形式来自下面 \cref{sec:5-sre-neymanian} 讨论的 Neymanian 视角。
 
+\begin{Example}[Example 5.2 — 学生化分层估计量]\label{ex:5-2}
+Motivated by the studentized statistic in the simple two-sample problem, we can use the following studentized statistic for the stratified estimator in the FRT:
+\[
+t_{\mathrm{S}} = \frac{\hat{\tau}_{\mathrm{S}}}{\sqrt{\hat{V}_{\mathrm{S}}}},
+\]
+with
+\[
+\hat{V}_{\mathrm{S}} = \sum_{k=1}^{K} \pi_{[k]}^{2} \left( \frac{\hat{S}_{[k]}^{2}(1)}{n_{[k]1}} + \frac{\hat{S}_{[k]}^{2}(0)}{n_{[k]0}} \right),
+\]
+where $\hat{S}_{[k]}^2(1)$ and $\hat{S}_{[k]}^2(0)$ are the stratum-specific sample variances of the outcomes under the treatment and control, respectively. The exact form of this statistic is motivated by the Neymanian perspective discussed in Section 5.3 below.
+\end{Example}
+
 \paragraph{合并 Wilcoxon 秩和统计量}
 
 我们首先在第 $k$ 层内计算 Wilcoxon 秩和统计量 $W_{[k]}$，然后合并为：
@@ -128,6 +152,24 @@ W_\SRE = \sum_{k=1}^K c_{[k]} W_{[k]}.
 \]
 
 基于不同的渐近方案和最优性准则，\citet{VanElteren:1960} 提出了两种加权方法。一种使用 $c_{[k]} = 1 / (n_{[k]1} n_{[k]0})$，另一种使用 $c_{[k]} = 1 / (n_{[k]} + 1)$。
+
+\begin{Example}[Example 5.3 — 合并 Wilcoxon 秩和统计量]\label{ex:5-3}
+We first compute the Wilcoxon rank sum statistic $W_{[k]}$ within stratum $k$ (recall Example 3.3) and then combine them as
+\[
+W_{\mathrm{S}} = \sum_{k=1}^{K} c_{[k]} W_{[k]}.
+\]
+
+Based on different asymptotic schemes and optimality criteria, Van Elteren (1960) proposed two weighting methods, one with
+\[
+c_{[k]} = \frac{1}{n_{[k]1} n_{[k]0}},
+\]
+and the other with
+\[
+c_{[k]} = \frac{1}{n_{[k]} + 1}.
+\]
+
+The motivations for these weights are quite technical, and other choices of weights may also be reasonable.
+\end{Example}
 
 \paragraph{Hodges--Lehmann 对齐秩统计量}
 
@@ -140,6 +182,19 @@ Van Elteren (1960) 的统计量在层数较少且各层样本量较大时表现�
 \tilde W = \sum_{i=1}^n Z_i \tilde R_i.
 \]
 
+\begin{Example}[Example 5.4 — Hodges and Lehmann (1962) 的对齐秩统计量]\label{ex:5-4}
+Van Elteren (1960)'s statistic works well with a few large strata. However, it does not work well with many small strata since it does not make enough comparisons, potentially losing information in the data. Hodges and Lehmann (1962) proposed a test statistic that makes more comparisons across strata after standardizing the outcomes. They suggested first centering the outcomes as
+\[
+\tilde{Y}_i = Y_i - \bar{Y}_{[k]}
+\]
+with the stratum-specific mean $\bar{Y}_{[k]} = n_{[k]}^{-1}\sum_{X_i = k}Y_i$ if $X_i = k$, then obtaining the ranks $(\tilde{R}_1,\dots,\tilde{R}_n)$ of the pooled outcomes $(\tilde{Y}_1,\ldots,\tilde{Y}_n)$, and finally constructing the test statistic
+\[
+\tilde{W} = \sum_{i=1}^n Z_i \tilde{R}_i.
+\]
+
+We can simulate the exact distributions of the above test statistics under the SRE. We can also calculate their means and variances and obtain the $p$-values based on Normal approximations.
+\end{Example}
+
 \paragraph{Kolmogorov--Smirnov 统计量}
 
 我们计算 $D_{[k]}$，即第 $k$ 层内治疗组和对照组结果的经验分布函数之间的最大差距。最终的检验统计量可以是：
@@ -147,6 +202,24 @@ Van Elteren (1960) 的统计量在层数较少且各层样本量较大时表现�
 D_\SRE = \sum_{k=1}^K c_{[k]} D_{[k]}, \quad \text{或} \quad D_{\max} = \max_{1 \leq k \leq K} c_{[k]} D_{[k]},
 \]
 其中 $c_{[k]} = \sqrt{n_{[k]1} n_{[k]0} / n_{[k]}}$。
+
+\begin{Example}[Example 5.5 — Kolmogorov--Smirnov 统计量]\label{ex:5-5}
+After searching for a while, I failed to find a detailed discussion of the Kolmogorov--Smirnov statistic for the SRE. Below is my proposal.
+
+We compute $D_{[k]}$, the maximum difference between the empirical distributions of the outcomes under treatment and control within stratum $k$. The final test statistic can be
+\[
+D_{\mathrm{S}} = \sum_{k=1}^{K} c_{[k]} D_{[k]}
+\]
+or
+\[
+D_{\max} = \max_{1 \leq k \leq K} c_{[k]} D_{[k]},
+\]
+where $c_{[k]} = \sqrt{n_{[k]1}n_{[k]0} / n_{[k]}}$ is motivated by the limiting distribution of $D_{[k]}$ with $n_{[k]1}$ and $n_{[k]0}$ approaching infinity (see Example 3.4). The statistics $D_{\mathrm{S}}$ and $D_{\mathrm{max}}$ are more appropriate when all strata have large sample sizes. Another reasonable choice is
+\[
+D = \max_{y} \left| \sum_{k=1}^{K} \pi_{[k]} \{\hat{F}_{[k]1}(y) - \hat{F}_{[k]0}(y)\} \right|,
+\]
+where $\hat{F}_{[k]1}(y)$ and $\hat{F}_{[k]0}(y)$ are the stratum-specific empirical distribution functions of the outcomes under the treatment and control, respectively. The statistic $D$ is appropriate in both the cases with large strata and the cases with many small strata.
+\end{Example}
 
 \footnote{式 \eqref{eq:5-8} 和 \eqref{eq:5-9} 的期望和方差推导见附录 \cref{sec:appendix-5-8}。}
 

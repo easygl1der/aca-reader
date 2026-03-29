@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [{
+          "type": "command",
+          "command": ".claude/hooks/auto-compile-latex.sh"
+        }]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [{
+          "type": "command",
+          "command": ".claude/hooks/auto-commit-push.sh"
+        }]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [{
+          "type": "command",
+          "if": "Bash(compile\\.sh)",
+          "command": ".claude/hooks/auto-commit-push.sh"
+        }]
+      }
+    ]
+  }
+}

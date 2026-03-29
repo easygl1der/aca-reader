@@ -1,0 +1,133 @@
+% Chapter 2: Samuel's Molev-Sagan Type Formula
+% 基于 Matthew J. Samuel (2024)
+% arXiv: 2401.11060
+
+\chapter{Samuel's Molev-Sagan Type Formula}
+\label{chap:MolevSagan}
+
+\section{引言：两个多项式相乘会得到什么？}
+\label{sec:ProductMotivation}
+
+在第一章中，我们遇到了三重变量集的 Graham positivity 问题——即研究形如
+\begin{equation}
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \mathfrak{S}_w(\mathbf{x}; \mathbf{t})
+\label{eq:TripleProduct}
+\end{equation}
+的展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的正性。
+
+但如果我们退后一步，问一个更基本的问题：\textbf{两个双重 Schubert 多项式相乘，会得到什么？}
+
+这并非一个纯粹的技术性问题。当我们取 $\mathbf{y} = \mathbf{t} = 0$ 时，系数 $c^w_{u,v}(0, 0)$ 计数旗流形中 Schubert 胞腔的相交个数——这正是 Hilbert 第十五问题的核心（涉及射影空间的相交理论）。
+
+Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $u, v$ 都是 Grassmannian 排列）的组合公式。他们的工作揭示了一个美妙的结构：系数可以理解为某种\textbf{路径计数}。Samuel 在 2024 年的工作中将这一公式推广到更一般的情形。
+
+\section{Separated Descents：分离的下降点}
+\label{sec:SeparatedDescents}
+
+在我们陈述主要公式之前，需要引入一个关键概念。
+
+当我们把两个 Schubert 多项式相乘时，系数 $e^w_{uv}(\mathbf{y}; \mathbf{z})$ 的结构并非任意——它受到排列 $u$ 和 $v$ 的\textbf{下降点}（descents）位置的深刻影响。
+
+直观上，如果 $u$ 和 $v$ 的下降点彼此"分离"——存在某个整数 $p$ 将它们分开——那么乘积的结构会变得格外清晰。
+
+\begin{Definition}[\textbf{\underline{Separated Descents 条件}}]
+\label{def:SeparatedDescents}
+设 $u, v \in S_\infty$。称 $(u, v)$ 满足\textbf{separated descents 条件}，如果存在正整数 $p$ 使得：
+\begin{itemize}
+\item 对所有 $i < p$，有 $\ell(us_i) > \ell(u)$（即 $i \notin \mathrm{Des}(u)$）；
+\item 对所有 $i > p$，有 $\ell(vs_i) > \ell(v)$（即 $i \notin \mathrm{Des}(v)$）。
+\end{itemize}
+换言之，$u$ 的所有下降点都集中在 $p$ 的左侧，$v$ 的所有下降点都集中在 $p$ 的右侧。
+\end{Definition}
+
+这一观察的根源在于旗流形的几何：Schubert 胞腔的相交性质与它们在旗流形中的相对位置密切相关。当两个胞腔的"朝向"足够分离时，它们的交集会呈现出一种正则的结构。
+
+\section{乘积公式（Theorem 3.1）}
+\label{sec:ProductFormula}
+
+这是本文的核心定理——Samuel 给出的 Molev-Sagan 类型公式。
+
+\begin{Theorem}[Theorem 3.1: 乘积公式]
+设 $u, v \in S_\infty$ 满足 separated descents 条件，则
+\begin{equation}
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \mathfrak{S}_v(\mathbf{x}; \mathbf{z}) = \sum_{w \in S_\infty} e_{uv}^w(\mathbf{y}; \mathbf{z}) \mathfrak{S}_w(\mathbf{x}; \mathbf{y})
+\label{eq:ProductFormula}
+\end{equation}
+其中系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 是关于 $\mathbf{y}_i - \mathbf{z}_j$ 的非负整数系数多项式。
+\end{Theorem}
+
+\textbf{这为什么重要？} 当 $\mathbf{y} = \mathbf{z}$ 时，\eqref{eq:ProductFormula} 简化为
+\begin{equation}
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \mathfrak{S}_v(\mathbf{x}; \mathbf{y}) = \sum_w c^w_{uv}(\mathbf{y}) \mathfrak{S}_w(\mathbf{x}; \mathbf{y})
+\label{eq:YGequalsZ}
+\end{equation}
+此时系数 $c^w_{uv}(\mathbf{y})$ 恰好是 Graham positivity 研究的对象。换言之，定理 \ref{eq:ProductFormula} 是 Graham positivity 的源头——它告诉我们\textbf{为什么}展开系数会是正多项式。\footnote{乘积公式的完整推导见附录。}
+
+\section{证明思路：Path 图与权重}
+\label{sec:PathDiagram}
+
+公式的证明依赖于一种组合模型——\textbf{path 图}（路径图）。
+
+想象一个网格，起点在左下角，终点在右上角。每条从起点到终点的单调路径对应一种"行走方式"。对于给定的排列 $u, v$，我们可以构造特定的 path 图集合，而系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 正是这些路径的\textbf{权重之和}。
+
+权重的计算涉及 $\mathbf{y}$ 和 $\mathbf{z}$ 变量的巧妙分配——每一个"拐角"处都可能贡献一个因子 $(\mathbf{y}_i - \mathbf{z}_j)$。
+
+\textbf{核心洞察}：path 图模型揭示了多重 Schubert 多项式的乘法与旗流形中的相交理论之间存在一一对应。几何相交 $\Leftrightarrow$ 路径计数。\footnote{Path 图的详细定义与权重公式见附录。}
+
+\section{Pieri 公式（Theorem 7.1）}
+\label{sec:PieriFormula}
+
+当公式中取 $v = c_{p,k}$（即特定循环排列）时，我们得到一个重要的特殊情形：
+
+\begin{Theorem}[Theorem 7.1: Pieri 公式]
+当 $v = c_{p,k} = s_{k-p+1} s_{k-p+2} \cdots s_k$（特定循环排列）时，乘积公式简化为
+\begin{equation}
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \mathfrak{S}_{c_{p,k}}(\mathbf{x}; \mathbf{z}) = \sum_{\substack{w \\ \ell(w) = \ell(u) + k}} e_{u, c_{p,k}}^w(\mathbf{y}; \mathbf{z}) \mathfrak{S}_w(\mathbf{x}; \mathbf{y})
+\label{eq:PieriFormula}
+\end{equation}
+\end{Theorem}
+
+Pieri 公式在 Schubert calculus 中有着悠久的历史——它对应于旗流形中 Grassmannian 子流形的相交性质。
+
+\section{Dominant Approximation：主导逼近}
+\label{sec:DominantApproximation}
+
+本文的另一个关键贡献是\textbf{dominant approximation} 概念。
+
+对于每个排列 $v$，存在一个唯一的"最简单"的排列 $\mu_v$，使得
+\begin{equation}
+\mathfrak{S}_{\mu_v}(\mathbf{x}; \mathbf{z}) = \prod_{i=1}^{\infty} E_{\lambda_i(v)}(\mathbf{x}; \mathbf{z}_i)
+\label{eq:DominantApproximation}
+\end{equation}
+其中 $E_{\lambda}(\mathbf{x}; \mathbf{z})$ 是所谓的主导（dominant）Schubert 多项式，具有特别简洁的形式。
+
+这一结果的深刻之处在于：它告诉我们\textbf{每个 Schubert 多项式都可以"近似"为一个主导多项式}，而这种近似的误差项具有某种可控的结构。\footnote{Dominant approximation 的完整证明见附录。}
+
+\section{关键引理一览}
+\label{sec:KeyLemmas}
+
+\begin{Lemma}[Lemma 4.1: 消减条件]
+\label{eq:ReductionCondition}
+若 $\ell(ws_i) < \ell(w)$ 且 $\ell(us_i) > \ell(u)$，$\ell(vs_i) > \ell(v)$，则 $c_{uv}^w(\mathbf{y}; \mathbf{z}) = 0$。
+\end{Lemma}
+
+\begin{Lemma}[Lemma 4.2: 提升引理]
+\label{eq:LiftingLemma}
+若 $\ell(ws_i) > \ell(w)$，则 $c_{uv}^w(\mathbf{y}; \mathbf{z}) = c_{u, vs_i}^{ws_i}(\mathbf{y}; \mathbf{z})$。
+\end{Lemma}
+
+这两个引理告诉我们：在 separated descents 条件下，系数 $e_{uv}^w$ 的结构受到 Bruhat 序的强烈约束——不满足特定下降条件的情形系数必为零。
+
+\section{本章小结}
+\label{sec:Chapter2Summary}
+
+本章介绍了 Samuel 的 Molev-Sagan 类型公式的核心内容。关键要点如下：
+
+\begin{enumerate}
+\item \textbf{Separated descents 条件}是公式成立的本质条件——它反映了旗流形中 Schubert 胞腔相交的正则性；
+\item \textbf{乘积公式}（\cref{eq:ProductFormula}）将双重 Schubert 多项式的乘积展开为系数非负的 Schubert 多项式线性组合；
+\item \textbf{Path 图模型}提供了系数几何含义的组合解释——路径计数；
+\item \textbf{Dominant approximation} 提供了将一般排列"化简"为主导排列的系统方法。
+\end{enumerate}
+
+作为推论，当 $y = z$ 时，本章的公式直接给出 Graham positivity 猜想的证明——这将是下一章的主题。
