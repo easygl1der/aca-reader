@@ -43,7 +43,7 @@ for page in doc:
 - 教材习题编号（如 "Chapter 2: 2.1", "Chapter 3: 3.4, 3.5, 3.6"）
 - 实证分析题目（LaLonde 数据等）
 
-### Step 3: 在教材转录本中查找习题内容
+### Step 3: 在教材 transcript / tex 中查找习题内容
 
 教材路径优先级：
 1. **优先使用 .tex 版本**（如果有的话）- 因为 tex 里面有更好的 `\label` 和 `\cref` 引用跳转功能
