@@ -57,15 +57,9 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 
 直观上，这个估计量代表"最有可能产生观测数据的参数值"。
 
-下面的定理从理论上证明了MLE的合理性：
+下面的定理从理论上证明了 MLE 的合理性。
 
 \begin theorem}[似然函数的渐近支撑]\label{th:likelihood-asymptotic}
-\end theorem}
-```
-
-**证明思路**：
-```
-
 设 $\theta_0$ 是参数真值，在正则条件 (R0)-(R2) 下，
 \[
 \lim_{n \to \infty} \mathbb{P}_{\theta_0}\left[ L(\theta_0; \mathbf{X}) > L(\theta; \mathbf{X}) \right] = 1, \quad \forall \theta \neq \theta_0.
@@ -73,7 +67,7 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 \]
 \end theorem}
 
-这个定理表明：随着样本量增大，似然函数在真值处达到全局最大值的概率趋于1。\footnote{该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}
+\textbf{证明思路}：由于 $\theta_0$ 是内点，存在领域使得似然函数在该领域内取得最大值。随着 $n$ 增大，似然函数在 $\theta_0$ 处超过相邻点的概率趋于 1，因此解序列收敛到 $\theta_0$。\footnote{该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}
 
 在正则条件下，MLE 可以通过求解\textbf{似然方程（likelihood equation）}得到：
 
@@ -102,8 +96,6 @@ l(\theta) = -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_
 解得 $\widehat{\theta} = \bar{x}$。这是样本均值。
 
 \textbf{意义}：对于正态分布，样本均值不仅是矩估计量，也是最大似然估计量。
-
-\textbf{注}：在例 6.1.1 中我们看到，对于 Laplace 分布，MLE 是样本中位数。这说明 MLE 的形式完全由分布的尾部行为决定。
 \end{example}
 
 \textbf{定理 6.1.2 的 Invariance 性质}：若 $\widehat{\theta}$ 是 $\theta$ 的 MLE，则对任意函数 $g(\theta)$，$g(\widehat{\theta})$ 是 $g(\theta)$ 的 MLE。\footnote{Laplace 分布 MLE 的完整推导见附录 \cref{sec:laplace-mle-derivation}。}
@@ -153,7 +145,7 @@ Cauchy 分布的似然函数无解析解，需通过数值优化（如 Newton �
 
 \subsection{为什么估计量的方差有下界？}
 
-我们已经知道 MLE 是一致的。但这只告诉我们估计量在在大样本下趋于真值，却没有告诉我们\textbf{收敛的速度有多快}。
+我们已经知道 MLE 是一致的。但这只告诉我们估计量在大样本下趋于真值，却没有告诉我们\textbf{收敛的速度有多快}。
 
 一个自然的疑问是：\textbf{对于给定的分布，是否存在方差最小的估计量？方差能小到什么程度？}
 
@@ -184,7 +176,7 @@ I(\theta) = \text{Var}(S(X; \theta)) = \mathbb{E}_\theta\left[ \left( \frac{\par
 \tag{6.2.3}\label{eq:fisher-information}
 \]
 
-直观上理解：若 $\theta$ 的微小变化会导致密度函数较大的变化，则我们对 $\theta$ 的了解就更多，信息量就更大。
+直观上理解：若 $\theta$ 的微小变化会导致密度函数较大的变化，则我们对 $\theta$ 的了解就更多，信息量就越大。
 
 等价的计算公式（通常更方便）是
 
@@ -394,17 +386,15 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 
 \subsection{似然比检验}
 
-\begin{center}
 \fbox{
 \parbox{0.9\textwidth}{
 \textbf{似然比检验（LRT）}：拒绝 $H_0$ 当且仅当 $\Lambda \leq c$，其中 $c$ 满足 $\alpha = \sup_{\theta \in \omega} \mathbb{P}_{\theta}(\Lambda \leq c)$。
 }
 }
-\end{center}
 
 但通常我们关注简单原假设 $H_0: \theta = \theta_0$，此时临界值由 $\mathbb{P}_{\theta_0}(\Lambda \leq c) = \alpha$ 确定。
 
-\begin example}[指数分布的 LRT]\label{ex:exponential-lrt}
+\begin{example}[指数分布的 LRT]\label{ex:exponential-lrt}
 设 $X_1, \ldots, X_n \sim \text{Exp}(\theta)$，密度 $f(x;\theta) = \theta^{-1}e^{-x/\theta}$，$x > 0$。
 
 似然函数 $L(\theta) = \theta^{-n}\exp\{-n\bar{x}/\theta\}$。MLE 为 $\widehat{\theta} = \bar{x}$。
@@ -419,7 +409,7 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 \textbf{注意}：当 $H_0$ 为真时，$2n\bar{X}/\theta_0 \sim \chi^2(2n)$。因此临界值可从 $\chi^2$ 分布获得。\footnote{指数分布似然比检验的详细推导见附录 \cref{sec:exponential-lrt-derivation}。}
 \end{example}
 
-\begin example}[正态均值的 LRT]\label{ex:normal-lrt}
+\begin{example}[正态均值的 LRT]\label{ex:normal-lrt}
 设 $X_1, \ldots, X_n \sim N(\theta, \sigma^2)$，$\sigma^2$ 已知。则
 
 \[
@@ -679,7 +669,7 @@ H_0: \boldsymbol{\theta} \in \omega \quad \text{vs} \quad H_1: \boldsymbol{\thet
 
 \textbf{含义}：渐近分布的自由度等于约束的个数，而不是原始参数的个数。
 
-\begin example}[正态均值的检验]\label{ex:normal-mean-test-multiparameter}
+\begin{example}[正态均值的检验]\label{ex:normal-mean-test-multiparameter}
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，检验 $H_0: \mu = \mu_0$（$\sigma^2$ 未知）。
 
 全空间 $\Omega = \{(\mu, \sigma^2): \mu \in \mathbb{R}, \sigma^2 > 0\}$，约束子空间 $\omega = \{(\mu_0, \sigma^2): \sigma^2 > 0\}$。
@@ -767,13 +757,11 @@ Q(\theta|\theta^{(m)}, \mathbf{x}) = \mathbb{E}_{\theta^{(m)}}\left[ \log L^c(\t
 \]
 \end{enumerate}
 
-\begin{center}
 \fbox{
 \parbox{0.9\textwidth}{
 \textbf{EM 算法保证}：每一步迭代都使观测似然单调递增，即 $L(\theta^{(m+1)}|\mathbf{x}) \geq L(\theta^{(m)}|\mathbf{x})$。
 }
 }
-\end{center}
 
 \begin theorem}[EM 算法的单调性]\label{th:em-monotonicity}
 设 $\theta^{(m+1)}$ 由 E 步和 M 步得到。则
