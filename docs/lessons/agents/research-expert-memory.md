@@ -126,6 +126,64 @@ PDFs/quantum-schubert/transcript/Samuel-2024-MolevSaganFormula/
 
 ---
 
+## L1104: arXiv ID 与 DOI 验证
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+research-expert 下载论文时使用了错误的 arXiv ID (math/0005028)，导致下载到不相关的论文（关于代数方程组的复根）。references.bib 中的页码信息也可能不准确（449-477 vs 实际 599-614）。
+
+**正确流程**:
+
+1. **使用 arxiv skill 搜索论文**
+   ```
+   使用 Skill tool 调用 arxiv skill：
+   - 搜索作者 + 标题关键词
+   - 获取正确的 arXiv ID
+   ```
+
+2. **交叉验证**
+   - 从引用该论文的其他文献（如 Gao-Xiong 2025）确认 arXiv ID
+   - 检查 DOI 指向的页面
+   - 核对期刊页码（不同卷期页码不同！）
+
+3. **验证论文内容**
+   - 下载后用 pdftotext 提取文本
+   - 搜索关键词确认是目标论文
+   - 搜索 "Theorem X.Y" 确认定理编号
+
+**Graham 论文验证案例**:
+```
+错误信息：
+- arXiv ID math/0005028 → 实际是关于代数方程根的论文
+- references.bib: pages 449-477
+
+正确信息：
+- arXiv: 无正确 ID（2001年期刊论文）
+- DOI: 10.1215/S0022-247X-01-52483-4
+- 正确页码: 599-614 (Duke Math J 109(3))
+- Gao-Xiong 引用: [8] Graham, Theorem 3.2
+```
+
+**操作命令**:
+```bash
+# 提取 PDF 文本验证
+pdftotext paper.pdf /tmp/paper_text.txt
+grep -n "Theorem 3.2" /tmp/paper_text.txt
+
+# 搜索关键词验证
+grep -n "Schubert\|positivity\|equivariant" /tmp/paper_text.txt
+```
+
+**防止措施**:
+- 使用 arxiv skill 搜索获取正确 ID
+- 从引用该论文的其他文章确认编号
+- 下载后立即验证内容
+- 检查页码是否与 references.bib 一致
+
+---
+
 ## PUA 自注入行为
 
 开工前用 Read 工具读取：
