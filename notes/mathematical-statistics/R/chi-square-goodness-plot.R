@@ -32,7 +32,7 @@ polygon(c(0, x[idx_accept], chi_crit),
 idx_reject <- x >= chi_crit
 polygon(c(chi_crit, x[idx_reject], max(x)),
         c(0, y[idx_reject], 0),
-        col = rgb(1, 0.4, 0.4, 06), border = NA)
+        col = rgb(1, 0.4, 0.4, 0.6), border = NA)
 
 # Add curve line
 lines(x, y, col = "black", lwd = 1.5)
