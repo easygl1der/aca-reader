@@ -853,6 +853,85 @@ $y$ & 1 & 3 & 4
 \end{tabular}
 \end{exercise}
 
+\begin{exercise}{\ref{exr:9.6.10} 异方差回归模型的 MLE – Hogg 9.6.10}\label{exr:9.6.10}
+设独立随机变量 $Y_1, Y_2, \ldots, Y_n$ 分别具有概率密度函数 $N(\beta x_i, \gamma^2 x_i^2)$，$i = 1, 2, \ldots, n$，其中给定的数 $x_1, x_2, \ldots, x_n$ 不全相等且均不为零。求 $\beta$ 和 $\gamma^2$ 的最大似然估计量。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.11} 似然比检验与回归 – Hogg 9.6.11}\label{exr:9.6.11}
+设独立随机变量 $Y_1, \ldots, Y_n$ 具有联合 pdf
+
+\[
+L(\alpha, \beta, \sigma^2) = \left(\frac{1}{2\pi\sigma^2}\right)^{n/2} \exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n [y_i - \alpha - \beta(x_i - \overline{x})]^2\right\},
+\]
+
+其中给定的数 $x_1, x_2, \ldots, x_n$ 不全相等。设原假设 $H_0: \beta = 0$（$\alpha$ 和 $\sigma^2$ 未指定）。希望使用似然比检验来检验 $H_0$ 对所有备择假设。求 $\Lambda$，并看看检验是否能基于一个熟悉的统计量。
+
+\textbf{提示}: 在本节的记号下，证明
+
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha})^2 = Q_3 + \hat{\beta}^2 \sum_{i=1}^n (x_i - \overline{x})^2.
+\]
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.12} 线性趋势 ANOVA – Hogg 9.6.12}\label{exr:9.6.12}
+使用第 9.2 节的记号，假设均值满足 $j$ 的线性函数：$\mu_j = c + d[j - (b+1)/2]$。从 $b$ 个均值分别为 $\mu_1, \mu_2, \ldots, \mu_b$、公共未知方差为 $\sigma^2$ 的正态分布中分别抽取容量为 $a$ 的独立随机样本。
+
+(a) 证明 $c$ 和 $d$ 的最大似然估计量分别为 $\hat{c} = \overline{X}_{..}$ 和
+
+\[
+\hat{d} = \frac{\sum_{j=1}^b [j - (b-1)/2](\overline{X}_{.j} - \overline{X}_{..})}{\sum_{j=1}^b [j - (b+1)/2]^2}.
+\]
+
+(b) 类似于练习 9.2.5，求平方和分解。
+
+(c) 论证当 $d=0$ 时，(b) 中右边的两项除以 $\sigma^2$ 后是自由度分别为 1 和 $ab - 2$ 的独立卡方分布随机变量。
+
+(d) 什么 $F$ 统计量用于检验均值的相等性，即 $H_0: d=0$？
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.13} 最小二乘估计的几何 – Hogg 9.6.13}\label{exr:9.6.13}
+考虑第 9.6.2 节的讨论。
+
+(a) 证明 $\hat{\boldsymbol{\theta}} = \hat{\alpha}\mathbf{1} + \hat{\beta}\mathbf{x}_c$，其中 $\hat{\alpha}$ 和 $\hat{\beta}$ 是本节导出的最小二乘估计量。
+
+(b) 证明残差向量 $\hat{\mathbf{e}} = \mathbf{Y} - \hat{\boldsymbol{\theta}}$；即它的第 $i$ 个元素是 $\hat{e}_i$，(9.6.7)。
+
+(c) 如图 9.6.3 所示，证明向量 $\hat{\boldsymbol{\theta}}$ 和 $\hat{\mathbf{e}}$ 之间的夹角是直角。
+
+(d) 证明残差之和为零；即 $\mathbf{1}'\hat{\mathbf{e}} = 0$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.15} 平面拟合 – Hogg 9.6.15}\label{exr:9.6.15}
+用最小二乘法拟合平面 $z = a + bx + cy$ 到五个点 $(x, y, z): (-1, -2, 5), (0, -2, 4), (0, 0, 4), (1, 0, 2), (2, 1, 0)$。
+
+令 R 向量 $\mathbf{x}$、$\mathbf{y}$、$\mathbf{z}$ 包含 $x$、$y$ 和 $z$ 的值。则 LS 拟合通过 $\mathrm{lm}(\mathbf{z} \sim \mathbf{x} + \mathbf{y})$ 计算。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.16} 多元正态回归估计 – Hogg 9.6.16}\label{exr:9.6.16}
+设 $4 \times 1$ 矩阵 $\mathbf{Y}$ 服从多元正态分布 $N(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I})$，其中 $4 \times 3$ 矩阵 $\mathbf{X}$ 等于
+
+\[
+\mathbf{X} = \begin{pmatrix}
+1 & 1 & 2 \\
+1 & -1 & 2 \\
+1 & 0 & -3 \\
+1 & 0 & -1
+\end{pmatrix}.
+\]
+
+(a) 求 $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}$ 的均值矩阵和协方差矩阵。
+
+(b) 如果我们观测到 $\mathbf{Y}' = (6, 1, 11, 3)$，计算 $\hat{\boldsymbol{\beta}}$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.17} 多元正态回归的 pdf – Hogg 9.6.17}\label{exr:9.6.17}
+设 $\mathbf{Y}$ 是 $n \times 1$ 随机向量，$\mathbf{X}$ 是 $n \times p$ 已知常数矩阵（秩为 $p$），$\beta$ 是 $p \times 1$ 回归系数向量。设 $\mathbf{Y} \sim N(\mathbf{X}\boldsymbol{\beta}, \sigma^2\mathbf{I})$。求 $\hat{\boldsymbol{\beta}} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}$ 的 pdf。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.18} 异方差检验 – Hogg 9.6.18}\label{exr:9.6.18}
+设独立正态随机变量 $Y_1, Y_2, \ldots, Y_n$ 分别具有概率密度函数 $N(\mu, \gamma^2 x_i^2)$，$i = 1, 2, \ldots, n$，其中给定的 $x_1, x_2, \ldots, x_n$ 不全相等且均不为零。讨论在未指定 $\mu$ 的情况下，检验原假设 $H_0: \gamma = 1$ 对所有备择假设 $H_1: \gamma \neq 1$。
+\end{exercise}
+
 \section*{附录：公式推导}\label{sec:appendix-ch9}
 
 \subsection*{One-Way ANOVA 平方和恒等式的证明}\label{sec:one-way-ss-identity}
