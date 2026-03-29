@@ -170,6 +170,128 @@ t = \frac{ \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) }{ \sqrt{ \frac{ \hat{S}^2(1) }{n
 
 \userannotation{学生化为什么更稳健？}{当 treatment 组和 control 组的方差差异较大时，差值均值的检验可能失效。学生化通过分别估计两组的方差，能够更好地处理异方差情况。}
 
+\subsection{卡方检验：二元结局的渐近检验}
+
+对于二元结局，我们还可以使用\textbf{卡方检验（Chi-Square Test）}——这是 Fisher 精确检验的大样本渐近替代。
+
+\textbf{背景}：卡方检验由卡尔·皮尔逊（Karl Pearson）于 1900 年提出，用于检验观察频数与期望频数之间是否存在显著差异。
+
+\textbf{基本思想}：在零假设 $Z \perp Y$ 下，治疗组和对照组的成功概率相等：$p_1 = p_0$。我们可以构建 $2 \times 2$ 列联表：
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+        & $Y=1$ & $Y=0$ & 合计\\\hline
+$Z=1$ & $n_{11}$ & $n_{10}$ & $n_1$ \\
+$Z=0$ & $n_{01}$ & $n_{00}$ & $n_0$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{期望频数}（在 $Z \perp Y$ 下）：
+\[
+\mathbb{E}(n_{11}) = \frac{n_1 \cdot n_{.1}}{n}, \quad
+\mathbb{E}(n_{10}) = \frac{n_1 \cdot n_{.0}}{n}, \quad
+\mathbb{E}(n_{01}) = \frac{n_0 \cdot n_{.1}}{n}, \quad
+\mathbb{E}(n_{00}) = \frac{n_0 \cdot n_{.0}}{n}
+\]
+
+\textbf{皮尔逊卡方统计量}：
+\[
+\chi^2 = \sum_{\text{所有格子}} \frac{(O - E)^2}{E}
+= \frac{(n_{11} - \mathbb{E}(n_{11}))^2}{\mathbb{E}(n_{11})}
++ \frac{(n_{10} - \mathbb{E}(n_{10}))^2}{\mathbb{E}(n_{10})}
++ \frac{(n_{01} - \mathbb{E}(n_{01}))^2}{\mathbb{E}(n_{01})}
++ \frac{(n_{00} - \mathbb{E}(n_{00}))^2}{\mathbb{E}(n_{00})}
+\]
+
+其中 $O$ = 观察频数（observed），$E$ = 期望频数（expected）。
+
+\textbf{渐近分布}：在零假设下，当样本量 $n$ 足够大时，
+\[
+\chi^2 \xrightarrow{d} \chi_1^2
+\]
+自由度为 $(2-1)\times(2-1)=1$，因为行合计与列合计已固定。
+
+★ Insight ─────────────────────────────────────
+为什么是 $(O-E)^2/E$ 而不是 $|O-E|$？平方项保证正值且对大的偏离更敏感；除以 $E$ 则标准化了不同期望频数的影响。这正是皮尔逊的洞见——将"偏离程度"量化为一个具有标准渐近分布的统计量。
+─────────────────────────────────────────────────
+
+\textbf{R 实现}：
+\begin{verbatim}
+# 构建 2x2 列联表
+tb <- matrix(c(n11, n10, n01, n00), nrow = 2, byrow = TRUE)
+rownames(tb) <- c("Z=1", "Z=0")
+colnames(tb) <- c("Y=1", "Y=0")
+
+# 卡方检验（渐近方法）
+chisq.test(tb)
+
+# Fisher 精确检验（小样本精确方法）
+fisher.test(tb)
+\end{verbatim}
+
+\textbf{与 Fisher 精确检验的比较}：
+
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+特征 & Chi-square test & Fisher exact test \\\hline
+原理 & 渐近方法（大样本） & 精确方法（小样本）\\
+p 值 & 近似 & 精确\\
+适用场景 & 期望频数均 $>5$ & 小样本或期望频数 $<5$\\\hline
+\end{tabular}
+\end{center}
+
+★ Insight ─────────────────────────────────────
+Fisher 精确检验使用超几何分布计算 p 值，在零假设下有精确的有限样本分布。Chi-square 则是大样本近似——当样本量增大时，两者结果趋于一致。实践中，如果样本不太小且所有期望频数都 $>5$，两种方法都可以使用。
+─────────────────────────────────────────────────
+
+\textbf{连续性修正}：R 中的 \texttt{chisq.test} 默认使用 Yates 连续性修正，对小样本的渐近近似进行校正：
+\[
+\chi^2_{\text{Yates}} = \sum \frac{(|O - E| - 0.5)^2}{E}
+\]
+
+\textbf{完整例子——简历种族歧视实验}（Bertrand \& Mullainathan, 2004）：
+
+该实验将简历上的名字随机分配为黑人听起来或白人听起来的名字，研究感知种族对面试回调率的影响。
+
+\begin{verbatim}
+resume = read.csv("resume.csv")
+Alltable = table(resume$race, resume$call)
+Alltable
+#         0    1
+# black 2278  157
+# white 2200  235
+\end{verbatim}
+
+数据汇总为 $2 \times 2$ 列联表：
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+        & 回调$(Y=1)$ & 无回调$(Y=0)$ & 合计\\\hline
+黑人名字$(Z=1)$ & 157 & 2278 & 2435\\
+白人名字$(Z=0)$ & 235 & 2200 & 2435\\\hline
+\end{tabular}
+\end{center}
+
+\begin{verbatim}
+> chisq.test(Alltable)
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+X-squared = 17.6, df = 1, p-value = 2.7e-05
+\end{verbatim}
+
+p 值极小，提供种族对回调率有显著影响的强有力证据。
+
+\textbf{与 Neymanian 推断的联系}：卡方检验本质上是在检验弱零假设 $H_0: \tau = 0$（平均因果效应为零）的渐近版本。风险差估计量 $\widehat{\text{RD}} = \hat{p}_1 - \hat{p}_0$ 的渐近方差为
+\[
+\text{var}(\widehat{\text{RD}}) \approx \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_0(1-\hat{p}_0)}{n_0}
+\]
+而 $\chi^2$ 统计量正是 $(\widehat{\text{RD}})^2 / \text{var}(\widehat{\text{RD}})$ 的另一种表达。
+
 \subsection{Wilcoxon 秩和统计量}
 
 差值均值和学生化统计量都关注均值差异，且对异常值敏感。Wilcoxon 秩和统计量基于合并观测结果的秩：
