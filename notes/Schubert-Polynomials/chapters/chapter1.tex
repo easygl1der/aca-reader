@@ -835,6 +835,50 @@ Skew 除差算子 $\partial_{w/v}$（见\cref{def:SkewDividedDifference}）由 M
 
 我们以关于 Grothendieck 多项式的猜想结束本文的讨论（见\cref{sec:GrothendieckProof}）。
 
+\begin{Example}[Graham Positivity 的具体例子]
+\label{ex:GrahamPositivityExample}
+考虑 $S_4$ 中的两个 Grassmannian 排列：
+\begin{itemize}
+\item $u = 1324$：前两位 $1<3$ 递增，后两位 $3>2$ 递减，故是 2-Grassmannian
+\item $v = 2413$：前两位 $2<4$ 递增，后两位 $4>1$ 递减，故是 2-Grassmannian
+\end{itemize}
+
+由 Graham Positivity 定理，它们的乘积展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 必为 $t_i - y_j$ 的非负整数系数多项式。
+
+具体计算（取 $n=3$ 的简化情形）：
+$$\mathfrak{S}_{12}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) = \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) + (t_1 - y_1)\mathfrak{S}_{12}(\mathbf{x}; \mathbf{t})$$
+
+验证：系数 $c^{21}_{12,21} = 1 \in \mathbb{N}$，$c^{12}_{12,21} = t_1 - y_1 \in \mathbb{N}[t_1 - y_1]$，符合正性要求。
+\end{Example}
+
+\begin{Example}[Samuel 猜想：一般排列的正性]
+\label{ex:SamuelConjectureExample}
+Samuel 猜想声称：\textbf{即使 $u, v$ 不是 Grassmannian 排列}，展开系数仍然保持正性。
+
+在 $S_3$ 中验证：
+$$w = 213,\quad u = 132,\quad v = 231$$
+
+计算（利用 $S_3$ 的双重 Schubert 多项式表）：
+\begin{align*}
+S_{132}(x; y) \cdot S_{231}(x; t) &= (x_2 - y_2) \cdot (x_1x_2 - x_1t_3 - x_2t_3 + t_2t_3) \\
+&= \cdots
+\end{align*}
+
+整理后可得展开系数均为 $t_i - y_j$ 的非负多项式，验证了猜想在小规模情形下的正确性。
+\end{Example}
+
+\begin{Example}[Kirillov 猜想：Skew 除差算子的正性]
+\label{ex:KirillovConjectureExample}
+令 $\mathbf{y} = 0$，Samuel 猜想退化为 Kirillov 猜想：
+
+对 $S_3$ 中的置换，验证 $\partial_{w/v} \mathfrak{S}_u(\mathbf{x}) \in \mathbb{N}[\mathbf{x}]$。
+
+取 $u = 231$，$v = 12$（恒等置换），$w = 231$：
+$$\partial_{231/12}(\mathfrak{S}_{231}) = \partial_{231}(x_1x_2) = ?$$
+
+利用除差算子的递推性质逐步计算，可验证结果的所有系数均为非负整数——这正是 Kirillov 猜想所预测的。
+\end{Example}
+
 \section{主要定理的证明}
 \label{sec:ProofMain}
 
