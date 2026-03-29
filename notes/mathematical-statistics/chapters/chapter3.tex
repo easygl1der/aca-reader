@@ -1,312 +1,535 @@
-\chapter{Special Distributions}\label{chap:special-distributions}
+\chapter{Special Distributions}\label{chap:special-distributions-ch3}
 
 \section*{Chapter 3 Overview}
 
-In Chapters 1 and 2, we established the mathematical framework for describing single and multiple random variables. Now we ask: \textbf{Which distributions deserve our special attention?}
+In Chapters 1 and 2, we established the mathematical foundations for describing single and multiple random variables. Now we face a fundamental question: \textbf{Which probability distributions deserve our special attention, and why?}
 
-Statistics matters because certain probability distributions appear repeatedly in nature and experimental data. Mastering these distributions is like learning the basic vocabulary of a language---they form the foundation for further study.
+The answer lies at the heart of statistics itself. Certain distributions appear again and again in nature, in experiments, and in theoretical investigations. These are not arbitrary choices---they emerge naturally from simple, recurring patterns: counting successes in independent trials, measuring waiting times, modeling measurement errors, and describing the behavior of averages.
 
-This chapter introduces the most important families of distributions in statistics. We will see how these distributions arise naturally from a few fundamental principles---summing independent trials, limiting processes, and transformations---and why each distribution is indispensable in statistical practice.
+This chapter introduces the most important families of distributions in statistical theory and practice. We will discover how these distributions arise from fundamental principles, appreciate their interconnected relationships, and understand why each distribution is indispensable in statistical work.
 
-\textbf{Chapter Roadmap}: Bernoulli $\to$ Binomial $\to$ Poisson $\to$ Negative Binomial/Geometric $\to$ Multinomial/Hypergeometric $\to$ Gamma/Chi-square/Beta $\to$ Normal $\to$ Multivariate Normal $\to$ $t$ and $F$ Distributions
+\textbf{Chapter Roadmap}:
+\begin{itemize}
+\item Bernoulli $\to$ Binomial $\to$ Negative Binomial/Geometric $\to$ Multinomial $\to$ Hypergeometric
+\item Poisson (as a limiting form of the binomial)
+\item Gamma $\to$ Chi-square $\to$ Beta
+\item Normal $\to$ Bivariate Normal $\to$ Multivariate Normal
+\item $t$ and $F$ Distributions (arising from normal theory)
+\end{itemize}
 
-\section{3.1 From Bernoulli to Binomial: The Science of Counting}\label{sec:binomial-distributions-ch3}
+The relationships between these distributions are not accidental---they reflect deep mathematical structures that will accompany us throughout statistical inference.
 
-\subsection{Why Do We Need the Binomial Distribution?}
+\section{3.1 The Binomial and Related Distributions}\label{sec:binomial-related-ch3}
 
-When we repeat an independent experiment, the most natural question is: \textbf{How many successes?} How many heads appear in 10 coin tosses? How many defective items among 1000 products? How many patients recover after treatment?
+\subsection{Why Do We Study the Binomial Distribution?}
 
-This ``counting problem'' pervades statistics. The binomial distribution is the mathematical model for such counting experiments.
+Consider the following scenarios: How many heads appear when a coin is tossed 100 times? How many defective items are found in a batch of 1000 products? How many patients recover after receiving an experimental treatment?
 
-\textbf{Historical genesis}：The binomial distribution originated from the study of games of chance in the 18th century. Bernoulli (1713) proved the weak law of large numbers for Bernoulli trials, establishing the theoretical foundation for the binomial distribution.
+These questions share a common mathematical structure: we perform $n$ independent trials, each with two possible outcomes (success or failure), and we count the total number of successes. This ``counting problem'' pervades statistics, and the binomial distribution is its natural mathematical model.
 
-\subsection{Bernoulli Trials}
+The binomial distribution originated from the study of games of chance in the 18th century. Jakob Bernoulli (1713) proved the weak law of large numbers for Bernoulli trials, establishing the theoretical foundation. Later, Abraham de Moivre and Pierre-Simon Laplace developed approximations that would lead to the central limit theorem---one of mathematics' most remarkable results.
 
-A \textbf{Bernoulli trial} is the simplest random experiment: the outcome is one of two mutually exclusive and complementary possibilities---success or failure.
+\subsection{Bernoulli Trials}\label{sub:bernoulli-trials-ch3}
+
+A \textbf{Bernoulli trial} is the simplest random experiment: the outcome is one of two mutually exclusive and exhaustive possibilities---success or failure.
 
 Let the random variable $X$ denote the outcome:
 \[
 X(\text{success}) = 1, \quad X(\text{failure}) = 0.
 \]
 
-Its pmf is
+The probability mass function (pmf) is:
 \begin{equation}\label{eq:bernoulli-pmf-ch3}
-p(x) = p^{x}(1-p)^{1-x}, \quad x = 0, 1.
+p(x) = p^{x}(1-p)^{1-x}, \quad x = 0, 1,
+\end{equation}
+where $p$ is the probability of success.
+
+The mean and variance of a Bernoulli distribution are:
+\begin{equation}\label{eq:bernoulli-moments-ch3}
+\mathbb{E}X = p, \quad \text{var}(X) = p(1-p).
 \end{equation}
 
-Mean and variance:
-\[
-\mathbb{E}X = p, \quad \text{var}(X) = p(1-p).
-\tag{3.1.1}\label{eq:bernoulli-moments}
+\begin{example}[Coin Toss]\label{ex:coin-toss-ch3}
+If we toss a fair coin ($p = 1/2$), then $\mathbb{E}X = 1/2$ and $\text{var}(X) = 1/4$. The standard deviation is $0.5$, meaning typical deviations from the mean are about half a coin toss.
+\end{example}
 
 \textbf{Why is the Bernoulli distribution so fundamental?} It is the simplest non-trivial random variable---neither a deterministic constant nor a uniform distribution. It captures the essential nature of ``yes/no'' decision uncertainty. Every experiment with binary outcome can be modeled as a Bernoulli trial.
 
-\subsection{The Binomial Distribution}
+\subsection{The Binomial Distribution}\label{sub:binomial-distribution-ch3}
 
 Now we ask: \textbf{What is the distribution of the number of successes in $n$ independent Bernoulli trials?}}
 
 Let $X_i$ be the Bernoulli variable for trial $i$, and we are interested in $X = \sum_{i=1}^{n} X_i$.
 
-To have $x$ successes means we choose $x$ positions out of $n$ for the successes, with the remaining positions being failures. The number of such arrangements is $\binom{n}{x}$, and each arrangement has probability $p^x(1-p)^{n-x}$.
+To have exactly $x$ successes means: we choose $x$ positions out of $n$ for the successes (there are $\binom{n}{x}$ ways to do this), and the remaining $n-x$ positions are failures. Each arrangement has probability $p^x(1-p)^{n-x}$.
 
+Therefore, the pmf is:
 \begin{equation}\label{eq:binomial-pmf-ch3}
 p(x) = \binom{n}{x} p^{x}(1-p)^{n-x}, \quad x = 0, 1, \ldots, n.
 \end{equation}
 
-We write $X \sim \text{Bin}(n, p)$.
+We write $X \sim \text{Bin}(n, p)$ and call $n$ and $p$ the parameters of the binomial distribution.
 
-\begin example}[Dice Problem]\label{ex:binomial-dice-ch3}
+\textbf{Verification that $p(x)$ sums to 1}: By the binomial theorem,
+\[
+\sum_{x=0}^{n} \binom{n}{x} p^{x}(1-p)^{n-x} = [(1-p) + p]^{n} = 1^{n} = 1.
+\]
+
+\begin{example}[Dice Problem]\label{ex:binomial-dice-ch3}
 Rolling a fair six-sided die 3 times, what is the probability of getting exactly 2 sixes?
 
-Solution: Let $X$ be the number of sixes, so $X \sim \text{Bin}(n=3, p=1/6)$,
+Let $X$ be the number of sixes, so $X \sim \text{Bin}(n=3, p=1/6)$:
 \[
-\mathbb{P}(X=2) = \binom{3}{2} \left(\frac{1}{6}\right)^2 \left(\frac{5}{6}\right)^1 = 3 \times \frac{1}{36} \times \frac{5}{6} = \frac{15}{216} \approx 0.06944.
+\mathbb{P}(X=2) = \binom{3}{2} \left(\frac{1}{6}\right)^{2} \left(\frac{5}{6}\right)^{1} = 3 \times \frac{1}{36} \times \frac{5}{6} = \frac{15}{216} \approx 0.06944.
 \]
-\end example}
 
-\textbf{Moment generating function}:
+In R, this is computed as \texttt{dbinom(2, 3, 1/6)}.
+\end{example}
+
+\textbf{Moment generating function}: The mgf of a binomial distribution is:
+\begin{equation}\label{eq:binomial-mgf-ch3}
+M(t) = \mathbb{E}[e^{tX}] = \sum_{x=0}^{n} e^{tx} \binom{n}{x} p^{x}(1-p)^{n-x} = [(1-p) + pe^{t}]^{n}.
+\end{equation}
+
+From the mgf, we derive the mean and variance:
+\begin{equation}\label{eq:binomial-moments-ch3}
+\mathbb{E}X = M'(0) = np, \quad \text{var}(X) = M''(0) - [M'(0)]^{2} = np(1-p).
+\end{equation}\footnote{Derivation in Appendix \cref{sec:derivation-binomial-moments}.}
+
+\begin{example}[Battery Lifetime]\label{ex:binomial-battery-ch3}
+Suppose a battery has probability $p = 0.95$ of lasting at least 100 hours. In a package of $n = 10$ batteries, the expected number that last at least 100 hours is $np = 9.5$, with variance $np(1-p) = 0.475$.
+
+The probability that at least 8 batteries last is:
 \[
-M(t) = \mathbb{E}[e^{tX}] = [(1-p) + pe^{t}]^{n}.
-\tag{3.1.2}\label{eq:binomial-mgf}
+\mathbb{P}(X \geq 8) = \sum_{x=8}^{10} \binom{10}{x} (0.95)^{x} (0.05)^{10-x}.
+\]
+In R: \texttt{1 - pbinom(7, 10, 0.95) = 0.9885}.
+\end{example}
 
-\textbf{Mean and variance}:
+\subsection*{Additivity of Binomial Distributions}
+
+One of the most important properties of the binomial distribution is its additivity under the same success probability.
+
+\begin{theorem}[Additivity of Binomial Distributions]\label{th:binomial-additivity-ch3}
+If $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then
 \[
-\mathbb{E}X = np, \quad \text{var}(X) = np(1-p).
-\tag{3.1.3}\label{eq:binomial-moments}
+X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p).
+\]
+\end{theorem}
 
-These follow from the linearity of expectation and the independence of trials. The MGF also confirms these results. \footnote{Derivation in Appendix \cref{sec:derivation-binomial-moments}.}
+\textbf{Intuitive understanding}: Imagine two independent piles of coin flips. The first pile of $n_1$ coins yields $X_1$ heads, the second pile of $n_2$ coins yields $X_2$ heads. Combined, we have $n_1 + n_2$ coins with total heads $X_1 + X_2$. This must still be binomial with the combined sample size.\footnote{Proof using mgf in Appendix \cref{sec:derivation-binomial-additivity}.}
 
-\begin theorem}[Additivity of Binomial Distributions]\label{th:binomial-sum-ch3}
-If $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$.
-\end theorem}
+This additivity property reflects the fundamental nature of counting: if we count successes in two batches of trials (each batch having the same success probability), the total is simply the sum.
 
-This means: two binomial experiments can be combined into one larger binomial experiment. The additivity property reflects the fundamental nature of counting: if we count successes in two batches of trials, the total is the sum.
-
-\begin remark}\label{rmk:binomial-intuition-ch3}
-\textbf{Intuitive understanding}:
-Imagine two independent piles of coin flips: the first pile of $n_1$ coins yields $X_1$ heads, the second pile of $n_2$ coins yields $X_2$ heads. Combined, we have $n_1 + n_2$ coins with total heads $X_1 + X_2$.
+\begin remark}\label{rmk:binomial-mode-ch3}
+The mode (most likely value) of a $\text{Bin}(n, p)$ distribution is $\lfloor (n+1)p \rfloor$. This makes intuitive sense: the expected number of successes is $np$, and the mode should be near this value.
 \end remark}
 
 \subsection{Negative Binomial and Geometric Distributions}\label{sub:negative-binomial-ch3}
 
-\textbf{Central question}: If we do not count the number of successes, but rather \textbf{the number of trials needed to achieve the $r$-th success}, what is the distribution?
+\textbf{A different question}: Instead of counting the number of successes in $n$ trials, we ask: \textbf{How many trials are needed to achieve the $r$-th success?}
 
-Let $Y$ be the number of failures before the $r$-th success. Then the total number of trials is $Y + r$.
+This question leads to the negative binomial distribution. Let $Y$ be the number of failures before the $r$-th success. Then the total number of trials is $Y + r$.
 
-To have exactly $y$ failures before the $r$-th success: the first $y+r-1$ trials must contain exactly $r-1$ successes and $y$ failures (in any order), and the last trial must be a success. The number of such sequences is $\binom{y+r-1}{r-1}$:
+To have exactly $y$ failures before the $r$-th success: the first $y+r-1$ trials must contain exactly $r-1$ successes and $y$ failures (in any order), and the last (($y+r$)-th) trial must be a success. The number of such sequences is $\binom{y+r-1}{r-1}$:
 
 \begin{equation}\label{eq:negative-binomial-pmf-ch3}
 p_Y(y) = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-This is called the \textbf{negative binomial distribution}, written $Y \sim \text{NB}(r, p)$.
+We write $Y \sim \text{NB}(r, p)$. The distribution derives its name from the fact that $p_Y(y)$ is a general term in the expansion of $p^{r}[1-(1-p)]^{-r}$.\footnote{Derivation in Appendix \cref{sec:derivation-negative-binomial}.}
 
 When $r=1$, we obtain the \textbf{geometric distribution}:
 \begin{equation}\label{eq:geometric-pmf-ch3}
 p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
+In terms of Bernoulli trials, $Y$ is the number of failures until the first success.
+
+\begin{example}[Blood Type Problem]\label{ex:blood-type-ch3}
+Suppose the probability that a person has blood type B is $p = 0.12$. Patients are sampled until 10 people with blood type B are obtained. What is the probability that at most 30 patients need to be tested?
+
+Let $Y \sim \text{NB}(r=10, p=0.12)$. We want $\mathbb{P}(Y \leq 20)$ (since the 10th success occurs on trial $y+r = y+10$, and $y \leq 20$ means at most 30 trials).
+
+In R: \texttt{pnbinom(20, 10, 0.12) = 0.0019}. The probability is quite small!
+\end{example}
+
+\begin{example}[First Success Waiting Time]\label{ex:first-success-ch3}
+For a geometric distribution with $p = 0.12$, the probability that exactly 11 patients must be tested before finding the first with blood type B is:
+\[
+\mathbb{P}(Y = 11) = (0.12)(0.88)^{11} \approx 0.0294.
+\]
+In R: \texttt{dgeom(11, 0.12)}.
+\end{example}
+
 \begin theorem}[Memorylessness of Geometric Distribution]\label{th:geometric-memoryless-ch3}
 The geometric distribution possesses a unique \textbf{memorylessness property}:
-\[
-\mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j).
-\tag{3.1.4}\label{eq:memoryless}
-\]
+\begin{equation}\label{eq:memoryless-property-ch3}
+\mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j), \quad k, j \geq 0.
+\end{equation}
 \end theorem}
 
 \textbf{What does this mean?} If you have already failed $k$ times, the remaining waiting time for the first success is exactly the same as it was at the beginning. Past failures do not change future expectations. This property characterizes the geometric distribution among all discrete distributions on $\{0,1,2,\ldots\}$.\footnote{Proof in Appendix \cref{sec:derivation-memoryless}.}
 
-Mean and variance of geometric distribution: $\mathbb{E}Y = (1-p)/p$, $\text{var}(Y) = (1-p)/p^2$.\footnote{Derivation in Appendix \cref{sec:derivation-geometric-moments}.}
+The mean and variance of the geometric distribution (with support $\{0,1,2,\ldots\}$) are:
+\begin{equation}\label{eq:geometric-moments-ch3}
+\mathbb{E}Y = \frac{1-p}{p}, \quad \text{var}(Y) = \frac{1-p}{p^{2}}.
+\end{equation}\footnote{Derivation in Appendix \cref{sec:derivation-geometric-moments}.}
+
+\begin remark}\label{rmk:negative-binomial-mgf-ch3}
+The mgf of the negative binomial distribution is:
+\[
+M(t) = \frac{p^{r}}{[1 - (1-p)e^{t}]^{r}}, \quad t < -\log(1-p).
+\]
+This can be derived using the negative binomial series.\footnote{Derivation in Appendix \cref{sec:derivation-nb-mgf}.}
+\end remark}
 
 \subsection{The Multinomial Distribution}\label{sub:multinomial-ch3}
 
-The binomial generalizes to $k$ categories: each trial results in exactly one of $k$ mutually exclusive categories.
+The binomial generalizes naturally to $k$ categories. In each trial, exactly one of $k$ mutually exclusive categories occurs.
 
-Let $X_i$ be the count of category $i$ occurrences. Then $(X_1, \ldots, X_k)$ follows a \textbf{multinomial distribution} with parameters $n$ and $p_1, \ldots, p_k$:
+Let categories be $C_1, C_2, \ldots, C_k$ with probabilities $p_1, p_2, \ldots, p_k$ (where $\sum_{i=1}^{k} p_i = 1$). We repeat the experiment $n$ times independently. Let $X_i$ be the count of category $i$ occurrences.
 
+The joint pmf of $(X_1, X_2, \ldots, X_k)$ is:
 \begin{equation}\label{eq:multinomial-pmf-ch3}
-\mathbb{P}(X_1=x_1, \ldots, X_k=x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k},
+\mathbb{P}(X_1 = x_1, \ldots, X_k = x_k) = \frac{n!}{x_1! x_2! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k},
 \end{equation}
-where $\sum_{i=1}^k x_i = n$ and $\sum_{i=1}^k p_i = 1$.
+where $\sum_{i=1}^{k} x_i = n$.
 
-Note that the binomial is a special case with $k=2$.\footnote{Derivation in Appendix \cref{sec:derivation-multinomial}.}
+We say $(X_1, \ldots, X_k)$ has a \textbf{multinomial distribution} with parameters $n$ and $p_1, \ldots, p_k$. The binomial is a special case with $k=2$.\footnote{Derivation in Appendix \cref{sec:derivation-multinomial}.}
+
+\textbf{Properties}: For each $i$, the marginal distribution of $X_i$ is $\text{Bin}(n, p_i)$. The covariance between $X_i$ and $X_j$ ($i \neq j$) is:
+\begin{equation}\label{eq:multinomial-covariance-ch3}
+\text{cov}(X_i, X_j) = -np_i p_j.
+\end{equation}
+
+\begin{example}[Die Roll]\label{ex:multinomial-dice-ch3}
+Roll a fair six-sided die $n = 30$ times. What is the probability of getting exactly 5 ones, 4 twos, 6 threes, 3 fours, 7 fives, and 5 sixes?
+
+Here $k=6$, $p_i = 1/6$ for all $i$. The probability is:
+\[
+\frac{30!}{5!4!6!3!7!5!} \left(\frac{1}{6}\right)^{30} \approx 0.0028.
+\]
+\end{example}
+
+\begin remark}\label{rmk:multinomial-correlation-ch3}
+The correlation between $X_i$ and $X_j$ is:
+\[
+\rho_{ij} = -\sqrt{\frac{p_i p_j}{(1-p_i)(1-p_j)}}.
+\]
+This negative correlation makes intuitive sense: if we observe more occurrences of category $i$, there are fewer trials remaining for category $j$.
+\end remark}
 
 \subsection{The Hypergeometric Distribution}\label{sub:hypergeometric-ch3}
 
 \textbf{Central question}: What is the distribution of successes when sampling \textbf{without replacement}?
 
-In a batch of $N$ items with $D$ defectives, we draw $n$ items (without replacement), and $X$ is the number of defectives. Unlike the binomial, successive draws are not independent because the composition changes.
+Consider a batch of $N$ items with $D$ defectives. We draw $n$ items without replacement, and $X$ is the number of defectives in our sample. Unlike the binomial case, successive draws are not independent because the composition changes as we sample.
 
+The pmf is:
 \begin{equation}\label{eq:hypergeometric-pmf-ch3}
-p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x = 0, 1, \ldots, n.
+p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x = 0, 1, \ldots, \min(n, D).
 \end{equation}
 
 We write $X \sim \text{Hypergeometric}(N, D, n)$.
 
 \textbf{Mean and variance}:
-\[
-\mathbb{E}X = n\frac{D}{N}, \quad \text{var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}.
-\tag{3.1.5}\label{eq:hypergeometric-moments}
+\begin{equation}\label{eq:hypergeometric-moments-ch3}
+\mathbb{E}X = n\frac{D}{N}, \quad \text{var}(X) = n\frac{D}{N}\left(1-\frac{D}{N}\right)\frac{N-n}{N-1}.
+\end{equation}
 
-The final factor $\frac{N-n}{N-1}$ is the \textbf{finite population correction factor}. When $N \gg n$, it approaches 1, and the hypergeometric distribution approximates the binomial.\footnote{Derivation in Appendix \cref{sec:derivation-hypergeometric}.}
+The factor $\frac{N-n}{N-1}$ is the \textbf{finite population correction factor}. When $N \gg n$, it approaches 1, and the hypergeometric distribution approximates the binomial with $p = D/N$.\footnote{Derivation in Appendix \cref{sec:derivation-hypergeometric}.}
 
 This approximation reflects an important principle: when the sample size is small relative to the population, sampling without replacement is almost the same as sampling with replacement.
 
-\section{3.2 The Poisson Distribution: The World of Rare Events}\label{sec:poisson-distribution-ch3}
+\begin{example}[Card Drawing]\label{ex:hypergeometric-cards-ch3}
+Draw 2 cards from a standard deck of 52 cards without replacement. What is the probability of getting exactly 1 ace?
 
-\subsection{Why Is the Poisson Distribution Important?}
+Here $N=52$, $D=4$ (aces), $n=2$. We want $\mathbb{P}(X=1)$:
+\[
+\mathbb{P}(X=1) = \frac{\binom{48}{1}\binom{4}{1}}{\binom{52}{2}} = \frac{48 \times 4}{1326} \approx 0.1448.
+\]
 
-In nature and society, there exists a special class of phenomena: \textbf{the number of events occurring in a fixed time/space interval}---such as customers arriving at a bank per hour, printing errors per page, earthquakes per year, decay events of a radioactive atom.
+For comparison, with replacement (binomial), the probability would be:
+\[
+\binom{2}{1}\left(\frac{4}{52}\right)\left(\frac{48}{52}\right) \approx 0.1412.
+\]
+The probabilities are quite close!
+\end{example}
 
-These phenomena share a common feature: \textbf{the probability of occurrence is small, but the number of trials is large}. The limiting form of the binomial distribution is precisely the Poisson distribution.
+\section{3.2 The Poisson Distribution}\label{sec:poisson-distribution-ch3}
 
-Historical note: The Poisson distribution was introduced by Siméon Denis Poisson in 1837, originally for analyzing data on French court judgments---the probability that a judge makes a certain number of rulings in a given time period.
+In nature and society, there exists a remarkable class of phenomena: \textbf{the number of events occurring in a fixed time or space interval}. Examples include:
+\begin{itemize}
+\item Customers arriving at a bank per hour
+\item Typographical errors per page of a manuscript
+\item Earthquakes per year in a region
+\item Decay events of a radioactive substance
+\item Accidents at an intersection per week
+\end{itemize}
 
-\subsection{Definition and Properties}
+These phenomena share a common feature: \textbf{the probability of each individual event is small, but the number of opportunities is large}. This is precisely the regime where the Poisson distribution emerges.
 
+Historical note: The Poisson distribution was introduced by Siméon Denis Poisson in 1837, originally for analyzing data on French court judgments---the probability that a judge makes a certain number of rulings in a given time period. Little did Poisson know that his distribution would become one of the most widely used tools in all of statistics.
+
+\subsection{Definition and Properties}\label{sub:poisson-definition-ch3}
+
+A discrete random variable $X$ has a Poisson distribution with parameter $\lambda > 0$ if:
 \begin{equation}\label{eq:poisson-pmf-ch3}
-p(x) = \frac{\lambda^{x}e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \ldots
+p(x) = \mathbb{P}(X=x) = \frac{\lambda^{x} e^{-\lambda}}{x!}, \quad x = 0, 1, 2, \ldots
 \end{equation}
 
-Here $\lambda > 0$ is the parameter, representing the mean occurrence rate. We write $X \sim \text{Poisson}(\lambda)$.
+We write $X \sim \text{Poisson}(\lambda)$.
 
-\textbf{Verification}: Because $e^{\lambda} = \sum_{x=0}^{\infty} \frac{\lambda^x}{x!}$,
+\textbf{Verification}: Because $e^{\lambda} = \sum_{x=0}^{\infty} \frac{\lambda^{x}}{x!}$,
 \[
-\sum_{x=0}^{\infty} p(x) = e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^x}{x!} = e^{-\lambda} \cdot e^{\lambda} = 1.
-\tag{3.2.1}\label{eq:poisson-normalization}
+\sum_{x=0}^{\infty} p(x) = e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^{x}}{x!} = e^{-\lambda} \cdot e^{\lambda} = 1.
+\tag{3.2.1}\label{eq:poisson-normalization-ch3}
+\]
 
-\textbf{Mean and variance}:
-\[
+The parameter $\lambda$ has a beautiful interpretation: it is both the mean and the variance of the distribution:
+\begin{equation}\label{eq:poisson-moments-ch3}
 \mathbb{E}X = \lambda, \quad \text{var}(X) = \lambda.
-\tag{3.2.2}\label{eq:poisson-moments}
+\end{equation}\footnote{Derivation in Appendix \cref{sec:derivation-poisson-moments}.}
 
-\textbf{Here is a surprising property}: Mean and variance are equal! This is a hallmark feature of the Poisson distribution, useful for checking whether data might follow a Poisson model.\footnote{Derivation in Appendix \cref{sec:derivation-poisson-moments}.}
+\textbf{Here is a surprising and useful property}: Mean equals variance! This is a hallmark feature of the Poisson distribution, useful for checking whether data might follow a Poisson model.
+
+\begin{example}[Automobile Accidents]\label{ex:poisson-accidents-ch3}
+Let $X$ be the number of automobile accidents at a busy intersection per week. Suppose $X \sim \text{Poisson}(\lambda = 2)$.
+
+Then $\mathbb{E}X = 2$ and $\text{std}(X) = \sqrt{2} \approx 1.41$.
+
+\begin{itemize}
+\item $\mathbb{P}(X \geq 1) = 1 - \mathbb{P}(X = 0) = 1 - e^{-2} \approx 0.8647$
+\item $\mathbb{P}(3 \leq X \leq 8) = \mathbb{P}(X \leq 8) - \mathbb{P}(X \leq 2) \approx 0.3231$
+\end{itemize}
+
+In R: \texttt{1 - ppois(0, 2)} and \texttt{ppois(8, 2) - ppois(2, 2)}.
+\end{example}
+
+\begin{example}[Chocolate Chips]\label{ex:chocolate-chips-ch3}
+The number of chocolate chips in a cookie follows a Poisson distribution. We want the probability that a cookie contains at least 2 chips to be greater than 0.99. Find the smallest mean $\lambda$.
+
+We need:
+\[
+\mathbb{P}(X \geq 2) = 1 - \mathbb{P}(X = 0) - \mathbb{P}(X = 1) = 1 - e^{-\lambda} - \lambda e^{-\lambda} > 0.99.
+\]
+
+Solving: $e^{-\lambda}(1 + \lambda) < 0.01$. By trial, $\lambda \approx 6$ works, since $e^{-6}(7) \approx 0.007$.
+
+So at least 6 chips on average are needed!
+\end{example}
+
+\subsection{The Poisson Approximation to the Binomial}\label{sub:poisson-approximation-ch3}
+
+One of the most important limit theorems in probability connects the binomial and Poisson distributions.
 
 \begin theorem}[Poisson Approximation to Binomial]\label{th:poisson-approximation-ch3}
-If $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then $X_n \xrightarrow{d} \text{Poisson}(\lambda)$.
+If $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$ as $n \to \infty$, then for any fixed $k$:
+\[
+\lim_{n \to \infty} \mathbb{P}(X_n = k) = \frac{\lambda^{k} e^{-\lambda}}{k!}.
+\]
+That is, $X_n \xrightarrow{d} \text{Poisson}(\lambda)$.
 \end theorem}
 
-\textbf{Intuitive understanding}: When $n$ is large and $p$ is small, the binomial distribution behaves almost identically to the Poisson distribution. In practice, the Poisson approximation is often used to simplify calculations for rare events. The key insight is that $\lambda = np$ (the mean) is the only parameter that matters in the limit.\footnote{Proof in Appendix \cref{sec:derivation-poisson-limit}.}
+\textbf{Intuitive understanding}: When $n$ is large and $p$ is small, the binomial distribution behaves almost identically to the Poisson distribution. The key insight is that only $\lambda = np$ (the mean) matters in the limit.\footnote{Proof in Appendix \cref{sec:derivation-poisson-limit}.}
 
-\begin example}[Typographical Errors]\label{ex:poisson-errors-ch3}
-A manuscript has 500 pages, each page contains approximately 300 words. If the probability of a word being misspelled is $p = 1/10,000$, and we model each word as a Bernoulli trial, then the number of errors per page follows $\text{Bin}(300, 1/10000) \approx \text{Poisson}(0.03)$. Using the Poisson model, $\mathbb{P}(\text{at least 1 error}) \approx 1 - e^{-0.03} \approx 0.03$.
-\end example}
+\begin{example}[Typographical Errors]\label{ex:poisson-errors-ch3}
+A manuscript has 500 pages, each page containing approximately 300 words. If the probability of a word being misspelled is $p = 1/10{,}000$, then the number of errors per page follows $\text{Bin}(300, 1/10000) \approx \text{Poisson}(0.03)$.
 
-Poisson processes provide a rich framework for modeling random points in time or space, with applications ranging from queueing theory to insurance mathematics.\footnote{Discussion of Poisson processes in Appendix \cref{sec:poisson-process}.}
-
-\section{3.3 The Gamma, $\chi^2$, and Beta Distributions}\label{sec:gamma-chi2-beta-ch3}
-
-These three distributions form the backbone of continuous statistical inference. Understanding their relationships掌握它们的关系，就理解了半参数推断的数学基础。
-
-\subsection{The Gamma Function}
-
-\textbf{Why do we start with the gamma function?} Because it serves as a bridge between factorials and integrals---this is one of the most beautiful identities in mathematics.
-
+Using the Poisson model:
 \[
-\Gamma(\alpha) = \int_{0}^{\infty} x^{\alpha-1}e^{-x} \, dx, \quad \alpha > 0.
-\tag{3.3.1}\label{eq:gamma-function}
+\mathbb{P}(\text{at least 1 error}) \approx 1 - e^{-0.03} \approx 0.03.
+\]
 
-\textbf{Key property}: $\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$, and for positive integers $n$, $\Gamma(n) = (n-1)!$.
+This explains why Poisson is often used for rare event counting!
+\end{example}
 
-This recursive property follows from integration by parts:\footnote{Derivation in Appendix \cref{sec:derivation-gamma-function}.}
+\begin remark}\label{rmk:poisson-additivity-ch3}
+If $X_1 \sim \text{Poisson}(\lambda_1)$ and $X_2 \sim \text{Poisson}(\lambda_2)$ are independent, then $X_1 + X_2 \sim \text{Poisson}(\lambda_1 + \lambda_2)$. This additivity property reflects the superposition of independent Poisson processes.
+\end remark}
+
+\section{3.3 The Gamma, $\chi^{2}$, and Beta Distributions}\label{sec:gamma-family-ch3}
+
+These three distributions form the backbone of continuous statistical inference. Understanding their relationships is essential for mastering the mathematical foundations of statistics.
+
+\subsection{The Gamma Function}\label{sub:gamma-function-ch3}
+
+The gamma function serves as a bridge between factorials and integrals---one of the most beautiful identities in mathematics.
+
+\begin{definition}[Gamma Function]\label{def:gamma-function-ch3}
+For $\alpha > 0$, the gamma function is defined as:
 \[
-\Gamma(\alpha+1) = \int_0^\infty x^\alpha e^{-x} dx = \left[-x^\alpha e^{-x}\right]_0^\infty + \alpha \int_0^\infty x^{\alpha-1} e^{-x} dx = \alpha \Gamma(\alpha).
-\tag{3.3.2}\label{eq:gamma-recursion}
+\Gamma(\alpha) = \int_{0}^{\infty} x^{\alpha-1} e^{-x} \, dx.
+\tag{3.3.1}\label{eq:gamma-function-def-ch3}
+\]
+\end{definition}
 
-The gamma function also satisfies $B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$, which connects to the Beta function $B(\alpha, \beta) = \int_0^1 t^{\alpha-1}(1-t)^{\beta-1} dt$.
+\textbf{Key property} (recursion formula):
+\[
+\Gamma(\alpha+1) = \alpha\Gamma(\alpha).
+\tag{3.3.2}\label{eq:gamma-recursion-ch3}
+\]
+
+This follows from integration by parts:\footnote{Derivation in Appendix \cref{sec:derivation-gamma-function}.}:
+\[
+\Gamma(\alpha+1) = \int_{0}^{\infty} x^{\alpha} e^{-x} dx = \left[-x^{\alpha} e^{-x}\right]_{0}^{\infty} + \alpha \int_{0}^{\infty} x^{\alpha-1} e^{-x} dx = \alpha\Gamma(\alpha).
+\]
+
+For positive integers $n$:
+\[
+\Gamma(n) = (n-1)!.
+\]
+
+The gamma function also connects to the beta function:
+\[
+B(\alpha, \beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)} = \int_{0}^{1} t^{\alpha-1}(1-t)^{\beta-1} dt.
+\tag{3.3.3}\label{eq:beta-function-ch3}
+\]
+
+\begin{example}[Gamma Function Values]\label{ex:gamma-values-ch3}
+\begin{itemize}
+\item $\Gamma(1) = 0! = 1$
+\item $\Gamma(2) = 1! = 1$
+\item $\Gamma(3) = 2! = 2$
+\item $\Gamma(4) = 3! = 6$
+\item $\Gamma(\frac{1}{2}) = \sqrt{\pi}$ (a remarkable result!)
+\end{itemize}
+\end{example}
 
 \subsection{The Gamma Distribution}\label{sub:gamma-distribution-ch3}
 
+The gamma distribution is a continuous distribution on $(0, \infty)$ that generalizes both the exponential and chi-square distributions.
+
 \begin{definition}[Gamma Distribution]\label{def:gamma-distribution-ch3}
-A continuous random variable $X$ has a gamma distribution with parameters $\alpha > 0$ and $\beta > 0$ if its pdf is
+A continuous random variable $X$ has a gamma distribution with parameters $\alpha > 0$ (shape) and $\beta > 0$ (scale) if its pdf is:
 \[
 f(x) = \begin{cases}
-\frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta} & x > 0 \\
-0 & \text{elsewhere},
+\frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta} & x > 0 \\[4pt]
+0 & \text{elsewhere}.
 \end{cases}
+\tag{3.3.4}\label{eq:gamma-pdf-ch3}
 \]
 We write $X \sim \Gamma(\alpha, \beta)$.
 \end{definition}
 
+\textbf{Verification that $f(x)$ integrates to 1}: Use the substitution $z = x/\beta$, $dz = dx/\beta$:
+\[
+\int_{0}^{\infty} \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta} dx = \frac{1}{\Gamma(\alpha)} \int_{0}^{\infty} z^{\alpha-1} e^{-z} dz = 1.
+\]
+
 \textbf{Meaning of the parameters}:
 \begin{itemize}
-\item $\alpha$: shape parameter, controlling the distribution's shape
-\item $\beta$: scale parameter, controlling the spread
+\item $\alpha$ (shape): Controls the shape of the distribution. Larger $\alpha$ means more mass concentrated near the mean.
+\item $\beta$ (scale): Controls the spread. Larger $\beta$ means more probability at larger values.
 \end{itemize}
 
-When $\alpha = 1$, we get $X \sim \text{Exp}(1/\beta)$ (exponential distribution). When $\alpha = n/2$ and $\beta = 2$, we get the $\chi^2$ distribution.
-
-\textbf{Mean and variance}:
-\[
-\mathbb{E}X = \alpha\beta, \quad \text{var}(X) = \alpha\beta^{2}.
-\tag{3.3.3}\label{eq:gamma-moments}
-
-\textbf{Two important special cases}:
+\textbf{Special cases}:
 \begin{itemize}
 \item $\Gamma(1, \beta) = \text{Exp}(1/\beta)$ (exponential distribution)
-\item $\Gamma(n/2, 2) = \chi^2(n)$ (chi-square distribution)
+\item $\Gamma(n/2, 2) = \chi^{2}(n)$ (chi-square distribution with $n$ degrees of freedom)
 \end{itemize}
 
-The moment generating function of a gamma distribution is $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$.\footnote{Derivation in Appendix \cref{sec:gamma-mgf-derivation}.}
+\textbf{Moment generating function}:
+\[
+M(t) = (1 - \beta t)^{-\alpha}, \quad t < \frac{1}{\beta}.
+\tag{3.3.5}\label{eq:gamma-mgf-ch3}
+\]
+
+From the mgf, the mean and variance are:\footnote{Derivation in Appendix \cref{sec:derivation-gamma-mgf}.}
+\[
+\mathbb{E}X = \alpha\beta, \quad \text{var}(X) = \alpha\beta^{2}.
+\tag{3.3.6}\label{eq:gamma-moments-ch3}
+\]
+
+\begin{example}[Battery Lifetime]\label{ex:battery-lifetime-ch3}
+Let $X$ be the lifetime in hours of a certain battery under extremely cold conditions. Suppose $X \sim \Gamma(5, 4)$.
+
+Then:
+\begin{itemize}
+\item Mean lifetime: $\mathbb{E}X = 5 \times 4 = 20$ hours
+\item Standard deviation: $\sqrt{5 \times 16} = 8.94$ hours
+\item Probability it lasts at least 50 hours: $1 - F(50) = 0.0053$ (in R: \texttt{1 - pgamma(50, shape=5, scale=4)})
+\item Median lifetime: $F^{-1}(0.5) = 18.68$ hours (in R: \texttt{qgamma(0.5, shape=5, scale=4)})
+\end{itemize}
+\end{example}
 
 \begin remark}\label{rmk:gamma-additivity-ch3}
-If $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ are independent, then $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$. This additivity property reflects the natural structure of gamma-distributed waiting times: the sum of independent waiting times follows a gamma distribution with shape parameter equal to the sum of individual shape parameters.
+If $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ are independent, then $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$. This additivity property reflects the natural structure of gamma-distributed waiting times.\footnote{Proof using mgf in Appendix \cref{sec:derivation-gamma-additivity}.
 \end remark}
 
-\subsection{The $\chi^2$ Distribution}\label{sub:chi-square-ch3}
+\begin remark}\label{rmk:hazard-function-ch3}
+The hazard function of a gamma distribution is $r(x) = \frac{x^{\alpha-1} e^{-x/\beta}}{\beta^{\alpha} \Gamma(\alpha) (1 - F(x))}$. For the exponential ($\alpha=1$), $r(x) = 1/\beta$ is constant. For $\alpha > 1$, $r(x)$ is increasing; for $\alpha < 1$, it is decreasing.
+\end remark}
 
-\textbf{Central question}: If we square multiple standard normal random variables and sum them, what is the distribution of this new variable?
+\subsection{The $\chi^{2}$ Distribution}\label{sub:chi-square-ch3}
+
+The chi-square distribution is central to statistics, arising naturally in problems involving variances and sums of squared normal variables.
 
 \begin{definition}[Chi-Square Distribution]\label{def:chi-square-ch3}
 Let $Z_1, Z_2, \ldots, Z_n \sim N(0, 1)$ be iid. Then
 \[
-X = \sum_{i=1}^{n} Z_i^2 \sim \chi^{2}(n).
-\tag{3.3.4}\label{eq:chi-square-definition}
+X = \sum_{i=1}^{n} Z_i^{2} \sim \chi^{2}(n).
+\tag{3.3.7}\label{eq:chi-square-definition-ch3}
 \]
-We say $X$ follows a chi-square distribution with $n$ degrees of freedom.
+The parameter $n$ is called the number of degrees of freedom.
 \end{definition}
 
-The $\chi^2$ distribution is a special case of $\Gamma(n/2, 2)$: if $X \sim \chi^2(n)$ then $X \sim \Gamma(n/2, 2)$.
+The $\chi^{2}$ distribution is a special case of $\Gamma(n/2, 2)$: if $X \sim \chi^{2}(n)$ then $X \sim \Gamma(n/2, 2)$.
 
 \textbf{Mean and variance}:
 \[
 \mathbb{E}X = n, \quad \text{var}(X) = 2n.
-\tag{3.3.5}\label{eq:chi-square-moments}
-
-\textbf{Additivity}: If $X_1 \sim \chi^2(m)$ and $X_2 \sim \chi^2(n)$ are independent, then $X_1 + X_2 \sim \chi^2(m+n)$. This follows directly from the gamma additivity property.\footnote{Derivation in Appendix \cref{sec:derivation-chi-square}.}
-
-\textbf{Why is it important?} The sampling distribution of the sample variance is closely connected to the $\chi^2$ distribution---making it a central tool for variance estimation and hypothesis testing in Chapter 4.
-
-\begin example}[Sample Variance Distribution]\label{ex:chi-square-sample-variance-ch3}
-For iid $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$, the sample variance $S^2$ satisfies
-\[
-\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1).
-\tag{3.3.6}\label{eq:sample-variance-chi-square}
+\tag{3.3.8}\label{eq:chi-square-moments-ch3}
 \]
+
+\begin remark}\label{rmk:chi-square-additivity-ch3}
+If $X_1 \sim \chi^{2}(m)$ and $X_2 \sim \chi^{2}(n)$ are independent, then $X_1 + X_2 \sim \chi^{2}(m+n)$. This follows directly from the gamma additivity property.
+\end remark}
+
+\textbf{Why is it important?} The sampling distribution of the sample variance is closely connected to the $\chi^{2}$ distribution, making it essential for variance estimation and hypothesis testing.
+
+\begin{example}[Sample Variance Distribution]\label{ex:sample-variance-ch3}
+For iid $X_1, \ldots, X_n \sim N(\mu, \sigma^{2})$, the sample variance $S^{2}$ satisfies:
+\[
+\frac{(n-1)S^{2}}{\sigma^{2}} \sim \chi^{2}(n-1).
+\tag{3.3.9}\label{eq:sample-variance-chi-square-ch3}
+\]
+
 This fundamental result tells us that the scaled sum of squared deviations from the mean follows a chi-square distribution. It is the foundation for confidence intervals for variance and ANOVA.
-\end example}
+\end{example}
+
+\begin{example}[Chi-Square Percentiles]\label{ex:chi-square-percentiles-ch3}
+Suppose $X \sim \chi^{2}(10)$. In R:
+\begin{itemize}
+\item Mean: $\mathbb{E}X = 10$, std: $\sqrt{20} = 4.47$
+\item Quartiles: \texttt{qchisq(c(0.25, 0.5, 0.75), 10)} = (6.74, 9.34, 12.55)
+\end{itemize}
+\end{example}
 
 \subsection{The Beta Distribution}\label{sub:beta-distribution-ch3}
 
-Similar to the gamma, the beta distribution is a continuous distribution defined on the $(0,1)$ interval, particularly useful for modeling probabilities and proportions.
+The beta distribution is a continuous distribution on the interval $(0,1)$, particularly useful for modeling probabilities and proportions.
 
 \begin{definition}[Beta Distribution]\label{def:beta-distribution-ch3}
-If $X$ has pdf
+If $X$ has pdf:
 \[
 f(x) = \begin{cases}
-\frac{1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1} & 0 < x < 1 \\
+\frac{1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1} & 0 < x < 1 \\[4pt]
 0 & \text{elsewhere},
 \end{cases}
+\tag{3.3.10}\label{eq:beta-pdf-ch3}
 \]
 where $B(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$, then $X \sim \text{Beta}(\alpha, \beta)$.
 \end{definition}
 
-The beta function $B(\alpha, \beta)$ normalizes the distribution so that $\int_0^1 f(x) dx = 1$.
+The beta function $B(\alpha, \beta)$ normalizes the distribution so that $\int_{0}^{1} f(x) dx = 1$.
 
 \textbf{Mean and variance}:
 \[
-\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \text{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
-\tag{3.3.7}\label{eq:beta-moments}
+\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \text{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^{2}(\alpha+\beta+1)}.
+\tag{3.3.11}\label{eq:beta-moments-ch3}
+\]\footnote{Derivation in Appendix \cref{sec:derivation-beta-moments}.}
 
 \textbf{Special cases}:
 \begin{itemize}
@@ -314,90 +537,134 @@ The beta function $B(\alpha, \beta)$ normalizes the distribution so that $\int_0
 \item $\text{Beta}(\alpha, 1) = \text{Power}(1/\alpha)$ (power distribution on $(0,1)$)
 \end{itemize}
 
-\textbf{Bayesian perspective}: In Bayesian statistics, when we use a beta distribution as the prior for a binomial distribution's parameter $p$, the posterior distribution remains beta---this is called a \textbf{conjugate prior}. The beta-binomial model is one of the most important conjugate pairs in Bayesian analysis.\footnote{Discussion of conjugate priors in Appendix \cref{sec:beta-binomial-conjugate}.}
+\begin{example}[Beta Distribution Shapes]\label{ex:beta-shapes-ch3}
+The beta distribution offers a wide variety of shapes:
+\begin{itemize}
+\item $\alpha = \beta = 1$: Uniform
+\item $\alpha = \beta > 1$: Symmetric, mound-shaped
+\item $\alpha > \beta$: Right-skewed
+\item $\alpha < \beta$: Left-skewed
+\end{itemize}
+\end{example}
+
+\begin remark}\label{rmk:beta-conjugate-ch3}
+In Bayesian statistics, when we use a beta distribution as the prior for a binomial parameter $p$, the posterior distribution remains beta. This is called a \textbf{conjugate prior} relationship. The beta-binomial model is one of the most important conjugate pairs in Bayesian analysis.\footnote{Discussion of conjugate priors in Appendix \cref{sec:beta-binomial-conjugate}.
+\end remark}
 
 The beta distribution's flexibility---capturing a wide variety of shapes on $(0,1)$ through different $\alpha, \beta$ values---makes it ideal for modeling uncertain probabilities.
 
-\section{3.4 The Normal Distribution: Queen of Statistics}\label{sec:normal-distribution-ch3}
+\section{3.4 The Normal Distribution}\label{sec:normal-distribution-ch3}
 
 Among all probability distributions, the \textbf{normal distribution} holds a paramount position. It forms the cornerstone of statistical inference, econometrics, signal processing, and many other fields.
 
-\textbf{Why is the normal distribution so special?} There are three reasons:
+The normal distribution's importance stems from three key facts:
 \begin{enumerate}
 \item \textbf{Central Limit Theorem}: Sums of many independent small factors approximate a normal distribution
 \item \textbf{Mathematical elegance}: Linear combinations of normal variables remain normal
-\item \textbf{Interpretable parameters}: Both mean and variance have intuitive meanings
+\item \textbf{Interpretable parameters}: Both mean and variance have clear, intuitive meanings
 \end{enumerate}
 
-Historical note: The normal distribution was introduced by Carl Friedrich Gauss in 1809 when studying measurement errors. Although Laplace had discussed error distributions earlier, Gauss's work cemented the normal distribution's central role in statistics. This explains why the normal distribution is often called the ``Gaussian distribution''.
+Historical note: The normal distribution was introduced by Carl Friedrich Gauss in 1809 when studying measurement errors. Although Laplace had discussed error distributions earlier, Gauss's work cemented the normal distribution's central role in statistics. This is why we often call it the ``Gaussian distribution''.
+
+\subsection{Definition and Basic Properties}\label{sub:normal-definition-ch3}
 
 \begin{definition}[Normal Distribution]\label{def:normal-distribution-ch3}
-If $X$ has pdf
+We say a random variable $X$ has a normal distribution if its pdf is:
 \[
-f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left\{ -\frac{(x-\mu)^2}{2\sigma^2} \right\}, \quad -\infty < x < \infty,
+f(x) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left\{ -\frac{(x-\mu)^{2}}{2\sigma^{2}} \right\}, \quad -\infty < x < \infty.
+\tag{3.4.1}\label{eq:normal-pdf-ch3}
 \]
-then $X$ follows a normal distribution, written $X \sim N(\mu, \sigma^2)$.
+We write $X \sim N(\mu, \sigma^{2})$, where $\mu$ is the mean and $\sigma^{2}$ is the variance.
 \end{definition}
 
-In particular, $N(0,1)$ is called the \textbf{standard normal distribution}, with pdf denoted $\phi(z)$ and cdf denoted $\Phi(z)$.
+The standard normal distribution is $N(0,1)$, with pdf $\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^{2}/2}$ and cdf $\Phi(z)$.
 
-\textbf{Standardization}: If $X \sim N(\mu, \sigma^2)$, then $Z = \frac{X-\mu}{\sigma} \sim N(0,1)$.
-
-This allows any normal probability calculation to be transformed into a standard normal calculation:
+\textbf{Key property}: If $X \sim N(\mu, \sigma^{2})$, then $Z = \frac{X-\mu}{\sigma} \sim N(0,1)$. This standardization allows any normal probability calculation to be transformed into a standard normal calculation:
 \[
 \mathbb{P}(X \leq x) = \Phi\!\left(\frac{x-\mu}{\sigma}\right).
-\tag{3.4.1}\label{eq:normal-cdf-standardization}
+\tag{3.4.2}\label{eq:normal-cdf-standardization-ch3}
+\]
 
-The mgf of $N(\mu, \sigma^2)$ is $M(t) = \exp\{\mu t + \sigma^2 t^2/2\}$.\footnote{Derivation in Appendix \cref{sec:derivation-normal-mgf}.}
+\begin{example}[Height Distribution]\label{ex:height-normal-ch3}
+Suppose the height of adult males is $N(\mu=70, \sigma^{2}=16)$ (in inches). Then:
+\begin{itemize}
+\item Probability a man exceeds 6 feet ($72$ inches): $Z = (72-70)/4 = 0.5$, so $\mathbb{P}(X > 72) = 1 - \Phi(0.5) \approx 0.3085$
+\item 95th percentile: $x_{0.95} = 70 + 4 \cdot \Phi^{-1}(0.95) \approx 76.6$ inches
+\item Probability within one standard deviation: $\Phi(1) - \Phi(-1) \approx 0.6827$
+\end{itemize}
+\end{example}
 
-\begin example}[Normal Probability Calculation]\label{ex:normal-prob-ch3}
-Let $X \sim N(100, 225)$ (i.e., $\sigma=15$), find $\mathbb{P}(X < 85)$.
+The mgf of $N(\mu, \sigma^{2})$ is:
+\[
+M(t) = \exp\left\{\mu t + \frac{1}{2}\sigma^{2}t^{2}\right\}, \quad -\infty < t < \infty.
+\tag{3.4.3}\label{eq:normal-mgf-ch3}
+\]\footnote{Derivation in Appendix \cref{sec:derivation-normal-mgf}.}
 
-Solution: $Z = \frac{85-100}{15} = -1$, so $\mathbb{P}(X < 85) = \Phi(-1) \approx 0.1587$.
-\end example}
+From the mgf, $\mathbb{E}X = \mu$ and $\text{var}(X) = \sigma^{2}$.
 
 \begin theorem}[Linear Combinations of Normal Variables]\label{th:normal-linear-combination-ch3}
-If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, then for any constants $a, b$,
+If $X_1 \sim N(\mu_1, \sigma_1^{2})$ and $X_2 \sim N(\mu_2, \sigma_2^{2})$ are independent, then for any constants $a, b$:
 \[
-aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2).
-\tag{3.4.2}\label{eq:normal-linear-combination}
+aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2}).
+\tag{3.4.4}\label{eq:normal-linear-combination-ch3}
 \]
 \end theorem}
 
-\textbf{Why is this property important?} It means the normal distribution is closed under linear transformations---making the normal distribution the theoretical foundation of linear models.
+\textbf{Why is this property important?} It means the normal distribution is closed under linear transformations---making it the theoretical foundation of linear models.\footnote{Proof in Appendix \cref{sec:derivation-normal-linear-combination}.}
 
-\begin remark}\label{rmk:gauss-history-ch3}
-Gauss derived the normal distribution as the distribution of measurement errors. His argument was roughly: if we make many small independent measurements, the distribution of their average should be symmetric and concentrated around the true value. The normal distribution is the unique distribution satisfying these natural assumptions.
+\begin remark}\label{rmk:normal-location-scale-ch3}
+The mean $\mu$ is a \textbf{location parameter}: changing $\mu$ shifts the entire distribution without changing its shape. The standard deviation $\sigma$ is a \textbf{scale parameter}: changing $\sigma$ stretches or compresses the distribution.
 \end remark}
+
+\begin remark}\label{rmk:empirical-rule-ch3}
+For any normal distribution:
+\begin{itemize}
+\item $\mathbb{P}(\mu - \sigma < X < \mu + \sigma) \approx 0.6827$
+\item $\mathbb{P}(\mu - 2\sigma < X < \mu + 2\sigma) \approx 0.9545$
+\item $\mathbb{P}(\mu - 3\sigma < X < \mu + 3\sigma) \approx 0.9973$
+\end{itemize}
+These are sometimes called the \textbf{empirical rule} or 68-95-99.7 rule.
+\end remark}
+
+\begin theorem}[Chi-Square from Normal Squares]\label{th:normal-to-chi-square-ch3}
+If $X \sim N(\mu, \sigma^{2})$, then $\frac{(X-\mu)^{2}}{\sigma^{2}} \sim \chi^{2}(1)$.
+\end theorem}
+
+This connects the normal and chi-square distributions and explains why the chi-square distribution with $n$ degrees of freedom involves the sum of $n$ squared standard normals.
 
 \section{3.5 Multivariate Normal Distribution}\label{sec:multivariate-normal-ch3}
 
-The natural extension of the normal distribution to higher dimensions.
+The natural extension of the normal distribution to higher dimensions provides powerful tools for modeling correlated variables.
 
-\subsection{Bivariate Normal Distribution}
+\subsection{Bivariate Normal Distribution}\label{sub:bivariate-normal-ch3}
 
 The bivariate normal distribution is not just a two-dimensional version of the univariate normal---its correlation structure creates a rich geometry of elliptical contours.
 
 \begin{definition}[Bivariate Normal Distribution]\label{def:bivariate-normal-ch3}
-If $(X_1, X_2)$ has joint pdf
+If $(X_1, X_2)$ has joint pdf:
 \[
-f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{Q(x_1, x_2)}{2(1-\rho^2)} \right\},
+f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^{2}}} \exp\left\{ -\frac{Q(x_1, x_2)}{2(1-\rho^{2})} \right\},
+\tag{3.5.1}\label{eq:bivariate-normal-pdf-ch3}
 \]
-where $Q = \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^2}{\sigma_2^2}$, then $(X_1, X_2)$ follows a bivariate normal distribution, written $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$.
+where
+\[
+Q = \frac{(x_1-\mu_1)^{2}}{\sigma_1^{2}} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^{2}}{\sigma_2^{2}},
+\]
+then $(X_1, X_2)$ follows a bivariate normal distribution, written $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^{2}, \sigma_2^{2}, \rho)$.
 \end{definition}
 
-\textbf{Meaning of the five parameters}:
+The five parameters have clear interpretations:
 \begin{itemize}
 \item $\mu_1, \mu_2$: means of the marginal distributions
-\item $\sigma_1^2, \sigma_2^2$: variances of the marginal distributions
+\item $\sigma_1^{2}, \sigma_2^{2}$: variances of the marginal distributions
 \item $\rho$: correlation coefficient between $X_1$ and $X_2$
 \end{itemize}
 
 \begin theorem}[Properties of the Bivariate Normal]\label{th:bivariate-normal-properties-ch3}
-If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$, then:
+If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^{2}, \sigma_2^{2}, \rho)$, then:
 \begin{enumerate}
-\item Marginal distributions: $X_1 \sim N(\mu_1, \sigma_1^2)$, $X_2 \sim N(\mu_2, \sigma_2^2)$
-\item Conditional distribution: $X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1-\mu_1), \ \sigma_2^2(1-\rho^2)\right)$
+\item Marginal distributions: $X_1 \sim N(\mu_1, \sigma_1^{2})$, $X_2 \sim N(\mu_2, \sigma_2^{2})$
+\item Conditional distribution: $X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1-\mu_1), \ \sigma_2^{2}(1-\rho^{2})\right)$
 \item $X_1 \Perp X_2 \iff \rho = 0$ (uncorrelated implies independent for normals)
 \item Any linear combination $aX_1 + bX_2$ follows a normal distribution
 \end{enumerate}
@@ -405,11 +672,28 @@ If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$, then:
 
 \textbf{Key insight}: The conditional mean is a linear function of $x_1$. This means that given one variable, the best prediction for the other is also linear. The slope $\rho\sigma_2/\sigma_1$ tells us how much $X_2$ changes (in standard deviations) for each standard deviation change in $X_1$.
 
-The conditional variance $\sigma_2^2(1-\rho^2)$ is always smaller than the marginal variance $\sigma_2^2$---knowing $X_1$ reduces our uncertainty about $X_2$. When $|\rho| = 1$, the conditional variance is zero: $X_2$ is perfectly determined by $X_1$.
+The conditional variance $\sigma_2^{2}(1-\rho^{2})$ is always smaller than the marginal variance $\sigma_2^{2}$---knowing $X_1$ reduces our uncertainty about $X_2$. When $|\rho| = 1$, the conditional variance is zero: $X_2$ is perfectly determined by $X_1$.
+
+\begin{example}[Husband-Wife Heights]\label{ex:height-correlation-ch3}
+In a certain population, husband height $X_1 \sim N(5.8, 0.04)$ feet and wife height $X_2 \sim N(5.3, 0.04)$ feet, with correlation $\rho = 0.6$.
+
+Given a husband is 6.3 feet tall, the conditional distribution of wife's height is:
+\[
+X_2 \mid X_1 = 6.3 \sim N\left(5.3 + 0.6 \cdot \frac{0.2}{0.2}(6.3-5.8), 0.04(1-0.36)\right) = N(5.6, 0.0256).
+\]
+
+So the predicted wife height is 5.6 feet, with standard deviation $0.16$ feet. A 95\% prediction interval is $5.6 \pm 1.96 \times 0.16 = (5.29, 5.91)$ feet.
+\end{example}
+
+The joint mgf of the bivariate normal is:\footnote{Derivation in Appendix \cref{sec:derivation-bivariate-mgf}.}
+\[
+M(t_1, t_2) = \exp\left\{ t_1\mu_1 + t_2\mu_2 + \frac{1}{2}(t_1^{2}\sigma_1^{2} + 2t_1 t_2 \rho\sigma_1\sigma_2 + t_2^{2}\sigma_2^{2}) \right\}.
+\tag{3.5.2}\label{eq:bivariate-normal-mgf-ch3}
+\]
 
 \section{3.6 The $t$ and $F$ Distributions}\label{sec:t-f-distributions-ch3}
 
-These two distributions originated from a practical question: \textbf{How do we make inferences when the population variance is unknown?}}
+These two distributions originated from a practical question: \textbf{How do we make inferences when the population variance is unknown?}
 
 This question lies at the heart of statistical inference: when we estimate a population mean using the sample mean, we typically don't know the true variance. The $t$ and $F$ distributions allow us to account for this additional uncertainty.
 
@@ -418,69 +702,94 @@ Historical note: William Gosset (Student) introduced the $t$ distribution in 190
 \subsection{The $t$ Distribution}\label{sub:t-distribution-ch3}
 
 \begin{definition}[$t$ Distribution]\label{def:t-distribution-ch3}
-If $Z \sim N(0,1)$ and $X \sim \chi^2(n)$ are independent, then
+If $Z \sim N(0,1)$ and $X \sim \chi^{2}(n)$ are independent, then
 \[
 T = \frac{Z}{\sqrt{X/n}} \sim t(n).
-\tag{3.6.1}\label{eq:t-distribution}
+\tag{3.6.1}\label{eq:t-distribution-ch3}
 \]
 We say $T$ follows a $t$ distribution with $n$ degrees of freedom.
 \end{definition}
+
+The pdf of the $t$ distribution is:
+\[
+f(t) = \frac{\Gamma((n+1)/2)}{\sqrt{\pi n}\,\Gamma(n/2)} \left(1 + \frac{t^{2}}{n}\right)^{-(n+1)/2}, \quad -\infty < t < \infty.
+\tag{3.6.2}\label{eq:t-pdf-ch3}
+\]\footnote{Derivation in Appendix \cref{sec:derivation-t-distribution}.}
 
 The $t$ distribution has heavier tails than the normal distribution, reflecting the additional uncertainty introduced by estimating the variance.
 
 \textbf{Mean and variance}:
 \[
 \mathbb{E}T = 0 \ (n>1), \quad \text{var}(T) = \frac{n}{n-2} \ (n>2).
-\tag{3.6.2}\label{eq:t-moments}
+\tag{3.6.3}\label{eq:t-moments-ch3}
+\]
 
 When $n=1$, we obtain the Cauchy distribution---a ``dangerous'' distribution with no mean (the integral diverges).
 
 \textbf{Relationship to normal}: As $n \to \infty$, $t(n) \xrightarrow{d} N(0,1)$. This reflects the intuitive idea: as the sample size grows, our knowledge of the variance improves, and the $t$ distribution converges to the standard normal.
 
-\begin example}[$t$ Distribution Application]\label{ex:t-distribution-ch3}
-Let $T \sim t(10)$, find $\mathbb{P}(|T| > 2.228)$.
+\begin{example}[$t$ Distribution Application]\label{ex:t-distribution-ch3}
+Let $T \sim t(10)$. Find $\mathbb{P}(|T| > 2.228)$.
 
-From tables, $t_{0.025, 10} = 2.228$, so $\mathbb{P}(|T| > 2.228) = 0.05$. Compare to the normal: for $Z \sim N(0,1)$, $\mathbb{P}(|Z| > 1.96) = 0.05$. The $t$ critical values are larger because of heavier tails.
-\end example}
+From tables, $t_{0.025, 10} = 2.228$, so $\mathbb{P}(|T| > 2.228) = 0.05$.
 
-The $t$ distribution is fundamental to constructing confidence intervals for the mean when the population variance is unknown. When we replace the population standard deviation $\sigma$ with the sample standard deviation $S$, the resulting statistic follows a $t$ distribution. This is why the $t$ distribution is so central to practical statistics.\footnote{Detailed discussion in Chapter 4, Section 4.3.}
+Compare to the normal: for $Z \sim N(0,1)$, $\mathbb{P}(|Z| > 1.96) = 0.05$. The $t$ critical values are larger because of heavier tails.
+
+In R: \texttt{2 * (1 - pt(2.228, 10)) = 0.05}.
+\end{example}
+
+The $t$ distribution is fundamental to constructing confidence intervals for the mean when the population variance is unknown. When we replace the population standard deviation $\sigma$ with the sample standard deviation $S$, the resulting statistic follows a $t$ distribution.\footnote{This is the foundation of Chapter 4's confidence interval theory.}
 
 \subsection{The $F$ Distribution}\label{sub:f-distribution-ch3}
 
 \begin{definition}[$F$ Distribution]\label{def:f-distribution-ch3}
-If $X_1 \sim \chi^2(m)$ and $X_2 \sim \chi^2(n)$ are independent, then
+If $X_1 \sim \chi^{2}(m)$ and $X_2 \sim \chi^{2}(n)$ are independent, then
 \[
 F = \frac{X_1/m}{X_2/n} \sim F(m, n).
-\tag{3.6.3}\label{eq:f-distribution}
+\tag{3.6.4}\label{eq:f-distribution-ch3}
 \]
 We say $F$ follows an $F$ distribution with degrees of freedom $(m, n)$.
 \end{definition}
+
+The pdf is:\footnote{Derivation in Appendix \cref{sec:derivation-f-distribution}.}
+\[
+f(w) = \begin{cases}
+\frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)} \left(\frac{m}{n}\right)^{m/2} \frac{w^{m/2-1}}{(1 + mw/n)^{(m+n)/2}} & w > 0 \\[4pt]
+0 & \text{elsewhere}.
+\end{cases}
+\tag{3.6.5}\label{eq:f-pdf-ch3}
+\]
 
 The $F$ distribution is the ratio of two independent chi-square variables, each divided by its degrees of freedom.
 
 \textbf{Mean and variance}:
 \[
-\mathbb{E}F = \frac{n}{n-2} \ (n>2), \quad \text{var}(F) = \frac{2n^2(m+n-2)}{m(n-2)^2(n-4)} \ (n>4).
-\tag{3.6.4}\label{eq:f-moments}
+\mathbb{E}F = \frac{n}{n-2} \ (n>2), \quad \text{var}(F) = \frac{2n^{2}(m+n-2)}{m(n-2)^{2}(n-4)} \ (n>4).
+\tag{3.6.6}\label{eq:f-moments-ch3}
+\]\footnote{Derivation in Appendix \cref{sec:derivation-f-moments}.}
 
 \textbf{Reciprocal property}: If $F \sim F(m, n)$, then $1/F \sim F(n, m)$. This symmetry is useful for computing tail probabilities.
 
-\textbf{Why is it important?} The $F$ distribution is central to ANOVA (analysis of variance) and regression analysis---we use it to compare whether two variances are equal, or whether the variance explained by a model is significantly greater than the residual variance.
+\begin remark}\label{rmk:f-to-t-relationship-ch3}
+If $T \sim t(n)$, then $T^{2} \sim F(1, n)$. This follows from the definitions: $T = Z/\sqrt{\chi^{2}(n)/n}$, so $T^{2} = Z^{2}/(\chi^{2}(n)/n) = \chi^{2}(1)/(\chi^{2}(n)/n) \sim F(1, n)$.
+\end remark}
+
+\textbf{Why is the $F$ distribution important?} It is central to ANOVA (analysis of variance) and regression analysis---we use it to compare whether two variances are equal, or whether the variance explained by a model is significantly greater than the residual variance.
 
 The $F$ statistic in ANOVA compares the variance between group means to the variance within groups. If the between-group variance is large relative to within-group variance, we reject the null hypothesis that all groups have the same mean.
 
-\section*{Chapter Summary}
+\section*{Chapter Summary}\label{sec:chapter-summary-ch3}
 
 This chapter introduced the most important families of distributions in statistics:
 
-\textbf{Discrete distributions we studied}:
+\textbf{Discrete distributions}:
 \begin{itemize}
 \item Bernoulli $\to$ Binomial $\to$ Negative Binomial/Geometric
 \item Multinomial $\to$ Hypergeometric
-\item Poisson (as a limit of binomial)
+\item Poisson (as a limit of binomial for rare events)
 \end{itemize}
 
-\textbf{Continuous distributions we studied}:
+\textbf{Continuous distributions}:
 \begin{itemize}
 \item Uniform $\to$ Exponential $\to$ Gamma $\to$ Chi-square
 \item Beta (on the unit interval)
@@ -495,86 +804,591 @@ This chapter introduced the most important families of distributions in statisti
 \hline
 \textbf{Relationship} & \textbf{Formula} \\ \hline
 Binomial $\to$ Poisson limit & $\text{Bin}(n,p) \xrightarrow{n\to\infty, p\to0, np=\lambda} \text{Poisson}(\lambda)$ \\ \hline
-Gamma $\to$ Chi-square & $\chi^2(n) = \Gamma(n/2, 2)$ \\ \hline
+Gamma $\to$ Chi-square & $\chi^{2}(n) = \Gamma(n/2, 2)$ \\ \hline
 Gamma additivity & $\Gamma(\alpha_1,\beta) + \Gamma(\alpha_2,\beta) \sim \Gamma(\alpha_1+\alpha_2, \beta)$ \\ \hline
-Chi-square additivity & $\chi^2(m) + \chi^2(n) \sim \chi^2(m+n)$ \\ \hline
-$t$ as Normal/Chi-square ratio & $t(n) = Z/\sqrt{\chi^2(n)/n}$ \\ \hline
-$F$ as Chi-square ratio & $F(m,n) = \frac{\chi^2(m)/m}{\chi^2(n)/n}$ \\ \hline
+Chi-square additivity & $\chi^{2}(m) + \chi^{2}(n) \sim \chi^{2}(m+n)$ \\ \hline
+Normal squares & $(X-\mu)^{2}/\sigma^{2} \sim \chi^{2}(1)$ \\ \hline
+$t$ as Normal/Chi-square ratio & $t(n) = Z/\sqrt{\chi^{2}(n)/n}$ \\ \hline
+$F$ as Chi-square ratio & $F(m,n) = \frac{\chi^{2}(m)/m}{\chi^{2}(n)/n}$ \\ \hline
 $t \to N$ limit & $t(n) \xrightarrow{d} N(0,1)$ as $n \to \infty$ \\ \hline
 Beta normalization & $B(\alpha,\beta) = \Gamma(\alpha)\Gamma(\beta)/\Gamma(\alpha+\beta)$ \\ \hline
 \end{tabular}
 \end{center}
 
-These relationships are not accidental: they reflect deep mathematical structures. The gamma function unify discrete and continuous through factorials; limit theorems connect binomial and Poisson; the chi-square distribution emerges naturally from squared normals; and $t$, $F$ distributions arise when we estimate unknown variance.
+These relationships are not accidental: they reflect deep mathematical structures. The gamma function unifies discrete and continuous through factorials; limit theorems connect binomial and Poisson; the chi-square distribution emerges naturally from squared normals; and $t$, $F$ distributions arise when we estimate unknown variance.
 
 \textbf{Why each distribution matters}:
 
 \begin{itemize}
-\item \textbf{Binomial}: counts of successes in independent trials
-\item \textbf{Poisson}: rare events in large populations
-\item \textbf{Gamma/Chi-square}: sums of squares, waiting times
-\item \textbf{Beta}: probabilities and proportions
+\item \textbf{Binomial}: Counts of successes in independent trials
+\item \textbf{Poisson}: Rare events in large populations
+\item \textbf{Gamma/Chi-square}: Sums of squares, waiting times, variance estimation
+\item \textbf{Beta}: Probabilities and proportions
 \item \textbf{Normal}: CLT limits, measurement errors, linear models
-\item \textbf{$t$}: inference about means with unknown variance
-\item \textbf{$F$}: comparing variances, ANOVA
+\item \textbf{$t$}: Inference about means with unknown variance
+\item \textbf{$F$}: Comparing variances, ANOVA
 \end{itemize}
 
 These distributions will return as the foundation for statistical inference in Chapter 4.
 
 \section*{Exercises}\label{sec:exercises-ch3}
 
-\begin{exercise}{3.1.1}
-Let $X$ be the number of successes in $n$ independent Bernoulli trials with success probability $p$. Show that the moment generating function of $X$ is $M(t) = [(1-p) + pe^t]^n$, and use it to verify $\mathbb{E}X = np$ and $\text{var}(X) = np(1-p)$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-1}}
+Let $X$ be the number of successes in $n$ independent Bernoulli trials with success probability $p$. Show that the moment generating function of $X$ is $M(t) = [(1-p) + pe^{t}]^{n}$, and use it to verify $\mathbb{E}X = np$ and $\text{var}(X) = np(1-p)$.
+\end{Exercise}
 
-\begin{exercise}{3.1.2}
-Show that the geometric distribution has mean $(1-p)/p$ and variance $(1-p)/p^2$. Verify its memorylessness property.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-2}}
+Show that the geometric distribution has mean $(1-p)/p$ and variance $(1-p)/p^{2}$. Verify its memorylessness property: $\mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j)$.
+\end{Exercise}
 
-\begin{exercise}{3.1.3}
-Prove the binomial additivity theorem: if $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$. (Hint: count successes in the combined experiment)
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-3}}
+Prove the binomial additivity theorem: if $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$. (Hint: use the moment generating function)
+\end{Exercise}
 
-\begin{exercise}{3.2.1}
+\begin{Exercise}{\ref{exr:3-4}}
+Consider $n$ independent Bernoulli trials with success probability $p = 1/4$. Find the smallest $n$ such that $\mathbb{P}(Y \geq 1) \geq 0.70$, where $Y$ is the number of successes.
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-5}}
+Suppose $Y$ is $b(n, p)$. Show that the ratio $Y/n$ (relative frequency of success) satisfies:
+\[
+\mathbb{E}(Y/n) = p, \quad \text{var}(Y/n) = \frac{p(1-p)}{n}.
+\]
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-6}}
 Suppose $X \sim \text{Poisson}(\lambda)$. Show that $\mathbb{E}X = \lambda$ and $\text{var}(X) = \lambda$.
-\end{exercise}
+\end{Exercise}
 
-\begin{exercise}{3.2.2}
-Prove the Poisson approximation to the binomial: if $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then $\lim_{n\to\infty} \mathbb{P}(X_n = k) = e^{-\lambda}\lambda^k/k!$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-7}}
+Prove the Poisson approximation to the binomial: if $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then for any fixed $k$:
+\[
+\lim_{n\to\infty} \mathbb{P}(X_n = k) = \frac{\lambda^{k} e^{-\lambda}}{k!}.
+\]
+\end{Exercise}
 
-\begin{exercise}{3.3.1}
-Let $X \sim \Gamma(\alpha, \beta)$. Show that $\mathbb{E}X = \alpha\beta$ and $\text{var}(X) = \alpha\beta^2$.\footnote{Derivation in Appendix \cref{sec:gamma-mean-variance}.}
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-8}}
+The number of customers arriving at a bank per hour follows a Poisson distribution with mean $\lambda = 15$. Find:
+\begin{itemize}
+\item $\mathbb{P}(\text{at least 20 customers})$
+\item $\mathbb{P}(\text{between 10 and 20 inclusive})$
+\end{itemize}
+\end{Exercise}
 
-\begin{exercise}{3.3.2}
+\begin{Exercise}{\ref{exr:3-9}}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $\mathbb{E}X = \alpha\beta$ and $\text{var}(X) = \alpha\beta^{2}$.\footnote{Derivation in Appendix \cref{sec:derivation-gamma-mgf}.}
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-10}}
 Show that the gamma function satisfies $\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$ and that for positive integers $n$, $\Gamma(n) = (n-1)!$.
-\end{exercise}
+\end{Exercise}
 
-\begin{exercise}{3.3.3}
-If $Z_1, Z_2, \ldots, Z_n$ are iid $N(0,1)$, show that $Y = \sum_{i=1}^n Z_i^2 \sim \chi^2(n)$. (Hint: use the moment generating function or convolutions)
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-11}}
+If $Z_1, Z_2, \ldots, Z_n$ are iid $N(0,1)$, show that $Y = \sum_{i=1}^{n} Z_i^{2} \sim \chi^{2}(n)$. (Hint: use the moment generating function)
+\end{Exercise}
 
-\begin{exercise}{3.4.1}
-Let $X \sim N(\mu, \sigma^2)$. Show that the standardized variable $Z = (X-\mu)/\sigma \sim N(0,1)$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-12}}
+Let $X \sim \chi^{2}(8)$. Find:
+\begin{itemize}
+\item $\mathbb{E}X$ and $\text{var}(X)$
+\item The 95th percentile
+\item $\mathbb{P}(X > 15)$
+\end{itemize}
+\end{Exercise}
 
-\begin{exercise}{3.4.2}
-If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, show that $X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-13}}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that:
+\[
+\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \text{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^{2}(\alpha+\beta+1)}.
+\]
+\end{Exercise}
 
-\begin{exercise}{3.4.3}
-Show that the moment generating function of $N(\mu, \sigma^2)$ is $M(t) = \exp\{\mu t + \sigma^2 t^2/2\}$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-14}}
+Let $X \sim N(\mu, \sigma^{2})$. Show that the standardized variable $Z = (X-\mu)/\sigma \sim N(0,1)$.
+\end{Exercise}
 
-\begin{exercise}{3.5.1}
-Let $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$. Derive the conditional distribution $X_2 \mid X_1 = x_1$ and verify it is normal with mean and variance as stated in Theorem \ref{th:bivariate-normal-properties-ch3}.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-15}}
+If $X_1 \sim N(\mu_1, \sigma_1^{2})$ and $X_2 \sim N(\mu_2, \sigma_2^{2})$ are independent, show that $X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma_1^{2} + \sigma_2^{2})$.
+\end{Exercise}
 
-\begin{exercise}{3.6.1}
-Let $T \sim t(n)$. Show that $T^2 \sim F(1, n)$. (Hint: use the definition of $t$ and $F$ distributions)
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-16}}
+Show that the moment generating function of $N(\mu, \sigma^{2})$ is $M(t) = \exp\{\mu t + \sigma^{2}t^{2}/2\}$.
+\end{Exercise}
 
-\begin{exercise}{3.6.2}
-If $X \sim \chi^2(n)$, show that $E(X^k) = \frac{2^k \Gamma(\frac{n}{2} + k)}{\Gamma(\frac{n}{2})}$ for $k > -n/2$.
-\end{exercise}
+\begin{Exercise}{\ref{exr:3-17}}
+Let $X \sim N(100, 225)$ (i.e., $\sigma=15$). Find:
+\begin{itemize}
+\item $\mathbb{P}(X < 85)$
+\item $\mathbb{P}(90 < X < 110)$
+\item The 90th percentile
+\end{itemize}
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-18}}
+Let $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^{2}, \sigma_2^{2}, \rho)$. Derive the conditional distribution $X_2 \mid X_1 = x_1$ and verify it is normal with mean and variance as stated in Theorem \ref{th:bivariate-normal-properties-ch3}.
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-19}}
+Let $T \sim t(n)$. Show that $T^{2} \sim F(1, n)$. (Hint: use the definition of $t$ and $F$ distributions)
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-20}}
+If $X \sim \chi^{2}(n)$, show that $E(X^{k}) = \frac{2^{k}\Gamma(\frac{n}{2} + k)}{\Gamma(\frac{n}{2})}$ for $k > -n/2$.
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-21}}
+Let $T \sim t(15)$. Find $\mathbb{P}(|T| > 2.131)$.
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:3-22}}
+Show that if $F \sim F(m, n)$, then $1/F \sim F(n, m)$.
+\end{Exercise}
+
+% === 附录：公式推导 ===
+
+\section{附录：公式推导}\label{sec:appendix-ch3}
+
+\subsection{Binomial Distribution MGF and Moments}\label{sec:derivation-binomial-moments}
+
+\textbf{背景（Background）}：We need to verify that for $X \sim \text{Bin}(n, p)$, the mgf is $M(t) = [(1-p) + pe^{t}]^{n}$ and derive the mean and variance.
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $n$: number of independent trials
+\item $p$: probability of success on each trial
+\item $X = \sum_{i=1}^{n} X_i$: total number of successes
+\item $X_i \sim \text{Bernoulli}(p)$: indicator of success on trial $i$
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+\item pmf: $p(x) = \binom{n}{x} p^{x}(1-p)^{n-x}$, $x = 0, 1, \ldots, n$
+\item Each $X_i$ has mgf $M_{X_i}(t) = (1-p) + pe^{t}$
+\end{itemize}
+
+\textbf{目标（Goal）}：Derive $M(t)$, then compute $\mathbb{E}X$ and $\text{var}(X)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{Step 1: MGF derivation using independence}
+
+Since the $X_i$ are iid, the mgf of their sum is the product of their mgfs:
+\[
+M(t) = \prod_{i=1}^{n} M_{X_i}(t) = [(1-p) + pe^{t}]^{n}.
+\]
+
+\textbf{Step 2: First derivative for mean}
+
+\[
+M'(t) = n[(1-p) + pe^{t}]^{n-1} \cdot pe^{t}.
+\]
+
+At $t=0$:
+\[
+\mathbb{E}X = M'(0) = n[(1-p) + p]^{n-1} \cdot p = np.
+\]
+
+\textbf{Step 3: Second derivative for variance}
+
+\[
+M''(t) = n(n-1)[(1-p) + pe^{t}]^{n-2}(pe^{t})^{2} + n[(1-p) + pe^{t}]^{n-1}(pe^{t}).
+\]
+
+At $t=0$:
+\[
+M''(0) = n(n-1)p^{2} + np = n(n-1)p^{2} + np = np[(n-1)p + 1] = np[(n-1)p + 1].
+\]
+
+Therefore:
+\[
+\text{var}(X) = M''(0) - [M'(0)]^{2} = np[(n-1)p + 1] - n^{2}p^{2} = np(1-p).
+\]
+
+\subsection{Binomial Additivity Theorem}\label{sec:derivation-binomial-additivity}
+
+\textbf{背景（Background）}：We want to show that if $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using the mgf approach:
+
+\[
+M_{X_1+X_2}(t) = M_{X_1}(t) \cdot M_{X_2}(t) = [(1-p) + pe^{t}]^{n_1} \cdot [(1-p) + pe^{t}]^{n_2} = [(1-p) + pe^{t}]^{n_1+n_2}.
+\]
+
+This is exactly the mgf of $\text{Bin}(n_1+n_2, p)$. By the uniqueness of mgfs, the result follows.
+
+\subsection{Negative Binomial PMF Derivation}\label{sec:derivation-negative-binomial}
+
+\textbf{背景（Background）}：We want to derive the pmf of $Y$, the number of failures before the $r$-th success.
+
+\textbf{目标（Goal）}：Show that $p_Y(y) = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+For $Y = y$ to occur:
+\begin{itemize}
+\item The first $y+r-1$ trials must contain exactly $r-1$ successes and $y$ failures
+\item The last trial (trial $y+r$) must be a success
+\end{itemize}
+
+The probability of any specific sequence with $r-1$ successes and $y$ failures in the first $y+r-1$ trials is $p^{r-1}(1-p)^{y}$. The probability of success on the last trial is $p$.
+
+The number of ways to arrange $r-1$ successes and $y$ failures in $y+r-1$ trials is $\binom{y+r-1}{r-1}$.
+
+Therefore:
+\[
+p_Y(y) = \binom{y+r-1}{r-1} \cdot p^{r-1}(1-p)^{y} \cdot p = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}, \quad y = 0, 1, 2, \ldots
+\]
+
+\subsection{Geometric Distribution Memorylessness Proof}\label{sec:derivation-memoryless}
+
+\textbf{背景（Background）}：We need to show that for $Y \sim \text{Geometric}(p)$:
+\[
+\mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j).
+\]
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\[
+\mathbb{P}(Y \geq k+j \mid Y \geq k) = \frac{\mathbb{P}(Y \geq k+j)}{\mathbb{P}(Y \geq k)} = \frac{(1-p)^{k+j}}{(1-p)^{k}} = (1-p)^{j} = \mathbb{P}(Y \geq j).
+\]
+
+This shows the geometric distribution is memoryless.
+
+\subsection{Geometric Distribution Moments}\label{sec:derivation-geometric-moments}
+
+\textbf{背景（Background）}：Find $\mathbb{E}Y$ and $\text{var}(Y)$ for $Y \sim \text{Geometric}(p)$ with pmf $p_Y(y) = p(1-p)^{y}$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using the fact that $\sum_{y=0}^{\infty} (1-p)^{y} = \frac{1}{p}$:
+
+\[
+\mathbb{E}Y = \sum_{y=0}^{\infty} y \cdot p(1-p)^{y} = p(1-p) \sum_{y=1}^{\infty} y(1-p)^{y-1}.
+\]
+
+Let $q = 1-p$. Using the formula $\sum_{y=1}^{\infty} y q^{y-1} = \frac{1}{(1-q)^{2}}$ for $|q| < 1$:
+\[
+\mathbb{E}Y = p q \cdot \frac{1}{p^{2}} = \frac{q}{p} = \frac{1-p}{p}.
+\]
+
+For variance, we need $\mathbb{E}[Y(Y-1)]$:
+\[
+\mathbb{E}[Y(Y-1)] = \sum_{y=0}^{\infty} y(y-1) p q^{y} = p q^{2} \sum_{y=2}^{\infty} y(y-1) q^{y-2} = p q^{2} \cdot \frac{2}{(1-q)^{3}} = \frac{2q^{2}}{p^{2}}.
+\]
+
+Then:
+\[
+\text{var}(Y) = \mathbb{E}[Y^{2}] - (\mathbb{E}Y)^{2} = \mathbb{E}[Y(Y-1)] + \mathbb{E}Y - (\mathbb{E}Y)^{2} = \frac{2q^{2}}{p^{2}} + \frac{q}{p} - \frac{q^{2}}{p^{2}} = \frac{q^{2}+qp}{p^{2}} = \frac{q}{p^{2}}.
+\]
+
+So $\text{var}(Y) = \frac{1-p}{p^{2}}$.
+
+\subsection{Negative Binomial MGF}\label{sec:derivation-nb-mgf}
+
+\textbf{背景（Background）}：Derive the mgf of $Y \sim \text{NB}(r, p)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\[
+M(t) = \mathbb{E}[e^{tY}] = \sum_{y=0}^{\infty} e^{ty} \binom{y+r-1}{r-1} p^{r}(1-p)^{y}.
+\]
+
+Let $q = 1-p$. Using the negative binomial series $(1-q)^{-r} = \sum_{y=0}^{\infty} \binom{y+r-1}{r-1} q^{y}$:
+\[
+M(t) = p^{r} \sum_{y=0}^{\infty} \binom{y+r-1}{r-1} (qe^{t})^{y} = \frac{p^{r}}{[1-qe^{t}]^{r}} = \frac{p^{r}}{[1-(1-p)e^{t}]^{r}},
+\]
+for $t < -\log(1-p)$.
+
+\subsection{Multinomial Distribution Derivation}\label{sec:derivation-multinomial}
+
+\textbf{背景（Background）}：Derive the joint pmf of $(X_1, \ldots, X_k)$ where $X_i$ is the count of category $i$ in $n$ iid trials.
+
+\textbf{目标（Goal）}：Show $p(x_1, \ldots, x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+The number of distinguishable arrangements of $x_1 C_1$'s, $x_2 C_2$'s, $\ldots$, $x_k C_k$'s is:
+\[
+\binom{n}{x_1} \binom{n-x_1}{x_2} \cdots \binom{n-x_1-\cdots-x_{k-1}}{x_k} = \frac{n!}{x_1! x_2! \cdots x_k!}.
+\]
+
+Each such arrangement has probability $p_1^{x_1} p_2^{x_2} \cdots p_k^{x_k}$. Therefore:
+\[
+\mathbb{P}(X_1 = x_1, \ldots, X_k = x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}.
+\]
+
+\subsection{Hypergeometric Distribution Mean and Variance}\label{sec:derivation-hypergeometric}
+
+\textbf{背景（Background）}：Find $\mathbb{E}X$ and $\text{var}(X)$ for $X \sim \text{Hypergeometric}(N, D, n)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+The pmf is:
+\[
+p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}.
+\]
+
+For the mean, we use an indicator variable approach. Let $X_i = 1$ if the $i$-th draw is a defective, 0 otherwise. Then $X = \sum_{i=1}^{n} X_i$.
+
+Each draw is equally likely to be any of the $N$ items, and exactly $D$ of them are defective. Therefore $\mathbb{P}(X_i = 1) = D/N$, so $\mathbb{E}X_i = D/N$.
+
+By linearity of expectation:
+\[
+\mathbb{E}X = \sum_{i=1}^{n} \mathbb{E}X_i = n \cdot \frac{D}{N}.
+\]
+
+For the variance, we use:
+\[
+\text{var}(X) = \sum_{i=1}^{n} \text{var}(X_i) + 2\sum_{i<j} \text{cov}(X_i, X_j).
+\]
+
+Each $X_i$ is Bernoulli with $p = D/N$, so $\text{var}(X_i) = \frac{D(N-D)}{N^{2}}$.
+
+For $i \neq j$, $\text{cov}(X_i, X_j) = -\frac{D(N-D)}{N^{2}(N-1)}$ (due to without-replacement sampling).
+
+Therefore:
+\[
+\text{var}(X) = n \cdot \frac{D(N-D)}{N^{2}} + 2\binom{n}{2} \cdot \left(-\frac{D(N-D)}{N^{2}(N-1)}\right) = n\frac{D(N-D)}{N^{2}} \cdot \frac{N-n}{N-1}.
+\]
+
+\subsection{Poisson Distribution Moments}\label{sec:derivation-poisson-moments}
+
+\textbf{背景（Background）}：Show that for $X \sim \text{Poisson}(\lambda)$, $\mathbb{E}X = \lambda$ and $\text{var}(X) = \lambda$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\[
+\mathbb{E}X = \sum_{x=0}^{\infty} x \cdot \frac{\lambda^{x} e^{-\lambda}}{x!} = \lambda e^{-\lambda} \sum_{x=1}^{\infty} \frac{\lambda^{x-1}}{(x-1)!} = \lambda e^{-\lambda} \cdot e^{\lambda} = \lambda.
+\]
+
+For variance:
+\[
+\mathbb{E}[X(X-1)] = \sum_{x=0}^{\infty} x(x-1) \cdot \frac{\lambda^{x} e^{-\lambda}}{x!} = \lambda^{2} e^{-\lambda} \sum_{x=2}^{\infty} \frac{\lambda^{x-2}}{(x-2)!} = \lambda^{2}.
+\]
+
+Therefore:
+\[
+\text{var}(X) = \mathbb{E}[X^{2}] - (\mathbb{E}X)^{2} = \mathbb{E}[X(X-1)] + \mathbb{E}X - (\mathbb{E}X)^{2} = \lambda^{2} + \lambda - \lambda^{2} = \lambda.
+\]
+
+\subsection{Poisson Limit Theorem}\label{sec:derivation-poisson-limit}
+
+\textbf{背景（Background）}：Prove that if $X_n \sim \text{Bin}(n, p_n)$ with $np_n \to \lambda$, then $X_n \xrightarrow{d} \text{Poisson}(\lambda)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+For fixed $k$:
+\[
+\mathbb{P}(X_n = k) = \binom{n}{k} p_n^{k} (1-p_n)^{n-k} = \frac{n(n-1)\cdots(n-k+1)}{k!} \left(\frac{\lambda_n}{n}\right)^{k} \left(1-\frac{\lambda_n}{n}\right)^{n-k},
+\]
+where $\lambda_n = np_n \to \lambda$.
+
+As $n \to \infty$:
+\[
+\frac{n(n-1)\cdots(n-k+1)}{n^{k}} \to 1, \quad \left(1-\frac{\lambda_n}{n}\right)^{-k} \to 1, \quad \left(1-\frac{\lambda_n}{n}\right)^{n} \to e^{-\lambda}.
+\]
+
+Therefore:
+\[
+\lim_{n \to \infty} \mathbb{P}(X_n = k) = \frac{\lambda^{k}}{k!} e^{-\lambda}.
+\]
+
+\subsection{Gamma Function Recursion Proof}\label{sec:derivation-gamma-function}
+
+\textbf{背景（Background）}：Prove $\Gamma(\alpha+1) = \alpha\Gamma(\alpha)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using integration by parts with $u = x^{\alpha}$ and $dv = e^{-x}dx$:
+\[
+\Gamma(\alpha+1) = \int_{0}^{\infty} x^{\alpha} e^{-x} dx = \left[-x^{\alpha} e^{-x}\right]_{0}^{\infty} + \alpha \int_{0}^{\infty} x^{\alpha-1} e^{-x} dx = 0 + \alpha\Gamma(\alpha) = \alpha\Gamma(\alpha).
+\]
+
+For positive integers, $\Gamma(n) = (n-1)!$ follows by induction.
+
+\subsection{Gamma Distribution MGF and Mean/Variance}\label{sec:derivation-gamma-mgf}
+
+\textbf{背景（Background）}：Derive the mgf and moments of $\Gamma(\alpha, \beta)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+The pdf is $f(x) = \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta}$ for $x > 0$.
+
+MGF:
+\[
+M(t) = \mathbb{E}[e^{tX}] = \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \int_{0}^{\infty} x^{\alpha-1} e^{-x(1/\beta - t)} dx.
+\]
+
+With $z = x(1-\beta t)/\beta$, $dz = (1-\beta t)/\beta dx$:
+\[
+M(t) = \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \cdot \frac{\beta^{\alpha}}{(1-\beta t)^{\alpha}} \Gamma(\alpha) = (1-\beta t)^{-\alpha}, \quad t < \frac{1}{\beta}.
+\]
+
+Mean: $M'(t) = \alpha\beta(1-\beta t)^{-\alpha-1}$, so $M'(0) = \alpha\beta$.
+
+Variance: $M''(t) = \alpha(\alpha+1)\beta^{2}(1-\beta t)^{-\alpha-2}$, so $M''(0) = \alpha(\alpha+1)\beta^{2}$.
+
+Thus $\text{var}(X) = \alpha(\alpha+1)\beta^{2} - (\alpha\beta)^{2} = \alpha\beta^{2}$.
+
+\subsection{Gamma Additivity Proof}\label{sec:derivation-gamma-additivity}
+
+\textbf{背景（Background）}：Show that if $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ are independent, then $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using the mgf:
+\[
+M_{X_1+X_2}(t) = M_{X_1}(t) \cdot M_{X_2}(t) = (1-\beta t)^{-\alpha_1} \cdot (1-\beta t)^{-\alpha_2} = (1-\beta t)^{-(\alpha_1+\alpha_2)}.
+\]
+
+This is the mgf of $\Gamma(\alpha_1+\alpha_2, \beta)$.
+
+\subsection{Beta Distribution Moments}\label{sec:derivation-beta-moments}
+
+\textbf{背景（Background）}：Derive $\mathbb{E}X$ and $\text{var}(X)$ for $X \sim \text{Beta}(\alpha, \beta)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+The pdf is $f(x) = \frac{1}{B(\alpha,\beta)} x^{\alpha-1}(1-x)^{\beta-1}$ for $0 < x < 1$.
+
+\[
+\mathbb{E}X = \frac{1}{B(\alpha,\beta)} \int_{0}^{1} x^{\alpha}(1-x)^{\beta-1} dx = \frac{B(\alpha+1,\beta)}{B(\alpha,\beta)} = \frac{\Gamma(\alpha+1)\Gamma(\beta)}{\Gamma(\alpha+\beta+1)} \cdot \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} = \frac{\alpha}{\alpha+\beta}.
+\]
+
+For variance:
+\[
+\mathbb{E}[X^{2}] = \frac{B(\alpha+2,\beta)}{B(\alpha,\beta)} = \frac{\alpha(\alpha+1)}{(\alpha+\beta)(\alpha+\beta+1)}.
+\]
+
+Therefore:
+\[
+\text{var}(X) = \mathbb{E}[X^{2}] - (\mathbb{E}X)^{2} = \frac{\alpha(\alpha+1)}{(\alpha+\beta)(\alpha+\beta+1)} - \frac{\alpha^{2}}{(\alpha+\beta)^{2}} = \frac{\alpha\beta}{(\alpha+\beta)^{2}(\alpha+\beta+1)}.
+\]
+
+\subsection{Normal Distribution MGF}\label{sec:derivation-normal-mgf}
+
+\textbf{背景（Background）}：Derive the mgf of $N(\mu, \sigma^{2})$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Let $Z = (X-\mu)/\sigma \sim N(0,1)$. Then $X = \sigma Z + \mu$, so:
+\[
+M_X(t) = \mathbb{E}[e^{t(\sigma Z + \mu)}] = e^{\mu t} \mathbb{E}[e^{t\sigma Z}] = e^{\mu t} e^{\frac{1}{2}\sigma^{2}t^{2}} = \exp\left\{\mu t + \frac{1}{2}\sigma^{2}t^{2}\right\}.
+\]
+
+For $Z \sim N(0,1)$, we used:
+\[
+\mathbb{E}[e^{tZ}] = \int_{-\infty}^{\infty} e^{tz} \frac{1}{\sqrt{2\pi}} e^{-z^{2}/2} dz = e^{t^{2}/2} \int_{-\infty}^{\infty} \frac{1}{\sqrt{2\pi}} e^{-(z-t)^{2}/2} dz = e^{t^{2}/2}.
+\]
+
+\subsection{Normal Linear Combination Proof}\label{sec:derivation-normal-linear-combination}
+
+\textbf{背景（Background）}：Show that if $X_1 \sim N(\mu_1, \sigma_1^{2})$ and $X_2 \sim N(\mu_2, \sigma_2^{2})$ are independent, then $aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2})$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using mgfs:
+\[
+M_{aX_1+bX_2}(t) = M_{X_1}(at) \cdot M_{X_2}(bt) = \exp\left\{\mu_1(at) + \frac{1}{2}\sigma_1^{2}(at)^{2}\right\} \cdot \exp\left\{\mu_2(bt) + \frac{1}{2}\sigma_2^{2}(bt)^{2}\right\}.
+\]
+
+Simplifying:
+\[
+= \exp\left\{(a\mu_1 + b\mu_2)t + \frac{1}{2}(a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2})t^{2}\right\}.
+\]
+
+This is the mgf of $N(a\mu_1 + b\mu_2, a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2})$.
+
+\subsection{Bivariate Normal MGF}\label{sec:derivation-bivariate-mgf}
+
+\textbf{背景（Background）}：Derive the joint mgf of a bivariate normal distribution.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+For $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^{2}, \sigma_2^{2}, \rho)$:
+\[
+M(t_1, t_2) = \mathbb{E}[\exp\{t_1 X_1 + t_2 X_2\}] = \exp\left\{t_1\mu_1 + t_2\mu_2 + \frac{1}{2}(t_1^{2}\sigma_1^{2} + 2t_1 t_2 \rho\sigma_1\sigma_2 + t_2^{2}\sigma_2^{2})\right\}.
+\]
+
+This follows from the quadratic form in the exponential of the joint pdf.
+
+\subsection{$t$ Distribution Derivation}\label{sec:derivation-t-distribution}
+
+\textbf{背景（Background）}：Derive the pdf of $T = Z/\sqrt{\chi^{2}(n)/n}$ where $Z \sim N(0,1)$ and $\chi^{2}(n)$ are independent.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+The transformation $(T, U) = (z/\sqrt{v/n}, v)$ where $Z \sim N(0,1)$ and $V \sim \chi^{2}(n)$.
+
+The Jacobian is $|J| = \sqrt{u/n}$.
+
+The joint pdf is:
+\[
+g(t, u) = \frac{1}{\sqrt{2\pi}} e^{-t^{2}u/(2n)} \cdot \frac{1}{\Gamma(n/2)2^{n/2}} u^{n/2-1} e^{-u/2} \cdot \sqrt{\frac{u}{n}}.
+\]
+
+Integrating out $u$ using the gamma integral with $z = u(1+t^{2}/n)/2$:
+\[
+f_T(t) = \frac{\Gamma((n+1)/2)}{\sqrt{\pi n}\,\Gamma(n/2)} \left(1 + \frac{t^{2}}{n}\right)^{-(n+1)/2}.
+\]
+
+\subsection{$F$ Distribution Derivation}\label{sec:derivation-f-distribution}
+
+\textbf{背景（Background）}：Derive the pdf of $F = \frac{U/m}{V/n}$ where $U \sim \chi^{2}(m)$ and $V \sim \chi^{2}(n)$ are independent.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Let $W = F$ and $Z = V$, so $U = (m/n)WZ$ and $V = Z$.
+
+The Jacobian is $|J| = (m/n)z$.
+
+The joint pdf is:
+\[
+g(w, z) = \frac{1}{\Gamma(m/2)\Gamma(n/2)2^{(m+n)/2}} \left(\frac{m}{n}wz\right)^{m/2-1} z^{n/2-1} e^{-(mw+n)z/(2n)} \cdot \frac{m}{n}z.
+\]
+
+Integrating out $z$ using the gamma integral with $y = z(mw+n)/(2n)$:
+\[
+f_W(w) = \frac{\Gamma((m+n)/2)}{\Gamma(m/2)\Gamma(n/2)} \left(\frac{m}{n}\right)^{m/2} \frac{w^{m/2-1}}{(1 + mw/n)^{(m+n)/2}}, \quad w > 0.
+\]
+
+\subsection{$F$ Distribution Moments}\label{sec:derivation-f-moments}
+
+\textbf{背景（Background）}：Derive the mean and variance of $F(m, n)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+Using $F = \frac{r_2}{r_1} \cdot \frac{U}{V}$ where $U \sim \chi^{2}(r_1)$ and $V \sim \chi^{2}(r_2)$ are independent:
+
+\[
+\mathbb{E}[F^{k}] = \left(\frac{r_2}{r_1}\right)^{k} \mathbb{E}[U^{k}] \mathbb{E}[V^{-k}].
+\]
+
+For $k=1$:
+\[
+\mathbb{E}[F] = \frac{r_2}{r_1} \cdot r_1 \cdot \frac{2^{-1}\Gamma(r_2/2 - 1)}{\Gamma(r_2/2)} = \frac{r_2}{r_2-2}, \quad r_2 > 2.
+\]
+
+The variance formula follows similarly for $k=2$.
+
+\subsection{Beta-Binomial Conjugate Prior}\label{sec:beta-binomial-conjugate}
+
+\textbf{背景（Background）}：Show that if $X \mid p \sim \text{Bin}(n, p)$ and $p \sim \text{Beta}(\alpha, \beta)$, then the posterior $p \mid X=x \sim \text{Beta}(\alpha+x, \beta+n-x)$.
+
+\textbf{推导步骤（Derivation Steps）}：
+
+By Bayes' theorem:
+\[
+\pi(p \mid x) \propto f(x \mid p) \cdot \pi(p) = \binom{n}{x} p^{x}(1-p)^{n-x} \cdot \frac{1}{B(\alpha,\beta)} p^{\alpha-1}(1-p)^{\beta-1}.
+\]
+
+Combining exponents:
+\[
+\pi(p \mid x) \propto p^{\alpha+x-1}(1-p)^{\beta+n-x-1}.
+\]
+
+This is the kernel of $\text{Beta}(\alpha+x, \beta+n-x)$.
+
+This conjugate relationship is fundamental in Bayesian statistics, allowing sequential updating of beliefs about $p$ as data is observed.

@@ -106,12 +106,12 @@ L(\theta) = L(\theta; x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i; \theta)
 最大似然估计量（MLE）：
 \[
 \widehat{\theta} = \underset{\theta}{\operatorname{argmax}} \, L(\theta).
-\tag{4.2.1}\label{eq:mle-definition}
+\tag{4.2.1}\label{eq:mle-definition}\]
 \]
 
 在实际计算中，通常使用对数似然 $l(\theta) = \log L(\theta)$，因为 $\log$ 是严格递增函数，最大化 $l(\theta)$ 等价于最大化 $L(\theta)$。在正则条件下，$\widehat{\theta}$ 满足
 \[
-\frac{\partial l(\theta)}{\partial \theta} = 0. \tag{4.2.2}\label{eq:mle-score-equation}
+\frac{\partial l(\theta)}{\partial \theta} = 0. \tag{4.2.2}\label{eq:mle-score-equation}\]
 \]
 
 这个方程称为\textbf{似然方程（score equation）}。\footnote{通用推导框架见附录 \cref{sec:derivation-mle}。}
@@ -144,15 +144,15 @@ L(\theta) = \theta^{\sum x_i}(1-\theta)^{n-\sum x_i}.
 对数似然为
 \[
 l(\mu, \sigma) = -\frac{n}{2}\log 2\pi - n\log\sigma - \frac{1}{2}\sum_{i=1}^n\left(\frac{x_i - \mu}{\sigma}\right)^2.
-\tag{4.2.3}\label{eq:normal-log-likelihood}
+\tag{4.2.3}\label{eq:normal-log-likelihood}\]
 \]
 
 对 $\mu$ 和 $\sigma$ 分别求偏导并令为零，解得
 \[
-\widehat{\mu} = \bar{X}, \tag{4.2.4}\label{eq:mle-normal-mu}
+\widehat{\mu} = \bar{X}, \tag{4.2.4}\label{eq:mle-normal-mu}\]
 \]
 \[
-\widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2. \tag{4.2.5}\label{eq:mle-normal-sigma}
+\widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2. \tag{4.2.5}\label{eq:mle-normal-sigma}\]
 \]
 
 \textbf{一个重要发现}：$\widehat{\mu} = \bar{X}$ 是无偏的（$\mathbb{E}(\bar{X}) = \mu$），但 $\widehat{\sigma}^2$ 是\textbf{有偏}的——
@@ -188,7 +188,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 已知。则 $\mu$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}},\quad \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right],
-\tag{4.3.1}\label{eq:ci-normal-known}
+\tag{4.3.1}\label{eq:ci-normal-known}\]
 \]
 其中 $z_{\alpha/2}$ 满足 $\Phi(z_{\alpha/2}) = 1 - \alpha/2$。
 
@@ -199,12 +199,12 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 未知。用 $S^2$ 替代 $\sigma^2$，则
 \[
 \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1},
-\tag{4.3.2}\label{eq:t-statistic}
+\tag{4.3.2}\label{eq:t-statistic}\]
 \]
 故 $\mu$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \bar{X} - t_{\alpha/2,n-1}\frac{S}{\sqrt{n}},\quad \bar{X} + t_{\alpha/2,n-1}\frac{S}{\sqrt{n}} \right].
-\tag{4.3.3}\label{eq:ci-normal-unknown}
+\tag{4.3.3}\label{eq:ci-normal-unknown}\]
 \]
 
 \textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}
@@ -214,7 +214,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$。则 $\sigma^2$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}},\quad \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}} \right].
-\tag{4.3.4}\label{eq:ci-variance}
+\tag{4.3.4}\label{eq:ci-variance}\]
 \]
 其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{详细推导见附录 \cref{sec:derivation-variance-ci}。}
 \end{theorem}
@@ -251,7 +251,7 @@ $H_0$ 为假 & 第二类错误（概率 $\beta$） & 正确（功效 $1-\beta$�
 检验统计量：
 \[
 Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
-\tag{4.4.1}\label{eq:z-test-statistic}
+\tag{4.4.1}\label{eq:z-test-statistic}\]
 \]
 
 在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
@@ -263,7 +263,7 @@ Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 检验统计量：
 \[
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
-\tag{4.4.2}\label{eq:t-test-statistic}
+\tag{4.4.2}\label{eq:t-test-statistic}\]
 \]
 
 在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
@@ -288,7 +288,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 \textbf{检验统计量}：
 \[
 \chi^2 = \sum_{i=1}^k \frac{(O_i - E_i)^2}{E_i}.
-\tag{4.5.1}\label{eq:chi-square-goodness}
+\tag{4.5.1}\label{eq:chi-square-goodness}\]
 \]
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2(k-1)$（大样本近似）。拒绝 $H_0$ 当 $\chi^2 > \chi^2_{\alpha, k-1}$。
@@ -302,13 +302,13 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 在独立性假设下，行合计与列合计的乘积除以总数给出期望频数：
 \[
 E_{ij} = \frac{O_{i\cdot} O_{\cdot j}}{n}.
-\tag{4.5.2}\label{eq:expected-frequency}
+\tag{4.5.2}\label{eq:expected-frequency}\]
 \]
 
 \textbf{检验统计量}：
 \[
 \chi^2 = \sum_{i=1}^r\sum_{j=1}^c \frac{(O_{ij} - E_{ij})^2}{E_{ij}}.
-\tag{4.5.3}\label{eq:chi-square-independence}
+\tag{4.5.3}\label{eq:chi-square-independence}\]
 \]
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2((r-1)(c-1))$。
@@ -322,7 +322,7 @@ E_{ij} = \frac{O_{i\cdot} O_{\cdot j}}{n}.
 大数定律保证了模拟的收敛性：
 \[
 \frac{1}{n}\sum_{i=1}^n g(X_i) \xrightarrow{P} \mathbb{E}[g(X)].
-\tag{4.6.1}\label{eq:lln-monte-carlo}
+\tag{4.6.1}\label{eq:lln-monte-carlo}\]
 \]
 
 这意味着：只要模拟次数足够多，样本均值可以任意接近真实期望。
@@ -356,7 +356,7 @@ Bootstrap 的解决思路既简单又巧妙：\textbf{用重抽样近似抽样�
 \textbf{percentile bootstrap 置信区间}：$\theta$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ T_{(\alpha B)}^*,\quad T_{((1-\alpha)B)}^* \right].
-\tag{4.7.1}\label{eq:bootstrap-ci}
+\tag{4.7.1}\label{eq:bootstrap-ci}\]
 \]
 
 \textbf{直觉}：如果样本是总体的良好代表，那么从样本有放回抽样就是在模拟"从总体中抽取样本"的过程。$T^*$ 的分布反映了 $T$ 的抽样分布的近似。\footnote{Bootstrap 的理论基础及更多细节见附录 \cref{sec:derivation-bootstrap}。}
