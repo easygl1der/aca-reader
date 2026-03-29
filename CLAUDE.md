@@ -366,6 +366,14 @@ domain-expert ←→ writing-expert
 2. **按板块读取**：不切割证明/推导，要完整传输给 AI
 3. **附录引用**：正文中用 `\footnote{推导见附录 \cref{sec:xxx}}`
 
+**每章独立附录** ⚠️：
+- 每章的公式推导放在**各自章节文件末尾**，不是统一放在 `appendix/` 目录
+- chapter1.tex → `\section{附录：公式推导}\label{sec:appendix-ch1}`
+- chapter2.tex → `\section{附录：公式推导}\label{sec:appendix-ch2}`
+- chapter3.tex → `\section{附录：公式推导}\label{sec:appendix-ch3}`
+- chapter4.tex → `\section{附录：公式推导}\label{sec:appendix-ch4}`
+- 正文引用：`\footnote{推导见附录 \cref{sec:appendix-chX}}`
+
 **附录章节结构**：
 ```latex
 \section{附录：公式推导}\label{sec:appendix-derivation}
