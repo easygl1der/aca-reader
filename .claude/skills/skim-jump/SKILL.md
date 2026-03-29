@@ -34,12 +34,12 @@ grep -n "目标内容" /path/to/chapters/chapter1.tex
 
 跳转到 chapter1.tex 第 650 行（李代数定义）：
 ```bash
-displayline -r -g 650 "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/schubert-positivity-notes.pdf" "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter1.tex"
+/Applications/Skim.app/Contents/SharedSupport/displayline -r -g 650 "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/schubert-positivity-notes.pdf" "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter1.tex"
 ```
 
 跳转到 appendix/qa.tex 第 114 行：
 ```bash
-displayline -r -g 114 "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/schubert-positivity-notes.pdf" "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/appendix/qa.tex"
+/Applications/Skim.app/Contents/SharedSupport/displayline -r -g 114 "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/schubert-positivity-notes.pdf" "/Users/yueyh/Projects/aca-workflow/notes/Schubert-Polynomials/appendix/qa.tex"
 ```
 
 ## 注意事项
