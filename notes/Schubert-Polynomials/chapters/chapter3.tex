@@ -25,6 +25,76 @@
 
 Kirillov 和 Maeno 在 1996 年的工作中引入了\textbf{量子双重 Schubert 多项式} $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$，这是旗流形等变量子量子上同调类的 Lascoux-Schützenberger 型代表元。本文介绍这一工作的核心内容。
 
+\section{经典回顾：除差算子与 Schubert 多项式}
+\label{sec:ClassicalRecap}
+
+在引入量子版本之前，我们先回顾经典理论的核心定义。
+
+\subsection{除差算子}
+
+除差算子（divided difference operator）是 Schubert 演算的核心工具。
+
+\begin{Definition}[\textbf{\underline{除差算子}}]
+\label{def:DividedDifferenceOp}
+对于 $i = 1, \ldots, n-1$，\textbf{除差算子} $\partial_i$ 定义为：
+\begin{equation}
+\partial_i f = \frac{f(x_1,\ldots,x_i,x_{i+1},\ldots) - f(x_1,\ldots,x_{i+1},x_i,\ldots)}{x_i - x_{i+1}}
+\label{eq:DividedDifference}
+\end{equation}
+\end{Definition}
+
+直观上，$\partial_i$ 测量了多项式在交换两个变量时的变化，并除以它们的差。这个算子的核恰好是对称多项式。
+
+\textbf{基本性质}：$\partial_i$ 满足 Leibniz 法则：
+\begin{equation}
+\partial_i(fg) = (\partial_i f)g + (s_i f)(\partial_i g)
+\label{eq:LeibnizRule}
+\end{equation}
+其中 $s_i f = f(x_1,\ldots,x_{i+1},x_i,\ldots)$ 表示交换 $x_i$ 和 $x_{i+1}$。
+
+\subsection{经典 Schubert 多项式：Definition 1}
+
+\begin{Definition}[\textbf{\underline{Schubert 多项式（Definition 1）}}]
+\label{def:ClassicalSchubert}
+设 $\delta = (n-1,n-2,\ldots,1,0)$，$w_0$ 为 $S_n$ 的最长置换。\textbf{Schubert 多项式}定义为：
+\begin{equation}
+\mathfrak{S}_w(x) = \partial_{w^{-1}w_0}(x^{\delta})
+\label{eq:SchubertPolynomial}
+\end{equation}
+其中 $x^{\delta} = x_1^{n-1}x_2^{n-2}\cdots x_n^0$。
+\end{Definition}
+
+这个定义的深刻之处在于：尽管 $\partial_w$ 的定义依赖于排列的表示，但 $\mathfrak{S}_w(x)$ 是良定义的——即结果与所选的约化表示无关。
+
+\subsection{双重 Schubert 多项式：Definition 2}
+
+更一般地，我们有双变量版本的 Schubert 多项式：
+
+\begin{Definition}[\textbf{\underline{双重 Schubert 多项式（Definition 2）}}]
+\label{def:DoubleSchubert}
+\textbf{双重 Schubert 多项式}定义为：
+\begin{equation}
+\mathfrak{S}_w(x,y) = \partial_{w^{-1}w_0}^{(x)} \prod_{i+j\leq n}(x_i + y_j)
+\label{eq:DoubleSchubert}
+\end{equation}
+其中 $\partial^{(x)}$ 表示只对 $x$ 变量作用的除差算子。
+\end{Definition}
+
+当 $y = 0$ 时，$\mathfrak{S}_w(x,0) = \mathfrak{S}_w(x)$ 退化为经典情形。
+
+\subsection{标量积}
+
+\begin{Definition}[\textbf{\underline{标量积}}]
+\label{def:ScalarProduct}
+经典 Schubert 多项式的标量积定义为：
+\begin{equation}
+\langle f, g \rangle = \partial_{w_0}(fg)
+\label{eq:ScalarProduct}
+\end{equation}
+\end{Definition}
+
+这个标量积给出了 Schubert 多项式的正交性。
+
 \section{量子上同调的基本框架}
 \label{sec:QuantumCohomologyFramework}
 
