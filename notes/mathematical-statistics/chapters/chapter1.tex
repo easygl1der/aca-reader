@@ -880,3 +880,405 @@ F(x) = \begin{cases} 0 & x < 0 \\ x/2 & 0 \leq x < 1 \\ 1/2 & 1 \leq x < 2 \\ 1 
 \begin{exercise}{1.10.2}
 用 Cauchy-Schwarz 不等式证明：若 $\mathbb{E}(X^2) = \mathbb{E}(Y^2) = 1$，则 $|\mathbb{E}(XY)| \leq 1$。
 \end{exercise}
+
+% === 附录：公式推导 ===
+\section{附录：公式推导}\label{sec:appendix-ch1}
+
+\subsection{概率公理的推导}\label{sec:derivation-probability-axioms}
+
+\textbf{背景}：概率公理（Kolmogorov, 1933）为概率论奠定了严格数学基础。
+
+\textbf{目标}：从三条公理推导出概率的其他基本性质。
+
+\textbf{推导步骤}：
+
+\textbf{性质1}：$\mathbb{P}(\phi) = 0$。
+
+由公理 3，令 $A_n = \phi$ 对所有 $n$，则 $\cup_{n=1}^{\infty} A_n = \phi$，故
+\[
+\mathbb{P}(\phi) = \sum_{n=1}^{\infty} \mathbb{P}(\phi) = \mathbb{P}(\phi) + \sum_{n=2}^{\infty} \mathbb{P}(\phi).
+\]
+两边减去 $\sum_{n=2}^{\infty} \mathbb{P}(\phi)$ 得 $\mathbb{P}(\phi) = 0$。
+
+\textbf{性质2}：若 $A \subset B$，则 $\mathbb{P}(B \setminus A) = \mathbb{P}(B) - \mathbb{P}(A)$。
+
+由 $B = A \cup (B \setminus A)$ 且 $A \cap (B \setminus A) = \phi$，结合公理得
+\[
+\mathbb{P}(B) = \mathbb{P}(A) + \mathbb{P}(B \setminus A).
+\]
+
+\textbf{性质3}：$\mathbb{P}(A) \leq 1$。
+
+由 $A \subset \mathcal{C}$ 和性质2，$\mathbb{P}(A) \leq \mathbb{P}(\mathcal{C}) = 1$。
+
+\textbf{性质4}（容斥原理）：
+\[
+\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B).
+\]
+
+将 $A \cup B$ 写成不交并：$A \cup B = A \cup (B \setminus A)$，再用公理。
+
+\textbf{布尔不等式}：对任意 $A_1, \ldots, A_n$，
+\[
+\mathbb{P}\left(\bigcup_{i=1}^{n} A_i\right) \leq \sum_{i=1}^{n} \mathbb{P}(A_i).
+\]
+
+使用数学归纳法，从容斥原理中去掉负项得到。
+
+\subsection{贝叶斯公式的深层意义}\label{sec:derivation-bayes-insight}
+
+\textbf{背景}：贝叶斯公式是更新信念的数学工具。
+
+\textbf{全概率公式}是贝叶斯公式的基础：
+\[
+\mathbb{P}(A) = \sum_i \mathbb{P}(B_i) \mathbb{P}(A \mid B_i),
+\]
+其中 $\{B_i\}$ 是样本空间的一个划分。
+
+\textbf{贝叶斯公式的直觉}：
+
+将条件概率公式 $\mathbb{P}(B_j \mid A) = \frac{\mathbb{P}(B_j \cap A)}{\mathbb{P}(A)}$ 中的分子、分母分别展开：
+\[
+\mathbb{P}(B_j \mid A) = \frac{\mathbb{P}(B_j) \mathbb{P}(A \mid B_j)}{\sum_i \mathbb{P}(B_i) \mathbb{P}(A \mid B_i)}.
+\]
+
+\textbf{先验到后验的更新机制}：
+\begin{enumerate}
+\item 先验概率 $\mathbb{P}(B_j)$：观测数据前对假设的信念
+\item 似然 $\mathbb{P}(A \mid B_j)$：在该假设下观测到数据的"可能性"
+\item 归一化常数 $\sum_i \mathbb{P}(B_i) \mathbb{P}(A \mid B_i)$：确保后验概率之和为 1
+\item 后验概率 $\mathbb{P}(B_j \mid A)$：观测数据后对假设的更新信念
+\end{enumerate}
+
+贝叶斯公式的核心思想：用数据（通过似然）来更新先验信念，得到后验分布。这构成了贝叶斯统计的理论基础。
+
+\subsection{医学检测假阳性详解}\label{sec:derivation-medical-test-false-positive}
+
+\textbf{问题设定}：
+\begin{itemize}
+\item 疾病患病率：$\mathbb{P}(D) = 0.01$（1\%）
+\item 检测准确率：$\mathbb{P}(+ \mid D) = 0.99$（患病者 99\% 阳性）
+\item 误报率：$\mathbb{P}(+ \mid D^c) = 0.01$（健康者 1\% 阳性）
+\end{itemize}
+
+\textbf{求解}：$\mathbb{P}(D \mid +)$——检测阳性者真正患病的概率。
+
+由贝叶斯公式：
+\[
+\mathbb{P}(D \mid +) = \frac{\mathbb{P}(D) \mathbb{P}(+ \mid D)}{\mathbb{P}(D) \mathbb{P}(+ \mid D) + \mathbb{P}(D^c) \mathbb{P}(+ \mid D^c)}.
+\]
+
+代入数值：
+\[
+= \frac{0.01 \times 0.99}{0.01 \times 0.99 + 0.99 \times 0.01} = \frac{0.0099}{0.0099 + 0.0099} = \frac{0.0099}{0.0198} = 0.5.
+\]
+
+\textbf{直觉解释}：即使检测准确率高达 99\%，由于疾病非常罕见（1\%），在所有阳性结果中，真阳性（$0.01 \times 0.99 = 0.0099$）和假阳性（$0.99 \times 0.01 = 0.0099$）的数量竟然相同！
+
+这说明在罕见事件检测中，\textbf{先验概率}（患病率）对后验概率有决定性影响。
+
+\subsection{两两独立但不相互独立的反例}\label{sec:derivation-pairwise-not-mutual}
+
+\textbf{背景}：独立性是概率论中的重要概念，但两两独立不等于相互独立。
+
+\textbf{经典反例}：掷两枚公平硬币，考虑以下四个事件：
+\begin{itemize}
+\item $A$：第一枚硬币正面朝上
+\item $B$：第二枚硬币正面朝上
+\item $C$：两枚硬币结果相同（$HH$ 或 $TT$）
+\end{itemize}
+
+\textbf{验证两两独立}：
+\begin{itemize}
+\item $\mathbb{P}(A) = \mathbb{P}(B) = \mathbb{P}(C) = 1/2$
+\item $\mathbb{P}(A \cap B) = \mathbb{P}(HH) = 1/4 = \mathbb{P}(A) \mathbb{P}(B)$
+\item $\mathbb{P}(A \cap C) = \mathbb{P}(HH) = 1/4 = \mathbb{P}(A) \mathbb{P}(C)$
+\item $\mathbb{P}(B \cap C) = \mathbb{P}(HH) = 1/4 = \mathbb{P}(B) \mathbb{P}(C)$
+\end{itemize}
+
+\textbf{但不相互独立}：
+\[
+\mathbb{P}(A \cap B \cap C) = \mathbb{P}(HH) = 1/4 \neq \mathbb{P}(A) \mathbb{P}(B) \mathbb{P}(C) = 1/8.
+\]
+
+这个例子说明：三个事件中，任意两个都独立，但三个放在一起就不独立了。
+
+\subsection{几何分布无记忆性的证明}\label{sec:derivation-geometric-memoryless}
+
+\textbf{背景}：几何分布描述"直到第一次成功所需等待次数"的分布。
+
+\textbf{定义}：$X \sim \text{Geom}(p)$，$\mathbb{P}(X = k) = (1-p)^{k-1} p$，$k = 1, 2, 3, \ldots$
+
+\textbf{无记忆性}：对任意 $m, n \geq 1$，
+\[
+\mathbb{P}(X > m+n \mid X > m) = \mathbb{P}(X > n).
+\]
+
+\textbf{证明}：
+\[
+\mathbb{P}(X > m+n \mid X > m) = \frac{\mathbb{P}(X > m+n)}{\mathbb{P}(X > m)} = \frac{(1-p)^{m+n}}{(1-p)^{m}} = (1-p)^{n} = \mathbb{P}(X > n).
+\]
+
+\textbf{直观含义}：如果已经等待了 $m$ 次且没有成功，那么再等待 $n$ 次的概率与"从头开始等待 $n$ 次"的概率完全相同。过去的时间"被遗忘"了。
+
+\textbf{唯一性}：无记忆性是几何分布的特征性质——离散支撑集 $\{1, 2, 3, \ldots\}$ 上具有无记忆性的分布只有几何分布。
+
+\subsection{Poisson 近似二项分布的证明}\label{sec:derivation-poisson-limit}
+
+\textbf{背景}：Poisson 分布是二项分布当 $n \to \infty$、$p \to 0$、$np = \lambda$ 固定时的极限。
+
+\textbf{定理}：若 $X_n \sim \text{Bin}(n, p_n)$，且 $np_n \to \lambda$，则对任意固定 $k$：
+\[
+\lim_{n \to \infty} \mathbb{P}(X_n = k) = \frac{\lambda^k e^{-\lambda}}{k!}.
+\]
+
+\textbf{证明}：
+
+二项分布式：
+\[
+\mathbb{P}(X_n = k) = \frac{n(n-1)\cdots(n-k+1)}{k!} p_n^k (1-p_n)^{n-k}.
+\]
+
+写成：
+\[
+= \frac{n^k\left(1-\frac{1}{n}\right)\left(1-\frac{2}{n}\right)\cdots\left(1-\frac{k-1}{n}\right)}{k!} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k} + o(1).
+\]
+
+当 $n \to \infty$ 时：
+\[
+\left(1-\frac{j}{n}\right) \to 1 \quad \text{for fixed } j,
+\]
+\[
+\left(1-\frac{\lambda}{n}\right)^{n} \to e^{-\lambda},
+\]
+\[
+\left(1-\frac{\lambda}{n}\right)^{-k} \to 1.
+\]
+
+因此：
+\[
+\lim_{n \to \infty} \mathbb{P}(X_n = k) = \frac{\lambda^k}{k!} e^{-\lambda}.
+\]
+
+\textbf{实际意义}：当 $n$ 很大、$p$ 很小时，用 $\text{Poisson}(\lambda = np)$ 近似 $\text{Bin}(n, p)$ 可以大大简化计算。
+
+\subsection{指数分布无记忆性的讨论}\label{sec:derivation-exponential-memoryless}
+
+\textbf{背景}：指数分布是连续版本的无记忆分布。
+
+\textbf{定义}：$X \sim \text{Exp}(\lambda)$，$f(x) = \lambda e^{-\lambda x}$，$x > 0$。
+
+\textbf{无记忆性}：对任意 $s, t > 0$，
+\[
+\mathbb{P}(X > s+t \mid X > s) = \mathbb{P}(X > t).
+\]
+
+\textbf{证明}：
+\[
+\mathbb{P}(X > s+t \mid X > s) = \frac{\mathbb{P}(X > s+t)}{\mathbb{P}(X > s)} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = \mathbb{P}(X > t).
+\]
+
+\textbf{与几何分布的类比}：离散几何分布和连续指数分布都具有无记忆性。这不是巧合——它们都是"等待直到事件发生"这一过程的模型，只是时间参数不同。
+
+\textbf{实际应用}：指数分布常用于描述：
+\begin{itemize}
+\item 电子元件的寿命（假设失效率恒定）
+\item 客户服务时间
+\item 打电话的间隔时间
+\end{itemize}
+
+\textbf{Poisson 过程的联系}：如果事件以固定速率 $\lambda$ 发生（Poisson 过程），那么相邻事件的时间间隔服从指数分布 $\text{Exp}(\lambda)$。
+
+\subsection{一元变换公式的推导}\label{sec:derivation-transformation-formula}
+
+\textbf{背景}：已知 $X$ 的分布，求 $Y = g(X)$ 的分布。
+
+\textbf{定理}：设 $X$ 是连续随机变量，$f_X(x)$ 已知。$y = g(x)$ 是一一对应且可导的，$x = g^{-1}(y) = h(y)$。则
+\[
+f_Y(y) = f_X(h(y)) \left| h'(y) \right|, \quad y \in \mathcal{S}_Y.
+\]
+
+\textbf{证明}：
+
+由 CDF 定义：
+\[
+F_Y(y) = \mathbb{P}(Y \leq y) = \mathbb{P}(g(X) \leq y) = \mathbb{P}(X \leq h(y)) = F_X(h(y)).
+\]
+
+对 $y$ 求导（链式法则）：
+\[
+f_Y(y) = f_X(h(y)) \cdot h'(y) = f_X(h(y)) \left| h'(y) \right|.
+\]
+
+\textbf{多对一情况}：若 $g$ 不是一一对应，则需将所有映射到同一 $y$ 的 $x$ 的概率相加：
+\[
+f_Y(y) = \sum_{i} f_X(x_i) \left| x_i' \right|,
+\]
+其中 $x_i = h_i(y)$ 是 $y = g(x)$ 的各个解。
+
+\subsection{函数期望定理的证明}\label{sec:derivation-function-expectation}
+
+\textbf{背景}：已知 $X$ 的分布，求 $Y = g(X)$ 的期望。
+
+\textbf{定理}：设 $Y = g(X)$。
+\begin{itemize}
+\item 若 $X$ 离散：$\mathbb{E}Y = \sum_x g(x) p_X(x)$
+\item 若 $X$ 连续：$\mathbb{E}Y = \int_{-\infty}^{\infty} g(x) f_X(x) dx$
+\end{itemize}
+
+\textbf{证明（连续情形）}：
+
+由定义：
+\[
+\mathbb{E}Y = \int_{-\infty}^{\infty} y f_Y(y) dy.
+\]
+
+使用变换公式：
+\[
+= \int_{-\infty}^{\infty} y \cdot f_X(h(y)) |h'(y)| dy.
+\]
+
+做变量替换 $x = h(y)$，则 $dx = h'(y) dy$，$y = g(x)$：
+\[
+= \int_{-\infty}^{\infty} g(x) f_X(x) dx.
+\]
+
+\textbf{重要意义}：我们不需要先求 $Y$ 的分布，直接用 $X$ 的分布计算即可！这就是"函数期望定理"的价值。
+
+\subsection{期望线性性的证明}\label{sec:derivation-expectation-linear}
+
+\textbf{定理}：对任意随机变量 $X, Y$（期望存在）和常数 $a, b$：
+\[
+\mathbb{E}[aX + bY] = a\mathbb{E}X + b\mathbb{E}Y.
+\]
+
+\textbf{证明}：
+
+由函数期望定理和重期望：
+\[
+\mathbb{E}[aX + bY] = \iint (ax + by) f_{XY}(x,y) dx dy.
+\]
+
+分离积分：
+\[
+= a \iint x f_{XY}(x,y) dx dy + b \iint y f_{XY}(x,y) dx dy = a\mathbb{E}X + b\mathbb{E}Y.
+\]
+
+\textbf{关键点：无需 $X, Y$ 独立！} 线性性对所有随机变量都成立，无论它们是否相关。
+
+\textbf{推论}：对 iid $X_1, \ldots, X_n$，$\mathbb{E}\bar{X} = \mathbb{E}X_1$。
+
+由线性性：
+\[
+\mathbb{E}\bar{X} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n X_i\right] = \frac{1}{n}\sum_{i=1}^n \mathbb{E}X_i = \frac{1}{n} \cdot n \mathbb{E}X_1 = \mathbb{E}X_1.
+\]
+
+\subsection{方差公式的推导}\label{sec:derivation-variance-formula}
+
+\textbf{背景}：方差度量随机变量偏离其均值的程度。
+
+\textbf{定义}：$\text{var}(X) = \mathbb{E}[(X - \mu)^2]$，其中 $\mu = \mathbb{E}X$。
+
+\textbf{计算公式}：$\text{var}(X) = \mathbb{E}(X^2) - \mu^2$。
+
+\textbf{推导}：
+\[
+\text{var}(X) = \mathbb{E}[(X - \mu)^2] = \mathbb{E}[X^2 - 2\mu X + \mu^2] = \mathbb{E}(X^2) - 2\mu\mathbb{E}(X) + \mu^2 = \mathbb{E}(X^2) - 2\mu^2 + \mu^2 = \mathbb{E}(X^2) - \mu^2.
+\]
+
+\textbf{方差性质}：
+\begin{enumerate}
+\item $\text{var}(aX + b) = a^2 \text{var}(X)$（尺度变换）
+\item 若 $X \Perp Y$：$\text{var}(X + Y) = \text{var}(X) + \text{var}(Y)$
+\end{enumerate}
+
+第二点的证明：若 $X, Y$ 独立，
+\[
+\text{var}(X+Y) = \mathbb{E}[(X+Y)^2] - [\mathbb{E}(X+Y)]^2 = \mathbb{E}(X^2) + 2\mathbb{E}(X)\mathbb{E}(Y) + \mathbb{E}(Y^2) - \mu_X^2 - 2\mu_X\mu_Y - \mu_Y^2 = \text{var}(X) + \text{var}(Y).
+\]
+
+\textbf{注意}：独立性条件不可少！若 $X = Y$，则 $\text{var}(X+Y) = \text{var}(2X) = 4\text{var}(X) \neq 2\text{var}(X)$。
+
+\subsection{Markov 不等式的证明}\label{sec:derivation-markov}
+
+\textbf{定理}：若 $g(X) \geq 0$，则对任意 $a > 0$，
+\[
+\mathbb{P}(g(X) \geq a) \leq \frac{\mathbb{E}[g(X)]}{a}.
+\]
+
+\textbf{证明}：
+
+设事件 $A = \{g(X) \geq a\}$，则 $g(X) \geq a \cdot \mathbb{I}_A$（因为在 $A$ 上 $g(X) \geq a$，在 $A^c$ 上 $g(X) \geq 0$）。
+
+取期望：
+\[
+\mathbb{E}[g(X)] \geq \mathbb{E}[a \cdot \mathbb{I}_A] = a \cdot \mathbb{P}(A) = a \cdot \mathbb{P}(g(X) \geq a).
+\]
+
+两边除以 $a > 0$ 得证。
+
+\textbf{意义}：Markov 不等式仅用一阶矩（期望）就能给出概率上界，不依赖分布的具体形式。当然，上界可能很松——例如对正态分布，$\mathbb{P}(|X| \geq 2\sigma)$ 的真实值约为 0.05，而 Markov 上界给出的是 $1/4$。
+
+\textbf{特例}：取 $g(X) = (X - \mu)^2$，$a = k^2$，得 Chebyshev 不等式：
+\[
+\mathbb{P}(|X - \mu| \geq k) \leq \frac{\text{var}(X)}{k^2}.
+\]
+
+\subsection{Cauchy-Schwarz 不等式的证明}\label{sec:derivation-cauchy-schwarz}
+
+\textbf{定理}：对任意随机变量 $X, Y$，
+\[
+|\mathbb{E}(XY)| \leq \sqrt{\mathbb{E}(X^2) \cdot \mathbb{E}(Y^2)}.
+\]
+
+\textbf{证明}：
+
+考虑 $\mathbb{E}[(tX - Y)^2] \geq 0$ 对任意实数 $t$ 成立。
+
+展开：
+\[
+0 \leq \mathbb{E}[t^2 X^2 - 2tXY + Y^2] = t^2 \mathbb{E}(X^2) - 2t\mathbb{E}(XY) + \mathbb{E}(Y^2).
+\]
+
+这是关于 $t$ 的二次不等式，其判别式必须非正：
+\[
+[2\mathbb{E}(XY)]^2 - 4\mathbb{E}(X^2)\mathbb{E}(Y^2) \leq 0.
+\]
+
+整理得：
+\[
+|\mathbb{E}(XY)| \leq \sqrt{\mathbb{E}(X^2) \cdot \mathbb{E}(Y^2)}.
+\]
+
+\textbf{应用}：证明相关系数 $|\text{corr}(X,Y)| \leq 1$。
+
+设 $X^* = X - \mu_X$，$Y^* = Y - \mu_Y$，则
+\[
+|\text{corr}(X,Y)| = \frac{|\mathbb{E}(X^* Y^*)|}{\sqrt{\text{var}(X) \text{var}(Y)}} \leq \frac{\sqrt{\mathbb{E}(X^{*2}) \mathbb{E}(Y^{*2})}}{\sqrt{\text{var}(X) \text{var}(Y)}} = 1.
+\]
+
+\subsection{Jensen 不等式的证明}\label{sec:derivation-jensen}
+
+\textbf{定理}：若 $g$ 是凸函数，$X$ 的期望存在，则
+\[
+\mathbb{E}[g(X)] \geq g(\mathbb{E}X).
+\]
+
+\textbf{证明（使用凸函数的支撑超平面）}：
+
+由凸函数的性质，对任意 $x_0$，存在支撑线 $L(x) = g(x_0) + c(x - x_0)$ 使得 $g(x) \geq L(x)$ 对所有 $x$ 成立。
+
+取 $x_0 = \mathbb{E}X$，则 $g(x) \geq g(\mathbb{E}X) + c(x - \mathbb{E}X)$。
+
+取期望：
+\[
+\mathbb{E}[g(X)] \geq g(\mathbb{E}X) + c\mathbb{E}(X - \mathbb{E}X) = g(\mathbb{E}X) + c \cdot 0 = g(\mathbb{E}X).
+\]
+
+\textbf{特例}：
+\begin{itemize}
+\item $g(x) = x^2$（凸）：$\mathbb{E}(X^2) \geq (\mathbb{E}X)^2$
+\item $g(x) = e^x$（凸）：$\mathbb{E}(e^X) \geq e^{\mathbb{E}X}$
+\end{itemize}
+
+第二个特例说明：指数函数的期望大于等于期望的指数——这在金融中用于证明"彩票溢价"现象。
