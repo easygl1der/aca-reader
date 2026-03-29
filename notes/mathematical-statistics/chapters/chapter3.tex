@@ -126,7 +126,7 @@ X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p).
 
 这种可加性反映了计数的本质：如果我们在两批试验（每批具有相同成功概率）中计数成功次数，总数就是简单求和。
 
-\beginRemark}\label{rmk:binomial-mode-ch3}
+\begin{example}\label{rmk:binomial-mode-ch3}
 $\text{Bin}(n, p)$ 分布的众数（最可能取值）为 $\lfloor (n+1)p \rfloor$。这很直观：成功次数的期望值是 $np$，众数应该接近这个值。
 \endRemark}
 
@@ -168,12 +168,12 @@ p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 在 R 中：\texttt{dgeom(11, 0.12)}。
 \end{example}
 
-\beginTheorem}[几何分布的无记忆性]\label{th:geometric-memoryless-ch3}
+\begin{example}[几何分布的无记忆性]\label{th:geometric-memoryless-ch3}
 几何分布具有独特的\textbf{无记忆性（memorylessness property）}：
 \begin{equation}\label{eq:memoryless-property-ch3}
 \mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j), \quad k, j \geq 0.
 \end{equation}
-\endTheorem}
+\end{example}
 
 \textbf{这是什么意思？} 如果你已经失败了 $k$ 次，那么距离第一次成功的剩余等待时间与开始时完全相同。过去的失败不会改变未来的期望。这个性质刻画了 $\{0,1,2,\ldots\}$ 上所有离散分布中几何分布的独特地位。\footnote{证明见附录 \cref{sec:derivation-memoryless}。}
 
@@ -182,7 +182,7 @@ p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \mathbb{E}Y = \frac{1-p}{p}, \quad \text{var}(Y) = \frac{1-p}{p^{2}}.
 \end{equation}
 
-\beginRemark}\label{rmk:negative-binomial-mgf-ch3}
+\begin{example}\label{rmk:negative-binomial-mgf-ch3}
 负二项分布的 mgf 为：
 \[
 M(t) = \frac{p^{r}}{[1 - (1-p)e^{t}]^{r}}, \quad t < -\log(1-p).
@@ -219,7 +219,7 @@ $(X_1, X_2, \ldots, X_k)$ 的联合 pmf 为：
 \]
 \end{example}
 
-\beginRemark}\label{rmk:multinomial-correlation-ch3}
+\begin{example}\label{rmk:multinomial-correlation-ch3}
 $X_i$ 和 $X_j$ 的相关系数为：
 \[
 \rho_{ij} = -\sqrt{\frac{p_i p_j}{(1-p_i)(1-p_j)}}.
@@ -341,7 +341,7 @@ p(x) = \mathbb{P}(X=x) = \frac{\lambda^{x} e^{-\lambda}}{x!}, \quad x = 0, 1, 2,
 \]
 
 即 $X_n \xrightarrow{d} \text{Poisson}(\lambda)$。
-\endTheorem}
+\end{example}
 
 \textbf{直观理解}：当 $n$ 很大且 $p$ 很小时，二项分布的行为几乎与 Poisson 分布完全相同。关键洞见是：在极限中只有 $\lambda = np$（均值）起作用。\footnote{证明见附录 \cref{sec:derivation-poisson-limit}。}
 
@@ -356,7 +356,7 @@ p(x) = \mathbb{P}(X=x) = \frac{\lambda^{x} e^{-\lambda}}{x!}, \quad x = 0, 1, 2,
 这就解释了为什么 Poisson 分布常用于稀有事件计数！
 \end{example}
 
-\beginRemark}\label{rmk:poisson-additivity-ch3}
+\begin{example}\label{rmk:poisson-additivity-ch3}
 若 $X_1 \sim \text{Poisson}(\lambda_1)$ 和 $X_2 \sim \text{Poisson}(\lambda_2)$ 独立，则 $X_1 + X_2 \sim \text{Poisson}(\lambda_1 + \lambda_2)$。这种可加性反映了独立 Poisson 过程（Poisson process）的叠加性质。
 \endRemark}
 
@@ -465,11 +465,11 @@ M(t) = (1 - \beta t)^{-\alpha}, \quad t < \frac{1}{\beta}.
 \end{itemize}
 \end{example}
 
-\beginRemark}\label{rmk:gamma-additivity-ch3}
+\begin{example}\label{rmk:gamma-additivity-ch3}
 若 $X_1 \sim \Gamma(\alpha_1, \beta)$ 和 $X_2 \sim \Gamma(\alpha_2, \beta)$ 独立，则 $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$。这种可加性反映了 Gamma 分布等待时间的自然结构。\footnote{使用 mgf 的证明见附录 \cref{sec:derivation-gamma-additivity}。}
 \endRemark}
 
-\beginRemark}\label{rmk:hazard-function-ch3}
+\begin{example}\label{rmk:hazard-function-ch3}
 Gamma 分布的危险函数（hazard function）为 $r(x) = \frac{x^{\alpha-1} e^{-x/\beta}}{\beta^{\alpha} \Gamma(\alpha) (1 - F(x))}$。对于指数分布（$\alpha=1$），$r(x) = 1/\beta$ 是常数；对于 $\alpha > 1$，$r(x)$ 递增；对于 $\alpha < 1$，$r(x)$ 递减。
 \endRemark}
 
@@ -494,7 +494,7 @@ $\chi^{2}$ 分布是 $\Gamma(n/2, 2)$ 的特殊情形：如果 $X \sim \chi^{2}(
 \tag{3.3.8}\label{eq:chi-square-moments-ch3}
 \]
 
-\beginRemark}\label{rmk:chi-square-additivity-ch3}
+\begin{example}\label{rmk:chi-square-additivity-ch3}
 若 $X_1 \sim \chi^{2}(m)$ 和 $X_2 \sim \chi^{2}(n)$ 独立，则 $X_1 + X_2 \sim \chi^{2}(m+n)$。这直接来自 Gamma 分布的可加性。
 \endRemark}
 
@@ -558,7 +558,7 @@ Beta 分布提供了丰富多样的形状：
 \end{itemize}
 \end{example}
 
-\beginRemark}\label{rmk:beta-conjugate-ch3}
+\begin{example}\label{rmk:beta-conjugate-ch3}
 在贝叶斯统计中，当我们用 Beta 分布作为二项分布参数 $p$ 的先验时，后验分布仍然是 Beta 分布。这称为\textbf{共轭先验（conjugate prior）}关系。Beta-二项模型是贝叶斯分析中最重要的共轭对之一。\footnote{共轭先验的讨论见附录 \cref{sec:beta-binomial-conjugate}。}
 \endRemark}
 
@@ -619,15 +619,15 @@ M(t) = \exp\left\{\mu t + \frac{1}{2}\sigma^{2}t^{2}\right\}, \quad -\infty < t 
 aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2}).
 \tag{3.4.4}\label{eq:normal-linear-combination-ch3}
 \]
-\endTheorem}
+\end{example}
 
 \textbf{为什么这个性质重要？} 它意味着正态分布在线性变换下闭合——这使它成为线性模型的理论基础。\footnote{证明见附录 \cref{sec:derivation-normal-linear-combination}。}
 
-\beginRemark}\label{rmk:normal-location-scale-ch3}
+\begin{example}\label{rmk:normal-location-scale-ch3}
 均值 $\mu$ 是\textbf{位置参数（location parameter）}：改变 $\mu$ 只平移整个分布而不改变形状。标准差 $\sigma$ 是\textbf{尺度参数（scale parameter）}：改变 $\sigma$ 拉伸或压缩分布。
 \endRemark}
 
-\beginRemark}\label{rmk:empirical-rule-ch3}
+\begin{example}\label{rmk:empirical-rule-ch3}
 对于任何正态分布：
 \begin{itemize}
 \item $\mathbb{P}(\mu - \sigma < X < \mu + \sigma) \approx 0.6827$
@@ -637,9 +637,9 @@ aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^{2}\sigma_1^{2} + b^{2}\sigma_2^{2}).
 这些有时被称为\textbf{经验法则（empirical rule）}或 68-95-99.7 法则。
 \endRemark}
 
-\beginTheorem}[正态平方到卡方]\label{th:normal-to-chi-square-ch3}
+\begin{example}[正态平方到卡方]\label{th:normal-to-chi-square-ch3}
 若 $X \sim N(\mu, \sigma^{2})$，则 $\frac{(X-\mu)^{2}}{\sigma^{2}} \sim \chi^{2}(1)$。
-\endTheorem}
+\end{example}
 
 这连接了正态分布和卡方分布，解释了为什么自由度为 $n$ 的卡方分布涉及 $n$ 个平方标准正态的和。
 
@@ -679,7 +679,7 @@ Q = \frac{(x_1-\mu_1)^{2}}{\sigma_1^{2}} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\s
 \item $X_1 \Perp X_2 \iff \rho = 0$（对正态变量，不相关等价于独立）
 \item 任何线性组合 $aX_1 + bX_2$ 服从正态分布
 \end{enumerate}
-\endTheorem}
+\end{example}
 
 \textbf{关键洞见}：条件均值是 $x_1$ 的线性函数。这意味着给定一个变量，对另一个变量的最佳预测也是线性的。斜率 $\rho\sigma_2/\sigma_1$ 告诉我们 $X_2$ 相对于 $X_1$ 每个标准差变化多少（以标准差计）。
 
@@ -781,7 +781,7 @@ $F$ 分布是两个独立卡方变量的比值，每个除以各自的自由度�
 
 \textbf{倒数性质}：若 $F \sim F(m, n)$，则 $1/F \sim F(n, m)$。这个对称性对计算尾部概率很有用。
 
-\beginRemark}\label{rmk:f-to-t-relationship-ch3}
+\begin{example}\label{rmk:f-to-t-relationship-ch3}
 若 $T \sim t(n)$，则 $T^{2} \sim F(1, n)$。这从定义可得：$T = Z/\sqrt{\chi^{2}(n)/n}$，所以 $T^{2} = Z^{2}/(\chi^{2}(n)/n) = \chi^{2}(1)/(\chi^{2}(n)/n) \sim F(1, n)$。
 \endRemark}
 
