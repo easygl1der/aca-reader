@@ -491,6 +491,16 @@ Q_1 = \sigma^{-2}\mathbf{X}'\mathbf{A}\mathbf{X},\quad Q_2 = \sigma^{-2}\mathbf{
 
 \section*{习题}\label{sec:exercises-ch9}
 
+\begin{exercise}{\ref{exr:9.2.1} $T^2$ 与 $F$ 统计量的关系 – Hogg 9.2.1}\label{exr:9.2.1}
+考虑在例 8.3.1 中通过似然比检验推导出的 $T$ 统计量，用于检验两个具有公共方差的正态分布均值的相等性。证明 $T^2$ 恰好是表达式 (9.2.11) 中的 $F$ 统计量。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.2.2} 线性函数的不相关性 – Hogg 9.2.2}\label{exr:9.2.2}
+在模型 (9.2.1) 下，证明线性函数 $X_{ij} - \overline{X}_{.j}$ 与 $\overline{X}_{.j} - \overline{X}_{..}$ 不相关。
+
+\textbf{提示}: 回忆 $\overline{X}_{.j}$ 和 $\overline{X}_{..}$ 的定义，不失一般性地设 $E(X_{ij}) = 0$ 对所有 $i,j$。
+\end{exercise}
+
 \begin{exercise}{\ref{exr:9.2.3} One-Way ANOVA 数据计算 – Hogg 9.2.3}\label{exr:9.2.3}
 考虑来自三个正态分布的独立随机样本，它们具有相等方差及 respective means $\mu_1, \mu_2, \mu_3$。数据如下：
 
@@ -506,6 +516,54 @@ I & II & III \\
 \end{tabular}
 
 使用 R 或其他统计软件，计算用于检验 $H_0: \mu_1 = \mu_2 = \mu_3$ 的 $F$ 统计量。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.2.4} 样本方差的分解 – Hogg 9.2.4}\label{exr:9.2.4}
+设 $X_1, X_2, \ldots, X_n$ 是来自正态分布 $N(\mu, \sigma^2)$ 的随机样本。证明
+
+\[
+\sum_{i=1}^n (X_i - \overline{X})^2 = \sum_{i=2}^n (X_i - \overline{X}')^2 + \frac{n-1}{n}(X_1 - \overline{X}')^2,
+\]
+
+其中 $\overline{X} = \sum_{i=1}^n X_i / n$ 且 $\overline{X}' = \sum_{i=2}^n X_i / (n-1)$。
+
+\textbf{提示}: 将 $X_i - \overline{X}$ 替换为 $(X_i - \overline{X}') - (X_1 - \overline{X}')/n$。证明 $\sum_{i=2}^n (X_i - \overline{X}')^2 / \sigma^2$ 服从自由度为 $n-2$ 的卡方分布。证明右边两项独立。下列统计量的分布是什么？
+
+\[
+\frac{[(n-1)/n](X_1 - \overline{X}')^2}{\sigma^2}?
+\]
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.2.5} MLE 与平方和分解 – Hogg 9.2.5}\label{exr:9.2.5}
+使用本节的记号，假设均值满足条件 $\mu = \mu_1 + (b-1)d = \mu_2 - d = \mu_3 - d = \dots = \mu_b - d$。即最后 $b-1$ 个均值相等但与第一个均值 $\mu_1$ 不同（假设 $d \neq 0$）。从 $b$ 个具有公共未知方差 $\sigma^2$ 的正态分布中分别抽取容量为 $a$ 的独立随机样本。
+
+(a) 证明 $\mu$ 和 $d$ 的最大似然估计量分别是 $\hat{\mu} = \overline{X}_{..}$ 和
+
+\[
+\hat{d} = \frac{\sum_{j=2}^b \overline{X}_{.j}/(b-1) - \overline{X}_{.1}}{b}.
+\]
+
+(b) 使用练习 9.2.4，求 $Q_6$ 和 $Q_7 = c\hat{d}^2$，使得当 $d=0$ 时，$Q_7/\sigma^2 \sim \chi^2(1)$，且
+
+\[
+\sum_{i=1}^a \sum_{j=1}^b (X_{ij} - \overline{X}_{..})^2 = Q_3 + Q_6 + Q_7.
+\]
+
+(c) 论证当 $d=0$ 时，右边的三项除以 $\sigma^2$ 后是相互独立的卡方分布随机变量。
+
+(d) $Q_7/(Q_3+Q_6)$ 乘以什么常数在 $d=0$ 时服从 $F$ 分布？注意，这个 $F$ 实际上就是用于检验第一个分布的均值与后 $b-1$ 个分布合并后的公共均值相等的双样本 $T$ 的平方。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.2.6} LDL 胆固醇水平 ANOVA 分析 – Hogg 9.2.6}\label{exr:9.2.6}
+一项研究比较了四种药物对 LDL（低密度脂蛋白）胆固醇水平的影响。数据记录在文件 quailldl.rda 中。
+
+(a) 绘制 LDL 水平的比较箱线图。哪种药物似乎导致更低的 LDL 水平？识别数据中的异常值（按观测号）。
+
+(b) 计算所有四种药物的 LDL 均值相等的 $F$ 检验。报告 $F$ 检验统计量和 p 值。使用显著性水平 0.05 就问题给出结论。使用例 9.2.1 中的 R 代码。
+
+(c) (b) 中的结论与 (a) 中的箱线图一致吗？
+
+(d) 注意，$F$ 检验的一个假设是模型 (9.2.1) 中的随机误差 $e_{ij}$ 服从正态分布。$e_{ij}$ 的估计量是 $x_{ij} - \overline{x}_{.j}$，这些称为残差，即全模型拟合后剩余的部分。计算这些残差，然后获取它们的直方图、箱线图和正态 Q-Q 图。评价正态性假设。
 \end{exercise}
 
 \begin{exercise}{\ref{exr:9.2.7} One-Way ANOVA 假设检验 – Hogg 9.2.7}\label{exr:9.2.7}
