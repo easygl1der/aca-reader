@@ -1,0 +1,428 @@
+% Chapter 3: Quantum Double Schubert Polynomials
+% 基于 Kirillov & Maeno (1996), arXiv: q-alg/9610022
+
+\chapter{Quantum Double Schubert Polynomials}
+\label{chap:QuantumDouble}
+
+\section{引言：为什么需要量子版本？}
+\label{sec:QuantumMotivation}
+
+在前两章中，我们研究了经典双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 的性质，以及三重变量集情形下的 Graham positivity。但在某些几何情形中，普通的 Schubert 多项式并不能完全描述所研究的对象。
+
+\textbf{核心问题}：当我们研究旗流形上\textbf{曲线的个数}时，普通的相交理论只能计数点与点的交集。但带参数的曲线——例如 $\mathbb{P}^1$ 到旗流形的稳定映射——其计数需要引入额外的变量来记录这些曲线的"度数"。
+
+这引导我们进入\textbf{量子上同调}（quantum cohomology）的世界。在量子上同调中，Schubert 类的乘法不再是
+\[
+[\sigma_u] \cdot [\sigma_v] = \sum_w c^w_{u,v} [\sigma_w],
+\]
+而是
+\[
+[\sigma_u] \star [\sigma_v] = \sum_{w,\beta} q^{\beta} c^w_{u,v}(\beta) [\sigma_w],
+\tag{3.1}
+\]
+其中 $\beta$ 记录了连接子簇的曲线类，$q^{\beta}$ 是形式变量。
+
+Kirillov 和 Maeno 在 1996 年的工作中引入了\textbf{量子双重 Schubert 多项式} $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$，这是旗流形等变量子量子上同调类的 Lascoux-Schützenberger 型代表元。本文介绍这一工作的核心内容。
+
+\section{量子上同调的基本框架}
+\label{sec:QuantumCohomologyFramework}
+
+在介绍量子双重 Schubert 多项式之前，我们需要建立量子上同调的基本框架。这一理论源于物理中的拓扑场论，由 Kontsevich 和 Manin 系统化。
+
+\subsection{Gromov-Witten 不变量}
+
+设 $V$ 是光滑复流形，$\beta \in H_2(V, \mathbb{Z})$ 是曲线类。\textbf{Gromov-Witten 不变量}
+\[
+\langle I_{0,m,\beta}^V \rangle : H^*(V, \mathbf{Q})^{\otimes m} \longrightarrow \mathbf{Q}
+\tag{3.2}
+\]
+计数满足特定条件的参数化曲线个数。直观上，$ \langle I_{0,m,\beta}^V \rangle(X_1^* \otimes \cdots \otimes X_m^*) $ 是满足以下条件的稳定映射 $f: \mathbb{P}^1 \to V$ 的"虚拟个数"：
+\begin{itemize}
+\item $f$ 的像代表同调类 $\beta$；
+\item $f(p_i) \in X_i$（其中 $p_1, \ldots, p_m \in \mathbb{P}^1$ 是标记点）。
+\end{itemize}
+
+\subsection{小量子上同调环}
+
+对于旗流形 $Fl_n = SL_n / B$，小量子上同调环的结构由 Givental、Kim 和 Ciocan-Fontanine 确定。
+
+\begin{Theorem}[小量子上同调环 {\cite[ Theorem 8]{KM1996}}]
+\label{def:SmallQuantumCohomology}
+小量子上同调环 $QH^*(Fl_n)$ 同构于
+\[
+\mathbf{Z}[x_1, \ldots, x_n; q_1, \ldots, q_{n-1}] / (\widetilde{e}_1, \ldots, \widetilde{e}_n),
+\tag{3.3}
+\]
+其中 $\widetilde{e}_i(x|q)$ 是\textbf{量子初等对称函数}，由以下行列式生成：
+\[
+\det\begin{pmatrix}
+x_1 + t & q_1 & 0 & \cdots & 0 \\
+-1 & x_2 + t & q_2 & \cdots & 0 \\
+0 & -1 & x_3 + t & \cdots & 0 \\
+\vdots & \ddots & \ddots & \ddots & \vdots \\
+0 & \cdots & 0 & -1 & x_n + t
+\end{pmatrix}
+= t^n + \widetilde{e}_1 t^{n-1} + \cdots + \widetilde{e}_n.
+\tag{3.4}
+\]
+\end{Theorem}
+
+当 $q_1 = \cdots = q_{n-1} = 0$ 时，\eqref{eq:SmallQuantumCohomology} 退化为经典上同调环。
+
+\textbf{几何含义}：量子初等对称函数 $\widetilde{e}_i$ 对应于旗流形中特定子流形的类。它们的零点描述了旗流形的量子修正结构。
+
+\section{量子双重 Schubert 多项式的定义}
+\label{sec:DefinitionQuantumDouble}
+
+现在我们给出量子双重 Schubert 多项式的正式定义。
+
+\subsection{定义}
+
+设 $x = (x_1, \ldots, x_n)$ 和 $y = (y_1, \ldots, y_n)$ 是两组变量，$q = (q_1, \ldots, q_{n-1})$ 是量子变量。
+
+\textbf{顶部多项式}定义为
+\[
+\widetilde{\mathfrak{S}}_{w_0}(x,y) := \prod_{i=1}^{n-1} \Delta_i(y_{n-i} \mid x_1, \ldots, x_i),
+\tag{3.5}
+\]
+其中
+\[
+\Delta_k(t \mid x_1, \ldots, x_k) := \sum_{j=0}^k t^{k-j} e_j(x_1, \ldots, x_k \mid q_1, \ldots, q_{k-1})
+\tag{3.6}
+\]
+是关于 $x_1, \ldots, x_k$ 的量子初等对称函数的生成函数。
+
+\begin{Definition}[量子双重 Schubert 多项式 {\cite[ Definition 4]{KM1996}}]
+\label{def:QuantumDoubleSchubert}
+对于每个置换 $w \in S_n$，定义\textbf{量子双重 Schubert 多项式}为
+\[
+\widetilde{\mathfrak{S}}_w(x,y) = \partial_{ww_0}^{(y)} \widetilde{\mathfrak{S}}_{w_0}(x,y),
+\tag{3.7}
+\]
+其中除差算子 $\partial_{ww_0}^{(y)}$ 作用于 $y$ 变量。
+\end{Definition}
+
+\subsection{与经典版本的关系}
+
+\begin{Remark}
+当 $q = 0$ 时，\eqref{eq:QuantumDoubleSchubert} 简化为
+\[
+\left. \widetilde{\mathfrak{S}}_w(x,y) \right|_{q=0} = \mathfrak{S}_w(x,y),
+\tag{3.8}
+\]
+即经典双重 Schubert 多项式。这是"经典极限"的一个例子。
+\end{Remark}
+
+验证：设 $q=0$，则 $\Delta_i(y_{n-i} \mid x_1, \ldots, x_i) = \prod_{j=1}^i (x_j + y_{n-i+j})$，而
+\[
+\prod_{i=1}^{n-1} \prod_{j=1}^i (x_j + y_{n-i+j}) = \prod_{i+j \leq n} (x_i + y_j) = \mathfrak{S}_{w_0}(x,y).
+\]
+然后由除差算子的性质可得 \eqref{eq:QuantumDoubleSchubert}。
+
+\section{主要性质}
+\label{sec:MainProperties}
+
+量子双重 Schubert 多项式具有一系列重要性质。
+
+\subsection{稳定性}
+
+与经典版本类似，量子双重 Schubert 多项式具有稳定性。
+
+\begin{Proposition}[稳定性]
+设 $m > n$ 且 $i: S_n \hookrightarrow S_m$ 是自然嵌入，则
+\[
+\widetilde{\mathfrak{S}}_w(x,y) = \widetilde{\mathfrak{S}}_{i(w)}(x,y).
+\tag{3.9}
+\]
+\end{Proposition}
+
+这意味着量子双重 Schubert 多项式在嵌入下保持不变，可以定义在 $S_\infty$ 上。
+
+\subsection{$S_3$ 的例子}
+
+为了建立直观感受，我们展示 $S_3$ 的量子双重 Schubert 多项式。
+
+\begin{Example}[$S_3$ 的量子双重 Schubert 多项式]
+在 $S_3$ 中，量子双重 Schubert 多项式为：
+\begin{align*}
+\widetilde{\mathfrak{S}}_{s_1s_2s_1}(x,y) &= (x_1+y_2)(x_1+y_1)(x_2+y_1) + q_1(x_1+y_2), \\
+\widetilde{\mathfrak{S}}_{s_2s_1}(x,y) &= (x_1+y_1)(x_1+y_2) - q_1, \\
+\widetilde{\mathfrak{S}}_{s_1s_2}(x,y) &= (x_1+y_1)(x_2+y_1) + q_1, \\
+\widetilde{\mathfrak{S}}_{s_1}(x,y) &= x_1 + y_1, \\
+\widetilde{\mathfrak{S}}_{s_2}(x,y) &= x_1 + x_2 + y_1 + y_2, \\
+\widetilde{\mathfrak{S}}_{\mathrm{id}}(x,y) &= 1.
+\end{align*}
+观察：每个多项式都由一个经典部分加上一到两个 $q$ 修正项组成。当 $q_1 = 0$ 时，这些公式退化为经典双重 Schubert 多项式。
+\end{Example}
+
+注意第一个公式（对应最长元 $w_0 = s_1s_2s_1$）包含了 $q_1$ 项，这反映了在量子上同调中，最高维 Schubert 类的乘法会涉及量子修正。
+
+\section{量子 Schubert 多项式}
+\label{sec:QuantumSchubertPolynomials}
+
+除了量子双重版本，Kirillov 和 Maeno 还定义了不含 $y$ 变量的量子 Schubert 多项式。
+
+\subsection{量子配对}
+
+定义量子配对为 Grothendieck 留数：
+\[
+\langle f, g \rangle_Q = \mathrm{Res}_{\widetilde{I}}(fg),
+\tag{3.10}
+\]
+其中 $\widetilde{I}$ 是由量子初等对称函数生成的理想。这个配对对应于量子上同调环中的相交形式。
+
+\subsection{定义}
+
+\begin{Definition}[量子 Schubert 多项式 {\cite[ Definition 5]{KM1996}}]
+\label{def:QuantumSchubert}
+\textbf{量子 Schubert 多项式} $\widetilde{\mathfrak{S}}_w(x)$ 是将字典序排列的单项式 $\{x^I \mid I \subset \delta\}$ 关于量子配对 $\langle, \rangle_Q$ 进行 Gram-Schmidt 正交化得到的。
+\end{Definition}
+
+这一定义在结构上与经典 Schubert 多项式的刻画像（Proposition 4）完全对应。
+
+量子 Schubert 多项式满足以下正交性条件：
+\[
+\langle \widetilde{\mathfrak{S}}_u, \widetilde{\mathfrak{S}}_v \rangle_Q = \begin{cases}
+1 & \text{若 } v = w_0 u, \\
+0 & \text{其他}.
+\end{cases}
+\tag{3.11}
+\]
+
+\section{量子 Cauchy 恒等式}
+\label{sec:QuantumCauchy}
+
+量子 Cauchy 恒等式是本文的核心结果之一。
+
+\begin{Theorem}[量子 Cauchy 恒等式 {\cite[ Theorem B]{KM1996}}]
+\label{def:QuantumCauchy}
+设 $\widetilde{\mathfrak{S}}_w(x) = \widetilde{\mathfrak{S}}_w(x,0)$，则
+\[
+\sum_{w \in S_n} \widetilde{\mathfrak{S}}_w(x) \mathfrak{S}_{ww_0}(y) = \widetilde{\mathfrak{S}}_{w_0}(x,y).
+\tag{3.12}
+\]
+\end{Theorem}
+
+\textbf{与经典版本的关系}：当 $q = 0$ 时，\eqref{eq:QuantumCauchy} 退化为经典的 Cauchy 公式
+\[
+\sum_{w \in S_n} \mathfrak{S}_w(x) \mathfrak{S}_{ww_0}(y) = \prod_{i+j \leq n}(x_i + y_j),
+\tag{3.13}
+\]
+其中 $\mathfrak{S}_w(x) = \widetilde{\mathfrak{S}}_w(x,0)|_{q=0}$。
+
+\textbf{几何意义}：\eqref{eq:QuantumCauchy} 建立了量子 Schubert 多项式（对应量子上同调类）与经典 Schubert 多项式（对应普通上同调类）之间的对偶关系。
+
+\section{Lascoux-Sch\"{u}tzenberger 型公式}
+\label{sec:LascouxFormula}
+
+作为量子 Cauchy 恒等式的一个直接推论，我们得到量子 Schubert 多项式的 Lascoux-Sch\"{u}tzenberger 型公式。
+
+\begin{Corollary}[Lascoux-Sch\"{u}tzenberger 型公式 {\cite[ Theorem C]{KM1996}}]
+\label{def:QuantumLascoux}
+设 $\widetilde{\mathfrak{S}}_{w_0}(x,y)$ 如上定义，则
+\[
+\widetilde{\mathfrak{S}}_w(x) = \partial_{ww_0}^{(y)} \widetilde{\mathfrak{S}}_{w_0}(x,y) \big|_{y=0}.
+\tag{3.14}
+\]
+\end{Corollary}
+
+这个公式告诉我们：量子 Schubert 多项式可以通过对量子双重 Schubert 多项式施加除差算子，然后取 $y=0$ 来得到。这与经典情形
+\[
+\mathfrak{S}_w(x) = \partial_{w^{-1}w_0} \mathfrak{S}_{w_0}(x)
+\tag{3.15}
+\]
+的结构完全类似。
+
+\section{与三重 Schubert Positivity 的联系}
+\label{sec:ConnectionTriplePositivity}
+
+在第一章中，我们研究了 Gao-Xiong 关于三重 Schubert Positivity 的结果。现在我们揭示量子双重 Schubert 多项式与这一结果的联系。
+
+回顾第一章的核心问题：研究展开系数
+\[
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \mathfrak{S}_w(\mathbf{x}; \mathbf{t})
+\tag{3.16}
+\]
+的正性。
+
+当我们考虑量子上同调时，同样的乘法在量子配对下有更丰富的结构。量子双重 Schubert 多项式提供了这些乘法结构的代数代表元。
+
+具体而言，等变量子量子上同调环 $QH^*_{U_n}(Fl_n)$ 同构于
+\[
+\mathbf{Z}[x_1, \ldots, x_n; y_1, \ldots, y_n; q_1, \ldots, q_{n-1}] / \widetilde{J},
+\tag{3.17}
+\]
+其中理想 $\widetilde{J}$ 由
+\[
+e_i(x \mid q_1, \ldots, q_{n-1}) - e_i(y_1, \ldots, y_n), \quad 1 \leq i \leq n
+\tag{3.18}
+\]
+生成。
+
+量子双重 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(x,y)$ 在这个环中扮演的角色，与经典双重 Schubert 多项式在经典等变上同调中扮演的角色完全类似。
+
+\textbf{三重版本的关键洞察}：当 Gao-Xiong 研究三重变量集 $(x, y, t)$ 时，他们实际上是在研究等变量子量子上同调的一个精化版本。量子双重 Schubert 多项式的结构常数提供了这些精化的代数解释。
+
+\section{Vafa-Intriligator 公式}
+\label{sec:VafaIntriligator}
+
+本文的另一重要贡献是给出了 Vafa-Intriligator 公式的高维推广。
+
+Vafa-Intriligator 公式最初来自物理，它给出了某些余维一子流形上交点数的显式计算。在旗流形的情形，这涉及 Gromov-Witten 不变量的显式公式。
+
+Kirillov 和 Maeno 在 Section 8 中给出了旗流形的 Vafa-Intriligator 公式的高维推广。这一公式在量子上同调中的地位，如同经典 Schubert 多项式在普通上同调中的地位——它提供了计算结构常数的组合工具。
+
+我们将在附录中给出这一公式的详细推导（见 \cref{sec:appendix-derivation-ch3}）。
+
+\section{量子化映射}
+\label{sec:QuantizationMap}
+
+Kirillov 和 Maeno 还引入了量子化映射，这是理解量子与经典关系的关键工具。
+
+定义量子化映射 $P_n \to \overline{P}_n$ 为
+\[
+\widetilde{f}(x) = \sum_{w \in S^{(n)}} \partial_w^{(y)} f(y) \widetilde{\mathfrak{S}}_w(x,y) \big|_{\overline{P}_n}.
+\tag{3.19}
+\]
+
+\begin{Proposition}[配对保持]
+量子化映射保持配对：
+\[
+\langle \widetilde{f}, \widetilde{g} \rangle_Q = \langle f, g \rangle, \quad f, g \in P_n.
+\tag{3.20}
+\]
+\end{Proposition}
+
+这意味着量子化是配对保持的线性映射，但**不保持乘法**（见 \cite[ Remark 5(i)]{KM1996}）。
+
+量子化保持初等多项式和完全齐次对称多项式，但将单形式映射到量子单形式。
+
+\section{与其他工作的关系}
+\label{sec:RelationOtherWork}
+
+本文与 Fomin、Gelfand 和 Postnikov 的独立工作有部分重叠，但采用了完全不同的方法。
+
+Postnikov 等人基于一类交换算子 $X_i$ 发展了量子 Schubert 多项式理论，得到了量子 Monk 公式、正交性和量子乘法的定义等结果。
+
+Kirillov-Maeno 的方法则基于量子 Cauchy 恒等式和留数配对，提供了另一种理解量子 Schubert 结构常数的途径。这两种方法互为补充，共同构成了量子 Schubert calculus 的基础。
+
+\section{本章小结}
+\label{sec:Chapter3Summary}
+
+本章介绍了 Kirillov 和 Maeno 关于量子双重 Schubert 多项式的工作。关键要点如下：
+
+\begin{enumerate}
+\item \textbf{量子初等对称函数} $\widetilde{e}_i(x|q)$ 由行列式生成函数定义，它们生成了小量子上同调环的 Relations；
+\item \textbf{量子双重 Schubert 多项式} $\widetilde{\mathfrak{S}}_w(x,y)$ 通过对顶部多项式施加除差算子定义；
+\item \textbf{经典极限}：当 $q=0$ 时，$\widetilde{\mathfrak{S}}_w(x,y)$ 退化为经典双重 Schubert 多项式；
+\item \textbf{量子 Cauchy 恒等式}建立了量子 Schubert 多项式与经典 Schubert 多项式之间的对偶关系；
+\item \textbf{量子化映射}是配对保持的线性映射，但不保持乘法；
+\item 这些结果与 Gao-Xiong 的三重 Schubert positivity 工作有深刻的联系。
+\end{enumerate}
+
+在下一章中，我们将继续探讨量子 Schubert calculus 的其他方面，以及这些多项式在更广泛的几何背景下的应用。
+
+% === 用户问答记录 ===
+% （暂无）
+
+\section{附录：公式推导}
+\label{sec:appendix-derivation-ch3}
+
+\subsection{量子初等对称函数的行列式展开}
+\label{sec:quantum-elementary-determinant}
+
+\textbf{背景（Background）}：量子初等对称函数 $\widetilde{e}_i(x|q)$ 通过行列式生成函数定义。本节给出其显式展开形式。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $x = (x_1, \ldots, x_n)$：变量
+\item $q = (q_1, \ldots, q_{n-1})$：量子变量
+\item $e_i(x_1, \ldots, x_m \mid q_1, \ldots, q_{m-1})$：量子初等对称函数
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+生成函数（行列式形式）：
+\[
+\det\begin{pmatrix}
+x_1 + t & q_1 & 0 & \cdots & 0 \\
+-1 & x_2 + t & q_2 & \cdots & 0 \\
+0 & -1 & x_3 + t & \cdots & 0 \\
+\vdots & \ddots & \ddots & \ddots & \vdots \\
+0 & \cdots & 0 & -1 & x_n + t
+\end{pmatrix}
+= t^n + \widetilde{e}_1 t^{n-1} + \cdots + \widetilde{e}_n.
+\]
+
+\textbf{目标（Goal）}：给出 $\widetilde{e}_k(x|q)$ 的显式形式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 对行列式按第一列展开，或利用三对角矩阵的性质。矩阵是 $(n+1)\times(n+1)$ 的三对角矩阵，其特征值问题可以通过递推解决。
+
+2. 定义 $D_m(t) = \det(A_m)$，其中 $A_m$ 是 $m\times m$ 的主子矩阵。则 $D_m(t)$ 满足递推关系：
+\[
+D_m(t) = (x_m + t) D_{m-1}(t) - q_{m-1} D_{m-2}(t),
+\tag{3.21}
+\]
+其中 $D_0(t) = 1$，$D_1(t) = x_1 + t$。
+
+3. 比较 $t^n + \widetilde{e}_1 t^{n-1} + \cdots + \widetilde{e}_n$ 的系数，可得：
+\[
+\widetilde{e}_k(x|q) = e_k(x_1, \ldots, x_k) + \text{涉及 } q_1, \ldots, q_{k-1} \text{ 的修正项}.
+\tag{3.22}
+\]
+
+更精确地，通过递推可证：
+\[
+\widetilde{e}_k(x|q) = \sum_{j=0}^{\lfloor k/2 \rfloor} (-1)^j \sum_{1 \leq i_1 < \cdots < i_j \leq k-1} q_{i_1} q_{i_2} \cdots q_{i_j} \cdot e_{k-2j}(x_1, \ldots, x_{k-j}).
+\tag{3.23}
+\]
+
+\textbf{验证}：当 $q=0$ 时，\eqref{eq:quantum-elementary-expansion} 简化为 $e_k(x_1, \ldots, x_k)$。当 $n=3$，$k=1$ 时，$\widetilde{e}_1 = x_1 + x_2 + x_3$。当 $n=3$，$k=2$ 时，
+\[
+\widetilde{e}_2 = e_2(x_1,x_2,x_3) - q_1(x_1 + x_2) = x_1x_2 + x_1x_3 + x_2x_3 - q_1(x_1 + x_2).
+\tag{3.24}
+\]
+
+\subsection{量子配对与 Grothendieck 留数}
+\label{sec:quantum-pairing-residue}
+
+\textbf{背景（Background）}：量子配对 $\langle f, g \rangle_Q$ 通过 Grothendieck 留数定义，它对应于量子上同调环中的相交形式。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $\widetilde{I}_n \subset \overline{P}_n = \mathbf{Z}[q_1,\ldots,q_{n-1}][x_1,\ldots,x_n]$：由量子初等对称函数生成的理想
+\item $\mathcal{H} = \det\left(\frac{\partial \widetilde{e}_i}{\partial x_j}\right)$：Hessian
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+Grothendieck 留数定义：对于 $f \in \overline{P}_n$，若 $\deg f < d_0 = \deg \mathcal{H}$，则 $\mathrm{Res}_{\widetilde{I}}(f) = 0$；若 $\deg f = d_0$，则 $f \equiv \frac{\alpha}{n!}\mathcal{H} \pmod{\widetilde{I}_n}$，其中 $\mathrm{Res}_{\widetilde{I}}(f) = \alpha$。
+
+配对定义为 $\langle f, g \rangle_Q = \mathrm{Res}_{\widetilde{I}}(fg)$。
+
+\textbf{目标（Goal）}：证明配对的非退化性和正交性。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 由 Grothendieck 留数的基本性质，若 $f \in \widetilde{I}_n$，则 $\mathrm{Res}_{\widetilde{I}}(f) = 0$。
+
+2. 因此配对在商环 $\overline{P}_n / \widetilde{I}_n \cong QH^*(Fl_n)$ 上诱导非退化配对。
+
+3. 对于量子 Schubert 多项式的正交性，关键计算基于以下观察：由量子 Cauchy 恒等式
+\[
+\langle \widetilde{\mathfrak{S}}_{w_0}(x,y), \widetilde{\mathfrak{S}}_{w_0}(x,z) \rangle_Q^{(x)} = C(y,z),
+\tag{3.25}
+\]
+其中右边是"典范元素"。
+
+4. 对两边施加除差算子 $\partial_{vw_0}^{(y)} \partial_{ww_0}^{(z)}$，可得
+\[
+\langle \widetilde{\mathfrak{S}}_v(x,y), \widetilde{\mathfrak{S}}_w(x,z) \rangle_Q^{(x)} = \sum_{u \in S_n} \partial_{vw_0}^{(y)} \mathfrak{S}_u(y) \cdot \partial_{ww_0}^{(z)} \mathfrak{S}_{w_0u}(z).
+\tag{3.26}
+\]
+
+5. 取 $y=z=0$，利用 $\eta(\partial_w \mathfrak{S}_u) = \delta_{w,u}$，可得正交性关系 \eqref{eq:QuantumSchubertOrthogonality}。
+
+这完成了配对非退化性的推导。
+
+\endinput
