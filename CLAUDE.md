@@ -441,6 +441,94 @@ domain-expert ←→ writing-expert
 
 ---
 
+## Agent Memory System · 教训记忆机制
+
+### 背景
+literature-experts 团队有 20 个 agents，但**没有教训记忆机制**——同一个错误会被重复犯。
+
+### 解决方案
+为每个 agent 创建专属 memory 文件，包含历史教训和常见错误清单，agent 开工前必须读取。
+
+### Memory 文件位置
+```
+docs/lessons/agents/
+├── ALL-agents-memory.md           # 所有 agent 通用教训
+├── causal-expert-memory.md        # 因果推断专家专属
+├── geometry-expert-memory.md      # 微分几何专家专属
+├── bayesian-expert-memory.md      # 贝叶斯统计专属
+├── info-geo-expert-memory.md      # 信息几何专属
+├── schubert-expert-memory.md     # Schubert 演算专属
+├── statistic-expert-memory.md     # 数理统计专属
+├── writing-expert-memory.md       # 写作专家专属
+├── exercise-expert-memory.md     # 习题专家专属
+├── latex-checker-memory.md       # LaTeX 检查专家专属
+├── qa-specialist-memory.md       # QA 记录专家专属
+└── research-expert-memory.md     # 文献管理专家专属
+```
+
+### Agent → Memory 映射
+
+| Agent | Memory File |
+|-------|-------------|
+| causal-expert, causal-expert-2 | causal-expert-memory.md |
+| geometry-expert | geometry-expert-memory.md |
+| bayesian-expert | bayesian-expert-memory.md |
+| info-geo-expert | info-geo-expert-memory.md |
+| schubert-expert | schubert-expert-memory.md |
+| statistic-expert, statistic-expert-2 | statistic-expert-memory.md |
+| writing-expert (×3) | writing-expert-memory.md |
+| exercise-expert (×4) | exercise-expert-memory.md |
+| latex-checker | latex-checker-memory.md |
+| qa-specialist | qa-specialist-memory.md |
+| research-expert (×2) | research-expert-memory.md |
+
+### 教训更新流程
+
+**触发时机**：用户纠正 agent 错误时
+
+**流程**：
+```
+用户纠正 agent → Agent 被纠正后立即更新自己的 memory 文件
+    ├─ 通用教训 → 同时更新 ALL-agents-memory.md
+    └─ 领域专属 → 更新对应 agent-memory.md
+```
+
+**教训记录格式**：
+```markdown
+### LXXX: [教训标题]
+
+**日期**: YYYY-MM-DD
+**经历次数**: N 次 (累计)
+
+**错误描述**:
+[具体错误]
+
+**正确做法**:
+```latex
+[正确代码]
+```
+
+**防止措施**:
+- [措施 1]
+```
+
+### Self-PUA 行为声明
+
+每个 agent 必须在 prompt 中注入：
+
+```markdown
+### 教训记忆文件 (必须在开工前读取)
+
+**重要**: 在开始工作前，你必须先读取教训记忆文件：
+
+1. **通用教训**: `/Users/yueyh/Projects/aca-workflow/docs/lessons/agents/ALL-agents-memory.md`
+2. **专属教训**: `/Users/yueyh/Projects/aca-workflow/docs/lessons/agents/{本agent}-memory.md`
+
+读取这些文件后，在回复中引用其中的关键教训作为确认。
+```
+
+---
+
 ## Git 提交习惯
 
 **原则**: 每次更新了能跑通的内容就 commit
