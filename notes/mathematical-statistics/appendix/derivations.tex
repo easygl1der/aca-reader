@@ -1,0 +1,122 @@
+\section{附录：公式推导}\label{sec:appendix-derivation}
+
+\subsection{Gamma 分布的矩母函数推导}\label{sec:gamma-mgf-derivation}
+
+\textbf{背景（Background）}：
+在正文中我们声明 Gamma 分布的矩母函数为 $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$。这里给出完整推导。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $\alpha > 0$：形状参数（shape parameter）
+\item $\beta > 0$：尺度参数（scale parameter）
+\item $X \sim \Gamma(\alpha, \beta)$：服从 Gamma 分布的随机变量
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+\item Gamma 分布的 pdf：$f(x) = \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta}, \quad x > 0$
+\item 矩母函数定义：$M(t) = \mathbb{E}(e^{tX})$
+\end{itemize}
+
+\textbf{目标（Goal）}：
+证明 $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 根据矩母函数定义：
+\[
+M(t) = \int_{0}^{\infty} e^{tx} \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1} e^{-x/\beta} \, dx
+= \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \int_{0}^{\infty} x^{\alpha-1} e^{-x(1 - \beta t)/\beta} \, dx.
+\]
+
+2. 作变量替换：令 $y = \frac{x(1 - \beta t)}{\beta}$，则 $x = \frac{\beta y}{1 - \beta t}$，$dx = \frac{\beta}{1 - \beta t} dy$。
+
+3. 代入积分（要求 $t < 1/\beta$ 以保证 $1 - \beta t > 0$）：
+\[
+\begin{aligned}
+M(t) &= \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \int_{0}^{\infty} \left(\frac{\beta y}{1 - \beta t}\right)^{\alpha-1} e^{-y} \frac{\beta}{1 - \beta t} \, dy \\
+&= \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \cdot \frac{\beta^{\alpha}}{(1 - \beta t)^{\alpha}} \int_{0}^{\infty} y^{\alpha-1} e^{-y} \, dy \\
+&= \frac{1}{(1 - \beta t)^{\alpha}} \cdot \Gamma(\alpha) \\
+&= (1 - \beta t)^{-\alpha}.
+\end{aligned}
+\]
+
+\textbf{结论}：
+因此，$X \sim \Gamma(\alpha, \beta)$ 的矩母函数为 $M(t) = (1 - \beta t)^{-\alpha}$，定义域为 $t < 1/\beta$。$\blacksquare$
+
+\subsection{Gamma 分布的均值与方差推导}\label{sec:gamma-mean-variance}
+
+\textbf{背景（Background）}：
+在正文中我们给出 Gamma 分布的均值为 $\mathbb{E}X = \alpha\beta$，方差为 $\text{var}(X) = \alpha\beta^2$。这里基于矩母函数给出推导。
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+\item 矩母函数：$M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$
+\item 均值公式：$\mathbb{E}X = M'(0)$
+\item 方差公式：$\text{var}(X) = M''(0) - [M'(0)]^2$
+\end{itemize}
+
+\textbf{目标（Goal）}：
+计算 $\mathbb{E}X$ 和 $\text{var}(X)$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 计算一阶导数：
+\[
+M'(t) = -\alpha(1 - \beta t)^{-\alpha-1}(-\beta) = \alpha\beta(1 - \beta t)^{-\alpha-1}.
+\]
+
+2. 计算二阶导数：
+\[
+M''(t) = \alpha\beta \cdot (-\alpha-1)(1 - \beta t)^{-\alpha-2}(-\beta) = \alpha(\alpha+1)\beta^2(1 - \beta t)^{-\alpha-2}.
+\]
+
+3. 代入 $t = 0$：
+\[
+M'(0) = \alpha\beta(1 - 0)^{-\alpha-1} = \alpha\beta = \mathbb{E}X.
+\]
+
+\[
+M''(0) = \alpha(\alpha+1)\beta^2(1 - 0)^{-\alpha-2} = \alpha(\alpha+1)\beta^2.
+\]
+
+4. 计算方差：
+\[
+\text{var}(X) = M''(0) - [M'(0)]^2 = \alpha(\alpha+1)\beta^2 - (\alpha\beta)^2 = \alpha\beta^2.
+\]
+
+\textbf{结论}：
+因此，$\mathbb{E}X = \alpha\beta$，$\text{var}(X) = \alpha\beta^2$。$\blacksquare$
+
+\subsection{卡方分布与 Gamma 分布的关系}\label{sec:chi2-gamma-relation}
+
+\textbf{背景（Background）}：
+卡方分布 $\chi^2(n)$ 是统计学中最重要的分布之一，它实际上是 Gamma 分布的特例。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $n$：自由度（degrees of freedom）
+\item $Z_1, Z_2, \ldots, Z_n \sim N(0,1)$ iid
+\item $X = \sum_{i=1}^{n} Z_i^2 \sim \chi^2(n)$
+\end{itemize}
+
+\textbf{目标（Goal）}：
+证明 $X \sim \Gamma(n/2, 2)$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 单个标准正态平方的分布：若 $Z \sim N(0,1)$，则 $Y = Z^2$ 的 pdf 为
+\[
+f_Y(y) = \frac{1}{\sqrt{2\pi y}} e^{-y/2} y^{-1/2} = \frac{1}{\Gamma(1/2) 2^{1/2}} y^{1/2 - 1} e^{-y/2}, \quad y > 0.
+\]
+这正是 $\Gamma(1/2, 2)$ 的形式。
+
+2. 利用 Gamma 分布的可加性：若 $Y_1 \sim \Gamma(\alpha_1, \beta)$，$Y_2 \sim \Gamma(\alpha_2, \beta)$ 独立，则 $Y_1 + Y_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$。
+
+3. 由于 $Z_1^2, Z_2^2, \ldots, Z_n^2$ 独立同分布，且每个 $Z_i^2 \sim \Gamma(1/2, 2)$，根据可加性：
+\[
+X = \sum_{i=1}^{n} Z_i^2 \sim \Gamma\left(\frac{n}{2}, 2\right).
+\]
+
+\textbf{结论}：
+卡方分布 $\chi^2(n)$ 等价于 $\Gamma(n/2, 2)$。$\blacksquare$
