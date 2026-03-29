@@ -975,6 +975,625 @@ Rao（1973）考虑过一个遗传学中的连锁估计问题，可归结为以�
 \hint{对数似然为 $l(\mu, \sigma^2) = -\frac{n}{2}\log(2\pi) - n\log\sigma - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2$。计算二阶偏导数并取负期望。}
 \end{exercise}
 
+% === 6.1 节习题 ===
+
+\begin{exercise}{\ref{exr:6.1.1} Gamma 分布的 MLE – Hogg 6.1.1}\label{exr:6.1.1}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $X \sim \Gamma(\alpha=4, \beta=\theta)$ 分布的随机样本，其中 $0 < \theta < \infty$。
+
+\begin{enumerate}
+\item 求 $\theta$ 的 MLE $\widehat{\theta}$。
+\item 假设以下数据是来自 $X$ 的随机样本实现（已四舍五入）。绘制直方图并将 $4\widehat{\theta}$ 标注在图上。
+\item 对于该样本，-overlay the $\Gamma(\alpha=4, \beta=\widehat{\theta})$ pdf 到直方图上。数据是否与此 pdf 一致？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.2} 多种分布的 MLE – Hogg 6.1.2}\label{exr:6.1.2}
+设 $X_1, X_2, \ldots, X_n$ 表示来自以下分布的随机样本：
+
+\begin{enumerate}
+\item[(a)] $f(x;\theta) = \theta x^{\theta-1}$，$0 < x < 1$，$0 < \theta < \infty$，零 elsewhere。
+\item[(b)] $f(x;\theta) = e^{-(x-\theta)}$，$\theta \leq x < \infty$，$-\infty < \theta < \infty$，零 elsewhere。注意这是一个非正则情形。
+\end{enumerate}
+
+每种情况求 $\theta$ 的 MLE $\widehat{\theta}$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.3} 均匀分布的 MLE（Nonregular case）– Hogg 6.1.3}\label{exr:6.1.3}
+设 $Y_1 < Y_2 < \ldots < Y_n$ 是来自分布 $f(x;\theta) = 1$，$\theta - \frac{1}{2} \leq x \leq \theta + \frac{1}{2}$，$-\infty < \theta < \infty$ 的随机样本的顺序统计量。这是一个非正则情形。证明每个满足
+
+\[
+Y_n - \frac{1}{2} \leq u(X_1, X_2, \ldots, X_n) \leq Y_1 + \frac{1}{2}
+\]
+
+的统计量 $u(X_1, X_2, \ldots, X_n)$ 都是 $\theta$ 的 MLE。特别地，$(4Y_1 + 2Y_n + 1)/6$，$(Y_1 + Y_n)/2$ 和 $(2Y_1 + 4Y_n - 1)/6$ 是三个这样的统计量。因此，MIE 不具有唯一性。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.4} 三角分布的 MLE – Hogg 6.1.4}\label{exr:6.1.4}
+设 $X_1, \ldots, X_n$ iid，pdf 为 $f(x;\theta) = 2x/\theta^2$，$0 < x \leq \theta$，零 elsewhere。注意这是非正则情形。求：
+
+\begin{enumerate}
+\item[(a)] $\theta$ 的 MLE $\widehat{\theta}$。
+\item[(b)] 使得 $E(c\widehat{\theta}) = \theta$ 的常数 $c$。
+\item[(c)] 该分布中位数的 MLE。证明它是一致的估计量。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.5} 三角分布的数据分析 – Hogg 6.1.5}\label{exr:6.1.5}
+考虑 Exercise 6.1.4 中的 pdf。
+
+\begin{enumerate}
+\item[(a)] 使用定理 4.8.1 说明如何从此 pdf 生成观测值。
+\item[(b)] 以下数据从此 pdf 生成。求 $\theta$ 和中位数的 MLE。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.6} 指数分布的 MLE – Hogg 6.1.6}\label{exr:6.1.6}
+设 $X_1, X_2, \ldots, X_n$ iid，pdf 为 $f(x;\theta) = (1/\theta)e^{-x/\theta}$，$0 < x < \infty$，零 elsewhere。求 $P(X \leq 2)$ 的 MLE 并证明它是一致的。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.7} 二项分布的 MLE – Hogg 6.1.7}\label{exr:6.1.7}
+设表格
+
+\begin{center}
+\begin{tabular}{c|cccccc}
+$x$ & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+Frequency & 6 & 10 & 14 & 13 & 6 & 1
+\end{tabular}
+\end{center}
+
+表示来自 $n=5$ 的二项分布的样本量为 50 的样本摘要。求 $P(X \geq 3)$ 的 MLE。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.9} Poisson 分布的 MLE – Hogg 6.1.9}\label{exr:6.1.9}
+设表格
+
+\[
+\begin{array}{c c c c c c c}
+x & 0 & 1 & 2 & 3 & 4 & 5 \\ \hline
+\text{Frequency} & 7 & 14 & 12 & 13 & 6 & 3
+\end{array}
+\]
+
+表示来自 Poisson 分布的样本量为 55 的随机样本的摘要。求 $P(X=2)$ 的最大似然估计量。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.10} Bernoulli 分布的约束 MLE – Hogg 6.1.10}\label{exr:6.1.10}
+设 $X_1, X_2, \ldots, X_n$ 是来自参数为 $p$ 的 Bernoulli 分布的随机样本。如果 $p$ 被限制为 $\frac{1}{2} \leq p \leq 1$，求该参数的 MLE。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.11} 正态分布的约束 MLE – Hogg 6.1.11}\label{exr:6.1.11}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $N(\theta, \sigma^2)$ 分布的随机样本，其中 $\sigma^2$ 固定但 $-\infty < \theta < \infty$。
+
+\begin{enumerate}
+\item[(a)] 证明 $\theta$ 的 MLE 是 $\bar{X}$。
+\item[(b)] 如果 $\theta$ 被限制为 $0 \leq \theta < \infty$，证明 $\theta$ 的 MLE 是 $\widehat{\theta} = \max\{0, \bar{X}\}$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.12} Poisson 分布的约束 MLE – Hogg 6.1.12}\label{exr:6.1.12}
+设 $X_1, X_2, \ldots, X_n$ 是来自 Poisson 分布的随机样本，其中 $0 < \theta \leq 2$。证明 $\theta$ 的 MLE 是 $\widetilde{\theta} = \min\{\bar{X}, 2\}$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.1.13} 混合模型的 MLE – Hogg 6.1.13}\label{exr:6.1.13}
+设 $X_1, X_2, \ldots, X_n$ 是来自两种 pdf 之一的分布的随机样本。如果 $\theta=1$，则 $f(x;\theta=1) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$，$-\infty < x < \infty$。如果 $\theta=2$，则 $f(x;\theta=2) = 1/[\pi(1+x^2)]$，$-\infty < x < \infty$。求 $\theta$ 的 MLE。
+\end{exercise}
+
+% === 6.2 节习题 ===
+
+\begin{exercise}{\ref{exr:6.2.2} 均匀分布的信息量 – Hogg 6.2.2}\label{exr:6.2.2}
+给定 $f(x;\theta) = 1/\theta$，$0 < x < \theta$，零 elsewhere，其中 $\theta > 0$，形式上计算
+
+\[
+n E\left\{\left[ \frac{\partial \log f(X;\theta)}{\partial \theta} \right]^2\right\}
+\]
+
+的倒数。与 $(n+1)Y_n/n$ 的方差进行比较，其中 $Y_n$ 是该分布随机样本的最大观测值。评论。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.3} Cauchy 分布的 Rao-Cramér 下界 – Hogg 6.2.3}\label{exr:6.2.3}
+给定 pdf
+
+\[
+f(x;\theta) = \frac{1}{\pi[1+(x-\theta)^2]}, \quad -\infty < x < \infty, \quad -\infty < \theta < \infty,
+\]
+
+证明 Rao-Cramér 下界为 $2/n$，其中 $n$ 是来自此 Cauchy 分布的随机样本的大小。如果 $\widehat{\theta}$ 是 $\theta$ 的 MLE，$\sqrt{n}(\widehat{\theta}-\theta)$ 的渐近分布是什么？
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.4} 位置模型的信息量 – Hogg 6.2.4}\label{exr:6.2.4}
+考虑 Example 6.2.2 中讨论的位置模型。
+
+\begin{enumerate}
+\item[(a)] 当 $e_i$ 具有 logistic pdf 时写出位置模型。
+\item[(b)] 使用表达式 (6.2.8)，证明 (a) 中模型的信息 $I(\theta) = 1/3$。提示：在表达式 (6.2.8) 的积分中，使用代换 $u = (1+e^{-z})^{-1}$。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.5} Logistic 位置模型的中位数效率 – Hogg 6.2.5}\label{exr:6.2.5}
+使用与 Exercise 6.2.4 (a) 中相同的位置模型，求样本中位数相对于模型 MLE 的 ARE。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.6} 污染正态分布的 ARE – Hogg 6.2.6}\label{exr:6.2.6}
+考虑位置模型（Example 6.2.2），其中误差 pdf 是污染正态分布 (3.4.17)，$\epsilon$ 为污染比例，$\sigma_c^2$ 为污染部分的方差。证明样本中位数相对于样本均值的 ARE 由
+
+\[
+e(Q_2, \bar{X}) = \frac{2[1+\epsilon(\sigma_c^2-1)][1-\epsilon+(\epsilon/\sigma_c)]^2}{\pi}
+\]
+
+给出。
+
+\begin{enumerate}
+\item[(a)] 如果 $\sigma_c^2 = 9$，使用上式填充表格：
+\begin{center}
+\begin{tabular}{c|cccc}
+$\epsilon$ & 0 & 0.05 & 0.10 & 0.15 \\ \hline
+$e(Q_2, \bar{X})$ & & & &
+\end{tabular}
+\end{center}
+\item[(b)] 注意从表格中当 $\epsilon$ 从 0.10 增加到 0.15 时，样本中位数变得"更好"。确定这发生的 $\epsilon$ 值。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.7} Gamma 分布的有效性 – Hogg 6.2.7}\label{exr:6.2.7}
+回顾 Exercise 6.1.1，其中 $X_1, X_2, \ldots, X_n$ 是来自 $X \sim \Gamma(\alpha=4, \beta=\theta)$ 分布的随机样本，$0 < \theta < \infty$。
+
+\begin{enumerate}
+\item[(a)] 求 Fisher 信息 $I(\theta)$。
+\item[(b)] 证明 $\theta$ 的 MLE（已在 Exercise 6.1.1 中导出）是 $\theta$ 的有效估计量。
+\item[(c)] 使用定理 6.2.2，求 $\sqrt{n}(\widehat{\theta}-\theta)$ 的渐近分布。
+\item[(d)] 对于 Example 6.1.1 的数据，求 $\theta$ 的渐近 95\% 置信区间。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.8} 正态分布（方差）的有效性 – Hogg 6.2.8}\label{exr:6.2.8}
+设 $X \sim N(0,\theta)$，$0 < \theta < \infty$。
+
+\begin{enumerate}
+\item[(a)] 求 Fisher 信息 $I(\theta)$。
+\item[(b)] 如果 $X_1, X_2, \ldots, X_n$ 是来自此分布的随机样本，证明 $\theta$ 的 MLE 是 $\theta$ 的有效估计量。
+\item[(c)] $\sqrt{n}(\widehat{\theta}-\theta)$ 的渐近分布是什么？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.9} Pareto 型分布的估计 – Hogg 6.2.9}\label{exr:6.2.9}
+如果 $X_1, X_2, \ldots, X_n$ 是来自 pdf
+
+\[
+f(x;\theta) = \left\{ \begin{array}{l l}
+\frac{3\theta^3}{(x+\theta)^4} & 0 < x < \infty, 0 < \theta < \infty \\
+0 & \text{elsewhere},
+\end{array} \right.
+\]
+
+的随机样本，证明 $Y = 2\bar{X}$ 是 $\theta$ 的无偏估计量并求其效率。
+\end{exercise}
+
+\begin{exercise}{\ref{r:6.2.10} 正态标准差的无偏估计 – Hogg 6.2.10}\label{exr:6.2.10}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $N(0,\theta)$ 分布的随机样本。我们想估计标准差 $\sqrt{\theta}$。求常数 $c$ 使得 $Y = c\sum_{i=1}^n |X_i|$ 是 $\sqrt{\theta}$ 的无偏估计量，并确定其效率。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.11} 正态均值平方的估计 – Hogg 6.2.11}\label{exr:6.2.11}
+设 $\bar{X}$ 是来自 $N(\theta, \sigma^2)$ 分布的样本量为 $n$ 的随机样本的均值，$-\infty < \theta < \infty$，$\sigma^2 > 0$。假设 $\sigma^2$ 已知。证明 $\bar{X}^2 - \sigma^2/n$ 是 $\theta^2$ 的无偏估计量并求其效率。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.12} Beta 分布的置信区间 – Hogg 6.2.12}\label{exr:6.2.12}
+回想 $\widehat{\theta} = -n/\sum_{i=1}^n \log X_i$ 是 beta$(\theta,1)$ 分布的 $\theta$ 的 MLE。并且 $W = -\sum_{i=1}^n \log X_i$ 服从 $\Gamma(n, 1/\theta)$ 分布。
+
+\begin{enumerate}
+\item[(a)] 证明 $2\theta W$ 服从 $\chi^2(2n)$ 分布。
+\item[(b)] 使用 (a)，求 $c_1$ 和 $c_2$ 使得
+
+\[
+P\left(c_1 < \frac{2\theta n}{\widehat{\theta}} < c_2\right) = 1-\alpha,
+\]
+
+然后求 $\theta$ 的 $(1-\alpha)100\%$ 置信区间。
+\item[(c)] 对于 $\alpha = 0.05$ 和 $n=10$，将此区间的长度与 Example 6.2.6 中找到的区间长度进行比较。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.13} Beta 分布的数据分析 – Hogg 6.2.13}\label{exr:6.2.13}
+数据文件 beta30.rda 包含从 beta$(\theta,1)$ 分布生成的 30 个观测值，其中 $\theta=4$。
+
+\begin{enumerate}
+\item[(a)] 使用参数 $\mathsf{pr}=\mathsf{T}$ 获取数据的直方图。叠加 $\beta(4,1)$ pdf。评论。
+\item[(b)] 使用 Exercise 6.2.12 的结果，基于数据计算最大似然估计。
+\item[(c)] 使用 Exercise 6.2.12 (c) 中找到的置信区间，基于数据计算 $\theta$ 的 95\% 置信区间。置信区间成功吗？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.14} Pareto 型分布的模拟 – Hogg 6.2.14}\label{exr:6.2.14}
+考虑对 Exercise 6.2.9 中给定 pdf 的随机变量 $X$ 进行采样。
+
+\begin{enumerate}
+\item[(a)] 获取相应的 cdf 及其逆函数。说明如何从此分布生成观测值。
+\item[(b)] 编写一个生成 $X$ 样本的 R 函数。
+\item[(c)] 生成大小为 50 的样本，计算 Exercise 6.2.9 中讨论的 $\theta$ 的无偏估计量。使用它和中心极限定理计算 $\theta$ 的 95\% 置信区间。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.15} One-Step 估计量的渐近分布 – Hogg 6.2.15}\label{exr:6.2.15}
+使用表达式 (6.2.21) 和 (6.2.22)，获得本节末尾讨论的 one-step 估计量的结果。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.2.16} 正态方差估计的效率 – Hogg 6.2.16}\label{exr:6.2.16}
+设 $S^2$ 是来自 $N(\mu,\theta)$，$0 < \theta < \infty$（其中 $\mu$ 已知）的样本量为 $n>1$ 的随机样本的样本方差。我们知道 $E(S^2) = \theta$。
+
+\begin{enumerate}
+\item[(a)] $S^2$ 的效率是多少？
+\item[(b)] 在这些条件下，$\theta$ 的 MLE $\widehat{\theta}$ 是什么？
+\item[(c)] $\sqrt{n}(\widehat{\theta}-\theta)$ 的渐近分布是什么？
+\end{enumerate}
+\end{exercise}
+
+% === 6.3 节习题 ===
+
+\begin{exercise}{\ref{exr:6.3.2} 指数分布 LRT 的功效函数 – Hogg 6.3.2}\label{exr:6.3.2}
+考虑 Example 6.3.1 中导出的决策规则 (6.3.5)。获取检验统计量在一般备择假设下的分布，并使用它获取检验的功效函数。使用 R 绘制当 $\theta_0=1$，$n=10$，$\alpha=0.05$ 时的功效曲线。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.3} 正态均值检验与第四章的关系 – Hogg 6.3.3}\label{exr:6.3.3}
+证明决策规则 (6.3.6) 给出的检验类似于 Example 4.6.1 中的检验，只是这里 $\sigma^2$ 已知。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.4} 正态均值检验的功效函数 – Hogg 6.3.4}\label{exr:6.3.4}
+获取一个 R 函数，绘制 Example 6.3.2 末尾讨论的功效函数。运行该函数当 $\theta_0=0$，$n=10$，$\sigma^2=1$，$\alpha=0.05$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.5} Laplace 位置模型的 Score 检验 – Hogg 6.3.5}\label{exr:6.3.5}
+考虑 Example 6.3.4。
+
+\begin{enumerate}
+\item[(a)] 证明我们可以写成 $S^* = 2T - n$，其中 $T = \#\{X_i > \theta_0\}$。
+\item[(b)] 证明此模型的 Score 检验等价于当 $T < c_1$ 或 $T > c_2$ 时拒绝 $H_0$。
+\item[(c)] 证明在 $H_0$ 下，$T$ 服从二项分布 $b(n,1/2)$；因此，确定使检验具有大小 $\alpha$ 的 $c_1$ 和 $c_2$。
+\item[(d)] 作为 $\theta$ 的函数，确定基于 $T$ 的检验的功效函数。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.6} 正态方差检验 – Hogg 6.3.6}\label{exr:6.3.6}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $N(\mu_0, \sigma^2=\theta)$ 分布的随机样本，其中 $0 < \theta < \infty$，$\mu_0$ 已知。证明 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$ 的似然比检验可以基于统计量 $W = \sum_{i=1}^n (X_i-\mu_0)^2/\theta_0$ 进行。确定 $W$ 在原假设下的分布，并给出显式的拒绝规则。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.7} 正态方差检验的功效函数 – Hogg 6.3.7}\label{exr:6.3.7}
+对于 Exercise 6.3.6 中描述的检验，获取检验统计量在一般备择假设下的分布。如果有计算条件，当 $\theta_0=1$，$n=10$，$\mu=0$，$\alpha=0.05$ 时绘制此功效曲线。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.8} Beta 分布的精确检验 – Hogg 6.3.8}\label{exr:6.3.8}
+使用 Example 6.2.4 的结果，求假设 (6.3.21) 的精确大小 $\alpha$ 检验。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.9} Poisson 分布的似然比检验 – Hogg 6.3.9}\label{exr:6.3.9}
+设 $X_1, X_2, \ldots, X_n$ 是来自均值为 $\theta > 0$ 的 Poisson 分布的随机样本。
+
+\begin{enumerate}
+\item[(a)] 证明 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$ 的似然比检验可以基于统计量 $Y = \sum_{i=1}^n X_i$ 进行。获取 $Y$ 在原假设下的分布。
+\item[(b)] 对于 $\theta_0=2$ 和 $n=5$，求当 $Y \leq 4$ 或 $Y \geq 17$ 时拒绝 $H_0$ 的检验的显著性水平。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.10} Bernoulli 分布的似然比检验 – Hogg 6.3.10}\label{exr:6.3.10}
+设 $X_1, X_2, \ldots, X_n$ 是来自 Bernoulli $b(1,\theta)$ 分布的随机样本，其中 $0 < \theta < 1$。
+
+\begin{enumerate}
+\item[(a)] 证明 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$ 的似然比检验可以基于统计量 $Y = \sum_{i=1}^n X_i$ 进行。获取 $Y$ 在原假设下的分布。
+\item[(b)] 对于 $n=100$ 和 $\theta_0=1/2$，求 $c_1$ 使得当 $Y \leq c_1$ 或 $Y \geq c_2 = 100-c_1$ 时拒绝 $H_0$ 具有近似显著性水平 $\alpha=0.05$。提示：使用中心极限定理。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.11} Gamma 分布的似然比检验 – Hogg 6.3.11}\label{exr:6.3.11}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $\Gamma(\alpha=4, \beta=\theta)$ 分布的随机样本，其中 $0 < \theta < \infty$。
+
+\begin{enumerate}
+\item[(a)] 证明 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$ 的似然比检验可以基于统计量 $W = \sum_{i=1}^n X_i$ 进行。获取 $2W/\theta_0$ 在原假设下的分布。
+\item[(b)] 对于 $\theta_0=3$ 和 $n=5$，求 $c_1$ 和 $c_2$ 使得当 $W \leq c_1$ 或 $W \geq c_2$ 时拒绝 $H_0$ 具有显著性水平 0.05。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.12} 正态与双指数分布的检验 – Hogg 6.3.12}\label{exr:6.3.12}
+设 $X_1, X_2, \ldots, X_n$ 是来自 pdf $f(x;\theta) = \theta\exp\{-|x|^\theta\}/[2\Gamma(1/\theta)]$，$-\infty < x < \infty$ 的分布，其中 $\theta > 0$。假设 $\Omega = \{\theta: \theta=1,2\}$。考虑假设 $H_0: \theta=2$（正态分布）vs $H_1: \theta=1$（双指数分布）。证明似然比检验可以基于统计量 $W = \sum_{i=1}^n (X_i^2 - |X_i|)$ 进行。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.13} Beta 分布的似然比检验 – Hogg 6.3.13}\label{exr:6.3.13}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $\alpha=\beta=\theta$ 的 Beta 分布的随机样本，$\Omega = \{\theta: \theta=1,2\}$。证明检验 $H_0: \theta=1$ vs $H_1: \theta=2$ 的似然比统计量 $\Lambda$ 是统计量 $W = \sum_{i=1}^n \log X_i + \sum_{i=1}^n \log(1-X_i)$ 的函数。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.14} 位置模型的几何解释 – Hogg 6.3.14}\label{exr:6.3.14}
+考虑位置模型
+
+\[
+X_i = \theta + e_i, \quad i=1,\ldots,n,
+\]
+
+其中 $e_1, e_2, \ldots, e_n$ iid，pdf 为 $f(z)$。估计 $\theta$ 有一个很好的几何解释。设 $\mathbf{X} = (X_1, \ldots, X_n)'$ 和 $\mathbf{e} = (e_1, \ldots, e_n)'$ 分别为观测向量和随机误差向量，设 $\boldsymbol{\mu} = \theta\mathbf{1}$，其中 $\mathbf{1}$ 是所有分量等于 1 的向量。设 $V$ 是形如 $\boldsymbol{\mu}$ 的向量的子空间；即 $V = \{\mathbf{v}: \mathbf{v}=a\mathbf{1}, a \in \mathbb{R}\}$。则在向量记号中我们可以将模型写成
+
+\[
+\mathbf{X} = \boldsymbol{\mu} + \mathbf{e}, \quad \boldsymbol{\mu} \in V.
+\]
+
+\begin{enumerate}
+\item[(a)] 如果误差 pdf 是 Laplace，(2.2.4)，证明 (6.3.27) 中的最小化等价于当范数是 $l_1$ 范数时的似然最大化。
+\item[(b)] 如果误差 pdf 是 $N(0,1)$，证明 (6.3.27) 中的最小化等价于当范数是 $l_2$ 范数平方时的似然最大化。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.15} 位置模型检验的几何解释 – Hogg 6.3.15}\label{exr:6.3.15}
+继续 Exercise 6.3.14，除了估计还有检验的几何解释。对于模型 (6.3.26)，考虑假设
+
+\[
+H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0,
+\]
+
+其中 $\theta_0$ 是指定的。
+
+\begin{enumerate}
+\item[(a)] 如果误差 pdf 是 Laplace，证明表达式 (6.3.31) 等价于当范数由 (6.3.28) 给出时的似然比检验。
+\item[(b)] 如果误差 pdf 是 $N(0,1)$，证明表达式 (6.3.31) 等价于当范数由 $l_2$ 范数平方 (6.3.29) 给出时的似然比检验。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.16} Bernoulli 分布的三种似然检验 – Hogg 6.3.16}\label{exr:6.3.16}
+设 $X_1, X_2, \ldots, X_n$ 是来自 pmf $p(x;\theta) = \theta^x(1-\theta)^{1-x}$，$x=0,1$ 的分布，其中 $0 < \theta < 1$。我们想检验 $H_0: \theta=1/3$ vs $H_1: \theta \neq 1/3$。
+
+\begin{enumerate}
+\item[(a)] 求 $\Lambda$ 和 $-2\log\Lambda$。
+\item[(b)] 确定 Wald 型检验。
+\item[(c)] 什么是 Rao 的 score 统计量？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.17} Poisson 分布的 Wald 型检验 – Hogg 6.3.17}\label{exr:6.3.17}
+设 $X_1, X_2, \ldots, X_n$ 是来自均值为 $\theta > 0$ 的 Poisson 分布的随机样本。考虑检验 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$。
+
+\begin{enumerate}
+\item[(a)] 获取表达式 (6.3.13) 的 Wald 型检验。
+\item[(b)] 编写一个 R 函数来计算此检验统计量。
+\item[(c)] 对于 $\theta_0=23$，计算检验统计量并对以下数据确定 $p$ 值。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.18} Gamma 分布的似然比检验 – Hogg 6.3.18}\label{exr:6.3.18}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $\Gamma(\alpha,\beta)$ 分布的随机样本，其中 $\alpha$ 已知，$\beta > 0$。求 $H_0: \beta=\beta_0$ vs $H_1: \beta \neq \beta_0$ 的似然比检验。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.3.19} 均匀分布的似然比检验（非正则情形）– Hogg 6.3.19}\label{exr:6.3.19}
+设 $Y_1 < Y_2 < \ldots < Y_n$ 是来自 $(0,\theta)$ 上均匀分布的随机样本的顺序统计量，其中 $\theta > 0$。
+
+\begin{enumerate}
+\item[(a)] 证明检验 $H_0: \theta=\theta_0$ vs $H_1: \theta \neq \theta_0$ 的 $\Lambda$ 为 $\Lambda = (Y_n/\theta_0)^n$，$Y_n \leq \theta_0$，如果 $Y_n > \theta_0$ 则 $\Lambda=0$。
+\item[(b)] 当 $H_0$ 成立时，证明 $-2\log\Lambda$ 具有精确的 $\chi^2(2)$ 分布，而不是 $\chi^2(1)$。注意正则条件不满足。
+\end{enumerate}
+\end{exercise}
+
+% === 6.4 节习题 ===
+
+\begin{exercise}{\ref{exr:6.4.1} 多项分布的 MLE – Hogg 6.4.1}\label{exr:6.4.1}
+对市民进行了一项调查，内容是他们是否支持市议会正在考虑的分区计划。回答有：是、否、无所谓和其他。用 $p_1, p_2, p_3$ 和 $p_4$ 表示这些回答的相应真实概率。调查结果为：
+
+\begin{center}
+\begin{tabular}{c|cccc}
+是 & 否 & 无所谓 & 其他 \\ \hline
+60 & 45 & 70 & 25
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item[(a)] 获取 $p_i$，$i=1,\ldots,4$ 的 MLE。
+\item[(b)] 获取 $p_i$，$i=1,\ldots,4$ 的 95\% 置信区间，(4.2.7)。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.3} 指数分布的双参数 MLE – Hogg 6.4.3}\label{exr:6.4.3}
+设 $X_1, X_2, \ldots, X_n$ iid，每个都具有 pdf $f(x;\theta_1,\theta_2) = (1/\theta_2)e^{-(x-\theta_1)/\theta_2}$，$\theta_1 \leq x < \infty$，$-\infty < \theta_2 < \infty$，零 elsewhere。求 $\theta_1$ 和 $\theta_2$ 的最大似然估计量。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.4} Pareto 分布的 MLE（非正则情形）– Hogg 6.4.4}\label{exr:6.4.4}
+Pareto 分布是收入研究中经常使用的模型，其分布函数为
+
+\[
+F(x;\theta_1,\theta_2) = \left\{ \begin{array}{l l}
+1-(\theta_1/x)^{\theta_2} & \theta_1 \leq x \\
+0 & \text{elsewhere},
+\end{array} \right.
+\]
+
+其中 $\theta_1 > 0$ 和 $\theta_2 > 0$。如果 $X_1, X_2, \ldots, X_n$ 是来自此分布的随机样本，求 $\theta_1$ 和 $\theta_2$ 的最大似然估计量。（提示：此练习处理非正则情形。）
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.5} 均匀分布的 MLE – Hogg 6.4.5}\label{exr:6.4.5}
+设 $Y_1 < Y_2 < \ldots < Y_n$ 是来自在闭区间 $[\theta-\rho, \theta+\rho]$ 上均匀分布的随机样本的顺序统计量。求 $\theta$ 和 $\rho$ 的最大似然估计量。这两个估计量是无偏的吗？
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.7} 正态数据的分析 – Hogg 6.4.7}\label{exr:6.4.7}
+数据文件 normal50.rda 包含 Exercise 6.4.6 中描述的情况的样本量为 $n=50$ 的随机样本。在 R 中下载此数据并获取观测值的直方图。
+
+\begin{enumerate}
+\item[(a)] 在 Exercise 6.4.6 (b) 中，设 $c=58$，$\xi = P(X \leq c)$。基于数据，计算 $\xi$ 的 MLE 的估计值。将此估计值与数据中小于等于 58 的样本比例 $\hat{p}$ 进行比较。
+\item[(b)] R 函数 bootstraps64.R 计算 MLE 的 bootstrap 置信区间。使用此函数计算 $\xi$ 的 95\% 置信区间。将您的区间与基于 $\hat{p}$ 的表达式 (4.2.7) 的区间进行比较。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.8} 90th 分位数的 MLE – Hogg 6.4.8}\label{exr:6.4.8}
+考虑 Exercise 6.4.6 (a)。
+
+\begin{enumerate}
+\item[(a)] 使用 Exercise 6.4.7 的数据，计算 $b$ 的 MLE。同时获取基于数据 90th 分位数的估计值。
+\item[(b)] 编辑 R 函数 bootstrapcis64.R 以计算 $b$ 的 bootstrap 置信区间。然后在 Exercise 6.4.7 的数据上运行您的 R 函数，计算 $b$ 的 95\% 置信区间。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.9} Bernoulli 分布的约束 MLE – Hogg 6.4.9}\label{exr:6.4.9}
+考虑两个具有未知参数 $p_1$ 和 $p_2$ 的 Bernoulli 分布。如果 $Y$ 和 $Z$ 等于两个独立随机样本（每个样本量为 $n$）中成功次数，分别来自相应分布，求 $p_1$ 和 $p_2$ 的 MLE（如果我们知道 $0 \leq p_1 \leq p_2 \leq 1$）。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.10} 位置和尺度族的 pdf – Hogg 6.4.10}\label{exr:6.4.10}
+证明如果 $X_i$ 服从模型 (6.4.14)，则其 pdf 为 $b^{-1}f((x-a)/b)$。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.11} 位置和尺度族的信息矩阵 – Hogg 6.4.11}\label{exr:6.4.11}
+验证 Example 6.4.4 中位置和尺度族的偏导数和信息矩阵的 entries。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.12} 对称分布的信息矩阵 – Hogg 6.4.12}\label{exr:6.4.12}
+假设 $X$ 的 pdf 是 Example 6.4.4 中定义的位置和尺度族。证明如果 $f(z) = f(-z)$，则信息矩阵的 entry $I_{12}=0$。然后论证在这种情况下 $a$ 和 $b$ 的 MLE 渐近独立。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.4.13} 正态分布作为位置和尺度族 – Hogg 6.4.13}\label{exr:6.4.13}
+假设 $X_1, X_2, \ldots, X_n$ iid $N(\mu,\sigma^2)$。证明 $X_i$ 服从 Example 6.4.4 中给出的位置和尺度族。获取此 example 中给出的信息矩阵的 entries，并证明它们与 Example 6.4.3 中确定的信息矩阵一致。
+\end{exercise}
+
+% === 6.5 节习题 ===
+
+\begin{exercise}{\ref{exr:6.5.1} 正态均值检验（地球-月球质量比）– Hogg 6.5.1}\label{exr:6.5.1}
+在 Hollander 和 Wolfe (1999) 的第 80 页，他们展示了由 7 艘不同航天器（5 艘 Mariner 型和 2 艘 Pioneer 型）对地球质量与月球质量之比的测量值。这些测量值如下（也在文件 earthmoon.rda 中）。根据早期的 Ranger 航行，科学家们将此比率设定为 81.3035。假设正态分布，检验假设 $H_0: \mu = 81.3035$ vs $H_1: \mu \neq 81.3035$，其中 $\mu$ 是这些后续航行的真实平均比率。使用 $p$ 值在名义 $\alpha$ 水平 0.05 下得出结论。
+
+\begin{center}
+\begin{tabular}{ccccccc}
+81.3001 & 81.3015 & 81.3006 & 81.3011 & 81.2997 & 81.3005 & 81.3021
+\end{tabular}
+\end{center}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.2} 箱线图和置信区间 – Hogg 6.5.2}\label{exr:6.5.2}
+获取 Exercise 6.5.1 中数据的箱线图。在图上标注值 81.3035。计算 $\mu$ 的 95\% 置信区间，(4.2.3)，并将其端点标注在图上。评论。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.3} 两比例相等的检验 – Hogg 6.5.3}\label{exr:6.5.3}
+考虑 Exercise 6.4.1 中讨论的市民调查。假设感兴趣的假设是 $H_0: p_1 = p_2$ vs $H_1: p_1 \neq p_2$。
+
+\begin{enumerate}
+\item[(a)] 使用检验 (6.5.20) 在水平 $\alpha=0.05$ 下检验这些假设。结合问题得出结论。
+\item[(b)] 获取 $p_1 - p_2$ 的 95\% 置信区间，(6.5.21)。置信区间在问题背景下意味着什么？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.4} 正态方差检验 – Hogg 6.5.4}\label{exr:6.5.4}
+设 $X_1, X_2, \ldots, X_n$ 是来自 $N(\theta_1,\theta_2)$ 分布的随机样本。证明对于检验 $H_0: \theta_2 = \theta_2'$（指定）和 $\theta_1$ 未指定 against $H_1: \theta_2 \neq \theta_2'$，$\theta_1$ 未指定，似然比原则导致当 $\sum_{1}^n(x_i-\bar{x})^2 \leq c_1$ 或 $\sum_{1}^n(x_i-\bar{x})^2 \geq c_2$ 时拒绝，其中 $c_1 < c_2$ 是适当选择的。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.5} 两正态均值的似然比检验 – Hogg 6.5.5}\label{exr:6.5.5}
+设 $X_1,\ldots,X_n$ 和 $Y_1,\ldots,Y_m$ 是分别来自 $N(\theta_1,\theta_3)$ 和 $N(\theta_2,\theta_4)$ 分布的独立随机样本。
+
+\begin{enumerate}
+\item[(a)] 证明检验 $H_0: \theta_1 = \theta_2$，$\theta_3 = \theta_4$ against all alternatives 的似然比为
+
+\[
+\frac{\left[ \sum_1^n (x_i-\bar{x})^2/n \right]^{n/2} \left[ \sum_1^m (y_i-\bar{y})^2/m \right]^{m/2}}{\left\{\left[ \sum_1^n (x_i-u)^2 + \sum_1^m (y_i-u)^2 \right] / (m+n) \right\}^{(n+m)/2}},
+\]
+
+其中 $u = (n\bar{x}+m\bar{y})/(n+m)$。
+
+\item[(b)] 证明检验 $H_0: \theta_3 = \theta_4$，$\theta_1$ 和 $\theta_2$ 未指定 against $H_1: \theta_3 \neq \theta_4$，$\theta_1$ 和 $\theta_2$ 未指定的似然比检验可以基于随机变量
+
+\[
+F = \frac{\sum_1^n (X_i-\bar{X})^2/(n-1)}{\sum_1^m (Y_i-\bar{Y})^2/(m-1)}
+\]
+
+进行。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.6} 两正态方差的似然比检验 – Hogg 6.5.6}\label{exr:6.5.6}
+设 $X_1, X_2, \ldots, X_n$ 和 $Y_1, Y_2, \ldots, Y_m$ 是分别来自 $N(0,\theta_1)$ 和 $N(0,\theta_2)$ 分布的独立随机样本。
+
+\begin{enumerate}
+\item[(a)] 求检验复合假设 $H_0: \theta_1 = \theta_2$ against 复合备择假设 $H_1: \theta_1 \neq \theta_2$ 的似然比 $\Lambda$。
+\item[(b)] 此 $\Lambda$ 是实际用于此检验的什么 $F$ 统计量的函数？
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.7} 两指数分布的似然比检验 – Hogg 6.5.7}\label{exr:6.5.7}
+设 $X$ 和 $Y$ 是两个具有相应 pdf
+
+\[
+f(x;\theta_i) = \left\{ \begin{array}{l l}
+(1/\theta_i)e^{-x/\theta_i} & 0 < x < \infty, 0 < \theta_i < \infty \\
+0 & \text{elsewhere},
+\end{array} \right.
+\]
+
+的独立随机变量，$i=1,2$。为了检验 $H_0: \theta_1 = \theta_2$ against $H_1: \theta_1 \neq \theta_2$，分别从这些分布中抽取样本量为 $n_1$ 和 $n_2$ 的两个独立样本。求似然比 $\Lambda$ 并证明在 $H_0$ 下 $\Lambda$ 可以写成具有 $F$ 分布的统计量的函数。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.8} 指数分布的 $F$ 检验数值例子 – Hogg 6.5.8}\label{exr:6.5.8}
+对于 Exercise 6.5.7 导出的 $F$ 检验的数值例子，以下是两个生成的数据集。第一个由 R 调用 rexp(10,1/20) 生成，即来自 $\Gamma(1,20)$ 分布的 10 个观测值。第二个由 rexp(12,1/40) 生成。数据已四舍五入，也可以在文件 genexpd.rda 中找到。
+
+\begin{enumerate}
+\item[(a)] 获取数据集合的比较箱线图。评论。
+\item[(b)] 执行 Exercise 6.5.7 的 $F$ 检验。在水平 0.05 下结合问题得出结论。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.9} 两均匀分布的似然比检验（非正则）– Hogg 6.5.9}\label{exr:6.5.9}
+考虑两个均匀分布，相应 pdf 为
+
+\[
+f(x;\theta_i) = \left\{ \begin{array}{l l}
+\frac{1}{2\theta_i} & -\theta_i < x < \theta_i, -\infty < \theta_i < \infty \\
+0 & \text{elsewhere},
+\end{array} \right.
+\]
+
+$i=1,2$。原假设是 $H_0: \theta_1 = \theta_2$，而备择假设是 $H_1: \theta_1 \neq \theta_2$。设 $X_1 < X_2 < \ldots < X_{n_1}$ 和 $Y_1 < Y_2 < \ldots < Y_{n_2}$ 是分别来自相应分布的两个独立随机样本的顺序统计量。使用似然比 $\Lambda$，求用于检验 $H_0$ against $H_1$ 的统计量。当 $H_0$ 成立时，求 $-2\log\Lambda$ 的分布。注意在这种非正则情形下，自由度是 $\Omega$ 和 $\omega$ 维数之差的两倍。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.10} 双正态分布的似然比检验 – Hogg 6.5.10}\label{exr:6.5.10}
+设 $(X_1,Y_1),(X_2,Y_2),\ldots,(X_n,Y_n)$ 是来自双正态分布的随机样本，$\mu_1,\mu_2,\sigma_1^2=\sigma_2^2=\sigma^2,\rho=1/2$，其中 $\mu_1,\mu_2$ 和 $\sigma^2>0$ 是未知的实数。求检验 $H_0: \mu_1=\mu_2=0$，$\sigma^2$ 未知 against all alternatives 的似然比 $\Lambda$。似然比 $\Lambda$ 是具有什么分布的统计量的函数？
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.11} 多项分布的似然比检验 – Hogg 6.5.11}\label{exr:6.5.11}
+设 $n$ 次独立试验的实验使得 $x_1, x_2, \ldots, x_k$ 是实验以互斥且穷举的事件 $C_1, C_2, \ldots, C_k$ 结束的相应次数。如果 $p_i = P(C_i)$ 在整个 $n$ 次试验中恒定，则该特定试验序列的概率为 $L = p_1^{x_1}p_2^{x_2}\cdots p_k^{x_k}$。
+
+\begin{enumerate}
+\item[(a)] 回忆 $p_1 + p_2 + \cdots + p_k = 1$，证明检验 $H_0: p_i = p_{i0} > 0, i=1,2,\ldots,k,$ against all alternatives 的似然比由
+
+\[
+\Lambda = \prod_{i=1}^k \left( \frac{(p_{i0})^{x_i}}{(x_i/n)^{x_i}} \right)
+\]
+
+给出。
+
+\item[(b)] 证明
+
+\[
+-2\log\Lambda = \sum_{i=1}^k \frac{x_i(x_i - np_{i0})^2}{(np_i')^2},
+\]
+
+其中 $p_i'$ 在 $p_{i0}$ 和 $x_i/n$ 之间。
+
+\item[(c)] 对于大的 $n$，论证 $x_i/(np_i')^2$ 被 $1/(np_{i0})$ 近似，因此
+
+\[
+-2\log\Lambda \approx \sum_{i=1}^k \frac{(x_i - np_{i0})^2}{np_{i0}} \quad \text{当 } H_0 \text{成立时}.
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.12} 两二项比例的 LRT – Hogg 6.5.12}\label{exr:6.5.12}
+完成 Example 6.5.3 中找到的 LRT 的推导。尽可能简化。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.13} 两二项比例的 Wald 统计量 – Hogg 6.5.13}\label{exr:6.5.13}
+证明 Example 6.5.3 的表达式 (6.5.25) 是正确的。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.14} 两二项比例的备择估计 – Hogg 6.5.14}\label{exr:6.5.14}
+如 Example 6.5.3 中所讨论的，$Z$，(6.5.27)，可以用作检验统计量，前提是我们有在 $H_0$ 成立时 $p_1(1-p_1)$ 和 $p_2(1-p_2)$ 的一致估计量。然而，在 $H_0$ 下，$p_1(1-p_1) = p_2(1-p_2) = p(1-p)$，其中 $p = p_1 = p_2$。证明统计量 (6.5.24) 是 $p$ 在 $H_0$ 下的一致估计量。因此，确定 $H_0$ 的另一个检验。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.15} 两比例的检验（制造业应用）– Hogg 6.5.15}\label{exr:6.5.15}
+一家机器店生产 toggle lever。白天和夜班都有。如果标准螺母不能拧入螺纹，则 toggle lever 有缺陷。设 $p_1$ 和 $p_2$ 分别为白天和夜班生产的缺陷 lever 的比例。我们将基于分别从两个班的生产中抽取的每个 1000 个 lever 的两个随机样本，检验原假设 $H_0: p_1 = p_2$，against 双侧备择假设。使用 Example 6.5.3 中给出的检验统计量 $Z^*$。
+
+\begin{enumerate}
+\item[(a)] 绘制说明具有 $\alpha=0.05$ 的临界区域的标注临界值的标准正态 pdf 图。
+\item[(b)] 如果分别为白天和夜班观察到 $y_1=37$ 和 $y_2=53$ 个缺陷，计算检验统计量的值和近似 $p$ 值（注意这是双侧检验）。在 (a) 的图上定位计算的检验统计量并陈述您的结论。获取检验的近似 $p$ 值。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{\ref{exr:6.5.16} 三种检验的比较 – Hogg 6.5.16}\label{exr:6.5.16}
+对于 Exercise 6.5.15 (b) 中给出的情况，计算 Exercises 6.5.12 和 6.5.14 中定义的检验。获取所有三个检验的近似 $p$ 值。讨论结果。
+\end{exercise}
+
 % === 附录：公式推导 ===
 
 \section{附录：公式推导}\label{sec:appendix-ch6}
