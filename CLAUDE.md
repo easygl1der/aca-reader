@@ -252,6 +252,11 @@ domain-expert ←→ writing-expert
     - **book 模板**（do Carmo）：使用 `exercise` 环境，格式为 `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}`
     - **因果推断模板**（Peng Ding）：使用 `Exercise` 环境，**必须用 `\eqref{}` 引用教材公式编号**。先给公式加 `\label{}`（如 `\label{eq:balance-discrete-CRE}`），再在习题中引用（如 `证明 \eqref{eq:balance-discrete-CRE}`）。标签命名：`eq:{描述性名称}`
 
+    **⚠️ 精确引用规则（所有 exercise-expert 必须遵守）**：
+    - ❌ 禁止文本引用：`Example 4.1.3`、`formula (4.1.4)-(4.1.8)`、`定理 2.1` 等
+    - ✅ 必须读取教材 `.tex` 文件找到真实 `\label{}`，使用 `\cref{}` 或 `\eqref{}` 引用
+    - 如果被引用内容没有 `\label`，**必须先添加标签**，再在习题中引用
+
 12. **学习原则（核心思想）**: 从学习数学知识的角度，公式推导是必要学习的；但在理解思想、了解脉络、抓住重点的目的下，公式推导/定理证明反而不是最重要的，所以可以放到附录。在正文中抓住重点，以防被过长的数学公式分散了注意力。
 
 13. **问答引用规则**: 问答结果记录到 `appendix/qa.tex` 后，必须使用**有编号的小节**（`\subsection{标题}\label{sec:qa-xxx}`），在正文相应位置用 `\footnote{问：...？见附录 \cref{sec:qa-xxx}}` 引用，使读者可以跳转到详细解答。**footnote 中必须标出问题是什么**。

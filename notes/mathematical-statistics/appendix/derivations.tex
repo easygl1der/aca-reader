@@ -120,3 +120,348 @@ X = \sum_{i=1}^{n} Z_i^2 \sim \Gamma\left(\frac{n}{2}, 2\right).
 
 \textbf{结论}：
 卡方分布 $\chi^2(n)$ 等价于 $\Gamma(n/2, 2)$。$\blacksquare$
+
+\subsection{边缘分布公式的推导}\label{sec:derivation-marginal-distributions}
+
+\textbf{背景（Background）}：
+在正文中我们给出边缘分布的公式。这里展示如何从联合分布推导边缘分布。
+
+\textbf{目标（Goal）}：
+证明 $f_{X_1}(x_1) = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 从联合 cdf 出发，对 $x_2$ 求导得到联合 pdf：
+\[
+f_{X_1, X_2}(x_1, x_2) = \frac{\partial^2}{\partial x_1 \partial x_2} F_{X_1, X_2}(x_1, x_2).
+\]
+
+2. 边缘 cdf 定义为：
+\[
+F_{X_1}(x_1) = \mathbb{P}(X_1 \leq x_1) = \lim_{x_2 \to \infty} F_{X_1, X_2}(x_1, x_2).
+\]
+
+3. 对边缘 cdf 求导：
+\[
+f_{X_1}(x_1) = \frac{d}{dx_1} F_{X_1}(x_1) = \frac{d}{dx_1} \lim_{x_2 \to \infty} F_{X_1, X_2}(x_1, x_2).
+\]
+
+4. 利用 Leibniz 积分法则：
+\[
+\frac{d}{dx_1} \int_{-\infty}^{x_1} \int_{-\infty}^{\infty} f(w_1, w_2) \, dw_2 \, dw_1 = \int_{-\infty}^{\infty} f(x_1, w_2) \, dw_2.
+\]
+
+\textbf{结论}：
+因此，$f_{X_1}(x_1) = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2$。对于离散情形，将积分替换为求和即可。$\blacksquare$
+
+\subsection{期望线性性的推导}\label{sec:derivation-expectation-linear}
+
+\textbf{背景（Background）}：
+在正文中我们声称期望算子 $E$ 是线性的，即 $\mathbb{E}(aY_1 + bY_2) = a\mathbb{E}Y_1 + b\mathbb{E}Y_2$。
+
+\textbf{目标（Goal）}：
+给出这一性质的形式化推导。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 期望定义（连续型）：
+\[
+\mathbb{E}(aY_1 + bY_2) = \int\int [a y_1 + b y_2] f(y_1, y_2) \, dy_1 \, dy_2.
+\]
+
+2. 利用积分的线性性：
+\[
+= a \int\int y_1 f(y_1, y_2) \, dy_1 \, dy_2 + b \int\int y_2 f(y_1, y_2) \, dy_1 \, dy_2.
+\]
+
+3. 由联合 pdf 的性质 $\int\int f(y_1, y_2) \, dy_1 \, dy_2 = 1$，我们分别处理两项。
+
+4. 第一项：先对 $y_2$ 积分得到边缘密度，再积分：
+\[
+\int\int y_1 f(y_1, y_2) \, dy_1 \, dy_2 = \int y_1 \left( \int f(y_1, y_2) \, dy_2 \right) dy_1 = \int y_1 f_{Y_1}(y_1) \, dy_1 = \mathbb{E}Y_1.
+\]
+
+5. 第二项同理可得 $\mathbb{E}Y_2$。
+
+\textbf{结论}：
+因此 $\mathbb{E}(aY_1 + bY_2) = a\mathbb{E}Y_1 + b\mathbb{E}Y_2$。注意此性质无需 $Y_1, Y_2$ 独立。$\blacksquare$
+
+\subsection{Jacobian 变换公式的推导}\label{sec:derivation-jacobian}
+
+\textbf{背景（Background）}：
+在正文中我们给出二元变换公式 $f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(v_1(y_1, y_2), v_2(y_1, y_2)) \cdot |J|$。
+
+\textbf{目标（Goal）}：
+解释 $|J|$ 的来源。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 设变换为 $(X_1, X_2) = (v_1(Y_1, Y_2), v_2(Y_1, Y_2))$，逆变换为 $(Y_1, Y_2) = (u_1(X_1, X_2), u_2(X_1, X_2))$。
+
+2. 事件 $\{Y_1 \leq y_1, Y_2 \leq y_2\}$ 等价于 $\{X_1 \leq v_1(y_1, y_2), X_2 \leq v_2(y_1, y_2)\}$。
+
+3. 因此边缘 cdf：
+\[
+F_{Y_1, Y_2}(y_1, y_2) = \int_{-\infty}^{v_1(y_1, y_2)} \int_{-\infty}^{v_2(y_1, y_2)} f_{X_1, X_2}(x_1, x_2) \, dx_2 \, dx_1.
+\]
+
+4. 对两边求混合偏导：
+\[
+f_{Y_1, Y_2}(y_1, y_2) = \frac{\partial^2}{\partial y_1 \partial y_2} F_{Y_1, Y_2}(y_1, y_2).
+\]
+
+5. 应用多元链式法则：
+\[
+f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(v_1, v_2) \cdot \left| \frac{\partial x_1}{\partial y_1} \cdot \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \cdot \frac{\partial x_2}{\partial y_1} \right| = f_{X_1, X_2}(v_1, v_2) \cdot |J|.
+\]
+
+\textbf{结论}：
+$|J|$ 度量了变换下的面积元素缩放比例。$\blacksquare$
+
+\subsection{条件分布公式的推导}\label{sec:derivation-conditional-distribution}
+
+\textbf{背景（Background）}：
+条件分布 $f_{X_2|X_1}(x_2|x_1) = f_{X_1, X_2}(x_1, x_2) / f_{X_1}(x_1)$ 是概率论的核心概念。
+
+\textbf{目标（Goal）}：
+从条件概率的基本定义出发推导出条件 pdf 公式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 条件概率的基本定义：
+\[
+\mathbb{P}(B \mid A) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)}.
+\]
+
+2. 对于无穷小事件 $\{X_1 \in [x_1, x_1 + dx_1), X_2 \in [x_2, x_2 + dx_2)\}$：
+\[
+\mathbb{P}(X_2 \in dx_2 \mid X_1 \in dx_1) = \frac{f_{X_1, X_2}(x_1, x_2) \, dx_1 \, dx_2}{f_{X_1}(x_1) \, dx_1} = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)} \, dx_2.
+\]
+
+3. 因此条件 pdf：
+\[
+f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}.
+\]
+
+4. 验证：边缘密度公式的逆过程
+\[
+\int_{-\infty}^{\infty} f_{X_2 \mid X_1}(x_2 \mid x_1) f_{X_1}(x_1) \, dx_2 = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2 = f_{X_1}(x_1),
+\]
+故 $\int f_{X_2 \mid X_1}(x_2 \mid x_1) \, dx_2 = 1$，确实是合法的 pdf。
+
+\textbf{结论}：
+条件 pdf 公式得证。$\blacksquare$
+
+\subsection{全期望公式的推导}\label{sec:derivation-law-total-expectation}
+
+\textbf{背景（Background）}：
+全期望公式 $\mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \mathbb{E}(X_2)$ 是连接条件期望与边缘期望的桥梁。
+
+\textbf{目标（Goal）}：
+形式化推导这一公式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 从条件期望定义出发：
+\[
+\mathbb{E}(X_2 \mid X_1) = \int_{-\infty}^{\infty} x_2 f_{X_2 \mid X_1}(x_2 \mid x_1) \, dx_2.
+\]
+
+2. 对条件期望再取期望（即关于 $X_1$ 求平均）：
+\[
+\mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \int_{-\infty}^{\infty} \left( \int_{-\infty}^{\infty} x_2 f_{X_2 \mid X_1}(x_2 \mid x_1) \, dx_2 \right) f_{X_1}(x_1) \, dx_1.
+\]
+
+3. 重新排列积分次序：
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x_2 f_{X_2 \mid X_1}(x_2 \mid x_1) f_{X_1}(x_1) \, dx_2 \, dx_1.
+\]
+
+4. 由条件 pdf 定义 $f_{X_2 \mid X_1}(x_2 \mid x_1) f_{X_1}(x_1) = f_{X_1, X_2}(x_1, x_2)$：
+\[
+= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} x_2 f_{X_1, X_2}(x_1, x_2) \, dx_2 \, dx_1 = \mathbb{E}X_2.
+\]
+
+\textbf{结论}：
+全期望公式得证。$\blacksquare$
+
+\subsection{条件方差不等式的推导}\label{sec:derivation-variance-inequality}
+
+\textbf{背景（Background）}：
+在正文中我们给出 $\text{var}[\mathbb{E}(X_2 \mid X_1)] \leq \text{var}(X_2)$。这里给出证明。
+
+\textbf{目标（Goal）}：
+证明条件方差不等式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 方差分解：
+\[
+\text{var}(X_2) = \mathbb{E}[\text{var}(X_2 \mid X_1)] + \text{var}[\mathbb{E}(X_2 \mid X_1)].
+\]
+
+2. 上式等价于全方差公式（Law of Total Variance）：
+\[
+\text{var}(X_2) = \mathbb{E}\{[X_2 - \mathbb{E}(X_2 \mid X_1)]^2 \mid X_1\} + \text{var}[\mathbb{E}(X_2 \mid X_1)].
+\]
+
+3. 展开第一项：
+\[
+\mathbb{E}\{[X_2 - \mathbb{E}(X_2 \mid X_1)]^2 \mid X_1\} \geq 0,
+\]
+因为平方的期望非负。
+
+4. 因此：
+\[
+\text{var}(X_2) \geq \text{var}[\mathbb{E}(X_2 \mid X_1)].
+\]
+
+\textbf{结论}：
+条件均值的方差不超过原变量的方差，等号成立当且仅当 $X_2 \mid X_1$ 的条件方差几乎处处为 0（即 $X_2$ 可由 $X_1$ 确定性决定）。$\blacksquare$
+
+\subsection{独立性判定的推导}\label{sec:derivation-independence}
+
+\textbf{背景（Background）}：
+我们声称 $X_1$ 与 $X_2$ 独立等价于 $f(x_1, x_2) \equiv g(x_1) h(x_2)$（可分离变量）。
+
+\textbf{目标（Goal）}：
+证明这一判定条件。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{（$\Rightarrow$）} 若 $X_1$ 与 $X_2$ 独立，则 $f(x_1, x_2) = f_1(x_1) f_2(x_2)$，显然可分离。
+
+\textbf{（$\Leftarrow$）} 若 $f(x_1, x_2) \equiv g(x_1) h(x_2)$：
+
+1. 由边缘密度定义：
+\[
+f_1(x_1) = \int_{-\infty}^{\infty} g(x_1) h(x_2) \, dx_2 = g(x_1) \int_{-\infty}^{\infty} h(x_2) \, dx_2 = c_1 g(x_1),
+\]
+其中 $c_1 = \int h(x_2) \, dx_2$ 为常数。
+
+2. 同理：
+\[
+f_2(x_2) = h(x_2) \int_{-\infty}^{\infty} g(x_1) \, dx_1 = c_2 h(x_2),
+\]
+其中 $c_2 = \int g(x_1) \, dx_1$ 为常数。
+
+3. 由归一性 $\int\int f(x_1, x_2) \, dx_1 \, dx_2 = 1$，得 $c_1 c_2 = 1$。
+
+4. 因此：
+\[
+f(x_1, x_2) \equiv g(x_1) h(x_2) \equiv c_1 g(x_1) \cdot c_2 h(x_2) \equiv f_1(x_1) f_2(x_2).
+\]
+
+\textbf{结论}：
+故 $f(x_1, x_2) \equiv g(x_1) h(x_2)$ 是独立性的等价条件。$\blacksquare$
+
+\subsection{相关系数范围的推导}\label{sec:derivation-correlation-bounds}
+
+\textbf{背景（Background）}：
+我们声称相关系数满足 $-1 \leq \rho \leq 1$。这里用 Cauchy-Schwarz 不等式证明。
+
+\textbf{目标（Goal）}：
+证明 $|\rho| \leq 1$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. Cauchy-Schwarz 不等式：对任意随机变量 $U, V$，
+\[
+[\mathbb{E}(UV)]^2 \leq \mathbb{E}(U^2) \cdot \mathbb{E}(V^2).
+\]
+
+2. 应用于协方差，令 $U = X_1 - \mu_1$，$V = X_2 - \mu_2$：
+\[
+[\text{cov}(X_1, X_2)]^2 = [\mathbb{E}(X_1 - \mu_1)(X_2 - \mu_2)]^2 \leq \mathbb{E}(X_1 - \mu_1)^2 \cdot \mathbb{E}(X_2 - \mu_2)^2 = \sigma_1^2 \sigma_2^2.
+\]
+
+3. 两边开方：
+\[
+|\text{cov}(X_1, X_2)| \leq \sigma_1 \sigma_2.
+\]
+
+4. 因此：
+\[
+|\rho| = \frac{|\text{cov}(X_1, X_2)|}{\sigma_1 \sigma_2} \leq 1.
+\]
+
+\textbf{结论}：
+故 $-1 \leq \rho \leq 1$。等号成立当且仅当 $X_2 = a X_1 + b$（完美线性关系）。$\blacksquare$
+
+\subsection{二元正态条件分布的推导}\label{sec:derivation-bivariate-normal-conditional}
+
+\textbf{背景（Background）}：
+在正文中给出二元正态的条件分布为
+\[
+X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1), \ \sigma_2^2(1-\rho^2)\right).
+\]
+这里给出推导。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $\mu_1, \mu_2$：边缘分布均值
+\item $\sigma_1^2, \sigma_2^2$：边缘分布方差
+\item $\rho$：相关系数
+\item $f(x_1, x_2)$：二元正态联合密度
+\end{itemize}
+
+\textbf{目标（Goal）}：
+求条件分布 $f_{2|1}(x_2|x_1)$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 条件密度公式：
+\[
+f_{2|1}(x_2|x_1) = \frac{f(x_1, x_2)}{f_1(x_1)},
+\]
+其中 $f_1(x_1) = \frac{1}{\sigma_1 \sqrt{2\pi}} \exp\left\{-\frac{(x_1-\mu_1)^2}{2\sigma_1^2}\right\}$。
+
+2. 写出联合密度的指数部分（略去归一化常数）：
+\[
+f(x_1, x_2) \propto \exp\left\{ -\frac{1}{2(1-\rho^2)} \left[ \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} + \frac{(x_2-\mu_2)^2}{\sigma_2^2} \right] \right\}.
+\]
+
+3. 关于 $x_2$ 完全平方配方：
+\[
+\frac{(x_2-\mu_2)^2}{\sigma_2^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}{\sigma_1\sigma_2} = \left(\frac{x_2-\mu_2}{\sigma_2} - \rho\frac{x_1-\mu_1}{\sigma_1}\right)^2 - \rho^2\frac{(x_1-\mu_1)^2}{\sigma_1^2}.
+\]
+
+4. 代入并整理：
+\[
+f(x_1, x_2) \propto \exp\left\{ -\frac{(x_1-\mu_1)^2}{2\sigma_1^2} \right\} \cdot \exp\left\{ -\frac{1}{2(1-\rho^2)} \left(\frac{x_2-\mu_2}{\sigma_2} - \rho\frac{x_1-\mu_1}{\sigma_1}\right)^2 \right\}.
+\]
+
+5. 因此条件密度为：
+\[
+f_{2|1}(x_2|x_1) \propto \exp\left\{ -\frac{1}{2(1-\rho^2)} \left(\frac{x_2-\mu_2}{\sigma_2} - \rho\frac{x_1-\mu_1}{\sigma_1}\right)^2 \right\}.
+\]
+
+6. 这正是均值为 $\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)$、方差为 $\sigma_2^2(1-\rho^2)$ 的正态密度。
+
+\textbf{结论}：
+二元正态的条件分布仍是正态分布。$\blacksquare$
+
+\subsection{独立随机变量线性组合 mgf 的推导}\label{sec:derivation-mgf-linear-combination}
+
+\textbf{背景（Background）}：
+在正文中给出若 $X_1, \ldots, X_n$ 相互独立，则 $T = \sum_{i=1}^n k_i X_i$ 的 mgf 为 $M_T(t) = \prod_{i=1}^n M_i(k_i t)$。
+
+\textbf{目标（Goal）}：
+形式化推导这一公式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+1. 由 mgf 定义：
+\[
+M_T(t) = \mathbb{E}[e^{tT}] = \mathbb{E}\left[\exp\left(t \sum_{i=1}^n k_i X_i\right)\right] = \mathbb{E}\left[\prod_{i=1}^n e^{t k_i X_i}\right].
+\]
+
+2. 由于 $X_1, \ldots, X_n$ 相互独立，$e^{t k_i X_i}$ 也相互独立，因此期望可分解为乘积：
+\[
+\mathbb{E}\left[\prod_{i=1}^n e^{t k_i X_i}\right] = \prod_{i=1}^n \mathbb{E}[e^{t k_i X_i}] = \prod_{i=1}^n M_i(k_i t).
+\]
+
+3. 定义域：由各 $M_i(t)$ 的存在域 $-h_i < t < h_i$，$T$ 的 mgf 定义域为 $-\min_i\{h_i/k_i\} < t < \min_i\{h_i/k_i\}$（假设 $k_i > 0$；若 $k_i < 0$ 则需调整）。
+
+\textbf{结论}：
+故 $M_T(t) = \prod_{i=1}^n M_i(k_i t)$。特别地，若 $X_i$ iid，则 $M_T(t) = [M(k t)]^n$。$\blacksquare$
