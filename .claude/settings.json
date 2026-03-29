@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{
+          "type": "command",
+          "if": "Bash(rm|git reset|git clean)",
+          "command": ".claude/hooks/block-dangerous.sh"
+        }]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit",
@@ -20,7 +30,33 @@
         "hooks": [{
           "type": "command",
           "if": "Bash(compile\\.sh)",
+          "command": ".claude/hooks/check-label-cite.sh"
+        }]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [{
+          "type": "command",
+          "if": "Bash(compile\\.sh)",
           "command": ".claude/hooks/auto-commit-push.sh"
+        }]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "UserPromptSubmit",
+        "hooks": [{
+          "type": "command",
+          "command": ".claude/hooks/qa-reminder.sh"
+        }]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "Stop",
+        "hooks": [{
+          "type": "command",
+          "command": ".claude/hooks/qa-reminder.sh"
         }]
       }
     ]
