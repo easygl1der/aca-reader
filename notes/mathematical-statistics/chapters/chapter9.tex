@@ -801,6 +801,38 @@ $y$ & 141 & 161 & 124 & 118 & 168
 在模型 \eqref{eq:regression-model} 下，求参数 $\alpha$ 和 $\beta$ 的 $(1-\alpha)100\%$ 置信区间。
 \end{exercise}
 
+\begin{exercise}{\ref{exr:9.6.6} 均值估计量的分布与置信区间 – Hogg 9.6.6}\label{exr:9.6.6}
+考虑模型 (9.6.1)。设 $\eta_0 = E(Y|x = x_0 - \overline{x})$。$\eta_0$ 的最小二乘估计量是 $\hat{\eta}_0 = \hat{\alpha} + \hat{\beta}(x_0 - \overline{x})$。
+
+(a) 使用 (9.6.9)，证明 $\hat{\eta}_0$ 是无偏估计量，并证明其方差为
+
+\[
+V(\hat{\eta}_0) = \sigma^2 \left[ \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{\sum_{i=1}^n (x_i - \overline{x})^2} \right].
+\]
+
+(b) 获取 $\hat{\eta}_0$ 的分布，并用它来确定 $\eta_0$ 的 $(1-\alpha)100\%$ 置信区间。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.7} 预测区间 – Hogg 9.6.7}\label{exr:9.6.7}
+假设样本 $(x_1, Y_1), \ldots, (x_n, Y_n)$ 服从线性模型 (9.6.1)。设 $Y_0$ 是在 $x = x_0 - \overline{x}$ 处的一个未来观测值，我们想为其确定一个预测区间。假设模型 (9.6.1) 对 $Y_0$ 成立；即 $Y_0 \sim N(\alpha + \beta(x_0 - \overline{x}), \sigma^2)$。我们使用练习 9.6.6 中的 $\hat{\eta}_0$ 作为对 $Y_0$ 的预测。
+
+(a) 获取 $Y_0 - \hat{\eta}_0$ 的分布，证明其方差为：
+
+\[
+V(Y_0 - \hat{\eta}_0) = \sigma^2 \left[ 1 + \frac{1}{n} + \frac{(x_0 - \overline{x})^2}{\sum_{i=1}^n (x_i - \overline{x})^2} \right].
+\]
+
+(b) 获取以 $Y_0 - \hat{\eta}_0$ 为分子的 $t$ 统计量。
+
+(c) 现在从 $1 - \alpha = P[-t_{\alpha/2, n-2} < T < t_{\alpha/2, n-2}]$ 开始，其中 $0 < \alpha < 1$，确定 $Y_0$ 的 $(1-\alpha)100\%$ 预测区间。
+
+(d) 将此预测区间与练习 9.6.6 获得的置信区间进行比较。为什么预测区间更大？从直觉上解释。
+\end{exercise}
+
+\begin{exercise}{\ref{exr:9.6.8} 奥运会 1500 米成绩的预测区间 – Hogg 9.6.8}\label{exr:9.6.8}
+在例 9.6.1 中，我们得到了 2020 年奥运会男子 1500 米冠军成绩的预测。计算上一道练习中给出的该预测的 95\% 预测区间。这些计算由 R 函数 \texttt{cipi.R} 执行。调用方式是 \texttt{cipi(lm(time$\sim$year), matrix(c(1,2020), ncol=2))}。就问题而言，这个预测区间意味着什么？接下来计算 2024 年和 2028 年奥运会的预测。为什么区间长度在增加？
+\end{exercise}
+
 \begin{exercise}{\ref{exr:9.6.9} 回归平方和分解 – Hogg 9.6.9}\label{exr:9.6.9}
 证明以下等式成立：
 
