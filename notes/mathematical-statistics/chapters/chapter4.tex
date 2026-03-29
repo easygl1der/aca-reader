@@ -226,6 +226,74 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \label{fig:chi-square-ci}
 \end{figure}
 
+\section{4.3 Order Statistics}\label{sec:4.3}
+
+\subsection{次序统计量的定义}
+
+设 $X_1, X_2, \ldots, X_n$ 是来自连续型分布的随机样本，该分布的 pdf 为 $f(x)$，支撑集为 $S = (a, b)$，其中 $-\infty \leq a < b \leq \infty$。将样本按从小到大排列：
+
+\[
+Y_1 < Y_2 < \cdots < Y_n
+\]
+
+其中 $Y_1$ 是最小值，$Y_2$ 是次小值，$\ldots$，$Y_n$ 是最大值。则称 $Y_i$ 为第 $i$ 个\textbf{次序统计量（order statistic）}。
+
+次序统计量在统计推断中扮演重要角色，因为它们的某些性质\textbf{不依赖于母体分布的具体形式}。
+
+\subsection{联合 pdf}
+
+\begin{theorem}[次序统计量的联合分布]\label{th:order-statistics-joint}
+设 $Y_1 < Y_2 < \cdots < Y_n$ 是来自连续型分布的随机样本 $X_1, X_2, \ldots, X_n$ 的次序统计量，该分布的 pdf 为 $f(x)$，支撑集为 $(a, b)$。则 $Y_1, Y_2, \ldots, Y_n$ 的联合 pdf 为
+
+\[
+g(y_1, y_2, \ldots, y_n) =
+\begin{cases}
+n! \, f(y_1) f(y_2) \cdots f(y_n) & a < y_1 < y_2 < \cdots < y_n < b \\
+0 & \text{otherwise}
+\end{cases}
+\tag{4.3.1}\label{eq:order-statistics-joint}
+\]
+\end{theorem}
+
+\textbf{证明思路}：样本空间可以划分为 $n!$ 个互不相交的集合，每个集合对应 $Y_1, \ldots, Y_n$ 的一个排列。其中一种排列是 $a < x_1 < x_2 < \cdots < x_n < b$，雅可比为 1；其他排列的雅可比为 $\pm 1$。求和后即得公式。
+
+\subsection{单个次序统计量的分布}
+
+设 $Y_k$ 是第 $k$ 个次序统计量。其边缘 pdf 为
+
+\[
+g_k(y_k) =
+\begin{cases}
+\frac{n!}{(k-1)!\,(n-k)!} [F(y_k)]^{k-1} [1-F(y_k)]^{n-k} f(y_k) & a < y_k < b \\
+0 & \text{otherwise}
+\end{cases}
+\tag{4.3.2}\label{eq:single-order-statistic}
+\]
+
+其中 $F(x)$ 是母体分布函数。
+
+\begin{example}[均匀分布次序统计量]\label{ex:uniform-order-statistic}
+设 $Y_1 < Y_2 < Y_3 < Y_4$ 是来自 pdf
+\[
+f(x) =
+\begin{cases}
+2x & 0 < x < 1 \\
+0 & \text{otherwise}
+\end{cases}
+\]
+的随机样本（容量为 4）的次序统计量。求 $P(1/2 < Y_3)$。
+
+\textbf{解}：此处 $F(x) = x^2$，$f(x) = 2x$（$0 < x < 1$）。由公式 \eqref{eq:single-order-statistic}，$Y_3$ 的 pdf 为
+\[
+g_3(y_3) = \frac{4!}{2!\,1!} (y_3^2)^2 (1-y_3^2)(2y_3) = 24(y_3^5 - y_3^7), \quad 0 < y_3 < 1.
+\]
+
+因此
+\[
+P\left(\frac{1}{2} < Y_3\right) = \int_{1/2}^1 24(y_3^5 - y_3^7) \, dy_3 = \frac{243}{256}.
+\]
+\end{example}
+
 \section{4.4 Hypothesis Testing}\label{sec:4.4}
 
 假设检验回答一个根本性问题：\textbf{数据是否提供足够证据拒绝关于总体的某个声明？}
