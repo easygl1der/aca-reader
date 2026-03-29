@@ -847,52 +847,60 @@ Skew 除差算子 $\partial_{w/v}$（见\cref{def:SkewDividedDifference}）由 M
 \subsection{定理的例子}
 \label{sec:TheoremExamples}
 
-\begin{Example}[\cref{def:GrahamPositivity} 的具体例子]
+\textbf{定理的层次关系}：三个定理的正性条件依次减弱——
+\cref{def:GrahamPositivity} 要求 $u, v$ 都是 Grassmannian；
+\cref{conj:Samuel} 去掉了这个限制；
+\cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例。
+下面依次验证。
+
+\begin{Example}[\cref{def:GrahamPositivity} 的验证（条件最强）]
 \label{ex:GrahamPositivityExample}
+\cref{def:GrahamPositivity} 要求 $u, v$ 都是 Grassmannian 排列。
+
 考虑 $S_4$ 中的两个 Grassmannian 排列：
 \begin{itemize}
 \item $u = 1324$：前两位 $1<3$ 递增，后两位 $3>2$ 递减，故是 2-Grassmannian
 \item $v = 2413$：前两位 $2<4$ 递增，后两位 $4>1$ 递减，故是 2-Grassmannian
 \end{itemize}
 
-由\cref{def:GrahamPositivity}，它们的乘积展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 必为 $t_i - y_j$ 的非负整数系数多项式。
-
 具体计算（取 $n=3$ 的简化情形）：
 $$\mathfrak{S}_{12}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) = (x_1 - t_1) = \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})$$
 
-验证：此处恰好有 $c^{21}_{12,21} = 1 \in \mathbb{N}$，符合正性。
+验证：展开系数 $c^{21}_{12,21} = 1 \in \mathbb{N}$，符合正性。
 
-\textbf{更复杂的例子}：取 $u = 213$，$v = 132$（两个 Grassmannian 排列）。由 $S_3$ 的双重 Schubert 多项式表：
-$$\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) = x_1 - y_2$$
-$$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
-
-计算乘积：
+更复杂的例子：取 $u = 213$，$v = 132$。由 $S_3$ 表：
+$$\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) = x_1 - y_2,\quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
 \begin{align*}
-\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t})
-&= (x_1 - y_2)(x_2 - t_2) \\
+\mathfrak{S}_{213} \cdot \mathfrak{S}_{132} &= (x_1 - y_2)(x_2 - t_2) \\
 &= x_1 x_2 - x_1 t_2 - y_2 x_2 + y_2 t_2
 \end{align*}
-
-将其展开为关于 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的组合时，利用
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t}) = x_1 x_2 - x_1 t_3 - x_2 t_3 + t_2 t_3$$
-可将上式整理。关键观察是：每项系数都是 $t_j - y_i$ 的多项式（如此处 $y_2 t_2 = y_2(t_2 - y_2) + y_2^2$），验证了 \cref{def:GrahamPositivity} 的正性要求。
+利用 $y_2 t_2 = y_2(t_2 - y_2) + y_2^2$，每项系数都是 $t_j - y_i$ 的多项式，验证了 \cref{def:GrahamPositivity}。
 \end{Example}
 
-\begin{Example}[\cref{conj:Samuel} 的验证]
+\begin{Example}[\cref{conj:Samuel} 的验证（条件减弱）]
 \label{ex:SamuelConjectureExample}
-\cref{conj:Samuel} 声称：\textbf{即使 $u, v$ 不是 Grassmannian 排列}，展开系数仍然保持正性。
+\cref{conj:Samuel} 去掉了 Grassmannian 的限制，声称对\textbf{任意} $u, v$ 都有正性。
 
-在 $S_3$ 中验证\cref{conj:Samuel}：取 $u = 21$，$v = 12$（两个简单的 Grassmannian 排列）。计算
-$$\mathfrak{S}_{21}(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_{12}(\mathbf{x};\mathbf{t}) = (x_1 - y_1) \cdot 1 = x_1 - y_1$$
-
-当 $\mathbf{y} = \mathbf{t}$ 时，上式化为 $x_1 - t_1 = \mathfrak{S}_{21}(\mathbf{x};\mathbf{t})$。展开系数为 $1 \in \mathbb{N}$，符合正性。
+取 $u = 231$（有 2 个 descents，非 Grassmannian）和 $v = 312$：
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$$
+$$\mathfrak{S}_{312}(\mathbf{x}; \mathbf{t}) = x_1 - t_3$$
+\begin{align*}
+\mathfrak{S}_{231} \cdot \mathfrak{S}_{312} &= x_1^2 x_2 - x_1^2 y_3 - x_1 x_2 y_3 - x_1 x_2 t_3 \\
+&\quad + x_1 y_3 t_3 + x_2 y_3 t_3 + x_1 y_2 y_3 - y_2 y_3 t_3
+\end{align*}
+利用 $t_3 = (t_3 - y_3) + y_3$，每项系数都可化为 $t_j - y_i$ 的多项式，验证了 \cref{conj:Samuel} 在非 Grassmannian 情形下的正性。
 \end{Example}
 
-\begin{Example}[\cref{cor:Kirillov} 的验证]
+\begin{Example}[\cref{cor:Kirillov} 的验证（条件最弱）]
 \label{ex:KirillovConjectureExample}
-令 $\mathbf{y} = \mathbf{t} = 0$，\cref{conj:Samuel} 退化为\cref{cor:Kirillov}。对 $S_3$ 中的 Grassmannian 排列 $u = 231$，有 $\mathfrak{S}_{231} = x_1 x_2$。利用除差算子的性质：
-$$\partial_1(x_1 x_2) = \frac{x_1 x_2 - x_2 x_1}{x_1 - x_2} = 0$$
-实际上，更简单的例子是 $\partial_1(x_1) = 1 \in \mathbb{N}[\mathbf{x}]$，这验证了 skew 除差算子作用在 Schubert 多项式上得到非负系数。
+\cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例。
+
+取 $u = 21$，$v = 12$（恒等置换），则
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{12}(\mathbf{x}; \mathbf{t}) = (x_1 - y_1) \cdot 1 = x_1 - y_1$$
+
+令 $\mathbf{y} = \mathbf{t} = 0$，得 $x_1 \in \mathbb{N}[\mathbf{x}]$。更直接的验证：
+$$\partial_1(x_1) = \frac{x_1 - x_1}{x_1 - x_1} = 1 \in \mathbb{N}[\mathbf{x}]$$
+这验证了 skew 除差算子 $\partial_{w/v}$ 作用在 Schubert 多项式上得到非负系数，即 \cref{cor:Kirillov}。
 \end{Example}
 
 \section{主要定理的证明}
