@@ -1,8 +1,36 @@
 \section{问答记录}
 
-\subsection*{问题记录}
+\subsection{置信区间的频率派解释}\label{sec:qa-confidence-interval-frequentist}
 
-\textbf{问题:} ...
-\textbf{回答:} ...
+\textbf{问}：很多初学者把置信区间的定义 $\mathbb{P}_\theta(L \leq \theta \leq U) = 1 - \alpha$ 误解为"$\theta$ 有 $1-\alpha$ 的概率落在区间 $[L, U]$ 中"。这两种解释有什么区别？哪个是正确的，为什么？
+
+\textbf{答}：这是一个关于频率派与贝叶斯派对置信区间不同理解的核心问题。
+
+\textbf{关键区别}：在频率派统计中，$\theta$ 是\textbf{固定（但未知）的常数}，而区间 $[L, U]$ 是\textbf{随机的}（因为它依赖于样本数据）。因此，我们不能对固定参数 $\theta$ 做概率陈述。
+
+\textbf{正确的频率派解释}：如果我们重复抽样很多次，构造置信区间，那么 $100(1-\alpha)\%$ 的区间会包含真实的 $\theta$。但对于任何\textbf{单次}观察到的区间，真实的 $\theta$ 要么在里面，要么不在里面——没有概率可言。
+
+\textbf{举例说明}：设硬币抛掷 $n=100$ 次，$\hat{p} \sim \text{Binomial}(100, \theta)/100$。
+\begin{itemize}
+\item 对于\textbf{单一样本}：观察到的区间是某个具体区间如 $[0.45, 0.55]$，真实的 $\theta$ 要么在里面，要么不在——无法赋予概率。
+\item 对于\textbf{重复抽样}：如果用同样的真实 $\theta$ 做 1000 次实验，约 950 次构造出的区间会包含 $\theta$。这就是"95\% 置信度"的含义。
+\end{itemize}
+
+\textbf{贝叶斯派的理解则不同}：在贝叶斯统计中，$\theta$ 被视为随机变量（需要先验分布），可以得到"后验可信区间" $P(\theta \in [L, U] \mid \text{data}) = 1 - \alpha$。这里的概率是关于 $\theta$ 的，可以合理地说"$\theta$ 有 95\% 的概率在这个区间内"。
+
+\textbf{总结对比}：
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+表述 & 频率派有效？ & 含义 \\
+\hline
+"$P(\theta \in [L,U]) = 0.95$" & 否 & $\theta$ 是固定的 \\
+"用此方法构造的区间中 95\% 包含 $\theta$" & 是 & 概率在区间构造上 \\
+"$P(\theta \in [L,U] \mid \text{data}) = 0.95$" & 仅在贝叶斯框架下成立 & 需要对 $\theta$ 设定先验分布 \\
+\hline
+\end{tabular}
+\end{center}
+
+置信区间（confidence interval）这一术语是\textbf{频率派概念}，它描述的是构造过程的可靠性，而不是关于某个固定区间的概率。
 
 \subsection*{学习笔记}
