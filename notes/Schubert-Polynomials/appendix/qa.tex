@@ -725,3 +725,34 @@ $$c^w_{u,v}(\beta) \in \mathbb{N}[q_1, q_2, \ldots]$$
 \textbf{几何直觉}：Grassmannian 条件像是"选择了正确的舞台"——当两个 Grassmannian Schubert 类相交时，结果仍然是"好"的（横截、无奇点）；但如果舞台选错了（一般排列），相交可能产生负系数，需要额外的条件（separated descents）来保证正性。\footnote{问：为什么 Graham Positivity 要求 Grassmannian 排列？见附录 \cref{sec:GrassmannianRole}。}
 
 \textbf{footnote 引用}：见 \cref{sec:GaoXiongVsKnutsonTao}。
+
+\section{什么是 Schur 函数？}
+\label{sec:WhatIsSchurFunction}
+
+\subsection{问题}
+Schur 函数是什么？为什么它在 Grassmannian Schubert calculus 中如此重要？
+
+\subsection{回答}
+
+\textbf{定义}：Schur 函数 $s_\lambda(x_1, \ldots, x_n)$ 是由分拆 $\lambda = (\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_n \geq 0)$ 索引的齐次对称多项式，次数为 $|\lambda| = \lambda_1 + \lambda_2 + \cdots + \lambda_n$。
+
+\textbf{组合定义（半标准 Young 表）}：
+$$s_\lambda(x_1, \ldots, x_n) = \sum_{T \in \mathrm{SSYT}(\lambda)} x^{\mathrm{wt}(T)}$$
+其中求和取遍所有形状为 $\lambda$ 的半标准 Young 表，$x^{\mathrm{wt}(T)} = x_1^{m_1} x_2^{m_2} \cdots$ 记录每行出现的次数。
+
+\textbf{例子}（$n=3, \lambda=(2,1)$）：
+$$s_{21}(x_1,x_2,x_3) = x_1^2 x_2 + x_1^2 x_3 + x_1 x_2^2 + x_1 x_3^2 + x_2^2 x_3 + x_2 x_3^2 + x_1 x_2 x_3$$
+
+\textbf{与 Grassmannian 的联系}：当 $w$ 是 $k$-Grassmannian 排列时，其双重 Schubert 多项式可以写成：
+$$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = s_{\lambda^{(k)}}(\mathbf{x}/\mathbf{y})$$
+其中 $s_{\lambda^{(k)}}$ 是分拆 $\lambda^{(k)}$ 对应的 Schur 函数，$\mathbf{x}/\mathbf{y}$ 表示商 Schur 函数（factorial Schur function）。
+
+\textbf{为什么正性来自 Schur 函数？}：
+
+关键性质——Littlewood-Richardson 规则：两个 Schur 函数的乘积展开系数是非负整数：
+$$s_\mu \cdot s_\nu = \sum_\lambda c_{\mu\nu}^\lambda s_\lambda, \quad c_{\mu\nu}^\lambda \in \mathbb{N}$$
+
+这就是 Graham Positivity 的代数基础！当 $u, v$ 都是 Grassmannian 时，$\mathfrak{S}_u \cdot \mathfrak{S}_v$ 的展开系数归结为 Littlewood-Richardson 系数，自然非负。
+
+\textbf{从几何看 Schur 函数}：Schur 函数对应 Grassmannian $\mathrm{Gr}(k,n)$ 的 Schubert 类的上同调环。分拆 $\lambda$ 编码了对应的 Schubert 胞腔的位置。\footnote{问：什么是 Schur 函数？见附录 \cref{sec:WhatIsSchurFunction}。}
+
