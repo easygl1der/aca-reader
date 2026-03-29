@@ -142,6 +142,59 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \q
 
 \textbf{Rao-Blackwell 定理}：若用 $X_2$ 估计 $\mu_2 = \mathbb{E}X_2$，则条件均值 $\mathbb{E}(X_2 \mid x_1)$ 比 $X_2$ 本身更精确（方差更小）。这在统计推断中极其重要——它告诉我们如何利用辅助信息改进估计。\footnote{Rao-Blackwell 定理的详细讨论见附录 \cref{sec:derivation-rao-blackwell}。}
 
+\subsection{R 计算：条件分布}
+
+\begin{example}[离散条件分布]\label{ex:conditional-distribution-discrete-ch2}
+设 $(X_1, X_2)$ 的联合 pmf 如下：
+
+\[
+p_{X_1, X_2}(x_1, x_2) = \frac{1}{8}, \quad x_1 = 1,2, \quad x_2 = 1,2,3,4.
+\]
+
+求条件分布 $\mathbb{P}(X_2 = x_2 \mid X_1 = 1)$。
+
+边缘分布 $p_{X_1}(1) = \sum_{x_2=1}^4 \frac{1}{8} = \frac{4}{8} = \frac{1}{2}$。
+
+条件分布：
+\[
+\mathbb{P}(X_2 = x_2 \mid X_1 = 1) = \frac{p_{X_1,X_2}(1,x_2)}{p_{X_1}(1)} = \frac{1/8}{1/2} = \frac{1}{4}, \quad x_2 = 1,2,3,4.
+\]
+
+因此，给定 $X_1 = 1$ 时，$X_2$ 均匀分布于 $\{1,2,3,4\}$。
+\end{example}
+
+\begin{example}[连续条件分布]\label{ex:conditional-distribution-continuous-ch2}
+设 $(X_1, X_2)$ 服从二元正态 $N(0, 0, 1, 1, 0.5)$。求条件分布 $f_{X_2|X_1}(x_2 \mid x_1 = 0.5)$。
+
+由公式 \eqref{eq:bivariate-normal-conditional}：
+\[
+X_2 \mid X_1 = 0.5 \sim N\left(0 + 0.5 \cdot \frac{1}{1}(0.5 - 0), 1 \cdot (1-0.5^2)\right) = N(0.25, 0.75).
+\]
+
+R 验证：
+\begin{verbatim}
+# 条件分布参数
+mu2_given_x1 <- 0 + 0.5 * (0.5 - 0)  # = 0.25
+sigma2_sq <- 1 * (1 - 0.5^2)  # = 0.75
+
+# 在 R 中绘制条件密度
+curve(dnorm(x, mu2_given_x1, sqrt(sigma2_sq)),
+      from = -2, to = 2,
+      xlab = expression(x[2]), ylab = "Density",
+      main = expression(paste("Conditional density of ", X[2], " | ", X[1], " = 0.5")))
+\end{verbatim}
+\end{example}
+
+\subsection{条件分布的实际应用}
+
+条件分布在统计建模中有广泛应用：
+
+\textbf{1. 回归分析}：条件均值 $\mathbb{E}(Y \mid X = x)$ 正是回归函数。线性回归假设 $\mathbb{E}(Y \mid X = x) = \alpha + \beta x$，但更一般地，任何条件均值函数都可以作为回归目标。
+
+\textbf{2. 分层抽样}：在抽样设计中，我们经常按子群（strata）分组。子群内的条件分布描述了组内变异，而边缘分布描述了总体变异。方差分解公式 \eqref{eq:law-total-variance} 正是这种思想的数学表达。
+
+\textbf{3. 贝叶斯统计}：后验分布 $f(\theta \mid x)$ 是在观测数据 $x$ 的条件下参数 $\theta$ 的条件分布。整个贝叶斯推断都建立在条件分布的理论之上。
+
 \section{2.4 独立性：变量间的"无关系"}\label{sec:2.4}
 
 \subsection{什么时候 $X_1$ 和 $X_2$ 互不影响？}
@@ -265,6 +318,89 @@ X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1
 \end{Remark}
 
 条件分布的方差 $\sigma_2^2(1-\rho^2)$ 小于无条件方差 $\sigma_2^2$——知道 $X_1$ 的值减少了我们对 $X_2$ 的不确定性。当 $|\rho| = 1$ 时，方差为零，意味着 $X_2$ 可以完全由 $X_1$ 线性决定。
+
+\subsection{R 计算：二元正态}
+
+R 中处理二元正态分布的核心函数包括 \texttt{mvtnorm} 包中的函数。
+
+\begin{example}[二元正态概率计算]\label{ex:bivariate-normal-prob-ch2}
+设 $(X_1, X_2) \sim N(0, 0, 1, 1, 0.7)$。求 $\mathbb{P}(X_1 \leq 0.5, X_2 \leq 0.5)$。
+
+在 R 中：
+\begin{verbatim}
+# 安装和加载 mvtnorm 包
+install.packages("mvtnorm")
+library(mvtnorm)
+
+# 计算二元正态 CDF
+pmvnorm(lower = c(-Inf, -Inf), upper = c(0.5, 0.5),
+        mean = c(0, 0), sigma = matrix(c(1, 0.7, 0.7, 1), nrow = 2))
+\end{verbatim}
+\end{example}
+
+\begin{example}[生成二元正态样本]\label{ex:bivariate-normal-simulation-ch2}
+设 $(X_1, X_2) \sim N(0, 0, 1, 1, 0.8)$。生成 $n = 1000$ 的样本并可视化。
+
+\begin{verbatim}
+library(mvtnorm)
+n <- 1000
+rho <- 0.8
+sigma <- matrix(c(1, rho, rho, 1), nrow = 2)
+set.seed(123)
+sample <- rmvnorm(n, mean = c(0, 0), sigma = sigma)
+
+# 绘制散点图
+plot(sample, xlab = expression(X[1]), ylab = expression(X[2]),
+     main = paste("Bivariate Normal, rho =", rho), pch = 20, cex = 0.5)
+
+# 添加相关系数
+cor(sample[,1], sample[,2])
+\end{verbatim}
+\end{example}
+
+\textbf{不同 $\rho$ 值的效果}：
+\begin{itemize}
+\item $\rho = 0$：$X_1$ 和 $X_2$ 独立，分布呈圆形对称
+\item $\rho > 0$：正相关，分布沿主对角线 ($y=x$) 拉伸
+\item $\rho < 0$：负相关，分布沿副对角线 ($y=-x$) 拉伸
+\item $|\rho| = 1$：分布退化为一条直线（完美线性关系）
+\end{itemize}
+
+\subsection{条件均值与预测}
+
+二元正态的一个核心应用是\textbf{最优线性预测}。给定 $X_1 = x_1$，$X_2$ 的最佳预测是条件均值：
+
+\[
+\widehat{X}_2 = \mathbb{E}(X_2 \mid x_1) = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1).
+\]
+
+\textbf{为什么是"最优"？} 考虑预测误差 $e = X_2 - \widehat{X}_2$。可以证明，在所有线性预测中，这个条件均值预测的均方误差最小。\footnote{最优线性预测的推导见附录 \cref{sec:derivation-bivariate-normal-conditional}。}
+
+\textbf{预测误差的方差}：$\text{var}(e) = \sigma_2^2(1-\rho^2)$。当 $|\rho| = 1$ 时，误差方差为零——$X_2$ 可以完全由 $X_1$ 预测。
+
+\begin{example}[身高与体重预测]\label{ex:height-weight-prediction-ch2}
+设 $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$，其中 $X_1$ 为父亲身高（英寸），$X_2$ 为儿子身高（英寸）。根据 Galton 的经典数据：
+\[
+\mu_1 = \mu_2 = 68.2, \quad \sigma_1 = \sigma_2 = 2.7, \quad \rho = 0.5.
+\]
+
+给定父亲身高 $x_1 = 72$ 英寸，儿子的预测身高为：
+\[
+\mathbb{E}(X_2 \mid X_1 = 72) = 68.2 + 0.5 \cdot \frac{2.7}{2.7}(72 - 68.2) = 68.2 + 1.9 = 70.1 \text{ 英寸}.
+\]
+
+预测误差的标准差为 $\sigma_2\sqrt{1-\rho^2} = 2.7 \cdot \sqrt{0.75} \approx 2.34$ 英寸。
+\end{example}
+
+\subsection{回归与条件均值}
+
+从条件均值公式，我们可以写出"回归方程"：
+\[
+X_2 = \alpha + \beta X_1 + \varepsilon,
+\]
+其中 $\beta = \rho \frac{\sigma_2}{\sigma_1}$，$\alpha = \mu_2 - \beta \mu_1$，$\varepsilon \sim N(0, \sigma_2^2(1-\rho^2))$ 与 $X_1$ 独立。
+
+\textbf{最小二乘法的联系}：在统计学中，我们通常从数据估计回归系数。样本回归系数 $\widehat{\beta} = \widehat{\rho} \frac{s_2}{s_1}$ 依概率收玫到真实的 $\beta$。\footnote{回归理论的详细讨论见附录 \cref{sec:derivation-regression}。}
 
 \section{2.7 多元推广}\label{sec:2.7}
 
