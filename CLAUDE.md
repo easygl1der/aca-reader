@@ -604,6 +604,7 @@ git worktree prune
 - **2026-03-27**: 符号不一致（同一概念用不同符号）→ 使用 /latex-writing-check 检查全笔记符号统一
 - **2026-03-27**: 学术写作中不要使用 `\mparafh`（margin paragraph）→ 用 `\paragraph` 替代
 - **2026-03-29**: Agent 无响应/不工作时 → 立即 respawn，不要等；Team Lead 直接顶上闭环，不要卡在 agent 状态上
+- **2026-03-29**: subagent 生成的 theorem 环境 `\begin theorem}` 缺少 `{` 或有空格 → 必须严格使用 `\begin theorem}` 格式
 
 ---
 
