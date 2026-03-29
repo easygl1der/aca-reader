@@ -678,53 +678,120 @@ $$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \text{ 是 proper 且横截的
 \subsection{问题}
 在 Graham Positivity Theorem（\cref{def:GrahamPositivity}）中，为什么要求 $u, v$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列？$k_1, k_2$ 的作用是什么？为什么不能推广到一般排列？
 
-\subsection{回答}
+\subsection{详细分析}
 
 \textbf{1. $k$-Grassmannian 排列的几何意义}：
 
-一个 $k$-Grassmannian 排列 $w$ 对应 Grassmannian 流形 $\mathrm{Gr}(k, n)$ 中的一个 Schubert 胞腔。定义要求：
+一个 $k$-Grassmannian 排列 $w$ 对应 Grassmannian 流形 $\mathrm{Gr}(k, n)$ 中的一个 Schubert 胞腔。\footnote{问：什么是 Grassmannian？见\cref{def:Grassmannian}。} 定义要求：
 $$w(1) < w(2) < \cdots < w(k) \quad \text{且} \quad w(k+1) > w(k+2) > \cdots > w(n)$$
+
+几何上，这意味着 $w$ 的下降点集合 $\mathrm{Des}(w)$ 恰好是 $\{k\}$——只有一个 descent，发生在位置 $k$。这个单一 descent 将排列分成两个"递增块"：
+\begin{itemize}
+\item 前 $k$ 位：严格递增 $\Rightarrow$ 对应 Grassmannian 中第一个 flag 条件 $V_1 \subset V_2 \subset \cdots \subset V_k$
+\item 后 $n-k$ 位：严格递减 $\Rightarrow$ 对应 Grassmannian 中剩余的包含关系
+\end{itemize}
+
+例如，$w = (1, 3, 4, 2) \in S_4$ 是 2-Grassmannian：
+\begin{itemize}
+\item 前 2 位 $1 < 3$ 递增
+\item 后 2 位 $4 > 2$ 递减
+\item 对应 $\mathrm{Gr}(2, 4)$ 中的 Schubert 胞腔
+\end{itemize}
 
 \textbf{2. $k_1, k_2$ 的作用}：
 
-$k_1$ 和 $k_2$ 标记了两个 Grassmannian 的类型——它们决定了对应的 Schubert 类在哪种 Grassmannian 流形中。例如：
-\begin{itemize}
-\item $k_1 = 2$：前 2 位递增 $\Rightarrow$ 对应 $\mathrm{Gr}(2, n)$
-\item $k_2 = 1$：前 1 位递增 $\Rightarrow$ 对应 $\mathrm{Gr}(1, n) = \mathbb{CP}^{n-1}$
-\end{itemize}
+$k_1$ 和 $k_2$ 标记了两个 Grassmannian 的"维数"——它们决定了对应的 Schubert 类分别位于哪种 Grassmannian 流形中。
 
-\textbf{3. 为什么正性依赖 Grassmannian 条件？}
+当 $u$ 是 $k_1$-Grassmannian，$v$ 是 $k_2$-Grassmannian 时，它们分别对应：
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) = s_{\lambda^{(1)}}(\mathbf{x}/\mathbf{y}), \quad \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = s_{\lambda^{(2)}}(\mathbf{x}/\mathbf{t})$$
 
-当 $u, v$ 都是 Grassmannian 时，它们的 Schubert 多项式 $\mathfrak{S}_u, \mathfrak{S}_v$ 可以因子化为（ skew）Schur 函数：
+其中 $s_\lambda$ 是 Schur 函数，$\lambda^{(1)}, \lambda^{(2)}$ 是与 $k_1, k_2$ 相关的分拆。\footnote{问：Schur 函数是什么？见\cref{sec:WhatIsSchurFunction}。}
+
+\textbf{3. 为什么正性依赖于 Grassmannian 条件？——因子化机制}：
+
+当 $u, v$ 都是 Grassmannian 时，它们的 Schubert 多项式可以因子化为（factorial）Schur 函数：
 $$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) = s_{\lambda}(\mathbf{x}/\mathbf{y})$$
-其中 $s_\lambda$ 是 Schur 函数，$\lambda$ 是某个分拆。
 
-Schur 函数的结构常数是 Littlewood-Richardson 系数 $c_{\mu\nu}^\lambda$，而 Littlewood-Richardson 系数是 \textbf{非负整数}！这就是正性的来源。
+这是因为 Grassmannian 排列的逆序数向量具有特殊结构：只有一行（single row）。这使得 Schubert 多项式的组合公式退化为简单的分拆函数。
 
-\textbf{4. 为什么推广到一般排列是难题？}
+Schur 函数的乘法规则是 Littlewood-Richardson 规则：
+$$s_\mu \cdot s_\nu = \sum_\lambda c_{\mu\nu}^\lambda s_\lambda$$
 
-对于非 Grassmannian 排列，Schubert 多项式不能因子化为 Schur 函数。当两个一般的 Schubert 多项式相乘时：
+其中结构常数 $c_{\mu\nu}^\lambda$ 是 \textbf{Littlewood-Richardson 系数}——非负整数！\footnote{问：Littlewood-Richardson 系数为什么非负？见\cref{sec:LittlewoodRichardsonPositivity}。} 这就是正性的代数来源。
+
+当设置 $\mathbf{y} = \mathbf{t} = 0$ 时，因子化 Schur 函数退化为普通 Schur 函数，乘积展开系数仍是 Littlewood-Richardson 系数，自然非负。
+
+\textbf{4. 推广到一般排列的困难——Samuel 猜想}：
+
+对于非 Grassmannian 排列，Schubert 多项式不能因子化为 Schur 函数。例如，$w = (2, 4, 3, 1) \in S_4$ 有两个 descents（发生在位置 2 和 3），其 Schubert 多项式是更复杂的组合对象。
+
+当两个一般的 Schubert 多项式相乘时：
 $$\mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \mathfrak{S}_w$$
 
-系数 $c^w_{u,v}$ 不再自动非负。需要新的几何/组合解释来说明为什么某些特殊排列（separated descents, 或三重情形）仍然保持正性。
+系数 $c^w_{u,v}$ 不再自动非负。这是因为：
+\begin{enumerate}
+\item 非 Grassmannian Schubert 多项式不是单一 Schur 函数，而是 Schur 函数的线性组合
+\item 乘法后系数变为这些 Schur 函数之间的"混合"系数
+\item 这些混合系数可能是负的——正性不再自动成立
+\end{enumerate}
 
-\textbf{5. Samuel 猜想（Theorem 1.1）的意义}：
+\textbf{5. Separated Descents：弱化条件的几何意义}：
 
-Samuel 猜想将正性从 Grassmannian 推广到任意排列，但引入了 separated descents 条件：
-$$\max \mathrm{Des}(u) \leq \min \mathrm{Des}(v)$$
+Samuel 在论文中引入了 separated descents 条件来弱化 Grassmannian 要求。\footnote{问：什么是 separated descents？见\cref{def:SeparatedDescents}。}
 
-这个条件的几何意义是：交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 仍然是 transverse 的，从而保持了正性。
+\begin{Definition}[\textbf{Separated Descents 条件}]
+设 $u, v \in S_\infty$。称 $(u, v)$ 满足 separated descents 条件，如果存在正整数 $p$ 使得：
+\begin{itemize}
+\item 对所有 $i < p$，有 $\ell(us_i) > \ell(u)$（即 $i \notin \mathrm{Des}(u)$）；
+\item 对所有 $i > p$，有 $\ell(vs_i) > \ell(v)$（即 $i \notin \mathrm{Des}(v)$）。
+\end{itemize}
+换言之，$u$ 的所有下降点都集中在 $p$ 的左侧，$v$ 的所有下降点都集中在 $p$ 的右侧。
+\end{Definition}
 
-\textbf{6. 量子版本（Kirillov-Maeno）的正性}：
+用 descent 集合描述：$\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$。
 
-在量子上同调中，正性仍然成立，但系数变为关于 $q$ 的多项式：
+几何意义：这个条件保证了两列 Schubert 类 $B^-uB/B$ 和 $B^-vB/B$ 的相对位置是"可分离"的。当我们用特殊排列 $\tau$ 平移后，相交运算
+$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$$
+仍然保持横截性（transversality），从而交集的上同调类仍然是 Schubert 类的非负线性组合。
+
+\textbf{6. Samuel 论文中的弱化策略}：
+
+Samuel 在 2024 年的论文中，证明了 separated descents 情形下的正性公式。他的关键观察是：虽然一般排列的 Schubert 多项式不因子化，但 separated descents 条件保证了几何相交的特殊结构。
+
+Samuel 的策略是：
+\begin{enumerate}
+\item 使用 $B^-$-轨道方法（Gao-Xiong 的几何框架）
+\item 证明在 separated descents 条件下，轨道闭合的相交仍是"好"的
+\item 通过组合论证，将系数限制为关于 $t_i - y_j$ 的非负多项式
+\end{enumerate}
+
+\textbf{7. 量子版本（Kirillov-Maeno）是否保持正性？}：
+
+Kirillov 和 Maeno 在 1996 年引入了量子双重 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$。\footnote{问：什么是量子 Schubert 多项式？见\cref{chap:QuantumDouble}。}
+
+在量子上同调中，正性仍然成立，但形式更复杂：
 $$c^w_{u,v}(\beta) \in \mathbb{N}[q_1, q_2, \ldots]$$
 
-量子参数 $q$ 记录了曲线类的度数，物理上对应不同亏格的 Gromov-Witten 不变量。
+其中 $\beta$ 记录了连接子簇的曲线类，$q^\beta$ 是形式变量。物理上，量子参数 $q$ 来自 Gromov-Witten 不变量——计数通过给定 curve class $\beta$ 连接两点的曲线的个数。
 
-\textbf{几何直觉}：Grassmannian 条件像是"选择了正确的舞台"——当两个 Grassmannian Schubert 类相交时，结果仍然是"好"的（横截、无奇点）；但如果舞台选错了（一般排列），相交可能产生负系数，需要额外的条件（separated descents）来保证正性。\footnote{问：为什么 Graham Positivity 要求 Grassmannian 排列？见附录 \cref{sec:GrassmannianRole}。}
+具体而言，量子 Schubert 乘法规则为：
+$$[\sigma_u] \star [\sigma_v] = \sum_{w,\beta} q^{\beta} c^w_{u,v}(\beta) [\sigma_w]$$
 
-\textbf{footnote 引用}：见 \cref{sec:GaoXiongVsKnutsonTao}。
+其中 $c^w_{u,v}(\beta) \in \mathbb{N}$ 对每个 $\beta$ 都是非负整数。
+
+\textbf{几何直觉总结}：
+
+Grassmannian 条件像是"选择了正确的舞台"：
+\begin{itemize}
+\item 当 $u, v$ 都是 Grassmannian 时，它们对应的 Schubert 胞腔位于"好"的几何位置——相邻 Grassmannian 子流形上。相交总是产生"好"的结果（横截、无奇点）
+\item 如果舞台选错了（一般排列），相交可能产生负系数
+\item Separated descents 条件提供了某种"部分好"的位置关系——只要下降点分离，几何就仍是"好"的
+\item 量子版本通过引入 $q$ 参数，将问题提升到曲线计数层面，但正性机制保持不变
+\end{itemize}
+
+\textbf{开放问题}：Samuel 猜想（Theorem 1.1）声称对所有 $u, v \in S_\infty$，正性都成立。Gao \& Xiong 的工作证明了 separated descents 情形。推广到完全一般排列仍是 open problem——这反映了我们对旗流形中一般位置相交的理解仍然有限。
+
+\textbf{footnote 引用}：见 \cref{sec:GaoXiongVsKnutsonTao}，\cref{def:Lemma25}。
 
 \section{什么是 Schur 函数？}
 \label{sec:WhatIsSchurFunction}
