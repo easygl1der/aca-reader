@@ -33,4 +33,92 @@
 
 置信区间（confidence interval）这一术语是\textbf{频率派概念}，它描述的是构造过程的可靠性，而不是关于某个固定区间的概率。
 
+\subsection{贝叶斯先验分布的具体例子}\label{sec:qa-bayesian-prior-examples}
+
+\textbf{问}：在之前关于置信区间的回答中提到，贝叶斯学派认为 $\theta$ 需要先验分布。能给出一些具体的先验分布例子吗？先验分布到底代表什么？
+
+\textbf{答}：这是一个很好的问题。在贝叶斯统计中，我们将参数 $\theta$ 视为随机变量，因此在推断前必须为其指定一个\textbf{先验分布}（prior distribution），表达我们对参数的初始信念。以下是几个经典例子。
+
+---
+
+\textbf{例 1：硬币抛掷（Bernoulli 分布）—— Beta 先验}
+
+设硬币正面朝上的概率为 $\theta$，抛掷 $n$ 次得到 $Y$ 次正面，则 $Y \sim \text{Binomial}(n, \theta)$。
+
+\textbf{共轭先验}：我们为 $\theta$ 选择 Beta 分布作为先验：
+\[
+\theta \sim \text{Beta}(\alpha, \beta)
+\]
+其 pdf 为：
+\[
+\pi(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta-1}}{B(\alpha, \beta)}, \quad 0 < \theta < 1
+\]
+
+\textbf{直观理解}：Beta 分布是 $[0,1]$ 区间上的灵活分布，参数 $(\alpha, \beta)$ 控制先验信念：
+\begin{itemize}
+\item $\alpha = \beta = 1$：均匀分布（无信息先验），表示"对 $\theta$ 一无所知"
+\item $\alpha = \beta = 2$：表示" $\theta$ 可能接近 0.5"的信念（对称且集中）
+\item $\alpha = 3, \beta = 1$：表示" $\theta$ 更可能接近 1"的信念
+\end{itemize}
+
+\textbf{为什么选择 Beta 分布？} 因为它是 Bernoulli/binomial 的共轭先验——后验分布与先验分布具有相同的函数形式，计算极为方便。观测数据后，后验分布为：
+\[
+\theta \mid Y \sim \text{Beta}(\alpha + Y, \beta + n - Y)
+\]
+
+\textbf{例 2：正态均值 —— 正态先验}
+
+设 $X_1, \ldots, X_n \sim N(\theta, \sigma^2)$，其中 $\sigma^2$ 已知，$\theta$ 未知。
+
+\textbf{共轭先验}：我们为 $\theta$ 选择正态分布作为先验：
+\[
+\theta \sim N(\mu_0, \tau_0^2)
+\]
+其中 $\mu_0$ 是先验均值（你对 $\theta$ 的初始猜测），$\tau_0^2$ 是先验方差（你对这个猜测的信心）。
+
+\textbf{直观理解}：
+\begin{itemize}
+\item $\tau_0^2$ 很大：先验方差大，表示对 $\theta$ 的初始信念很模糊
+\item $\tau_0^2$ 很小：先验方差小，表示对 $\theta$ 有很强的先验信念
+\item $\mu_0 = 0$：如果你没有任何理由偏好正值或负值
+\end{itemize}
+
+\textbf{后验分布}：观测数据后，后验分布为：
+\[
+\theta \mid \bar{x} \sim N\!\left(\frac{\frac{\mu_0}{\tau_0^2} + \frac{n\bar{x}}{\sigma^2}}{\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}},\; \frac{1}{\frac{1}{\tau_0^2} + \frac{n}{\sigma^2}}\right)
+\]
+这是又一个正态分布——共轭性的体现。
+
+---
+
+\textbf{为什么需要先验分布？先验代表什么？}
+
+先验分布（prior distribution）代表我们在\textbf{观测数据之前}对参数 $\theta$ 的主观信念（subjective belief）。这可以从两个角度理解：
+
+\begin{enumerate}
+\item \textbf{主观贝叶斯视角}：先验反映了个人的真实信念。例如，如果你认为硬币"通常"是公平的，你可以将先验设为 $\theta \sim \text{Beta}(2,2)$（中心在 0.5，但允许不确定性）。
+
+\item \textbf{客观贝叶斯视角}：选择尽量"无信息"的先验，使后验主要由数据驱动。例如，$\text{Beta}(1,1)$（均匀分布）或 Jeffreys 先验 $\text{Beta}(1/2, 1/2)$。
+\end{enumerate}
+
+\textbf{贝叶斯推断的本质}是通过贝叶斯定理将先验更新为后验：
+\[
+\underbrace{\pi(\theta \mid \text{data})}_{\text{后验}} \propto \underbrace{L(\theta \mid \text{data})}_{\text{似然}} \times \underbrace{\pi(\theta)}_{\text{先验}}
+\]
+数据通过似然函数"告诉"我们信息，先验通过贝叶斯定理被更新为后验。后验分布集中了所有关于 $\theta$ 的信息——既包含先验信念，也包含数据证据。
+
+\textbf{先验 vs. 后验的直观理解}：
+\begin{center}
+\begin{tabular}{ccc}
+\hline
+ & \textbf{先验（Prior）} & \textbf{后验（Posterior）} \\
+\hline
+时机 & 看到数据之前 & 看到数据之后 \\
+性质 & 主观信念或无信息设定 & 更新后的知识状态 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{总结}：先验分布是贝叶斯统计的标志性特征。它将参数视为随机变量，允许我们以概率语言描述对参数的认知，并通过数据不断更新这种认知。这与频率派的"参数固定但未知"观点形成了根本性对比。
+
 \subsection*{学习笔记}
