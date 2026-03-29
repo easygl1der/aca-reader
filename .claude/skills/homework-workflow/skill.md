@@ -12,7 +12,21 @@
 
 ## 工作流程
 
-### Step 1: 解析 Homework PDF
+### Step 1: 检查教材 transcript / tex
+
+**优先使用已有 .md 或 .tex 文件**，不要重复从 PDF 提取。
+
+1. 搜索是否有对应教材的 transcript (.md) 或笔记 (.tex)：
+   ```
+   Glob: PDFs/<主题>/transcript/**/*.md
+   Glob: notes/<主题>/**/*.tex
+   ```
+
+2. 如果有 .tex 文件 → 读取 .tex（更好的 `\label` / `\cref` 跳转）
+3. 如果只有 .md 文件 → 读取 .md 转录本
+4. **只有当没有 transcript 也没有 tex 时**，才从 PDF 解析
+
+### Step 2: 解析 Homework PDF
 
 使用 `pymupdf` (fitz) 提取 PDF 文本：
 
@@ -23,7 +37,7 @@ for page in doc:
     print(page.get_text())
 ```
 
-### Step 2: 分析作业结构
+### Step 3: 分析作业结构
 
 识别：
 - 教材习题编号（如 "Chapter 2: 2.1", "Chapter 3: 3.4, 3.5, 3.6"）
