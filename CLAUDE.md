@@ -116,6 +116,27 @@ notes/<主题>/
 
 ---
 
+## 🔧 Agent Memory System
+
+literature-experts 团队成员与教训 Memory 文件映射
+
+| Agent | Memory 文件 |
+|-------|-------------|
+| causal-expert | `docs/lessons/agents/causal-expert-memory.md` |
+| geometry-expert | `docs/lessons/agents/geometry-expert-memory.md` |
+| bayesian-expert | `docs/lessons/agents/bayesian-expert-memory.md` |
+| info-geo-expert | `docs/lessons/agents/info-geo-expert-memory.md` |
+| schubert-expert | `docs/lessons/agents/schubert-expert-memory.md` |
+| writing-expert | `docs/lessons/agents/writing-expert-memory.md` |
+| latex-checker | `docs/lessons/agents/latex-checker-memory.md` |
+| qa-specialist | `docs/lessons/agents/qa-specialist-memory.md` |
+| exercise-expert | `docs/lessons/agents/exercise-expert-memory.md` |
+| gemini-expert | `docs/lessons/agents/gemini-expert-memory.md` |
+
+通用教训: `docs/lessons/agents/ALL-agents-memory.md`
+
+---
+
 ## 📝 文献库
 
 | 主题 | 路径 |
