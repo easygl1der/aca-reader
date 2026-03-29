@@ -138,7 +138,7 @@ f_{X_1}(x_1) = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2.
 \begin{example}[离散边缘分布]\label{ex:marginal-discrete-ch2}
 设 $(X_1, X_2)$ 的联合 pmf 如下（列联表形式）：
 
-\[
+\begin{equation}\label{eq:law-total-expectation}
 \begin{array}{c|cccc|c}
 X_2 \backslash X_1 & 1 & 2 & 3 & 4 & \text{边缘} \\ \hline
 1 & 0.05 & 0.10 & 0.05 & 0.02 & ? \\
@@ -259,7 +259,7 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \q
 这里有一个深刻的定理，它连接了条件与边缘。\footnote{推导见附录 \cref{sec:derivation-ch2-law-total-expectation}。}
 
 \begin{theorem}[全期望公式]\label{th:law-total-expectation-ch2}
-\begin{equation}\label{eq:law-total-expectation}
+\[
 \mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \mathbb{E}(X_2).
 \tag{2.3.1}
 \end{equation}
@@ -270,13 +270,13 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \q
 更惊人的是方差的不等式：\footnote{推导见附录 \cref{sec:derivation-ch2-variance-inequality}。}
 
 \begin{theorem}[条件方差公式]\label{th:law-total-variance-ch2}
-\[
+\begin{equation}\label{eq:law-total-variance}
 \text{var}(X_2) = \mathbb{E}[\text{var}(X_2 \mid X_1)] + \text{var}[\mathbb{E}(X_2 \mid X_1)].
-\tag{2.3.2}\label{eq:law-total-variance}\]
-\begin{equation}
-\end{theorem}
-\tag{}
+\tag{2.3.2}
 \end{equation}
+\end{theorem}
+
+\textbf{直观理解}：总方差等于"平均条件方差"加上"条件均值的方差"。第一项度量 $X_2$ 在给定 $X_1$ 后的残余不确定性；第二项度量 $X_1$ 带来的不确定性。
 
 \textbf{Rao-Blackwell 定理}：若用 $X_2$ 估计 $\mu_2 = \mathbb{E}X_2$，则条件均值 $\mathbb{E}(X_2 \mid x_1)$ 比 $X_2$ 本身更精确（方差更小）。这在统计推断中极其重要——它告诉我们如何利用辅助信息改进估计。\footnote{Rao-Blackwell 定理的详细讨论见附录 \cref{sec:derivation-ch2-rao-blackwell}。}
 
@@ -285,7 +285,7 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \q
 \begin{example}[离散条件分布]\label{ex:conditional-distribution-discrete-ch2}
 设 $(X_1, X_2)$ 的联合 pmf 如下：
 
-\[
+\begin{equation}\label{eq:independence-factorization}
 p_{X_1, X_2}(x_1, x_2) = \frac{1}{8}, \quad x_1 = 1,2, \quad x_2 = 1,2,3,4.
 \]
 
@@ -520,26 +520,26 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = f_{X_2}(x_2) \quad \text{（不依赖于 } x_1 
 \begin{theorem}[独立性]\label{th:independence-ch2}
 \[
 X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv f_1(x_1) f_2(x_2).
-\tag{2.4.1}\label{eq:independence-factorization}\]
-\]
+\tag{2.4.1}
+\end{equation}
 \end{theorem}
 
-\begin{equation}\label{th:independence-factorization-ch2}
+一个实用的判据：
 
-\tag{}
-\end{equation}
+\begin{theorem}[独立性因子化判据]\label{th:independence-factorization-ch2}
+\begin{equation}\label{eq:independence-factorization-practical}
 X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad \text{（可分离变量）}.
-\tag{2.4.2}\label{eq:independence-factorization-practical}\]
-\]
+\tag{2.4.2}
+\end{equation}
 \end{theorem}
 
 \textbf{独立性的后果}：
 \begin{itemize}
 \item $\mathbb{E}[g(X_1) h(X_2)] = \mathbb{E}[g(X_1)] \cdot \mathbb{E}[h(X_2)]$
-\begin{equation}
+\item $\text{cov}(X_1, X_2) = 0$
 \end{itemize}
-\tag{}
-\end{equation}
+
+\beginRemark}\label{rmk:cov-zero-not-independence-ch2}
 \textbf{逆命题不成立！} $\text{cov}(X_1, X_2) = 0$ 并不意味着独立性（除二元正态分布外）。
 \endRemark}
 
@@ -552,7 +552,7 @@ X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad 
 独立性在统计推断中极其重要，因为：
 
 \textbf{1. 简化计算}：若 $X_1 \Perp X_2$，则
-\[
+\begin{equation}\label{eq:correlation-definition}
 \mathbb{E}[g(X_1)h(X_2)] = \mathbb{E}[g(X_1)] \cdot \mathbb{E}[h(X_2)],
 \]
 这大大简化了期望的计算。
@@ -682,7 +682,8 @@ fisher.test(table)
 
 \begin{equation}\label{def:correlation-ch2}
 \rho_{12} = \text{corr}(X_1, X_2) = \frac{\text{cov}(X_1, X_2)}{\sqrt{\text{var}(X_1)} \sqrt{\text{var}(X_2)}} = \frac{\text{cov}(X_1, X_2)}{\sigma_1 \sigma_2}.
-\tag{2.5.1}\label{eq:correlation-definition}
+\tag{2.5.1}
+\end{equation}
 \end{equation}
 
 这就是相关系数（correlation coefficient）。
@@ -695,9 +696,10 @@ fisher.test(table)
 \end{itemize}
 
 为什么是 $[-1, 1]$？这来自 Cauchy-Schwarz 不等式：
-\[
+\begin{equation}\label{eq:cauchy-schwarz-application}
 |\text{cov}(X_1, X_2)| = |\mathbb{E}[(X_1-\mu_1)(X_2-\mu_2)]| \leq \sqrt{\mathbb{E}[(X_1-\mu_1)^2] \cdot \mathbb{E}[(X_2-\mu_2)^2]} = \sigma_1 \sigma_2.
-\tag{2.5.2}\label{eq:cauchy-schwarz-application}\]
+\tag{2.5.2}
+\end{equation}
 
 \beginRemark}\label{rmk:corr-vs-cov-ch2}
 \textbf{相关 vs 协方差}：协方差取决于量纲（"米的协方差"vs"厘米的协方差"数值不同）；相关系数是无量纲的，消除了单位影响。因此，相关系数是更通用的"关联程度"度量。
@@ -707,11 +709,10 @@ fisher.test(table)
 
 相关系数的概念由 Francis Galton（1888）在研究遗传问题时首次提出，但 Karl Pearson（1896）给出了严格的数学定义和估计方法。Pearson 的工作奠定了生物计量学的基础，也使得相关性成为统计学中最广泛使用的概念之一。
 
-\begin{equation}
+\textbf{Galton 的发现}：Galton 研究双胞胎身高时发现，父亲身高与子女身高之间存在"回归"（regression）现象——极端身高（非常高或非常矮）的父母，其子女的身高倾向于向平均值"回归"。这种"向均值回归"的现象正是相关性的体现。
 
-\tag{}
-\end{equation}
-\[
+\textbf{Pearson 的贡献}：Pearson 给出了相关系数的精确数学定义：
+\begin{equation}\label{eq:bivariate-normal-conditional}
 \rho_{XY} = \frac{\text{cov}(X, Y)}{\sigma_X \sigma_Y},
 \]
 并推导了其统计性质。他发展的矩估计方法至今仍是估计相关系数的主要方法之一。
@@ -797,22 +798,22 @@ f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{1
 \item 条件分布：\footnote{推导见附录 \cref{sec:derivation-ch2-bivariate-normal-conditional}。}
 \[
 X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1), \ \sigma_2^2(1-\rho^2)\right)
-\tag{2.6.1}\label{eq:bivariate-normal-conditional}\]
-\]
+\tag{2.6.1}
+\end{equation}
 \item $X_1 \Perp X_2 \iff \rho = 0$（正态独有的"不相关 $\Rightarrow$ 独立"）
 \item 任意线性组合 $aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, \text{var}(aX_1 + bX_2))$
 \end{enumerate}
 
 \beginRemark}\label{rmk:bivariate-normal-conditional-ch2}
 \textbf{条件分布的几何直觉}：条件均值
-\[
+\begin{equation}\label{eq:multivariate-independence}
 \mathbb{E}(X_2 \mid x_1) = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)
 \]
 是 $x_1$ 的线性函数。这意味着：给定 $X_1 = x_1$，$X_2$ 的最佳预测也是线性的，其斜率由相关系数 $\rho$ 决定。
-\begin{equation}
+\endRemark}
 
-\tag{}
-\end{equation}
+条件分布的方差 $\sigma_2^2(1-\rho^2)$ 小于无条件方差 $\sigma_2^2$——知道 $X_1$ 的值减少了我们对 $X_2$ 的不确定性。当 $|\rho| = 1$ 时，方差为零，意味着 $X_2$ 可以完全由 $X_1$ 线性决定。
+
 \subsection{R 计算：二元正态}
 
 R 中处理二元正态分布的核心函数包括 \texttt{mvtnorm} 包中的函数。
@@ -920,25 +921,26 @@ f_{2,\ldots,n|1}(x_2,\ldots,x_n \mid x_1) = \frac{f(x_1, x_2, \ldots, x_n)}{f_1(
 $n$ 个随机变量 $X_1, \ldots, X_n$ 相互独立，当且仅当
 \[
 f(x_1, x_2, \ldots, x_n) \equiv f_1(x_1) f_2(x_2) \cdots f_n(x_n).
-\tag{2.7.1}\label{eq:multivariate-independence}\]
+\tag{2.7.1}
+\end{equation}
 
 \textbf{注意}：两两独立（pairwise independence）不一定推出相互独立（mutual independence）。Bernstein 的例子说明了这一点。\footnote{反例见附录 \cref{sec:derivation-ch2-pairwise-not-mutual}。}
 
 \subsection{线性组合的 mgf}
 
 若 $X_1, \ldots, X_n$ 相互独立，$T = \sum_{i=1}^n k_i X_i$ 的 mgf 为
-\[
+\begin{equation}\label{eq:mgf-sum-iid}
 M_T(t) = \prod_{i=1}^n M_i(k_i t).
 \]\footnote{推导见附录 \cref{sec:derivation-ch2-mgf-linear-combination}。}
 
 特别地，若 $X_1, \ldots, X_n$ iid（独立同分布），则 $T = \sum_{i=1}^n X_i$ 的 mgf 为
 \[
 M_T(t) = [M(t)]^n.
-\tag{2.7.2}\label{eq:mgf-sum-iid}\]
-\begin{equation}
-这个性质在研究样本和的分布时极为有用——它是一切大样本理论的起点。\footnote{中心极限定理的讨论见附录 \cref{sec:derivation-ch2-clt}。}
-\tag{}
+\tag{2.7.2}
 \end{equation}
+
+这个性质在研究样本和的分布时极为有用——它是一切大样本理论的起点。\footnote{中心极限定理的讨论见附录 \cref{sec:derivation-ch2-clt}。}
+
 \subsection{多元正态分布}
 
 多元正态分布是二元正态的自然推广，在统计学中占据核心地位。
@@ -952,10 +954,9 @@ f(\mathbf{x}) = \frac{1}{(2\pi)^{n/2} |\Sigma|^{1/2}} \exp\left\{ -\frac{1}{2} (
 \end{definition}
 
 \textbf{关键性质}：
-\begin{equation}
+\begin{enumerate}
 \item 任意边缘分布都是正态的
-\tag{}
-\end{equation}
+\item 任意线性组合 $a_1 X_1 + \cdots + a_n X_n \sim N(\mathbf{a}'\boldsymbol{\mu}, \mathbf{a}'\Sigma\mathbf{a})$
 \item 若 $\Sigma$ 对角线之外所有元素为零（即变量独立），则 $\mathbf{X}$ 的分量独立
 \item 条件分布仍是正态的
 \end{enumerate}
