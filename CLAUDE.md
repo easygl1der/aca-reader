@@ -16,7 +16,7 @@
 
 ### PDF 打开规则
 - **每次打开 PDF 必须用 Skim**: `open -a Skim <file>`
-- **Skim 跳转**: `displayline -r -g <line> "<pdf>" "<tex>"`
+- **Skim 跳转**: `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"`
   - 示例: `displayline -r -g 650 "/path/file.pdf" "/path/chapter1.tex"`
 
 ### LaTeX 格式红线
