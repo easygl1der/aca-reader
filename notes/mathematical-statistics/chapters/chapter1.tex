@@ -2,45 +2,47 @@
 
 \section*{Chapter 1 概述}
 
-本章建立概率论的基本框架，从集合论和概率公理出发，逐步过渡到随机变量、期望、方差等核心概念。
+本章从概率论的公理化基础出发，逐步建立整套理论框架。我们将从集合论的语言开始，引入概率的严格定义，然后过渡到条件概率、独立性等核心概念，最终走向随机变量与期望的一般理论。这一脉络不仅是数理统计的基础，更是理解整个现代统计学的钥匙。
 
 \section{1.1 Introduction}\label{sec:1.1}
 
-本节直观介绍概率模型的概念，在 1.3 节中将其形式化。许多研究的特点是，在本质上相同的条件下可以重复进行实验。例如，医学研究关注药物的效果；经济学家关注某些商品的价格变化；农学家研究肥料对粮食产量的影响。实验产生 outcome，但无法在实验前确定预测结果。
+\subsection{为何需要概率论？}
 
-若实验可以重复进行，且所有可能 outcome 可以事先描述，则称为随机实验（random experiment），所有可能 outcome 的集合称为样本空间（sample space），记为 $\mathcal{C}$。
+在科学研究中，我们经常面对这样的情境：在本质上相同的条件下，可以反复进行某种实验。例如，医学研究者关心新药的效果；经济学家关注某些商品的价格波动；农学家研究肥料对作物产量的影响。这种实验产生的结果在实验前无法确定预测——这正是随机现象的本质。
+
+统计学的主要目的，就是为随机现象提供数学模型，从而进行统计推断（statistical inference）：从观测数据出发，对未知现象做出结论。而构建这种模型的理论基础，正是概率论。
+
+\subsection{随机实验与样本空间}
+
+若一个实验可以在相同条件下重复进行，且所有可能的结果（outcome）可以在实验前描述，我们就称其为随机实验（random experiment）。所有可能结果的集合称为样本空间（sample space），记为 $\mathcal{C}$。
 
 \begin{example}[例 1.1.1]\label{ex:coin-toss}
-抛掷硬币，outcome 为 $T$（反面）或 $H$（正面）。样本空间为 $\mathcal{C} = \{H, T\}$。
+抛掷一枚硬币。令 $H$ 表示正面，$T$ 表示反面。样本空间为 $\mathcal{C} = \{H, T\}$。
 \end{example}
 
 \begin{example}[例 1.1.2]\label{ex:two-dice}
-投掷一枚红骰子和一枚白骰子，outcome 为有序对（红骰子点数，白骰子点数）。样本空间包含 36 个有序对：$\mathcal{C} = \{(1,1), \ldots, (1,6), (2,1), \ldots, (6,6)\}$。
+投掷一枚红骰子和一枚白骰子。令 outcome 为有序对（红骰子点数，白骰子点数）。样本空间包含 36 个有序对：$\mathcal{C} = \{(1,1), \ldots, (6,6)\}$。
 \end{example}
 
-我们用小写 Roman 字母表示 $\mathcal{C}$ 的元素，如 $a, b, c$。事件（event）是 $\mathcal{C}$ 的子集，用大写 Roman 字母表示，如 $A, B, C$。
+\subsection{事件与概率的直观起源}
 
-重复实验 $N$ 次，事件 $A$ 发生的次数（频率）记为 $f$，则 $f/N$ 称为相对频率（relative frequency）。当 $N$ 增大时，相对频率趋于稳定，趋向某个数 $p$，这称为事件 $A$ 的概率（probability）。
+我们用小写 Roman 字母（如 $a, b, c$）表示 $\mathcal{C}$ 的元素，用大写 Roman 字母（如 $A, B, C$）表示 $\mathcal{C}$ 的子集，即事件（event）。
 
-\begin{example}[例 1.1.3]\label{ex:dice-sum}
-在例 1.1.2 中，设 $B$ 为点数之和为 7 的所有有序对：$B = \{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\}$。若投掷 $N = 400$ 次，$f = 60$ 次出现点数之和为 7，则相对频率 $f/N = 60/400 = 0.15$，因此 $B$ 的概率约为 $0.15$。
-\end{example}
+设想进行 $N$ 次重复实验。事件 $A$ 发生的次数（频率）记为 $f$，则 $f/N$ 称为相对频率（relative frequency）。当 $N$ 增大时，相对频率趋于稳定，趋向某个数 $p$——这正是事件 $A$ 的概率（probability）。
 
-\begin{remark}[注 1.1.1]\label{rem:frequency-interpretation}
-概率的相对频率解释依赖于实验可重复的条件。另一种观点是将概率视为主观信念。无论采用哪种解释，1.3 节的概率数学性质都是一致的。
-\end{remark}
+概率的相对频率解释依赖于实验可重复的条件。另一种观点是将概率视为主观信念（贝叶斯学派）。无论采用哪种解释，1.3 节的概率数学性质都是一致的。
 
-统计学的目的是为随机实验提供数学模型，进而进行统计推断。概率论的理论基础之一是基于集合和集合函数的概念，这正是下一节的内容。
+统计学的目的就是为随机实验提供数学模型，进而进行统计推断。
 
 \section{1.2 Sets}\label{sec:1.2}
 
-集合是现代数学的基本概念。设 $C$ 表示区间 $[0,1]$ 上的实数集合，则 $\frac{3}{4} \in C$。
+\subsection{集合论基础}
+
+集合（set）是现代数学的基本概念。若对象 $x$ 属于集合 $C$，记作 $x \in C$。
 
 若集合 $C$ 是有限的或与正整数集等势，则称 $C$ 为可数的（countable）。
 
-\subsection{1.2.1 Review of Set Theory}\label{sec:1.2.1}
-
-设 $\mathcal{C}$ 为样本空间，事件是 $\mathcal{C}$ 的子集。
+设 $\mathcal{C}$ 为样本空间。事件是 $\mathcal{C}$ 的子集。
 
 \begin{definition}[定义 1.2.1]\label{def:complement}
 事件 $A$ 的补（complement）$A^c$ 是 $\mathcal{C}$ 中所有不属于 $A$ 的元素构成的集合：$A^c = \{x \in \mathcal{C} : x \notin A\}$。
@@ -64,87 +66,55 @@
 若 $A \cap B = \phi$，则称 $A$ 和 $B$ 是不交的（disjoint）。
 \end{definition}
 
-若 $A_1, A_2, \ldots, A_n$ 为任意集合，定义
-\[
-A_1 \cup A_2 \cup \cdots \cup A_n = \{x: x \in A_i \text{ for some } i = 1, 2, \ldots, n\} \tag{1.2.8}
-\]
-\[
-A_1 \cap A_2 \cap \cdots \cap A_n = \{x: x \in A_i \text{ for all } i = 1, 2, \ldots, n\}. \tag{1.2.9}
-\]
-简写为 $\cup_{i=1}^{n} A_i$ 和 $\cap_{i=1}^{n} A_i$。
-
 可数并和可数交定义为
 \[
-\cup_{n=1}^{\infty} A_n = \{x: x \in A_n \text{ for some } n\} \tag{1.2.10}
-\]
-\[
-\cap_{n=1}^{\infty} A_n = \{x: x \in A_n \text{ for all } n\}. \tag{1.2.11}
+\cup_{n=1}^{\infty} A_n = \{x: x \in A_n \text{ for some } n\}, \quad
+\cap_{n=1}^{\infty} A_n = \{x: x \in A_n \text{ for all } n\}.
 \]
 
-\textbf{德摩根定律（DeMorgan's Laws）}：对任意集合 $A$ 和 $B$，
+\textbf{德摩根定律（DeMorgan's Laws）}：
 \[
-(A \cap B)^c = A^c \cup B^c \tag{1.2.6}
-\]
-\[
-(A \cup B)^c = A^c \cap B^c. \tag{1.2.7}
+(A \cap B)^c = A^c \cup B^c, \qquad (A \cup B)^c = A^c \cap B^c.
 \]
 
 \textbf{分配律}：
 \[
-A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \tag{1.2.5}
+A \cap (B \cup C) = (A \cap B) \cup (A \cap C).
 \]
 
-\begin{example}[例 1.2.3]\label{ex:set-limit}
-设 $\mathcal{C} = \{1,2,3,\ldots\}$，$A_n = \{1,3,\ldots,2n-1\}$，$B_n = \{n,n+1,\ldots\}$，则
+\begin{example}[例 1.2.1]\label{ex:set-operations}
+设 $\mathcal{C} = \{1,2,\ldots,10\}$，$A = \{1,2\}$，$B = \{2,3,4\}$，$C = \{3,4,5,6\}$。则
 \[
-\cup_{n=1}^{\infty} A_n = \{1,3,5,\ldots\}; \quad \cap_{n=1}^{\infty} A_n = \{1\}
+A^c = \{3,4,\ldots,10\}, \quad A \cup B = \{1,2,3,4\}, \quad A \cap B = \{2\},
 \]
 \[
-\cup_{n=1}^{\infty} B_n = \mathcal{C}; \quad \cap_{n=1}^{\infty} B_n = \phi. \tag{1.2.13}
+A \cap C = \phi, \quad B \cap C = \{3,4\}.
 \]
 \end{example}
 
-\textbf{单调序列}：若 $\{A_n\}$ 非递减（$A_n \subset A_{n+1}$），则 $\lim_{n\to\infty} A_n = \cup_{n=1}^{\infty} A_n$。若 $\{A_n\}$ 非递增（$A_n \supset A_{n+1}$），则 $\lim_{n\to\infty} A_n = \cap_{n=1}^{\infty} A_n$。
+\textbf{单调序列}：若 $\{A_n\}$ 非递减（$A_n \subset A_{n+1}$），则 $\lim_{n\to\infty} A_n = \cup_{n=1}^{\infty} A_n$。若非递增，则 $\lim_{n\to\infty} A_n = \cap_{n=1}^{\infty} A_n$。
 
-\subsection{1.2.2 Set Functions}\label{sec:1.2.2}
+\subsection{集合函数}
 
 集合函数（set function）是将集合映射到实数的函数。
 
-\begin{example}[例 1.2.5]\label{ex:counting-set-function}
-设 $\mathcal{C} = \mathbb{R}$，$Q(A)$ 为 $A$ 中正整数的个数。若 $A = \{x: 0 < x < 5\}$，则 $Q(A) = 4$；若 $A = \{-2,-1\}$，则 $Q(A) = 0$。
+\begin{example}[例 1.2.2]\label{ex:counting-measure}
+设 $\mathcal{C} = \mathbb{R}$，$Q(A)$ 为 $A$ 中正整数的个数。若 $A = \{x: 0 < x < 5\}$，则 $Q(A) = 4$。
 \end{example}
 
-\begin{example}[例 1.2.6]\label{ex:area-set-function}
-设 $\mathcal{C} = \mathbb{R}^2$，$Q(A)$ 为 $A$ 的面积（若面积存在）。若 $A = \{(x,y): x^2 + y^2 \leq 1\}$（单位圆盘），则 $Q(A) = \pi$。
+\begin{example}[例 1.2.3]\label{ex:area-measure}
+设 $\mathcal{C} = \mathbb{R}^2$，$Q(A)$ 为 $A$ 的面积。若 $A = \{(x,y): x^2 + y^2 \leq 1\}$（单位圆盘），则 $Q(A) = \pi$。
 \end{example}
 
 集合函数常用求和或积分定义。记号：
 \[
-\sum_A f(x) \quad \text{表示在所有 } x \in A \text{ 上求和}
+\sum_A f(x) \quad \text{表示在所有 } x \in A \text{ 上求和}, \qquad
+\int_A f(x) \, dx \quad \text{表示在集合 } A \text{ 上的积分}.
 \]
-\[
-\int_A f(x) \, dx \quad \text{表示在集合 } A \text{ 上的积分}
-\]
-
-\begin{example}[例 1.2.7]\label{ex:geometric-series}
-设 $\mathcal{C}$ 为所有非负整数构成的集合，$Q(A) = \sum_{n \in A} \left(\frac{2}{3}\right)^n$。由几何级数公式 $\sum_{n=0}^{\infty} a^n = \frac{1}{1-a}$（$|a| < 1$），可得 $Q(\mathcal{C}) = 3$。
-\end{example}
-
-\begin{example}[例 1.2.8]\label{ex:exponential-set-function}
-设 $\mathcal{C} = (0,\infty)$，$Q(A) = \int_A e^{-x} \, dx$。则
-\[
-Q[(1,3)] = \int_1^3 e^{-x} \, dx = e^{-1} - e^{-3} \approx 0.318
-\]
-\[
-Q(\mathcal{C}) = \int_0^{\infty} e^{-x} \, dx = 1.
-\]
-\end{example}
 
 \section{1.3 The Probability Set Function}\label{sec:1.3}
 
-设 $\mathcal{C}$ 为样本空间，$\mathcal{B}$ 为事件域（$\sigma$-域），现在定义概率集函数。
-
-\textbf{Remark 1.3.1:} 概率的定义由三条公理组成，这三条公理来源于相对频率的三条直观性质。设重复实验 $N$ 次，事件 $A$ 的相对频率为 $f_A = \#\{A\}/N$。则 $f_A \geq 0$、$f_{\mathcal{C}} = 1$，且若 $A_1, A_2$ 不交则 $f_{A_1 \cup A_2} = f_{A_1} + f_{A_2}$。
+概率的定义由三条公理组成——这三条公理来源于相对频率的三条直观性质。\footnote{详细推导见附录 \cref{sec:derivation-probability-axioms}。}
 
 \begin{definition}[定义 1.3.1 (概率)]\label{def:probability}
 设 $\mathcal{C}$ 为样本空间，$\mathcal{B}$ 为事件域。函数 $\mathbb{P}: \mathcal{B} \to \mathbb{R}$ 满足以下三条条件则称为概率集函数：
@@ -159,9 +129,9 @@ Q(\mathcal{C}) = \int_0^{\infty} e^{-x} \, dx = 1.
 \end{enumerate}
 \end{definition}
 
-若事件序列两两不相交，称其为互不相容的（mutually exclusive）。若序列还是穷尽的（exhaustive），即其并为 $\mathcal{C}$，则构成 $\mathcal{C}$ 的一个划分（partition）。
+若事件序列两两不相交，称其为互不相容的（mutually exclusive）。若其并为 $\mathcal{C}$，则构成 $\mathcal{C}$ 的一个划分（partition）。
 
-概率集函数告诉我们在事件域上概率如何分布。
+概率集函数告诉我们在事件域上概率如何分布。从这三条公理出发，可以推导出概率论的所有其他结果。\footnote{详细推导见附录 \cref{sec:derivation-probability-theorems}。}
 
 \begin{theorem}[定理 1.3.1]\label{th:complement-probability}
 对每个事件 $A \in \mathcal{B}$，$\mathbb{P}(A) = 1 - \mathbb{P}(A^c)$。
@@ -176,34 +146,11 @@ Q(\mathcal{C}) = \int_0^{\infty} e^{-x} \, dx = 1.
 
 \begin{theorem}[定理 1.3.2]\label{th:empty-probability}
 $\mathbb{P}(\phi) = 0$。
-\end{theorem}
+\end{theohoerem}
 
-\begin{theorem}[定理 1.3.3]\label{th:subset-probability}
-若 $A \subset B$，则 $\mathbb{P}(A) \leq \mathbb{P}(B)$。
-\end{theorem}
-
-\begin{proof}
-$B = A \cup (A^c \cap B)$，且两项不相交。由公理 (3) 得 $\mathbb{P}(B) = \mathbb{P}(A) + \mathbb{P}(A^c \cap B) \geq \mathbb{P}(A)$。
-\end{proof}
-
-\begin{corollary}[推论 1.3.1]\label{cor:probability-bound}
-对每个 $A \in \mathcal{B}$，$0 \leq \mathbb{P}(A) \leq 1$。
-\end{corollary}
-
-\begin{theorem}[定理 1.3.5]\label{th:inclusion-exclusion}
-对任意事件 $A, B$，
-\[
-\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B).
-\]
-\end{theorem}
-
-\begin{proof}
-将 $A \cup B$ 和 $B$ 分解为不相交集合的并：
-\[
-A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
-\]
-由公理 (3) 得 $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(A^c \cap B)$ 和 $\mathbb{P}(B) = \mathbb{P}(A \cap B) + \mathbb{P}(A^c \cap B)$。消去 $\mathbb{P}(A^c \cap B)$ 即得结果。
-\end{proof}
+\begin{example}[例 1.3.1]\label{ex:card-drawing}
+从 52 张扑克牌中随机抽取一张。设 $A$ 为抽到 A 的事件，$B$ 为抽到红桃的事件。则 $\mathbb{P}(A \cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A \cap B) = \frac{4}{52} + \frac{13}{52} - \frac{1}{52} = \frac{16}{52} = \frac{4}{13}$。
+\end{example}
 
 \textbf{等可能性情形（Equilikely Case）}：若样本空间 $\mathcal{C} = \{x_1, x_2, \ldots, x_m\}$ 有限，且每个 outcome 等概率 $p_i = 1/m$，则
 \[
@@ -212,16 +159,16 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
 
 \section{1.4 Conditional Probability and Independence}\label{sec:1.4}
 
-\subsection{Conditional Probability}\label{sec:conditional-probability}
+\subsection{Conditional Probability}
+
+我们经常需要在已知某些信息发生的条件下，对事件概率进行调整。这就是条件概率（conditional probability）的直观来源。
 
 \begin{definition}[定义 1.4.1 (条件概率)]\label{def:conditional-probability}
-设 $\mathbb{P}(B) > 0$，在事件 $B$ 已发生的条件下，事件 $A$ 的条件概率（conditional probability）定义为
+设 $\mathbb{P}(B) > 0$，在事件 $B$ 已发生的条件下，事件 $A$ 的条件概率定义为
 \[
 \mathbb{P}(A \mid B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}.
 \]
 \end{definition}
-
-条件概率也满足概率公理。
 
 由条件概率定义可直接导出乘法法则（multiplication rule）：
 \[
@@ -245,7 +192,9 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
 \]
 \end{theorem}
 
-\textbf{术语：} $\mathbb{P}(B_j)$ 为先验概率（prior probability），$\mathbb{P}(B_j \mid A)$ 为后验概率（posterior probability），$\mathbb{P}(A \mid B_j)$ 为似然（likelihood）。
+\textbf{术语}：$\mathbb{P}(B_j)$ 为先验概率（prior probability），$\mathbb{P}(B_j \mid A)$ 为后验概率（posterior probability），$\mathbb{P}(A \mid B_j)$ 为似然（likelihood）。
+
+贝叶斯公式不仅仅是一个计算工具，更提供了一种思考不确定性的思维方式。\footnote{详细讨论见附录 \cref{sec:derivation-bayes-insight}。}
 
 \begin{example}[例 1.4.1 (医学检测)]\label{ex:medical-test}
 设某疾病患病率为 $1\%$，检测准确率为 $99\%$。令 $D = \{\text{患病}\}$，$+ = \{\text{检测阳性}\}$。则
@@ -255,23 +204,7 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
 即使检测准确率高达 $99\%$，检测阳性者真正患病的概率只有 $50\%$！
 \end{example}
 
-\begin{remark}[贝叶斯视角的启示]\label{rem:bayesian-insight}
-贝叶斯公式不仅仅是一个计算工具，更提供了一种\textbf{思考不确定性的思维方式}。
-
-\textbf{1. 先验与后验的博弈} \\
-先验概率（prior）$\mathbb{P}(B_j)$ 反映了我们在获得新证据之前的信念；后验概率（posterior）$\mathbb{P}(B_j \mid A)$ 则是融合了新证据之后的更新信念。贝叶斯公式告诉我们：\emph{如何根据证据更新信念}。
-
-\textbf{2. 似然的核心作用} \\
-似然（likelihood）$\mathbb{P}(A \mid B_j)$ 衡量的是，在假设 $B_j$ 成立的条件下，观测到证据 $A$ 的"理所当然"程度。注意这是一个方向性问题——它不是问"$B_j$ 能否解释 $A$"，而是问"如果 $B_j$ 为真，$A$ 有多常见"。这正是贝叶斯推理与逻辑推理的关键区别。
-
-\textbf{3. 从特殊到一般的延伸} \\
-在医学检测例子中，我们关注的是 $\mathbb{P}(\text{患病} \mid \text{阳性})$——这是最直接有用的信息。但在更一般的统计推断中，我们往往需要从数据（$A$）反推参数（$B_j$）的分布。这正是贝叶斯统计的核心任务。
-
-\textbf{4. 与频率学派的对话} \\
-频率学派将概率解释为长期频率，认为参数是固定常数，只能通过反复抽样来估计；贝叶斯学派则将参数也视为随机变量，用概率分布描述我们对参数的信念，并将数据视为更新这种信念的证据。两种视角并非互斥——贝叶斯公式本身是中性的，它只是提供了融合先验信息与观测数据的数学框架。
-\end{remark}
-
-\subsection{1.4.1 Independence}\label{sec:1.4.1}
+\subsection{1.4.1 Independence}
 
 \begin{definition}[定义 1.4.2 (独立性)]\label{def:independence}
 若 $\mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B)$，则称事件 $A$ 与 $B$ 相互独立（independent），记作 $A \Perp B$。
@@ -279,14 +212,9 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
 
 当 $\mathbb{P}(A) > 0, \mathbb{P}(B) > 0$ 时，独立性等价于 $\mathbb{P}(A \mid B) = \mathbb{P}(A)$ 或 $\mathbb{P}(B \mid A) = \mathbb{P}(B)$。
 
-\begin{proposition}[命题 1.4.1]\label{prop:independence-properties}
-若 $A \Perp B$，则：
-\begin{enumerate}
-    \item $A \Perp B^c$
-    \item $A^c \Perp B$
-    \item $A^c \Perp B^c$
-\end{enumerate}
-\end{proposition}
+\begin{example}[例 1.4.2]\label{ex:independence-coins}
+抛掷两枚独立硬币。设 $A$ 为第一枚正面朝上，$B$ 为第二枚正面朝上。则 $\mathbb{P}(A) = \mathbb{P}(B) = 1/2$，且 $\mathbb{P}(A \cap B) = 1/4 = \mathbb{P}(A) \cdot \mathbb{P}(B)$，故 $A \Perp B$。
+\end{example}
 
 \begin{definition}[定义 1.4.3 (相互独立)]\label{def:mutual-independence}
 事件序列 $\{A_i : i \in I\}$ 相互独立，若对任意有限子集 $\{i_1, \ldots, i_k\}$，
@@ -295,9 +223,11 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
 \]
 \end{definition}
 
-\textbf{Warning:} 两两独立（pairwise independent）不一定意味着相互独立！
+\textbf{Warning:} 两两独立（pairwise independent）不一定意味着相互独立！\footnote{反例见附录 \cref{sec:derivation-pairwise-not-mutual}。}
 
 \section{1.5 Random Variables}\label{sec:1.5}
+
+样本空间 $\mathcal{C}$ 的元素可能不是数字，这在描述和分析上会带来不便。我们需要一个规则，将 $\mathcal{C}$ 的每个元素映射到一个实数——这正是随机变量（random variable）的思想。
 
 随机变量（random variable）是从样本空间 $\mathcal{C}$ 到实数的函数：$X: \mathcal{C} \to \mathbb{R}$。
 
@@ -309,7 +239,9 @@ A \cup B = A \cup (A^c \cap B), \quad B = (A \cap B) \cup (A^c \cap B).
     \item \textbf{连续随机变量（continuous）}：取值充满区间，不可数
 \end{itemize}
 
-\begin{example}[例 1.5.1]\label{ex:rv-coin}
+给定随机变量 $X$，它的取值空间 $\mathcal{D}$ 成为新的样本空间。$X$ 不仅诱导了新的样本空间，还诱导了一个概率分布——这正是"分布"（distribution）概念的起源。
+
+\begin{example}[例 1.5.1]\label{ex:rv-coin-sum}
 抛掷两枚硬币。样本空间 $\mathcal{C} = \{HH, HT, TH, TT\}$。定义 $X$ 为正面出现的次数：$X(HH) = 2$，$X(HT) = X(TH) = 1$，$X(TT) = 0$。则 $X$ 是取值在 $\{0, 1, 2\}$ 的离散随机变量。
 \end{example}
 
@@ -336,13 +268,11 @@ pmf 满足：$p_X(x) \geq 0$ 对所有 $x$，且 $\sum_x p_X(x) = 1$。
 \[
 \mathbb{P}(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \quad k = 0, 1, 2, \ldots.
 \]
-泊松分布是二项分布当 $n \to \infty$、$p \to 0$、$np = \lambda$ 固定时的极限分布。
-
-\subsection{1.6.1 Transformations}\label{sec:1.6.1}
-
-设 $X$ 为离散随机变量，$Y = g(X)$。则 $p_Y(y) = \sum_{x: g(x)=y} p_X(x)$。
+泊松分布是二项分布当 $n \to \infty$、$p \to 0$、$np = \lambda$ 固定时的极限分布——这揭示了离散分布之间的深刻联系。\footnote{详细推导见附录 \cref{sec:derivation-poisson-limit}。}
 
 \section{1.7 Continuous Random Variables}\label{sec:1.7}
+
+连续随机变量的取值充满一个或多个区间，不可数。
 
 \begin{definition}[定义 1.7.1 (概率密度函数)]\label{def:pdf}
 设 $X$ 为连续随机变量。若存在非负函数 $f_X(x)$ 使得
@@ -354,37 +284,21 @@ pmf 满足：$p_X(x) \geq 0$ 对所有 $x$，且 $\sum_x p_X(x) = 1$。
 
 pdf 满足：$f_X(x) \geq 0$ 对所有 $x$，且 $\int_{-\infty}^{\infty} f_X(x) \, dx = 1$。
 
-\textbf{Warning:} $f_X(x)$ 可以大于 1！
+\textbf{Warning:} $f_X(x)$ 可以大于 1！这与 pmf 的 $p_X(x) \leq 1$ 形成对比。
 
 \textbf{正态分布（Normal/Gaussian）}：$X \sim N(\mu, \sigma^2)$，
 \[
 f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right), \quad -\infty < x < \infty.
 \]
 
-\textbf{标准正态分布}：$Z \sim N(0, 1)$，$\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}$。
-
 \textbf{指数分布（Exponential）}：$X \sim \text{Exp}(\lambda)$，$f(x) = \lambda e^{-\lambda x}$，$x > 0$。
-
-\subsection{1.7.1 Quantiles}\label{sec:1.7.1}
-
-\begin{definition}[定义 1.7.2 (分位数)]\label{def:quantile}
-设 $X$ 的 CDF 为 $F_X(x)$。对 $0 < p < 1$，$p$-分位数 $x_p$ 满足 $F_X(x_p) = p$。中位数是 $p = 0.5$ 的分位数。
-\end{definition}
-
-\subsection{1.7.2 Transformations}\label{sec:1.7.2}
-
-设 $X$ 为连续随机变量，$Y = g(X)$。若 $y = g(x)$ 严格单调且可导，则
-\[
-f_Y(y) = f_X(h(y)) \cdot |h'(y)|,
-\]
-其中 $x = h(y)$ 是 $y = g(x)$ 的反函数。
-
-若 $Y = aX + b$，则 $f_Y(y) = \frac{1}{|a|} f_X\left(\frac{y-b}{a}\right)$。
 
 \section{1.8 Expectation of a Random Variable}\label{sec:1.8}
 
+期望（expected value）是随机变量最重要的一致性度量。它描述了分布的"中心位置"。
+
 \begin{definition}[定义 1.8.1 (数学期望)]\label{def:expectation}
-随机变量 $X$ 的期望（expected value）：
+随机变量 $X$ 的期望：
 \begin{itemize}
     \item 离散型：$\mathbb{E}X = \sum_x x \cdot p_X(x)$
     \item 连续型：$\mathbb{E}X = \int_{-\infty}^{\infty} x \cdot f_X(x) \, dx$
@@ -392,29 +306,39 @@ f_Y(y) = f_X(h(y)) \cdot |h'(y)|,
 要求级数或积分绝对收敛。
 \end{definition}
 
+\begin{example}[例 1.8.1]\label{ex:expectation-dice}
+设 $X$ 为掷骰子的点数。则 $\mathbb{E}X = \frac{1}{6}(1+2+3+4+5+6) = 3.5$。
+\end{example}
+
+期望的线性性是概率论中最重要、最有用的性质之一。\footnote{详细证明见附录 \cref{sec:derivation-expectation-linear}。}
+
 \begin{theorem}[定理 1.8.1 (期望的线性性)]\label{th:expectation-linearity}
 对任意随机变量 $X, Y$ 和常数 $a, b$：
 \[
 \mathbb{E}[aX + bY] = a\mathbb{E}X + b\mathbb{E}Y.
 \]
 \textbf{关键点：} 无需 $X, Y$ 相互独立！
-\end{theorem}
+\end{theohoerem}
 
-\begin{theorem}[定理 1.8.2 (方差公式)]\label{th:variance-formula}
+方差（variance）度量分布的离散程度。\footnote{详细推导见附录 \cref{sec:derivation-variance-formula}。}
+
+\begin{theohoerem}[定理 1.8.2 (方差公式)]\label{th:variance-formula}
 \[
 \text{var}(X) = \mathbb{E}[(X - \mu)^2] = \mathbb{E}[X^2] - (\mathbb{E}X)^2,
 \]
 其中 $\mu = \mathbb{E}X$。
-\end{theorem}
+\end{theohoerem}
 
-\begin{theorem}[定理 1.8.3 (方差的性质)]\label{th:variance-properties}
+\begin{theohoerem}[定理 1.8.3 (方差的性质)]\label{th:variance-properties}
 \begin{enumerate}
     \item $\text{var}(aX + b) = a^2 \text{var}(X)$
     \item 若 $X_1, \ldots, X_n$ 相互独立，则 $\text{var}\left(\sum_{i=1}^{n} X_i\right) = \sum_{i=1}^{n} \text{var}(X_i)$
 \end{enumerate}
-\end{theorem}
+\end{theohoerem}
 
 \section{1.9 Some Special Expectations}\label{sec:1.9}
+
+两个随机变量之间的"共同变化"程度，用协方差（covariance）来度量。
 
 \begin{definition}[定义 1.9.1 (协方差)]\label{def:covariance}
 \[
@@ -431,17 +355,21 @@ f_Y(y) = f_X(h(y)) \cdot |h'(y)|,
     \item 若 $X \Perp Y$，则 $\text{cov}(X, Y) = 0$
 \end{enumerate}
 
+相关系数（correlation）将协方差标准化，消除了量纲的影响。
+
 \begin{definition}[定义 1.9.2 (相关系数)]\label{def:correlation}
 \[
 \text{corr}(X, Y) = \frac{\text{cov}(X, Y)}{\sqrt{\text{var}(X) \cdot \text{var}(Y)}}.
 \]
 \end{definition}
 
-$-1 \leq \text{corr}(X, Y) \leq 1$。
+$-1 \leq \text{corr}(X, Y) \leq 1$。相关系数衡量的是两个变量之间的线性关系强度。
 
 \section{1.10 Important Inequalities}\label{sec:1.10}
 
-\begin{theorem}[Markov 不等式]\label{th:markov}
+概率论中有几个基本不等式，它们在理论证明和实际应用中都非常重要。
+
+\begin{theohoerem}[Markov 不等式]\label{th:markov}
 若 $X$ 为随机变量，$g(X) \geq 0$，则对任意 $a > 0$，
 \[
 \mathbb{P}(g(X) \geq a) \leq \frac{\mathbb{E}[g(X)]}{a}.
@@ -450,20 +378,26 @@ $-1 \leq \text{corr}(X, Y) \leq 1$。
 \[
 \mathbb{P}(|X| \geq k) \leq \frac{\mathbb{E}[X^2]}{k^2}.
 \]
-\end{theorem}
+\end{theohoerem}
 
-\begin{theorem}[Chebyshev 不等式]\label{th:chebyshev}
+Markov 不等式的意义在于：它仅用期望就能给出概率的上界，而不需要知道分布的完整信息。\footnote{详细证明见附录 \cref{sec:derivation-markov}。}
+
+\begin{theohoerem}[Chebyshev 不等式]\label{th:chebyshev}
 设 $\mu = \mathbb{E}X$，$\sigma^2 = \text{var}(X)$。则对任意 $k > 0$，
 \[
 \mathbb{P}(|X - \mu| \geq k) \leq \frac{\sigma^2}{k^2}.
 \]
-\end{theorem}
+\end{theohoerem}
 
-\begin{theorem}[Cauchy-Schwarz 不等式]\label{th:cauchy-schwarz}
+Chebyshev 不等式是 Markov 不等式的直接推论。它告诉我们：无论分布是什么，至少 $1 - 1/k^2$ 的概率质量落在 $\mu \pm k\sigma$ 区间内。
+
+\begin{theohoerem}[Cauchy-Schwarz 不等式]\label{th:cauchy-schwarz}
 \[
 |\mathbb{E}(XY)| \leq \sqrt{\mathbb{E}[X^2] \cdot \mathbb{E}[Y^2]}.
 \]
-\end{theorem}
+\end{theohoerem}
+
+Cauchy-Schwarz 不等式在概率论中有着广泛的应用，例如证明相关系数 $|\text{corr}(X,Y)| \leq 1$。
 
 \section*{Summary}\label{sec:chapter1-summary}
 
@@ -478,6 +412,8 @@ $-1 \leq \text{corr}(X, Y) \leq 1$。
     \item \textbf{协方差与相关系数}：度量两个随机变量的联合变化趋势
     \item \textbf{重要不等式}：Markov、Chebyshev、Cauchy-Schwarz
 \end{enumerate}
+
+这些概念相互关联，共同构成了数理统计的基石。理解它们之间的有机联系，比单纯记忆公式更重要。
 
 \section*{Exercises}\label{sec:chapter1-exercises}
 
