@@ -2,15 +2,25 @@
 
 \section*{Chapter 2 概述}
 
-\textbf{本章路线图}：联合分布 $\to$ 边缘分布 $\to$ 条件分布 $\to$ 独立性 $\to$ 相关性 $\to$ 多元正态
-
-\section{2.1 从一元到多元：为什么需要联合分布？}\label{sec:2.1}
-
 在一元情形，我们用 cdf $F_X(x) = \mathbb{P}(X \leq x)$ 描述单个随机变量的行为。但在许多场景中，\emph{单个变量的分布并不能回答我们的问题}——我们需要知道多个变量如何共同变化。
+
+\textbf{为什么需要联合分布？} 例如，在经济学中，我们关心收入与教育年限的共同分布；在医学中，我们关心血压与胆固醇的联合水平；在金融中，资产收益率之间的相关性是风险管理的核心。这些问题都涉及多个随机变量的联合行为。
+
+统计推断的核心任务——从样本推断总体——本质上也是多元的：样本是多个观测值的向量，而统计量是这些观测值的函数。第 4 章将看到，点估计、置信区间、假设检验全部建立在多元分布理论之上。
+
+\textbf{本章路线图}：联合分布 $\to$ 边缘分布 $\to$ 条件分布 $\to$ 独立性 $\to$ 相关性 $\to$ 多元正态 $\to$ 多元推广
+
+\section{2.1 从一元到多元：联合分布}\label{sec:2.1}
+
+\subsection{为什么需要联合分布？}
+
+在一元情形，我们学会了用 cdf、pmf/pdf 描述单个随机变量的行为。但在真实世界中，变量很少孤立存在。
 
 \textbf{核心问题}：给定两个随机变量 $X_1$ 和 $X_2$，如何描述它们的联合行为？
 
-这促使我们建立联合分布理论。本章以二元情形为主，揭示多元分布的核心思想。
+例如，设 $X_1$ 为身高，$X_2$ 为体重。知道身高分布和体重分布当然有用，但知道两者如何"共同变化"——高个子是否倾向于更重——显然更有价值。这种"共同变化"的数学表达，正是联合分布。
+
+\textbf{历史注记}：多元分析的思想可以追溯到 Francis Galton（1822-1911）的工作。他研究遗传问题时发现，单个特征的分布不足以描述遗传规律——必须考虑特征之间的相关性。他发明的"相关系数"（correlation coefficient）正是本章的核心概念之一。
 
 \subsection{随机向量与联合分布}
 
@@ -22,6 +32,8 @@
 \begin{equation}\label{eq:joint-cdf-ch2}
 F_{X_1, X_2}(x_1, x_2) = \mathbb{P}(X_1 \leq x_1, X_2 \leq x_2).
 \end{equation}
+
+注意：这里的"且"（$,$）表示两个事件同时发生。
 
 \textbf{离散型} 用 pmf 描述：
 \begin{equation}\label{eq:joint-pmf-ch2}
@@ -35,15 +47,17 @@ F_{X_1, X_2}(x_1, x_2) = \int_{-\infty}^{x_1} \int_{-\infty}^{x_2} f(w_1, w_2) \
 \end{equation}
 其中 $f \geq 0$ 且 $\int\int_{\mathcal{D}} f = 1$。
 
-\begin remark}\label{rmk:pdf-greater-than-one}
-\textbf{Warning}：与一元情形不同，这里的 $f(x_1, x_2)$ 可以大于 1！因为它是"密度"而非概率值。
-\end remark}
+\begin{Remark}\label{rmk:pdf-greater-than-one-ch2}
+\textbf{警告}：与一元情形不同，这里的 $f(x_1, x_2)$ 可以大于 1！因为它是"密度"而非概率值。
+\end{Remark}
 
 几何直观：若把联合 pdf $z = f(x_1, x_2)$ 视作一张曲面，则 $\mathbb{P}((X_1, X_2) \in A)$ 就是该曲面下区域 $A$ 上的体积。这是一元情形"曲线下面积"在二维的推广。
 
-\subsection{边缘分布：积分即求和}\label{sec:marginal-distribution}
+\section{2.2 边缘分布：积分即求和}\label{sec:2.2}
 
-\textbf{核心问题}：已知 $(X_1, X_2)$ 的联合分布，如何得到单个 $X_1$ 的分布？
+\subsection{核心问题：如何从联合分布得到边缘分布？}
+
+我们已经知道 $(X_1, X_2)$ 的联合分布，自然会问：如何得到单个 $X_1$ 的分布？
 
 直觉上，我们需要"忽略" $X_2$ 的信息。具体做法是：
 \begin{itemize}
@@ -63,56 +77,23 @@ p_{X_1}(x_1) = \sum_{x_2} p_{X_1, X_2}(x_1, x_2).
 f_{X_1}(x_1) = \int_{-\infty}^{\infty} f_{X_1, X_2}(x_1, x_2) \, dx_2.
 \end{equation}
 
-\begin remark}\label{rmk:marginal-name}
+\begin{Remark}\label{rmk:marginal-name-ch2}
 \textbf{为什么叫"边缘"？} 在二维离散情形，将联合 pmf 列表，边缘分布恰好是每行（或每列）的"边缘"之和。这解释了名称的由来。
-\end remark}
+\end{Remark}
 
-\subsection{期望的推广与线性性}\label{sec:expectation-linear}
+\textbf{一个重要发现}：已知联合分布可以推出边缘分布，但反过来不成立——边缘分布丢失了变量之间的依赖信息。例如，两个不同的联合分布可能有相同的边缘分布。
 
-设 $Y = g(X_1, X_2)$ 是新的随机变量，其期望为
-\[
-\mathbb{E}Y = \int\int g(x_1, x_2) f(x_1, x_2) \, dx_1 \, dx_2 \quad \text{（连续型）}.
-\]
-
-关键发现：期望算子 $E$ 对加法保持线性，无论 $X_1, X_2$ 是否独立。\footnote{推导见附录 \cref{sec:derivation-expectation-linear}。}
-
-\begin{equation}\label{th:expectation-linear-ch2}
-\mathbb{E}(aY_1 + bY_2) = a\mathbb{E}Y_1 + b\mathbb{E}Y_2.
-\end{equation}
-
-\textbf{这为什么重要？} 在第1章我们学过独立随机变量之和的方差公式 $\text{var}(X_1 + X_2) = \text{var}(X_1) + \text{var}(X_2)$。期望的线性性是其基础——它无需独立性即可成立。
-
-\section{2.2 变换：寻找新视角}\label{sec:2.2}
-
-给定 $(X_1, X_2)$ 的分布，我们经常想研究其函数 $Y = u(X_1, X_2)$ 的分布。例如：
-\begin{itemize}
-\item 和 $Y = X_1 + X_2$（两个随机变量之和）
-\item 商 $Y = X_1 / X_2$（比值）
-\item 极坐标变换 $(R, \Theta) = (\sqrt{X_1^2 + X_2^2}, \arctan(X_2/X_1))$
-\end{itemize}
-
-对于连续型，一一对应的变换有简洁的公式。\footnote{推导见附录 \cref{sec:derivation-jacobian}。}
-
-\begin{equation}\label{eq:transformation-joint-pdf-ch2}
-f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(v_1(y_1, y_2), v_2(y_1, y_2)) \cdot |J|.
-\end{equation}
-
-其中 Jacobian 行列式
-\begin{equation}\label{eq:jacobian-ch2}
-J = \det\begin{pmatrix}
-\frac{\partial x_1}{\partial y_1} & \frac{\partial x_1}{\partial y_2} \\
-\frac{\partial x_2}{\partial y_1} & \frac{\partial x_2}{\partial y_2}
-\end{pmatrix}
-= \frac{\partial x_1}{\partial y_1} \cdot \frac{\partial x_2}{\partial y_2} - \frac{\partial x_1}{\partial y_2} \cdot \frac{\partial x_2}{\partial y_1}.
-\end{equation}
-
-\textbf{为什么有 $|J|$？} 这是面积元素的变换因子。在一元情形我们有 $f_Y(y) = f_X(h(y)) |h'(y)|$；二维情形类似，只是用行列式度量了面积缩放比例。
+\begin{Example}[不同联合分布有相同边缘分布]\label{ex:same-marginals-different-joint}
+设 $(X_1, X_2)$ 和 $(Y_1, Y_2)$ 有相同的边缘分布，但不同的联合结构。实际上，如果不知道联合分布，就无法回答"两个变量是否相关"这样的问题。
+\end{Example}
 
 \section{2.3 条件分布：信息的价值}\label{sec:2.3}
 
+\subsection{条件分布的核心思想}
+
 \textbf{核心问题}：已知 $X_1$ 的值，$X_2$ 的分布会如何变化？
 
-这就是条件分布要回答的问题。条件分布本质上是在 $X_1 = x_1$ 的条件下，重新审视 $X_2$ 的行为。
+这就是条件分布要回答的问题。条件分布本质上是在 $X_1 = x_1$ 的条件下，重新审视 $X_2$ 的行为——这是贝叶斯思维在随机变量层面的延伸。
 
 \textbf{离散型条件 pmf}：\footnote{推导见附录 \cref{sec:derivation-conditional-distribution}。}
 \begin{equation}\label{eq:conditional-pmf-ch2}
@@ -126,31 +107,44 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}, \q
 
 分子是联合密度，分母是边缘密度。这个比值衡量的是，在 $X_1 = x_1$ 的条件下，$(x_1, x_2)$ 这个"点"有多"典型"。
 
+\textbf{注意}：在连续情形，$\mathbb{P}(X_1 = x_1) = 0$，所以不能直接用条件概率定义。这里用条件密度代替——条件密度的定义源自 Radon-Nikodym 定理，它是条件期望存在性的数学基础。\footnote{条件密度的严格数学讨论见附录 \cref{sec:derivation-conditional-density}。}
+
 由此定义条件期望：
 \begin{equation}\label{eq:conditional-expectation-ch2}
 \mathbb{E}[u(X_2) \mid x_1] = \int_{-\infty}^{\infty} u(x_2) f_{X_2 \mid X_1}(x_2 \mid x_1) \, dx_2.
 \end{equation}
 
-\subsection{全期望公式与 Rao-Blackwell 定理}
+条件期望 $\mathbb{E}[X_2 \mid X_1 = x_1]$ 是 $x_1$ 的函数，可以理解为 $X_1$ 取某个值时 $X_2$ 的最佳预测。
+
+\subsection{全期望公式与方差分解}
 
 这里有一个深刻的定理，它连接了条件与边缘。\footnote{推导见附录 \cref{sec:derivation-law-total-expectation}。}
 
-\begin{equation}\label{th:law-total-expectation-ch2}
+\begin{Theorem}[全期望公式]\label{th:law-total-expectation-ch2}
+\[
 \mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \mathbb{E}(X_2).
-\end{equation}
+\tag{2.3.1}\label{eq:law-total-expectation}
+\]
+\end{Theorem}
 
-这称为\textbf{全期望公式}。它的含义是：\emph{对条件均值再取期望，等于无条件期望}。
+\textbf{含义}：对条件均值再取期望，等于无条件期望。这看起来显而易见，但它是概率论中最强大的工具之一。
 
 更惊人的是方差的不等式：\footnote{推导见附录 \cref{sec:derivation-variance-inequality}。}
-\[
-\text{var}[\mathbb{E}(X_2 \mid X_1)] \leq \text{var}(X_2).
-\]
 
-\textbf{Rao-Blackwell 定理}：若用 $X_2$ 估计 $\mu_2 = \mathbb{E}X_2$，则条件均值 $E(X_2 \mid x_1)$ 比 $X_2$ 本身更精确（方差更小）。这在统计推断中极其重要——它告诉我们如何利用辅助信息改进估计。
+\begin{Theorem}[条件方差公式]\label{th:law-total-variance-ch2}
+\[
+\text{var}(X_2) = \mathbb{E}[\text{var}(X_2 \mid X_1)] + \text{var}[\mathbb{E}(X_2 \mid X_1)].
+\tag{2.3.2}\label{eq:law-total-variance}
+\]
+\end{Theorem}
+
+\textbf{直观理解}：总方差等于"平均条件方差"加上"条件均值的方差"。第一项度量 $X_2$ 在给定 $X_1$ 后的残余不确定性；第二项度量 $X_1$ 带来的不确定性。
+
+\textbf{Rao-Blackwell 定理}：若用 $X_2$ 估计 $\mu_2 = \mathbb{E}X_2$，则条件均值 $\mathbb{E}(X_2 \mid x_1)$ 比 $X_2$ 本身更精确（方差更小）。这在统计推断中极其重要——它告诉我们如何利用辅助信息改进估计。\footnote{Rao-Blackwell 定理的详细讨论见附录 \cref{sec:derivation-rao-blackwell}。}
 
 \section{2.4 独立性：变量间的"无关系"}\label{sec:2.4}
 
-\textbf{核心问题}：什么时候 $X_1$ 和 $X_2$ 互不影响？
+\subsection{什么时候 $X_1$ 和 $X_2$ 互不影响？}
 
 若 $X_1$ 与 $X_2$ 独立，则知道 $X_1$ 的值不会改变我们对 $X_2$ 的认知。用条件分布的语言：
 \[
@@ -159,15 +153,21 @@ f_{X_2 \mid X_1}(x_2 \mid x_1) = f_{X_2}(x_2) \quad \text{（不依赖于 } x_1 
 
 由此推出联合密度可分离。\footnote{推导见附录 \cref{sec:derivation-independence}。}
 
-\begin{equation}\label{def:independence-ch2}
+\begin{Theorem}[独立性]\label{th:independence-ch2}
+\[
 X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv f_1(x_1) f_2(x_2).
-\end{equation}
+\tag{2.4.1}\label{eq:independence-factorization}
+\]
+\end{Theorem}
 
 一个实用的判据：
 
-\begin{equation}\label{th:independence-factorization-ch2}
+\begin{Theorem}[独立性因子化判据]\label{th:independence-factorization-ch2}
+\[
 X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad \text{（可分离变量）}.
-\end{equation}
+\tag{2.4.2}\label{eq:independence-factorization-practical}
+\]
+\end{Theorem}
 
 \textbf{独立性的后果}：
 \begin{itemize}
@@ -175,11 +175,13 @@ X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad 
 \item $\text{cov}(X_1, X_2) = 0$
 \end{itemize}
 
-\begin remark}\label{rmk:cov-zero-not-independence}
+\begin{Remark}\label{rmk:cov-zero-not-independence-ch2}
 \textbf{逆命题不成立！} $\text{cov}(X_1, X_2) = 0$ 并不意味着独立性（除二元正态分布外）。
-\end remark}
+\end{Remark}
 
 这提醒我们：\textbf{不相关}（uncorrelated）和\textbf{独立}（independent）是两个不同概念。不相关只说明没有线性关系，但变量间可能存在非线性依赖。
+
+\textbf{一个经典反例}：设 $X \sim \text{Uniform}(-1, 1)$，$Y = X^2$。则 $\text{cov}(X, Y) = 0$（因为 $X$ 对称），但 $Y$ 完全由 $X$ 决定——它们显然不独立。\footnote{更多反例见附录 \cref{sec:derivation-independent-implies-uncorrelated}。}
 
 \section{2.5 相关性：线性关联的度量}\label{sec:2.5}
 
@@ -191,6 +193,7 @@ X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad 
 
 \begin{equation}\label{def:correlation-ch2}
 \rho_{12} = \text{corr}(X_1, X_2) = \frac{\text{cov}(X_1, X_2)}{\sqrt{\text{var}(X_1)} \sqrt{\text{var}(X_2)}} = \frac{\text{cov}(X_1, X_2)}{\sigma_1 \sigma_2}.
+\tag{2.5.1}\label{eq:correlation-definition}
 \end{equation}
 
 这就是相关系数（correlation coefficient）。
@@ -202,18 +205,18 @@ X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad 
 \item $\rho_{12} = 0$ 称\textbf{不相关}
 \end{itemize}
 
-\textbf{为什么是 $[-1, 1]$？} 这来自 Cauchy-Schwarz 不等式：
+为什么是 $[-1, 1]$？这来自 Cauchy-Schwarz 不等式：
 \[
 |\text{cov}(X_1, X_2)| = |\mathbb{E}[(X_1-\mu_1)(X_2-\mu_2)]| \leq \sqrt{\mathbb{E}[(X_1-\mu_1)^2] \cdot \mathbb{E}[(X_2-\mu_2)^2]} = \sigma_1 \sigma_2.
-\]
+\tag{2.5.2}\label{eq:cauchy-schwarz-application}
 
-\begin remark}\label{rmk:corr-vs-cov}
+\begin{Remark}\label{rmk:corr-vs-cov-ch2}
 \textbf{相关 vs 协方差}：协方差取决于量纲（"米的协方差"vs"厘米的协方差"数值不同）；相关系数是无量纲的，消除了单位影响。因此，相关系数是更通用的"关联程度"度量。
-\end remark}
+\end{Remark}
 
 \section{2.6 二元正态：最重要的二元分布}\label{sec:2.6}
 
-在所有二元分布中，二元正态分布占据核心地位。它是一元正态分布在二维的自然推广。
+在所有二元分布中，二元正态分布占据核心地位。它是一元正态分布在二维的自然推广，也是计量经济学、信号处理等领域的基石。
 
 \textbf{为什么重要？}
 \begin{enumerate}
@@ -222,6 +225,8 @@ X_1 \text{ 与 } X_2 \text{ 独立} \iff f(x_1, x_2) \equiv g(x_1) h(x_2) \quad 
 \item 不相关 $\iff$ 独立（这是正态独有的优雅性质）
 \item 多元正态是计量经济学、信号处理等领域的基石
 \end{enumerate}
+
+历史注记：二元正态分布由 Francis Galton 和 Karl Pearson 在 19 世纪末独立发展。Pearson 发展的多元相关理论为现代统计学奠定了重要基础。
 
 \begin{definition}[二元正态分布]\label{def:bivariate-normal-ch2}
 $(X_1, X_2)$ 服从二元正态分布，若其联合 pdf 为
@@ -238,14 +243,6 @@ f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{1
 \item $\rho$：相关系数
 \end{itemize}
 
-\begin remark}\label{rmk:bivariate-normal-conditional}
-\textbf{条件分布的几何直觉}：在二元正态中，条件均值
-\[
-\mathbb{E}(X_2 \mid x_1) = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)
-\]
-是 $x_1$ 的线性函数。这意味着：给定 $X_1 = x_1$，$X_2$ 的最佳预测也是线性的，其斜率由相关系数 $\rho$ 决定。
-\end remark}
-
 \textbf{关键性质}：
 
 \begin{enumerate}
@@ -253,10 +250,21 @@ f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}} \exp\left\{ -\frac{1
 \item 条件分布：\footnote{推导见附录 \cref{sec:derivation-bivariate-normal-conditional}。}
 \[
 X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1), \ \sigma_2^2(1-\rho^2)\right)
+\tag{2.6.1}\label{eq:bivariate-normal-conditional}
 \]
 \item $X_1 \Perp X_2 \iff \rho = 0$（正态独有的"不相关 $\Rightarrow$ 独立"）
 \item 任意线性组合 $aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, \text{var}(aX_1 + bX_2))$
 \end{enumerate}
+
+\begin{Remark}\label{rmk:bivariate-normal-conditional-ch2}
+\textbf{条件分布的几何直觉}：条件均值
+\[
+\mathbb{E}(X_2 \mid x_1) = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)
+\]
+是 $x_1$ 的线性函数。这意味着：给定 $X_1 = x_1$，$X_2$ 的最佳预测也是线性的，其斜率由相关系数 $\rho$ 决定。
+\end{Remark}
+
+条件分布的方差 $\sigma_2^2(1-\rho^2)$ 小于无条件方差 $\sigma_2^2$——知道 $X_1$ 的值减少了我们对 $X_2$ 的不确定性。当 $|\rho| = 1$ 时，方差为零，意味着 $X_2$ 可以完全由 $X_1$ 线性决定。
 
 \section{2.7 多元推广}\label{sec:2.7}
 
@@ -282,9 +290,9 @@ f_{2,\ldots,n|1}(x_2,\ldots,x_n \mid x_1) = \frac{f(x_1, x_2, \ldots, x_n)}{f_1(
 $n$ 个随机变量 $X_1, \ldots, X_n$ 相互独立，当且仅当
 \[
 f(x_1, x_2, \ldots, x_n) \equiv f_1(x_1) f_2(x_2) \cdots f_n(x_n).
-\]
+\tag{2.7.1}\label{eq:multivariate-independence}
 
-\textbf{注意}：两两独立（pairwise independence）不一定推出相互独立（mutual independence）。Bernstein 的例子说明了这一点。
+\textbf{注意}：两两独立（pairwise independence）不一定推出相互独立（mutual independence）。Bernstein 的例子说明了这一点。\footnote{反例见附录 \cref{sec:derivation-pairwise-not-mutual}。}
 
 \subsection{线性组合的 mgf}
 
@@ -296,7 +304,9 @@ M_T(t) = \prod_{i=1}^n M_i(k_i t).
 特别地，若 $X_1, \ldots, X_n$ iid（独立同分布），则 $T = \sum_{i=1}^n X_i$ 的 mgf 为
 \[
 M_T(t) = [M(t)]^n.
-\]
+\tag{2.7.2}\label{eq:mgf-sum-iid}
+
+这个性质在研究样本和的分布时极为有用——它是一切大样本理论的起点。\footnote{中心极限定理的讨论见附录 \cref{sec:derivation-clt}。}
 
 \section{本章总结}\label{sec:chapter2-summary}
 
@@ -310,11 +320,16 @@ M_T(t) = [M(t)]^n.
 条件 pmf & $p_{X_2|X_1}(x_2|x_1) = p(x_1,x_2)/p_{X_1}(x_1)$ \\ \hline
 条件 pdf & $f_{X_2|X_1}(x_2|x_1) = f(x_1,x_2)/f_{X_1}(x_1)$ \\ \hline
 全期望 & $\mathbb{E}[\mathbb{E}(X_2|X_1)] = \mathbb{E}X_2$ \\ \hline
+方差分解 & $\text{var}(X_2) = \mathbb{E}[\text{var}(X_2|X_1)] + \text{var}[\mathbb{E}(X_2|X_1)]$ \\ \hline
 独立性 & $f(x_1,x_2) = f_1(x_1)f_2(x_2)$ \\ \hline
 协方差 & $\text{cov} = \mathbb{E}(X_1X_2) - \mathbb{E}X_1\mathbb{E}X_2$ \\ \hline
 相关系数 & $\rho = \text{cov}/(\sigma_1\sigma_2)$，$-1 \leq \rho \leq 1$ \\ \hline
 \end{tabular}
 \end{center}
+
+\textbf{本章内部脉络}：联合分布（描述共同行为） $\to$ 边缘分布（提取单个变量信息） $\to$ 条件分布（利用已知变量更新未知变量） $\to$ 独立性（无关系时的简化） $\to$ 相关性（量化关联程度）。
+
+\textbf{为下一章铺垫}：第 3 章将系统研究最重要的几类分布，这些分布在多元情形下自然出现。第 4 章则利用这些分布建立统计推断的基本工具。
 
 \section*{习题}\label{sec:exercises-ch2}
 
@@ -323,23 +338,49 @@ M_T(t) = [M(t)]^n.
 \end{exercise}
 
 \begin{exercise}{2.2.1}
-设 $(X_1, X_2)$ 的联合 pdf 为 $f(x_1, x_2) = 2$，$0 < x_1 < x_2 < 1$，其他位置为零。求 $Y = X_1 + X_2$ 的分布。
+设 $(X_1, X_2)$ 的联合 pdf 为 $f(x_1, x_2) = 2$，$0 < x_1 < x_2 < 1$，其他位置为零。
+\begin{enumerate}
+\item 求边缘 pdf $f_{X_1}(x_1)$ 和 $f_{X_2}(x_2)$
+\item 验证 $\int\int f = 1$
+\end{enumerate}
 \end{exercise}
 
 \begin{exercise}{2.3.1}
 设 $X_1$ 和 $X_2$ 具有联合 pdf $f(x_1, x_2) = x_1 + x_2$，$0 < x_1 < 1$，$0 < x_2 < 1$。求给定 $X_1 = x_1$ 时 $X_2$ 的条件均值和条件方差。
 \end{exercise}
 
+\begin{exercise}{2.3.2}
+证明全期望公式：$\mathbb{E}[\mathbb{E}(X_2 \mid X_1)] = \mathbb{E}X_2$。（提示：对离散和连续两种情形分别证明）
+\end{exercise}
+
 \begin{exercise}{2.4.1}
 证明：若 $X_1$ 和 $X_2$ 独立，则 $\mathbb{E}[g(X_1) h(X_2)] = \mathbb{E}[g(X_1)] \cdot \mathbb{E}[h(X_2)]$。
+\end{exercise}
+
+\begin{exercise}{2.4.2}
+设 $(X, Y)$ 具有联合 pdf $f(x, y) = x + y$，$0 < x < 1$，$0 < y < 1$。$X$ 与 $Y$ 是否独立？为什么？
 \end{exercise}
 
 \begin{exercise}{2.5.1}
 设 $(X, Y)$ 具有联合 pdf $f(x, y) = x + y$，$0 < x < 1$，$0 < y < 1$。求相关系数 $\rho$。
 \end{exercise}
 
+\begin{exercise}{2.5.2}
+证明：$-1 \leq \text{corr}(X, Y) \leq 1$。（提示：使用 Cauchy-Schwarz 不等式）
+\end{exercise}
+
 \begin{exercise}{2.6.1}
+设 $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$。证明条件分布 $X_2 \mid X_1 = x_1 \sim N(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1), \sigma_2^2(1-\rho^2))$。
+\end{exercise}
+
+\begin{exercise}{2.6.2}
+设 $(X_1, X_2) \sim N(0, 0, 1, 1, \rho)$（相关系数为 $\rho$ 的二元标准正态）。求 $X_1 + X_2$ 的分布。
+\end{exercise}
+
+\begin{exercise}{2.7.1}
 设 $X_1, X_2, X_3$ 为三个独立同分布的随机变量，每个的 pdf 为 $f(x) = 2x$，$0 < x < 1$。求 $Y = \max\{X_1, X_2, X_3\}$ 的分布。
 \end{exercise}
 
-% === 用户问答记录 ===%
+\begin{exercise}{2.7.2}
+设 $X_1, \ldots, X_n$ iid $\sim N(\mu, \sigma^2)$。令 $\bar{X} = n^{-1}\sum X_i$。利用 mgf 证明 $\bar{X} \sim N(\mu, \sigma^2/n)$。
+\end{exercise}
