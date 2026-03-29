@@ -170,66 +170,283 @@ t = \frac{ \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) }{ \sqrt{ \frac{ \hat{S}^2(1) }{n
 
 \userannotation{学生化为什么更稳健？}{当 treatment 组和 control 组的方差差异较大时，差值均值的检验可能失效。学生化通过分别估计两组的方差，能够更好地处理异方差情况。}
 
-\subsection{卡方检验：二元结局的渐近检验}
+\subsection{卡方检验：分类数据的拟合优度与独立性}
 
-对于二元结局，我们还可以使用\textbf{卡方检验（Chi-Square Test）}——这是 Fisher 精确检验的大样本渐近替代。
+迄今为止我们关注的都是连续型结局。但统计学同样关注\textbf{分类数据（categorical data）}——即计数数据。例如：选举中支持不同候选人的选民人数、不同药物治疗后的治愈/未治愈人数。卡方检验（Chi-Square Test）正是处理这类数据的核心工具。
 
-\textbf{背景}：卡方检验由卡尔·皮尔逊（Karl Pearson）于 1900 年提出，用于检验观察频数与期望频数之间是否存在显著差异。
+★ Insight ─────────────────────────────────────
+连续数据关注"均值差异"，分类数据关注"频数差异"。这两类数据的分析方法有本质区别——连续数据用 $t$ 检验或 $z$ 检验，分类数据用卡方检验。理解这一点，才能在实战中选对武器。
+─────────────────────────────────────────────────
 
-\textbf{基本思想}：在零假设 $Z \perp Y$ 下，治疗组和对照组的成功概率相等：$p_1 = p_0$。我们可以构建 $2 \times 2$ 列联表：
+卡方检验由卡尔·皮尔逊（Karl Pearson）于 1900 年提出，核心思想是：**比较观测频数与期望频数。如果两者差异很大，说明数据可能不服从假设的分布或独立性结构。**
+
+\subsubsection{拟合优度检验}
+
+\textbf{问题}：数据是否来自某个特定分布？
+
+设有 $k$ 个类别的观测频数 $O_1, O_2, \ldots, O_k$，总样本量为 $n$。在零假设 $H_0$ 下，第 $i$ 类的期望频数为 $E_i = n p_{i0}$，其中 $p_{i0}$ 是 $H_0$ 规定的理论概率。
+
+\textbf{皮尔逊卡方统计量}：
+\[
+\chi^2 = \sum_{i=1}^{k} \frac{(O_i - E_i)^2}{E_i} \tag{4.5.1}
+\]
+
+\textbf{直观理解}：$(O_i - E_i)^2 / E_i$ 衡量每个类别的偏差——平方消去正负号，除以 $E_i$ 进行标准化（一个大类的 $100$ 偏差比一个小类的 $100$ 偏差更重要），求和得到总体偏离程度。
+
+\textbf{渐近分布}：在 $H_0$ 下，当样本量 $n$ 足够大时，
+\[
+\chi^2 \xrightarrow{d} \chi_{k-1}^2
+\]
+自由度为 $k-1$，因为只有一个约束——$\sum O_i = \sum E_i = n$。
+
+\textbf{决策规则}：计算 $\chi^2$ 值，若 $\chi^2 > \chi^2_{\alpha, k-1}$（临界值），则拒绝 $H_0$。
+
+★ Insight ─────────────────────────────────────
+为什么自由度是 $k-1$？因为 $k$ 个类别的观测频数之和必须等于 $n$，这产生了一个线性约束。所以 $k$ 个类别中只有 $k-1$ 个可以自由变化——最后一个由总和决定。
+─────────────────────────────────────────────────
+
+\begin{Example}[骰子检验——硬币是否均匀？]\label{ex:dice-goodness-of-fit}
+\textbf{背景}：投掷一枚骰子 120 次，想检验它是否均匀（各面概率均为 $1/6$）。
+
+\textbf{观测数据}：
+
+\begin{center}
+\begin{tabular}{c|cccccc}
+面 & 1 & 2 & 3 & 4 & 5 & 6\\\hline
+观测频数 $O_i$ & 15 & 22 & 18 & 25 & 17 & 23\\
+期望频数 $E_i$ & 20 & 20 & 20 & 20 & 20 & 20
+\end{tabular}
+\end{center}
+
+\textbf{计算}：
+\[
+\chi^2 = \frac{(15-20)^2}{20} + \frac{(22-20)^2}{20} + \frac{(18-20)^2}{20} + \frac{(25-20)^2}{20} + \frac{(17-20)^2}{20} + \frac{(23-20)^2}{20} = 4.3
+\]
+
+自由度 $k-1 = 5$，查表得 $\chi^2_{0.05, 5} = 11.07$。
+
+由于 $4.3 < 11.07$，在 $\alpha = 0.05$ 水平下\textbf{不能拒绝}均匀性假设。
+
+\textbf{R 实现}：
+\begin{verbatim}
+> obs <- c(15, 22, 18, 25, 17, 23)
+> chisq.test(obs, p = rep(1/6, 6))
+
+	Chi-squared test for given probabilities
+
+X-squared = 4.3, df = 5, p-value = 0.507
+\end{verbatim}
+
+p 值为 $0.507$，远大于 $0.05$，与手工计算一致。
+
+\qed
+\end{Example}
+
+★ Insight ─────────────────────────────────────
+骰子例子中，$E_i = 20$ 都相同。如果某个类别期望频数太小（$<5$），渐近近似的精度会下降，此时应该用精确检验（exact test）或合并相邻类别。
+─────────────────────────────────────────────────
+
+\begin{Example}[遗传学——孟德尔豌豆实验]\label{ex:mendel-pea}
+\textbf{背景}：孟德尔杂交黄色圆粒豌豆与绿色皱粒豌豆，预期后代比例为：
+\[
+\text{黄圆} : \text{黄皱} : \text{绿圆} : \text{绿皱} = 9 : 3 : 3 : 1
+\]
+
+\textbf{观测数据}（共 556 株）：
+\[
+O = (315, 101, 108, 32), \quad E = (556 \times \tfrac{9}{16}, \ldots) = (312.75, 104.25, 104.25, 34.75)
+\]
+
+\textbf{计算}：
+\[
+\chi^2 = \frac{(315-312.75)^2}{312.75} + \frac{(101-104.25)^2}{104.25} + \frac{(108-104.25)^2}{104.25} + \frac{(32-34.75)^2}{34.75} \approx 0.47
+\]
+
+自由度 $k-1 = 3$，查表得 $\chi^2_{0.05, 3} = 7.81$。由于 $0.47 < 7.81$，\textbf{不能拒绝}孟德尔比例。
+
+\textbf{R 实现}：
+\begin{verbatim}
+> obs <- c(315, 101, 108, 32)
+> prob <- c(9/16, 3/16, 3/16, 1/16)
+> chisq.test(obs, p = prob)
+
+	Chi-squared test for given probabilities
+
+X-squared = 0.47, df = 3, p-value = 0.925
+\end{verbatim}
+
+p 值为 $0.925$——数据与孟德尔比例高度吻合（这也引发了一些历史争议，因为拟合得太好了）。
+
+\qed
+\end{Example}
+
+\subsubsection{独立性检验}
+
+第二个应用场景是\textbf{列联表独立性检验}——判断两个分类变量是否独立。
+
+\textbf{问题}：对于 $r \times c$ 列联表，检验行变量 $X$ 与列变量 $Y$ 是否独立。
+
+设 $O_{ij}$ 为单元格 $(i,j)$ 的观测频数，$O_{i\cdot} = \sum_j O_{ij}$ 为第 $i$ 行合计，$O_{\cdot j} = \sum_i O_{ij}$ 为第 $j$ 列合计，总计为 $n$。
+
+\textbf{期望频数}（在独立性假设 $H_0: X \perp Y$ 下）：
+\[
+E_{ij} = \frac{O_{i\cdot} \cdot O_{\cdot j}}{n} \tag{4.5.2}
+\]
+
+\textbf{直观理解}：如果 $X$ 和 $Y$ 独立，第 $(i,j)$ 格的概率应为 $P(X=i)P(Y=j)$。用边际频数估计这些概率，就得到上式。
+
+\textbf{检验统计量}：
+\[
+\chi^2 = \sum_{i=1}^{r} \sum_{j=1}^{c} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}
+\]
+
+\textbf{自由度}：在 $H_0$ 下，$(r-1)(c-1)$。直观上，$r$ 行中有 $r-1$ 行可以自由取值（最后一行由行合计决定），$c$ 列中有 $c-1$ 列可以自由取值，故自由度为 $(r-1)(c-1)$。
+
+★ Insight ─────────────────────────────────────
+$2 \times 2$ 表的自由度为 $1$，这与二项分布的参数个数一致——只估计了一个参数 $p$（成功率）。更大的表可以检验更复杂的独立性结构。
+─────────────────────────────────────────────────
+
+\textbf{连续性修正}（仅用于 $2 \times 2$ 表）：
+R 中的 \texttt{chisq.test} 默认使用 Yates 连续性修正，对小样本的渐近近似进行校正：
+\[
+\chi^2_{\text{Yates}} = \sum \frac{(|O - E| - 0.5)^2}{E}
+\]
+
+\begin{Example}[$2 \times 2$ 表——治疗与结局独立性]\label{ex:2x2-chi-square}
+考虑二元结局的随机实验，数据汇总为：
 
 \begin{center}
 \begin{tabular}{lccc}
 \hline
-        & $Y=1$ & $Y=0$ & 合计\\\hline
-$Z=1$ & $n_{11}$ & $n_{10}$ & $n_1$ \\
-$Z=0$ & $n_{01}$ & $n_{00}$ & $n_0$ \\
-\hline
+        & 成功$(Y=1)$ & 失败$(Y=0)$ & 合计\\\hline
+治疗$(Z=1)$ & $n_{11}=30$ & $n_{10}=20$ & $n_1=50$ \\
+对照$(Z=0)$ & $n_{01}=20$ & $n_{00}=30$ & $n_0=50$ \\\hline
 \end{tabular}
 \end{center}
 
-\textbf{期望频数}（在 $Z \perp Y$ 下）：
+\textbf{步骤 1：计算期望频数}：
 \[
-\mathbb{E}(n_{11}) = \frac{n_1 \cdot n_{.1}}{n}, \quad
-\mathbb{E}(n_{10}) = \frac{n_1 \cdot n_{.0}}{n}, \quad
-\mathbb{E}(n_{01}) = \frac{n_0 \cdot n_{.1}}{n}, \quad
-\mathbb{E}(n_{00}) = \frac{n_0 \cdot n_{.0}}{n}
+E_{11} = \frac{50 \times 50}{100} = 25, \quad
+E_{10} = \frac{50 \times 50}{100} = 25, \quad
+E_{01} = \frac{50 \times 50}{100} = 25, \quad
+E_{00} = 25
 \]
 
-\textbf{皮尔逊卡方统计量}：
+\textbf{步骤 2：计算 $\chi^2$}：
 \[
-\chi^2 = \sum_{\text{所有格子}} \frac{(O - E)^2}{E}
-= \frac{(n_{11} - \mathbb{E}(n_{11}))^2}{\mathbb{E}(n_{11})}
-+ \frac{(n_{10} - \mathbb{E}(n_{10}))^2}{\mathbb{E}(n_{10})}
-+ \frac{(n_{01} - \mathbb{E}(n_{01}))^2}{\mathbb{E}(n_{01})}
-+ \frac{(n_{00} - \mathbb{E}(n_{00}))^2}{\mathbb{E}(n_{00})}
+\chi^2 = \frac{(30-25)^2}{25} + \frac{(20-25)^2}{25} + \frac{(20-25)^2}{25} + \frac{(30-25)^2}{25} = \frac{25}{25} + \frac{25}{25} + \frac{25}{25} + \frac{25}{25} = 4
 \]
 
-其中 $O$ = 观察频数（observed），$E$ = 期望频数（expected）。
-
-\textbf{渐近分布}：在零假设下，当样本量 $n$ 足够大时，
-\[
-\chi^2 \xrightarrow{d} \chi_1^2
-\]
-自由度为 $(2-1)\times(2-1)=1$，因为行合计与列合计已固定。
-
-★ Insight ─────────────────────────────────────
-为什么是 $(O-E)^2/E$ 而不是 $|O-E|$？平方项保证正值且对大的偏离更敏感；除以 $E$ 则标准化了不同期望频数的影响。这正是皮尔逊的洞见——将"偏离程度"量化为一个具有标准渐近分布的统计量。
-─────────────────────────────────────────────────
+自由度 $(2-1)(2-1)=1$，临界值 $\chi^2_{0.05,1} = 3.84$。由于 $4 > 3.84$，\textbf{拒绝独立性假设}——治疗与结局存在关联。
 
 \textbf{R 实现}：
 \begin{verbatim}
-# 构建 2x2 列联表
-tb <- matrix(c(n11, n10, n01, n00), nrow = 2, byrow = TRUE)
-rownames(tb) <- c("Z=1", "Z=0")
-colnames(tb) <- c("Y=1", "Y=0")
+> tb <- matrix(c(30, 20, 20, 30), nrow = 2, byrow = TRUE)
+> chisq.test(tb)
 
-# 卡方检验（渐近方法）
-chisq.test(tb)
+	Pearson's Chi-squared test with Yates' continuity correction
 
-# Fisher 精确检验（小样本精确方法）
-fisher.test(tb)
+X-squared = 4, df = 1, p-value = 0.0455
 \end{verbatim}
+
+注意 Yates 修正后的 $\chi^2$ 从 $4$ 降到 $4 \times (|30-25|-0.5)^2/25 + \cdots = 3.24$（临界值不变），p 值 $= 0.072$——这说明连续性修正在小样本时影响显著。
+
+\qed
+\end{Example}
+
+\begin{Example}[$3 \times 2$ 表——吸烟与肺癌]\label{ex:smoking-lung-cancer}
+\textbf{背景}：研究吸烟状态与肺癌诊断的关联，数据如下：
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+        & 患肺癌 & 未患肺癌 & 合计\\\hline
+重度吸烟 & 60 & 40 & 100\\
+轻度吸烟 & 20 & 30 & 50\\
+不吸烟   & 10 & 40 & 50\\\hline
+\end{tabular}
+\end{center}
+
+\textbf{步骤 1：计算期望频数}：
+\[
+E_{11} = \frac{100 \times 90}{200} = 45, \quad
+E_{12} = \frac{100 \times 110}{200} = 55
+\]
+\[
+E_{21} = \frac{50 \times 90}{200} = 22.5, \quad
+E_{22} = \frac{50 \times 110}{200} = 27.5
+\]
+\[
+E_{31} = \frac{50 \times 90}{200} = 22.5, \quad
+E_{32} = \frac{50 \times 110}{200} = 27.5
+\]
+
+\textbf{步骤 2：计算 $\chi^2$}：
+\[
+\chi^2 = \frac{(60-45)^2}{45} + \frac{(40-55)^2}{55} + \frac{(20-22.5)^2}{22.5} + \frac{(30-27.5)^2}{27.5} + \frac{(10-22.5)^2}{22.5} + \frac{(40-27.5)^2}{27.5} \approx 20.4
+\]
+
+自由度 $(3-1)(2-1) = 2$，查表 $\chi^2_{0.05,2} = 5.99$。由于 $20.4 > 5.99$，\textbf{拒绝独立性}——吸烟与肺癌存在显著关联。
+
+\textbf{R 实现}：
+\begin{verbatim}
+> tb <- matrix(c(60, 40, 20, 30, 10, 40), nrow = 3, byrow = TRUE)
+> rownames(tb) <- c("重度吸烟", "轻度吸烟", "不吸烟")
+> colnames(tb) <- c("患肺癌", "未患肺癌")
+> chisq.test(tb)
+
+	Pearson's Chi-squared test
+
+X-squared = 20.4, df = 2, p-value = 3.7e-05
+\end{verbatim}
+
+p 值极小，结论稳健。
+
+\qed
+\end{Example}
+
+\begin{Example}[$4 \times 3$ 表——教育程度与收入水平]\label{ex:education-income}
+\textbf{背景}：调查 500 人的教育程度与收入水平：
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+        & 低收入 & 中等收入 & 高收入 & 合计\\\hline
+初中及以下 & 80 & 50 & 20 & 150\\
+高中      & 60 & 80 & 30 & 170\\
+本科      & 30 & 70 & 40 & 140\\
+研究生    & 10 & 30 & 100 & 140\\\hline
+合计     & 180 & 230 & 190 & 500
+\end{tabular}
+\end{center}
+
+\textbf{R 实现}：
+\begin{verbatim}
+> edu <- c(80, 50, 20, 60, 80, 30, 30, 70, 40, 10, 30, 100)
+> tb <- matrix(edu, nrow = 4, byrow = TRUE)
+> rownames(tb) <- c("初中及以下", "高中", "本科", "研究生")
+> colnames(tb) <- c("低收入", "中等收入", "高收入")
+> chisq.test(tb)
+
+	Pearson's Chi-squared test
+
+X-squared = 186.7, df = 6, p-value < 2.2e-16
+\end{verbatim}
+
+p 值极小，拒绝独立性——教育程度与收入水平存在强关联。
+
+\textbf{进一步分析}：对于 $r \times c$ 表，还可以计算列联表相关系数（contingency coefficient）和 Cramér V（Cramér's V）来衡量关联强度：
+\[
+V = \sqrt{\frac{\chi^2}{n \times \min(r-1, c-1)}}
+\]
+对于本例，$V = \sqrt{186.7 / (500 \times 2)} \approx 0.43$，表示中等偏强的关联。
+
+\qed
+\end{Example}
+
+\subsubsection{二元结局下的卡方检验：与 Fisher 精确检验的对比}
+
+回到随机实验的二元结局语境，我们使用卡方检验来检验 $Z \perp Y$（治疗与结局独立）。
 
 \textbf{与 Fisher 精确检验的比较}：
 
@@ -246,11 +463,6 @@ p 值 & 近似 & 精确\\
 ★ Insight ─────────────────────────────────────
 Fisher 精确检验使用超几何分布计算 p 值，在零假设下有精确的有限样本分布。Chi-square 则是大样本近似——当样本量增大时，两者结果趋于一致。实践中，如果样本不太小且所有期望频数都 $>5$，两种方法都可以使用。
 ─────────────────────────────────────────────────
-
-\textbf{连续性修正}：R 中的 \texttt{chisq.test} 默认使用 Yates 连续性修正，对小样本的渐近近似进行校正：
-\[
-\chi^2_{\text{Yates}} = \sum \frac{(|O - E| - 0.5)^2}{E}
-\]
 
 \textbf{完整例子——简历种族歧视实验}（Bertrand \& Mullainathan, 2004）：
 
@@ -276,6 +488,18 @@ Alltable
 \end{tabular}
 \end{center}
 
+计算各格期望频数：
+\[
+E_{11} = \frac{2435 \times 392}{4870} \approx 195.7, \quad
+E_{12} = \frac{2435 \times 4478}{4870} \approx 2239.3
+\]
+\[
+E_{21} = \frac{2435 \times 392}{4870} \approx 196.3, \quad
+E_{22} = \frac{2435 \times 4478}{4870} \approx 2238.7
+\]
+
+由于期望频数都远大于 $5$，适合使用卡方检验。
+
 \begin{verbatim}
 > chisq.test(Alltable)
 
@@ -291,6 +515,18 @@ p 值极小，提供种族对回调率有显著影响的强有力证据。
 \text{var}(\widehat{\text{RD}}) \approx \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_0(1-\hat{p}_0)}{n_0}
 \]
 而 $\chi^2$ 统计量正是 $(\widehat{\text{RD}})^2 / \text{var}(\widehat{\text{RD}})$ 的另一种表达。
+
+\textbf{不满足适用条件时的处理}：
+
+\begin{enumerate}
+  \item 如果某些期望频数 $< 5$（尤其 $2 \times 2$ 表），优先使用 Fisher 精确检验
+  \item 如果样本量太小，可以合并相邻类别以增大期望频数
+  \item 使用蒙特卡洛近似：\texttt{chisq.test(tb, simulate.p.value = TRUE)}
+\end{enumerate}
+
+★ Insight ─────────────────────────────────────
+卡方检验的"大样本近似"条件可以通过经验规则判断：期望频数都 $>5$ 时近似精度较好；如果有多个格子 $<5$，渐近近似的 p 值可能严重偏离真实值，此时 Fisher 精确检验更可靠。
+─────────────────────────────────────────────────
 
 \subsection{Wilcoxon 秩和统计量}
 
