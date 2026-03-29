@@ -17,10 +17,40 @@
 | L006 | 禁止使用 \bm 命令 | 2 |
 | L007 | 公式引用必须用 \eqref{} | 2 |
 | L008 | PUA 行为自注入 | 1 |
+| L009 | LaTeX theorem 环境格式检查 | 1 |
 
 ---
 
-## L001: LaTeX 禁止 Markdown 格式
+## L009: LaTeX theorem 环境格式检查
+
+**日期**: 2026-03-29
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+生成的 LaTeX 文件中，theorem/definition/example 等环境写成了 `\begin theorem}` 或 `\end theorem}` —— 中间有空格或缺少 `{`/`}`。
+
+**正确做法**:
+```latex
+% 错误 ❌
+\begin theorem}[...]
+\end theorem}
+\begin definition}[...]
+\end definition}
+
+% 正确 ✅
+\begin theorem}[...]
+\end theorem}
+\begin{definition}[...]
+\end{definition}
+```
+
+**检查命令**:
+```bash
+grep -n "begin theorem\|end theorem\|begin definition\|end definition" notes/**/*.tex
+```
+
+**防止措施**:
+- 生成后立即检查所有 theorem-like 环境闭合: LaTeX 禁止 Markdown 格式
 
 **日期**: 2026-03-29
 **经历次数**: 3 次 (累计)
