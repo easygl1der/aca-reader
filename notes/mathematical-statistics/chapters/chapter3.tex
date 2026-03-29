@@ -8,7 +8,7 @@ Statistics matters because certain probability distributions appear repeatedly i
 
 \textbf{Chapter Roadmap}: Bernoulli $\to$ Binomial $\to$ Poisson $\to$ Gamma/Chi-square/Beta $\to$ Normal $\to$ Multivariate Normal $\to$ $t$ and $F$ Distributions
 
-\section{3.1 From Bernoulli to Binomial: The Science of Counting}\label{sec:binomial-distributions-ch3}
+\section{3.1 The Binomial and Related Distributions}\label{sec:binomial-distributions-ch3}
 
 \subsection{Why Do We Need the Binomial Distribution?}
 
@@ -30,7 +30,7 @@ p(x) = p^{x}(1-p)^{1-x}, \quad x = 0, 1.
 
 Mean and variance:
 \[
-\mathbb{E}X = p, \quad \text{var}(X) = p(1-p).
+\mathbb{E}X = p, \quad \operatorname{var}(X) = p(1-p).
 \]
 
 \textbf{Why is the Bernoulli distribution so fundamental?} It is the simplest non-trivial random variable---neither a deterministic constant nor a uniform distribution. It captures the essential nature of ``yes/no'' decision uncertainty.
@@ -61,12 +61,12 @@ Solution: Let $X$ be the number of sixes, so $X \sim \text{Bin}(n=3, p=1/6)$,
 \textbf{Moment generating function}:
 \[
 M(t) = [(1-p) + pe^{t}]^{n}.
-\]
+\]\footnote{推导见附录 \cref{sec:binomial-mgf-derivation}.}
 
 \textbf{Mean and variance}:
 \[
-\mathbb{E}X = np, \quad \text{var}(X) = np(1-p).
-\]
+\mathbb{E}X = np, \quad \operatorname{var}(X) = np(1-p).
+\]\footnote{推导见附录 \cref{sec:binomial-mgf-derivation}.}
 
 \begin theorem}[Additivity of Binomial Distributions]\label{th:binomial-sum-ch3}
 If $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$.
@@ -89,7 +89,7 @@ Let $Y$ be the number of failures before the $r$-th success. Then the total numb
 p_Y(y) = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-This is called the \textbf{negative binomial distribution}.
+This is called the \textbf{negative binomial distribution}.\footnote{推导见附录 \cref{sec:negative-binomial-mgf}.}
 
 When $r=1$, we obtain the \textbf{geometric distribution}:
 \begin{equation}\label{eq:geometric-pmf-ch3}
@@ -99,7 +99,7 @@ p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 The geometric distribution possesses a unique \textbf{memorylessness property}:
 \[
 \mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j).
-\]
+\]\footnote{推导见附录 \cref{sec:geometric-memoryless}.}
 
 \textbf{What does this mean?} If you have already failed $k$ times, the remaining waiting time for the first success is exactly the same as it was at the beginning. Past failures do not change future expectations.
 
@@ -113,6 +113,8 @@ Let $X_i$ be the count of category $i$ occurrences. Then $(X_1, \ldots, X_k)$ fo
 \mathbb{P}(X_1=x_1, \ldots, X_k=x_k) = \frac{n!}{x_1! \cdots x_k!} p_1^{x_1} \cdots p_k^{x_k}.
 \end{equation}
 
+\textbf{Mean and variance}: For each $i$, $X_i \sim \text{Bin}(n, p_i)$, so $\mathbb{E}X_i = np_i$ and $\operatorname{var}(X_i) = np_i(1-p_i)$. The covariance is $\operatorname{cov}(X_i, X_j) = -np_ip_j$ for $i \neq j$.\footnote{推导见附录 \cref{sec:multinomial-covariance}.}
+
 \subsection{The Hypergeometric Distribution}\label{sub:hypergeometric-ch3}
 
 \textbf{Central question}: What is the distribution of successes when sampling \textbf{without replacement}?
@@ -123,9 +125,9 @@ In a batch of $N$ items with $D$ defectives, we draw $n$ items (without replacem
 p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x = 0, 1, \ldots, n.
 \end{equation}
 
-\textbf{Mean and variance}:
+\textbf{Mean and variance}:\footnote{推导见附录 \cref{sec:hypergeometric-mean-variance}.}
 \[
-\mathbb{E}X = n\frac{D}{N}, \quad \text{var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}.
+\mathbb{E}X = n\frac{D}{N}, \quad \operatorname{var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}.
 \]
 
 The final factor $\frac{N-n}{N-1}$ is the \textbf{finite population correction factor}. When $N \gg n$, it approaches 1, and the hypergeometric distribution approximates the binomial.
@@ -136,7 +138,7 @@ The final factor $\frac{N-n}{N-1}$ is the \textbf{finite population correction f
 
 In nature and society, there exists a special class of phenomena: \textbf{the number of events occurring in a fixed time/space interval}---such as customers arriving at a bank per hour, printing errors per page, earthquakes per year.
 
-These phenomena share a common feature: \textbf{the probability of occurrence is small, but the number of trials is large}. The limiting form of the binomial distribution is precisely the Poisson distribution.
+These phenomena share a common feature: \textbf{the probability of occurrence is small, but the number of trials is large}. The limiting form of the binomial distribution is precisely the Poisson distribution.\footnote{推导见附录 \cref{sec:poisson-approximation-proof}.}
 
 \subsection{Definition of the Poisson Distribution}
 
@@ -151,12 +153,19 @@ Here $\lambda > 0$ is the parameter. We write $X \sim \text{Poisson}(\lambda)$.
 \sum_{x=0}^{\infty} p(x) = e^{-\lambda} \sum_{x=0}^{\infty} \frac{\lambda^x}{x!} = e^{-\lambda} \cdot e^{\lambda} = 1.
 \]
 
-\textbf{Mean and variance}:
+\textbf{Mean and variance}:\footnote{推导见附录 \cref{sec:poisson-mgf-derivation}.}
 \[
-\mathbb{E}X = \lambda, \quad \text{var}(X) = \lambda.
+\mathbb{E}X = \lambda, \quad \operatorname{var}(X) = \lambda.
 \]
 
 \textbf{Here is a surprising property}: Mean and variance are equal! This is a hallmark feature of the Poisson distribution.
+
+\begin{example}[Car Accidents]\label{ex:poisson-accidents-ch3}
+Let $X$ be the number of automobile accidents at a busy intersection per week. Suppose that $X$ has a Poisson distribution with $\lambda = 2$. Then the expected number of accidents per week is 2 and the standard deviation is $\sqrt{2}$. The probability of at least one accident in a week is
+\[
+\mathbb{P}(X \geq 1) = 1 - \mathbb{P}(X = 0) = 1 - e^{-2} \approx 0.8647.
+\]
+\end/example}
 
 \begin theorem}[Poisson Approximation]\label{th:poisson-approximation-ch3}
 If $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then $X_n \xrightarrow{d} \text{Poisson}(\lambda)$.
@@ -164,13 +173,17 @@ If $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then $X_n \xrightarrow{
 
 \textbf{Intuitive understanding}: When $n$ is large and $p$ is small, the binomial distribution behaves almost identically to the Poisson distribution. In practice, the Poisson approximation is often used to simplify calculations.
 
+\begin theorem}[Additivity of Poisson Distributions]\label{th:poisson-additivity-ch3}
+If $X_1 \sim \text{Poisson}(\lambda_1)$ and $X_2 \sim \text{Poisson}(\lambda_2)$ are independent, then $X_1 + X_2 \sim \text{Poisson}(\lambda_1 + \lambda_2)$.
+\end theorem}
+
 \begin remark}
 The Poisson distribution was introduced by Siméon Denis Poisson in 1837, originally for analyzing data on French court judgments---the probability that a judge makes a certain number of rulings in a given time period.
 \end remark}
 
 \section{3.3 The Gamma, $\chi^2$, and Beta Distributions}\label{sec:gamma-chi2-beta-ch3}
 
-These three distributions form the backbone of continuous statistical inference. Understanding their relationships掌握了它们的关系，就理解了半参数推断的数学基础。
+These three distributions form the backbone of continuous statistical inference. Understanding their relationships，掌握了它们的关系，就理解了半参数推断的数学基础。
 
 \subsection{The Gamma Function}
 
@@ -201,9 +214,9 @@ We write $X \sim \Gamma(\alpha, \beta)$.
 \item $\beta$: scale parameter, controlling the spread
 \end{itemize}
 
-\textbf{Mean and variance}:
+\textbf{Mean and variance}:\footnote{推导见附录 \cref{sec:gamma-mgf-derivation}.}
 \[
-\mathbb{E}X = \alpha\beta, \quad \text{var}(X) = \alpha\beta^{2}.
+\mathbb{E}X = \alpha\beta, \quad \operatorname{var}(X) = \alpha\beta^{2}.
 \]
 
 \textbf{Two important special cases}:
@@ -212,15 +225,25 @@ We write $X \sim \Gamma(\alpha, \beta)$.
 \item $\Gamma(n/2, 2) = \chi^2\text{-distribution}$
 \end{itemize}
 
-\begin remark}
-If $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ are independent, then $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$.
-\end remark}
+\begin{exercise}{3.3.1}
+Let $X$ have a $\Gamma(\alpha, \beta)$ distribution. Show that the moment generating function is $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$.
+\end{exercise}
 
-The moment generating function of a gamma distribution is $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$.\footnote{推导见附录 \cref{sec:gamma-mgf-derivation}.}
+\begin{exercise}{3.3.2}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $\mathbb{E}X = \alpha\beta$ and $\operatorname{var}(X) = \alpha\beta^2$.
+\end{exercise}
+
+\begin{exercise}{3.3.3}
+Let $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ be independent. Show that $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$.
+\end{exercise}
+
+\begin remark}
+The gamma distribution's importance in applications stems from the variety of shapes it can take. When $\alpha < 1$, the distribution is decreasing (hazard rate increasing); when $\alpha > 1$, it has a single peak; and as $\alpha \to \infty$, it approaches a normal distribution (by the Central Limit Theorem).
+\end remark}
 
 \subsection{The $\chi^2$ Distribution}\label{sub:chi-square-ch3}
 
-\textbf{Central question}: If we square multiple standard normal random variables and sum them, what is the distribution of this new variable?
+\textbf{Central question}: If we square multiple standard normal random variables and sum them, what is the distribution of this new variable?\footnote{推导见附录 \cref{sec:chi-square-from-normal}.}
 
 \begin{definition}[Chi-Square Distribution]\label{def:chi-square-ch3}
 Let $Z_1, Z_2, \ldots, Z_n \sim N(0, 1)$ be iid. Then
@@ -233,16 +256,24 @@ The $\chi^2$ distribution is a special case of $\Gamma(n/2, 2)$.
 
 \textbf{Mean and variance}:
 \[
-\mathbb{E}X = n, \quad \text{var}(X) = 2n.
+\mathbb{E}X = n, \quad \operatorname{var}(X) = 2n.
 \]
 
-\textbf{Additivity}: If $X_1 \sim \chi^2(m)$ and $X_2 \sim \chi^2(n)$ are independent, then $X_1 + X_2 \sim \chi^2(m+n)$.
+\textbf{Additivity}: If $X_1 \sim \chi^2(m)$ and $X_2 \sim \chi^2(n)$ are independent, then $X_1 + X_2 \sim \chi^2(m+n)$.\footnote{推导见附录 \cref{sec:chi-square-additivity}.}
+
+\begin{exercise}{3.3.4}
+If $Z_1, Z_2, \ldots, Z_n$ are iid $N(0,1)$, show that $Y = \sum_{i=1}^n Z_i^2 \sim \chi^2(n)$.
+\end{exercise}
+
+\begin{exercise}{3.3.5}
+If $X \sim \chi^2(n)$, show that $E(X^k) = \frac{2^k \Gamma(\frac{n}{2} + k)}{\Gamma(\frac{n}{2})}$ for $k > -n/2$.
+\end{exercise}
 
 \textbf{Why is it important?} The sampling distribution of the sample variance is closely connected to the $\chi^2$ distribution---making it a central tool for variance estimation and hypothesis testing.
 
 \subsection{The Beta Distribution}\label{sub:beta-distribution-ch3}
 
-Similar to the gamma, the beta distribution is a continuous distribution defined on the $(0,1)$ interval, particularly useful for modeling probabilities.
+Similar to the gamma, the beta distribution is a continuous distribution defined on the $(0,1)$ interval, particularly useful for modeling probabilities.\footnote{推导见附录 \cref{sec:beta-from-gamma}.}
 
 \begin{definition}[Beta Distribution]\label{def:beta-distribution-ch3}
 If $X$ has pdf
@@ -255,20 +286,28 @@ f(x) = \begin{cases}
 where $B(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}$, then $X \sim \text{Beta}(\alpha, \beta)$.
 \end{definition}
 
-\textbf{Mean and variance}:
+\textbf{Mean and variance}:\footnote{推导见附录 \cref{sec:beta-mean-variance}.}
 \[
-\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \text{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
+\mathbb{E}X = \frac{\alpha}{\alpha+\beta}, \quad \operatorname{var}(X) = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}.
 \]
 
 \textbf{Special case}: $\text{Beta}(1,1) = \text{Uniform}(0,1)$.
 
 \textbf{Bayesian perspective}: In Bayesian statistics, when we use a beta distribution as the prior for a binomial distribution's parameter $p$, the posterior distribution remains beta---this is called a \textbf{conjugate prior}.
 
+\begin{exercise}{3.3.6}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that $\mathbb{E}X = \frac{\alpha}{\alpha+\beta}$.
+\end{exercise}
+
+\begin{exercise}{3.3.7}
+Show that the graph of a $\text{Beta}(\alpha, \beta)$ pdf is symmetric about $x = 1/2$ if and only if $\alpha = \beta$.
+\end{exercise}
+
 \section{3.4 The Normal Distribution: Queen of Statistics}\label{sec:normal-distribution-ch3}
 
 Among all probability distributions, the \textbf{normal distribution} holds a paramount position. It forms the cornerstone of statistical inference, econometrics, signal processing, and many other fields.
 
-\textbf{Why is the normal distribution so special?} There are three reasons:
+\textbf{Why is the normal distribution so special?} There are three reasons:\footnote{推导见附录 \cref{sec:normal-mgf-derivation}.}
 \begin{enumerate}
 \item \textbf{Central Limit Theorem}: Sums of many independent small factors approximate a normal distribution
 \item \textbf{Mathematical elegance}: Linear combinations of normal variables remain normal
@@ -290,13 +329,29 @@ In particular, $N(0,1)$ is called the \textbf{standard normal distribution}, wit
 This allows any normal probability calculation to be transformed into a standard normal calculation:
 \[
 \mathbb{P}(X \leq x) = \Phi\!\left(\frac{x-\mu}{\sigma}\right).
-\]
+\]\footnote{推导见附录 \cref{sec:normal-z-transform}.}
 
 \begin{example}[Normal Probability Calculation]\label{ex:normal-prob-ch3}
 Let $X \sim N(100, 225)$ (i.e., $\sigma=15$), find $\mathbb{P}(X < 85)$.
 
 Solution: $Z = \frac{85-100}{15} = -1$, so $\mathbb{P}(X < 85) = \Phi(-1) \approx 0.1587$.
-\end{example}
+\end/example}
+
+\begin{exercise}{3.4.1}
+Let $X \sim N(\mu, \sigma^2)$. Show that the standardized variable $Z = (X-\mu)/\sigma \sim N(0,1)$.
+\end{exercise}
+
+\begin{exercise}{3.4.2}
+If $X \sim N(75, 100)$, find $\mathbb{P}(X < 60)$ and $\mathbb{P}(70 < X < 100)$.
+\end{exercise}
+
+\begin{exercise}{3.4.3}
+Let $X \sim N(\mu, \sigma^2)$. Find $b$ so that $\mathbb{P}[-b < (X-\mu)/\sigma < b] = 0.90$.
+\end{exercise}
+
+\begin{exercise}{3.4.4}
+Let $X \sim N(\mu, \sigma^2)$ with $\mathbb{P}(X < 89) = 0.90$ and $\mathbb{P}(X < 94) = 0.95$. Find $\mu$ and $\sigma^2$.
+\end{exercise}
 
 \begin theorem}[Linear Combinations of Normal Variables]\label{th:normal-linear-combination-ch3}
 If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, then for any constants $a, b$,
@@ -306,6 +361,14 @@ aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2).
 \end theorem}
 
 \textbf{Why is this property important?} It means the normal distribution is closed under linear transformations---making the normal distribution the theoretical foundation of linear models.
+
+\begin{exercise}{3.4.5}
+If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, show that $X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.
+\end{exercise}
+
+\begin{exercise}{3.4.6}
+Let $X_1, X_2, \ldots, X_n$ be iid $N(\mu, \sigma^2)$. Show that $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i \sim N(\mu, \sigma^2/n)$.
+\end{exercise}
 
 \begin remark}
 The normal distribution was introduced by Carl Friedrich Gauss in 1809 when studying measurement errors. Although Laplace had discussed error distributions earlier, Gauss's work cemented the normal distribution's central role in statistics. This explains why the normal distribution is often called the ``Gaussian distribution''.
@@ -332,21 +395,34 @@ where $Q = \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}
 \item $\rho$: correlation coefficient
 \end{itemize}
 
-\begin theorem}[Properties of the Bivariate Normal]\label{th:bivariate-normal-properties-ch3}
-If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$, then:
-\begin{enumerate}
-\item Marginal distributions: $X_1 \sim N(\mu_1, \sigma_1^2)$, $X_2 \sim N(\mu_2, \sigma_2^2)$
-\item Conditional distribution: $X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1-\mu_1), \ \sigma_2^2(1-\rho^2)\right)$
-\item $X_1 \Perp X_2 \iff \rho = 0$ (uniqueness to normals: uncorrelated implies independent)
-\item Any linear combination $aX_1 + bX_2$ follows a normal distribution
-\end{enumerate}
-\end theorem}
+\begin{exercise}{3.5.1}
+Show that if $(X_1, X_2)$ has a bivariate normal distribution, then the marginal distributions are $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$.
+\end{exercise}
+
+\begin{exercise}{3.5.2}
+For the bivariate normal distribution, show that $\operatorname{cov}(X_1, X_2) = \rho\sigma_1\sigma_2$.
+\end{exercise}
+
+\begin{exercise}{3.5.3}
+Show that for the bivariate normal, $X_1 \Perp X_2$ if and only if $\rho = 0$ (uncorrelated normal variables are independent).
+\end{exercise}
+
+\begin{exercise}{3.5.4}
+Let $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$. Show that the conditional distribution of $X_2$ given $X_1 = x_1$ is
+\[
+X_2 \mid X_1 = x_1 \sim N\left(\mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1-\mu_1), \ \sigma_2^2(1-\rho^2)\right).
+\]
+\end{exercise}
 
 \textbf{Key insight}: The conditional mean is a linear function of $x_1$. This means that given one variable, the best prediction for the other is also linear.
 
+\begin{exercise}{3.5.5}
+Let $X_1$ and $X_2$ be independent $N(0,1)$ variables. Find the joint pdf of $Y_1 = X_1 + X_2$ and $Y_2 = X_1 - X_2$. Are $Y_1$ and $Y_2$ independent?
+\end{exercise}
+
 \section{3.6 The $t$ and $F$ Distributions}\label{sec:t-f-distributions-ch3}
 
-These two distributions originated from a practical question: \textbf{How do we make inferences when the population variance is unknown?}
+These two distributions originated from a practical question: \textbf{How do we make inferences when the population variance is unknown?}\footnote{推导见附录 \cref{sec:t-distribution-derivation}.}
 
 \subsection{The $t$ Distribution}\label{sub:t-distribution-ch3}
 
@@ -357,39 +433,427 @@ T = \frac{Z}{\sqrt{X/n}} \sim t(n).
 \]
 \end{definition}
 
-\textbf{Mean and variance}:
+\textbf{Mean and variance}:\footnote{推导见附录 \cref{sec:t-distribution-derivation}.}
 \[
-\mathbb{E}T = 0 \ (n>1), \quad \text{var}(T) = \frac{n}{n-2} \ (n>2).
+\mathbb{E}T = 0 \ (n>1), \quad \operatorname{var}(T) = \frac{n}{n-2} \ (n>2).
 \]
 
 \textbf{Relationship to normal}: As $n \to \infty$, $t(n) \xrightarrow{d} N(0,1)$.
 
 \textbf{Intuitive understanding}: The numerator $Z$ is standard normal, while the denominator $\sqrt{X/n}$ estimates the standard deviation of $Z$. When $n$ is small, this estimate is very unstable, so the $t$ distribution has heavier tails than the normal. When $n=1$, we obtain the Cauchy distribution---a ``dangerous'' distribution with no mean.
 
+\begin{exercise}{3.6.1}
+Let $T \sim t(10)$. Find $\mathbb{P}(|T| > 2.228)$.
+\end{exercise}
+
+\begin{exercise}{3.6.2}
+Let $T \sim t(14)$. Determine $b$ so that $\mathbb{P}(-b < T < b) = 0.90$.
+\end{exercise}
+
+\begin{exercise}{3.6.3}
+Let $T \sim t(n)$. Show that $T^2 \sim F(1, n)$.
+\end{exercise}
+
+\begin{exercise}{3.6.4}
+Verify that the $t$ distribution with $r = 1$ degrees of freedom is the same as the Cauchy distribution.
+\end{exercise}
+
 \begin{example}[$t$ Distribution Application]\label{ex:t-distribution-ch3}
-Let $T \sim t(10)$, find $\mathbb{P}(|T| > 2.228)$.
+Let $T \sim t(10)$. From tables, $t_{0.025, 10} = 2.228$, so $\mathbb{P}(|T| > 2.228) = 0.05$.
+\end/example}
 
-From tables, $t_{0.025, 10} = 2.228$, so $\mathbb{P}(|T| > 2.228) = 0.05$.
-\end{example}
+\begin{exercise}{3.6.5}
+Using R, plot the pdfs of $t$ distributions with degrees of freedom $1, 3, 10, 30$ overlaid with the standard normal pdf. Comment on how the $t$ distribution approaches the normal as degrees of freedom increase.
+\end{exercise}
 
-\subsection{The $F$ Distribution}\label{sub:f-distribution-ch3}
-
-\begin{definition}[$F$ Distribution]\label{def:f-distribution-ch3}
-If $X_1 \sim \chi^2(m)$ and $X_2 \sim \chi^2(n)$ are independent, then
+\begin{exercise}{3.6.6}
+Let $X \sim N(\mu, \sigma^2)$ and let $S^2$ be the sample variance from a sample of size $n$. Show that
 \[
-F = \frac{X_1/m}{X_2/n} \sim F(m, n).
+\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t(n-1).
 \]
-\end{definition}
+\end{exercise}
 
-\textbf{Mean and variance}:
+\begin{exercise}{3.6.7}
+Show that the $t$ distribution is symmetric about 0. What does this imply about the relationship between the mean and median?
+\end{exercise}
+
+\begin{exercise}{3.6.8}
+Compare the probabilities $\mathbb{P}(|X| > 2)$ for $X \sim N(0,1)$ versus $X \sim t(3)$. Which has heavier tails?
+\end{exercise}
+
+\begin{exercise}{3.6.9}
+Let $T \sim t(n)$. Show that $E(T^k) = 0$ for all odd $k$ (when the moment exists).
+\end{exercise}
+
+\begin{exercise}{3.6.10}
+Let $T \sim t(n)$ with $n > 4$. Show that $\operatorname{var}(T) = \frac{n}{n-2}$ and find the kurtosis.
+\end{exercise}
+
+\begin{exercise}{3.6.11}
+Show that as $n \to \infty$, the $t(n)$ distribution converges to $N(0,1)$. (Hint: Use the mgf or characteristic function.)
+\end{exercise}
+
+\begin{exercise}{3.6.12}
+Consider a location model $X = \mu + e$ where $e \sim t(3)$. Determine the probability $\mathbb{P}(|X - \mu| \geq \sigma)$ where $\sigma$ is the standard deviation of $X$.
+\end{exercise}
+
+\begin{exercise}{3.6.13}
+Let $F \sim F(m, n)$. Show that $\frac{1}{F} \sim F(n, m)$.
+\end{exercise}
+
+\begin{exercise}{3.6.14}
+Let $X_1, X_2$ be iid $\text{Exp}(1)$. Show that $Z = X_1/X_2 \sim F(2, 2)$.
+\end{exercise}
+
+\begin{exercise}{3.6.15}
+Let $X_1 \sim \chi^2(r_1)$ and $X_2 \sim \chi^2(r_2)$ be independent. Show that $\frac{X_1/r_1}{X_2/r_2} \sim F(r_1, r_2)$.
+\end{exercise}
+
+\begin{exercise}{3.6.16}
+Show that if $F \sim F(m, n)$, then $Y = \frac{1}{1 + (m/n)F}$ has a $\text{Beta}(n/2, m/2)$ distribution.
+\end{exercise}
+
+\begin{exercise}{3.6.17}
+Let $X_1, X_2, X_3$ be independent $\chi^2$ variables with $r_1, r_2, r_3$ degrees of freedom respectively. Show that $Y_1 = X_1/X_2$ and $Y_2 = X_1 + X_2$ are independent, and that $Y_2 \sim \chi^2(r_1 + r_2)$.
+\end{exercise}
+
+\begin{exercise}{3.6.18}
+Using the result of the previous exercise, show that $\frac{X_1/r_1}{X_3/r_3}$ and $\frac{X_2/r_2}{X_3/r_3}$ are independent $F$-variables.
+\end{exercise}
+
+\begin{exercise}{3.6.19}
+Let $F \sim F(m, n)$ with $n > 4$. Find the mean and variance of $F$.
+\end{exercise}
+
+\begin{exercise}{3.6.20}
+Let $F \sim F(1, n)$. Show that $F = T^2$ where $T \sim t(n)$.
+\end{exercise}
+
+\begin{exercise}{3.6.21}
+Let $X \sim N(0,1)$ and $Y \sim \chi^2(n)$ be independent. Show that $Z = \frac{X}{\sqrt{Y/n}} \sim t(n)$.
+\end{exercise}
+
+\begin{exercise}{3.6.22}
+Consider two independent samples from normal populations: $X_1, \ldots, X_{n_1}$ from $N(\mu_1, \sigma^2)$ and $Y_1, \ldots, Y_{n_2}$ from $N(\mu_2, \sigma^2)$. Show that
 \[
-\mathbb{E}F = \frac{n}{n-2} \ (n>2), \quad \text{var}(F) = \frac{2n^2(m+n-2)}{m(n-2)^2(n-4)} \ (n>4).
+\frac{(\bar{X} - \bar{Y}) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t(n_1 + n_2 - 2),
 \]
+where $S_p^2$ is the pooled variance estimator.
+\end{exercise}
 
-\textbf{Reciprocal property}: If $F \sim F(m, n)$, then $1/F \sim F(n, m)$.
+\begin{exercise}{3.6.23}
+Let $X \sim \chi^2(n)$. Show that $X/n \xrightarrow{p} 1$ as $n \to \infty$. (This result is useful for understanding why the $t$ distribution converges to the normal.)
+\end{exercise}
 
-\textbf{Why is it important?} The $F$ distribution is central to ANOVA (analysis of variance) and regression analysis---we use it to compare whether two variances are equal.
+\begin{exercise}{3.6.24}
+Let $T_n \sim t(n)$. Show that $T_n^2 \xrightarrow{d} \chi^2(1)$ as $n \to \infty$.
+\end{exercise}
 
+\begin{exercise}{3.6.25}
+Let $X_1, X_2$ be iid $N(0,1)$. Find the distribution of $Z = X_1^2 + X_2^2$. What is $\mathbb{P}(Z > 4)$?
+\end{exercise}
+
+\begin{exercise}{3.6.26}
+Let $T \sim t(9)$. Use R to find $c$ such that $\mathbb{P}(-c < T < c) = 0.95$.
+\end{exercise}
+
+\begin{exercise}{3.6.27}
+Let $F \sim F(5, 10)$. Find $\mathbb{P}(F > 3.33)$.
+\end{exercise}
+
+\begin{exercise}{3.6.28}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that if $\alpha = \beta = 1$, we get the uniform distribution on $(0,1)$.
+\end{exercise}
+
+\begin{exercise}{3.6.29}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that the mode is $\frac{\alpha-1}{\alpha+\beta-2}$ when $\alpha > 1$ and $\beta > 1$.
+\end{exercise}
+
+\begin{exercise}{3.6.30}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that the entropy is maximized when $X$ is uniform (i.e., $\alpha = \beta = 1$).
+\end{exercise}
+
+\begin{exercise}{3.6.31}
+Let $X_1 \sim \Gamma(\alpha_1, 1)$ and $X_2 \sim \Gamma(\alpha_2, 1)$ be independent. Show that $\frac{X_1}{X_1 + X_2} \sim \text{Beta}(\alpha_1, \alpha_2)$.
+\end{exercise}
+
+\begin{exercise}{3.6.32}
+Let $X \sim \chi^2(n)$. Show that $X$ can be written as $X = Z_1^2 + \cdots + Z_n^2$ where $Z_i \sim N(0,1)$ are independent.
+\end{exercise}
+
+\begin{exercise}{3.6.33}
+Let $X \sim \chi^2(n)$. Show that the moment generating function is $M(t) = (1-2t)^{-n/2}$ for $t < 1/2$.
+\end{exercise}
+
+\begin{exercise}{3.6.34}
+Let $X \sim \text{Poisson}(\lambda)$. Show that $E(X) = \lambda$ and $\operatorname{var}(X) = \lambda$ using the mgf or directly from the series.
+\end{exercise}
+
+\begin{exercise}{3.6.35}
+Let $X \sim \text{Poisson}(\lambda)$. Show that the probability generating function is $G(s) = \exp\{\lambda(s-1)\}$.
+\end{exercise}
+
+\begin{exercise}{3.6.36}
+If $X \sim \text{Poisson}(\lambda)$, show that $\mathbb{P}(X = k+1 \mid X \geq k) = \frac{\lambda}{k+1} \cdot \frac{1 - F(k)}{1 - F(k+1)}$ where $F$ is the cdf. Comment on the limiting behavior.
+\end{exercise}
+
+\begin{exercise}{3.6.37}
+Let $X_1, X_2$ be independent $\text{Poisson}(\lambda_1)$ and $\text{Poisson}(\lambda_2)$ variables. Find the distribution of $X_1 + X_2$.
+\end{exercise}
+
+\begin{exercise}{3.6.38}
+Let $X \sim \text{Poisson}(\lambda)$. Show that $\mathbb{P}(X \leq n) \leq \frac{e^{-\lambda} \lambda^n}{n!}$ for all $n \geq 0$. (This is related to the Chernoff bound for Poisson.)
+\end{exercise}
+
+\begin{exercise}{3.6.39}
+Let $X \sim \text{Geometric}(p)$. Show that $\mathbb{E}X = \frac{1-p}{p}$ and $\operatorname{var}(X) = \frac{1-p}{p^2}$.
+\end{exercise}
+
+\begin{exercise}{3.6.40}
+Let $X \sim \text{Geometric}(p)$. Show the memoryless property: $\mathbb{P}(X > m+n \mid X > m) = \mathbb{P}(X > n)$ for all $m, n \geq 0$.
+\end{exercise}
+
+\begin{exercise}{3.6.41}
+Let $X \sim \text{NegativeBinomial}(r, p)$. Show that $\mathbb{E}X = \frac{r(1-p)}{p}$ and $\operatorname{var}(X) = \frac{r(1-p)}{p^2}$.
+\end{exercise}
+
+\begin{exercise}{3.6.42}
+Let $X \sim \text{NegativeBinomial}(r, p)$. Show that the mgf is $M(t) = \left(\frac{p}{1-(1-p)e^t}\right)^r$ for $t < -\log(1-p)$.
+\end{exercise}
+
+\begin{exercise}{3.6.43}
+Consider $n$ independent Bernoulli trials with success probability $p$. Let $X$ be the number of failures before the $r$-th success. Show that $X \sim \text{NegativeBinomial}(r, p)$.
+\end{exercise}
+
+\begin{exercise}{3.6.44}
+Let $X \sim \text{Bin}(n, p)$. Show that $\mathbb{E}\left[\frac{X}{n}\right] = p$ and $\operatorname{var}\left(\frac{X}{n}\right) = \frac{p(1-p)}{n}$.
+\end{exercise}
+
+\begin{exercise}{3.6.45}
+Let $X \sim \text{Bin}(n, p)$. Find the mode of the distribution. (Hint: Compare $p(x+1)/p(x)$ to 1.)
+\end{exercise}
+
+\begin{exercise}{3.6.46}
+Let $X \sim \text{Bin}(n, p)$. Show that the skewness is $\frac{1-2p}{\sqrt{np(1-p)}}$.
+\end{exercise}
+
+\begin{exercise}{3.6.47}
+Let $X \sim \text{Hypergeometric}(N, D, n)$. Show that $\mathbb{E}X = n\frac{D}{N}$.
+\end{exercise}
+
+\begin{exercise}{3.6.48}
+Let $X \sim \text{Hypergeometric}(N, D, n)$. Show that $\operatorname{var}(X) = n\frac{D}{N}\frac{N-D}{N}\frac{N-n}{N-1}$.
+\end{exercise}
+
+\begin{exercise}{3.6.49}
+Let $X \sim \text{Hypergeometric}(N, D, n)$. Show that when $N \to \infty$ with $D/N \to p$, then $X \approx \text{Bin}(n, p)$.
+\end{exercise}
+
+\begin{exercise}{3.6.50}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that the hazard function is $h(x) = \frac{x^{\alpha-1}}{\beta^\alpha \Gamma(\alpha, x/\beta)}$ where $\Gamma(\alpha, x/\beta)$ is the incomplete gamma function.
+\end{exercise}
+
+\begin{exercise}{3.6.51}
+Let $X \sim \text{Exponential}(\lambda)$. Show that $X$ has the memoryless property: $\mathbb{P}(X > s+t \mid X > s) = \mathbb{P}(X > t)$.
+\end{exercise}
+
+\begin{exercise}{3.6.52}
+Let $X \sim \text{Exponential}(\lambda)$. Show that $Y = \lambda X \sim \text{Exp}(1)$.
+\end{exercise}
+
+\begin{exercise}{3.6.53}
+Let $X_1, X_2, \ldots, X_n$ be iid $\text{Exp}(\lambda)$. Show that $\sum_{i=1}^n X_i \sim \Gamma(n, 1/\lambda)$.
+\end{exercise}
+
+\begin{exercise}{3.6.54}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $\frac{2X}{\beta} \sim \chi^2(2\alpha)$.
+\end{exercise}
+
+\begin{exercise}{3.6.55}
+Let $X \sim \text{Weibull}(\lambda, k)$. Show that the cdf is $F(x) = 1 - \exp\{-(\lambda x)^k\}$ for $x \geq 0$.
+\end{exercise}
+
+\begin{exercise}{3.6.56}
+Let $X \sim \text{Weibull}(\lambda, k)$. Show that the hazard function is $h(x) = k\lambda(\lambda x)^{k-1}$.
+\end{exercise}
+
+\begin{exercise}{3.6.57}
+Let $X \sim N(0,1)$. Show that $Y = X^2 \sim \chi^2(1)$.
+\end{exercise}
+
+\begin{exercise}{3.6.58}
+Let $X \sim N(0,1)$. Show that $E(|X|) = \sqrt{2/\pi}$.
+\end{exercise}
+
+\begin{exercise}{3.6.59}
+Let $X \sim N(0,1)$. Show that $E(X^4) = 3$.
+\end{exercise}
+
+\begin{exercise}{3.6.60}
+Let $X \sim N(\mu, \sigma^2)$. Show that the moment generating function is $M(t) = \exp\{\mu t + \frac{1}{2}\sigma^2 t^2\}$.
+\end{exercise}
+
+\begin{exercise}{3.6.61}
+Let $X \sim N(\mu, \sigma^2)$. Find $E[(X-\mu)^4]$.
+\end{exercise}
+
+\begin{exercise}{3.6.62}
+Let $X \sim N(\mu, \sigma^2)$. Show that the skewness is 0 and the kurtosis is 0 (using the excess kurtosis definition).
+\end{exercise}
+
+\begin{exercise}{3.6.63}
+Let $X_1, X_2$ be iid $N(0,1)$. Find $P(X_1 > X_2)$.
+\end{exercise}
+
+\begin{exercise}{3.6.64}
+Let $X \sim N(0,1)$. Show that $E[\Phi(X)] = \frac{1}{2}$.
+\end{exercise}
+
+\begin{exercise}{3.6.65}
+Let $X \sim N(0,1)$. Show that $E[X \Phi(X)] = \frac{1}{2\sqrt{\pi}}$.
+\end{exercise}
+
+\begin{exercise}{3.6.66}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that $E[\log X] = \psi(\alpha) - \psi(\alpha + \beta)$ where $\psi$ is the digamma function.
+\end{exercise}
+
+\begin{exercise}{3.6.67}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that the variance of $\log X$ is $\psi'(\alpha) - \psi'(\alpha+\beta)$ where $\psi'$ is the trigamma function.
+\end{exercise}
+
+\begin{exercise}{3.6.68}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $E[\log X] = \log \beta + \psi(\alpha)$ where $\psi$ is the digamma function.
+\end{exercise}
+
+\begin{exercise}{3.6.69}
+Let $X \sim \Gamma(\alpha, 1)$. Show that the entropy is $H(X) = \alpha + \log \Gamma(\alpha) - (1-\alpha)\psi(\alpha)$.
+\end{exercise}
+
+\begin{exercise}{3.6.70}
+Let $X \sim N(0,1)$. Show that the differential entropy is $H(X) = \frac{1}{2}\log(2\pi e)$.
+\end{exercise}
+
+\begin{exercise}{3.6.71}
+Let $X \sim \text{Exp}(\lambda)$. Show that the entropy is $H(X) = 1 - \log \lambda$.
+\end{exercise}
+
+\begin{exercise}{3.6.72}
+Let $X \sim \text{Poisson}(\lambda)$. Show that the entropy satisfies $H(X) \leq \lambda(1 + \log \lambda) - \log \lambda!$ (using Stirling's approximation).
+\end{exercise}
+
+\begin{exercise}{3.6.73}
+Let $X \sim \text{Bin}(n, p)$. Show that the mode is $\lfloor (n+1)p \rfloor$.
+\end{exercise}
+
+\begin{exercise}{3.6.74}
+Let $X \sim \text{Poisson}(\lambda)$. Show that the mode is $\lfloor \lambda \rfloor$.
+\end{exercise}
+
+\begin{exercise}{3.6.75}
+Let $X \sim \Gamma(\alpha, \beta)$ with $\alpha > 1$. Show that the mode is $(\alpha-1)\beta$.
+\end{exercise}
+
+\begin{exercise}{3.6.76}
+Let $X \sim \chi^2(n)$. Show that the mode is $n-2$ for $n > 2$.
+\end{exercise}
+
+\begin{exercise}{3.6.77}
+Let $X \sim t(n)$. Show that the mode is 0.
+\end{exercise}
+
+\begin{exercise}{3.6.78}
+Let $F \sim F(m, n)$. Show that the mode is $\frac{(m-2)}{m} \cdot \frac{n}{n+2}$ for $m > 2$ and $n > 0$.
+\end{exercise}
+
+\begin{exercise}{3.6.79}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that $E[X(1-X)] = \frac{\alpha\beta}{(\alpha+\beta)(\alpha+\beta+1)}$.
+\end{exercise}
+
+\begin{exercise}{3.6.80}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $E[1/X] = \frac{1}{\beta(\alpha-1)}$ for $\alpha > 1$.
+\end{exercise}
+
+\begin{exercise}{3.6.81}
+Let $X \sim \text{Exp}(\lambda)$. Show that $E[X^k] = \frac{k!}{\lambda^k}$ for integer $k \geq 1$.
+\end{exercise}
+
+\begin{exercise}{3.6.82}
+Let $X \sim \chi^2(n)$. Show that $E[\sqrt{X}] \approx \sqrt{n}$ for large $n$, and find a better approximation.
+\end{exercise}
+
+\begin{exercise}{3.6.83}
+Let $X \sim N(0,1)$. Show that $E[|X|^k] = \frac{2^{k/2}\Gamma((k+1)/2)}{\sqrt{\pi}}$.
+\end{exercise}
+
+\begin{exercise}{3.6.84}
+Let $X \sim \text{Poisson}(\lambda)$. Show that $\mathbb{P}(X \text{ is even}) = \frac{1}{2}(1 + e^{-2\lambda})$.
+\end{exercise}
+
+\begin{exercise}{3.6.85}
+Let $X \sim \text{Geometric}(p)$. Show that $\mathbb{P}(X \leq k) = 1 - (1-p)^k$ for $k \geq 0$.
+\end{exercise}
+
+\begin{exercise}{3.6.86}
+Let $X \sim \text{NegativeBinomial}(r, p)$. Show that $\mathbb{P}(X \leq k) = 1 - I_p(k+1, r)$ where $I_p$ is the regularized incomplete beta function.
+\end{exercise}
+
+\begin{exercise}{3.6.87}
+Let $X \sim \text{Bin}(n, p)$. Show that $\mathbb{P}(X \leq k) = I_{1-p}(n-k, k+1)$.
+\end{exercise}
+
+\begin{exercise}{3.6.88}
+Let $X \sim \text{Hypergeometric}(N, D, n)$. Show that when $N \to \infty$ with $D/N \to p$, then $\mathbb{P}(X = k) \to \binom{n}{k}p^k(1-p)^{n-k}$.
+\end{exercise}
+
+\begin{exercise}{3.6.89}
+Let $X \sim \Gamma(\alpha, \beta)$. Show that $X$ can be approximated by a normal distribution when $\alpha$ is large. What is the approximating $N(\mu, \sigma^2)$?
+\end{exercise}
+
+\begin{exercise}{3.6.90}
+Let $X \sim \text{Beta}(\alpha, \beta)$. Show that when $\alpha$ and $\beta$ are large, $\sqrt{X(1-X)}$ is approximately normal. Find the mean and variance.
+\end{exercise}
+
+\begin{exercise}{3.6.91}
+Let $X \sim \text{Poisson}(\lambda)$. Show that for large $\lambda$, $\sqrt{X}$ is approximately normal with mean $\sqrt{\lambda}$ and variance $\frac{1}{4}$.
+\end{exercise}
+
+\begin{exercise}{3.6.92}
+Let $X_1, X_2, \ldots, X_n$ be iid $\text{Poisson}(\lambda)$. Show that $\bar{X} \approx N(\lambda, \lambda/n)$ for large $n$ (Central Limit Theorem).
+\end{exercise}
+
+\begin{exercise}{3.6.93}
+Let $X \sim \chi^2(n)$. Show that $\sqrt{2X} \approx N(\sqrt{2n-1}, 1)$ for large $n$.
+\end{exercise}
+
+\begin{exercise}{3.6.94}
+Let $X \sim F(m, n)$. Show that as $n \to \infty$, $F \cdot \frac{n}{m} \xrightarrow{d} \chi^2(m)/m$.
+\end{exercise}
+
+\begin{exercise}{3.6.95}
+Let $T \sim t(n)$. Show that $T^2 \cdot \frac{n-2}{n} \xrightarrow{d} \chi^2(1)$ as $n \to \infty$.
+\end{exercise}
+
+\begin{exercise}{3.6.96}
+Let $X_1, X_2, \ldots, X_n$ be iid $N(\mu, \sigma^2)$. Show that $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$ where $S^2$ is the sample variance.
+\end{exercise}
+
+\begin{exercise}{3.6.97}
+Let $X_1, \ldots, X_{n_1}$ and $Y_1, \ldots, Y_{n_2}$ be independent samples from $N(\mu_1, \sigma^2)$ and $N(\mu_2, \sigma^2)$ respectively. Show that $\frac{S_1^2}{S_2^2} \cdot \frac{\sigma_2^2}{\sigma_1^2} \sim F(n_1-1, n_2-1)$.
+\end{exercise}
+
+\begin{exercise}{3.6.98}
+Let $X \sim N(0,1)$ and $Y \sim \chi^2(n)$ be independent. Show that $T = \frac{X}{\sqrt{Y/n}}$ has the $t(n)$ distribution.
+\end{exercise}
+
+\begin{exercise}{3.6.99}
+Let $X \sim \chi^2(m)$ and $Y \sim \chi^2(n)$ be independent. Show that $\frac{X/m}{Y/n} \sim F(m, n)$.
+\end{exercise}
+
+\begin{exercise}{3.6.100}
+Show that if $F \sim F(1, n)$, then $\sqrt{F} \sim t(n)$.
+\end{exercise}
+
+% === Summary Table ===
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
@@ -419,37 +883,6 @@ This chapter introduced the most important families of distributions in statisti
 \item $\Gamma(n/2, 2) = \chi^2(n)$
 \item $t(n) \xrightarrow{n\to\infty} N(0,1)$
 \item If $F \sim F(m,n)$, then $1/F \sim F(n,m)$
+\item $t(n)^2 = F(1, n)$
+\item $\chi^2(n) = \Gamma(n/2, 2)$
 \end{itemize}
-
-% === Exercises ===
-\begin{exercise}{3.1}
-Let $X$ be the number of successes in $n$ independent Bernoulli trials with success probability $p$. Show that the moment generating function of $X$ is $M(t) = [(1-p) + pe^t]^n$.
-\end{exercise}
-
-\begin{exercise}{3.2}
-Suppose $X \sim \text{Poisson}(\lambda)$. Show that $\mathbb{E}X = \lambda$ and $\text{var}(X) = \lambda$.
-\end{exercise}
-
-\begin{exercise}{3.3}
-Let $X \sim \Gamma(\alpha, \beta)$. Show that $\mathbb{E}X = \alpha\beta$ and $\text{var}(X) = \alpha\beta^2$.\footnote{推导见附录 \cref{sec:gamma-mean-variance}.}
-\end{exercise}
-
-\begin{exercise}{3.4}
-If $Z_1, Z_2, \ldots, Z_n$ are iid $N(0,1)$, show that $Y = \sum_{i=1}^n Z_i^2 \sim \chi^2(n)$.
-\end{exercise}
-
-\begin{exercise}{3.5}
-Let $X \sim N(\mu, \sigma^2)$. Show that the standardized variable $Z = (X-\mu)/\sigma \sim N(0,1)$.
-\end{exercise}
-
-\begin{exercise}{3.6}
-If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, show that $X_1 + X_2 \sim N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$.
-\end{exercise}
-
-\begin{exercise}{3.7}
-Let $X \sim \text{Beta}(\alpha, \beta)$. Show that $\mathbb{E}X = \frac{\alpha}{\alpha+\beta}$.
-\end{exercise}
-
-\begin{exercise}{3.8}
-If $X \sim \chi^2(n)$, show that $E(X^k) = \frac{2^k \Gamma(\frac{n}{2} + k)}{\Gamma(\frac{n}{2})}$ for $k > -n/2$.
-\end{exercise}
