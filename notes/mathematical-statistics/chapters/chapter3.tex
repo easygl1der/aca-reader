@@ -55,14 +55,14 @@ p(x) = \binom{n}{x} p^{x}(1-p)^{n-x}, \quad x = 0, 1, \ldots, n.
 
 We write $X \sim \text{Bin}(n, p)$.
 
-\begin{Example}[Dice Problem]\label{ex:binomial-dice-ch3}
+\begin example}[Dice Problem]\label{ex:binomial-dice-ch3}
 Rolling a fair six-sided die 3 times, what is the probability of getting exactly 2 sixes?
 
 Solution: Let $X$ be the number of sixes, so $X \sim \text{Bin}(n=3, p=1/6)$,
 \[
 \mathbb{P}(X=2) = \binom{3}{2} \left(\frac{1}{6}\right)^2 \left(\frac{5}{6}\right)^1 = 3 \times \frac{1}{36} \times \frac{5}{6} = \frac{15}{216} \approx 0.06944.
 \]
-\end{Example}
+\end example}
 
 \textbf{Moment generating function}:
 \[
@@ -76,16 +76,16 @@ M(t) = \mathbb{E}[e^{tX}] = [(1-p) + pe^{t}]^{n}.
 
 These follow from the linearity of expectation and the independence of trials. The MGF also confirms these results. \footnote{Derivation in Appendix \cref{sec:derivation-binomial-moments}.}
 
-\begin{Theorem}[Additivity of Binomial Distributions]\label{th:binomial-sum-ch3}
+\begin theorem}[Additivity of Binomial Distributions]\label{th:binomial-sum-ch3}
 If $X_1 \sim \text{Bin}(n_1, p)$ and $X_2 \sim \text{Bin}(n_2, p)$ are independent, then $X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p)$.
-\end{Theorem}
+\end theorem}
 
 This means: two binomial experiments can be combined into one larger binomial experiment. The additivity property reflects the fundamental nature of counting: if we count successes in two batches of trials, the total is the sum.
 
-\begin{Remark}\label{rmk:binomial-intuition-ch3}
+\begin remark}\label{rmk:binomial-intuition-ch3}
 \textbf{Intuitive understanding}:
 Imagine two independent piles of coin flips: the first pile of $n_1$ coins yields $X_1$ heads, the second pile of $n_2$ coins yields $X_2$ heads. Combined, we have $n_1 + n_2$ coins with total heads $X_1 + X_2$.
-\end{Remark}
+\end remark}
 
 \subsection{Negative Binomial and Geometric Distributions}\label{sub:negative-binomial-ch3}
 
@@ -106,13 +106,13 @@ When $r=1$, we obtain the \textbf{geometric distribution}:
 p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-\begin{Theorem}[Memorylessness of Geometric Distribution]\label{th:geometric-memoryless-ch3}
+\begin theorem}[Memorylessness of Geometric Distribution]\label{th:geometric-memoryless-ch3}
 The geometric distribution possesses a unique \textbf{memorylessness property}:
 \[
 \mathbb{P}(Y \geq k+j \mid Y \geq k) = \mathbb{P}(Y \geq j).
 \tag{3.1.4}\label{eq:memoryless}
 \]
-\end{Theorem}
+\end theorem}
 
 \textbf{What does this mean?} If you have already failed $k$ times, the remaining waiting time for the first success is exactly the same as it was at the beginning. Past failures do not change future expectations. This property characterizes the geometric distribution among all discrete distributions on $\{0,1,2,\ldots\}$.\footnote{Proof in Appendix \cref{sec:derivation-memoryless}.}
 
@@ -182,15 +182,15 @@ Here $\lambda > 0$ is the parameter, representing the mean occurrence rate. We w
 
 \textbf{Here is a surprising property}: Mean and variance are equal! This is a hallmark feature of the Poisson distribution, useful for checking whether data might follow a Poisson model.\footnote{Derivation in Appendix \cref{sec:derivation-poisson-moments}.}
 
-\begin{Theorem}[Poisson Approximation to Binomial]\label{th:poisson-approximation-ch3}
+\begin theorem}[Poisson Approximation to Binomial]\label{th:poisson-approximation-ch3}
 If $X_n \sim \text{Bin}(n, p_n)$ and $np_n \to \lambda$, then $X_n \xrightarrow{d} \text{Poisson}(\lambda)$.
-\end{Theorem}
+\end theorem}
 
 \textbf{Intuitive understanding}: When $n$ is large and $p$ is small, the binomial distribution behaves almost identically to the Poisson distribution. In practice, the Poisson approximation is often used to simplify calculations for rare events. The key insight is that $\lambda = np$ (the mean) is the only parameter that matters in the limit.\footnote{Proof in Appendix \cref{sec:derivation-poisson-limit}.}
 
-\begin{Example}[Typographical Errors]\label{ex:poisson-errors-ch3}
+\begin example}[Typographical Errors]\label{ex:poisson-errors-ch3}
 A manuscript has 500 pages, each page contains approximately 300 words. If the probability of a word being misspelled is $p = 1/10,000$, and we model each word as a Bernoulli trial, then the number of errors per page follows $\text{Bin}(300, 1/10000) \approx \text{Poisson}(0.03)$. Using the Poisson model, $\mathbb{P}(\text{at least 1 error}) \approx 1 - e^{-0.03} \approx 0.03$.
-\end{Example}
+\end example}
 
 Poisson processes provide a rich framework for modeling random points in time or space, with applications ranging from queueing theory to insurance mathematics.\footnote{Discussion of Poisson processes in Appendix \cref{sec:poisson-process}.}
 
@@ -249,9 +249,9 @@ When $\alpha = 1$, we get $X \sim \text{Exp}(1/\beta)$ (exponential distribution
 
 The moment generating function of a gamma distribution is $M(t) = (1 - \beta t)^{-\alpha}$ for $t < 1/\beta$.\footnote{Derivation in Appendix \cref{sec:gamma-mgf-derivation}.}
 
-\begin{Remark}\label{rmk:gamma-additivity-ch3}
+\begin remark}\label{rmk:gamma-additivity-ch3}
 If $X_1 \sim \Gamma(\alpha_1, \beta)$ and $X_2 \sim \Gamma(\alpha_2, \beta)$ are independent, then $X_1 + X_2 \sim \Gamma(\alpha_1 + \alpha_2, \beta)$. This additivity property reflects the natural structure of gamma-distributed waiting times: the sum of independent waiting times follows a gamma distribution with shape parameter equal to the sum of individual shape parameters.
-\end{Remark}
+\end remark}
 
 \subsection{The $\chi^2$ Distribution}\label{sub:chi-square-ch3}
 
@@ -277,14 +277,14 @@ The $\chi^2$ distribution is a special case of $\Gamma(n/2, 2)$: if $X \sim \chi
 
 \textbf{Why is it important?} The sampling distribution of the sample variance is closely connected to the $\chi^2$ distribution---making it a central tool for variance estimation and hypothesis testing in Chapter 4.
 
-\begin{Example}[Sample Variance Distribution]\label{ex:chi-square-sample-variance-ch3}
+\begin example}[Sample Variance Distribution]\label{ex:chi-square-sample-variance-ch3}
 For iid $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$, the sample variance $S^2$ satisfies
 \[
 \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1).
 \tag{3.3.6}\label{eq:sample-variance-chi-square}
 \]
 This fundamental result tells us that the scaled sum of squared deviations from the mean follows a chi-square distribution. It is the foundation for confidence intervals for variance and ANOVA.
-\end{Example}
+\end example}
 
 \subsection{The Beta Distribution}\label{sub:beta-distribution-ch3}
 
@@ -350,25 +350,25 @@ This allows any normal probability calculation to be transformed into a standard
 
 The mgf of $N(\mu, \sigma^2)$ is $M(t) = \exp\{\mu t + \sigma^2 t^2/2\}$.\footnote{Derivation in Appendix \cref{sec:derivation-normal-mgf}.}
 
-\begin{Example}[Normal Probability Calculation]\label{ex:normal-prob-ch3}
+\begin example}[Normal Probability Calculation]\label{ex:normal-prob-ch3}
 Let $X \sim N(100, 225)$ (i.e., $\sigma=15$), find $\mathbb{P}(X < 85)$.
 
 Solution: $Z = \frac{85-100}{15} = -1$, so $\mathbb{P}(X < 85) = \Phi(-1) \approx 0.1587$.
-\end{Example}
+\end example}
 
-\begin{Theorem}[Linear Combinations of Normal Variables]\label{th:normal-linear-combination-ch3}
+\begin theorem}[Linear Combinations of Normal Variables]\label{th:normal-linear-combination-ch3}
 If $X_1 \sim N(\mu_1, \sigma_1^2)$ and $X_2 \sim N(\mu_2, \sigma_2^2)$ are independent, then for any constants $a, b$,
 \[
 aX_1 + bX_2 \sim N(a\mu_1 + b\mu_2, a^2\sigma_1^2 + b^2\sigma_2^2).
 \tag{3.4.2}\label{eq:normal-linear-combination}
 \]
-\end{Theorem}
+\end theorem}
 
 \textbf{Why is this property important?} It means the normal distribution is closed under linear transformations---making the normal distribution the theoretical foundation of linear models.
 
-\begin{Remark}\label{rmk:gauss-history-ch3}
+\begin remark}\label{rmk:gauss-history-ch3}
 Gauss derived the normal distribution as the distribution of measurement errors. His argument was roughly: if we make many small independent measurements, the distribution of their average should be symmetric and concentrated around the true value. The normal distribution is the unique distribution satisfying these natural assumptions.
-\end{Remark}
+\end remark}
 
 \section{3.5 Multivariate Normal Distribution}\label{sec:multivariate-normal-ch3}
 
@@ -393,7 +393,7 @@ where $Q = \frac{(x_1-\mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1-\mu_1)(x_2-\mu_2)}
 \item $\rho$: correlation coefficient between $X_1$ and $X_2$
 \end{itemize}
 
-\begin{Theorem}[Properties of the Bivariate Normal]\label{th:bivariate-normal-properties-ch3}
+\begin theorem}[Properties of the Bivariate Normal]\label{th:bivariate-normal-properties-ch3}
 If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$, then:
 \begin{enumerate}
 \item Marginal distributions: $X_1 \sim N(\mu_1, \sigma_1^2)$, $X_2 \sim N(\mu_2, \sigma_2^2)$
@@ -401,7 +401,7 @@ If $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, \rho)$, then:
 \item $X_1 \Perp X_2 \iff \rho = 0$ (uncorrelated implies independent for normals)
 \item Any linear combination $aX_1 + bX_2$ follows a normal distribution
 \end{enumerate}
-\end{Theorem}
+\end theorem}
 
 \textbf{Key insight}: The conditional mean is a linear function of $x_1$. This means that given one variable, the best prediction for the other is also linear. The slope $\rho\sigma_2/\sigma_1$ tells us how much $X_2$ changes (in standard deviations) for each standard deviation change in $X_1$.
 
@@ -437,11 +437,11 @@ When $n=1$, we obtain the Cauchy distribution---a ``dangerous'' distribution wit
 
 \textbf{Relationship to normal}: As $n \to \infty$, $t(n) \xrightarrow{d} N(0,1)$. This reflects the intuitive idea: as the sample size grows, our knowledge of the variance improves, and the $t$ distribution converges to the standard normal.
 
-\begin{Example}[$t$ Distribution Application]\label{ex:t-distribution-ch3}
+\begin example}[$t$ Distribution Application]\label{ex:t-distribution-ch3}
 Let $T \sim t(10)$, find $\mathbb{P}(|T| > 2.228)$.
 
 From tables, $t_{0.025, 10} = 2.228$, so $\mathbb{P}(|T| > 2.228) = 0.05$. Compare to the normal: for $Z \sim N(0,1)$, $\mathbb{P}(|Z| > 1.96) = 0.05$. The $t$ critical values are larger because of heavier tails.
-\end{Example}
+\end example}
 
 The $t$ distribution is fundamental to constructing confidence intervals for the mean when the population variance is unknown. When we replace the population standard deviation $\sigma$ with the sample standard deviation $S$, the resulting statistic follows a $t$ distribution. This is why the $t$ distribution is so central to practical statistics.\footnote{Detailed discussion in Chapter 4, Section 4.3.}
 
