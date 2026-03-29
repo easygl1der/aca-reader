@@ -1066,6 +1066,86 @@ Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with pmf $p(x
 Let $X_{1}, X_{2}, \ldots, X_{n}$ denote a random sample from a distribution that is $N(\theta, 1)$, $-\infty < \theta < \infty$. Find the MVUE of $\theta^{2}$.
 \end{exercise}
 
+\begin{exercise}{\ref{exr:7.6.2} MVUE of $\theta^{2}$ for Normal(0, $\theta$) – Hogg 7.6.2}\label{exr:7.6.2}
+Let $X_{1}, X_{2}, \ldots, X_{n}$ denote a random sample from a distribution that is $N(0, \theta)$ . Then $Y = \sum X_{i}^{2}$ is a complete sufficient statistic for $\theta$ . Find the MVUE of $\theta^{2}$ .
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.3} Bootstrap SE for Normal CDF MVUE – Hogg 7.6.3}\label{exr:7.6.3}
+Consider Example 7.6.3 where the parameter of interest is $P(X < c)$ for $X$ distributed $N(\theta, 1)$ . Modify the R function bootse1.R so that for a specified value of $c$ it returns the MVUE of $P(X < c)$ and the bootstrap standard error of the estimate. Run your function on the data in ex763data.rda with $c = 11$ and 3,000 bootstraps. These data are generated from a $N(10,1)$ distribution. Report (a) the true parameter, (b) the MVUE, and (c) the bootstrap standard error.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.4} Bootstrap SE for Median MVUE – Hogg 7.6.4}\label{exr:7.6.4}
+For Example 7.6.4, modify the R function bootse1.R so that the estimate is the median not the mean. Using 3,000 bootstraps, run your function on the data set discussed in the example and report (a) the estimate and (b) the bootstrap standard error.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.5} Uniform$(0, \theta)$ MVUEs – Hogg 7.6.5}\label{exr:7.6.5}
+Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a uniform $(0, \theta)$ distribution. Continuing with Example 7.6.2, find the MVUEs for the following functions of $\theta$ .
+
+(a) $g(\theta) = \frac{\theta^2}{12}$ , i.e., the variance of the distribution.
+
+(b) $g(\theta) = \frac{1}{\theta}$ , i.e., the pdf of the distribution.
+
+(c) For $t$ real, $g(\theta) = \frac{e^{t\theta} - 1}{t\theta}$ , i.e., the mgf of the distribution.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.6} Poisson MVUE for $P(X \leq 1)$ – Hogg 7.6.6}\label{exr:7.6.6}
+Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a Poisson distribution with parameter $\theta > 0$ .
+
+(a) Find the MVUE of $P(X\leq 1) = (1 + \theta)e^{-\theta}$
+
+Hint: Let $u(x_{1}) = 1$ , $x_{1} \leq 1$ , zero elsewhere, and find $E[u(X_1)|Y = y]$ where $Y = \sum_{1}^{n}X_{i}$ .
+
+(b) Express the MVUE as a function of the mle of $\theta$
+
+(c) Determine the asymptotic distribution of the mle of $\theta$
+
+(d) Obtain the mle of $P(X \leq 1)$ . Then use Theorem 5.2.9 to determine its asymptotic distribution.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.7} Poisson Conditional Expectation with $(-1)^{X_{1}}$ – Hogg 7.6.7}\label{exr:7.6.7}
+Let $X_{1}, X_{2}, \ldots, X_{n}$ denote a random sample from a Poisson distribution with parameter $\theta > 0$ . From Remark 7.6.1, we know that $E[(-1)^{X_1}] = e^{-2\theta}$ .
+
+(a) Show that $E[(-1)^{X_1}|Y_1 = y_1] = (1 - 2/n)^{y_1}$ , where $Y_1 = X_1 + X_2 + \dots + X_n$ . Hint: First show that the conditional pdf of $X_1, X_2, \ldots, X_{n-1}$ , given $Y_1 = y_1$ , is multinomial, and hence that of $X_1$ , given $Y_1 = y_1$ , is $b(y_1, 1/n)$ .
+
+(b) Show that the mle of $e^{-2\theta}$ is $e^{-2\overline{X}}$
+
+(c) Since $y_{1} = n\overline{x}$ , show that $(1 - 2 / n)^{y_1}$ is approximately equal to $e^{-2\overline{x}}$ when $n$ is large.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.8} Bivariate Normal Distribution of $(X_{1}, \overline{X})$ – Hogg 7.6.8}\label{exr:7.6.8}
+As in Example 7.6.3, let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample of size $n > 1$ from a distribution that is $N(\theta, 1)$ . Show that the joint distribution of $X_{1}$ and $\overline{X}$ is bivariate normal with mean vector $(\theta, \theta)$ , variances $\sigma_{1}^{2} = 1$ and $\sigma_{2}^{2} = 1/n$ , and correlation coefficient $\rho = 1/\sqrt{n}$ .
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.9} Exponential MLE and MVUE of $P(X \leq 2)$ – Hogg 7.6.9}\label{exr:7.6.9}
+Let a random sample of size $n$ be taken from a distribution that has the pdf $f(x; \theta) = (1 / \theta) \exp(-x / \theta) I_{(0, \infty)}(x)$ . Find the mle and MVUE of $P(X \leq 2)$ .
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.10} Gamma$(1, \theta)$ MLE and MVUE – Hogg 7.6.10}\label{exr:7.6.10}
+Let $X_1, X_2, \ldots, X_n$ be a random sample with the common pdf $f(x) = \theta^{-1} e^{-x / \theta}$ , for $x > 0$ , zero elsewhere; that is, $f(x)$ is a $\Gamma(1, \theta)$ pdf.
+
+(a) Show that the statistic $\overline{X} = n^{-1}\sum_{i=1}^{n} X_i$ is a complete and sufficient statistic for $\theta$ .
+
+(b) Determine the MVUE of $\theta$
+
+(c) Determine the mle of $\theta$
+
+(d) Often, though, this pdf is written as $f(x) = \tau e^{-\tau x}$ , for $x > 0$ , zero elsewhere. Thus $\tau = 1 / \theta$ . Use Theorem 6.1.2 to determine the mle of $\tau$ .
+
+(e) Show that the statistic $\overline{X} = n^{-1}\sum_{i=1}^{n} X_i$ is a complete and sufficient statistic for $\tau$ . Show that $(n-1)/(n\overline{X})$ is the MVUE of $\tau = 1/\theta$ . Hence, as usual, the reciprocal of the mle of $\theta$ is the mle of $1/\theta$ , but, in this situation, the reciprocal of the MVUE of $\theta$ is not the MVUE of $1/\theta$ .
+
+(f) Compute the variances of each of the unbiased estimators in parts (b) and (e).
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.11} Two-Sample $F$-Distribution for $\theta^{2}$ – Hogg 7.6.11}\label{exr:7.6.11}
+Consider the situation of the last exercise, but suppose we have the following two independent random samples: (1) $X_{1}, X_{2}, \ldots, X_{n}$ is a random sample with the common pdf $f_{X}(x) = \theta^{-1} e^{-x / \theta}$ , for $x > 0$ , zero elsewhere, and (2) $Y_{1}, Y_{2}, \ldots, Y_{n}$ is a random sample with common pdf $f_{Y}(y) = \theta e^{-\theta y}$ , for $y > 0$ , zero elsewhere. The last exercise suggests that, for some constant $c$ , $Z = c \overline{X / Y}$ might be an unbiased estimator of $\theta^2$ . Find this constant $c$ and the variance of $Z$ .
+
+Hint: Show that $\overline{X} /(\theta^2\overline{Y})$ has an $F$-distribution.
+\end{exercise}
+
+\begin{exercise}{\ref{exr:7.6.12} Asymptotics of Normal Variance MVUE at $\theta = 1/2$ – Hogg 7.6.12}\label{exr:7.6.12}
+Obtain the asymptotic distribution of the MVUE in Example 7.6.1 for the case $\theta = 1/2$ .
+\end{exercise}
+
 \begin{exercise}{\ref{exr:7.9.1} Basu's Theorem for Uniform Distribution – Hogg 7.9.1}\label{exr:7.9.1}
 Let $Y_{1} < Y_{2} < Y_{3} < Y_{4}$ denote the order statistics of a random sample of size $n = 4$ from a distribution having pdf $f(x; \theta) = 1/\theta$, $0 < x < \theta$, zero elsewhere, where $0 < \theta < \infty$. Argue that the complete sufficient statistic $Y_{4}$ for $\theta$ is independent of each of the statistics $Y_{1}/Y_{4}$ and $(Y_{1} + Y_{2})/(Y_{3} + Y_{4})$.
 \end{exercise}
