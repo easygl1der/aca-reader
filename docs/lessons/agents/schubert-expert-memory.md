@@ -70,6 +70,56 @@ u < w  % 严格不等（差一个 inversion）
 
 ---
 
+## L503: 文献引用标注规范
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+Lemma/Theorem/Corollary 环境中的定理引用缺少原文献编号标注。
+
+**正确做法**:
+```latex
+% 正确格式：定理名 + 原文编号 + \cite{}
+\begin{Lemma}[Lemma 2.2 {\cite[ Lemma 2.2]{GX2025}}]
+\label{def:Lemma22}
+...
+\end{Lemma}
+
+% Theorem 格式
+\begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 3.2]{Gr}}]
+\label{def:GrahamPositivity}
+...
+\end{Theorem}
+
+% Corollary 格式
+\begin{Corollary}[Corollary 1.2: Kirillov 猜想 {\cite[Conjecture 1]{kirillov2007}}]
+\label{cor:Kirillov}
+...
+\end{Corollary}
+```
+
+**引用规范清单**:
+| 定理类型 | 格式要求 |
+|----------|----------|
+| Lemma | `\begin{Lemma}[Lemma X.Y {\cite[ Lemma X.Y]{KEY}}]` |
+| Theorem | `\begin{Theorem}[名称 {\cite[ Theorem X.Y]{KEY}}]` |
+| Corollary | `\begin{Corollary}[名称 {\cite[ Corollary X.Y]{KEY}}]` |
+| Proposition | `\begin{Proposition}[名称 {\cite[ Proposition X.Y]{KEY}}]` |
+
+**常见引用 key**:
+- `GX2025` — Gao & Xiong (2025) - Triple Schubert Positivity
+- `Sa` — Samuel (2024) - Molev-Sagan Formula
+- `KM` — Kirillov & Maeno (1996) - Quantum Double Schubert
+- `Gr` — Graham (2001) - Positivity in Equivariant Schubert Calculus
+- `anderson2023` — Anderson & Fulton - Equivariant Cohomology
+
+**防止措施**:
+- 每次写 Lemma/Theorem/Corollary 前，先确认原文献编号
+- 用 grep 检查是否有遗漏引用
+
+---
+
 ## 领域专属符号表
 
 ```latex
