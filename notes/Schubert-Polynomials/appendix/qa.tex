@@ -823,3 +823,42 @@ $$s_\mu \cdot s_\nu = \sum_\lambda c_{\mu\nu}^\lambda s_\lambda, \quad c_{\mu\nu
 
 \textbf{从几何看 Schur 函数}：Schur 函数对应 Grassmannian $\mathrm{Gr}(k,n)$ 的 Schubert 类的上同调环。分拆 $\lambda$ 编码了对应的 Schubert 胞腔的位置。\footnote{问：什么是 Schur 函数？见附录 \cref{sec:WhatIsSchurFunction}。}
 
+
+\section{为什么 Graham Positivity 要求 u, v 是 Grassmannian 排列？}
+\label{sec:WhyGrassmannian}
+
+\subsection{问题}
+在\cref{def:GrahamPositivity} 中，$u, v$ 必须是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列。但在计算时好像没有用到 $k_1, k_2$ 的具体值？为什么要有这个限制？
+
+\subsection{回答}
+
+\textbf{限制的底层逻辑}：Grassmannian 排列的特殊结构保证了对应的双重 Schubert 多项式是\textbf{因子化 Schur 多项式}}（factorial Schur polynomial），这使得乘积展开系数的正性可以单独证明。
+
+\begin{enumerate}
+\item \textbf{Grassmannian 排列的结构}
+\begin{itemize}
+\item $k$-Grassmannian 排列 $w$ 满足：前 $k$ 位递增，后 $n-k$ 位递减
+\item 这意味着 $w$ 对应的 Schubert 胞腔只涉及前 $k$ 个坐标
+\item 因此 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 可以写成前 $k$ 个变量的因子的乘积
+\end{itemize}
+
+\item \textbf{因子化 Schur 多项式}
+\begin{itemize}
+\item 当 $u$ 是 $k_1$-Grassmannian 时，$\mathfrak{S}_u(\mathbf{x}; \mathbf{y})$ 关于 $\mathbf{y}$ 是线性的
+\item 具体地：$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^{k_1} (x_{a_i} - y_{b_i})$
+\item 这种因子化形式使得乘积 $\mathfrak{S}_u \cdot \mathfrak{S}_v$ 的结构特别清晰
+\end{itemize}
+
+\item \textbf{$k_1, k_2$ 的作用}
+\begin{itemize}
+\item $k_1, k_2$ 决定了 $u, v$ 对应的 Grassmannian 流形 $Gr(k_1, n)$ 和 $Gr(k_2, n)$
+\item 不同 $k$ 值的 Grassmannian 排列给出不同的因子化形式
+\item 但关键性质（正性）与具体的 $k$ 值无关，只要求两者都是 Grassmannian
+\end{itemize}
+\end{enumerate}
+
+\textbf{ Samuel 猜想的推广}：\cref{conj:Samuel} 去掉了 Grassmannian 的限制，声称对\textbf{任意} $u, v$ 都有正性。这更困难，因为非 Grassmannian 排列的多项式不是因子化的。
+
+\textbf{直观理解}：把 $u, v$ 是 Grassmannian 排列看作"特殊情形"——就像在群论中，先研究阿贝尔群（特殊）再推广到一般群。Grassmannian 排列的因子化性质使得正性容易验证，而一般排列需要更深的工具。
+
+\textbf{footnote}：见 \cref{sec:WhyGrassmannian}。
