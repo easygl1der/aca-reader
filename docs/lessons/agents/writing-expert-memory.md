@@ -125,6 +125,40 @@ callout 块
 
 ---
 
+## L704: 例子必须引用对应定理
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+写定理的例子时，没有用 \cref 引用对应的定理，导致读者无法明确知道这个例子是验证哪个定理的。
+
+**正确做法**:
+```latex
+% 错误 ❌
+\begin{Example}[Graham Positivity 的具体例子]
+由 Graham Positivity 定理......
+\end{Example}
+
+% 正确 ✅
+\begin{Example}[\cref{def:GrahamPositivity} 的具体例子]
+\label{ex:GrahamPositivityExample}
+由\cref{def:GrahamPositivity}，它们的乘积展开系数......
+验证：系数......符合\cref{def:GrahamPositivity} 的正性要求。
+\end{Example}
+```
+
+**关键要求**:
+1. Example 的标题用 `\cref{<label>}` 引用对应定理
+2. 正文首次提到定理时用 `\cref{<label>}` 引用
+3. 验证结论时再次用 `\cref{<label>}` 强调
+
+**防止措施**:
+- 写例子前先确认对应的定理 label
+- 写完后检查是否有遗漏的 \cref 引用
+
+---
+
 ## 领域专属技能
 
 ```latex
