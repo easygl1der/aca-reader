@@ -13,10 +13,45 @@
 | L902 | \bm 命令禁用检查 | 1 |
 | L903 | Label/Ref 一致性检查 | 1 |
 | L904 | Theorem 环境禁止 itemize | 1 |
+| L905 | theorem 环境 \\begin/\\end 格式检查 | 1 |
 
 ---
 
-## L901: Markdown 残留检查
+## L905: theorem 环境 \begin/\end 格式检查
+
+**日期**: 2026-03-29
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+subagent 生成的 chapter5.tex 中，theorem 环境写成了 `\begin theorem}` 和 `\end theorem}` —— 中间有空格或缺少 `{`/`}`。
+
+**正确做法**:
+```latex
+% 错误 ❌
+\begin theorem}[...]
+\end theorem}
+
+% 正确 ✅
+\begin theorem}[...]
+\end theorem}
+```
+
+检查命令:
+```bash
+grep -n "begin theorem\|end theorem" notes/**/*.tex
+# 或检查空格
+grep -n "\\\\end theorem\}" notes/**/*.tex
+```
+
+**修复方法**:
+```python
+# Python 修复脚本
+content = content.replace('\\{', '{')
+content = content.replace('\\}', '}')
+```
+
+**防止措施**:
+- 每次生成后立即检查 theorem 环境闭合: Markdown 残留检查
 
 **日期**: 2026-03-29
 **经历次数**: 2 次 (累计)
