@@ -26,12 +26,12 @@
 
 \subsection{收敛性的定义}
 
-本节，我们形式化地描述随机变量序列 $\{X_n\}$ "接近"另一个随机变量 $X$ 的方式。
+本节，我们形式化地描述随机变量序列 ${X_n}$ "接近"另一个随机变量 $X$ 的方式。
 
 \textbf{为什么需要收敛性？} 在统计中，我们通常不知道总体的精确分布，但希望知道当样本量增大时，估计量是否越来越准确。收敛性正是描述这种"越来越准确"的数学语言。
 
 \begin{definition}[依概率收敛]\label{def:convergence-in-probability}
-设 $\{X_n\}$ 是一列随机变量，$X$ 是定义在同一样本空间上的随机变量。若对所有 $\epsilon > 0$，
+设 ${X_n}$ 是一列随机变量，$X$ 是定义在同一样本空间上的随机变量。若对所有 $\epsilon > 0$，
 \[
 \lim_{n \to \infty} \mathbb{P}[|X_n - X| \geq \epsilon] = 0,
 \]
@@ -49,14 +49,14 @@ X_n \xrightarrow{P} X.
 
 \textbf{统计中的特殊情况}：在统计学中，渐近随机变量 $X$ 往往是常数——即所有概率质量集中在某个常数 $a$ 上的退化分布。此时记 $X_n \xrightarrow{P} a$。
 
-\textbf{例：数列收敛是依概率收敛的特殊情况}（习题 5.1.1）：若 $\{a_n\}$ 是普通数列（可视为退化的随机变量），则 $a_n \to a$ 等价于 $a_n \xrightarrow{P} a$。
+\textbf{例：数列收敛是依概率收敛的特殊情况}（习题 5.1.1）：若 ${a_n}$ 是普通数列（可视为退化的随机变量），则 $a_n \to a$ 等价于 $a_n \xrightarrow{P} a$。
 
 \subsection{弱大数定律}
 
 展示依概率收敛的一个经典方法是使用 Chebyshev 不等式。
 
 \begin{example}[弱大数定律（WLLN）]\label{ex:wlln}
-设 $\{X_n\}$ 是 iid 随机变量序列，具有共同均值 $\mu$ 和有限方差 $\sigma^2$。令 $\overline{X}_n = n^{-1}\sum_{i=1}^n X_i$。则
+设 ${X_n}$ 是 iid 随机变量序列，具有共同均值 $\mu$ 和有限方差 $\sigma^2$。令 $\overline{X}_n = n^{-1}\sum_{i=1}^n X_i$。则
 \[
 \overline{X}_n \xrightarrow{P} \mu.
 \]
@@ -93,7 +93,7 @@ X_n \xrightarrow{P} X.
 
 \begin{theorem}[常数乘积的收敛性]\label{th:convergence-scalar}
 若 $X_n \xrightarrow{P} X$ 且 $a$ 是常数，则 $aX_n \xrightarrow{P} aX$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{证明}：若 $a = 0$，结论显然。若 $a \neq 0$，
 \[
@@ -103,7 +103,7 @@ X_n \xrightarrow{P} X.
 
 \begin{theorem}[连续函数变换]\label{th:continuous-mapping}
 若 $X_n \xrightarrow{P} a$ 且实函数 $g$ 在 $a$ 处连续，则 $g(X_n) \xrightarrow{P} g(a)$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{证明}：由于 $g$ 在 $a$ 处连续，对 $\epsilon > 0$，存在 $\delta > 0$，使得若 $|x - a| < \delta$，则 $|g(x) - g(a)| < \epsilon$。因此
 \[
@@ -118,7 +118,7 @@ X_n^2 \xrightarrow{P} a^2,\quad \frac{1}{X_n} \xrightarrow{P} \frac{1}{a}\ (a \n
 
 \begin{theorem}[乘积的收敛性]\label{th:convergence-product}
 若 $X_n \xrightarrow{P} X$ 且 $Y_n \xrightarrow{P} Y$，则 $X_n Y_n \xrightarrow{P} XY$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{证明}：利用恒等式 $2X_nY_n = X_n^2 + Y_n^2 - (X_n - Y_n)^2$，结合上述结果可得。\footnote{乘积收敛性的完整证明见附录 \cref{sec:convergence-product-proof}。}
 
@@ -164,7 +164,7 @@ S_n^2 = \frac{n}{n-1}\left(\frac{1}{n}\sum X_i^2 - \overline{X}_n^2\right) \xrig
 \end{example}
 
 \begin{example}[均匀分布最大值的收敛]\label{ex:uniform-max-convergence}
-设 $X_1, \ldots, X_n \sim \mathrm{Uniform}(0, \theta)$，$\theta$ 未知。令 $Y_n = \max\{X_1, \ldots, X_n\}$。
+设 $X_1, \ldots, X_n \sim \mathrm{Uniform}(0, \theta)$，$\theta$ 未知。令 $Y_n = \max{X_1, \ldots, X_n}$。
 
 $Y_n$ 的 cdf 为（习题 5.1.4）
 \[
@@ -184,7 +184,7 @@ F_{Y_n}(t) = \begin{cases}
 上一节我们介绍了依概率收敛的概念。利用这个概念，我们可以形式化地说统计量收敛到参数。但"有多接近"？我们能否量化估计的误差？本节介绍的依分布收敛与前述结果结合，给出了这些问题的肯定答案。
 
 \begin{definition}[依分布收敛]\label{def:convergence-in-distribution}
-设 $\{X_n\}$ 是一列随机变量，$X$ 是一随机变量。设 $F_{X_n}$ 和 $F_X$ 分别是 $X_n$ 和 $X$ 的 cdf。设 $C(F_X)$ 表示 $F_X$ 的所有连续点集合。若
+设 ${X_n}$ 是一列随机变量，$X$ 是一随机变量。设 $F_{X_n}$ 和 $F_X$ 分别是 $X_n$ 和 $X$ 的 cdf。设 $C(F_X)$ 表示 $F_X$ 的所有连续点集合。若
 \[
 \lim_{n \to \infty} F_{X_n}(x) = F_X(x),\quad \forall x \in C(F_X),
 \]
@@ -243,7 +243,7 @@ F_n(t) = \int_{-\infty}^{t} \frac{\Gamma[(n+1)/2]}{\sqrt{\pi n}\,\Gamma(n/2)} \f
 \end{example}
 
 \begin{example}[均匀分布最大值的渐近指数分布]\label{ex:uniform-max-exponential}
-回顾例 5.1.2：$Y_n = \max\{X_1, \ldots, X_n\}$，其中 $X_i \sim \mathrm{Uniform}(0,\theta)$。考虑 $Z_n = n(\theta - Y_n)$。
+回顾例 5.1.2：$Y_n = \max{X_1, \ldots, X_n}$，其中 $X_i \sim \mathrm{Uniform}(0,\theta)$。考虑 $Z_n = n(\theta - Y_n)$。
 
 对 $t \in (0, n\theta)$，利用 $Y_n$ 的 cdf，可得
 \[
@@ -258,7 +258,7 @@ F_n(t) = \int_{-\infty}^{t} \frac{\Gamma[(n+1)/2]}{\sqrt{\pi n}\,\Gamma(n/2)} \f
 
 \begin{theorem}[依概率收敛推出依分布收敛]\label{th:prob-to-dist}
 若 $X_n \xrightarrow{P} X$，则 $X_n \xrightarrow{D} X$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{证明梗概}：设 $x$ 是 $F_X$ 的连续点。对 $\epsilon > 0$，
 \[
@@ -271,17 +271,17 @@ F_{X_n}(x) = \mathbb{P}[X_n \leq x] \leq \mathbb{P}[X \leq x + \epsilon] + \math
 
 \begin{theorem}[常数情形下两种收敛等价]\label{th:constant-equivalence}
 若 $X_n \xrightarrow{D} b$（常数），则 $X_n \xrightarrow{P} b$。
-\end\{theorem\}
+\end{theorem}
 
 \begin{theorem}[和的极限分布]\label{th:sum-convergence}
 设 $X_n \xrightarrow{D} X$ 且 $Y_n \xrightarrow{P} 0$。则 $X_n + Y_n \xrightarrow{D} X$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{应用场景}：若难以直接证明 $X_n \xrightarrow{D} X$，但容易证明 $Y_n \xrightarrow{D} X$ 且 $X_n - Y_n \xrightarrow{P} 0$，则 $X_n = Y_n + (X_n - Y_n) \xrightarrow{D} X$。
 
 \begin{theorem}[连续函数变换保持依分布收敛]\label{th:continuous-distribution}
 设 $X_n \xrightarrow{D} X$ 且 $g$ 是支撑上的连续函数，则 $g(X_n) \xrightarrow{D} g(X)$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{重要应用}：若 $Z_n \xrightarrow{D} Z \sim N(0,1)$，则 $Z_n^2 \xrightarrow{D} \chi^2(1)$（因为 $Z^2 \sim \chi^2(1)$）。
 
@@ -291,7 +291,7 @@ F_{X_n}(x) = \mathbb{P}[X_n \leq x] \leq \mathbb{P}[X \leq x + \epsilon] + \math
 A_n + B_n X_n \xrightarrow{D} a + bX.
 \tag{5.2.5}\label{eq:slutsky-theorem}
 \]
-\end\{theorem\}
+\end{theorem}
 
 \textbf{核心思想}：依分布收敛允许与依概率收敛的随机变量相乘——这是中心极限定理应用中最重要的工具。\footnote{Slutsky 定理的详细证明见附录 \cref{sec:slutsky-proof}。}
 
@@ -300,7 +300,7 @@ A_n + B_n X_n \xrightarrow{D} a + bX.
 另一个有用的概念是随机变量序列的\textbf{概率有界性}。
 
 \begin{definition}[有界概率]\label{def:bounded-in-probability}
-称随机变量序列 $\{X_n\}$ 概率有界，若对所有 $\epsilon > 0$，存在常数 $B_\epsilon > 0$ 和整数 $N_\epsilon$，使得
+称随机变量序列 ${X_n}$ 概率有界，若对所有 $\epsilon > 0$，存在常数 $B_\epsilon > 0$ 和整数 $N_\epsilon$，使得
 \[
 n \geq N_\epsilon \Rightarrow \mathbb{P}[|X_n| \leq B_\epsilon] \geq 1 - \epsilon.
 \tag{5.2.6}\label{eq:bounded-in-probability}
@@ -314,16 +314,16 @@ n \geq N_\epsilon \Rightarrow \mathbb{P}[|X_n| \leq B_\epsilon] \geq 1 - \epsilo
 \end{example}
 
 \begin{theorem}[依分布收敛蕴含概率有界]\label{th:dist-to-bounded}
-若 $X_n \xrightarrow{D} X$，则 $\{X_n\}$ 概率有界。
-\end\{theorem\}
+若 $X_n \xrightarrow{D} X$，则 ${X_n}$ 概率有界。
+\end{theorem}
 
 \begin{example}[有界但不依分布收敛]\label{ex:bounded-not-converge}
 令 $n = 2m$（偶数）时 $X_{2m} = 2 + 1/(2m)$；$n = 2m-1$（奇数）时 $X_{2m-1} = 1 + 1/(2m)$。则偶数子序列依分布收敛到常数 $2$，奇数子序列依分布收敛到常数 $1$。整个序列不依分布收敛（两个极限不同），但所有项都在 $[1, 5/2]$ 中，因此是概率有界的。
 \end{example}
 
 \begin{theorem}[乘积的收敛性]\label{th:product-convergence}
-设 $\{X_n\}$ 概率有界，$Y_n \xrightarrow{P} 0$。则 $X_n Y_n \xrightarrow{P} 0$。
-\end\{theorem\}
+设 ${X_n}$ 概率有界，$Y_n \xrightarrow{P} 0$。则 $X_n Y_n \xrightarrow{P} 0$。
+\end{theorem}
 
 \textbf{证明梗概}：由概率有界性，$|X_n|$ 在大概率下被某个常数控制。再由 $Y_n \to 0$ 的概率，可得上确界收敛到 $0$。\footnote{完整证明见附录 \cref{sec:product-convergence-proof}。}
 
@@ -377,12 +377,12 @@ Y_n = \frac{Z_n - n}{\sqrt{2n}} \xrightarrow{D} N(0,1).
 矩母函数（MGF）提供了一种确定渐近分布的系统方法。
 
 \begin{theorem}[MGF 收敛定理]\label{th:mgf-convergence}
-设 $\{X_n\}$ 是随机变量序列，每个 $X_n$ 的 mgf $M_{X_n}(t)$ 在 $-h < t < h$ 上存在。设 $X$ 的 mgf $M(t)$ 在 $|t| \leq h_1 \leq h$ 上存在。若
+设 ${X_n}$ 是随机变量序列，每个 $X_n$ 的 mgf $M_{X_n}(t)$ 在 $-h < t < h$ 上存在。设 $X$ 的 mgf $M(t)$ 在 $|t| \leq h_1 \leq h$ 上存在。若
 \[
 \lim_{n \to \infty} M_{X_n}(t) = M(t),\quad |t| \leq h_1,
 \]
 则 $X_n \xrightarrow{D} X$。
-\end\{theorem\}
+\end{theorem}
 
 \textbf{应用：二项分布趋近泊松分布}。设 $Y_n \sim b(n,p)$，其中 $p = \mu/n$（$\mu$ 固定）。则
 \[
@@ -519,7 +519,7 @@ P(Y = 48, 49, 50, 51, 52) = P(47.5 < Y < 52.5).
 \]
 
 \begin{definition}[随机向量的依概率收敛]\label{def:vector-convergence-probability}
-设 $\{\mathbf{X}_n\}$ 是一列 $p$ 维随机向量，$\mathbf{X}$ 是随机向量。若对所有 $\epsilon > 0$，
+设 ${\mathbf{X}_n}$ 是一列 $p$ 维随机向量，$\mathbf{X}$ 是随机向量。若对所有 $\epsilon > 0$，
 \[
 \lim_{n \to \infty} \mathbb{P}[\|\mathbf{X}_n - \mathbf{X}\| \geq \epsilon] = 0,
 \]
@@ -539,7 +539,7 @@ $\mathbf{X}_n \xrightarrow{P} \mathbf{X}$ 当且仅当对每个 $j = 1, \ldots, 
 样本协方差矩阵 $\mathbf{S} \xrightarrow{P} \boldsymbol{\Sigma}$。
 
 \begin{定理}[多元中心极限定理]\label{th:multivariate-clt}
-设 $\{\mathbf{X}_n\}$ 是 iid 随机向量序列，均值向量为 $\boldsymbol{\mu}$、协方差矩阵为 $\boldsymbol{\Sigma}$（正定）。则
+设 ${\mathbf{X}_n}$ 是 iid 随机向量序列，均值向量为 $\boldsymbol{\mu}$、协方差矩阵为 $\boldsymbol{\Sigma}$（正定）。则
 \[
 \sqrt{n}(\overline{\mathbf{X}}_n - \boldsymbol{\mu}) \xrightarrow{D} N_p(\mathbf{0}, \boldsymbol{\Sigma}).
 \tag{5.4.3}\label{eq:multivariate-clt}
@@ -570,7 +570,7 @@ $g: \mathbb{R}^p \to \mathbb{R}^k$ 是可微变换，Jacobian 矩阵 $\mathbf{B}
 \section*{Exercises}\label{sec:chapter5-exercises}
 
 \begin{exercise}{\ref{exr:5-1} Sequence Convergence}\label{exr:5-1}
-Let $\{a_n\}$ be a sequence of real numbers (degenerate random variables). Let $a$ be a real number. Show that $a_n \to a$ is equivalent to $a_n \xrightarrow{P} a$.
+Let ${a_n}$ be a sequence of real numbers (degenerate random variables). Let $a$ be a real number. Show that $a_n \to a$ is equivalent to $a_n \xrightarrow{P} a$.
 \end{exercise}
 
 \begin{exercise}{\ref{exr:5-2} Binomial Convergence}\label{exr:5-2}
@@ -609,7 +609,7 @@ e^{-(x-\theta)} & x > \theta, -\infty < \theta < \infty \\
 \end{cases}
 \tag{5.1.3}\label{eq:shifted-exponential}
 \]
-This pdf is called the shifted exponential. Let $Y_n = \min\{X_1, \ldots, X_n\}$. Prove that $Y_n \to \theta$ in probability by first obtaining the cdf of $Y_n$.
+This pdf is called the shifted exponential. Let $Y_n = \min{X_1, \ldots, X_n}$. Prove that $Y_n \to \theta$ in probability by first obtaining the cdf of $Y_n$.
 \end{exercise}
 
 \begin{exercise}{\ref{exr:5-8} Ratio Convergence}\label{exr:5-8}
@@ -732,7 +732,7 @@ Assume that $X_1, \ldots, X_n$ is a random sample from a $\Gamma(1,\beta)$ distr
 \end{exercise}
 
 \begin{exercise}{\ref{exr:5-35} Multivariate Convergence}\label{exr:5-35}
-Let $\{\mathbf{X}_n\}$ be a sequence of $p$-dimensional random vectors. Show that
+Let ${\mathbf{X}_n}$ be a sequence of $p$-dimensional random vectors. Show that
 \[
 \mathbf{X}_n \xrightarrow{D} N_p(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \text{ if and only if } \mathbf{a}'\mathbf{X}_n \xrightarrow{D} N_1(\mathbf{a}'\boldsymbol{\mu}, \mathbf{a}'\boldsymbol{\Sigma}\mathbf{a}),
 \]
@@ -875,7 +875,7 @@ S_n^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \overline{X}_n)^2 = \frac{n}{n-1}\left(
 
 \textbf{背景}：分析 $\mathrm{Uniform}(0, \theta)$ 分布最大值的渐近行为。
 
-\textbf{已知条件}：$Y_n = \max\{X_1, \ldots, X_n\}$，其中 $X_i \sim \mathrm{Uniform}(0, \theta)$。
+\textbf{已知条件}：$Y_n = \max{X_1, \ldots, X_n}$，其中 $X_i \sim \mathrm{Uniform}(0, \theta)$。
 
 \textbf{推导步骤}：
 
@@ -1007,7 +1007,7 @@ F_{X_n}(x) \leq F_X(x + \epsilon) + \mathbb{P}[|X_n - X| \geq \epsilon].
 
 考虑 $B_n X_n = bX_n + (B_n - b)X_n$。由 $B_n \xrightarrow{P} b$，有 $B_n - b \xrightarrow{P} 0$。
 
-2. 由定理 5.2.6（依分布收敛蕴含概率有界），$\{X_n\}$ 概率有界。
+2. 由定理 5.2.6（依分布收敛蕴含概率有界），${X_n}$ 概率有界。
 
 3. 应用定理 5.2.7（概率有界序列与依概率收敛到零的乘积趋于零）：
 \[
@@ -1031,7 +1031,7 @@ A_n + B_n X_n \xrightarrow{D} a + bX.
 
 \textbf{背景}：证明定理 5.2.7。
 
-\textbf{目标}：若 $\{X_n\}$ 概率有界，$Y_n \xrightarrow{P} 0$，则 $X_n Y_n \xrightarrow{P} 0$。
+\textbf{目标}：若 ${X_n}$ 概率有界，$Y_n \xrightarrow{P} 0$，则 $X_n Y_n \xrightarrow{P} 0$。
 
 \textbf{推导步骤}：
 
@@ -1076,7 +1076,7 @@ g(X_n) = g(\theta) + g'(\theta)(X_n - \theta) + o_p(|X_n - \theta|).
 \sqrt{n}(g(X_n) - g(\theta)) = g'(\theta)\sqrt{n}(X_n - \theta) + o_p(\sqrt{n}|X_n - \theta|).
 \]
 
-3. 由假设，$\sqrt{n}(X_n - \theta) \xrightarrow{D} N(0, \sigma^2)$，故 $\{ \sqrt{n}|X_n - \theta| \}$ 概率有界。
+3. 由假设，$\sqrt{n}(X_n - \theta) \xrightarrow{D} N(0, \sigma^2)$，故 ${ \sqrt{n}|X_n - \theta| }$ 概率有界。
 
 4. 由 $o_p$ 的定义，$o_p(\sqrt{n}|X_n - \theta|) \xrightarrow{P} 0$。
 
