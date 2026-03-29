@@ -672,4 +672,56 @@ $$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \text{ 是 proper 且横截的
 
 \textbf{几何直觉}：Knutson-Tao 把系数理解为"旗流形中的交点个数"，而 Gao-Xiong 把系数理解为"$B^-$-轨道闭合的等变相交类"。后者通过 Borel 构造将问题提升到等变上同调，自然地解释了 $t_i - y_j$ 多项式的出现。
 
+\section{Graham Positivity 中 Grassmannian 限制的作用}
+\label{sec:GrassmannianRole}
+
+\subsection{问题}
+在 Graham Positivity Theorem（\cref{def:GrahamPositivity}）中，为什么要求 $u, v$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列？$k_1, k_2$ 的作用是什么？为什么不能推广到一般排列？
+
+\subsection{回答}
+
+\textbf{1. $k$-Grassmannian 排列的几何意义}：
+
+一个 $k$-Grassmannian 排列 $w$ 对应 Grassmannian 流形 $\mathrm{Gr}(k, n)$ 中的一个 Schubert 胞腔。定义要求：
+$$w(1) < w(2) < \cdots < w(k) \quad \text{且} \quad w(k+1) > w(k+2) > \cdots > w(n)$$
+
+\textbf{2. $k_1, k_2$ 的作用}：
+
+$k_1$ 和 $k_2$ 标记了两个 Grassmannian 的类型——它们决定了对应的 Schubert 类在哪种 Grassmannian 流形中。例如：
+\begin{itemize}
+\item $k_1 = 2$：前 2 位递增 $\Rightarrow$ 对应 $\mathrm{Gr}(2, n)$
+\item $k_2 = 1$：前 1 位递增 $\Rightarrow$ 对应 $\mathrm{Gr}(1, n) = \mathbb{CP}^{n-1}$
+\end{itemize}
+
+\textbf{3. 为什么正性依赖 Grassmannian 条件？}
+
+当 $u, v$ 都是 Grassmannian 时，它们的 Schubert 多项式 $\mathfrak{S}_u, \mathfrak{S}_v$ 可以因子化为（ skew）Schur 函数：
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) = s_{\lambda}(\mathbf{x}/\mathbf{y})$$
+其中 $s_\lambda$ 是 Schur 函数，$\lambda$ 是某个分拆。
+
+Schur 函数的结构常数是 Littlewood-Richardson 系数 $c_{\mu\nu}^\lambda$，而 Littlewood-Richardson 系数是 \textbf{非负整数}！这就是正性的来源。
+
+\textbf{4. 为什么推广到一般排列是难题？}
+
+对于非 Grassmannian 排列，Schubert 多项式不能因子化为 Schur 函数。当两个一般的 Schubert 多项式相乘时：
+$$\mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \mathfrak{S}_w$$
+
+系数 $c^w_{u,v}$ 不再自动非负。需要新的几何/组合解释来说明为什么某些特殊排列（separated descents, 或三重情形）仍然保持正性。
+
+\textbf{5. Samuel 猜想（Theorem 1.1）的意义}：
+
+Samuel 猜想将正性从 Grassmannian 推广到任意排列，但引入了 separated descents 条件：
+$$\max \mathrm{Des}(u) \leq \min \mathrm{Des}(v)$$
+
+这个条件的几何意义是：交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 仍然是 transverse 的，从而保持了正性。
+
+\textbf{6. 量子版本（Kirillov-Maeno）的正性}：
+
+在量子上同调中，正性仍然成立，但系数变为关于 $q$ 的多项式：
+$$c^w_{u,v}(\beta) \in \mathbb{N}[q_1, q_2, \ldots]$$
+
+量子参数 $q$ 记录了曲线类的度数，物理上对应不同亏格的 Gromov-Witten 不变量。
+
+\textbf{几何直觉}：Grassmannian 条件像是"选择了正确的舞台"——当两个 Grassmannian Schubert 类相交时，结果仍然是"好"的（横截、无奇点）；但如果舞台选错了（一般排列），相交可能产生负系数，需要额外的条件（separated descents）来保证正性。\footnote{问：为什么 Graham Positivity 要求 Grassmannian 排列？见附录 \cref{sec:GrassmannianRole}。}
+
 \textbf{footnote 引用}：见 \cref{sec:GaoXiongVsKnutsonTao}。
