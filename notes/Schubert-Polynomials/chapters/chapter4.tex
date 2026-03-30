@@ -147,9 +147,40 @@ Mihalcea 的证明思路巧妙而简洁。核心思想是：将 EQLR 系数的�
 
 \subsection{为什么可以归约？}
 
-在证明之前，让我们理解这个策略的直觉。EQLR 系数涉及稳定映射模空间（stable map moduli space）$\overline{\mathcal{M}}_{0,3}(X,d)$，这是一个复杂的几何对象。但我们注意到，Mihalcea 的关键洞察是：\textbf{通过适当的映射和投影公式（projection formula），复杂的上同调表达式可以``推送''到积空间 $X \times X$ 上，而在 $X \times X$ 上 Graham positivity 已经告诉我们答案。}
+在证明之前，让我们理解这个策略的直觉。EQLR 系数涉及稳定映射模空间（stable map moduli space）$\overline{\mathcal{M}}_{0,3}(X,d)$，这是一个复杂的几何对象——它参数化了所有满足特定条件的稳定映射 $f: \mathbb{P}^1 \to X$。
+
+但 Mihalcea 的关键洞察是：\textbf{通过适当的映射和投影公式（projection formula），复杂的上同调表达式可以``推送''到积空间 $X \times X$ 上，而在 $X \times X$ 上 Graham positivity 已经告诉我们答案。}
 
 这个策略类似于我们在微积分中处理复杂积分时使用的变量替换——将一个难以处理的问题转化到我们已经理解的框架中。
+
+这一归约策略与 \cref{chap:TriplePositivity} 中 Gao-Xiong 证明三重 Schubert positivity 的思路有本质联系——两者都使用了**投影公式**（projection formula）将复杂的几何对象分解为已知的组成部分 \cite[Section 3]{GX2025}。
+
+\subsection{核心工具：投影公式与推送公式}
+
+在深入证明之前，我们需要了解两个关键的代数几何工具。
+
+\subsubsection{投影公式（Projection Formula）}
+
+设 $f: X_1 \to X_2$ 为 $T$-等变映射。对于 $T$-等变上同调类 $a \in H_T^*(X_2)$ 和 $b \in H_T^*(X_1)$，有：
+\begin{equation}
+f_*^T\left((f^T)^*(a) \cdot b\right) = a \cdot f_*^T(b).
+\label{eq:ProjectionFormulaCh4}
+\end{equation}
+
+\textbf{直观理解}：这个公式告诉我们，当我们对 $a$ 和 $b$ 的乘积做推送时，如果 $a$ 本身来自目标空间 $X_2$，它可以``提取出来''到外面，只留下 $b$ 的推送。这正是我们能够将问题从 $\overline{\mathcal{M}}$ 转移到 $X \times X$ 的关键。
+
+投影公式在 \cref{chap:TriplePositivity} 的证明中也扮演了核心角色——它建立了从几何相交到上同调类的桥梁 \cite[Lemma 2.5]{AndersonFulton}。
+
+\subsubsection{推送公式（Push-Forward Formula）}
+
+对于纤维积图（fiber product diagram），有：
+\begin{equation}
+f_*([V]) = \sum_i m_i a_i [f(V_i)],
+\label{eq:PushForwardCh4}
+\end{equation}
+其中 $V_i$ 是原像的不可约分支（irreducible component），$m_i$ 是对应的次数。
+
+这个公式允许我们将一个复杂子簇的推送分解为其各个不可约分支的推送的线性组合。
 
 \subsection{第一步：在 $X \times X$ 上工作}
 
