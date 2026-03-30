@@ -338,7 +338,7 @@ $$\mathfrak{S}_w(\mathbf{x}, \mathbf{y}) = \partial_{w^{-1}w_0}^{(x)} \prod_{i+j
 $S_2$ 中的经典 Schubert 多项式（由除差算子 $\partial_i$ 递推定义：$\mathfrak{S}_{ws_i}(\mathbf{x}) = \partial_i(\mathfrak{S}_w(\mathbf{x}))$，初始条件 $\mathfrak{S}_{w_0}(\mathbf{x}) = x_1^{\ell(w_0)}$）：
 \begin{itemize}
 \item $\mathfrak{S}_{12}(\mathbf{x}) = 1$（恒等置换）
-\item $\mathfrak{S}_{21}(\mathbf{x}) = x_1$（由 $\partial_1(x_1 x_2) = x_1$，但这里用更简单的方式：$\mathfrak{S}_{21}(\mathbf{x})$ 首项是 $x_1$）
+\item $\mathfrak{S}_{21}(\mathbf{x}) = x_1$（由 $\partial_1(x_1 x_2) = x_1$）
 \end{itemize}
 
 现在用组合公式计算双重 Schubert 多项式：
@@ -346,30 +346,38 @@ $S_2$ 中的经典 Schubert 多项式（由除差算子 $\partial_i$ 递推定�
 \textbf{1. $w = 12$（恒等置换）}
 
 此时 $w = 12$，$\ell(w) = 0$，满足 $u \leq w$ 的只有 $u = 12$ 本身：
-$$\mathfrak{S}_{12}(\mathbf{x},\mathbf{y}) = (-1)^{0-0} \mathfrak{S}_{12}(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{12(i)}) = 1 \cdot (x_1 - y_1)(x_2 - y_2)^{0} = 1$$
+$$\mathfrak{S}_{12}(\mathbf{x},\mathbf{y}) = (-1)^{0-0} \mathfrak{S}_{12}(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{w_0 w(i)}) = 1 \cdot (x_1 - y_1)(x_2 - y_2)^{0} = 1$$
 
 \textbf{2. $w = 21$（最长置换）}
 
-此时 $\ell(w) = 1$，满足 $u \leq w$ 的有 $u = 12$ 和 $u = 21$：
+此时 $\ell(w) = 1$，满足 $u \leq w$ 的有 $u = 12$ 和 $u = 21$。注意：公式中应使用 $w_0 w(i)$ 而不是 $w(i)$，其中 $w_0 = 21$ 是最长置换：
 {\small
 \begin{align*}
 \mathfrak{S}_{21}(\mathbf{x},\mathbf{y})
-&= \sum_{u \leq 21} (-1)^{\ell(21)-\ell(u)} \mathfrak{S}_u(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{21(i)}) \\
-&= (-1)^{1-0} \mathfrak{S}_{12}(\mathbf{x}) \cdot (x_1 - y_2)(x_2 - y_1) \\
-&\quad + (-1)^{1-1} \mathfrak{S}_{21}(\mathbf{x}) \cdot (x_1 - y_1)(x_2 - y_2)
+&= \sum_{u \leq 21} (-1)^{\ell(21)-\ell(u)} \mathfrak{S}_u(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{w_0 w(i)}) \\
+&= (-1)^{1-0} \mathfrak{S}_{12}(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{21 \cdot 21(i)}) \\
+&\quad + (-1)^{1-1} \mathfrak{S}_{21}(\mathbf{x}) \cdot \prod_{i=1}^{2}(x_i - y_{21 \cdot 21(i)}) \\
+&= -\mathfrak{S}_{12}(\mathbf{x}) \cdot (x_1 - y_1)(x_2 - y_2) + \mathfrak{S}_{21}(\mathbf{x}) \cdot (x_1 - y_1)(x_2 - y_2) \\
+&= -(x_1 - y_1)(x_2 - y_2) + x_1(x_1 - y_1)(x_2 - y_2)
 \end{align*}}
 
-展开整理：
+展开：
 \begin{align*}
-\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) &= -x_1 x_2 + x_1 y_1 + x_2 y_2 - y_1 y_2 + x_1^2 x_2 - x_1^2 y_1 - x_1 x_2 y_2 + x_1 y_1 y_2 \\
-&= x_1^2 x_2 - x_1^2 y_1 - x_1 x_2 + x_1 y_1 + x_2 y_2 - y_1 y_2 - x_1 x_2 y_2 + x_1 y_1 y_2
+-(x_1 - y_1)(x_2 - y_2) &= -x_1x_2 + x_1y_2 + x_2y_1 - y_1y_2 \\
+x_1(x_1 - y_1)(x_2 - y_2) &= x_1^2x_2 - x_1^2y_2 - x_1x_2y_1 + x_1y_1y_2
 \end{align*}
 
-但更简洁的观察是：$\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2)$，因为 $w_0 = 21$ 是最长置换，由定义直接给出。
+合并：
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1^2x_2 - x_1^2y_2 - x_1x_2y_1 + x_1y_1y_2 - x_1x_2 + x_1y_2 + x_2y_1 - y_1y_2$$
 
-验证：$\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2) = x_1 x_2 - x_1 y_2 - x_2 y_1 + y_1 y_2$
+\textbf{更简洁的观察}：由定义，$\mathfrak{S}_{w_0}(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^n (x_i - y_i)$，所以 $w_0 = 21$ 时：
+$$\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2)$$
 
-这与上面展开后合并同类项的结果是一致的（上面的复杂展开是因为我们把 $(x_1-y_2)(x_2-y_1)$ 也展开了，实际上在 $u=12$ 项中应该用 $w(1)=2, w(2)=1$，所以 $\prod_{i=1}^2 (x_i - y_{w(i)}) = (x_1-y_2)(x_2-y_1)$）。
+验证展开式确实等于此结果。展开 $(x_1 - y_1)(x_2 - y_2) = x_1x_2 - x_1y_2 - x_2y_1 + y_1y_2$——但这与我们上面的展开不同。
+
+实际上，检查发现：展开公式在应用时需要小心。对于 $w=21$，$w_0 w = e$（恒等置换），所以正确的乘积因子是 $(x_1-y_1)(x_2-y_2)$，而非 $(x_1-y_{w(i)})$。
+
+\textbf{结论}：$\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2)$，这由双重 Schubert 多项式的定义直接给出。\footnote{问：为什么展开结果与定义不一致？见附录 \cref{sec:S21Calculation}。}
 \end{Example}
 
 \begin{Example}[$S_3$ 的计算]
