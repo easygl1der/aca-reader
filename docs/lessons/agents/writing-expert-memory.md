@@ -452,3 +452,37 @@ $$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
 **防止措施**:
 - 写 QA 条目时，判断提及的定理是否简短
 - 简短定理优先内联，方便读者不跳转也能理解
+
+---
+
+## L711: 禁止未核实的"关键观察"注入 QA
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+在 QA 条目中添加了未核实的"关键观察"：**"当 u, v 都是 Grassmannian 时，separated descents 条件自动满足"**。这是一个数学错误！
+
+**反例**：
+- $u = 321$（2-Grassmannian），$\operatorname{Des}(u) = \{2\}$
+- $v = 213$（1-Grassmannian），$\operatorname{Des}(v) = \{1\}$
+- $\max \operatorname{Des}(u) = 2 > 1 = \min \operatorname{Des}(v)$ — 不满足 separated descents！
+
+**错误原因**：
+- 错误地认为"Grassmannian 蕴含 separated descents"
+- 忽略了 $k_1 > k_2$ 的情况
+- 没有用具体反例验证"观察"
+
+**正确做法**:
+1. 写"关键观察"前，先用具体例子验证
+2. 用反例测试极端情况
+3. 如果可能，找不到反例才写"自动满足"
+4. 数学声明必须有证明或反例支撑
+
+**核查清单**:
+- [ ] 这个"观察"有没有反例？
+- [ ] 极端情况是否满足？
+- [ ] 能否找到具体数值验证？
+
+**修复记录**:
+- Refined vs Original Graham QA（sec:RefinedVsOriginalGraham）→ 删除错误声明，添加反例 + 正确关系 ✅
