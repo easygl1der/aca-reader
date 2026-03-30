@@ -161,6 +161,101 @@ callout 块
 
 ---
 
+## L705: LaTeX 中文引号规范
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+中文引号 `"..."` 在 LaTeX 中不会自动转换为中文引号，需要使用 `` '' ` 来表示中文左引号""和右引号。
+
+**正确做法**:
+```latex
+% 错误 ❌
+中文引号 "分离" 模式
+
+% 正确 ✅
+中文引号``分离''模式
+```
+
+**渲染效果**:
+- ` `` ` → " (左双引号)
+- ` '' ` → " (右双引号)
+- ` `' ` → ' (左单引号)
+- ` '' ` → ' (右单引号)
+
+**批量替换方法**:
+```bash
+perl -i -pe 's/"/\x60\x60/g; s/"/\x27\x27/g' file.tex
+```
+
+**防止措施**:
+- 写作时直接使用 `` '' ` 格式
+- 润色后用 `grep '[""'']' file.tex` 检查是否有遗漏
+
+---
+
+## L706: 证明章节开头的定理脉络梳理
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+证明章节（Section）一开头就直接列出引理和定理，没有梳理它们之间的逻辑关系，导致读者迷失在技术细节中。
+
+**正确做法**:
+在证明章节开头（第一个小节之前），用清晰的叙事结构呈现：
+
+```latex
+\section{主要定理的证明}
+\label{sec:ProofMain}
+
+本节我们证明本文的三个人定理——Theorem \ref{def:GrahamPositivity}、
+Theorem \ref{def:RefinedGraham} 和 Theorem \ref{def:Theorem12}。
+这三个定理层层递进，构成了从特殊到一般的完整理论体系。
+
+\textbf{定理之间的逻辑链条}：
+
+\textbf{第一步}（Theorem \ref{def:GrahamPositivity}，Graham Positivity）：
+这是整个理论的起点，断言当 $u, v$ 都是 Grassmannian 排列时......
+原始证明依赖于几何相交理论。
+
+\textbf{第二步}（Theorem \ref{def:RefinedGraham}，Refined Graham Positivity）：
+这是对第一步的根本性推广。关键观察是：......
+因此，Refined 版本将假设从 ``两个 Grassmannian 排列'' 推广到 ``满足 separated descents 条件的任意排列''。
+
+\textbf{第三步}（Theorem \ref{def:Theorem12}，Triple Schubert Positivity）：
+在 Refined 版本的基础上，将两个排列进一步推广到三个排列......
+
+\textbf{支撑这三级火箭的底层引理}：
+
+引理之间的依赖关系决定了证明的层次：
+
+\begin{enumerate}
+\item \textbf{Lemma \ref{def:Lemma22}}（正规子群引理）：......
+\item \textbf{Lemma \ref{def:Lemma25}}（横截相交引理）：......
+\item \textbf{Corollary \ref{def:Corollary24}}（闭链分解推论）：......
+\end{enumerate}
+
+这三个引理的关系可以概括为：\textbf{Lemma \ref{def:Lemma22}} 提供了归纳法的结构，
+Lemma \ref{def:Lemma25} 保证了横截相交的良定义性，
+Corollary \ref{def:Corollary24} 将几何闭链分解为 Schubert 基底的组合。
+
+有了这些准备，我们现在可以进入正式的证明。
+```
+
+**Stein 风格要素**:
+1. **先声明目标**: 告诉读者要证哪几个定理
+2. **再梳理逻辑**: 用"第一步→第二步→第三步"呈现递进关系
+3. **后交代底层引理**: 用 enumerate 列出支撑定理的关键引理及其作用
+4. **最后过渡到证明**: "有了这些准备，我们现在可以进入正式的证明"
+
+**防止措施**:
+- 写证明章节前先画逻辑图
+- 检查是否说清楚了"为什么需要这个引理"和"这个引理在证明中起什么作用"
+
+---
+
 ## 领域专属技能
 
 ```latex
