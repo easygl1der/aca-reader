@@ -30,7 +30,7 @@
 \begin{enumerate}
 \item $f(x)$ 或 $p(x)$ 的形式完全未知
 \item 分布的形式已知，但包含未知参数 $\theta$（$\theta$ 可以是向量）
-\end{enumerate}\footnote{第一种情况属于非参数方法（Chapter 10 深入讨论），第二种情况是本章的核心内容。见附录 \cref{sec:qa-parametric-vs-nonparametric}。}
+\end{enumerate}\footnote{第一种情况属于非参数方法（Chapter 10 深入讨论），第二种情况是本章的核心内容。见附录 。}
 
 \textbf{本章聚焦第二类}——这正是统计学中最常见的场景。我们已知数据的分布类型，只是不知道具体的参数值。几个典型例子：
 
@@ -87,11 +87,11 @@ f(x_1, \ldots, x_n; \theta) = \prod_{i=1}^n f(x_i; \theta),
 
 若 $\mathbb{E}(T) \neq \theta$，则称 $\mathrm{Bias}(T) = \mathbb{E}(T) - \theta$ 为偏差。无偏性保证估计量没有系统性偏差——既不高估也不低估。
 
-\textbf{注意}：无偏性并不保证估计量"最好"。例如，样本方差 $S^2$ 是无偏的，但 $n^{-1}\sum(X_i - \bar{X})^2$ 是有偏的。这引发了一个自然的问题：能否找到一个统一的、"最优"的估计原则？\footnote{问：为什么要举这个例子？它在整个章节中起什么作用？见附录 \cref{sec:qa-unbiasedness-transition}。}
+\textbf{注意}：无偏性并不保证估计量"最好"。例如，样本方差 $S^2$ 是无偏的，但 $n^{-1}\sum(X_i - \bar{X})^2$ 是有偏的。这引发了一个自然的问题：能否找到一个统一的、"最优"的估计原则？\footnote{问：为什么要举这个例子？它在整个章节中起什么作用？见附录 。}
 
 \subsection{最大似然估计（MLE）}
 
-\textbf{为什么需要似然函数？} 样本来自参数 $\theta$ 的分布 $f(x;\theta)$。给定 $\theta$ 时，观察到当前数据 $\mathbf{x} = (x_1, \ldots, x_n)$ 的概率（密度）为 $f(\mathbf{x}; \theta)$。似然函数正是这个想法的数学表达——它衡量在给定 $\theta$ 时，观察到当前数据的"可能性"。\footnote{在贝叶斯统计中，似然函数与先验分布结合通过贝叶斯定理产生后验分布。见附录 \cref{sec:qa-bayesian-prior-examples}。}
+\textbf{为什么需要似然函数？} 样本来自参数 $\theta$ 的分布 $f(x;\theta)$。给定 $\theta$ 时，观察到当前数据 $\mathbf{x} = (x_1, \ldots, x_n)$ 的概率（密度）为 $f(\mathbf{x}; \theta)$。似然函数正是这个想法的数学表达——它衡量在给定 $\theta$ 时，观察到当前数据的"可能性"。\footnote{在贝叶斯统计中，似然函数与先验分布结合通过贝叶斯定理产生后验分布。见附录 。}
 
 \begin{definition}[似然函数]\label{def:likelihood-function-ch4}
 设 $X_1, \ldots, X_n$ 是来自 $f(x;\theta)$ 的随机样本。则
@@ -114,7 +114,7 @@ L(\theta) = L(\theta; x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i; \theta)
 \frac{\partial l(\theta)}{\partial \theta} = 0. \tag{4.2.2}\label{eq:mle-score-equation}\]
 \]
 
-这个方程称为\textbf{似然方程（score equation）}。\footnote{通用推导框架见附录 \cref{sec:derivation-mle}。}
+这个方程称为\textbf{似然方程（score equation）}。\footnote{通用推导框架见附录 。}
 
 \begin{example}[指数分布的 MLE]\label{ex:exponential-mle-ch4}
 设 $X_1, \ldots, X_n \sim \mathrm{Exp}(\theta)$，pdf 为 $f(x) = \theta^{-1}\exp\{-x/\theta\}$，$x>0$。
@@ -124,7 +124,7 @@ L(\theta) = L(\theta; x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i; \theta)
 l(\theta) = -n\log\theta - \frac{1}{\theta}\sum_{i=1}^n x_i.
 \]
 
-令导数为零，解得 $\widehat{\theta} = \bar{x}$。由于 $\mathbb{E}(X) = \theta$，故 $\widehat{\theta} = \bar{X}$ 也是无偏估计。\footnote{详细推导见附录 \cref{sec:derivation-exponential-mle}。}
+令导数为零，解得 $\widehat{\theta} = \bar{x}$。由于 $\mathbb{E}(X) = \theta$，故 $\widehat{\theta} = \bar{X}$ 也是无偏估计。\footnote{详细推导见附录 。}
 \end{example}
 
 \begin{example}[二项分布的 MLE]\label{ex:binomial-mle-ch4}
@@ -135,7 +135,7 @@ l(\theta) = -n\log\theta - \frac{1}{\theta}\sum_{i=1}^n x_i.
 L(\theta) = \theta^{\sum x_i}(1-\theta)^{n-\sum x_i}.
 \]
 
-对数似然求导并令为零，解得 $\widehat{\theta} = \bar{x}$。由于 $\mathbb{E}(X) = \theta$，故 $\widehat{\theta} = \bar{X}$ 是无偏的。\footnote{详细推导见附录 \cref{sec:derivation-binomial-mle}。}
+对数似然求导并令为零，解得 $\widehat{\theta} = \bar{x}$。由于 $\mathbb{E}(X) = \theta$，故 $\widehat{\theta} = \bar{X}$ 是无偏的。\footnote{详细推导见附录 。}
 \end{example}
 
 \begin{example}[正态分布的 MLE]\label{ex:normal-mle-ch4}
@@ -159,7 +159,7 @@ l(\mu, \sigma) = -\frac{n}{2}\log 2\pi - n\log\sigma - \frac{1}{2}\sum_{i=1}^n\l
 \[
 \mathbb{E}(\widehat{\sigma}^2) = \frac{n-1}{n}\sigma^2,
 \]
-而样本方差 $S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ 是无偏的（$\mathbb{E}(S^2) = \sigma^2$）。这说明 MLE 有时并非无偏——无偏性和最大似然是两种不同的估计原则。\footnote{详细推导见附录 \cref{sec:derivation-normal-mle}。}
+而样本方差 $S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ 是无偏的（$\mathbb{E}(S^2) = \sigma^2$）。这说明 MLE 有时并非无偏——无偏性和最大似然是两种不同的估计原则。\footnote{详细推导见附录 。}
 \end{example}
 
 MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态的、渐近有效的，且具有最优性。这些性质使 MLE 成为现代统计推断的基石。
@@ -180,7 +180,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 
 \textbf{正确理解}：不是说"$\theta$ 以 $1-\alpha$ 概率落在区间内"（$\theta$ 是固定常数，没有随机性），而是说"如果重复抽样 $100(1-\alpha)\%$ 的区间会包含 $\theta$"。这称为置信区间的频率学派解释。\footnote{问：很多初学者把置信区间的定义 $\mathbb{P}_\theta(L \leq \theta \leq U) = 1 - \alpha$ 误解为"$\theta$ 有 $1-\alpha$ 的概率落在区间 $[L, U]$ 中"。这两种解释有什么区别？见附录 \cref{sec:qa-confidence-interval-frequentist}。}
 
-\textbf{构造置信区间的关键}是找到枢轴量（pivot）——一个其分布不依赖于未知参数的函数。\footnote{枢轴量的构造方法及推导见附录 \cref{sec:derivation-confidence-interval}。}
+\textbf{构造置信区间的关键}是找到枢轴量（pivot）——一个其分布不依赖于未知参数的函数。\footnote{枢轴量的构造方法及推导见附录 。}
 
 \subsection{正态均值的置信区间}
 
@@ -192,7 +192,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \]
 其中 $z_{\alpha/2}$ 满足 $\Phi(z_{\alpha/2}) = 1 - \alpha/2$。
 
-\textbf{直觉理解}：区间宽度 $\propto \sigma/\sqrt{n}$——样本量越大，估计越精确。这与大数定律的直觉一致：更多信息带来更精确的估计。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-known}。}
+\textbf{直觉理解}：区间宽度 $\propto \sigma/\sqrt{n}$——样本量越大，估计越精确。这与大数定律的直觉一致：更多信息带来更精确的估计。\footnote{详细推导见附录 。}
 \end{example}
 
 \begin{example}[未知方差]\label{ex:ci-normal-unknown}
@@ -207,7 +207,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \tag{4.3.3}\label{eq:ci-normal-unknown}\]
 \]
 
-\textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}
+\textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{详细推导见附录 。}
 \end{example}
 
 \begin{theorem}[方差置信区间]\label{th:ci-variance-ch4}
@@ -216,7 +216,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}},\quad \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}} \right].
 \tag{4.3.4}\label{eq:ci-variance}\]
 \]
-其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{详细推导见附录 \cref{sec:derivation-variance-ci}。}
+其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{详细推导见附录 。}
 \end{theorem}
 
 \begin{figure}[H]
@@ -329,7 +329,7 @@ Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 \tag{4.4.1}\label{eq:z-test-statistic}\]
 \]
 
-在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
+在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{详细推导见附录 。}
 \end{example}
 
 \begin{example}[正态均值检验、未知方差]\label{ex:test-normal-unknown}
@@ -341,7 +341,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 \tag{4.4.2}\label{eq:t-test-statistic}\]
 \]
 
-在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
+在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{详细推导见附录 。}
 \end{example}
 
 \textbf{$p$ 值}：在 $H_0$ 为真条件下，观察到比当前样本更极端结果的概率。$p$ 值越小，拒绝 $H_0$ 的证据越强。
@@ -368,7 +368,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2(k-1)$（大样本近似）。拒绝 $H_0$ 当 $\chi^2 > \chi^2_{\alpha, k-1}$。
 
-\textbf{直观理解}：$(O_i - E_i)^2/E_i$ 衡量每个类别的偏差，平方消去正负号，除以 $E_i$ 进行标准化，求和得到总体偏差。\footnote{详细推导见附录 \cref{sec:derivation-chi-square}。}
+\textbf{直观理解}：$(O_i - E_i)^2/E_i$ 衡量每个类别的偏差，平方消去正负号，除以 $E_i$ 进行标准化，求和得到总体偏差。\footnote{详细推导见附录 。}
 
 \begin{figure}[H]
 \centering
@@ -583,7 +583,7 @@ E_{22} = \frac{60 \times 45}{120} = 22.5.
 \item 若 $U \leq f(Y)/(Mg(Y))$，接受 $X = Y$；否则拒绝，返回步骤 2
 \end{enumerate}
 
-接受概率为 $1/M$。\footnote{接受-拒绝算法的推导及收敛性证明见附录 \cref{sec:derivation-monte-carlo}。}
+接受概率为 $1/M$。\footnote{接受-拒绝算法的推导及收敛性证明见附录 。}
 
 \section{4.7 Bootstrap Methods}\label{sec:4.7}
 
@@ -607,7 +607,7 @@ Bootstrap 的解决思路既简单又巧妙：\textbf{用重抽样近似抽样�
 \tag{4.7.1}\label{eq:bootstrap-ci}\]
 \]
 
-\textbf{直觉}：如果样本是总体的良好代表，那么从样本有放回抽样就是在模拟"从总体中抽取样本"的过程。$T^*$ 的分布反映了 $T$ 的抽样分布的近似。\footnote{Bootstrap 的理论基础及更多细节见附录 \cref{sec:derivation-bootstrap}。}
+\textbf{直觉}：如果样本是总体的良好代表，那么从样本有放回抽样就是在模拟"从总体中抽取样本"的过程。$T^*$ 的分布反映了 $T$ 的抽样分布的近似。\footnote{Bootstrap 的理论基础及更多细节见附录 。}
 
 Bootstrap 的强大之处在于它的通用性——几乎任何估计量都可以用 Bootstrap 近似其分布，不需要繁复的数学推导。这使它成为现代统计实践中的重要工具。
 
