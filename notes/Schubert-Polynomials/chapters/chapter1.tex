@@ -121,14 +121,16 @@ $$\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v).$$
 \label{def:SkewDividedDifference}
 对于两个置换 $w, v \in S_n$，\textbf{\underline{Skew 除差算子}} $\partial_{w/v}$\footnote{问：Skew 除差算子与普通除差算子有什么区别？见附录 \cref{sec:SkewVsDivided}。} 定义为：
 \begin{equation}
-\partial_{w/v} = \partial_{w} \circ \partial_{v}^{-1}
+\partial_{w/v} = \sum_{\substack{u \\ v \leq u \leq w}} (-1)^{\ell(w)-\ell(u)} \partial_u
 \end{equation}
-其中 $\partial_{v}^{-1}$ 是 $\partial_v$ 的逆算子（即逆除差算子）\footnote{问：什么是逆除差算子？见附录 \cref{sec:InverseDividedDifference}。}，$\circ$ 表示算子复合。
+其中求和取遍所有满足 $v \leq u \leq w$（Bruhat 序）的置换 $u$。
+
+\textbf{注意：} 这里不存在 $\partial_v^{-1}$——除差算子 $\partial_i$ 是幂零的（$\partial_i^2 = 0$），没有逆算子。Skew 除差算子通过组合定义而非复合逆算子来定义。
 
 Skew 除差算子满足以下性质：
 \begin{itemize}
 \item 当 $v = e$（单位置换）时，$\partial_{w/e} = \partial_w$
-\item $\partial_{w/v}$ 可以展开为一系列基本除差算子的组合
+\item 当 $w = v$ 时，$\partial_{w/w} = \mathrm{id}$（恒等算子）
 \end{itemize}
 \end{Definition}
 
