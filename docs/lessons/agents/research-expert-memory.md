@@ -194,3 +194,81 @@ grep -n "Schubert\|positivity\|equivariant" /tmp/paper_text.txt
 1. 判断是通用教训还是文献管理专属
 2. 更新对应 memory 文件
 3. 在回复中引用教训确认
+
+---
+
+# 文献验证专家教训记忆（补充）
+
+**适用对象**: research-expert（文献验证专家）
+
+**最后更新**: 2026-03-30
+
+---
+
+## 职责定位
+
+research-expert 是 **文献验证专家**，负责：
+1. 对比笔记与原文，确保定义/定理正确
+2. 发现笔记中的概念性错误
+3. 为 domain expert 提供验证报告
+
+---
+
+## 触发场景
+
+| 场景 | 说明 |
+|------|------|
+| 定义验证 | 笔记中写了某个定义，需要确认是否与原文一致 |
+| 定理核实 | 某个定理的条件、结论需要核实 |
+| 公式验证 | 微分/差分计算需要对照原文 |
+| Gemini 发现错误 | Gemini 校对后发现疑似错误，需要核实 |
+
+---
+
+## 验证报告格式
+
+```markdown
+## 验证报告: [概念/定理名称]
+
+### 1. 原文定义/定理
+- **来源**: [书籍/论文名], Chapter X, Page Y
+- **内容**: [原文定义或定理]
+
+### 2. 笔记中的定义/定理
+- **位置**: [章节/文件]
+- **内容**: [笔记中的定义]
+
+### 3. 一致性判断
+- [ ] ✓ 一致
+- [ ] ✗ 不一致
+- [ ] ⚠ 部分差异
+
+### 4. 差异说明
+[详细说明差异内容及正确内容]
+```
+
+---
+
+## Chapter 1 验证教训（Gemini 发现）
+
+| 位置 | 错误描述 | 正确内容 |
+|------|----------|----------|
+| Bruhat order | `≥` 方向反 | 应该 `≤` |
+| 链比较 | `231 < 312` 不可比较 | 231 和 312 在 Bruhat order 下不可比较 |
+| 偏导计算 | ∂₁(x₂²) = x₂+x₁ | 正确是 -(x₁+x₂) |
+| 偏导计算 | ∂₁∂₂(x₁) = 1 | 正确是 0 |
+| 差分算子 | ∂w/v = ∂w ∘ ∂v⁻¹ | ∂ᵢ⁻¹ 不存在，∂ᵢ²=0 是幂零的 |
+
+---
+
+## 常用搜索命令
+
+```bash
+# 搜索 .md 转录文件（搜索性能更好）
+grep -r "Bruhat" PDFs/quantum-schubert/transcript/
+grep -r "Definition" PDFs/differential-geometry/
+
+# 搜索特定书籍
+grep -r "geodesic" PDFs/differential-geometry/Do\ Carmo*.md
+grep -r "Potential Outcome" PDFs/causal-inference/transcript/
+```
