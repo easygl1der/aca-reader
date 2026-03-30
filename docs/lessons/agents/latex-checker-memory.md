@@ -358,6 +358,41 @@ grep -n 'tag\*{' notes/**/*.tex
 
 ---
 
+## L910: 等变量子量子上同调 术语规范
+
+**日期**: 2026-03-31
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+错误地将 equivariant quantum cohomology 翻译为"等变量量子上同调"，缺少"子"字。
+
+**正确术语**:
+```latex
+% 错误 ❌
+等变量量子上同调
+
+% 正确 ✅
+等变量子量子上同调
+```
+
+**术语体系**:
+| 英文 | 中文 |
+|------|------|
+| equivariant cohomology | 等变量子上同调 |
+| quantum cohomology | 量子上同调 |
+| equivariant quantum cohomology | 等变量子量子上同调 |
+
+**检查命令**:
+```bash
+grep -n "等变量量子上同调" notes/Schubert-Polynomials/chapters/*.tex
+```
+
+**防止措施**:
+- equivariant quantum = 等变量子（不是等变量）
+- 记住：量子 variant 的修饰应该加"子"
+
+---
+
 ## 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
