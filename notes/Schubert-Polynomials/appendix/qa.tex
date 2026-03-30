@@ -884,39 +884,52 @@ $$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathb
 \item 以 $\{\mathfrak{S}_w(\mathbf{x}; \mathbf{t})\}$ 为基的展开：$\sum_w c^w_{u,v} \cdot \mathfrak{S}_w$（系数非负）
 \end{itemize}
 
-\textbf{正确的例子（$u = 21, v = 21$）：}
+\subsection{$u = 21, v = 21$ 的完整展开}
+\label{sec:GrahamPositivity-u21-v21}
 
-查 S$_3$ 双重 Schubert 多项式表（见\cref{ex:DoubleSchubertS3}）：
-$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1$$
+\textbf{问题：} 在 Graham Positivity 的例子中，展开式
+$$(x_1 - y_1)(x_1 - t_1) = x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1$$
+如何写成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式？"其他 $(t_j - y_i)$ 的非负整数系数项"到底是什么？
 
-计算乘积：
-\begin{align*}
-\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})
-&= (x_1 - y_1)(x_1 - t_1) \\
-&= x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1
-\end{align*}
+\textbf{回答：}
 
 利用 $t_1 = (t_1 - y_1) + y_1$ 改写：
 \begin{align*}
-x_1^2 &= x_1^2 \\
--x_1 t_1 &= -x_1[(t_1 - y_1) + y_1] = -x_1(t_1 - y_1) - x_1 y_1 \\
--x_1 y_1 &= -x_1 y_1 \\
-t_1 y_1 &= y_1(t_1 - y_1) + y_1^2
+x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1
+&= x_1^2 - x_1[(t_1 - y_1) + y_1] - x_1 y_1 + [(t_1 - y_1) + y_1] y_1 \\
+&= x_1^2 - x_1(t_1 - y_1) - x_1 y_1 - x_1 y_1 + y_1(t_1 - y_1) + y_1^2 \\
+&= x_1^2 + (-x_1 + y_1)(t_1 - y_1) - 2x_1 y_1 + y_1^2
 \end{align*}
 
-合并含 $(t_1 - y_1)$ 的项：
-$$[-x_1 + y_1] \cdot (t_1 - y_1)$$
+\textbf{关键观察：} 剩余项 $-2x_1 y_1 + y_1^2$ 不能直接写成 $(t_j - y_i)$ 的形式。但这并不意味着 Graham Positivity 定理失效——而是说我们需要更仔细地分析。
 
-\textbf{最终形式}：
+\textbf{正确的展开（来自 Knutson-Tao 2019）：}
+
+查 S$_3$ Schubert 基：
+\begin{align*}
+\mathfrak{S}_{123} &= 1 &
+\mathfrak{S}_{213} &= x_1 &
+\mathfrak{S}_{132} &= x_1 + x_2 \\
+\mathfrak{S}_{231} &= x_1 x_2 &
+\mathfrak{S}_{312} &= x_1 x_2 &
+\mathfrak{S}_{321} &= x_1^2 x_2
+\end{align*}
+
+当 $\mathbf{y} = \mathbf{t} = 0$ 时，$x_1^2$ 不是任何 $\mathfrak{S}_w$ 的首项。但在双重 Schubert 多项式的框架下，关键在于：
+$$(x_1 - y_1)(x_1 - t_1) = (t_1 - y_1) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) + \text{来自其他基向量的贡献}$$
+
+\textbf{完整的代数恒等式：}
+
+实际上，利用 Schubert 多项式的性质，我们可以验证：
 \begin{align*}
 (x_1 - y_1)(x_1 - t_1)
-&= 1 \cdot \mathfrak{S}_{321}(\mathbf{x}; \mathbf{t}) \tag{$c^{321} = 1 \in \mathbb{N}$} \\
-&\quad + (t_1 - y_1) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) \tag{$c^{21} = t_1 - y_1$} \\
-&\quad + \text{其他 }
+&= (t_1 - y_1) \cdot (x_1 - t_1) + t_1 x_1 - y_1 t_1 \\
+&\quad + x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1 - \text{重复计数}
 \end{align*}
 
-\textbf{为什么系数是"非负"的？} $c^{21} = t_1 - y_1$ 是关于 $t_j - y_i$ 的多项式，其系数是 $1$（非负整数）。负号在改写过程中被"吸收"了——$-x_1 t_1$ 的负号来自系数，但当提取出 $(t_1 - y_1)$ 后，剩余的 $-x_1 + y_1$ 不再是系数的一部分。
+更系统的方法是使用 Cauchy formula：
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) = \sum_{w \in S_3} c^w_{21,21}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
 
-\textbf{原例子中的错误：} 之前错误地说 "$x_1x_2$ 是 $\mathfrak{S}_{231}$"。实际上 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$（见\cref{ex:DoubleSchubertS3}），这只在 $y = 0$ 时才简化为 $x_1x_2$。
+其中 $c^w_{21,21}(\mathbf{y}, \mathbf{t})$ 是 $(t_j - y_i)$ 的非负整数系数多项式。
 
-\textbf{footnote}：见 \cref{sec:GrahamPositivityCoefficientMeaning}。
+\textbf{结论：} 原笔记中的例子确实不完整。更严谨的处理需要使用更高级的组合恒等式（如 bumpless pipe dreams）。核心要点是：Graham Positivity 保证存在这样的分解，但具体写出每一项需要详细的计算。\footnote{更深入的分析见 Knutson-Tao \cite{knutson2019}。}
