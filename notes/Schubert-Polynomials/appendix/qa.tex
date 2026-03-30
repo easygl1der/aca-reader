@@ -1182,3 +1182,51 @@ EQLR 系数的正性性质是等变量子量子上同调的核心结构。它连
 \end{itemize}
 
 这三种理论在旗流形的 Schubert calculus 中统一起来。\footnote{问：EQLR 系数是什么？见附录 \cref{sec:EQLR-Definition}。}
+
+\section{双重 Schubert 多项式的除差算子定义}
+\label{sec:DoubleSchubertDividedDifference}
+
+\subsection{问题}
+双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x};\mathbf{y})$ 如何用除差算子定义？
+
+\subsection{回答}
+
+\textbf{定义}（参考 Kirillov-Maeno \cite{KM}）：
+
+$$\boxed{\mathfrak{S}_w(\mathbf{x}, \mathbf{y}) = \partial_{w^{-1}w_0}^{(x)} \prod_{i+j\leq n}(x_i+y_j)}$$
+
+其中：
+\begin{itemize}
+\item $\partial_{w^{-1}w_0}^{(x)}$ 表示只在 $x$ 变量上施加除差算子
+\item 顶部多项式（top polynomial）$\prod_{i+j\leq n}(x_i+y_j)$ 对应最长置换 $w_0$
+\end{itemize}
+
+\textbf{与单重情形的对比}：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+情形 & 定义公式 & 顶部多项式 \\ \hline
+单重 & $\mathfrak{S}_w(x) = \partial_{w^{-1}w_0}(x^\delta)$ & $x^\delta = \prod_{i=1}^{n-1} x_i^{n-i}$ \\
+双重 & $\mathfrak{S}_w(x,y) = \partial_{w^{-1}w_0}^{(x)} \prod_{i+j\leq n}(x_i+y_j)$ & $\prod_{i+j\leq n}(x_i+y_j)$
+\end{tabular}
+\end{center}
+
+\textbf{关键性质}：
+
+\begin{enumerate}
+\item $\partial_i^{(x)}$ 只作用在 $x$ 变量上，$y$ 变量保持不变
+\item 递推关系：$\mathfrak{S}_{ws_i}(x,y) = \partial_i^{(x)} \mathfrak{S}_w(x,y)$（当 $i$ 是 $w$ 的 descent 时）
+\item 对称性：$\mathfrak{S}_w(x,y) = (-1)^{\ell(w)} \mathfrak{S}_{w w_0}(y,x)$
+\item 退化：当 $\mathbf{y} = \mathbf{0}$ 时，$\mathfrak{S}_w(\mathbf{x},\mathbf{0}) = \mathfrak{S}_w(\mathbf{x})$
+\end{enumerate}
+
+\textbf{$S_2$ 的具体例子}：
+
+在 $S_2$ 中，$n=2$，$w_0 = 21$。
+
+\begin{itemize}
+\item $\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1+y_1)(x_1+y_2)(x_2+y_1)$
+\item $\mathfrak{S}_{12}(\mathbf{x},\mathbf{y}) = x_2 + y_1$
+\end{itemize}
+
+\textbf{除差算子的几何意义}：除差算子 $\partial_i$ 在几何上对应于沿第 $i$ 个超平面进行截面，递归地将高维相交问题降维。\footnote{除差算子的几何意义见附录 \cref{sec:GeoToAlgebraTranslation}。}
