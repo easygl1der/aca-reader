@@ -414,3 +414,40 @@ grep -n "\\\\cite\[" notes/Schubert-Polynomials/chapters/chapter*.tex
 1. 判断是通用教训还是写作专属
 2. 更新对应 memory 文件
 3. 在回复中引用教训确认
+
+---
+
+## L710: QA 中提及短定理时内联陈述 + \cref 跳转
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+在 QA 条目中提到"原始 Graham Positivity"和"Refined Graham Positivity"时，只用文字描述条件，没有内联定理陈述也没有 \cref 跳转，导致读者无法快速跳转到原文查看完整定理。
+
+**正确做法**:
+当 QA 中提及的定理陈述较短时，应该：
+1. 内联定理的完整陈述（方便读者直接理解）
+2. 同时用 \cref{<label>} 标注，供读者跳转查看原文样式
+
+```latex
+% 错误 ❌：只描述不引用
+原始 Graham Positivity 要求：u, v 分别是 Grassmannian 排列
+
+% 正确 ✅：内联定理陈述 + \cref 跳转
+\textbf{原始 Graham Positivity（\cref{def:GrahamPositivity}）}：
+设 $u, v \in S_n$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列，则
+$$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]_{i,j \geq 1}$$
+
+\textbf{Refined Graham Positivity（\cref{def:RefinedGraham}）}：
+设 $B^-$ 作用于非奇异簇 $X$，$Y$ 是 $X$ 中的一个 $B^-(w)$-不变的有效闭链。则在 $H_T^*(X)$ 中有
+$$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
+```
+
+**判断标准**:
+- 定理陈述 ≤ 3 行 → 内联 + \cref
+- 定理陈述 > 3 行 → 仅用 \cref 跳转
+
+**防止措施**:
+- 写 QA 条目时，判断提及的定理是否简短
+- 简短定理优先内联，方便读者不跳转也能理解
