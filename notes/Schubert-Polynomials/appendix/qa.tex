@@ -1717,18 +1717,160 @@ $$[Z]_T = \sum_w c[w] x[w]$$
 \textbf{Section 19.4：退化证明（Theorem 19.4.4）}
 \label{sec:AndersonFulton19-4}
 
-\textbf{Proposition 19.4.4}（退化命题）：设 $B$ 是连通可解群在非奇异簇 $X$ 上作用，$T$ 是最大环面。设 $B' \subset B$ 是闭子群，$\chi : T \to \mathbb{C}^*$ 是特征标。假设 $Y \subseteq X$ 是 $B'$-不变的有效闭链，维数为 $k$。则存在典则定义的 $B$-不变有效闭链 $Z_1$ 和 $Z_2$（$\dim Z_1 = k$，$\dim Z_2 = k+1$），使得
-$$[Y]_T = [Z_1]_T + \chi [Z_2]_T$$
-在 $H_T^{2n-2k}X$ 中。\footnote{Proposition 19.4.4 是退化法证明正性的核心引理，见附录 \cref{sec:AndersonFulton19-4}。}
+本节内容来自 Anderson \& Fulton 的《Equivariant Cohomology in Algebraic Geometry》第 19.4 节（pages 371-377）。这是 Graham 退化证明的详细版本，用于证明 Schubert 结构常数的正性。
 
-\textbf{证明思路}：若 $Y$ 已是 $B$-不变，则 $Z_1 = Y$，$Z_2 = 0$。否则，令 $W$ 为 $BY$ 的闭包（维数 $k+1$）。考虑纤维丛 $V = B \times_{B'} Y \to B/B' = \mathbb{A}^1$，并将其紧化为 $\mathbb{P}^1 \times X$。利用 (19.1) 式的类关系 $[∞]_T = [0]_T + \chi$，与 $[V]_T$ 作交，可得到所需的分解。
+\subsection{背景：连通可解群与环面作用}
 
-\textbf{Theorem 19.4.5}：设 $U = U_N \supset U_{N-1} \supset \cdots \supset U_0$ 是 $T$-不变的正规子群链，$\chi_i$ 是 $T$ 在 $\mathfrak{u}_i/\mathfrak{u}_{i-1}$ 上的权。设 $Y$ 是 $B_0$-不变的有效 $k$-闭链。则存在典则定义的 $B$-不变有效闭链 $Z_I$（$\dim Z_I = k + |I|$），使得
-$$[Y]_T = \sum_{I \subseteq \{1,\ldots,N\}} \left(\prod_{i \in I} \chi_i\right) [Z_I]_T$$
+\textbf{基本设定}：
+\begin{itemize}
+\item $B$：复数域 $\mathbb{C}$ 上的连通可解线性代数群
+\item $T \subseteq B$：最大环面（torus）
+\item $X$：复射影簇（complex projective variety）
+\item $T$ 在 $X$ 上作用，只有有限多个固定点
+\end{itemize}
 
-\textbf{Corollary 19.4.7}：对于对角嵌入 $\delta : G/P \hookrightarrow G/P \times G/P$，有
-$$\delta_*(x^{[w]}) = \sum_{[u],[v]} c_{[u][v]}^{[w]} x^{[u]} \times x^{[v]}$$
-其中系数 $c_{[u][v]}^{[w]}$ 是正根的单项式的非负和。\footnote{关于 Theorem 19.4.4 的详细内容见附录 \cref{sec:AndersonFulton19-4}。}
+\textbf{退化证明的核心思想}：将 $B'$-不变的闭链类 $[Y]_T$ 分解为 $B$-不变闭链类的线性组合，系数是特征标的多项式。通过逐次应用这个分解，可以将任意 Schubert 胞腔类的乘积展开系数写成正根的非负多项式。
+
+\subsection{基本例子：$\mathbb{P}^1$ 上的退化}
+
+\textbf{Example 19.4.1}：设 $B$ 通过同态 $B \to \mathrm{GL}_2$ 作用在 $\mathbb{P}^1$ 上：
+\[
+b \mapsto \begin{pmatrix} \chi(b) & \varphi(b) \\ 0 & 1 \end{pmatrix},
+\]
+其中 $\chi: B \to \mathbb{C}^*$ 是特征标，$\varphi: B \to \mathbb{G}_a = \mathbb{C}$ 是满足
+\[
+\varphi(b_1 b_2) = \varphi(b_1) + \chi(b_1)\varphi(b_2)
+\]
+的正则函数。注意对 $t \in T$，有 $\varphi(t) = 0$（因为 $T$ 由半单元素组成）。
+
+此时 $T$ 在 $\mathbb{C}^2$ 上的权为 $\chi$ 和 $0$。我们有：
+\[
+H_T^* \mathbb{P}^1 = \Lambda[\zeta]/(\zeta + \chi)\zeta,
+\]
+其中 $\zeta = c_1^T(\mathcal{O}(1))$。
+
+点 $0 = [1,0]$ 被 $B$ 固定，点 $\infty = [0,1]$ 被 $T$ 固定，且
+\[
+[0]_T = \zeta, \quad [\infty]_T = \zeta + \chi.
+\]
+
+由此得到关键关系（公式 19.1）：
+\begin{equation}
+[\infty]_T = [0]_T + \chi \cdot [\mathbb{P}^1]_T.
+\tag{19.1}
+\end{equation}
+
+\subsection{幂幺根基的设置}
+
+设 $U \subseteq B$ 是幂幺根基（unipotent radical），则 $U$ 是 $B$ 的正规子群，且
+\[
+B = U \cdot T, \quad U \cap T = \{e\}.
+\]
+
+设 $U' \subseteq U$ 是 $B$ 的正规子群，满足 $\dim(U/U') = 1$，因此 $U/U' \cong \mathbb{G}_a$。（由于 $B$ 可解，这样的 $U'$ 总是存在的。）
+
+$T$ 通过共轭作用在 $U$ 上，这给出 $T$ 在 $U/U' \cong \mathbb{A}^1$ 上的一个特征标作用。等价地，如果 $\mathfrak{u} \supset \mathfrak{u}'$ 是对应的李代数，则 $\chi$ 是 $T$ 在 $\mathfrak{u}/\mathfrak{u}'$ 上的权。
+
+设 $\theta: U \to \mathbb{G}_a$ 是任意同态，核为 $U'$。
+
+\subsection{引理 19.4.2 与 19.4.3}
+
+\textbf{Lemma 19.4.2}：上述 $B$ 在 $\mathbb{G}_a$ 上的作用由下式给出：
+\[
+b \cdot z = \theta(u) + \chi(t)z,
+\]
+其中 $b = ut$（$u \in U$, $t \in T$），$z \in \mathbb{G}_a = \mathbb{C}$。
+
+\textbf{Lemma 19.4.3}：设 $\chi: T \to \mathbb{C}^*$ 是特征标，定义 $\tilde{\chi}: B \to \mathbb{C}^*$ 为其在 $B$ 上的唯一扩张（$\tilde{\chi}(ut) = \chi(t)$）。令 $\varphi: B \to \mathbb{C}$ 为 $\varphi(ut) = \theta(u)$。则：
+\begin{enumerate}
+\item $\varphi$ 的零点簇是 $B'$；
+\item 对 $b_1, b_2 \in B$，有 $\varphi(b_1 b_2) = \varphi(b_1) + \tilde{\chi}(b_1)\varphi(b_2)$。
+\end{enumerate}
+因此映射 $b \mapsto \begin{pmatrix} \tilde{\chi}(b) & \varphi(b) \\ 0 & 1 \end{pmatrix}$ 是 $B$ 到 $\mathrm{GL}_2$ 的群同态。
+
+\subsection{Proposition 19.4.4：退化命题（详细证明）}
+
+\textbf{命题}：设 $B$ 在非奇异簇 $X$ 上作用，$T$ 是最大环面。设 $B' \subset B$ 是闭子群，$\chi: T \to \mathbb{C}^*$ 是特征标。假设 $Y \subseteq X$ 是 $B'$-不变的有效闭链，$\dim Y = k$。则存在典则定义的 $B$-不变有效闭链 $Z_1$ 和 $Z_2$（$\dim Z_1 = k$，$\dim Z_2 = k+1$），使得
+\begin{equation}
+[Y]_T = [Z_1]_T + \chi [Z_2]_T
+\tag{19.3}
+\end{equation}
+在 $H_T^{2n-2k}X$ 中。
+
+\textbf{证明}（来自 Anderson \& Fulton, pp. 373-374）：
+
+只需对 $Y$ 是不可约子簇的情形构造。若 $Y$ 已经是 $B$-不变的，则取 $Z_1 = Y$，$Z_2 = 0$ 即得。
+
+否则，令 $W$ 为 $B \cdot Y$ 在 $X$ 中的闭包；这是一个维数为 $k+1$ 的子簇。考虑
+\[
+V = B \times_{B'} Y,
+\]
+具有自然的左 $B$ 作用。这是以 $Y$ 为纤维、$B/B' = \mathbb{A}^1$ 为底空间的纤维丛。
+
+映射 $V \to \mathbb{A}^1 \times X$，$[(b,y)] \mapsto (\varphi(b), b \cdot y)$ 是一个 $B$-等变的闭嵌入，其中 $B$ 在 $\mathbb{A}^1 \times X$ 上对角作用。
+
+利用从两个引理得到的 $B$ 在 $\mathbb{P}^1$ 上的作用，我们有 $B$-等变的紧化 $\mathbb{A}^1 \subset \mathbb{P}^1$。设 $V$ 为 $V$ 在 $\mathbb{P}^1 \times X$ 中的闭包，则 $V$ 是维数为 $k+1$ 的 $B$-不变子簇，通过第二投影 $P^1 \times X \to X$ 映射到 $W \subseteq X$。
+
+利用第一投影 $P^1 \times X \to P^1$ 拉回关系 (19.1)，我们得到
+\begin{equation}
+[\infty \times X]_T = [0 \times X]_T + \chi \cdot [\mathbb{P}^1 \times X]_T
+\tag{19.4}
+\end{equation}
+在 $H_T^2(\mathbb{P}^1 \times X)$ 中。
+
+将两边与 $[V]_T$ 作交：
+\begin{itemize}
+\item 左边：$\infty \times X$ 与 $V$ 在 $\infty \times Y \subseteq V$ 处有scheme-理论上相交。这是因为 $\varphi$ 的零点簇是 $B'$，而 $B'$ 保持 $Y$。
+\item 右边：$V \to \mathbb{P}^1$ 是支配的，所以 $V$ 与 $0 \times X$ 的交是形如 $0 \times Z_1$ 的正维数为 $k$ 的闭链。由于 $V$ 和 $0 \times X$ 都是 $P^1 \times X$ 的 $B$-不变子簇，它们的交也是 $B$-不变的，因此 $Z_1 \subseteq X$ 是一个 $B$-不变的 $k$-闭链。
+\end{itemize}
+
+于是得到
+\[
+[\infty \times Y]_T = [0 \times Z_1]_T + \chi \cdot [V]_T
+\]
+在 $H_T^{2n-2k+2}(\mathbb{P}^1 \times X)$ 中。通过投影 $\mathbb{P}^1 \times X \to X$ 推出
+\[
+[Y]_T = [Z_1]_T + \chi \cdot d[W]_T,
+\]
+其中 $d$ 是映射 $V \to W$ 的次数。故 $Z_1$ 和 $Z_2 = dW$ 即为所求的 $B$-不变有效闭链。$\square$
+
+\subsection{Theorem 19.4.5：链分解}
+
+在相同设置下，假设我们选择了正规子群链
+\[
+U = U_N \supset U_{N-1} \supset \cdots \supset U_0,
+\]
+其中每个 $U_i$ 被 $T$ 正规化，$U_{i-1}$ 在 $U_i$ 中正规，且 $\dim U_i/U_{i-1} = 1$。设 $\chi_i$ 是 $T$ 在李代数 $\mathfrak{u}_i/\mathfrak{u}_{i-1}$ 上的权，记 $B_i = U_i \cdot T$。
+
+\textbf{定理}：设 $Y$ 是 $B_0$-不变的有效 $k$-闭链。则对每个 $I \subseteq \{1,\ldots,N\}$，存在典则定义的 $B$-不变有效闭链 $Z_I$（$\dim Z_I = k + |I|$），使得
+\begin{equation}
+[Y]_T = \sum_{I \subseteq \{1,\ldots,N\}} \left(\prod_{i \in I} \chi_i\right) [Z_I]_T
+\tag{19.5}
+\end{equation}
+在 $H_T^{2n-2k}X$ 中。
+
+\textbf{证明}：对 $N$ 做归纳。$N=0$ 的情形平凡。假设对 $N-1$ 的情形已证。对于 $J \subseteq \{1,\ldots,N-1\}$，我们有非负闭链 $Z_J'$（关于 $B' = U_{N-1} \cdot T$ 不变），满足
+\[
+[Y]_T = \sum_{J \subseteq \{1,\ldots,N-1\}} \left(\prod_{j \in J} \chi_j\right) [Z_J']_T.
+\]
+
+对每个 $Z_J'$ 应用 Proposition 19.4.4，可得
+\[
+[Z_J']_T = [Z_J]_T + \chi_N [Z_{J \cup \{N\}}_T],
+\]
+其中 $Z_J$ 和 $Z_{J \cup \{N\}}$ 是非负的 $B$-不变闭链。代入即得所求。$\square$
+
+\subsection{Corollary 19.4.7：正性推论}
+
+\textbf{推论}：对于对角嵌入 $\delta: G/P \hookrightarrow G/P \times G/P$，有
+\[
+\delta_*(x^{[w]}) = \sum_{[u],[v]} c_{[u][v]}^{[w]} x^{[u]} \times x^{[v]},
+\]
+其中每个系数 $c_{[u][v]}^{[w]}$ 是正根的单项式的非负和。
+
+\textbf{证明思路}：将 Theorem 19.4.5 应用到 $B = (U \times U) \cdot T$ 在 $X \times X$ 上的对角作用。取 $U_0$ 为对角 $U \subseteq U \times U$，$U_N = U \times U$，则链给出分解。由于 $U$ 在 $G/P$ 上只有有限多个轨道，$B$-不变子簇都形如 $V_I \times W_I$，于是系数可写成正根单项式的非负和。特别地，由于 $\mathfrak{u}$ 的权空间都是一维的（权就是正根），这些系数是平方自由的。$\square$
+
+\textbf{参考文献}：Anderson, David, and William Fulton. \emph{Equivariant Cohomology in Algebraic Geometry}. Cambridge University Press, 2023. Section 19.4, pages 371-377.
 
 \section{k-Grassmannian 排列与线性因子乘积的等价性}
 \label{sec:GrassmannianLinearFactor}
