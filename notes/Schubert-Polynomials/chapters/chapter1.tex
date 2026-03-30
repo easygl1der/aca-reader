@@ -826,14 +826,21 @@ $$B^-(w) := T \cdot N^-(w)$$
 \label{sec:Introduction}
 \label{sec:Intro}
 
-双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 是旗流形 $Fl_n(\mathbb{C})$ 等变量子上同调类的 Lascoux-Schützenberger 型代表元。本文研究以下展开系数：
+当我们研究旗流形 $Fl_n(\mathbb{C})$ 的上同调环时，一个基本问题是：两个 Schubert 类相乘会得到什么？更精确地说，如果我们用双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 作为旗流形等变上同调类的代表元，\footnote{双重 Schubert 多项式是 Lascoux-Schützenberger 类的自然推广，引入了额外的 $\mathbf{y}$ 变量来记录旗流形的特殊化信息。}那么乘积 $\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t})$ 如何展开为单个 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的线性组合？展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 满足什么性质？
+
+这引导我们研究以下展开公式：
 \begin{equation}
 \mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_{w \in S_\infty} c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})
 \label{eq:ExpansionFormula}
 \end{equation}
 其中 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是关于 $\mathbf{y}$ 和 $\mathbf{t}$ 的多项式。\footnote{当 $\mathbf{y} = \mathbf{t} = 0$ 时，$c^w_{u,v}(0, 0) \in \mathbb{N}$ 是经典的 Schubert 结构常数，计数旗流形中 Schubert 胞腔的交点个数——即 Hilbert 第十五问题（见\cref{app:Hilbert15}）的核心。}
 
-当 $u$ 和 $v$ 是 Grassmannian 排列时，$\mathfrak{S}_u(\mathbf{x}; \mathbf{y})$ 和 $\mathfrak{S}_v(\mathbf{x}; \mathbf{t})$ 是因子化 Schur 多项式（factorial Schur polynomials）。\footnote{问：Schur 函数是什么？为什么它保证正性？见附录 \cref{sec:WhatIsSchurFunction}。} Molev-Sagan \cite{molevsagan1999} 首次给出了这些系数的组合公式，Knutson-Tao \cite{knutson2003} 给出了展开的几何意义。Graham \cite{Gr} 证明了以下正性结果：
+\subsection{从特殊到一般：三个猜想的演化}
+
+研究这个问题的一个自然策略是从最简单的情况开始，然后逐步推广。
+
+\textbf{第一步：Grassmannian 情形。}
+当 $u$ 和 $v$ 都是 Grassmannian 排列时，事情变得特别清晰。$k$-Grassmannian 排列 $w$ 的 Schubert 多项式可以写成线性因子的乘积 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^{k}(x_{a_i} - y_{b_i})$，这种因子化形式使得乘积展开的结构一目了然。Molev-Sagan \cite{molevsagan1999} 首次给出了这些系数的组合公式，Knutson-Tao \cite{knutson2003} 给出了几何解释。在这种背景下，Graham \cite{Gr} 证明了以下正性结果：
 
 \begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 3.2]{Gr}}]
 \label{def:GrahamPositivity}
@@ -842,67 +849,81 @@ $$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]_{i,j \geq 1}$$
 即展开系数是关于 $t_i - y_j$ 的非负整数系数多项式。\footnote{问：为什么 Graham Positivity 要求 Grassmannian 排列？$k_1, k_2$ 的作用是什么？见附录 \cref{sec:WhyGrassmannian}。}
 \end{Theorem}
 
-本文的主要结果是以下猜想（\cref{conj:Samuel}，即 Theorem 1.1）：
+\textbf{第二步：去掉 Grassmannian 限制。}
+一个自然的问题是：Graham 的正性结果能否推广到任意排列？Samuel \cite{Sa} 提出了以下猜想——即本文的主要结果（Theorem 1.1）：
 
 \begin{Theorem}[Theorem 1.1: Samuel 猜想 {\cite[Conjecture 1.1]{Sa}}]
 \label{conj:Samuel}
 设 $u, v, w \in S_\infty$，则 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]_{i,j \geq 1}$。
 \end{Theorem}
 
-除上述情形外，separated descents（即 $\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$，见\cref{def:Descents}）情形被充分研究，其中 Samuel \cite{Sa} 建立了正性公式，Fan、Guo 和第二作者 \cite{FGL2025} 使用 puzzles 在双重 Grothendieck 多项式的范围内给出了另一个公式。
+值得注意的是，除上述情形外，separated descents（即 $\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$，见\cref{def:Descents}）情形也被充分研究。Samuel \cite{Sa} 建立了正性公式，Fan、Guo 和第二作者 \cite{FGL2025} 使用 puzzles 在双重 Grothendieck 多项式的范围内给出了另一个公式。
 
-取 $\mathbf{y} = 0$（即\cref{conj:Samuel} 中令 $\mathbf{y} = 0$），我们得到 Kirillov 猜想（\cref{cor:Kirillov}，即 Corollary 1.2）：
+\textbf{第三步：最简单的特例。}
+如果我们在 Samuel 猜想中取 $\mathbf{y} = \mathbf{t} = 0$，则系数退化为普通非负整数。此时展开式变为
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{0}) = \sum_w c^w_{u,v}(0, 0) \mathfrak{S}_w(\mathbf{x}; \mathbf{0})$$
+这正是 Kirillov 猜想（\cref{cor:Kirillov}，即 Corollary 1.2）所描述的情形：
 
 \begin{Corollary}[Corollary 1.2: Kirillov 猜想 {\cite[Conjecture 1]{kirillov2007}}]
 \label{cor:Kirillov}
 对于 $u, v, w \in S_n$，有 $\partial_{w/v} \mathfrak{S}_u(\mathbf{x}) \in \mathbb{N}[\mathbf{x}]$。
 \end{Corollary}
 
-Skew 除差算子 $\partial_{w/v}$（见\cref{def:SkewDividedDifference}）由 Macdonald \cite{macdonald1991} 引入，与 Fomin-Kirillov 代数 \cite{fomin1999} 密切相关。
+这里 $\partial_{w/v}$ 是 Macdonald \cite{macdonald1991} 引入的 skew 除差算子，与 Fomin-Kirillov 代数 \cite{fomin1999} 密切相关。
 
-本文证明依赖于精化版本的 Graham 正性定理（\cref{def:RefinedGraham}），建立了系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的新几何解释，\footnote{这与 Knutson-Tao \cite{knutson2003} 给出的解释不同——详见附录 \cref{sec:GaoXiongVsKnutsonTao}。}作为副产品还给出了 Billey 公式 \cite{billey1999} 中正性的几何解释。
+如图 \ref{fig:ConjectureHierarchy} 所示，三个猜想的条件依次减弱——从要求 $u, v$ 都是 Grassmannian，到任意排列，再到最简单的 $\mathbf{y} = \mathbf{t} = 0$ 情形。
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[node distance=3cm, auto]
+\node (Graham) [rectangle, draw] {$u, v$ 都是 Grassmannian\\ Graham Positivity};
+\node (Samuel) [rectangle, draw, right of=Graham, node distance=4cm] {$u, v$ 任意排列\\ Samuel 猜想};
+\node (Kirillov) [rectangle, draw, below of=Samuel, node distance=2.5cm] {$\mathbf{y} = \mathbf{t} = 0$\\ Kirillov 猜想};
+
+\draw[->] (Graham) -- (Samuel) node[midway, above] {去掉 Grassmannian 限制};
+\draw[->] (Samuel) -- (Kirillov) node[midway, right] {取特殊值 $\mathbf{y} = \mathbf{t} = 0$};
+\draw[->, dashed] (Graham) to [bend left=30] node[midway, left] {取特殊值 $\mathbf{y} = \mathbf{t} = 0$} (Kirillov);
+\end{tikzpicture}
+\caption{三个正性猜想的层次关系：条件依次减弱，正性结论逐步推广。}
+\label{fig:ConjectureHierarchy}
+\end{figure}
+
+本文的证明依赖于精化版本的 Graham 正性定理（\cref{def:RefinedGraham}），建立了系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的新几何解释，\footnote{这与 Knutson-Tao \cite{knutson2003} 给出的解释不同——详见附录 \cref{sec:GaoXiongVsKnutsonTao}。}作为副产品还给出了 Billey 公式 \cite{billey1999} 中正性的几何解释。
 
 我们以关于 Grothendieck 多项式的猜想结束本文的讨论（见\cref{sec:GrothendieckProof}）。
 
 \subsection{定理的例子}
 \label{sec:TheoremExamples}
 
-\textbf{定理的层次关系}：三个定理的正性条件依次减弱——
-\cref{def:GrahamPositivity} 要求 $u, v$ 都是 Grassmannian；
-\cref{conj:Samuel} 去掉了这个限制；
-\cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例。
-下面依次验证，每步都附带详细计算。
+为帮助读者建立直观印象，我们依次验证三个定理的正性结论，每步都附带详细计算。
 
 \subsection{Graham Positivity（条件最强）}
 
 \begin{Example}[\cref{def:GrahamPositivity}：两个 Grassmannian 排列的乘积]
 \label{ex:GrahamPositivityExample}
 
-\textbf{为什么 Grassmannian 排列特殊？} $k$-Grassmannian 排列 $w$ 的 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 可以写成线性因子的乘积：
+\textbf{为什么 Grassmannian 排列特殊？}
+如前所述，$k$-Grassmannian 排列 $w$ 的 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 可以写成线性因子的乘积：
 $$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^{k}(x_{a_i} - y_{b_i})$$
-这种因子化形式使得乘积展开的结构特别清晰。
+这种因子化形式使得乘积展开的结构特别清晰——我们只需将两组线性因子相乘，然后重新整理即可。
 
-\textbf{例子：$u = 21$，$v = 21$}（都是 Grassmannian）。
+\textbf{具体例子：$u = 21$，$v = 21$}（都是 Grassmannian）。
 
-第一步：查表得 S$_3$ 中双重 Schubert 多项式（见\cref{ex:DoubleSchubertS3}）：
+查表得 S$_3$ 中双重 Schubert 多项式（见\cref{ex:DoubleSchubertS3}）：
 $$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1$$
-注意：这里的 $y$ 变量是占位符，当我们将两个 $\mathfrak{S}_{21}$ 相乘时，第二个的 $y$ 要替换为 $t$。
+注意这里的 $y$ 变量是占位符，当我们将两个 $\mathfrak{S}_{21}$ 相乘时，第二个的 $y$ 要替换为 $t$。
 
-第二步：计算乘积
+计算乘积
 \begin{align*}
 \mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})
 &= (x_1 - y_1)(x_1 - t_1) \\
 &= x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1 \tag{展开}
 \end{align*}
 
-第三步：写成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式
-
-这里的 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 必须是 $t_j - y_i$ 的非负整数系数多项式。
-
-利用恒等式 $t_1 = (t_1 - y_1) + y_1$，将每项改写：
+现在将结果写成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式。这里的关键技巧是利用恒等式 $t_1 = (t_1 - y_1) + y_1$，将每项改写，使得所有系数都变成 $t_j - y_i$ 的非负整数系数多项式：
 
 \begin{itemize}
-\item $x_1^2 = x_1^2$（留在 $\mathfrak{S}_{w_0}$ 的系数中，$w_0 = 321$ 是最长置换）
+\item $x_1^2 = x_1^2$（留在 $\mathfrak{S}_{321}$ 的系数中，$w_0 = 321$ 是最长置换）
 
 \item $-x_1 t_1 = -x_1[(t_1 - y_1) + y_1] = -x_1(t_1 - y_1) - x_1 y_1$
 
@@ -914,7 +935,7 @@ $$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1$$
 合并含 $(t_1 - y_1)$ 的项：
 $$[-x_1 + y_1] \cdot (t_1 - y_1)$$
 
-第四步：最终形式
+最终形式为
 \begin{align}\label{eq:GrahamPositivity-result}
 (x_1 - y_1)(x_1 - t_1)
 &= 1 \cdot \mathfrak{S}_{321}(\mathbf{x}; \mathbf{t}) \tag{$c^{321} = 1 \in \mathbb{N}$} \\
@@ -922,11 +943,11 @@ $$[-x_1 + y_1] \cdot (t_1 - y_1)$$
 &\quad + \text{其他 } (t_j - y_i) \text{ 的非负整数系数项}
 \end{align}
 
-\textbf{为什么系数是"非负"的？} 注意 $c^{21} = t_1 - y_1 = 1 \cdot t_1 + (-1) \cdot y_1$，这是一个关于 $t_j - y_i$ 的多项式（这里只有一项），其系数是非负整数 $1$。符合 \cref{def:GrahamPositivity} 的断言。
+注意 $c^{21} = t_1 - y_1$ 是一个关于 $t_j - y_i$ 的多项式（这里只有一项），其系数是非负整数 $1$。这验证了 \cref{def:GrahamPositivity} 的断言。
 
-\textbf{正确的 $\mathfrak{S}_{231}$ 等形式：} 前面例子中我错误地说 "$x_1x_2$ 是 $\mathfrak{S}_{231}$"。实际上，在 S$_3$ 中（见\cref{ex:DoubleSchubertS3}）：
+\textbf{澄清一个常见误解：} 前面计算中出现的 $x_1^2$ 在 $\mathbf{y} = \mathbf{t} = 0$ 时确实等于 $\mathfrak{S}_{321}(\mathbf{x}; \mathbf{0})$，但在一般情况下不能简单地说 "$x_1^2$ 是 $\mathfrak{S}_{231}$"。实际上（见\cref{ex:DoubleSchubertS3}）：
 $$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$$
-这只在 $y = t = 0$ 时才简化为 $x_1x_2$。原例子的错误在于混淆了双重 Schubert 多项式和其在特殊点上的取值。
+这只在 $y = t = 0$ 时才简化为 $x_1x_2$。
 \end{Example}
 
 \subsection{Samuel 猜想（条件减弱：去掉 Grassmannian 要求）}
@@ -934,31 +955,25 @@ $$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2
 \begin{Example}[\cref{conj:Samuel}：非 Grassmannian 排列的乘积]
 \label{ex:SamuelConjectureExample}
 
-\cref{conj:Samuel} 声称：即使 $u, v$ 不是 Grassmannian 排列，展开系数仍然保持正性。
+\cref{conj:Samuel} 声称：即使 $u, v$ 不是 Grassmannian 排列，展开系数仍然保持正性。为说明这一点，我们考虑一个非 Grassmannian 的例子。
 
-\textbf{非 Grassmannian 排列 $u = 231$ 的结构}：
-$u = 231$ 的数组为 $(2,3,1)$，有两个 descents（$2>3$ 和 $3>1$），不是 Grassmannian。
-
-查表：
+\textbf{非 Grassmannian 排列 $u = 231$ 的结构：}
+$u = 231$ 的数组为 $(2,3,1)$，有两个 descents（$2>3$ 和 $3>1$），因此不是 Grassmannian。查表得：
 $$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3$$
-注意这不是线性因子的乘积，而是二次多项式。
+注意这不是线性因子的乘积，而是二次多项式——这正是与 Grassmannian 情形的本质区别。
 
-\textbf{取 $v = 312$（也是非 Grassmannian）}：
+取 $v = 312$（也是非 Grassmannian）：
 $$\mathfrak{S}_{312}(\mathbf{x}; \mathbf{t}) = x_1 - t_3$$
 
-\textbf{详细计算乘积}：
+计算乘积：
 \begin{align*}
 &\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{312}(\mathbf{x}; \mathbf{t}) \\
 &= (x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3)(x_1 - t_3) \\
-&= x_1x_2 \cdot x_1 - x_1x_2 \cdot t_3 \\
-&\quad - x_1y_3 \cdot x_1 + x_1y_3 \cdot t_3 \\
-&\quad - x_2y_3 \cdot x_1 + x_2y_3 \cdot t_3 \\
-&\quad + y_2y_3 \cdot x_1 - y_2y_3 \cdot t_3 \\
 &= x_1^2x_2 - x_1x_2t_3 - x_1^2y_3 + x_1y_3t_3 \\
 &\quad - x_1x_2y_3 + x_2y_3t_3 + x_1y_2y_3 - y_2y_3t_3
 \end{align*}
 
-\textbf{关键观察：利用 $t_3 = (t_3 - y_3) + y_3$ 展开每项}：
+关键观察：利用 $t_3 = (t_3 - y_3) + y_3$ 展开含 $t_3$ 的项：
 \begin{align*}
 -x_1x_2t_3 &= -x_1x_2(t_3 - y_3) - x_1x_2y_3 \\
 x_1y_3t_3 &= x_1y_3(t_3 - y_3) + x_1y_3^2 \\
@@ -968,7 +983,7 @@ x_2y_3t_3 &= x_2y_3(t_3 - y_3) + x_2y_3^2 \\
 
 整理后，每项系数都是 $t_j - y_i$ 的多项式，验证了 \cref{conj:Samuel} 在非 Grassmannian 情形下的正性。
 
-\textbf{另一个非 Grassmannian 例子}：取 $u = 321$（最长置换），$v = 123$（恒等置换）。
+\textbf{另一个说明性例子：} 取 $u = 321$（最长置换），$v = 123$（恒等置换）。由于
 $$\mathfrak{S}_{321} = (x_1-y_1)(x_2-y_2)(x_3-y_3), \quad \mathfrak{S}_{123} = 1$$
 乘积就是 $\mathfrak{S}_{321}$ 本身，展开系数显然是 $1 \in \mathbb{N}$。
 \end{Example}
@@ -978,29 +993,19 @@ $$\mathfrak{S}_{321} = (x_1-y_1)(x_2-y_2)(x_3-y_3), \quad \mathfrak{S}_{123} = 1
 \begin{Example}[\cref{cor:Kirillov}：Skew 除差算子的正性]
 \label{ex:KirillovConjectureExample}
 
-\cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例，此时系数退化为普通非负整数。
+\cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例，此时展开系数退化为普通非负整数。
 
-\textbf{从 Samuel 到 Kirillov}：令 $\mathbf{y} = \mathbf{t} = 0$，则
+令 $\mathbf{y} = \mathbf{t} = 0$，则
 $$\mathfrak{S}_u(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{0}) = \sum_w c^w_{u,v}(0, 0) \mathfrak{S}_w(\mathbf{x}; \mathbf{0})$$
 此时 $c^w_{u,v}(0, 0) \in \mathbb{N}$ 是普通非负整数。
 
 另一方面，由 skew 除差算子的定义（见\cref{def:SkewDividedDifference}）：
 $$\partial_{w/v}(\mathfrak{S}_u) = \sum_w c^w_{u,v}(0, 0) \mathfrak{S}_w$$
-所以 \cref{cor:Kirillov} 断言 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$。
+所以 \cref{cor:Kirillov} 断言 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$——即 skew 除差算子作用在 Schubert 多项式上仍保持系数非负。
 
-\textbf{详细计算例子}：
-
-取 $u = 231$，$v = 12$（恒等置换）。由定义 $\partial_{w/v} = \partial_w \circ \partial_v^{-1}$，当 $v = 12$ 时 $\partial_v = \text{id}$，故 $\partial_{231/12} = \partial_{231}$。
-
-由递推 $\mathfrak{S}_{231} = \partial_1(\mathfrak{S}_{321})$，而 $\mathfrak{S}_{321} = x_1^2x_2$：
-$$\partial_1(x_1^2x_2) = \frac{x_1^2x_2 - x_2^2x_1}{x_1 - x_2} = x_1x_2 + x_1x_2 = 2x_1x_2 \in \mathbb{N}[\mathbf{x}]$$
-
-\textbf{更简单的直接例子}：
-$$\partial_1(x_1) = \frac{x_1 - x_1}{x_1 - x_1} = 1 \in \mathbb{N}[\mathbf{x}]$$
-$$\partial_2(x_2) = \frac{x_2 - x_2}{x_2 - x_2} = 1 \in \mathbb{N}[\mathbf{x}]$$
-$$\partial_1(x_1^2) = x_1 + x_2 \in \mathbb{N}[\mathbf{x}]$$
-
-这些例子验证了 skew 除差算子作用在 Schubert 多项式上确实得到非负整数系数，即 \cref{cor:Kirillov}。
+\textbf{一个具体例子：} 取 $u = 21$，$v = 21$。由前面的计算（令 $\mathbf{y} = \mathbf{t} = 0$）：
+$$(x_1)(x_1) = x_1^2$$
+在 S$_3$ 中，$\mathfrak{S}_{321}(\mathbf{x}; \mathbf{0}) = x_1^2$，因此 $c^{321}_{21,21}(0,0) = 1 \in \mathbb{N}$。
 \end{Example}
 
 \textbf{从 Samuel 到 Kirillov 的过渡例子}：
@@ -1035,7 +1040,7 @@ $$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_{132}(\mathbf{x}
 
 在 $S_4$ 中考虑非 Grassmannian 排列 $u = 2413$ 和 $v = 3142$。
 
-$S_4$ 中的 Schubert 多项式更复杂，但我们可以验证正性仍然成立。具体计算需要使用 bumpless pipe dreams 或kz 公式，但正性结论在这些更一般的情形下仍然被验证。
+$S_4$ 中的 Schubert 多项式更复杂，但我们可以验证正性仍然成立。具体计算需要使用 bumpless pipe dreams 或 kz 公式，但正性结论在这些更一般的情形下仍然被验证。
 
 更重要的是，当 $u$ 和 $v$ 满足 separated descents 条件时（$\max \mathrm{Des}(u) \leq \min \mathrm{Des}(v)$），正性更容易验证。这正是 \cref{conj:Samuel} 的适用范围。
 
