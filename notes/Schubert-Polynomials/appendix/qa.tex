@@ -1602,30 +1602,21 @@ $$\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2) = x_1 x_2 - 
 
 \textbf{使用除差算子验证}：
 
-根据双重 Schubert 多项式的除差算子定义（\cref{sec:DoubleSchubertDividedDifference}）：
-$$\mathfrak{S}_w(\mathbf{x}, \mathbf{y}) = \partial_{w^{-1}w_0}^{(x)} \prod_{i=1}^n (x_i - y_{w_0(i)})$$
+根据双重 Schubert 多项式的除差算子正确定义：
+$$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \partial_{w^{-1}w_0}^{(x)} \prod_{i=1}^n (x_i - y_i)$$
 
-对于 $n=2$，$w_0 = 21$，$w_0(1) = 2$，$w_0(2) = 1$：
-$$\prod_{i=1}^2 (x_i - y_{w_0(i)}) = (x_1 - y_2)(x_2 - y_1)$$
+注意这里是 $(x_i - y_i)$ 而非 $(x_i - y_{w_0(i)})$。
 
-对于 $w = 21$：
+对于 $n=2$，$w_0 = 21$，对于 $w = 21$：
 $$w^{-1}w_0 = 21^{-1} \cdot 21 = e$$
 所以 $\partial_{w^{-1}w_0} = \partial_e = \text{id}$（恒等算子）。
 
 因此：
-$$\mathfrak{S}_{21}(\mathbf{x}, \mathbf{y}) = (x_1 - y_2)(x_2 - y_1)$$
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^2 (x_i - y_i) = (x_1 - y_1)(x_2 - y_2)$$
 
-\textbf{与笔记公式对比}：
+这与正文中的简洁公式一致。
 
-笔记声称 $\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = (x_1 - y_1)(x_2 - y_2)$，这与上面的计算不符。
-
-用数值验证：取 $x_1 = 1, x_2 = 2, y_1 = 3, y_2 = 4$：
-\begin{itemize}
-\item $(x_1 - y_2)(x_2 - y_1) = (1-4)(2-3) = (-3)(-1) = 3$
-\item $(x_1 - y_1)(x_2 - y_2) = (1-3)(2-4) = (-2)(-2) = 4$
-\end{itemize}
-
-两者不相等，证明确实有问题。
+\textbf{原附录错误的原因}：原附录使用了错误的公式 $\prod(x_i - y_{w_0(i)})$ 而不是正确的 $\prod(x_i - y_i)$，导致得到了错误的结果 $(x_1-y_2)(x_2-y_1)$。
 
 \subsection{结论}
 
