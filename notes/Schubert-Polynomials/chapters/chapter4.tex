@@ -224,7 +224,34 @@ $$[F(V_i)]_T = \sum_j f_j^i [Y(u_j) \times Y(v_j)]_T.$$
 $$(\pi_{X \times X})_*^T\left([X(u) \times X(v)]_T \cdot [Y(u_j) \times Y(v_j)]_T\right) = \delta_{u,u_j} \cdot \delta_{v,v_j},$$
 其中 $\delta$ 为 Kronecker $\delta$。
 
-\textbf{结论}：整个表达式是关于 $x_i$ 的非负整数线性组合，因为每一步都只涉及非负多项式 $f_j^i$ 和非负整数 $a_i$ 的乘积与求和。这正是 Theorem \ref{th:EQCPositivity} 所要证明的。
+\textbf{结论}：整个表达式是关于 $x_i$ 的非负整数线性组合，因为每一步都只涉及：
+\begin{itemize}
+\item 非负整数 $a_i$（映射次数）；
+\item 非负多项式 $f_j^i$（来自 Graham positivity）；
+\item Kronecker $\delta$（非负整数）。
+\end{itemize}
+因此 $c_{u,v}^{w,d} \in \mathbb{Z}[x_1, \ldots, x_r]$ 是非负系数多项式，这正是 Theorem \ref{th:EQCPositivity} 所要证明的。
+
+\subsection{证明的整体结构}
+
+让我们用流程图总结整个归约过程：
+
+\begin{center}
+\begin{tikzpicture}[node distance=2.5cm, auto]
+\node (EQLR) at (0,0) {$c_{u,v}^{w,d}$};
+\node (M) at (0,-1.5) {$\overline{\mathcal{M}}_{0,3}(X,d)$};
+\node (F) at (0,-3) {$F = (ev_1, ev_2)$};
+\node (XX) at (0,-4.5) {$X \times X$};
+\node (Graham) at (0,-6) {$[F(V_i)]_T = \sum_j f_j^i [Y(u_j) \times Y(v_j)]_T$};
+
+\draw[->] (EQLR) -- (M) node[midway, right] {$\pi_*^T$};
+\draw[->] (M) -- (F) node[midway, right] {$F_*^T$};
+\draw[->] (F) -- (XX);
+\draw[->] (XX) -- (Graham) node[midway, right] {Graham positivity};
+\end{tikzpicture}
+\end{center}
+
+\textbf{关键洞察}：量子上同调（quantum cohomology）中的曲线计数问题可以通过投影公式归约为 $X \times X$ 上的经典问题。这与 \cref{chap:TriplePositivity} 中三重 Schubert positivity 的证明策略形成了呼应——两者都使用了投影公式作为核心工具，将复杂几何对象分解为已知的 Schubert 基底的组合。
 
 \section{与三重 Schubert Positivity 的联系}
 \label{sec:ConnectionToTripleCh4}
