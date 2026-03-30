@@ -1454,6 +1454,15 @@ $$c_i = \#\{j > i : w_0(j) < w_0(i)\} = n-i$$
 因此 $\mathfrak{S}_{w_0}(\mathbf{x}) = \prod_{i=1}^{n-1} x_i^{n-i}$。
 \end{enumerate}
 
+\textbf{具体例子（$n=2$）}：
+
+对于 $S_2$，$w_0 = 21$：
+\begin{itemize}
+\item $i=1$：$c_1 = \#\{j > 1 : w_0(j) < w_0(1)\} = \#\{2 : 1 < 2\} = 1$
+\end{itemize}
+故 $\mathfrak{S}_{21}(\mathbf{x}) = x_1^1 = x_1$。
+
+\bigskip
 \textbf{具体例子（$n=3$）}：
 
 对于 $S_3$，$w_0 = 321$：
@@ -1463,7 +1472,28 @@ $$c_i = \#\{j > i : w_0(j) < w_0(i)\} = n-i$$
 \end{itemize}
 故 $\mathfrak{S}_{321}(\mathbf{x}) = x_1^2 x_2^1 = x_1^2 x_2$。
 
-\textbf{pipe dream（管道路径）组合解释}：在 bumpless pipe dreams 模型中，$w_0$ 对应最"拥挤"的管道图，所有管道都必须尽可能向右拐弯，权重乘积恰好是 $\prod_{i=1}^{n-1} x_i^{n-i}$。
+\bigskip
+\textbf{具体例子（$n=4$）}：
+
+对于 $S_4$，$w_0 = 4321$：
+\begin{itemize}
+\item $i=1$：$c_1 = \#\{j > 1 : w_0(j) < w_0(1)\} = \#\{2,3,4 : 3,2,1 < 4\} = 3$
+\item $i=2$：$c_2 = \#\{j > 2 : w_0(j) < w_0(2)\} = \#\{3,4 : 2,1 < 3\} = 2$
+\item $i=3$：$c_3 = \#\{j > 3 : w_0(j) < w_0(3)\} = \#\{4 : 1 < 2\} = 1$
+\end{itemize}
+故 $\mathfrak{S}_{4321}(\mathbf{x}) = x_1^3 x_2^2 x_3^1$。
+
+\bigskip
+\textbf{对比：非最长置换的例子}：
+
+以 $w = 312 \in S_3$ 为例，其 code 为：
+\begin{itemize}
+\item $i=1$：$c_1 = \#\{j > 1 : 312(j) < 312(1)\} = \#\{2,3 : 1,2 < 3\} = 0$
+\item $i=2$：$c_2 = \#\{j > 2 : 312(j) < 312(2)\} = \#\{3 : 2 < 1\} = 0$
+\end{itemize}
+对应首项 $x_1^0 x_2^0 = 1$。实际计算得 $\mathfrak{S}_{312}(\mathbf{x}) = x_1 + x_2$，首项是 $x_1$（对应 Grassmannian 置换的分式）。
+
+\textbf{规律总结}：code 向量 $(c_1, \ldots, c_{n-1})$ 满足 $0 \leq c_i \leq n-i$，且 $w_0$ 对应最大 code $(n-1, n-2, \ldots, 1)$。
 
 \section{Humphreys Theorem 13.3 的内容}
 \label{sec:HumphreysThm13}
