@@ -16,6 +16,7 @@
 | L905 | theorem 环境 \\begin/\\end 格式检查 | 1 |
 | L906 | Overfull Hbox 排版问题检查 | 1 |
 | L907 | 表格统一用三线表格式，禁止 resizebox | 1 |
+| L908 | 中文引号规范检查 | 1 |
 
 ---
 
