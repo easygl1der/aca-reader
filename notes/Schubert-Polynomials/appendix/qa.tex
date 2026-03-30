@@ -1465,6 +1465,59 @@ $$c_i = \#\{j > i : w_0(j) < w_0(i)\} = n-i$$
 
 \textbf{_pipe dream_ 组合解释}：在 bumpless pipe dreams 模型中，$w_0$ 对应最"拥挤"的管道图，所有管道都必须尽可能向右拐弯，权重乘积恰好是 $\prod_{i=1}^{n-1} x_i^{n-i}$。
 
+\section{Humphreys Theorem 13.3 的内容}
+\label{sec:HumphreysThm13}
+
+\subsection{问题}
+在引理 2.2 的证明中，引用了 Humphreys \cite[Theorems 13.1 and 13.3]{humphreys1975} 来证明 $N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。Theorem 13.3 究竟说了什么？
+
+\subsection{回答}
+
+\textbf{定理内容（Humphreys, \textit{Linear Algebraic Groups}, Theorem 13.3）}：
+
+设 $G$ 为连通线性代数群，$N$ 为 $G$ 的闭正规子群。则：
+
+\begin{enumerate}
+\item 若 $N$ 是\textbf{交换的}（commutative），则 $N$ 的李代数 $\mathfrak{n}$ 是 $G$ 的李代数 $\mathfrak{g}$ 的\textbf{交换理想}。
+
+\item 特别地，当 $N$ 是连通的交换正规子群时，$N$ 位于 $G$ 的幂幺根基或中心中。
+\end{enumerate}
+
+\textbf{在引理 2.2 证明中的应用}：
+
+在 Gao-Xiong 的论文中，我们需要证明：当 $ws_i > w$ 时，$N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。
+
+通过李代数计算，我们已经验证了 $\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想（通过检查所有李括号 $[F_\alpha, F_\beta]$ 是否仍在 $\mathfrak{n}^-(ws_i)$ 中）。
+
+此时，$N^-(ws_i)$ 和 $N^-(w)$ 都是连通交换正规子群（因为它们都是幂幺群的闭子群）。因此，Humphreys Theorem 13.3 保证了 $\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想这一事实可以提升到群层面——$N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。
+
+\textbf{关键逻辑链条}：
+
+$$\mathfrak{n}^-(ws_i) \subset \mathfrak{n}^-(w) \text{ 且是理想} \xrightarrow{\text{Thm 13.3}} N^-(ws_i) \subset N^-(w) \text{ 且是正规子群}$$
+
+\textbf{references.bib 中的引用}：
+
+\begin{verbatim}
+@book{humphreys1975,
+  author = {Humphreys, James E.},
+  title = {Linear Algebraic Groups},
+  year = {1975},
+  publisher = {Springer-Verlag}
+}
+\end{verbatim}
+
+这是代数群理论中的经典参考文献，Theorem 13.3 位于第 13 章（关于幂幺群的结构）。
+
+\subsection{Theorem 13.1 与 Theorem 13.3 的区别}
+
+\begin{itemize}
+\item \textbf{Theorem 13.1}：证明了 $N^-(ws_i)$ 是 $N^-(w)$ 的\textbf{闭子群}（closed subgroup）。
+
+\item \textbf{Theorem 13.3}：在 13.1 的基础上，当 $N^-(ws_i)$ 是交换正规子群时，它不仅是闭子群，还是\textbf{正规子群}（normal subgroup）。
+\end{itemize}
+
+两者结合使用，是因为在代数群中，从李代数的理想性质提升到群的正规子群性质需要额外的交换性条件。\footnote{问：Humphreys Theorem 13.3 的具体内容是什么？见附录 \cref{sec:HumphreysThm13}。}
+
 \section{$S_{21}(x; y)$ 的计算问题}
 \label{sec:S21Calculation}
 
