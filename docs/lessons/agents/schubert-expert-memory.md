@@ -168,3 +168,45 @@ schubert-expert-3 将 $I(\tau) = \{y_j - t_i\}$ 误认为是置换 $\tau$ 的普
 **防止措施**:
 - 任何核心公式先查原文
 - 笔记引用 ≠ 原创，发现存疑立即核实
+
+---
+
+## L505: Schubert 笔记排版——长公式必须拆解
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+在 qa.tex 中，一个涉及 Schubert 类相交的链式表达公式太长（87.9pt overfull）：
+```latex
+$$\overline{B^-uB/B} \cap \overline{B^-vB/B} \xrightarrow{\text{横截性}} \text{良定义的交点数} \xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w$$
+```
+
+**正确做法**:
+```latex
+\begin{align}
+\overline{B^-uB/B} \cap \overline{B^-vB/B}
+&\xrightarrow{\text{横截性}} \text{良定义的交点数} \label{eq:geo-to-integer} \\
+&\xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \label{eq:integer-to-cohomology} \\
+&\xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w \label{eq:cohomology-to-polynomial}
+\end{align}
+```
+
+**Schubert 笔记排版高危模式**:
+1. 涉及 Schubert 细胞闭包 $\overline{B^-wB/B}$ 的相交表达式
+2. 涉及 $\xrightarrow{\text{...}}$ 链式翻译
+3. 涉及 $\sum_w$ 多重求和
+
+**检查命令**:
+```bash
+# 编译后立即检查 overfull hbox
+grep -i "overfull\|hbox" schubert-positivity-notes.log
+```
+
+**修复记录**:
+- 87.9pt too wide (line 1030) → 用 align 拆解为 3 行 ✅
+
+**防止措施**:
+- 写完长公式后立即编译检查
+- 涉及 Schubert 类的复杂表达式优先用 align 拆解
+
