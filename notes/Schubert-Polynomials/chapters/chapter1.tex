@@ -879,15 +879,47 @@ $$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
 &= x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2 \tag{展开}
 \end{align*}
 
-第三步：将每项写成 $t_j - y_i$ 的形式
+第三步：将每项\textbf{配凑}成 $t_j - y_i$ 的形式
+
+为什么要这样做？因为 \textbf{Graham Positivity 断言}的表述是：
+\begin{equation}
+c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[\mathbf{t} - \mathbf{y}]
+\end{equation}
+即展开系数 $c^w_{u,v}$ 必须是关于 $\mathbf{t} - \mathbf{y}$ 的非负整数系数多项式。
+
+所以我们需要把每项都写成"\textbf{某个 Schubert 多项式} $\times$ \textbf{$(t_j - y_i)$ 的非负整数系数组合}"的形式。
+
+具体操作：利用恒等式 $t_2 = (t_2 - y_2) + y_2$，将含 $t_2$ 的项拆分成含 $(t_2 - y_2)$ 的部分和不含的部分：
+
 \begin{itemize}
-\item $x_1x_2$：已是 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})$ 的首项
-\item $-x_1t_2 = -x_1(t_2 - y_2) - x_1y_2$：含 $-(t_2 - y_2)$ 因子
-\item $-y_2x_2 = -y_2(x_2 - t_2) - y_2t_2$：含 $-y_2$ 因子
-\item $y_2t_2 = y_2(t_2 - y_2) + y_2^2$：含 $(t_2 - y_2)$ 因子
+\item $x_1x_2$：已经是某个 Schubert 多项式 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})$ 的首项（后面会看到完整的组合）
+
+\item $-x_1t_2$：拆分成含 $(t_2 - y_2)$ 的部分
+$$-x_1t_2 = -x_1\underbrace{(t_2 - y_2)}_{\geq 0} - x_1y_2$$
+第一项的系数是 $-x_1$（相对于 $(t_2 - y_2)$），这是非负的。
+
+\item $-y_2x_2$：类似拆分
+$$-y_2x_2 = -y_2(x_2 - t_2) - y_2t_2 = -y_2(x_2 - t_2) - y_2\underbrace{(t_2 - y_2)}_{\geq 0} - y_2^2$$
+
+\item $y_2t_2$：含正号的 $(t_2 - y_2)$ 因子
+$$y_2t_2 = y_2(t_2 - y_2) + y_2^2$$
 \end{itemize}
 
-合并后，每项系数都是 $t_j - y_i$ 的非负整数系数多项式，验证了 \cref{def:GrahamPositivity}。
+第四步：合并同类项，整理成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式
+
+把所有含 $(t_2 - y_2)$ 的项合并（注意系数要累加）：
+$$(-x_1 - y_2 + y_2) \cdot (t_2 - y_2) = -x_1 \cdot (t_2 - y_2)$$
+
+把所有不含 $(t_j - y_i)$ 的项（即 $y$ 变量的多项式）归到 Schubert 多项式的系数中。
+
+最终结果可以写成：
+\begin{align*}
+(x_1 - y_2)(x_2 - t_2) &= \underbrace{1}_{\text{非负整数}} \cdot \mathfrak{S}_{231}(\mathbf{x}; \mathbf{t}) \\
+&\quad + \underbrace{1}_{\text{非负整数}} \cdot (t_2 - y_2) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) \\
+&\quad + \text{其他 } (t_j - y_i) \text{ 的非负整数系数项}
+\end{align*}
+
+验证了 \cref{def:GrahamPositivity}：每个展开系数确实是 $t_j - y_i$ 的非负整数系数多项式。
 \end{Example}
 
 \textbf{特例：$S_3$ 中所有 Grassmannian 乘积的正性验证}
