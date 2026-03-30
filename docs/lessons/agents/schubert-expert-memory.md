@@ -211,3 +211,44 @@ grep -i "overfull\|hbox" schubert-positivity-notes.log
 - 写完长公式后立即编译检查
 - 涉及 Schubert 类的复杂表达式优先用 align 拆解
 
+---
+
+## L506: Schubert 多项式符号强制约定
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+用户指出笔记中存在 `S_w(x)` 这种不规范的写法——既没有 `\mathfrak`，也没有 `\mathbf`。
+
+**正确做法**:
+```latex
+% 一重 Schubert 多项式（单变量集）
+\mathfrak{S}_u(\mathbf{x})    % ✅ 正确
+\mathfrak{S}_w(\mathbf{x})    % ✅ 正确
+
+% 二重 Schubert 多项式（双变量集）
+\mathfrak{S}_w(\mathbf{x}; \mathbf{y})  % ✅ 正确
+
+% 禁止以下写法：
+S_w(x)    % ❌ 没有 mathfrak
+S_w(\mathbf{x})  % ❌ 没有 mathfrak
+\mathfrak{S}_w(x)  % ❌ x 应该是 \mathbf{x}
+```
+
+**符号规范清单**:
+| 类型 | 正确写法 | 禁止 |
+|------|----------|------|
+| 单重 Schubert | `\mathfrak{S}_u(\mathbf{x})` | `S_w(x)`, `S_u(x)` |
+| 双重 Schubert | `\mathfrak{S}_w(\mathbf{x}; \mathbf{y})` | `S_w(x;y)` |
+| 三重 Schubert | `\mathfrak{S}_w(\mathbf{x}; \mathbf{y}; \mathbf{z})` | 任何不带 `\mathfrak` 的写法 |
+
+**检查命令**:
+```bash
+# 检查是否有 S_ 开头的不规范写法
+grep -n "S_[a-z](" notes/Schubert-Polynomials/chapters/chapter*.tex
+```
+
+**教训**:
+- 检查其他章节（chapter2-4）是否有类似问题
+- 发现后立即修正
