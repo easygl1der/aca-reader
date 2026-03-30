@@ -10,7 +10,9 @@
 \textbf{归约技术的底层逻辑}：
 \begin{enumerate}
 \item \textbf{嵌入保持胞腔结构}：任何约化群 $G$ 都可以嵌入到某个 $\mathrm{GL}_m(\mathbb{C})$ 中，嵌入是单的且是代数群态射。旗流形 $G/P$ 通过此嵌入嵌入到 $\mathrm{GL}_m/P'$ 中，Schubert 胞腔的闭包关系被保持：$$\overline{B^-\pi B/P} \subseteq \overline{B^-\sigma B/P} \iff \overline{B^-\pi B/P'} \subseteq \overline{B^-\sigma B/P'}$$\item \textbf{多项式代表元的函子性}：由 \cite[ Theorem 10.6.4]{anderson2023}，类 $[\overline{B^-\pi B/B}]_T$ 由双重 Schubert 多项式 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{t})$ 表示。当限制到 $\mathrm{GL}_m$ 时，这个代表元关系保持。\item \textbf{Positivity 的稳健性}：Graham positivity 猜想涉及 Schubert 多项式展开系数的非负性。这个性质在嵌入下保持——如果一般群的情形有 positivity，则其 $\mathrm{GL}_m$ 实现也有 positivity；反之如果 $\mathrm{GL}_m$ 情形有 negativity，通过嵌入的逆映射可以构造反例。
-\end{enumerate}\textbf{技术便利性}：$\mathrm{GL}_m(\mathbb{C})$ 有明确的多项式基（Schubert 多项式），而一般约化群没有这么好的多项式代表元系统。\footnote{问：为什么限制到 $\mathrm{GL}_m(\mathbb{C})$？见附录 \cref{sec:why-GLm}。}
+\end{enumerate}
+
+\textbf{技术便利性}：$\mathrm{GL}_m(\mathbb{C})$ 有明确的多项式基（Schubert 多项式），而一般约化群没有这么好的多项式代表元系统。\footnote{问：为什么限制到 $\mathrm{GL}_m(\mathbb{C})$？见附录 \cref{sec:why-GLm}。}
 \section{为何使用 $S_\infty$ 而非 $S_n$}\label{sec:Sinfty-vs-Sn}
 \subsection{问题}
 在展开公式 $\mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \mathfrak{S}_w$ 中，为何求和使用 $w \in S_\infty$ 而不是 $w \in S_n$？
@@ -18,7 +20,9 @@
 \textbf{核心原因：Schubert 多项式的稳定性（Stability）}
 \begin{enumerate}
 \item \textbf{$S_\infty$ 是所有有限对称群的并集}：$S_\infty = \bigcup_{n=1}^\infty S_n$。每个置换 $w \in S_\infty$ 只有有限多个非平凡位置，即存在 $N$ 使得 $w \in S_N$ 且对所有 $n \geq N$ 有 $w$ 在 $S_n$ 中。\item \textbf{Schubert 多项式的嵌入性}：对于 $m > n$，$S_n \subset S_m$，且 $\mathfrak{S}_w^{(n)}(x_1, \ldots, x_n) = \mathfrak{S}_w^{(m)}(x_1, \ldots, x_n, 0, \ldots, 0)$。即 $S_m$ 中的 Schubert 多项式在变量 $x_{n+1} = \cdots = x_m = 0$ 时限制到 $S_n$ 的形式。\item \textbf{结构常数的稳定性}：当 $n$ 足够大时（通常 $n \geq \ell(u) + \ell(v)$），展开系数 $c^w_{u,v}$ 与 $n$ 无关。这意味着在 $S_\infty$ 中定义的系数自然地在所有 $S_n$ 中有效。\item \textbf{商空间的自然语言}：从旗流形的角度看，$Fl_\infty(\mathbb{C}) = \varinjlim Fl_n(\mathbb{C})$ 是所有有限旗流形的余极限。在稳定极限下研究 Schubert  calculus 更简洁、更本质。
-\end{enumerate}\textbf{技术细节}：虽然 $u, v \in S_n$，但乘积 $\mathfrak{S}_u \cdot \mathfrak{S}_v$ 可能涉及长度超过 $n$ 的置换 $w$。使用 $S_\infty$ 避免了人为的截断，使得公式在所有 $n$ 下统一有效。\textbf{实际计算时}：在具体计算时，我们仍然在某个足够大的 $S_N$ 中工作（通常 $N = \ell(u) + \ell(v)$），因为更长的置换不会出现在展开中。
+\end{enumerate}
+
+\textbf{技术细节}：虽然 $u, v \in S_n$，但乘积 $\mathfrak{S}_u \cdot \mathfrak{S}_v$ 可能涉及长度超过 $n$ 的置换 $w$。使用 $S_\infty$ 避免了人为的截断，使得公式在所有 $n$ 下统一有效。\textbf{实际计算时}：在具体计算时，我们仍然在某个足够大的 $S_N$ 中工作（通常 $N = \ell(u) + \ell(v)$），因为更长的置换不会出现在展开中。
 \section{$S_\infty$ 的定义与直观理解}\label{sec:SInfinity}
 \subsection{问题}
 $S_\infty$ 定义中的 $\bigcup$（并集记号）是什么意思？
@@ -37,10 +41,14 @@ $S_\infty$ 定义中的 $\bigcup$（并集记号）是什么意思？
 \end{itemize}任意置换 $w$ 都可以分解为基本置换的乘积 $w = s_{i_1} s_{i_2} \cdots s_{i_k}$。\textbf{2. 基本除差算子 $\partial_i = \partial_{s_i}$}：对于 $i = 1, \ldots, n-1$，$\partial_i$（也记作 $\partial_{s_i}$）定义为$$\partial_i(f) = \partial_{s_i}(f) = \frac{f(x_1, \ldots, x_i, x_{i+1}, \ldots, x_n) - f(x_1, \ldots, x_{i+1}, x_i, \ldots, x_n)}{x_i - x_{i+1}}$$其作用是：先把函数中的 $x_i$ 和 $x_{i+1}$ 交换，再与原函数相减，最后除以 $x_i - x_{i+1}$。\textbf{例子}：设 $f = x_1$，则 $\partial_1(x_1) = \frac{x_1 - x_2}{x_1 - x_2} = 1$。\textbf{$n=3$ 的例子}：$S_3$ 中的置换可以用一维数组表示，如 $123$ 表示恒等置换，$321$ 表示最长置换 $w_0$。
 \begin{enumerate}
 \item $\partial_1(x_1) = 1$，因为 $\partial_1$ 交换 $x_1$ 和 $x_2$ 后相减得 $x_1 - x_2$，除以 $x_1 - x_2$ 得 $1$。\item $\partial_1(x_2) = -1$，因为 $\partial_1(x_2) = \frac{x_2 - x_1}{x_1 - x_2} = -1$。\item $\partial_1(x_1^2) = \frac{x_1^2 - x_2^2}{x_1 - x_2} = x_1 + x_2$。\item $\partial_1(x_1 x_2) = \frac{x_1 x_2 - x_2 x_1}{x_1 - x_2} = 0$。\item $\partial_2(x_2) = 1$（类似地，$\partial_2$ 交换 $x_2$ 和 $x_3$）。\item $\partial_1 \partial_2 (x_1)$：先作用 $\partial_2$，由于 $x_1$ 不依赖于 $x_2, x_3$，$\partial_2(x_1) = x_1$；再作用 $\partial_1$，得 $\partial_1(x_1) = 1$。\item $\partial_1 \partial_2 (x_1 x_3) = \partial_1(x_1 x_3) = x_1 + x_2$。
-\end{enumerate}\textbf{$n=4$ 的例子}：$S_4$ 中有 $4! = 24$ 个置换。设 $w = 3412$ 表示排列 $(1,2,3,4) \mapsto (3,4,1,2)$，可分解为 $w = s_1 s_2 s_1 s_3$（从右往左读）。
+\end{enumerate}
+
+\textbf{$n=4$ 的例子}：$S_4$ 中有 $4! = 24$ 个置换。设 $w = 3412$ 表示排列 $(1,2,3,4) \mapsto (3,4,1,2)$，可分解为 $w = s_1 s_2 s_1 s_3$（从右往左读）。
 \begin{enumerate}
 \item $\partial_1(x_1^2 x_3) = (x_1 + x_2) x_3$。\item $\partial_2 \partial_1 (x_3) = \partial_2(x_3) = x_3$（因为 $\partial_1$ 不改变不含 $x_1, x_2$ 的项）。\item 对于 $w = s_1 s_2$，有 $\partial_{s_1 s_2} = \partial_1 \partial_2$。计算 $\partial_1 \partial_2 (x_1)$：    $$\partial_2(x_1) = x_1, \quad \partial_1(x_1) = 1$$    所以 $\partial_{s_1 s_2}(x_1) = 1$。\item 对于置换 $w = 4321 = s_1 s_2 s_3 s_1 s_2 s_1$（最长置换 $w_0$），有    $$\partial_{w_0} = \partial_1 \partial_2 \partial_3 \partial_1 \partial_2 \partial_1$$    作用在单项式上会得到对称多项式。
-\end{enumerate}\textbf{置换对应的除差算子 $\partial_w$}：对于任意置换 $w \in S_n$，定义 $\partial_w$ 为适当组合的基本除差算子。例如，$w = s_i s_j$ 时，$\partial_w = \partial_i \partial_j$。\textbf{Skew 除差算子 $\partial_{w/v}$}：定义为 $\partial_{w/v} = \partial_w \circ \partial_v^{-1}$，其中 $\partial_v^{-1}$ 是 $\partial_v$ 的逆算子，$\circ$ 表示算子复合。这不是简单的函数除法，而是先对函数用 $\partial_v$ 的逆运算，再用 $\partial_w$ 作用。\textbf{为什么这样定义？} 这个定义源于 Schubert calculus 中展开系数的表示。当我们想将某个多项式展开为 Schubert 多项式的线性组合时，Skew 除差算子提供了一种系统的计算方法。具体来说，如果 $S_w$ 是 Schubert 多项式，那么 $\partial_{w/v}(S_u)$ 给出了组合系数 $c^w_{u,v}$。\textbf{$n=3$ 中的 Skew 除差算子例子}：
+\end{enumerate}
+
+\textbf{置换对应的除差算子 $\partial_w$}：对于任意置换 $w \in S_n$，定义 $\partial_w$ 为适当组合的基本除差算子。例如，$w = s_i s_j$ 时，$\partial_w = \partial_i \partial_j$。\textbf{Skew 除差算子 $\partial_{w/v}$}：定义为 $\partial_{w/v} = \partial_w \circ \partial_v^{-1}$，其中 $\partial_v^{-1}$ 是 $\partial_v$ 的逆算子，$\circ$ 表示算子复合。这不是简单的函数除法，而是先对函数用 $\partial_v$ 的逆运算，再用 $\partial_w$ 作用。\textbf{为什么这样定义？} 这个定义源于 Schubert calculus 中展开系数的表示。当我们想将某个多项式展开为 Schubert 多项式的线性组合时，Skew 除差算子提供了一种系统的计算方法。具体来说，如果 $S_w$ 是 Schubert 多项式，那么 $\partial_{w/v}(S_u)$ 给出了组合系数 $c^w_{u,v}$。\textbf{$n=3$ 中的 Skew 除差算子例子}：
 \begin{enumerate}
 \item $\partial_{s_1 / s_1} = \partial_{e}$：因为 $\partial_{s_1} \circ \partial_{s_1}^{-1} = \partial_{e}$（恒等算子）。\item $\partial_{s_1 s_2 / s_2} = \partial_{s_1} \circ \partial_{s_2}^{-1}$：先作用 $\partial_{s_2}^{-1}$（$\partial_{s_2}$ 的逆），再作用 $\partial_{s_1}$。\item 计算 $\partial_{s_1 s_2 / s_2}(x_1)$：    
 \begin{itemize}    \item $\partial_{s_2}(x_1) = x_1$（因为 $x_1$ 不依赖 $x_2, x_3$）    \item 所以 $\partial_{s_2}^{-1}(x_1) = x_1$    \item 再作用 $\partial_{s_1}$：$\partial_{s_1}(x_1) = 1$    
@@ -53,7 +61,9 @@ $S_\infty$ 定义中的 $\bigcup$（并集记号）是什么意思？
 逆除差算子 $\partial_i^{-1}$ 是 $\partial_i$ 的逆算子，即满足 $\partial_i \circ \partial_i^{-1} = \partial_i^{-1} \circ \partial_i = \text{id}$（恒等算子）。\textbf{如何定义 $\partial_i^{-1}$？} 由于 $\partial_i$ 不是双射，其逆算子需要通过其他方式定义。在实际计算中，我们通常用以下方式理解：\textbf{方式一：作为算子的形式逆}将 $\partial_i^{-1}$ 视为一个形式算子，其满足 $\partial_i \partial_i^{-1} = 1$。这在组合数学中常用于生成函数的计算。\textbf{方式二：通过多项式商环}在多项式环 $\mathbb{Z}[x_1, \ldots, x_n]$ 中，$\partial_i$ 的像包含所有对称多项式，因此 $\partial_i^{-1}$ 可以理解为在商环中的逆。\textbf{$n=3$ 中的例子}：
 \begin{enumerate}
 \item $\partial_1(x_1) = 1$，所以 $\partial_1^{-1}(1) = x_1$（形式上）。\item $\partial_1(x_1^2) = x_1 + x_2$，所以 $\partial_1^{-1}(x_1 + x_2) = x_1^2$。\item 更一般地，$\partial_1^{-1}(x_1^k) = x_1^{k+1}$（形式上，因为 $\partial_1(x_1^{k+1}) = x_1^k + x_1^{k-1}x_2 + \cdots + x_2^{k+1}$）。\item $\partial_1 \partial_1^{-1}(f) = f$ 对所有多项式 $f$ 成立。\item $\partial_1^{-1} \partial_1(f)$ 不一定等于 $f$，因为 $\partial_1$ 不是满射。
-\end{enumerate}\textbf{在 Skew 除差算子中的作用}：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$ 中的 $\partial_v^{-1}$ 就是逆除差算子。它允许我们``撤销``一个除差算子的作用，从而定义更一般的组合。
+\end{enumerate}
+
+\textbf{在 Skew 除差算子中的作用}：$\partial_{w/v} = \partial_w \circ \partial_v^{-1}$ 中的 $\partial_v^{-1}$ 就是逆除差算子。它允许我们``撤销``一个除差算子的作用，从而定义更一般的组合。
 \section{双重与三重 Schubert 多项式的区别}\label{sec:DoubleVsTriple}
 \subsection{问题}
 双重 Schubert 多项式和三重有什么区别，为什么叫 x 重？
@@ -185,7 +195,9 @@ Knutson-Tao 在 2003 年的论文中给出了展开系数的几何解释。设$$
 \end{itemize}\item \textbf{推广能力不同}
 \begin{itemize}\item \textbf{Knutson-Tao} 的 hive 模型对 Grassmannian 情形特别有效，但难以推广到一般排列。\item \textbf{Gao-Xiong} 基于 $B^-$-轨道的组合结构（Bruhat 分解），可推广至 separated descents 条件等更一般情形。
 \end{itemize}
-\end{enumerate}\textbf{技术细节}：Gao-Xiong 的关键观察是（见 Lemma 2.5）：$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \text{ 是 proper 且横截的}$$这意味着交集在一般位置上是``好``的几何对象，其等变量子上同调类可以展开为 Schubert 类的非负组合。\textbf{几何直觉}：Knutson-Tao 把系数理解为``旗流形中的交点个数``，而 Gao-Xiong 把系数理解为``$B^-$-轨道闭合的等变相交类``。后者通过 Borel 构造将问题提升到等变量子上同调，自然地解释了 $t_i - y_j$ 多项式的出现。
+\end{enumerate}
+
+\textbf{技术细节}：Gao-Xiong 的关键观察是（见 Lemma 2.5）：$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \text{ 是 proper 且横截的}$$这意味着交集在一般位置上是``好``的几何对象，其等变量子上同调类可以展开为 Schubert 类的非负组合。\textbf{几何直觉}：Knutson-Tao 把系数理解为``旗流形中的交点个数``，而 Gao-Xiong 把系数理解为``$B^-$-轨道闭合的等变相交类``。后者通过 Borel 构造将问题提升到等变量子上同调，自然地解释了 $t_i - y_j$ 多项式的出现。
 \section{Graham Positivity 中 Grassmannian 限制的作用}\label{sec:GrassmannianRole}
 \subsection{问题}
 在 Graham Positivity Theorem（\cref{def:GrahamPositivity}）中，为什么要求 $u, v$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列？$k_1, k_2$ 的作用是什么？为什么不能推广到一般排列？
@@ -200,14 +212,18 @@ Knutson-Tao 在 2003 年的论文中给出了展开系数的几何解释。设$$
 \end{enumerate}因为是计数问题，所以结果必为非负整数。这建立了正性的组合学来源。当设置 $\mathbf{y} = \mathbf{t} = 0$ 时，因子化 Schur 函数退化为普通 Schur 函数，乘积展开系数仍是 Littlewood-Richardson 系数，自然非负。\textbf{4. 推广到一般排列的困难——Samuel 猜想}：对于非 Grassmannian 排列，Schubert 多项式不能因子化为 Schur 函数。例如，$w = (2, 4, 3, 1) \in S_4$ 有两个 descents（发生在位置 2 和 3），其 Schubert 多项式是更复杂的组合对象。当两个一般的 Schubert 多项式相乘时：$$\mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \mathfrak{S}_w$$系数 $c^w_{u,v}$ 不再自动非负。这是因为：
 \begin{enumerate}
 \item 非 Grassmannian Schubert 多项式不是单一 Schur 函数，而是 Schur 函数的线性组合\item 乘法后系数变为这些 Schur 函数之间的``混合``系数\item 这些混合系数可能是负的——正性不再自动成立
-\end{enumerate}\textbf{5. Separated Descents：弱化条件的几何意义}：Samuel 在论文中引入了 separated descents 条件来弱化 Grassmannian 要求。\footnote{问：什么是 separated descents？见\cref{def:SeparatedDescents}。}
+\end{enumerate}
+
+\textbf{5. Separated Descents：弱化条件的几何意义}：Samuel 在论文中引入了 separated descents 条件来弱化 Grassmannian 要求。\footnote{问：什么是 separated descents？见\cref{def:SeparatedDescents}。}
 \begin{Definition}[\textbf{Separated Descents 条件}]设 $u, v \in S_\infty$。称 $(u, v)$ 满足 separated descents 条件，如果存在正整数 $p$ 使得：
 \begin{itemize}\item 对所有 $i < p$，有 $\ell(us_i) > \ell(u)$（即 $i \notin \mathrm{Des}(u)$）；\item 对所有 $i > p$，有 $\ell(vs_i) > \ell(v)$（即 $i \notin \mathrm{Des}(v)$）。
 \end{itemize}换言之，$u$ 的所有下降点都集中在 $p$ 的左侧，$v$ 的所有下降点都集中在 $p$ 的右侧。
 \end{Definition}用 descent 集合描述：$\max \operatorname{Des}(u) \leq \min \operatorname{Des}(v)$。几何意义：这个条件保证了两列 Schubert 类 $B^-uB/B$ 和 $B^-vB/B$ 的相对位置是``可分离``的。当我们用特殊排列 $\tau$ 平移后，相交运算$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$$仍然保持横截性（transversality），从而交集的上同调类仍然是 Schubert 类的非负线性组合。\textbf{6. Samuel 论文中的弱化策略}：Samuel 在 2024 年的论文中，证明了 separated descents 情形下的正性公式。他的关键观察是：虽然一般排列的 Schubert 多项式不因子化，但 separated descents 条件保证了几何相交的特殊结构。Samuel 的策略是：
 \begin{enumerate}
 \item 使用 $B^-$-轨道方法（Gao-Xiong 的几何框架）\item 证明在 separated descents 条件下，轨道闭合的相交仍是``好``的\item 通过组合论证，将系数限制为关于 $t_i - y_j$ 的非负多项式
-\end{enumerate}\textbf{7. 量子版本（Kirillov-Maeno）是否保持正性？}：Kirillov 和 Maeno 在 1996 年引入了量子双重 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$。\footnote{问：什么是量子 Schubert 多项式？见\cref{chap:QuantumDouble}。}在量子上同调中，正性仍然成立，但形式更复杂：$$c^w_{u,v}(\beta) \in \mathbb{N}[q_1, q_2, \ldots]$$其中 $\beta$ 记录了连接子簇的曲线类，$q^\beta$ 是形式变量。物理上，量子参数 $q$ 来自 Gromov-Witten 不变量——计数通过给定 curve class $\beta$ 连接两点的曲线的个数。具体而言，量子 Schubert 乘法规则为：$$[\sigma_u] \star [\sigma_v] = \sum_{w,\beta} q^{\beta} c^w_{u,v}(\beta) [\sigma_w]$$其中 $c^w_{u,v}(\beta) \in \mathbb{N}$ 对每个 $\beta$ 都是非负整数。\textbf{几何直觉总结}：Grassmannian 条件像是``选择了正确的舞台``：
+\end{enumerate}
+
+\textbf{7. 量子版本（Kirillov-Maeno）是否保持正性？}：Kirillov 和 Maeno 在 1996 年引入了量子双重 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$。\footnote{问：什么是量子 Schubert 多项式？见\cref{chap:QuantumDouble}。}在量子上同调中，正性仍然成立，但形式更复杂：$$c^w_{u,v}(\beta) \in \mathbb{N}[q_1, q_2, \ldots]$$其中 $\beta$ 记录了连接子簇的曲线类，$q^\beta$ 是形式变量。物理上，量子参数 $q$ 来自 Gromov-Witten 不变量——计数通过给定 curve class $\beta$ 连接两点的曲线的个数。具体而言，量子 Schubert 乘法规则为：$$[\sigma_u] \star [\sigma_v] = \sum_{w,\beta} q^{\beta} c^w_{u,v}(\beta) [\sigma_w]$$其中 $c^w_{u,v}(\beta) \in \mathbb{N}$ 对每个 $\beta$ 都是非负整数。\textbf{几何直觉总结}：Grassmannian 条件像是``选择了正确的舞台``：
 \begin{itemize}\item 当 $u, v$ 都是 Grassmannian 时，它们对应的 Schubert 胞腔位于``好``的几何位置——相邻 Grassmannian 子流形上。相交总是产生``好``的结果（横截、无奇点）\item 如果舞台选错了（一般排列），相交可能产生负系数\item Separated descents 条件提供了某种``部分好``的位置关系——只要下降点分离，几何就仍是``好``的\item 量子版本通过引入 $q$ 参数，将问题提升到曲线计数层面，但正性机制保持不变
 \end{itemize}\textbf{开放问题}：Samuel 猜想（Theorem 1.1）声称对所有 $u, v \in S_\infty$，正性都成立。Gao \& Xiong 的工作证明了 separated descents 情形。推广到完全一般排列仍是 open problem——这反映了我们对旗流形中一般位置相交的理解仍然有限。\textbf{footnote 引用}：见 \cref{sec:GaoXiongVsKnutsonTao}，\cref{def:Lemma25}。
 \section{什么是 Schur 函数？}\label{sec:WhatIsSchurFunction}
@@ -228,7 +244,9 @@ Schur 函数是什么？为什么它在 Grassmannian Schubert calculus 中如此
 \end{itemize}\item \textbf{$k_1, k_2$ 的作用}
 \begin{itemize}\item $k_1, k_2$ 决定了 $u, v$ 对应的 Grassmannian 流形 $Gr(k_1, n)$ 和 $Gr(k_2, n)$\item 不同 $k$ 值的 Grassmannian 排列给出不同的因子化形式\item 但关键性质（正性）与具体的 $k$ 值无关，只要求两者都是 Grassmannian
 \end{itemize}
-\end{enumerate}\textbf{ Samuel 猜想的推广}：\cref{conj:Samuel} 去掉了 Grassmannian 的限制，声称对\textbf{任意} $u, v$ 都有正性。这更困难，因为非 Grassmannian 排列的多项式不是因子化的。\textbf{直观理解}：把 $u, v$ 是 Grassmannian 排列看作``特殊情形``——就像在群论中，先研究阿贝尔群（特殊）再推广到一般群。Grassmannian 排列的因子化性质使得正性容易验证，而一般排列需要更深的工具。\textbf{footnote}：见 \cref{sec:WhyGrassmannian}。
+\end{enumerate}
+
+\textbf{ Samuel 猜想的推广}：\cref{conj:Samuel} 去掉了 Grassmannian 的限制，声称对\textbf{任意} $u, v$ 都有正性。这更困难，因为非 Grassmannian 排列的多项式不是因子化的。\textbf{直观理解}：把 $u, v$ 是 Grassmannian 排列看作``特殊情形``——就像在群论中，先研究阿贝尔群（特殊）再推广到一般群。Grassmannian 排列的因子化性质使得正性容易验证，而一般排列需要更深的工具。\textbf{footnote}：见 \cref{sec:WhyGrassmannian}。
 \section{Graham Positivity 中展开系数的``非负性``含义}\label{sec:GrahamPositivityCoefficientMeaning}
 \subsection{问题}
 在 Graham Positivity 定理中，为什么说展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的非负整数系数多项式？展开式中明明有负项（如 $-x_1t_2$）？
@@ -250,10 +268,14 @@ Schur 函数是什么？为什么它在 Grassmannian Schubert calculus 中如此
 \textbf{三层定理的递进关系}：
 \begin{enumerate}
 \item \textbf{Theorem 1.1 (Graham Positivity)}：起点——断言两个 Grassmannian 排列乘积的展开系数非负\item \textbf{Theorem 2.3 (Refined Graham Positivity)}：推广——关键观察是``Grassmannian 排列``限制本质只用到横截相交性。将假设推广到 separated descents 条件。\item \textbf{Theorem 1.2 (Triple Schubert Positivity)}：进一步推广——三个排列乘积的正性
-\end{enumerate}\textbf{底层引理的支撑作用}：
+\end{enumerate}
+
+\textbf{底层引理的支撑作用}：
 \begin{enumerate}
 \item \textbf{Lemma 2.2}（正规子群引理）：归纳法的李代数基础\item \textbf{Lemma 2.5}（横截相交引理）：核心技术工具，保证相交良定义\item \textbf{Corollary 2.4}（闭链分解推论）：几何闭链 → Schubert 基底的组合
-\end{enumerate}\textbf{证明的核心思想}：将几何相交（交集在等变量子上同调中的类）翻译为代数展开系数，然后利用上述引理证明系数必为非负。
+\end{enumerate}
+
+\textbf{证明的核心思想}：将几何相交（交集在等变量子上同调中的类）翻译为代数展开系数，然后利用上述引理证明系数必为非负。
 \section{几何相交如何翻译为代数展开系数}\label{sec:GeoToAlgebraTranslation}
 \subsection{问题}
 证明的核心思想是将几何相交（交集在等变量子上同调中的类）翻译为代数展开系数。这个翻译机制是如何实现的？除差算子的几何意义是什么？
@@ -263,7 +285,9 @@ Schur 函数是什么？为什么它在 Grassmannian Schubert calculus 中如此
 \item \textbf{横截相交引理（Lemma 2.5）}：保证交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper 且横截的。横截性意味着相交是``好的``——没有奇点、退化或不确定的点个数。横截相交的点个数是良定义的整数，这使得几何计数成为可能。\item \textbf{闭链分解推论（Corollary 2.4）}：这是连接几何与代数的桥梁。它断言在旗流形 $G/B$ 上，任意 $B^-$-不变的有效闭链必是 Schubert 类 $[\overline{B^-wB/B}]_T$ 的非负线性组合：$$\text{几何闭链} = \sum_w c_w \cdot [\overline{B^-wB/B}]_T$$\item \textbf{几何 → 代数对应}：
 \begin{itemize}\item \textbf{几何侧}：Schubert 品种 $\overline{B^-wB/B}$ 的相交\item \textbf{代数侧}：Schubert 多项式 $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ 在基 $\{\mathfrak{S}_w(\mathbf{x};\mathbf{t})\}$ 下的展开\item \textbf{翻译}：展开系数 $c^w_{u,v}(\mathbf{y},\mathbf{t})$ 就是几何相交数的代数化身
 \end{itemize}
-\end{enumerate}\textbf{除差算子的几何意义}：除差算子 $\partial_i$ 在几何上对应于\textbf{沿第 $i$ 个超平面进行截面}。它递归地将高维相交问题降维：通过作用，逐步``切割``旗流形中的 Schubert 胞腔，直到降到一个点（对应单项式）。这与拓扑学中的横截截面（transverse section）概念相通。\textbf{完整的翻译链条}：
+\end{enumerate}
+
+\textbf{除差算子的几何意义}：除差算子 $\partial_i$ 在几何上对应于\textbf{沿第 $i$ 个超平面进行截面}。它递归地将高维相交问题降维：通过作用，逐步``切割``旗流形中的 Schubert 胞腔，直到降到一个点（对应单项式）。这与拓扑学中的横截截面（transverse section）概念相通。\textbf{完整的翻译链条}：
 \begin{align}\overline{B^-uB/B} \cap \overline{B^-vB/B}&\xrightarrow{\text{横截性}} \text{良定义的交点数} \label{eq:geometric-to-integer} \\&\xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \label{eq:integer-to-cohomology} \\&\xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w \label{eq:cohomology-to-polynomial}
 \end{align}
 \section{Graham 定理为何依赖几何性质}\label{sec:GrahamProofGeometry}
@@ -273,12 +297,16 @@ Schur 函数是什么？为什么它在 Grassmannian Schubert calculus 中如此
 \textbf{Graham 证明的核心几何思想}：Graham 的证明确实完全基于几何——具体来说，是旗流形上 Schubert 胞腔的相交理论。核心步骤如下：
 \begin{enumerate}
 \item \textbf{几何相交}：在旗流形 $G/B$ 中，两个 Schubert 胞腔 $B^-uB/B$ 和 $B^-vB/B$ 的交集（在一般位置下）是若干 Schubert 胞腔的并。\item \textbf{横截性保证非负}：由 Kleiman-Bertini 定理，当群作用足够一般时，相交是横截的（transverse），这保证了交集点的个数是良定义的非负整数。\item \textbf{等变量子上同调的类}：在等变量子上同调中，Schubert 胞腔闭包 $\overline{B^-wB/B}$ 对应一个类 $[\overline{B^-wB/B}]_T \in H_T^*(G/B)$。\item \textbf{类乘积 = 相交}：类乘法在几何上对应于胞腔的相交。因此\[[\overline{B^-uB/B}]_T \cdot [\overline{B^-vB/B}]_T = \sum_w c_{u,v}^w [\overline{B^-wB/B}]_T\]其中 $c_{u,v}^w$ 正是旗流形中三点交点的个数——自然是非负整数。\item \textbf{多项式代表元}：等变 Schubert 类 $[\overline{B^-wB/B}]_T$ 可以用标准 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 作为代表元，这就将几何相交翻译为了多项式系数。
-\end{enumerate}\textbf{为什么等变量子上同调比普通上同调更好用？}普通上同调 $H^*(G/B)$ 中，Schubert 类 $[\overline{B^-wB/B}]$ 的乘法由相交个数定义，系数是整数。但：
+\end{enumerate}
+
+\textbf{为什么等变量子上同调比普通上同调更好用？}普通上同调 $H^*(G/B)$ 中，Schubert 类 $[\overline{B^-wB/B}]$ 的乘法由相交个数定义，系数是整数。但：
 \begin{itemize}\item \textbf{整数系数丢失信息}：普通上同调只告诉我们"有多少个交点"，但不区分不同"类型"的交点（比如由不同权贡献的交点）。\item \textbf{等变量子上同调保留权的信息}：等变类 $[\overline{B^-wB/B}]_T$ 携带了 torus 作用的信息——它在各个固定点的限制给出权的多项式。这让我们能看到系数中 $x_i$ 的具体结构，而不只是总数。
 \end{itemize}\textbf{Graham 的关键洞察}：Graham 发现：即使在等变量子上同调中，"类是几何对象的代表元"这一事实仍然成立。因此，相交仍然是良定义的（横截相交），系数 $c_{u,v}^w$ 作为权的多项式仍然可以由几何相交解释——只不过现在每个交点贡献的不只是一个计数 1，而是一个权的单项式（由该交点在 torus 作用下的权重决定）。\textbf{为何量子上同调更复杂？}当进入量子上同调时，情况发生了本质变化：
 \begin{enumerate}
 \item \textbf{曲线代替点}：不再是计数点与点的交，而是计数满足特定 Gromov-Witten 不变量的曲线（稳定映射）。\item \textbf{额外自由度}：稳定映射空间 $\overline{M}_{g,n}(G/P, d)$ 的维数依赖于次数 $d$，这引入了额外的形式变量 $q^d$。\item \textbf{非横截情形出现}：在量子情形中，Schubert 胞腔的"相交"不再是简单的点相交，而是涉及整条曲线的重合。这可能导致非横截情形，需要更精细的分析工具。\item \textbf{Gromov-Witten 不变量的正性不显然}：即使稳定映射的个数是正的（这本身需要深入证明），每个映射贡献的权的多项式是否仍然是非负的？这正是 Mihalcea 要回答的问题。
-\end{enumerate}\textbf{Mihalcea 的策略}：Mihalcea 的关键思想是：虽然量子上同调更复杂，但我们可以\textbf{退化}（degeneration）到经典情形。具体来说，他利用了量子环面作用的退化：让某些参数趋于无穷大，量子上同调的乘法就退化回经典等变量子上同调的乘法。在这个退化过程中，Graham 的几何论证仍然有效——只是我们需要小心追踪 $q$ 变量的行为和新的权结构。\textbf{总结}：Graham 的证明依赖几何，因为：
+\end{enumerate}
+
+\textbf{Mihalcea 的策略}：Mihalcea 的关键思想是：虽然量子上同调更复杂，但我们可以\textbf{退化}（degeneration）到经典情形。具体来说，他利用了量子环面作用的退化：让某些参数趋于无穷大，量子上同调的乘法就退化回经典等变量子上同调的乘法。在这个退化过程中，Graham 的几何论证仍然有效——只是我们需要小心追踪 $q$ 变量的行为和新的权结构。\textbf{总结}：Graham 的证明依赖几何，因为：
 \begin{itemize}\item Schubert 类在几何上对应 Schubert 胞腔\item 类乘法对应胞腔相交\item 横截性保证相交是良定义的\item 相交个数/权多项式就是展开系数
 \end{itemize}量子上同调之所以更复杂，是因为"点相交"变成了"曲线计数"，这引入了新的技术挑战。但 Mihalcea 的工作表明，核心正性在从点到曲线的推广中仍然保持。
 \section{$B^-(w)$ 与 $B^-$ 的关系}\label{sec:BMinusWvsBMinus}
@@ -292,7 +320,9 @@ $B^-(w)$ 是什么？它和 $B^-$ 有什么关系？
 \end{itemize}\textbf{几何意义}：$B^-(w)$-不变的闭链在 Schubert 胞腔的相交理论中扮演重要角色。直观上：
 \begin{enumerate}
 \item $B^-$ 是最大的群条件（最弱的要求）——任意 $B^-$ 不变闭链\item $B^-(w)$ 是更小的群条件（更强的要求）——只有 $B^-(w)$ 不变的闭链\item $B^-(w)$ 越大（$w$ 越短），$B^-(w)$-不变闭链的条件越弱，正性越难保证
-\end{enumerate}\textbf{为什么 Refined Graham Positivity 更强}：原始 Graham 要求 $B^-$-不变闭链，而 Refined 版本要求 $B^-(w)$-不变闭链。条件更弱（更容易满足），但结论反而更强——根被限制在 $I(w)$ 而非所有正根。这似乎矛盾，但实际上是因为 Refined 版本通过 separated descents 条件额外保证了横截相交性。
+\end{enumerate}
+
+\textbf{为什么 Refined Graham Positivity 更强}：原始 Graham 要求 $B^-$-不变闭链，而 Refined 版本要求 $B^-(w)$-不变闭链。条件更弱（更容易满足），但结论反而更强——根被限制在 $I(w)$ 而非所有正根。这似乎矛盾，但实际上是因为 Refined 版本通过 separated descents 条件额外保证了横截相交性。
 \section{$\mathbb{N}[-\alpha]_{\alpha \in I(w)}$ 的含义}\label{sec:NMinusAlphaInIw}
 \subsection{问题}
 在 Refined Graham Positivity 的证明中，系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$ 这个符号是什么意思？为什么用 $-\alpha$ 而不是 $\alpha$？
@@ -302,7 +332,9 @@ $B^-(w)$ 是什么？它和 $B^-$ 有什么关系？
 \end{itemize}\textbf{具体例子}：由第 \ref{sec:RefinedGrahamProof} 行的计算，$I(\tau) = \{y_j - t_i \mid 1 \leq i,j \leq n\}$，因此$$-\alpha = -(y_j - t_i) = t_i - y_j$$所以 $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)} = \mathbb{N}[t_i - y_j]_{i,j \geq 1}$，这正是 Graham Positivity 断言的系数形式。\textbf{为什么是 $-\alpha$？}：
 \begin{enumerate}
 \item \textbf{符号约定}：在等变量子上同调中，$T$ 的权通常用负根表示。具体来说，$H_T^*(\mathfrak{pt}) = \mathbb{Z}[t_1, \ldots, t_n]$ 中 $t_i$ 对应负根 $-\epsilon_i$。\item \textbf{Corollary 2.4 的形式}：第 \ref{def:Corollary24} 行的 Corollary 2.4 给出$$[Y]_T = \sum_{w \in W} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [\overline{B^-wB/B}]_T$$这里 $\mathbb{N}[-\alpha]$ 表示系数是关于负根的非负多项式。\item \textbf{链式法则}：在证明中（第 \ref{sec:RefinedGrahamProof} 行），因为交集在 $N^-(\tau)$ 下闭，而 $N^-(\tau)$ 的李代数与 $I(\tau) = \{y_j - t_i\}$ 相关，所以最终系数出现在 $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$ 中。
-\end{enumerate}\textbf{直观理解}：这是把"关于 $t_i - y_j$ 的非负整数系数多项式"写得更加抽象和紧凑的形式。两种写法完全等价：$$\mathbb{N}[-\alpha]_{\alpha \in I(\tau)} = \mathbb{N}[t_i - y_j]_{i,j \geq 1}$$
+\end{enumerate}
+
+\textbf{直观理解}：这是把"关于 $t_i - y_j$ 的非负整数系数多项式"写得更加抽象和紧凑的形式。两种写法完全等价：$$\mathbb{N}[-\alpha]_{\alpha \in I(\tau)} = \mathbb{N}[t_i - y_j]_{i,j \geq 1}$$
 \section{EQLR 系数的定义与意义}\label{sec:EQLR-Definition}
 \subsection{问题}
 EQLR 系数是什么？它在等变量量子上同调中扮演什么角色？
@@ -314,7 +346,9 @@ EQLR 系数是什么？它在等变量量子上同调中扮演什么角色？
 \end{itemize}\textbf{证明思路}：Mihalcea 的核心思想是\textbf{归约}——将 EQLR 系数的计算归约到已经在 Graham Positivity 定理中解决的问题。具体步骤：
 \begin{enumerate}
 \item 考虑空间 $X \times X$ 及其半直积 $B' = T \cdot (U^- \times U^-)$ 的作用\item 利用投影公式将 EQLR 系数的计算归约到 $X \times X$ 上的计算\item 应用 Graham 的正性定理（Proposition 6.1）：$[V]_T$ 可以唯一表示为 $[Y(u) \times Y(v)]_T$ 的非负系数线性组合\item 使用等变 Poincaré 对偶完成证明
-\end{enumerate}\textbf{为什么重要}：EQLR 系数的正性性质是等变量量子上同调的核心结构。它连接了：
+\end{enumerate}
+
+\textbf{为什么重要}：EQLR 系数的正性性质是等变量量子上同调的核心结构。它连接了：
 \begin{itemize}\item 经典 Schubert calculus（ cohomology）\item 等变量子上同调（equivariant cohomology）\item 量子上同调（quantum cohomology）
 \end{itemize}这三种理论在旗流形的 Schubert calculus 中统一起来。\footnote{问：EQLR 系数是什么？见附录 \cref{sec:EQLR-Definition}。}
 \section{双重 Schubert 多项式的除差算子定义}\label{sec:DoubleSchubertDividedDifference}
@@ -330,7 +364,9 @@ EQLR 系数是什么？它在等变量量子上同调中扮演什么角色？
 \end{center}\textbf{关键性质}：
 \begin{enumerate}
 \item $\partial_i^{(x)}$ 只作用在 $x$ 变量上，$y$ 变量保持不变\item 递推关系：$\mathfrak{S}_{ws_i}(x,y) = \partial_i^{(x)} \mathfrak{S}_w(x,y)$（当 $i$ 是 $w$ 的 descent 时）\item 对称性：$\mathfrak{S}_w(x,y) = (-1)^{\ell(w)} \mathfrak{S}_{w w_0}(y,x)$\item 退化：当 $\mathbf{y} = \mathbf{0}$ 时，$\mathfrak{S}_w(\mathbf{x},\mathbf{0}) = \mathfrak{S}_w(\mathbf{x})$
-\end{enumerate}\textbf{$S_2$ 的具体例子}：在 $S_2$ 中，$n=2$，$w_0 = 21$，顶部多项式为 $\prod_{i+j\leq 2}(x_i+y_j) = (x_1+y_1)(x_1+y_2)(x_2+y_1)$。
+\end{enumerate}
+
+\textbf{$S_2$ 的具体例子}：在 $S_2$ 中，$n=2$，$w_0 = 21$，顶部多项式为 $\prod_{i+j\leq 2}(x_i+y_j) = (x_1+y_1)(x_1+y_2)(x_2+y_1)$。
 \begin{itemize}\item $\mathfrak{S}_{21}(\mathbf{x},\mathbf{y}) = \partial_{12}^{(x)}\left[(x_1+y_1)(x_1+y_2)(x_2+y_1)\right] = (x_1+y_1)(x_1+y_2)(x_2+y_1)$\item $\mathfrak{S}_{12}(\mathbf{x},\mathbf{y}) = \partial_{21}^{(x)}\left[(x_1+y_1)(x_1+y_2)(x_2+y_1)\right] = x_2 + y_1$
 \end{itemize}\textbf{$S_3$ 的具体例子（详细计算）}：在 $S_3$ 中，$n=3$，$w_0 = 321$，顶部多项式为$$\prod_{i+j\leq 3}(x_i+y_j) = (x_1+y_1)(x_1+y_2)(x_1+y_3)(x_2+y_1)(x_2+y_2)(x_3+y_1)$$（共有 $\binom{3+1}{2}=6$ 个因子，因为满足 $i+j\leq 3$ 的 $(i,j)$ 对为：$(1,1),(1,2),(1,3),(2,1),(2,2),(3,1)$）通过除差算子计算：
 \begin{itemize}\item $\mathfrak{S}_{321}(\mathbf{x},\mathbf{y}) = (x_1+y_1)(x_1+y_2)(x_1+y_3)(x_2+y_1)(x_2+y_2)(x_3+y_1)$\item $\mathfrak{S}_{231}(\mathbf{x},\mathbf{y}) = \partial_1^{(x)}\mathfrak{S}_{321} = (x_1+x_2)(x_1+y_2)(x_1+y_3)(x_2+y_1)(x_3+y_1) + (x_1+x_2)(x_1+y_1)(x_2+y_1)(x_2+y_2)(x_3+y_1)$\item $\mathfrak{S}_{312}(\mathbf{x},\mathbf{y}) = (x_2+x_3)(x_1+y_1)(x_2+y_1)(x_2+y_2)(x_3+y_1) + (x_1+x_3)(x_1+y_1)(x_1+y_2)(x_2+y_1)(x_3+y_1)$\item $\mathfrak{S}_{132}(\mathbf{x},\mathbf{y}) = (x_1+x_2)(x_1+y_1)(x_1+y_3)(x_3+y_1) + (x_1+x_3)(x_1+y_1)(x_2+y_1)(x_2+y_2)$\item $\mathfrak{S}_{213}(\mathbf{x},\mathbf{y}) = (x_1+x_2)(x_1+y_1)(x_2+y_1) + (x_2+x_3)(x_1+y_1)(x_1+y_2)(x_2+y_2)(x_3+y_1)$\item $\mathfrak{S}_{123}(\mathbf{x},\mathbf{y}) = 1$（恒等置换）
@@ -357,7 +393,9 @@ EQLR 系数是什么？它在等变量量子上同调中扮演什么角色？
 \end{itemize}\item $w = 132$（换位 $(23)$，$\ell(w) = 1$）  
 \begin{itemize}  \item $w^{-1} = 132$（自逆）  \item $w_0 \cdot w^{-1} = 321 \cdot 132$  \item 计算：$321(1) = 3$，$321(3) = 1$，$321(2) = 2$，即 $312$  \item 因此 $w_0 / w = 312$  
 \end{itemize}
-\end{enumerate}\textbf{Bruhat 序约束}：在 $\partial_{w/v}$ 的定义中要求 $v \leq u \leq w$（Bruhat 序）。取 $v = w_0 / w$ 使得我们考虑的区间是：$$w_0 / w \leq u \leq w_0$$这确保了当作用于 $\mathfrak{S}_{w_0}(\mathbf{x})$ 时，可以提取出与 $w$ 相关的信息。\textbf{在 Kirillov 猜想证明中的作用}：取 $u = w$ 且 $v = w_0 / w$，则：$$\partial_{w/v}(\mathfrak{S}_{w_0}(\mathbf{x})) = \partial_{w/w_0/w}(\mathfrak{S}_{w_0}(\mathbf{x}))$$由于 $\mathfrak{S}_{w_0}(\mathbf{x}) = x_1^{n-1}x_2^{n-2}\cdots x_{n-1}$ 是单项式，作用于其上的除差算子可以显式计算。
+\end{enumerate}
+
+\textbf{Bruhat 序约束}：在 $\partial_{w/v}$ 的定义中要求 $v \leq u \leq w$（Bruhat 序）。取 $v = w_0 / w$ 使得我们考虑的区间是：$$w_0 / w \leq u \leq w_0$$这确保了当作用于 $\mathfrak{S}_{w_0}(\mathbf{x})$ 时，可以提取出与 $w$ 相关的信息。\textbf{在 Kirillov 猜想证明中的作用}：取 $u = w$ 且 $v = w_0 / w$，则：$$\partial_{w/v}(\mathfrak{S}_{w_0}(\mathbf{x})) = \partial_{w/w_0/w}(\mathfrak{S}_{w_0}(\mathbf{x}))$$由于 $\mathfrak{S}_{w_0}(\mathbf{x}) = x_1^{n-1}x_2^{n-2}\cdots x_{n-1}$ 是单项式，作用于其上的除差算子可以显式计算。
 \section{幂幺根基 $U$ 的含义}\label{sec:unipotent-radical}
 \subsection{问题}
 在 Borel 子群分解 $B = T \cdot U$ 中，$U$ 称为"幂幺根基"，这是什么意思？
@@ -372,7 +410,9 @@ EQLR 系数是什么？它在等变量量子上同调中扮演什么角色？
 \textbf{核心原因：旗流形的上同调环结构}Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 是旗流形 $Fl_n(\mathbb{C})$ 上 Schubert 胞腔类的上同调代表元。其次数等于对应胞腔的维度，即 $\ell(w)$。\textbf{最长置换 $w_0 = (n, n-1, \ldots, 1)$ 的特殊情况}：
 \begin{enumerate}
 \item \textbf{几何维度}：旗流形 $Fl_n(\mathbb{C})$ 的复维度是 $\binom{n}{2}$，恰好等于 $\ell(w_0)$。\item \textbf{上同调环中的关系}：在 $H^*(Fl_n)$ 中，基本类之间满足关系 $\sum_{i=1}^n x_i = 0$（因为旗流形是紧致的，Chern 类的和为零）。这意味着在多项式代表元中，变量 $x_n$ 可以用其他变量消去。\item \textbf{单项式基元的分圆条件}：Schubert 多项式在 $H^*(Fl_n)$ 中构成多项式环 $\mathbb{Z}[x_1, \ldots, x_{n-1}]$ 的自由基。对于每个置换 $w$，指数向量 $(c_1, c_2, \ldots, c_{n-1})$ 满足 $0 \leq c_i \leq n-i$。\item \textbf{最长置换的指数}：$w_0$ 对应的指数向量取最大值：$$c_i = \#\{j > i : w_0(j) < w_0(i)\} = n-i$$因此 $\mathfrak{S}_{w_0}(\mathbf{x}) = \prod_{i=1}^{n-1} x_i^{n-i}$。
-\end{enumerate}\textbf{具体例子（$n=2$）}：对于 $S_2$，$w_0 = 21$：
+\end{enumerate}
+
+\textbf{具体例子（$n=2$）}：对于 $S_2$，$w_0 = 21$：
 \begin{itemize}\item $i=1$：$c_1 = \#\{j > 1 : w_0(j) < w_0(1)\} = \#\{2 : 1 < 2\} = 1$
 \end{itemize}故 $\mathfrak{S}_{21}(\mathbf{x}) = x_1^1 = x_1$。\bigskip\textbf{具体例子（$n=3$）}：对于 $S_3$，$w_0 = 321$：
 \begin{itemize}\item $i=1$：$c_1 = \#\{j > 1 : w_0(j) < w_0(1)\} = \#\{2,3 : 2,1 < 3\} = 2$\item $i=2$：$c_2 = \#\{j > 2 : w_0(j) < w_0(2)\} = \#\{3 : 1 < 2\} = 1$
@@ -423,7 +463,9 @@ $[\overline{B^-wB/B}]_T$（等变量子上同调类）和标准 Schubert 多项�
 \end{itemize}\textbf{具体对应}（来自 \cite[ Theorem 10.6.4]{anderson2023}）：
 \begin{enumerate}
 \item \textbf{等变量子上同调类}：$[\overline{B^-wB/B}]_T \in H_T^*(Fl_n(\mathbb{C}))$\item \textbf{双重 Schubert 多项式代表元}：$[\overline{B^-wB/B}]_T$ 由 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 表示\item \textbf{退化为标准 Schubert 多项式}：当 $\mathbf{y} = \mathbf{0}$ 时，$$\mathfrak{S}_w(\mathbf{x}; \mathbf{0}) = \mathfrak{S}_w(\mathbf{x})$$
-\end{enumerate}\textbf{几何含义}：
+\end{enumerate}
+
+\textbf{几何含义}：
 \begin{itemize}\item $[\overline{B^-wB/B}]_T$ 是旗流形中 Schubert 胞腔闭包 $\overline{B^-wB/B}$ 的等变量子上同调类\item $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 是这个上同调类的多项式代表元（方便计算）\item $\mathbf{y}$ 变量编码了 torus $T$ 作用的信息
 \end{itemize}\textbf{为什么需要双重版本？}设 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[t_1, \ldots, t_n]$，则$$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) \in H_T^*(Fl_n) \cong \mathbb{Z}[x_1, \ldots, x_n]^{\mathfrak{S}_n}[t_1, \ldots, t_n] / \text{relations}$$当把 $x_i$ 替换为 $0$ 时，$\mathfrak{S}_w(\mathbf{0}; \mathbf{y})$ 给出了等变量子上同调类在固定点处的 restrictions，这些 restrictions 编码了 Schubert 胞腔的定位信息。\textbf{总结表}：
 \begin{center}
@@ -442,7 +484,9 @@ $[\overline{B^-wB/B}]_T$（等变量子上同调类）和标准 Schubert 多项�
 \subsection{equivariant 情形的证明思路}equivariant 情形的证明更加精细，因为需要处理 torus 作用带来的权：
 \begin{enumerate}
 \item 在 approximation space $\mathbf{X} = \mathbb{E} \times^T G/P$ 上工作\item 使用群 $\Gamma = \Gamma_f \rtimes (GL_m)^r$ 在 $\mathbf{X}$ 上的作用\item 由 Lemma 19.3.5，存在 $g \in \Gamma$ 使得 $g\mathbf{Y}[w]$ 与 $\mathbf{Z}$ 横截相交\item 利用 Poincaré 对偶和 Gysin 映射的基本性质\item 由于 Gysin 映射保持有效类（effective class），$c_{[w]}$ 是有效类\item 因此 $c_{[w]} \in \mathbb{Z}_{\geq 0}[\alpha_1, \ldots, \alpha_r]$
-\end{enumerate}\textbf{关键洞察}：在普通上同调中，横截相交给出非负整数；在 equivariant 上同调中，横截相交给出正根多项式的非负系数。
+\end{enumerate}
+
+\textbf{关键洞察}：在普通上同调中，横截相交给出非负整数；在 equivariant 上同调中，横截相交给出正根多项式的非负系数。
 \subsection{在引理 2.5 证明中的应用}在引理 2.5 的证明中，横截性由 Kleiman-Bertini 分析保证：
 \begin{itemize}\item 设 $w_0^{(m)} \in S_m$ 是最长排列\item 对于 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为直和\item 由 $v \in S_n$ 知 $\overline{B^-vB/B}$ 在 $s_i$（$n \leq i < 2n$）下不变\item 因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$\item 类似地 $\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$\item 由于 $u_0^{-1}\tau u_0 = w_0^{(2n)}$，交集的横截性由 \cite[Lemma 19.3.5]{anderson2023} 保证
 \end{itemize}\textbf{Footnote}：Theorem 19.4.4 的退化证明见附录 \cref{sec:AndersonFulton19-4}。
@@ -492,7 +536,9 @@ $[\overline{B^-wB/B}]_T$（等变量子上同调类）和标准 Schubert 多项�
 \textbf{结论：是的，反过来也成立。}这实际上是 $k$-Grassmannian 排列的一个等价刻画。\textbf{等价定义}：一个排列 $w \in S_n$ 是 $k$-Grassmannian 的，当且仅当其双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 可以分解为 $k$ 个线性因子的乘积：$$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^{k}(x_{a_i} - y_{b_i})$$\textbf{证明思路}：
 \begin{enumerate}
 \item \textbf{充分性（Grassmannian $\Rightarrow$ 线性因子）}：   已在正文（\cref{ex:GrahamPositivityExample}）证明。$k$-Grassmannian 排列 $w$ 对应的 Schubert 胞腔 $B^-wB/B$ 是 Grassmannian $G/P$ 的子簇，其坐标环是多项式环的商，故 $\mathfrak{S}_w$ 有因子化形式。\item \textbf{必要性（线性因子 $\Rightarrow$ Grassmannian）}：   设 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 是 $k$ 个线性因子的乘积。则 $\mathfrak{S}_w$ 作为 $\mathbf{x}$ 的多项式，每个因子关于 $\mathbf{x}$ 都是线性的。这意味着 $w$ 对应的旗流形子簇在某些方向上是线性的，这正是 Grassmannian 子簇的特征。更形式地说，如果 $w$ 不是 Grassmannian，则 $\mathfrak{S}_w$ 包含关于 $\mathbf{x}$ 的二次或更高次项。
-\end{enumerate}\textbf{具体例子验证}：
+\end{enumerate}
+
+\textbf{具体例子验证}：
 \begin{itemize}\item $w = 231$（非 Grassmannian）：$\mathfrak{S}_{231} = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3$——不能写成线性因子的乘积\item $w = 21$（1-Grassmannian）：$\mathfrak{S}_{21} = x_1 - y_1$——线性因子\item $w = 132$（1-Grassmannian）：$\mathfrak{S}_{132} = x_2 - y_2$——线性因子
 \end{itemize}\textbf{直觉理解}：Grassmannian 子簇本身是由线性方程定义的，因此其 Schubert 类自然有线性因子的表示。非 Grassmannian 的子簇涉及更复杂的代数关系，导致多项式中出现二次或更高次项。
 \section{Refined Graham Positivity 与原始 Graham Positivity 的关系}\label{sec:RefinedVsOriginalGraham}
@@ -515,7 +561,9 @@ Refined Graham Positivity（\cref{def:RefinedGraham}）和原始的 Graham Posit
 \textbf{Section 28: Bruhat Decomposition} 是 Humphreys 一书中关于旗流形分解的核心章节。其主要结果包括：\bigskip\textbf{28.1 T-稳定子群（Theorem 28.1 - 原文第 169 页）}：\textbf{Theorem 28.1.} 设 $G$ 为约化群，$T$ 为极大环面，$B$ 为 Borel 子群，$U$ 为 $B$ 的幂幺根基。则 $U$ 可以分解为两个 $T$-稳定子群的直接乘积：$$U = U_\sigma \cdot U_\sigma'$$其中对每个 $\sigma \in W$（Weyl 群元），根系 $\Phi^+$ 被划分为：$$\Phi_\sigma^+ = \{\alpha > 0 \mid \sigma^{-1}(\alpha) > 0\}, \quad \Phi_\sigma^- = \{\alpha > 0 \mid \sigma^{-1}(\alpha) < 0\}$$\bigskip\textbf{28.3 Bruhat 分解（Theorem 28.3 - 原文第 3831 页）}：\textbf{Theorem 28.3 (Bruhat Decomposition).}$$G = \bigcup_{\sigma \in W} B\sigma B \quad \text{（不相交并）}$$其中每个双陪集 $B\sigma B$ 等于某个 Schubert 胞腔。\textbf{推论（Corollary of Theorem 28.3）}：设 $B'$ 为 $G$ 的任意 Borel 子群，则 $B \cap B'$ 是连通的且包含 $G$ 的一个极大环面。\bigskip\textbf{28.4 正规形式（Theorem 28.4 - 原文第 3863 页）}：\textbf{Theorem 28.4.} 对每个 $\sigma \in W$，每个元素 $x \in G$ 可以唯一地写成：$$x = u' \cdot n(\sigma) \cdot t \cdot u$$其中 $u, u' \in U$（幂幺部分），$t \in T$（环面部分），$n(\sigma) \in N$（Weyl 群代表元）。\bigskip\textbf{在引理 2.2 证明中的应用}：正文引用"Humphreys \cite[Section 28]{humphreys1975}，$N^-(w)$ 同构于 Schubert 胞腔 $B^-wB/B \cong \mathbb{C}^{\ell(w_0) - \ell(w)}$"是基于以下对应：
 \begin{enumerate}
 \item $B^- = TU^-$ 是 $B$ 的相反 Borel 子群\item $N^-(w) = N^- \cap wNw^{-1}$ 对应负根方向\item 由 Bruhat 分解，$B^-wB/B \cong \mathbb{C}^{\ell(w_0) - \ell(w)}$\item 作为簇，$N^-(w) \cong B^-wB/B$（通过映射 $x \mapsto xwB/B$）
-\end{enumerate}\textbf{几何意义}：$N^-(w)$ 是旗流形 $G/B$ 中 Schubert 胞腔 $B^-wB/B$ 的坐标空间。具体而言，$N^-(w)$ 同构于 $\mathbb{C}^{\ell(w_0)-\ell(w)}$（仿射空间），这意味着每个 Schubert 胞腔可以用 $\ell(w_0)-\ell(w)$ 个复坐标参数化。\textbf{连通性}：由于 $N^-(w) \cong \mathbb{C}^d$（仿射空间），它是连通的（甚至单连通）。\footnote{问：Humphreys Section 28 的 Bruhat Decomposition 说了什么？见附录 \cref{sec:HumphreysSection28}。}
+\end{enumerate}
+
+\textbf{几何意义}：$N^-(w)$ 是旗流形 $G/B$ 中 Schubert 胞腔 $B^-wB/B$ 的坐标空间。具体而言，$N^-(w)$ 同构于 $\mathbb{C}^{\ell(w_0)-\ell(w)}$（仿射空间），这意味着每个 Schubert 胞腔可以用 $\ell(w_0)-\ell(w)$ 个复坐标参数化。\textbf{连通性}：由于 $N^-(w) \cong \mathbb{C}^d$（仿射空间），它是连通的（甚至单连通）。\footnote{问：Humphreys Section 28 的 Bruhat Decomposition 说了什么？见附录 \cref{sec:HumphreysSection28}。}
 \section{为什么 Refined Graham Positivity 的假设是``更强''的？}\label{sec:WhyStrongerHypothesis}
 \subsection{问题}
 在 Remark 中有一段话：
@@ -542,7 +590,9 @@ Refined Graham Positivity（\cref{def:RefinedGraham}）和原始的 Graham Posit
 \textbf{Grothendieck 多项式（Grothendieck polynomial）}是 Schubert 多项式的推广，由 Alexander Grothendieck 在 1950 年代引入。\textbf{历史背景}：Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 由 Lascoux 和 Schützenberger 在 1980 年代引入，用于表示旗流形上 Schubert 胞腔的上同调类。但这只解决了旗流形的\textbf{普通上同调}。1950 年代，Grothendieck 和 Grothendieck 学生 Demazure 研究了旗流形的\textbf{Chow 群}和\textbf{代数 K-理论}。他们发现，在 K-理论中，Schubert 类的代表元不再是多项式，而是更复杂的对象——这就是 Grothendieck 多项式。\textbf{与 Schubert 多项式的关系}：在旗流形的 K-理论中，Schubert 胞腔的结构常数不再是非负整数，而是更一般的表达式。Grothendieck 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x})$ 满足：
 \begin{enumerate}
 \item \textbf{退化到 Schubert 多项式}：当限制到上同调时，$\widetilde{\mathfrak{S}}_w(\mathbf{x})$ 退化为 $\mathfrak{S}_w(\mathbf{x})$$$\widetilde{\mathfrak{S}}_w(\mathbf{x}) \equiv \mathfrak{S}_w(\mathbf{x}) \pmod{\mathbb{Z}_{>0}[\text{次数} \geq 1]}$$\item \textbf{K-理论中的地位}：在 $K^0(Fl_n) \otimes \mathbb{Q}$ 中，$\{\widetilde{\mathfrak{S}}_w\}$ 构成基
-\end{enumerate}\textbf{组合定义}：Grothendieck 多项式可以用除差算子递归定义：$$\widetilde{\mathfrak{S}}_w(\mathbf{x}) = \partial_i^{-1} \widetilde{\mathfrak{S}}_{ws_i}(\mathbf{x}) \quad \text{（当 } i \text{ 是 } w \text{ 的 descent）}$$但这里的 $\partial_i^{-1}$ 是\textbf{逆除差算子}，定义为：$$\partial_i^{-1}(f) = \sum_{k \geq 0} x_i^k \cdot \partial_i(f)$$这导致 Grothendieck 多项式是\textbf{无穷级数}，但可以证明在 K-理论中是良定义的。\textbf{几何意义}：在代数 K-理论中，旗流形的结构环 $K^0(Fl_n)$ 由 Schubert 类 $[\mathcal{O}_{\overline{B^-wB/B}}]$ 生成。Grothendieck 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x})$ 是这些 K-理论类的代表元。\textbf{正性}：与 Schubert 多项式类似，Grothendieck 多项式的结构常数也满足某种正性。在 Fan-Guo-Xiong \cite{FGL2025} 中，他们建立了双重 Grothendieck 多项式范围的正性公式，使用 puzzles 方法。\textbf{笔记中的位置}：在\cref{sec:GrothendieckProof} 中，笔记讨论了关于 Grothendieck 多项式的 positivity 猜想，这是 Gao-Xiong 工作的自然推广方向之一。\footnote{问：Grothendieck 多项式是什么？见附录 \cref{sec:GrothendieckPolynomial}。}
+\end{enumerate}
+
+\textbf{组合定义}：Grothendieck 多项式可以用除差算子递归定义：$$\widetilde{\mathfrak{S}}_w(\mathbf{x}) = \partial_i^{-1} \widetilde{\mathfrak{S}}_{ws_i}(\mathbf{x}) \quad \text{（当 } i \text{ 是 } w \text{ 的 descent）}$$但这里的 $\partial_i^{-1}$ 是\textbf{逆除差算子}，定义为：$$\partial_i^{-1}(f) = \sum_{k \geq 0} x_i^k \cdot \partial_i(f)$$这导致 Grothendieck 多项式是\textbf{无穷级数}，但可以证明在 K-理论中是良定义的。\textbf{几何意义}：在代数 K-理论中，旗流形的结构环 $K^0(Fl_n)$ 由 Schubert 类 $[\mathcal{O}_{\overline{B^-wB/B}}]$ 生成。Grothendieck 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x})$ 是这些 K-理论类的代表元。\textbf{正性}：与 Schubert 多项式类似，Grothendieck 多项式的结构常数也满足某种正性。在 Fan-Guo-Xiong \cite{FGL2025} 中，他们建立了双重 Grothendieck 多项式范围的正性公式，使用 puzzles 方法。\textbf{笔记中的位置}：在\cref{sec:GrothendieckProof} 中，笔记讨论了关于 Grothendieck 多项式的 positivity 猜想，这是 Gao-Xiong 工作的自然推广方向之一。\footnote{问：Grothendieck 多项式是什么？见附录 \cref{sec:GrothendieckPolynomial}。}
 \section{Billey 公式的显式形式}\label{sec:BilleyFormulaExplicit}
 \subsection{问题}
 正文（\cref{sec:BilleyPositivity}）说"从其显式形式（此处略去）"，Billey 公式的显式形式到底是什么？
