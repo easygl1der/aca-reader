@@ -358,21 +358,21 @@ grep -n 'tag\*{' notes/**/*.tex
 
 ---
 
-## L910: 等变量子量子上同调 术语规范
+## L910: Equivariant Quantum Schubert Calculus 术语规范
 
 **日期**: 2026-03-31
-**经历次数**: 1 次 (累计)
+**经历次数**: 2 次 (累计)
 
 **错误描述**:
-错误地将 equivariant quantum cohomology 翻译为"等变量量子上同调"，缺少"子"字。
+错误地将 "Equivariant Quantum Schubert Calculus" 翻译为"等变量子量子上同调"。
 
 **正确术语**:
 ```latex
 % 错误 ❌
-等变量量子上同调
+等变量子量子上同调
 
 % 正确 ✅
-等变量子量子上同调
+等变量子上同调中的量子 Schubert 演算
 ```
 
 **术语体系**:
@@ -380,16 +380,16 @@ grep -n 'tag\*{' notes/**/*.tex
 |------|------|
 | equivariant cohomology | 等变量子上同调 |
 | quantum cohomology | 量子上同调 |
-| equivariant quantum cohomology | 等变量子量子上同调 |
+| Equivariant Quantum Schubert Calculus | 等变量子上同调中的量子 Schubert 演算 |
 
 **检查命令**:
 ```bash
-grep -n "等变量量子上同调" notes/Schubert-Polynomials/chapters/*.tex
+grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-Polynomials/chapters/*.tex
 ```
 
 **防止措施**:
-- equivariant quantum = 等变量子（不是等变量）
-- 记住：量子 variant 的修饰应该加"子"
+- 这是论文标题，应整体翻译为"等变量子上同调中的量子 Schubert 演算"
+- 不要拆分为"等变量子量子上同调"
 
 ---
 
