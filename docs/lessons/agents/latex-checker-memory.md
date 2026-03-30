@@ -418,8 +418,8 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 | Equivariant Quantum Schubert Calculus | 等变量子上同调中的量子 Schubert 演算 |
 
 **防止措施**:
-- "equivariant" 简称为"等变"，不是"等变量"
-- 表格中可简化为"等变上同调"、"量子化等变上同调"
+- "equivariant" 简称"等变"，不是"等变量"
+- 第三种情形应称为"等变量子上同调中的量子 Schubert 演算"，不是"量子化等变上同调"
 
 ---
 
