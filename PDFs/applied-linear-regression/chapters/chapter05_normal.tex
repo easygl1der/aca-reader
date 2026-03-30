@@ -1,0 +1,1020 @@
+ 
+\chapter{Normal Linear Model: Inference and Prediction}
+ \label{chapter::normal-linear-model}
+
+
+
+
+
+Under the Gauss--Markov model in Assumption \ref{assume::gm-model} in Chapter \ref{chapter::gauss-markov}, we have calculated the first two moments of the OLS estimator $\hat{\beta} = (X^{\T} X)^{-1} X^{\T} Y$:
+\begin{eqnarray*}
+E(\hat{\beta}) &=& \beta,\\
+\cov(\hat{\beta}) &=& \sigma^{2}(X^{\T}X)^{-1},
+\end{eqnarray*}
+and have shown that $\hat{\sigma}^{2} =   \hat{\varepsilon}^{\T}  \hat{\varepsilon} / (n-p)$ is unbiased for $\sigma^{2}$, where $\hat{\varepsilon} = Y - X \hat{\beta}$ is the residual vector. The Gauss--Markov theorem further ensures that the OLS estimator is the best linear unbiased estimator (BLUE). 
+Although these results characterize the nice properties of the OLS estimator,
+they do not fully determine its distribution and are thus inadequate
+for statistical inference.
+
+ This chapter will derive the joint distribution
+of $(\hat{\beta},\hat{\sigma}^{2})$ under the Normal linear model with stronger distribution assumptions. 
+
+ 
+
+\begin{assumption}
+[Normal linear model] 
+\label{assume::nlm}
+We have
+$$
+Y\sim\N(X\beta,\sigma^{2}I_{n}) , 
+$$
+or, equivalently,
+$$
+y_{i} \stackrel{ \textsc{ind} }{ \sim}\N(x_{i}^{\T}\beta,\sigma^{2}),\qquad(i=1,\ldots,n),
+$$ 
+where the design matrix $X$ is fixed with linearly independent column vectors. The unknown parameters are $(\beta,\sigma^{2})$. 
+\end{assumption}
+
+We can also write the Normal linear model as a linear function of covariates with error terms:
+$$
+Y = X\beta +\varepsilon \text{ with } \varepsilon \sim \N(0,\sigma^2 I_n) 
+$$
+or, equivalently, 
+$$
+y_i = x_{i}^{\T}\beta  +\varepsilon_i \text{ with } \varepsilon_i \iidsim \N(0,\sigma^2) \qquad(i=1,\ldots,n).
+$$
+ 
+
+
+Assumption \ref{assume::nlm} implies Assumption \ref{assume::gm-model}. Beyond the Gauss--Markov model, it further requires independent and identically distributed (IID) Normal error terms. 
+Assumption \ref{assume::nlm} is strong, but it is canonical in statistics. It allows us to derive elegant formulas and also justifies the outputs of the linear regression functions in many statistical packages. 
+
+
+More interestingly, even though Assumption \ref{assume::nlm} is strong, the statistical procedures derived in this chapter are robust to various violations. 
+\footnote{
+As another example, \citet{zhang2025random} discussed the robustness of the $t$ test in this chapter even when the error terms are correlated in an unknown way.
+}  
+Chapter \ref{chapter::EHW} will discuss the robustness of the $t$ test in this chapter even when the error terms are not Normally distributed. Moreover,  Chapter \ref{chapter::EHW} will relax Assumption \ref{assume::nlm} and propose a modified procedure that is particularly robust to heteroskedasticity.
+
+
+
+
+
+
+\section{Joint distribution of the OLS coefficient and variance estimator}
+% $(\hat{\beta},\hat{\sigma}^{2})$}
+
+We first state the main theorem on the joint distribution of $(\hat{\beta},\hat{\sigma}^{2})$
+via the joint distribution of $(\hat{\beta},\hat{\varepsilon}).$
+\begin{theorem}
+\label{thm:normalexactdistribution}Under Assumption \ref{assume::nlm}, we have 
+\[
+\left(\begin{array}{c}
+\hat{\beta}\\
+\hat{\varepsilon}
+\end{array}\right)\sim\N\left\{ \left(\begin{array}{c}
+\beta\\
+0
+\end{array}\right),\sigma^{2}\left(\begin{array}{cc}
+(X^{\T}X)^{-1} & 0\\
+0 & I_{n}-H
+\end{array}\right)\right\} ,
+\]
+and
+$$
+\hat{\sigma}^{2}/\sigma^{2}\sim\chi_{n-p}^{2}/(n-p).
+$$
+So 
+$$
+\hat{\beta}\ind\hat{\varepsilon} ,\quad 
+ \hat{\beta}\ind\hat{\sigma}^{2}  .
+$$
+\end{theorem}
+ 
+\begin{myproof}{Theorem}{\ref{thm:normalexactdistribution}}
+First, 
+\begin{eqnarray*}
+\left(\begin{array}{c}
+\hat{\beta}\\
+\hat{\varepsilon}
+\end{array}\right)
+&=&
+\left(\begin{array}{c}
+(X^{\T}X)^{-1}X^{\T}Y\\
+(I_{n}-H)Y
+\end{array}\right) \\
+&=&\left(\begin{array}{c}
+(X^{\T}X)^{-1}X^{\T}\\
+I_{n}-H
+\end{array}\right)Y
+\end{eqnarray*}
+is a linear transformation of $Y$, so they are jointly Normal. We have verified their means and variances in Chapter \ref{chapter::gauss-markov}, so we only need to show that their covariance is zero:
+\begin{eqnarray*}
+\cov(\hat{\beta},\hat{\varepsilon})
+&=&(X^{\T}X)^{-1}X^{\T}\cov(Y)(I_{n}-H)^{\T}\\
+&=&\sigma^{2}(X^{\T}X)^{-1}X^{\T}(I_{n}-H^{\T}) \\
+&=&0
+\end{eqnarray*}
+which holds because $(I_{n}-H)X=0$ by Lemma \ref{lem:projectionms}.
+The joint Normality with 0 covariance implies $\hat{\beta}\ind\hat{\varepsilon}$. 
+ 
+
+Second, because $\hat{\sigma}^{2}=\textsc{rss}/(n-p)=\hat{\varepsilon}^{\T}\hat{\varepsilon}/(n-p)$
+is a quadratic function of $\hat{\varepsilon}$, it is independent
+of $\hat{\beta}$. We only need to show that it is a scaled chi-squared
+distribution. This follows from Theorem \ref{thm::normal-chisq} in Appendix \ref{chapter:appendix-rvs}  due to the Normality of $\hat{\varepsilon}/\sigma$
+with the projection matrix $I_{n}-H$ as its covariance matrix. 
+\end{myproof}
+
+
+
+The second theorem is on the joint distribution of $(\hat{Y},\hat{\varepsilon}).$
+We have shown their means and covariance matrix in Chapter \ref{chapter::gauss-markov}.
+Because they are linear transformations of $Y$, they are jointly Normal
+and independent. 
+\begin{theorem}\label{thm::gaussianlm-independence-ye}
+Under Assumption \ref{assume::nlm}, we have 
+\[
+\left(\begin{array}{c}
+\hat{Y}\\
+\hat{\varepsilon}
+\end{array}\right)\sim\N\left\{ \left(\begin{array}{c}
+X\beta\\
+0
+\end{array}\right),\sigma^{2}\left(\begin{array}{cc}
+H & 0\\
+0 & I_{n}-H
+\end{array}\right)\right\} ,
+\]
+so 
+$$
+\hat{Y}\ind\hat{\varepsilon}.
+$$
+\end{theorem}
+ 
+
+Now we have seen several properties of $\hat{Y} $ and $  \hat{\varepsilon}$:
+\begin{enumerate}[label=(P\arabic*), ref=P\arabic*]
+\item\label{fitted-residual-chapter5-p1}
+In Chapter \ref{chapter::ols-vector}, we have shown that $Y = \hat{Y}  + \hat{\varepsilon}$ with $\hat{Y}  \perp  \hat{\varepsilon}$ by the OLS properties, which is a pure linear algebra fact without assumptions.
+\item\label{fitted-residual-chapter5-p2}
+In Chapter \ref{chapter::gauss-markov}, Theorem \ref{thm:GMcov} ensures that $\hat{Y} $ and $  \hat{\varepsilon}$ are uncorrelated under Assumption \ref{assume::gm-model}.
+\item\label{fitted-residual-chapter5-p3}
+Now Theorem \ref{thm::gaussianlm-independence-ye} further ensures that $\hat{Y}  \ind  \hat{\varepsilon}$ under Assumption \ref{assume::nlm}.
+\end{enumerate}
+
+
+The first result \eqref{fitted-residual-chapter5-p1} states that $\hat{Y} $ and $  \hat{\varepsilon}$
+are orthogonal. 
+The second result \eqref{fitted-residual-chapter5-p2} states that $\hat{Y} $ and $  \hat{\varepsilon}$ are uncorrelated. 
+The third result \eqref{fitted-residual-chapter5-p3} states $\hat{Y} $ and $  \hat{\varepsilon}$ are independent. 
+They hold under different assumptions. 
+
+
+
+\section{Pivotal quantities and statistical inference}
+
+\subsection{Scalar parameters}
+We first consider statistical inference for $c ^{\T}\beta$,
+a one-dimensional linear function of $\beta$ where $c \in\mathbb{R}^{p}.$
+For example, if $c = e_j \equiv   (0,\ldots,1,\ldots,0)^{\T}$ with only the
+$j$th element being one, then $c ^{\T}\beta=\beta_{j}$ is the
+$j$th element of $\beta$, which measures the impact of $x_{ij}$
+on $y_{i}$ on average. Standard software packages report statistical
+inference for each element of $\beta$. Sometimes we may also be interested in $\beta_j - \beta_{j'}$, the difference between the coefficients of two covariates, which corresponds to $c=(0, \ldots,0,1,0,\ldots,0,-1,0,\ldots,0)^{\T} = e_j - e_{j'}$. 
+
+Theorem \ref{thm:normalexactdistribution} implies that 
+\[
+c ^{\T}\hat{\beta}\sim\N\{ c ^{\T}\beta,\sigma^{2}c ^{\T}(X^{\T}X)^{-1}c \} .
+\]
+However, this is not directly useful because $\sigma^{2}$ is unknown.
+With $\sigma^{2}$ replaced by $\hat{\sigma}^{2}$, the standardized
+distribution
+\[
+T_c  = 
+\frac{c ^{\T}\hat{\beta}-c ^{\T}\beta}{\sqrt{\hat{\sigma}^{2}c ^{\T}(X^{\T}X)^{-1}c }}
+\]
+does not follow $\N(0,1)$ anymore. In fact, it is a $t$ distribution as shown in Theorem \ref{thm:1dimpivotal} below. 
+
+\begin{theorem}
+\label{thm:1dimpivotal}Under Assumption \ref{assume::nlm}, for a fixed vector $c  \in \mathbb{R}^p$, we have 
+$$
+T_c  \sim t_{n-p}.
+$$
+\end{theorem}
+
+
+
+
+\begin{myproof}{Theorem}{\ref{thm:1dimpivotal}}
+From Theorem \ref{thm:normalexactdistribution}, the standardized
+distribution with the true $\sigma^{2}$ follows
+\[
+\frac{c ^{\T}\hat{\beta}-c ^{\T}\beta}{\sqrt{\sigma^{2}c ^{\T}(X^{\T}X)^{-1}c }}\sim\N(0,1),
+\]
+ $\hat{\sigma}^{2}/\sigma^{2}\sim\chi_{n-p}^{2}/(n-p),$ and they
+are independent. These facts imply that
+\begin{align*}
+T_c &= 
+\frac{c ^{\T}\hat{\beta}-c ^{\T}\beta}{\sqrt{\hat{\sigma}^{2}c ^{\T}(X^{\T}X)^{-1}c }} \\
+& =\frac{c ^{\T}\hat{\beta}-c ^{\T}\beta}{\sqrt{\sigma^{2}c ^{\T}(X^{\T}X)^{-1}c }}\Big/\sqrt{\frac{\hat{\sigma}^{2}}{\sigma^{2}}}\\
+ & \sim \frac{\N(0,1)}{\sqrt{\chi_{n-p}^{2}/(n-p)}} ,
+\end{align*}
+where $\N(0,1)$ and $\chi_{n-p}^{2}$ denote independent standard Normal and $\chi_{n-p}^{2}$ random variables, respectively. Therefore, 
+$T_c \sim t_{n-p}$ by the definition of the $t$ distribution in Appendix \ref{chapter:appendix-rvs}. 
+\end{myproof}
+
+
+
+
+
+In Theorem \ref{thm:1dimpivotal}, the $T_c $ on the left-hand side
+depends on the observed data and the unknown true parameters, but the $t_{n-p}$ on the right-hand side is a random variable depending on only the dimension
+$(n,p)$ of $X$, but neither the data nor the true parameters. Because of this, we call the quantity on the left-hand side a {\it pivotal quantity}. Based
+on the quantiles of the $t_{n-p}$ random variable, we can tie the
+data and the true parameter via the following probability statement
+\[
+\pr\left\{ \left|\frac{c ^{\T}\hat{\beta}-c ^{\T}\beta}{\sqrt{\hat{\sigma}^{2}c ^{\T}(X^{\T}X)^{-1}c }}\right|\leq  
+t_{1-\alpha/2,n-p}
+\right\} =1-\alpha
+\]
+ for any $0<\alpha<1$, where $t_{1-\alpha/2,n-p}  $ is the $1-\alpha/2$
+quantile of $t_{n-p}$. 
+When $n-p$ is large (e.g. larger than $30$), the $1-\alpha/2$ quantile of $t_{n-p}$ is close to that of $\N(0,1)$. 
+In particular, when $n-p$ is large, $t_{97.5\%,n-p}\approx 1.96$, the $97.5\%$ quantile of $\N(0,1)$, which is the critical value for the $95\%$ confidence interval. 
+
+
+Define 
+$$
+\hat{\text{se}}_{c } = 
+\sqrt{\hat{\sigma}^{2}c ^{\T}(X^{\T}X)^{-1}c }
+$$
+which is often called the (estimated) standard error of $c ^{\T}\hat{\beta}$. Using the definition of $\hat{\text{se}}_{c } $,
+we can equivalently write the above probability statement as
+\[
+\pr\left\{ c ^{\T}\hat{\beta}- t_{1-\alpha/2,n-p} \hat{\text{se}}_{c }\leq c ^{\T}\beta\leq c ^{\T}\hat{\beta}+ t_{1-\alpha/2,n-p} \hat{\text{se}}_{c }\right\} =1-\alpha.
+\]
+We use 
+\[
+c ^{\T}\hat{\beta} \pm t_{1-\alpha/2,n-p} \hat{\text{se}}_{c } 
+\]
+as a $1-\alpha$ level confidence interval for $c ^{\T}\beta$. By duality of confidence
+interval and hypothesis testing, we can also construct a level $\alpha$
+test for $c ^{\T}\beta$. More precisely, we reject the null hypothesis $c ^{\T}\beta = d$ if the above confidence interval does not cover $d$, for a fixed number $d$. 
+
+
+As an important case, $c=e_j$ so $c^{\T} \beta = \beta_j$. Standard software packages, for example, \ri{R}, report the point estimator $\hat{\beta}_j$, the standard error $\hat{\text{se}}_j = \sqrt{ \hat{\sigma}^2 [(X^{\T}X)^{-1}]_{jj} }$, the $t$ statistic $T_j = \hat{\beta}_j / \hat{\text{se}}_j $, and the two-sided $p$-value $\pr( | t_{n-p} | \geq  |T_j|  )$ for testing whether $\beta_j$ equals zero or not. Section \ref{sec::normallinearmodel-r} below gives some examples. 
+
+
+
+\subsection{Vector parameters}
+We then consider statistical inference for $C\beta$, a multi-dimensional
+linear function of $\beta$ where $C\in\mathbb{R}^{l\times p}.$ If
+$l=1$, then it reduces to the one-dimensional case. If 
+$$
+C = \begin{pmatrix}
+c_1^{\T} \\
+\vdots \\
+c_l^{\T}
+\end{pmatrix} 
+$$
+with $l>1$, then 
+$$
+C\beta = \begin{pmatrix}
+c_1^{\T} \beta \\
+\vdots \\
+c_l^{\T} \beta
+\end{pmatrix}
+$$
+corresponds to the joint values of $l$ parameters $ c_1^{\T} \beta, \ldots,c_l^{\T} \beta$.
+
+\begin{example}\label{eg::testing-1}
+If
+\[
+C=\left(\begin{array}{ccccc}
+0 & 1 & 0 & \cdots & 0\\
+0 & 0 & 1 & \cdots & 0\\
+\vdots & \vdots & \vdots & \cdots & \vdots\\
+0 & 0 & 0 & \cdots & 1
+\end{array}\right) , 
+\]
+then 
+\[
+C\beta=\left(\begin{array}{c}
+\beta_{2}\\
+\vdots\\
+\beta_{p}
+\end{array}\right) 
+\]
+contains all the coefficients except for the first one (the
+intercept in most cases). Most software packages report the test of
+the joint significance of $(\beta_{2}, \ldots, \beta_{p})$. Section \ref{sec::normallinearmodel-r} below gives some examples. 
+\end{example}
+
+\begin{example}\label{eg::partition-reg-F}
+Another
+leading application is to test whether $\beta_{2}=0$ in the following
+regression partitioned by $X=(X_{1},X_{2})$, where $X_{1}$ and $X_{2}$
+are $n\times k$ and $n\times l$ matrices:
+\[
+Y=X_{1}\beta_{1}+X_{2}\beta_{2}+\varepsilon,
+\]
+ with
+\[
+C=\left(\begin{array}{cc}
+0_{l\times k} & I_{l}\end{array}\right)\left(\begin{array}{c}
+\beta_{1}\\
+\beta_{2}
+\end{array}\right)
+\]
+and therefore, $ C\beta=\beta_{2}.$
+ We will discuss this partitioned regression in more detail in Chapters \ref{chapter::FWL-theorem} and \ref{chapter::FWL-application}.
+ \end{example}
+ 
+Now we will focus on the generic problem of inferring $C\beta$.
+To avoid degeneracy, we assume that $C$ does not have redundant rows, quantified below. 
+
+\begin{assumption}\label{assume::c-non-degenerate}
+ $C$ has linearly independent
+rows. 
+\end{assumption}
+
+
+Theorem \ref{thm:normalexactdistribution} implies that 
+\[
+C\hat{\beta}-C\beta\sim\N\{ 0,\sigma^{2}C(X^{\T}X)^{-1}C^{\T}\} ,
+\]
+and therefore, by Theorem \ref{thm::normal-chisq} in Appendix \ref{chapter:appendix-rvs},  the standardized quadratic form has a chi-squared distribution\footnote{
+Technically, we need to prove that $\sigma^{2}C(X^{\T}X)^{-1}C^{\T}$ is a positive definite matrix.
+
+Because $X$ has linearly independent columns, $X^{\T}X$ is a non-degenerate and thus positive definite
+matrix. Since $ u^{\T} C(X^{\T}X)^{-1}C^{\T}u \geq 0$, to show that $C(X^{\T}X)^{-1}C^{\T}$ is non-degenerate, we only need to show that $u^{\T} C(X^{\T}X)^{-1}C^{\T}u  = 0$ must imply  $u = 0$. 
+%$$
+%u^{\T} C(X^{\T}X)^{-1}C^{\T}u  = 0  \Longrightarrow u = 0. 
+%$$
+From $u^{\T} C(X^{\T}X)^{-1}C^{\T}u  = 0$, we know  $C^{\T}u = u_1 c_1 + \cdots u_l c_l = 0$. Since the rows of $C$ are linearly independent, we must have $u = 0$. The proof is complete.}
+\[
+(C\hat{\beta}-C\beta)^{\T}\left\{ \sigma^{2}C(X^{\T}X)^{-1}C^{\T}\right\} ^{-1}(C\hat{\beta}-C\beta)\sim\chi_{l}^{2}.
+\]
+%The above chi-squared distribution follows from the property of the quadratic form of a Normal in Theorem \ref{thm::normal-chisq}, where $\sigma^{2}C(X^{\T}X)^{-1}C^{\T}$ is a positive definite matrix. 
+Again this is not directly useful with unknown $\sigma^{2}.$ Replacing
+$\sigma^{2}$ with the unbiased estimator $\hat{\sigma}^{2}$ and
+using a scaling factor $l$, we can obtain a pivotal quantity that
+has an $F$ distribution as summarized in  Theorem \ref{thm:ldimpivotal} below.
+
+\begin{theorem}
+\label{thm:ldimpivotal}Under Assumptions \ref{assume::nlm} and \ref{assume::c-non-degenerate}, the $F$ statistic
+\[
+F_C  = 
+\frac{(C\hat{\beta}-C\beta)^{\T}\left\{ C(X^{\T}X)^{-1}C^{\T}\right\} ^{-1}(C\hat{\beta}-C\beta)}{l\hat{\sigma}^{2}}
+\]
+follows the $F$ distribution with degrees of freedom $l$ and $n-p$:
+$$
+F_C  \sim F_{l,n-p} . 
+$$
+\end{theorem}
+
+
+\begin{myproof}{Theorem}{\ref{thm:ldimpivotal}}
+Similar to the proof of Theorem \ref{thm:1dimpivotal}, we apply Theorem
+\ref{thm:normalexactdistribution} to derive that
+\[
+\begin{aligned} 
+F_C
+= & \frac{(C\hat{\beta}-C\beta)^{\T}\left\{ \sigma^{2}C(X^{\T}X)^{-1}C^{\T}\right\} ^{-1}(C\hat{\beta}-C\beta)/l}{\hat{\sigma}^{2}/\sigma^{2}}\\
+\sim & \frac{\chi_{l}^{2}/l}{\chi_{n-p}^{2}/(n-p)} ,
+\end{aligned}
+\]
+where $\chi_{l}^{2} $ and $\chi_{n-p}^{2} $ denote independent $\chi_{l}^{2} $ and $\chi_{n-p}^{2} $ random variables, respectively. Therefore, $F_C  \sim  F_{l,n-p}$ by the definition of the $F$ distribution in Appendix \ref{chapter:appendix-rvs}. 
+\end{myproof}
+
+
+
+Theorem \ref{thm:ldimpivotal} motivates the following confidence
+region for $C\beta$:
+\[
+\left\{ r  :(C\hat{\beta}- r )^{\T}\left\{ C(X^{\T}X)^{-1}C^{\T}\right\} ^{-1}(C\hat{\beta}- r)\leq l\hat{\sigma}^{2}
+f_{1-\alpha, l, n-p}
+\right\} ,
+\]
+ where $f_{1-\alpha, l, n-p}$ is the upper $\alpha$ quantile of the
+$F_{l,n-p}$ distribution. By duality of the confidence region and hypothesis
+testing, we can also construct a level $\alpha$ test for $C\beta$. Most statistical packages automatically report the $p$-value based on the $F$ statistic in Example \ref{eg::testing-1}. 
+ 
+
+As a final remark, the statistics in Theorems \ref{thm:1dimpivotal}
+and \ref{thm:ldimpivotal} are called the Wald-type statistics. 
+
+\section{Prediction based on pivotal quantities}\label{sec::prection-normallinear}
+
+Practitioners use OLS not only to infer $\beta$ but also to predict
+future outcomes. For the pair of future data $(x_{n+1},y_{n+1})$, we observe
+only $x_{n+1}$ and want to predict $y_{n+1}$ based on $(X,Y)$ and $x_{n+1}$.
+Assume a stable relationship between $y_{n+1}$ and $x_{n+1}$, that is,
+\[
+y_{n+1}\sim\N(x_{n+1}^{\T}\beta,\sigma^{2})
+\]
+with the same $(\beta,\sigma^{2}).$ 
+
+First, we can predict the mean of $y_{n+1}$ which is $x_{n+1}^{\T}\beta$.
+It is just a one-dimensional linear function of $\beta$, so the theory
+in Theorem \ref{thm:1dimpivotal} is directly applicable. A natural
+unbiased predictor is $x_{n+1}^{\T}\hat{\beta}$ with $1-\alpha$ level
+prediction interval
+\[
+ x_{n+1}^{\T}\hat{\beta} \pm t_{1-\alpha/2,  n-p} \hat{\text{se}}_{x_{n+1}} .
+\]
+
+Second, we can predict $y_{n+1}$ itself, which is a random variable.
+We can still use $x_{n+1}^{\T}\hat{\beta}$ as a natural unbiased predictor
+but need to modify the prediction interval. Because $y_{n+1}\ind\hat{\beta}$,
+we have
+\[
+y_{n+1}-x_{n+1}^{\T}\hat{\beta}\sim\N\{ 0,\sigma^{2}+\sigma^{2}x_{n+1}^{\T}(X^{\T}X)^{-1}x_{n+1}\} ,
+\]
+and therefore
+\begin{align*}
+\frac{y_{n+1}-x_{n+1}^{\T}\hat{\beta}}{\sqrt{\hat{\sigma}^{2}+\hat{\sigma}^{2}x_{n+1}^{\T}(X^{\T}X)^{-1}x_{n+1}}} & =\frac{y_{n+1}-x_{n+1}^{\T}\hat{\beta}}{\sqrt{\sigma^{2}+\sigma^{2}x_{n+1}^{\T}(X^{\T}X)^{-1}x_{n+1}}}\Big/\sqrt{\frac{\hat{\sigma}^{2}}{\sigma^{2}}}\\
+ & \sim\frac{\N(0,1)}{\sqrt{\chi_{n-p}^{2}/(n-p)}} , 
+\end{align*}
+where $\N(0,1)$ and $\chi_{n-p}^{2}$ denote independent standard Normal and $\chi_{n-p}^{2}$ random variables, respectively. Therefore,  
+$$
+\frac{y_{n+1}-x_{n+1}^{\T}\hat{\beta}}{\sqrt{\hat{\sigma}^{2}+\hat{\sigma}^{2}x_{n+1}^{\T}(X^{\T}X)^{-1}x_{n+1}}}
+  \sim t_{n-p}
+$$
+is a pivotal quantity. Define  the squared prediction error  as
+\begin{align*}
+\hat{\text{pe}}_{x_{n+1}}^{2} & =\hat{\sigma}^{2}+\hat{\sigma}^{2}x_{n+1}^{\T}(X^{\T}X)^{-1}x_{n+1}\\
+ & =\hat{\sigma}^{2}\left\{ 1+n^{-1}x_{n+1}^{\T}\left(n^{-1}\sumn x_{i}x_{i}^{\T}\right)^{-1}x_{n+1}\right\}  ,
+\end{align*}
+which has two components. 
+The first one has magnitude close to $\sigma^{2}$, which is of constant order. The second one has a magnitude that is decreasing in $n$, if $n^{-1}\sumn x_{i}x_{i}^{\T}$ converges to a finite limit
+with large $n$. Therefore, the first component dominates the second
+one with large $n$, which results in the main difference between
+predicting the mean of $y_{n+1}$ and predicting $y_{n+1}$ itself. Using
+the notation $\hat{\text{pe}}_{x_{n+1}}$, we can construct the following
+$1-\alpha$ level prediction interval: 
+\[
+ x_{n+1}^{\T}\hat{\beta} \pm  t_{1-\alpha/2,  n-p} \hat{\text{pe}}_{x_{n+1}} .
+\]
+
+
+\section{Examples}
+\label{sec::normallinearmodel-r}
+
+
+Below I illustrate the theory in this chapter with two classic datasets. 
+
+
+\subsection{Univariate regression}
+
+
+Revisiting Galton's data, we have the following result: 
+
+\begin{lstlisting}
+> GaltonFamilies = read.table("GaltonFamilies.txt", header = TRUE)
+> 
+> ## OLS fit by the "lm" function
+> galton_fit = lm(childHeight ~ midparentHeight,
++                 data = GaltonFamilies)
+> 
+> ## OLS coefficients and inference
+> summary(galton_fit)$coef
+                  Estimate Std. Error   t value     Pr(>|t|)
+(Intercept)     22.6362405  4.2651074  5.307308 1.390930e-07
+midparentHeight  0.6373609  0.0616076 10.345491 8.053865e-24
+\end{lstlisting}
+
+
+With the fitted line, we can predict \ri{childHeight} at different values of \ri{midparentHeight}. In the \ri{predict} function, if we specify \ri{interval = "confidence"}, it gives the {\it confidence} intervals for the means of the new outcomes; if we specify \ri{interval = "prediction"}, it gives the {\it prediction} intervals for the new outcomes themselves. 
+
+\begin{lstlisting}
+> ## predictions: confidence and prediction intervals
+> new_mph  = seq(60, 80, by = 0.5)
+> new_data = data.frame(midparentHeight = new_mph)
+> new_ci   = predict(galton_fit, new_data, 
++                         interval = "confidence")
+> new_pi   = predict(galton_fit, new_data, 
++                         interval = "prediction")
+> head(round(new_ci, 2))
+    fit   lwr   upr
+1 60.88 59.74 62.01
+2 61.20 60.12 62.27
+3 61.52 60.50 62.53
+4 61.83 60.88 62.79
+5 62.15 61.25 63.05
+6 62.47 61.63 63.31
+> head(round(new_pi, 2))
+    fit   lwr   upr
+1 60.88 54.13 67.63
+2 61.20 54.45 67.94
+3 61.52 54.78 68.25
+4 61.83 55.11 68.56
+5 62.15 55.44 68.87
+6 62.47 55.76 69.18
+\end{lstlisting}
+
+
+
+Figure \ref{fig::prediction-galton} plots the fitted line as well as the confidence intervals and prediction intervals at level $95\%$.  
+%The file \ri{code5.4.1.R} contains the  \ri{R} code. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width = \textwidth]{figures/galton_prediction_ggplot.pdf}
+\caption{Prediction in Galton's regression}\label{fig::prediction-galton}
+\end{figure}
+
+
+
+
+
+\subsection{Anscombe's Quartet: the importance of graphical diagnostics}
+\label{sec::anscombe-quartet}
+
+
+\citet{anscombe1973graphs} used four simple datasets to illustrate the importance of graphical diagnostics in linear regression. 
+His datasets are in \texttt{anscombe} in the \texttt{R} package \texttt{datasets}: \texttt{x1} and \texttt{y1} constitute the first dataset, and so on. 
+
+
+
+\begin{lstlisting}
+> library(datasets)
+> ## Anscombe's Quartet
+> anscombe
+   x1 x2 x3 x4    y1   y2    y3    y4
+1  10 10 10  8  8.04 9.14  7.46  6.58
+2   8  8  8  8  6.95 8.14  6.77  5.76
+3  13 13 13  8  7.58 8.74 12.74  7.71
+4   9  9  9  8  8.81 8.77  7.11  8.84
+5  11 11 11  8  8.33 9.26  7.81  8.47
+6  14 14 14  8  9.96 8.10  8.84  7.04
+7   6  6  6  8  7.24 6.13  6.08  5.25
+8   4  4  4 19  4.26 3.10  5.39 12.50
+9  12 12 12  8 10.84 9.13  8.15  5.56
+10  7  7  7  8  4.82 7.26  6.42  7.91
+11  5  5  5  8  5.68 4.74  5.73  6.89
+\end{lstlisting}
+
+
+The four datasets have similar sample moments. 
+
+\begin{lstlisting}
+> ## mean of x
+> c(mean(anscombe$x1),
++   mean(anscombe$x2),
++   mean(anscombe$x3),
++   mean(anscombe$x4))
+[1] 9 9 9 9
+> ## variance of x
+> c(var(anscombe$x1),
++   var(anscombe$x2),
++   var(anscombe$x3),
++   var(anscombe$x4))
+[1] 11 11 11 11
+> ## mean of y
+> c(mean(anscombe$y1),
++   mean(anscombe$y2),
++   mean(anscombe$y3),
++   mean(anscombe$y4))
+[1] 7.500909 7.500909 7.500000 7.500909
+> ## variance of y
+> c(var(anscombe$y1),
++   var(anscombe$y2),
++   var(anscombe$y3),
++   var(anscombe$y4))
+[1] 4.127269 4.127629 4.122620 4.123249
+\end{lstlisting}
+
+The results based on linear regression are almost identical. 
+
+\begin{lstlisting}
+> ols1 = lm(y1 ~ x1, data = anscombe)
+> summary(ols1)
+
+Call:
+lm(formula = y1 ~ x1, data = anscombe)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.92127 -0.45577 -0.04136  0.70941  1.83882 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   3.0001     1.1247   2.667  0.02573 * 
+x1            0.5001     0.1179   4.241  0.00217 **
+
+Residual standard error: 1.237 on 9 degrees of freedom
+Multiple R-squared:  0.6665,	Adjusted R-squared:  0.6295 
+F-statistic: 17.99 on 1 and 9 DF,  p-value: 0.00217
+
+> ols2 = lm(y2 ~ x2, data = anscombe)
+> summary(ols2)
+
+Call:
+lm(formula = y2 ~ x2, data = anscombe)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.9009 -0.7609  0.1291  0.9491  1.2691 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)    3.001      1.125   2.667  0.02576 * 
+x2             0.500      0.118   4.239  0.00218 **
+
+Residual standard error: 1.237 on 9 degrees of freedom
+Multiple R-squared:  0.6662,	Adjusted R-squared:  0.6292 
+F-statistic: 17.97 on 1 and 9 DF,  p-value: 0.002179
+
+> ols3 = lm(y3 ~ x3, data = anscombe)
+> summary(ols3)
+
+Call:
+lm(formula = y3 ~ x3, data = anscombe)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.1586 -0.6146 -0.2303  0.1540  3.2411 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   3.0025     1.1245   2.670  0.02562 * 
+x3            0.4997     0.1179   4.239  0.00218 **
+
+Residual standard error: 1.236 on 9 degrees of freedom
+Multiple R-squared:  0.6663,	Adjusted R-squared:  0.6292 
+F-statistic: 17.97 on 1 and 9 DF,  p-value: 0.002176
+
+> ols4 = lm(y4 ~ x4, data = anscombe)
+> summary(ols4)
+
+Call:
+lm(formula = y4 ~ x4, data = anscombe)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-1.751 -0.831  0.000  0.809  1.839 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)   
+(Intercept)   3.0017     1.1239   2.671  0.02559 * 
+x4            0.4999     0.1178   4.243  0.00216 **
+
+Residual standard error: 1.236 on 9 degrees of freedom
+Multiple R-squared:  0.6667,	Adjusted R-squared:  0.6297 
+F-statistic:    18 on 1 and 9 DF,  p-value: 0.002165
+\end{lstlisting}
+
+
+However, the scatter plots of the datasets in Figure \ref{fig::AnscombeQuartetplots} reveal fundamental differences between the datasets. The first dataset seems ideal for linear regression. The second dataset shows a quadratic form of $y$ versus $x$, and therefore, the linear model is misspecified. The third dataset shows a linear trend of $y$ versus $x$, but an outlier has severely distorted the slope of the linear line. The fourth dataset is supported on only two values of $x$ and thus may suffer from severe extrapolation. 
+
+
+
+
+
+\begin{figure}[th]
+\centering
+\includegraphics[width = \textwidth]{figures/AnscombeQuartet.pdf}
+\caption{Anscombe's Quartet: scatter plots}\label{fig::AnscombeQuartetplots}
+\end{figure}
+
+
+
+
+
+
+\subsection{Multivariate regression}\label{section::normal-lm-lalonde}
+
+
+The \ri{R} package \ri{Matching} contains an experimental dataset \ri{lalonde} from \citet{lalonde1986evaluating}. Units were randomly assigned to a job training program, with \ri{treat} being the treatment indicator. The outcome \ri{re78} is the real earnings in the year 1978, and other variables are pretreatment covariates. From the simple OLS, the treatment has a significant positive effect, whereas none of the covariates are predictive of the outcome. 
+
+
+\begin{lstlisting}
+> library("Matching")
+> data(lalonde)
+> lalonde_fit = lm(re78 ~ ., data = lalonde)
+> summary(lalonde_fit)
+
+Call:
+lm(formula = re78 ~ ., data = lalonde)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+ -9612  -4355  -1572   3054  53119 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  2.567e+02  3.522e+03   0.073  0.94193   
+age          5.357e+01  4.581e+01   1.170  0.24284   
+educ         4.008e+02  2.288e+02   1.751  0.08058 . 
+black       -2.037e+03  1.174e+03  -1.736  0.08331 . 
+hisp         4.258e+02  1.565e+03   0.272  0.78562   
+married     -1.463e+02  8.823e+02  -0.166  0.86835   
+nodegr      -1.518e+01  1.006e+03  -0.015  0.98797   
+re74         1.234e-01  8.784e-02   1.405  0.16079   
+re75         1.974e-02  1.503e-01   0.131  0.89554   
+u74          1.380e+03  1.188e+03   1.162  0.24590   
+u75         -1.071e+03  1.025e+03  -1.045  0.29651   
+treat        1.671e+03  6.411e+02   2.606  0.00948 **
+
+Residual standard error: 6517 on 433 degrees of freedom
+Multiple R-squared:  0.05822,	Adjusted R-squared:  0.0343 
+F-statistic: 2.433 on 11 and 433 DF,  p-value: 0.005974
+\end{lstlisting}
+
+
+
+The above result shows that none of the pretreatment covariates is significant {\it  marginally}. It is also of interest to test whether they are {\it jointly} significant. The result below shows that they are only weakly significant at the level $0.05$ based on a joint test (the $p$-value is almost $0.05$!). 
+
+\begin{lstlisting}
+> library("car")
+> linearHypothesis(lalonde_fit,
++                  c("age=0", "educ=0", "black=0",
++                    "hisp=0", "married=0", "nodegr=0",
++                    "re74=0", "re75=0", "u74=0",
++                    "u75=0"))
+Linear hypothesis test
+
+Hypothesis:
+age = 0
+educ = 0
+black = 0
+hisp = 0
+married = 0
+nodegr = 0
+re74 = 0
+re75 = 0
+u74 = 0
+u75 = 0
+
+Model 1: restricted model
+Model 2: re78 ~ age + educ + black + hisp + married + nodegr + re74 + 
+    re75 + u74 + u75 + treat
+
+  Res.Df        RSS Df Sum of Sq      F  Pr(>F)  
+1    443 1.9178e+10                              
+2    433 1.8389e+10 10 788799023 1.8574 0.04929 *
+\end{lstlisting}
+
+
+Below I create two pseudo datasets: one with all units assigned to the treatment, and the other with all units assigned to the control, fixing all the pretreatment covariates. The predicted outcomes are the {\it counterfactual outcomes} under the treatment and control. I further calculate their means and verify that their difference equals the OLS coefficient of \ri{treat}. 
+
+
+\begin{lstlisting}
+> new_treat          = lalonde
+> new_treat$treat    = 1
+> predict_lalonde1   = predict(lalonde_fit, new_treat, 
++                            interval = "none")
+> new_control        = lalonde
+> new_control$treat  = 0
+> predict_lalonde0   = predict(lalonde_fit, new_control, 
++                              interval = "none")
+> mean(predict_lalonde1)
+[1] 6276.91
+> mean(predict_lalonde0)
+[1] 4606.201
+> 
+> mean(predict_lalonde1) - mean(predict_lalonde0)
+[1] 1670.709
+\end{lstlisting}
+
+
+
+\section{Homework problems}
+
+\paragraph{Maximum likelihood estimator and OLS}
+\label{hw5:normal-mle}
+
+Under the Normal linear model, prove that the maximum likelihood
+estimator for $\beta$ is the OLS estimator, but the maximum likelihood
+estimator for
+$\sigma^{2}$ is $\tilde{\sigma}^{2}=\textsc{rss}/n$. Compare the
+mean squared errors of $\hat{\sigma}^{2}$ and $\tilde{\sigma}^{2}$ for estimating $\sigma^2$. 
+
+
+Remark: The definitions of the mean squared errors are $E\{ (\hat{\sigma}^{2} - \sigma^2)^2 \} $ and $E\{ (\tilde{\sigma}^{2} - \sigma^2)^2 \} $. 
+
+
+
+\paragraph{Optimal estimation of the variance}
+\label{hw5:optimal-A-variance-normal}
+
+This problem extends Problem \ref{hw04::variance-estimation-A}.
+
+Under the Normal linear model, calculate $\var(\hat{\sigma}_A^2)$ and prove that $A = I_n$ minimizes $\var(\hat{\sigma}_A^2)$. 
+
+
+
+Remark: The minimizer of $\var(\hat{\sigma}_A^2)$ is not unique. For instance, $A = (I_n - H)^{+}$ also minimizes $\var(\hat{\sigma}_A^2)$, where $+$ denotes the pseudoinverse. There are other minimizers. 
+
+
+
+
+
+
+\paragraph{Maximum likelihood estimator with Laplace errors}\label{hw5:laplace-mle}
+
+Assume that $y_{i}=x_{i}^{\T}\beta+\sigma\varepsilon_{i}$, where the
+$\varepsilon_{i}$'s are IID Laplace distribution with density
+$f(\varepsilon)=2^{-1}e^{-|\varepsilon|}\ (i=1,\ldots,n)$. Find the
+Maximum likelihood estimators of $(\beta,\sigma^{2}).$  
+
+
+Remark: We will revisit this problem in Chapter \ref{chapter::quantile-regression}. 
+
+
+
+
+
+\paragraph{Joint prediction}\label{hw5:joint-preduction}
+
+
+
+With multiple future data points $(X_{n+1},Y_{n+1})$ where $X_{n+1}\in\mathbb{R}^{l\times p}$
+and $Y_{n+1}\in\mathbb{R}^{l},$ construct the joint predictors and
+prediction region for $Y_{n+1}$ based on $(X,Y)$ and $X_{n+1}$. 
+
+
+As a starting point, you can assume that $l\leq p$ and the rows of $X_{n+1}$ are linearly independent. You can then consider the case in which the rows of $X_{n+1}$ are not linearly independent.  
+
+
+Remark: Assume the Normal linear model for all observations and apply Theorem \ref{thm::normal-chisq} in Appendix \ref{chapter:appendix-rvs}. 
+
+
+
+
+\paragraph{Two-sample problem}\label{hw5::two-sample}
+
+\begin{enumerate}
+\item Assume that $z_{1},\ldots,z_{m}\iidsim\N(\mu_{1},\sigma^{2})$ and
+$w_{1},\ldots,w_{n}\iidsim\N(\mu_{2},\sigma^{2})$, and test
+$H_0: \mu_{1}=\mu_{2}$. Under $H_0$, the $t$ statistic with pooled variance
+estimator equals 
+\[
+t_{\text{equal}}=\frac{\bar{z}-\bar{w}}{  \sqrt{ \hat{\sigma}^2  (m^{-1} + n^{-1})  } } 
+\] 
+where 
+$$
+\hat{\sigma}^2 = \left\{ (m-1)S_{z}^{2}+(n-1)S_{w}^{2}\right\} /(m+n-2) 
+$$
+with the sample means  
+\[
+\bar{z}=m^{-1}\sum_{i=1}^{m}z_{i},\qquad\bar{w}=n^{-1}\sumn w_{i},
+\]
+and the sample variances
+\[
+S_{z}^{2}=(m-1)^{-1}\sum_{i=1}^{m}(z_{i}-\bar{z})^{2},\qquad S_{w}^{2}=(n-1)^{-1}\sumn(w_{i}-\bar{w})^{2}.
+\]
+
+Prove that under $H_0$, the $t$ statistic has the following distribution:
+\[
+t_{\text{equal}} \sim t_{m+n-2},
+\] 
+
+Remark: 
+The name ``\ri{equal}'' is motivated by the ``\ri{var.equal}''
+parameter of the \ri{R} function \ri{t.test}.
+
+\item We can write the above problem as testing hypothesis $H_{0}:\beta_{1}=0$ in the linear regression $Y=X\beta+\varepsilon$
+with 
+\[
+Y=\left(\begin{array}{c}
+z_{1}\\
+\vdots\\
+z_{m}\\
+w_{1}\\
+\vdots\\
+w_{n}
+\end{array}\right),\quad X=\left(\begin{array}{cc}
+1 & 1\\
+\vdots & \vdots\\
+1 & 1\\
+1 & 0\\
+\vdots & \vdots\\
+1 & 0
+\end{array}\right),\quad\beta=\left(\begin{array}{c}
+\beta_{0}\\
+\beta_{1}
+\end{array}\right),\quad\varepsilon=\left(\begin{array}{c}
+\varepsilon_{1}\\
+\vdots\\
+\varepsilon_{m}\\
+\varepsilon_{m+1}\\
+\vdots\\
+\varepsilon_{m+n}
+\end{array}\right).
+\]
+Based on the Normal linear model, we can compute the $t$ statistic for the coefficient of $\beta_1$. 
+
+Prove that the $t$ statistic from OLS is numerically identical to $t_{\text{equal}}$. 
+\end{enumerate}
+
+
+
+\paragraph{Analysis of Variance (ANOVA) with a multi-level treatment}\label{hw5:anova-f}
+
+Let $x_{i}$ be the indicator vector for $J$ treatment levels in
+a completely randomized experiment, for example, $x_{i} = e_j=(0,\ldots,1,\ldots,0)^{\T} $
+with the $j$th element being one if unit $i$ receives treatment
+level $j$ $(j=1,\ldots,J)$. Let $y_{i}$ be the outcome of unit
+$i$ $(i=1,\ldots,n)$. Let $\mathcal T_{j}$ be the indices of units receiving
+treatment $j$, and let $n_{j}=|\mathcal T_{j}|$ be the sample size and $\bar{y}_{j} = n_j^{-1} \sum_{i\in \mathcal T_j} y_i$ be the sample
+mean of the outcomes under treatment $j$. Define $\bar{y} = n^{-1} \sumn y_i$ as the grand mean. We can test whether the treatment
+has any effect on the outcome by testing the null hypothesis 
+\[
+H_{0}:\beta_{1}=\cdots=\beta_{J}
+\] 
+in the Normal linear model $Y=X\beta+\varepsilon$.
+% assuming $\varepsilon\sim \N(0,\sigma^{2} I_n ).$
+This is a special case of testing $C\beta=0$. 
+
+Find $C$ and prove that the corresponding $F$ statistic is identical to 
+\[
+F=\frac{\sum_{j=1}^{J}n_{j}(\bar{y}_{j}-\bar{y})^{2}/(J-1)}{\sum_{j=1}^{J}\sum_{i\in \mathcal T_{j}}(y_{i}-\bar{y}_{j})^{2}/(n-J)}\sim F_{J-1,n-J}.
+\]
+
+
+Remarks: (1)
+This is Fisher's $F$ statistic. (2) In this linear model formulation, $X$ does not contain a column of 1's. (3) The choice of $C$ is not
+unique, but the final formula for $F$ is. (4) You may use the Sherman--Morrison formula in Problem \ref{hwmath1::inverse-block-matrix} in Appendix \ref{chapter::linear-algebra}. 
+
+
+
+
+
+
+
+ 
+
+
+\paragraph{Confidence interval for $\sigma^2$}\label{hw5::confidence-interval-sigma2}
+
+Based on Theorem \ref{thm:normalexactdistribution}, construct a $1-\alpha$ level confidence interval for $\sigma^2$. 
+
+
+\paragraph{Relationship between $t$ and $F$}\label{hw5::T-F-1dim}
+
+
+Prove that when $C$ containing only one row $c^{\T}$, then $T_c^2 = F_C$, where $T_c$ is defined in Theorem \ref{thm:1dimpivotal} and $F_C$ is defined in Theorem \ref{thm:ldimpivotal}. 
+
+ 
+
+ 
+
+\paragraph{\textsc{rss} and $t$-statistic in univariate OLS}\label{hw5::t-ratio-univariateOLS}
+
+
+Focus on univariate OLS discussed in Chapter \ref{chapter::ols-1d}: $y_i = \hat{\alpha}  +  \hat{\beta} x_i + \hat{\varepsilon}_i$ $(i=1,\ldots, n)$. 
+
+Prove that \textsc{rss}  equals
+$$
+\sumn \hat{\varepsilon}_i^2 = \sumn (y_i -  \bar{y}  )^2 (1- \hat{\rho}_{xy} ^2)
+$$ 
+and under the homoskedasticity assumption, the $t$-statistic associated with $ \hat{\beta}$ equals
+$$
+\frac{  \hat{\rho}_{xy}   }{  \sqrt{    (1-\hat{\rho}_{xy} ^2) /(n-2)  }   }.
+$$
+
+
+
+
+\paragraph{Equivalence of the $t$-statistics}\label{hw5::t-stat-equivalent}
+
+
+
+Consider data $(x_i, y_i)_{i=1}^n$ with scalar $x_i$ and $y_i$. Run OLS fit of $y_i$ on $(1,x_i)$ to obtain $t_{y\mid x}$, the $t$-statistic of the coefficient of $x_i$, under the homoskedasticity assumption. Run OLS fit of $x_i$ on $(1,y_i)$ to obtain $t_{x\mid y}$, the $t$-statistic of the coefficient of $y_i$, under the homoskedasticity assumption. 
+
+Prove $t_{y\mid x} = t_{x\mid y}$.
+
+Remark: This is a numerical result that holds without any stochastic assumptions. I give an example below.
+
+\begin{lstlisting}
+> library(MASS)
+> #simulate bivariate normal distribution
+> xy = mvrnorm(n=100, mu=c(0, 0), 
++              Sigma=matrix(c(1, 0.5, 0.5, 1), ncol=2))
+> xy = as.data.frame(xy)
+> colnames(xy) = c("x", "y")
+> ## OLS
+> reg.y.x = lm(y ~ x, data = xy)
+> reg.x.y = lm(x ~ y, data = xy)
+> ## compare t statistics based on homoskedastic errors
+> summary(reg.y.x)$coef[2, 3]
+[1] 4.470331
+> summary(reg.x.y)$coef[2, 3]
+[1] 4.470331
+\end{lstlisting}
+The equivalence of the $t$-statistics from the OLS fit of $y$ on x and that of $x$ on $y$ demonstrates that based on OLS, the data do not contain any information about the direction of the relationship between $x$ and $y$. 
+
+ 
+
+
+\paragraph{An application}
+
+The \ri{R} package \ri{sampleSelection} \citep{toomet2008sample} describes the dataset \ri{RandHIE} as follows: ``The RAND Health Insurance Experiment was a comprehensive study of health care cost, utilization and outcome in the United States. It is the only randomized study of health insurance, and the only study which can give definitive evidence as to the causal effects of different health insurance plans.'' You can find more detailed information about other variables in this package. The main outcome of interest \ri{lnmeddol} means the log of medical expenses. 
+
+Use OLS to investigate the relationship between the outcome and various important covariates. 
+
+Remark: The solution to this problem is not unique, but you need to justify your choice of covariates and model, and need to interpret the results. 
+

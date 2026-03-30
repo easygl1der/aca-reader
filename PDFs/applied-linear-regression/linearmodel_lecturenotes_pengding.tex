@@ -1,0 +1,216 @@
+\documentclass[krantz2]{krantz}
+%\usepackage{fixltx2e,fix-cm}
+
+
+\usepackage{amssymb, amsmath, bbm, bm, mathtools, enumitem, url, float}
+\usepackage{graphicx, color, subfig}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage[all,import]{xy}
+\usepackage{natbib}  
+
+
+ 
+ 
+
+
+\definecolor{mygray}{gray}{0.6}
+\usepackage{listings}
+ 
+\lstset{language=R,
+    basicstyle=\footnotesize\ttfamily,
+%    numbers=left, stepnumber=5,
+    stringstyle=\color{black},
+    otherkeywords={0,1,2,3,4,5,6,7,8,9},
+    morekeywords={TRUE,FALSE},
+    deletekeywords={data,frame,length,as,character},
+    keywordstyle=\color{black},
+    commentstyle=\color{mygray},
+    showstringspaces=false
+}
+
+
+
+
+\lstnewenvironment{rc}[1][]{\lstset{language=R}}{}
+\newcommand{\ri}[1]{\lstinline{#1}}   
+            
+
+
+ 
+
+\setcounter{secnumdepth}{5}
+\newenvironment{myproof}[2] {\noindent {\bfseries Proof of {#1} {#2}:}}{\hfill$\square$}
+\newenvironment{mysolution}[1]{\vspace{0.1in} \noindent {\bfseries Solution to Problem {#1}:}}{\hfill$\square$}
+
+
+
+
+  
+\frenchspacing
+\tolerance=5000
+
+\makeindex
+
+
+\usepackage{hyperref}
+\makeatletter
+\providecommand*{\Hy@tocdestname}{}
+\makeatother
+
+
+
+
+\include{frontmatter/preamble} %place custom commands and macros here
+
+ 
+
+\begin{document}
+
+\frontmatter
+
+\title{Linear Model and Extensions}
+\author{Peng Ding\\
+Department of Statistics\\
+University of California, Berkeley}
+
+
+
+
+\maketitle
+
+\include{frontmatter/dedication}
+
+%\cleardoublepage
+%\setcounter{page}{7} %previous pages will be reserved for frontmatter to be added in later.
+
+
+\tableofcontents 
+
+
+  \include{frontmatter/acronyms}
+  \include{frontmatter/symbollist}
+  \include{frontmatter/rpackages}
+\include{frontmatter/preface}
+%\listoffigures
+%\listoftables
+
+\mainmatter
+
+
+
+
+
+\makeatletter
+\@addtoreset{example}{chapter}
+\@addtoreset{assumption}{chapter}
+\@addtoreset{example}{chapter}
+\@addtoreset{lemma}{chapter}
+\@addtoreset{remark}{chapter}
+\@addtoreset{theorem}{chapter}
+\@addtoreset{proposition}{chapter}
+\@addtoreset{corollary}{chapter}
+\@addtoreset{condition}{chapter}
+\makeatother
+
+\renewcommand {\theexample} {\thechapter.\arabic{example}}
+\renewcommand {\theassumption} {\thechapter.\arabic{assumption}}
+\renewcommand {\thelemma} {\thechapter.\arabic{lemma}}
+\renewcommand {\thetheorem} {\thechapter.\arabic{theorem}}
+\renewcommand {\theremark} {\thechapter.\arabic{remark}}
+\renewcommand {\theproposition} {\thechapter.\arabic{proposition}}
+\renewcommand {\thecorollary} {\thechapter.\arabic{corollary}}
+ \renewcommand {\thecondition} {\thechapter.\arabic{condition}}
+ \renewcommand {\thedefinition} {\thechapter.\arabic{definition}}
+\renewcommand{\theparagraph}{\arabic{chapter}.\arabic{paragraph}}
+
+ 
+
+
+
+%3. add the basics of optimization theory 
+%5. extending the discussion on Johnson Neyman technique - there are still unclear things about JN
+%8. multiple testing
+%9. Bootstrapping: independent + clustered 
+% interpretation of the coefficients in nonlinear GEE 
+% modified cluster-robust standard error: CR2 et al...
+
+ 
+
+\part{Introduction}
+
+
+ \include{chapters/chapter01_motivations}
+  \include{chapters/chapter02_ordinary}
+
+ 
+  
+\part{Ordinary Least Squares and Statistical Inference}
+
+  \include{chapters/chapter03_ordinary}
+  \include{chapters/chapter04_gauss}
+ \include{chapters/chapter05_normal} 
+  \include{chapters/chapter06_asymptotic} 
+  
+  
+  \part{Interpretation of Ordinary Least Squares Based on Partial Regressions}\label{part::FWL-Cochran}
+  
+    \include{chapters/chapter07_frisch}
+  \include{chapters/chapter08_applications}
+  \include{chapters/chapter09_cochran}
+
+
+\part{Model Fitting, Checking, and Misspecification}
+  \include{chapters/chapter10_multiple} 
+   \include{chapters/chapter11_leverage} 
+  \include{chapters/chapter12_population}
+  
+  
+\part{Overfitting, Regularization, and Model Selection}\label{part::modelselection}
+  \include{chapters/chapter13_perils}    
+  \include{chapters/chapter14_ridge}
+\include{chapters/chapter15_lasso}
+
+
+\part{Transformation and Weighting}
+   \include{chapters/chapter16_transformations}
+      \include{chapters/chapter17_interactions}
+      \include{chapters/chapter18_restricted}      
+       \include{chapters/chapter19_weighted}  
+      %jackknife and bootstrap 
+
+    
+    \part{Generalized Linear Models}
+ \include{chapters/chapter20_logistic}
+    \include{chapters/chapter21_logistic} 
+        \include{chapters/chapter22_regression}   
+     \include{chapters/chapter23_generalized}
+          \include{chapters/chapter24_from}
+% correlated data analysis           
+      \include{chapters/chapter25_generalized} 
+
+ 
+        \part{Beyond Modeling the Conditional Mean}
+           \include{chapters/chapter26_quantile} 
+            \include{chapters/chapter27_modeling}  
+
+
+\appendix  
+
+\part{Appendices}
+\renewcommand{\theparagraph}{\Alph{chapter}.\arabic{paragraph}}
+
+        \include{chapters/chapterA1_linear}
+      \include{chapters/chapterA2_random}
+        \include{chapters/chapterA3_limiting}
+                \include{chapters/chapterA4_mestimation}
+%        \include{chapters/2020-lecture00_math5_optimization} 
+
+ 
+ 
+\bibliographystyle{apalike}
+\bibliography{causal}
+
+\printindex
+
+\end{document}
