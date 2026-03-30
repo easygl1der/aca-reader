@@ -867,11 +867,11 @@ $$s_\mu \cdot s_\nu = \sum_\lambda c_{\mu\nu}^\lambda s_\lambda, \quad c_{\mu\nu
 \label{sec:GrahamPositivityCoefficientMeaning}
 
 \subsection{问题}
-在 Graham Positivity 定理中，为什么说展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的非负整数系数多项式？但实际展开 $\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = (x_1 - y_2)(x_2 - t_2) = x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$ 明明有负项（如 $-x_1t_2$）？
+在 Graham Positivity 定理中，为什么说展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的非负整数系数多项式？展开式中明明有负项（如 $-x_1t_2$）？
 
 \subsection{回答}
 
-\textbf{关键澄清}：您提到的展开式 $x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$ \textbf{不是} Graham Positivity 定理中的展开形式。
+\textbf{关键澄清}：展开式 $x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$ 是以单项式 $\{x_i, y_i, t_i\}$ 为基的展开，这不是 Graham Positivity 关心的形式。
 
 \textbf{Graham Positivity 定理的正确形式}：
 $$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
@@ -884,40 +884,39 @@ $$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathb
 \item 以 $\{\mathfrak{S}_w(\mathbf{x}; \mathbf{t})\}$ 为基的展开：$\sum_w c^w_{u,v} \cdot \mathfrak{S}_w$（系数非负）
 \end{itemize}
 
-\textbf{具体计算步骤（$u = 213, v = 132$）：}
+\textbf{正确的例子（$u = 21, v = 21$）：}
 
-第一步：Schubert 多项式的具体形式
-$$\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) = x_1 - y_2$$
-$$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
+查 S$_3$ 双重 Schubert 多项式表（见\cref{ex:DoubleSchubertS3}）：
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1$$
 
-第二步：乘积展开（以 $\{x_i, y_i, t_i\}$ 为基）
-$$(x_1 - y_2)(x_2 - t_2) = x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$$
-
-第三步：关键技巧——用 $t_j = (t_j - y_i) + y_i$ 改写
-
-将每项改写为"$(t_j - y_i)$ 因子 $+$ 不含 $t$ 的余项"：
+计算乘积：
 \begin{align*}
-x_1x_2 &= x_1x_2 \quad \text{（已是 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})$ 的首项）} \\
--x_1t_2 &= -x_1[(t_2 - y_2) + y_2] = -x_1(t_2 - y_2) - x_1y_2 \\
--y_2x_2 &= -y_2(x_2 - t_2) - y_2t_2 = -y_2(x_2 - t_2) - y_2[(t_2 - y_2) + y_2] = -y_2(x_2 - t_2) - y_2(t_2 - y_2) - y_2^2 \\
-y_2t_2 &= y_2[(t_2 - y_2) + y_2] = y_2(t_2 - y_2) + y_2^2
+\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})
+&= (x_1 - y_1)(x_1 - t_1) \\
+&= x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1
 \end{align*}
 
-第四步：合并同类项，将含 $(t_2 - y_2)$ 的项提出
-$$(-x_1 - y_2 + y_2) \cdot (t_2 - y_2) = -x_1 \cdot (t_2 - y_2)$$
+利用 $t_1 = (t_1 - y_1) + y_1$ 改写：
+\begin{align*}
+x_1^2 &= x_1^2 \\
+-x_1 t_1 &= -x_1[(t_1 - y_1) + y_1] = -x_1(t_1 - y_1) - x_1 y_1 \\
+-x_1 y_1 &= -x_1 y_1 \\
+t_1 y_1 &= y_1(t_1 - y_1) + y_1^2
+\end{align*}
 
-第五步：最终展开形式（以 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 为基）
-\begin{align}
-(x_1 - y_2)(x_2 - t_2)
-&= 1 \cdot \underbrace{\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})}_{x_1x_2} \tag{非负整数系数} \\
-&\quad + 1 \cdot (t_2 - y_2) \cdot \underbrace{\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t})}_{x_2 - t_2} \tag{非负整数系数} \\
-&\quad + \text{其他 } (t_j - y_i) \text{ 的非负整数系数项}
-\end{align}
+合并含 $(t_1 - y_1)$ 的项：
+$$[-x_1 + y_1] \cdot (t_1 - y_1)$$
 
-\textbf{为什么系数是"非负"的？}
+\textbf{最终形式}：
+\begin{align*}
+(x_1 - y_1)(x_1 - t_1)
+&= 1 \cdot \mathfrak{S}_{321}(\mathbf{x}; \mathbf{t}) \tag{$c^{321} = 1 \in \mathbb{N}$} \\
+&\quad + (t_1 - y_1) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) \tag{$c^{21} = t_1 - y_1$} \\
+&\quad + \text{其他 }
+\end{align*}
 
-$-x_1t_2$ 中的负号在重组后被"消化"了。当把表达式写成 $\sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式时，每个 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的多项式，**其系数是非负整数**。
+\textbf{为什么系数是"非负"的？} $c^{21} = t_1 - y_1$ 是关于 $t_j - y_i$ 的多项式，其系数是 $1$（非负整数）。负号在改写过程中被"吸收"了——$-x_1 t_1$ 的负号来自系数，但当提取出 $(t_1 - y_1)$ 后，剩余的 $-x_1 + y_1$ 不再是系数的一部分。
 
-\textbf{几何解释}：系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 计数的是旗流形中三个 $T$-不变闭链的相交点数（带权重），这自然是非负的。当我们把等变量修正 $(y, t)$ 考虑进来时，系数变成 $(t_i - y_j)$ 形式的正系数多项式。
+\textbf{原例子中的错误：} 之前错误地说 "$x_1x_2$ 是 $\mathfrak{S}_{231}$"。实际上 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$（见\cref{ex:DoubleSchubertS3}），这只在 $y = 0$ 时才简化为 $x_1x_2$。
 
 \textbf{footnote}：见 \cref{sec:GrahamPositivityCoefficientMeaning}。
