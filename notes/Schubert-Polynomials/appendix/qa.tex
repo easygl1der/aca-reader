@@ -1517,3 +1517,59 @@ $$\mathfrak{S}_{21}(\mathbf{x}, \mathbf{y}) = (x_1 - y_2)(x_2 - y_1)$$
 $$\mathfrak{S}_{21}(\mathbf{x}, \mathbf{y}) = (x_1 - y_2)(x_2 - y_1)$$
 
 展开的复杂形式可能是中间计算步骤的错误残留，需要在正文中修正。\footnote{问：$S_{21}(x; y)$ 的正确公式是什么？见附录 \cref{sec:S21Calculation}。}
+
+\section{$F_\alpha$ 是权为 $-\alpha$ 的根向量——是什么意思？}
+\label{sec:RootVectorWeight}
+
+\subsection*{问题}
+在第 1056 行，$\mathfrak{n}^-(w) = \mathrm{span}\{F_\alpha \mid \alpha \in J(w)\}$ 中，$F_\alpha$ 是"权为 $-\alpha$ 的根向量"。这里的"权"和"根向量"是什么意思？
+
+\subsection*{回答}
+
+\textbf{1. 什么是"根向量"？}
+
+在 $\mathfrak{gl}_n$ 中，每个矩阵单位 $E_{ij}$（第 $i$ 行第 $j$ 列为 1，其余为 0）都是一个根向量——因为它满足：
+$$[H, E_{ij}] = \alpha(H) \cdot E_{ij}$$
+其中 $\alpha = \epsilon_i - \epsilon_j$ 是权。
+
+\textbf{2. 什么是"权"？}
+
+设 $H = \mathrm{diag}(t_1, \ldots, t_n) \in \mathfrak{h}$。伴随作用给出：
+$$[H, E_{ij}] = (t_i - t_j) E_{ij}$$
+
+数 $(t_i - t_j)$ 就是 $E_{ij}$ 的\textbf{权}，记为 $\epsilon_i - \epsilon_j$。
+
+\textbf{3. 正根 vs 负根}
+
+在 $\mathfrak{gl}_n$ 中：
+\begin{itemize}
+\item \textbf{正根} $\alpha = \epsilon_i - \epsilon_j$（$i < j$）$\rightarrow$ 对应 $E_{ij}$（上三角矩阵）
+\item \textbf{负根} $-\alpha = \epsilon_j - \epsilon_i$（$i < j$）$\rightarrow$ 对应 $E_{ij}$（下三角矩阵）
+\end{itemize}
+
+\textbf{4. $F_\alpha$ 的含义}
+
+在记号中，$F_\alpha$ 通常指\textbf{对应负根 $-\alpha$ 的根向量}。所以：
+\begin{itemize}
+\item 若 $\alpha = \epsilon_1 - \epsilon_2$（正根）
+\item 则 $F_\alpha = E_{21}$（下三角矩阵）
+\item 且 $F_\alpha$ 的权是 $-\alpha = \epsilon_2 - \epsilon_1$（负根）
+\end{itemize}
+
+\textbf{5. 具体例子（$\mathfrak{gl}_3$）}
+
+\begin{center}
+\begin{tabular}{cccc}
+根 & 矩阵 & 类型 & 权 \\ \hline
+$\epsilon_1 - \epsilon_2$ & $E_{12}$ & 正根 & $+\alpha$ \\
+$\epsilon_2 - \epsilon_1$ & $E_{21}$ & 负根 & $-\alpha$ \\
+$\epsilon_1 - \epsilon_3$ & $E_{13}$ & 正根 & $+\beta$ \\
+$\epsilon_3 - \epsilon_1$ & $E_{31}$ & 负根 & $-\beta$ \\
+$\epsilon_2 - \epsilon_3$ & $E_{23}$ & 正根 & $+\gamma$ \\
+$\epsilon_3 - \epsilon_2$ & $E_{32}$ & 负根 & $-\gamma$
+\end{tabular}
+\end{center}
+
+\textbf{6. 为什么 $\mathfrak{n}^-(w)$ 用 $F_\alpha$（负根向量）？}
+
+因为 $\mathfrak{n}^- = \mathrm{Lie}(N^-)$，而 $N^-$ 是下三角幂幺矩阵群，其李代数由\textbf{负根空间}张成。所以 $\mathfrak{n}^-(w)$ 中的 $F_\alpha$ 对应负根 $-\alpha$，即权为 $-\alpha$。\footnote{问：$F_\alpha$ 是权为 $-\alpha$ 的根向量是什么意思？见附录 \cref{sec:RootVectorWeight}。}
