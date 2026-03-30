@@ -19,6 +19,13 @@
 - **Skim 跳转**: `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"`
   - 示例: `displayline -r -g 650 "/path/file.pdf" "/path/chapter1.tex"`
 
+### Playwright 浏览器缓存保护（绝对红线！）
+- ❌ **禁止清除 Playwright 浏览器缓存**
+- ❌ 禁止 `rm -rf ~/Library/Caches/ms-playwright/`
+- ❌ 禁止任何删除或清理 Playwright Edge/Chrome profile 的操作
+- ✅ 原因：清除缓存会丢失 Google 账号登录状态，导致 Gemini 无法使用
+- ✅ 如需释放空间，使用 `pkill -f ms-playwright` 而非删除缓存
+
 ### LaTeX 格式红线
 - ❌ 禁止 Markdown 语法在 .tex 文件中: `**加粗**`, `*斜体*`, `- 列表`, `> [!note]`
 - ❌ 禁止 `\bm` — 向量用 `\mathbf`，矩阵用 `\boldsymbol`
