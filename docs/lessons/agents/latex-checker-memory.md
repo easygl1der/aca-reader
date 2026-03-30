@@ -318,6 +318,46 @@ grep -n '[""'']' notes/**/*.tex
 
 ---
 
+## L909: 公式引用必须用 \cref 而非 \tag/式(★)
+
+**日期**: 2026-03-30
+**经历次数**: 1 次
+
+**错误描述**:
+正文引用公式时使用了 `式 (★★)` 而不是 `\cref{eq:label}`，或者用 `\tag{}` 自定义标签。
+
+**正确做法**:
+```latex
+% 错误 ❌
+将这一结论代入式 (★★)，得到
+$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = ...$$
+
+% 正确 ✅
+将这一结论代入 \cref{eq:skew-divided-diff-zero}，得到
+$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = ... \label{eq:skew-divided-diff-zero}$$
+```
+
+**命名规范**:
+- 公式用 `\label{eq:描述性名称}` 定义
+- 引用时用 `\cref{eq:描述性名称}`（自动判断类型）
+- 不要用 `\tag{}` 自定义数字/符号标签
+
+**检查命令**:
+```bash
+# 检查是否有式 (★) 残留
+grep -n '式 (★)\|式 (★★)' notes/**/*.tex
+
+# 检查是否有 \tag{} 残留
+grep -n 'tag\*{' notes/**/*.tex
+```
+
+**防止措施**:
+- 定义公式时立即加上 `\label{eq:...}`
+- 引用时用 `\cref{eq:...}` 代替手写"式 (X)"
+- 编译检查 cross-reference 警告
+
+---
+
 ## 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
