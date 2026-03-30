@@ -5,8 +5,237 @@
 
 \section{本章导论}
 
-\section{主要内容}
+许多统计应用涉及可以认为是通过问题结构以某种方式相关或连接的多个参数，这意味着这些参数的联合概率模型应该反映它们的依赖性。
+
+例如，在一项关于心脏治疗有效性的研究中，医院 $j$ 中患者存活的概率为 $\theta_j$，我们有来自多家医院的样本，估计 $\theta_j$ 的值应该是相互关联的。
+
+如果我们在先验分布中将 $\theta_j$ 视为从公共总体分布中抽取的样本，那么就能以一种自然的方式实现这一点。
+
+这类应用的一个关键特征是，观测数据 $y_{ij}$（单位 $i$ 在组 $j$ 内）可以用来估计 $\theta_j$ 总体分布的特征，即使 $\theta_j$ 的值本身没有被观测到。
+
+用层次化的方式建模这个问题是很自然的：可观测量在对某些参数的条件建模，这些参数本身用进一步参数（称为超参数）的概率规范来指定。
+
+这种层次化思维有助于理解多参数问题，并且在开发计算策略方面也发挥重要作用。
+
+\section{构参数化先验分布}
+
+\subsection{在历史数据背景下分析单个实验}
+
+我们从分层模型的描述开始，考虑使用来自小规模实验的数据和从类似的历史实验中构建的先验分布来估计参数 $\theta$ 的问题。从数学上讲，我们将认为当前和历史实验是从一个公共总体中随机抽取的样本。
+
+\begin{Example}[估计一组大鼠的肿瘤风险]
+  在药物评估中，例行对啮齿动物进行研究。对于从统计文献中提取的特定研究，假设直接目标是估计 $\theta$——即接受零剂量药物（对照组）的雌性 F344 实验室大鼠群体中发生子宫内膜基质息肉（一种肿瘤）的概率。
+
+  数据显示，14 只大鼠中有 4 只发生了子宫内膜基质息肉。给定 $\theta$，假设肿瘤数量的二项模型是很自然的。为方便起见，我们从共轭族中选择 $\theta$ 的先验分布，$\theta \sim \mathrm{Beta}(\alpha, \beta)$。
+
+  后验分布为 $\theta | y \sim \mathrm{Beta}(\alpha + y, \beta + n - y)$，其中 $y = 4$，$n = 14$。
+\end{Example}
+
+\section{可交换性与分层模型设置}
+
+\subsection{可交换性}
+
+当我们对参数一无所知时，通常假设它们是\textbf{可交换的（exchangeable）}。形式上，如果参数的联合分布在我们重新标记这些参数时保持不变，则这些参数 $\theta_1, \ldots, \theta_J$ 是可交换的。
+
+可交换性意味着我们没有理由认为任何特定参数比其他参数更大或更小。
+
+在层次模型中，我们通常假设参数 $\theta_j$ 是从某个分布 $p(\theta | \phi)$ 中独立同分布抽取的，其中 $\phi$ 是总体参数（超参数）。
+
+\subsection{两层层次模型}
+
+一般的两层层次模型可以写为：
+
+\begin{enumerate}
+  \item \textbf{数据层}：$y_{ij} | \theta_j \sim p(y_{ij} | \theta_j)$（独立）
+  \item \textbf{参数层}：$\theta_j | \phi \sim p(\theta_j | \phi)$（独立，来自共同先验）
+  \item \textbf{超参数层}：$\phi \sim p(\phi)$（先验）
+\end{enumerate}
+
+联合后验分布为：
+
+\[
+p(\theta, \phi | y) \propto p(\phi) \prod_{j=1}^J p(\theta_j | \phi) \prod_{i=1}^{n_j} p(y_{ij} | \theta_j)
+\]
+
+\subsection{先验分布的参数化}
+
+设 $\theta_j$ 的先验分布是参数为 $\phi$ 的某分布族。关键是选择 $\phi$ 使其具有直观意义，并且我们可以指定一个适当的先验 $p(\phi)$。
+
+\begin{Example}[比率参数]
+  如果 $\theta_j$ 是比率（如成功率），一种常见的选择是使用 $\theta_j | \mu, \sigma \sim \mathrm{N}(\mu, \sigma^2)$ 在 logit 变换后，即 $\mathrm{logit}(\theta_j) \sim \mathrm{N}(\mu, \sigma^2)$。
+
+  超参数 $\mu$ 代表总体 logit 比率的均值，$\sigma$ 衡量组间的变异程度。
+\end{Example}
+
+\section{共轭层次模型的完全贝叶斯分析}
+
+当每层的分布都是共轭的时，层次模型可以进行完全贝叶斯分析。在这些情况下，我们可以解析地边缘化超参数，或使用简单的计算方法。
+
+\subsection{Beta-Binomial 层次模型}
+
+假设我们有 $J$ 个独立实验，每个实验有 $n_j$ 次试验和 $y_j$ 次成功。模型为：
+
+\begin{enumerate}
+  \item $y_j | \theta_j \sim \mathrm{Bin}(n_j, \theta_j)$
+  \item $\theta_j | \alpha, \beta \sim \mathrm{Beta}(\alpha, \beta)$
+  \item $(\alpha, \beta)$ 的先验：需要指定
+\end{enumerate}
+
+如果我们对 $(\alpha, \beta)$ 指定适当的先验，可以进行完全贝叶斯分析。
+
+\subsection{从先验到后验}
+
+关键是理解层次模型如何允许数据"通知"超参数。在完全贝叶斯分析中，我们对 $(\alpha, \beta)$ 进行积分或抽样：
+
+\[
+p(\theta_j | y) = \iint p(\theta_j | \alpha, \beta) p(\alpha, \beta | y) \, d\alpha \, d\beta
+\]
+
+这个积分通常需要数值方法或马尔科夫链蒙特卡洛（MCMC）来计算。
+
+\section{从正态模型估计可交换参数}
+
+一个特别重要的特殊情况是，当数据 $y_j$ 是来自正态分布的样本均值，并且参数 $\theta_j$ 在变换后是正态分布时。
+
+\subsection{正态层次模型}
+
+假设：
+
+\begin{enumerate}
+  \item $y_j | \theta_j, \sigma_j^2 \sim \mathrm{N}(\theta_j, \sigma_j^2)$，其中 $\sigma_j^2$ 已知
+  \item $\theta_j | \mu, \tau^2 \sim \mathrm{N}(\mu, \tau^2)$
+  \item $(\mu, \tau^2)$ 有适当的先验
+\end{enumerate}
+
+超参数 $\mu$ 是总体均值，$\tau^2$ 是组间方差。
+
+\subsection{后验分布}
+
+给定数据 $y_j$，$\theta_j$ 的后验分布可以分解为：
+
+\[
+p(\theta_j | y, \mu, \tau^2) \propto p(\theta_j | \mu, \tau^2) \prod_{j=1}^J p(y_j | \theta_j)
+\]
+
+结果是：
+
+\[
+\theta_j | y, \mu, \tau^2 \sim \mathrm{N}\left(\frac{\frac{\mu}{\tau^2} + \frac{y_j}{\sigma_j^2}}{\frac{1}{\tau^2} + \frac{1}{\sigma_j^2}}, \left(\frac{1}{\tau^2} + \frac{1}{\sigma_j^2}\right)^{-1}\right)
+\]
+
+这个结果说明：后验均值是先验均值 $\mu$ 和数据均值 $y_j$ 的加权平均，权重由精度（方差的倒数）给出。
+
+当 $\tau^2$ 较大（组间变异大）时，估计接近原始数据 $y_j$；当 $\tau^2$ 较小（组间变异小）时，估计收缩到共同均值 $\mu$。
+
+\section{示例：八所学校的平行实验}
+
+这是一个经典的层次模型例子，展示了分层建模在 meta 分析中的应用。
+
+\subsection{问题背景}
+
+考虑一项研究，$J = 8$ 所学校，每所学校都报告了培训效果估计 $y_j$ 及其标准误 $\sigma_j$。我们希望估计每所学校的真实效果 $\theta_j$，同时估计总体效果。
+
+数据形式如下：
+
+\begin{center}
+\begin{tabular}{ccc}
+\hline
+学校 $j$ & 估计 $y_j$ & 标准误 $\sigma_j$ \\
+\hline
+1 & 28.4 & 14.9 \\
+2 & 7.0 & 10.2 \\
+3 & -4.4 & 16.3 \\
+4 & 7.0 & 11.0 \\
+5 & 1.9 & 9.4 \\
+6 & 6.6 & 10.5 \\
+7 & 10.8 & 17.6 \\
+8 & 33.1 & 15.6 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{层次模型}
+
+我们设定模型：
+
+\[
+y_j | \theta_j \sim \mathrm{N}(\theta_j, \sigma_j^2)
+\]
+\[
+\theta_j | \mu, \tau \sim \mathrm{N}(\mu, \tau^2)
+\]
+
+其中 $\sigma_j$ 已知，$(\mu, \tau)$ 有适当的先验。
+
+\subsection{后验推断}
+
+后验分布 $p(\theta, \mu, \tau | y)$ 可以通过 MCMC 或近似方法获得。关键是理解：
+
+\begin{Remark}
+  层次模型提供了在\textbf{合并信息}和\textbf{保持学校特异性估计}之间的自然权衡。参数 $\tau$ 控制了这种权衡：当 $\tau$ 小时，所有 $\theta_j$ 被强烈收缩到公共均值 $\mu$；当 $\tau$ 大时，每个 $\theta_j$ 主要由其自身数据决定。
+\end{Remark}
+
+\section{分层建模在 meta 分析中的应用}
+
+Meta 分析是将多项研究结果合并的统计方法。层次模型为 meta 分析提供了自然的框架。
+
+\subsection{固定效应与随机效应}
+
+在 meta 分析中，我们通常考虑两种模型：
+
+\begin{enumerate}
+  \item \textbf{固定效应模型}：假设所有研究估计相同的真实效应 $\theta$，观测差异仅由抽样误差解释。
+  \item \textbf{随机效应模型}：假设研究间的效应是可交换的，来自某个分布 $p(\theta_j | \mu, \tau^2)$。
+\end{enumerate}
+
+随机效应模型是层次模型的一个特例，其中 $\theta_j$ 被视为从公共分布中抽取的样本。
+
+\section{分层方差参数的弱信息先验}
+
+层次模型的一个关键挑战是估计方差参数 $\tau^2$。当数据稀疏时，方差参数的估计可能极不稳定。
+
+\subsection{问题}
+
+在后验分布中，$\tau^2$ 通常信息不足，导致后验尾部过重或甚至不当。
+
+\subsection{弱信息先验}
+
+一种解决方案是使用弱信息先验，例如：
+
+\begin{itemize}
+  \item \textbf{Half-t 先验}：对 $\tau$ 使用 $t$ 分布在正半轴
+  \item \textbf{Prior on $\log(\tau)$}: 使用宽窗口的正态先验
+\end{itemize}
+
+\begin{Remark}
+  选择先验时，应该考虑参数的尺度。例如，如果我们有标准误 $\sigma_j$，在 $\log(\tau)$ 上指定先验可能比在 $\tau$ 上更合理。
+\end{Remark}
 
 \section{本章小结}
+
+本章我们学习了：
+
+\begin{enumerate}
+  \item 层次模型的基本思想：通过分层结构处理相关参数
+  \item 可交换性（Exchangeability）的概念
+  \item 两层层次模型的构建：数据层、参数层、超参数层
+  \item Beta-Binomial 和正态层次模型
+  \item 后验分布的收缩（shrinkage）性质
+  \item 八学校例子：层次模型在 meta 分析中的应用
+  \item 固定效应 vs. 随机效应模型
+  \item 层次方差参数的弱信息先验
+\end{enumerate}
+
+层次模型是贝叶斯统计中最重要的工具之一，它允许我们：
+
+\begin{itemize}
+  \item 在保持参数特异性估计的同时合并信息
+  \item 自然地处理分组或聚类数据结构
+  \item 为 meta 分析提供 principled 框架
+\end{itemize}
+
+\section{下节预告}
+
+下一章我们将学习模型检查（Model Checking），这是贝叶斯数据分析中验证模型合理性的关键步骤。
 
 \endinput
