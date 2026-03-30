@@ -254,3 +254,38 @@ grep -n "S_[a-z](" notes/Schubert-Polynomials/chapters/chapter*.tex
 **教训**:
 - 检查其他章节（chapter2-4）是否有类似问题
 - 发现后立即修正
+
+---
+
+## L507: 多项式变量必须用 `\mathbf` 和下划线格式
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+在展开式中使用 `x1x2` 而不是正确的 LaTeX 格式 `x_1 x_2`，以及使用 `S_231(x; y)` 而不是 `\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y})`。
+
+**正确做法**:
+```latex
+% 错误 ❌
+S_231(x; y) = x1x2 - x1y3 - x2y3 + y2y3
+
+% 正确 ✅
+\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3
+```
+
+**符号检查清单**:
+1. `S_` → `\mathfrak{S}_`
+2. `x1` → `x_1`（使用下划线）
+3. `x;y` → `\mathbf{x}; \mathbf{y}`
+4. 乘积 `x1x2` → `x_1 x_2`（变量之间加空格）
+
+**修复记录**:
+- Line 364: `S_{21}(x; y)` → `\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y})` ✅
+- 所有 `x_1x_2` → `x_1 x_2` ✅
+- 所有 `x_1y_3` → `x_1 y_3` ✅
+
+**防止措施**:
+- 写多项式时立即检查下划线格式
+- 编译后用 grep 检查是否有遗漏的格式问题
+
