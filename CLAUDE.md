@@ -145,6 +145,7 @@ notes/<主题>/
 | 2026-03-29 | subagent 生成 `\begin theorem}` 缺少 `{` |
 | 2026-03-29 | Agent 无响应 → 立即 respawn |
 | 2026-03-29 | CLAUDE.md 太长导致 AI 忘记规则 → 重构为索引模式 |
+| 2026-03-30 | 编译后必须检查 overfull hbox 警告，超长公式用 align 拆解 |
 
 详见: `docs/lessons/`
 
