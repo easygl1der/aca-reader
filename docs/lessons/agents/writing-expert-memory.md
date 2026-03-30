@@ -313,6 +313,48 @@ Lemma/Theorem 环境中使用 `\textbf{证明：}` 内联文本，而不是正�
 
 ---
 
+## L708: 长公式写作时必须拆解，禁止堆叠单行
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+写作时将多个 $\xrightarrow{\text{...}}$ 翻译链堆叠在同一行 `$$...$$` 中，导致编译时 overfull hbox (87.9pt too wide)。
+
+**正确做法**:
+```latex
+% 错误 ❌：单行超长公式（Schubert 类相交链式翻译）
+$$\overline{B^-uB/B} \cap \overline{B^-vB/B} \xrightarrow{\text{横截性}} \text{良定义的交点数} \xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w$$
+
+% 正确 ✅：拆解为 align 多行
+\begin{align}
+\overline{B^-uB/B} \cap \overline{B^-vB/B}
+&\xrightarrow{\text{横截性}} \text{良定义的交点数} \label{eq:geo-to-integer} \\
+&\xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \label{eq:integer-to-cohomology} \\
+&\xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w \label{eq:cohomology-to-polynomial}
+\end{align}
+```
+
+**长公式高危模式（写作时优先检查）**:
+1. 涉及 Schubert 细胞闭包 $\overline{B^-wB/B}$ 的多步翻译链
+2. 涉及 $\xrightarrow{\text{...}}$ 箭头连接多个步骤
+3. 涉及 $\sum_w$ 多重求和 + 下标的复合表达式
+4. 任何预估宽度超过 15cm 的公式
+
+**写作 SOP**:
+1. 写完公式后立即用 `$$...$$` 预览是否超宽
+2. 超宽 → 用 `aligned` 或 `align` 拆解
+3. 编译后检查日志 `grep -i overfull *.log`
+
+**修复记录**:
+- qa.tex line 1030 (87.9pt) → align 拆解 3 行 ✅
+
+**防止措施**:
+- 写作时对长公式保持敏感，优先拆分
+- 编译后立即检查 overfull 警告
+
+---
+
 ## PUA 自注入行为
 
 开工前用 Read 工具读取：
