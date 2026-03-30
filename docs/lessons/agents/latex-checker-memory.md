@@ -14,6 +14,7 @@
 | L903 | Label/Ref 一致性检查 | 1 |
 | L904 | Theorem 环境禁止 itemize | 1 |
 | L905 | theorem 环境 \\begin/\\end 格式检查 | 1 |
+| L906 | Overfull Hbox 排版问题 | 1 |
 
 ---
 
