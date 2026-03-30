@@ -882,67 +882,52 @@ Skew 除差算子 $\partial_{w/v}$（见\cref{def:SkewDividedDifference}）由 M
 $$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \prod_{i=1}^{k}(x_{a_i} - y_{b_i})$$
 这种因子化形式使得乘积展开的结构特别清晰。
 
-\textbf{最简单的例子}：取 $u = 12$，$v = 21$（都是 Grassmannian）。
-$$\mathfrak{S}_{12}(\mathbf{x}; \mathbf{y}) = 1, \quad \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) = x_1 - t_1$$
-$$\mathfrak{S}_{12} \cdot \mathfrak{S}_{21} = x_1 - t_1 = \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})$$
-展开系数 $c^{21}_{12,21} = 1 \in \mathbb{N}$，符合正性。
+\textbf{例子：$u = 21$，$v = 21$}（都是 Grassmannian）。
 
-\textbf{更复杂的例子}：取 $u = 213$，$v = 132$（两个 Grassmannian 排列）。
-
-第一步：查表得
-$$\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) = x_1 - y_2$$
-$$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
+第一步：查表得 S$_3$ 中双重 Schubert 多项式（见\cref{ex:DoubleSchubertS3}）：
+$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1$$
+注意：这里的 $y$ 变量是占位符，当我们将两个 $\mathfrak{S}_{21}$ 相乘时，第二个的 $y$ 要替换为 $t$。
 
 第二步：计算乘积
 \begin{align*}
-\mathfrak{S}_{213} \cdot \mathfrak{S}_{132} &= (x_1 - y_2)(x_2 - t_2) \\
-&= x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2 \tag{展开}
+\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})
+&= (x_1 - y_1)(x_1 - t_1) \\
+&= x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1 \tag{展开}
 \end{align*}
 
-第三步：配凑——利用恒等式 $t_j = (t_j - y_i) + y_i$ 将每项改写为"\textbf{$(t_j - y_i)$ 因子} $+$ \textbf{不含 $t$ 的余项}"的形式：
+第三步：写成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式
+
+这里的 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 必须是 $t_j - y_i$ 的非负整数系数多项式。
+
+利用恒等式 $t_1 = (t_1 - y_1) + y_1$，将每项改写：
 
 \begin{itemize}
-\item $x_1x_2$：已是 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})$ 的首项，系数为 $1$（非负整数）。
+\item $x_1^2 = x_1^2$（留在 $\mathfrak{S}_{w_0}$ 的系数中，$w_0 = 321$ 是最长置换）
 
-\item $-x_1t_2 = -x_1\bigl[(t_2 - y_2) + y_2\bigr] = -x_1(t_2 - y_2) - x_1y_2$
+\item $-x_1 t_1 = -x_1[(t_1 - y_1) + y_1] = -x_1(t_1 - y_1) - x_1 y_1$
 
-\item $-y_2x_2 = -y_2(x_2 - t_2) - y_2t_2
-       = -y_2(x_2 - t_2) - y_2\bigl[(t_2 - y_2) + y_2\bigr]
-       = -y_2(x_2 - t_2) - y_2(t_2 - y_2) - y_2^2$
+\item $-x_1 y_1 = -x_1 y_1$
 
-\item $y_2t_2 = y_2\bigl[(t_2 - y_2) + y_2\bigr] = y_2(t_2 - y_2) + y_2^2$
+\item $t_1 y_1 = (t_1 - y_1 + y_1) y_1 = y_1(t_1 - y_1) + y_1^2$
 \end{itemize}
 
-第四步：合并同类项——将所有含 $(t_2 - y_2)$ 的项提出，余下的 $y$ 多项式归入系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$：
+合并含 $(t_1 - y_1)$ 的项：
+$$[-x_1 + y_1] \cdot (t_1 - y_1)$$
 
-\[
-(-x_1 - y_2 + y_2)\cdot(t_2 - y_2) = -x_1\cdot(t_2 - y_2)
-\]
-
-\textbf{最终形式}：
+第四步：最终形式
 \begin{align}\label{eq:GrahamPositivity-result}
-(x_1 - y_2)(x_2 - t_2)
-&= 1 \cdot \mathfrak{S}_{231}(\mathbf{x}; \mathbf{t}) \tag{非负整数系数} \\
-&\quad + 1 \cdot (t_2 - y_2) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) \tag{非负整数系数} \\
+(x_1 - y_1)(x_1 - t_1)
+&= 1 \cdot \mathfrak{S}_{321}(\mathbf{x}; \mathbf{t}) \tag{$c^{321} = 1 \in \mathbb{N}$} \\
+&\quad + (t_1 - y_1) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) \tag{$c^{21} = t_1 - y_1$} \\
 &\quad + \text{其他 } (t_j - y_i) \text{ 的非负整数系数项}
 \end{align}
 
-式 \eqref{eq:GrahamPositivity-result} 表明：每个 Schubert 多项式的系数确实是 $t_j - y_i$ 的非负整数系数多项式——这正是 \cref{def:GrahamPositivity} 的核心断言。
+\textbf{为什么系数是"非负"的？} 注意 $c^{21} = t_1 - y_1 = 1 \cdot t_1 + (-1) \cdot y_1$，这是一个关于 $t_j - y_i$ 的多项式（这里只有一项），其系数是非负整数 $1$。符合 \cref{def:GrahamPositivity} 的断言。
+
+\textbf{正确的 $\mathfrak{S}_{231}$ 等形式：} 前面例子中我错误地说 "$x_1x_2$ 是 $\mathfrak{S}_{231}$"。实际上，在 S$_3$ 中（见\cref{ex:DoubleSchubertS3}）：
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1 y_3 - x_2 y_3 + y_2 y_3$$
+这只在 $y = t = 0$ 时才简化为 $x_1x_2$。原例子的错误在于混淆了双重 Schubert 多项式和其在特殊点上的取值。
 \end{Example}
-
-\textbf{特例：$S_3$ 中所有 Grassmannian 乘积的正性验证}
-
-取所有可能的 Grassmannian 对 $(u, v)$ 验证正性：
-
-\begin{itemize}
-\item $(u, v) = (21, 21)$：
-$$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) = (x_1 - y_1)(x_1 - t_1) = x_1^2 - x_1(t_1 + y_1) + t_1y_1$$
-展开系数为 $1, -(t_1+y_1), t_1y_1$，都是 $t_i - y_j$ 的多项式。
-
-\item $(u, v) = (132, 213)$：
-$$\mathfrak{S}_{132} \cdot \mathfrak{S}_{213} = (x_2 - y_2)(x_1 - t_2) = x_1x_2 - x_1y_2 - t_2x_2 + t_2y_2$$
-展开后每项系数都是 $t_j - y_i$ 的多项式。
-\end{itemize}
 
 \subsection{Samuel 猜想（条件减弱：去掉 Grassmannian 要求）}
 
