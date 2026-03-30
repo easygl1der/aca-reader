@@ -528,3 +528,87 @@ grep -n '\\tag*{' notes/**/*.tex
 **防止措施**:
 - 定义公式时立即加上 `\label{eq:...}`
 - 引用时用 `\cref{eq:...}` 代替手写"式 (X)"
+
+---
+
+## L713: 学术引用完整性：可引用处必须标注，禁止无引用注入数学声明
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+写作时遇到以下问题：
+1. 提到 Gromov-Witten invariant 但没有引用 foundational work
+2. 提到 equivariant cohomology 的概念但没有引用 Borel 或 Anderson-Fulton
+3. 提到 classical Schubert positivity 但没有引用 Chevalley 或原始文献
+4. 提到量子上同调基础但没有引用 Givental/Fulton-Pandharipande
+5. 列出正性结果对比时没有标注各结果的原始文献
+
+**正确做法**:
+在学术写作中，每一处引入的概念、定理、方法都应标注来源：
+
+```latex
+% 错误 ❌：无引用的数学声明
+Gromov-Witten 不变量计数的是......
+在量子上同调中，乘法涉及 Gromov-Witten 不变量......
+
+% 正确 ✅：完整引用
+Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995} 计数的是......
+在量子上同调 \cite{FultonQuntum1997} 中，乘法涉及 Gromov-Witten 不变量......
+
+% 错误 ❌：正性对比无引用
+\begin{enumerate}
+\item 经典 LR 系数：$c_{u,v}^w \in \mathbb{N}$，计数交点个数
+\item Graham positivity：$c_{u,v}^w \in \mathbb{Z}[x_i]$
+\item 三重 positivity：$c_{u,v}^w(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$
+\end{enumerate}
+
+% 正确 ✅：每项都有引用
+\begin{enumerate}
+\item 经典 LR 系数 \cite[(1.1)]{Chevalley1994}：$c_{u,v}^w \in \mathbb{N}$，计数交点个数
+\item Graham positivity \cite{Gr}：$c_{u,v}^w \in \mathbb{Z}[x_i]$
+\item 三重 positivity \cite{GX2025}：$c_{u,v}^w(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$
+\end{enumerate}
+```
+
+**引用完整性检查清单**:
+- [ ] 每个数学概念首次提及时有 \cite{...}
+- [ ] 每个定理/引理/推论有对应 \cite{...}
+- [ ] 列举多个相关工作时，每项工作都有引用
+- [ ] 比较不同 positivity 结果时，每项都标注来源
+- [ ] 检查 references.bib 是否包含所有引用的条目
+
+**Chapter 4 新增引用示例**:
+```latex
+% Schubert positivity 的历史来源
+...植根于几何相交的具体计数 \cite[\S 1]{Chevalley1994}。
+
+% 等变量子上同调
+...关于 torus 作用参数的多项式 \cite{Borel1957,AndersonFulton}。
+
+% Gromov-Witten 不变量
+...涉及 Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995}
+
+% Kim 的贡献
+...提及 Kim 的重要贡献 \cite{Kim2000}
+
+% 量子上同调
+...量子上同调 \cite{FultonQuntum1997} 中，乘法涉及......
+
+% 正性结果对比
+在 Schubert calculus 的研究中，有多种不同层次的正性 \cite{knutson2003,FultonQuntum1997}
+```
+
+**修复记录**:
+- chapter4.tex: 补充 Gromov-Witten invariants 基础引用 (Kontsevich, Gromov) ✅
+- chapter4.tex: 补充 equivariant cohomology 引用 (Borel, AndersonFulton) ✅
+- chapter4.tex: 补充 classical LR coefficient 引用 (Chevalley) ✅
+- chapter4.tex: 补充 Kim 引用 (Kim2000) ✅
+- chapter4.tex: 补充正性对比引用 (knutson2003, FultonQuntum1997) ✅
+- references.bib: 添加 Borel1957, Chevalley1994, FultonQuntum1997, Kontsevich1994, Gromov1995, Kim2000 ✅
+
+**防止措施**:
+1. 写作时，遇到专业术语立即想：这个词组是哪篇论文提出的？
+2. 列举相关工作时，用 grep 检查是否每项都有 \cite{}
+3. 完成后用 `grep -n '\\cite{' chapter*.tex` 统计引用密度
+4. 对照原论文，核查每一处引用的准确性
