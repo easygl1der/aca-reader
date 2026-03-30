@@ -87,6 +87,7 @@
 | `docs/team-lead-protocol.md` | Team Lead 协议、PUA 注入 |
 | `docs/hooks-subagent.md` | Hooks 与 Subagent 自动化 |
 | `docs/progress.md` | 主题进度 |
+| `docs/knowledge-profile.md` | 用户知识画像系统 |
 
 ---
 
