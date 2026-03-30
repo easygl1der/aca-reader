@@ -961,3 +961,32 @@ $$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; 
 \end{enumerate}
 
 \textbf{证明的核心思想}：将几何相交（交集在等变上同调中的类）翻译为代数展开系数，然后利用上述引理证明系数必为非负。
+
+\section{几何相交如何翻译为代数展开系数}
+\label{sec:GeoToAlgebraTranslation}
+
+\subsection{问题}
+证明的核心思想是将几何相交（交集在等变上同调中的类）翻译为代数展开系数。这个翻译机制是如何实现的？除差算子的几何意义是什么？
+
+\subsection{回答}
+
+\textbf{翻译的三步走战略}：
+
+\begin{enumerate}
+\item \textbf{横截相交引理（Lemma 2.5）}：保证交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper 且横截的。横截性意味着相交是"好的"——没有奇点、退化或不确定的点个数。横截相交的点个数是良定义的整数，这使得几何计数成为可能。
+
+\item \textbf{闭链分解推论（Corollary 2.4）}：这是连接几何与代数的桥梁。它断言在旗流形 $G/B$ 上，任意 $B^-$-不变的有效闭链必是 Schubert 类 $[\overline{B^-wB/B}]_T$ 的非负线性组合：
+$$\text{几何闭链} = \sum_w c_w \cdot [\overline{B^-wB/B}]_T$$
+
+\item \textbf{几何 → 代数对应}：
+\begin{itemize}
+\item \textbf{几何侧}：Schubert 品种 $\overline{B^-wB/B}$ 的相交
+\item \textbf代数侧}：Schubert 多项式 $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ 在基 $\{\mathfrak{S}_w(\mathbf{x};\mathbf{t})\}$ 下的展开
+\item \textbf{翻译}：展开系数 $c^w_{u,v}(\mathbf{y},\mathbf{t})$ 就是几何相交数的代数化身
+\end{itemize}
+\end{enumerate}
+
+\textbf{除差算子的几何意义}：除差算子 $\partial_i$ 在几何上对应于\textbf{沿第 $i$ 个超平面进行截面}。它递归地将高维相交问题降维：通过作用，逐步"切割"旗流形中的 Schubert 胞腔，直到降到一个点（对应单项式）。这与拓扑学中的横截截面（transverse section）概念相通。
+
+\textbf{完整的翻译链条}：
+$$\overline{B^-uB/B} \cap \overline{B^-vB/B} \xrightarrow{\text{横截性}} \text{良定义的交点数} \xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w$$
