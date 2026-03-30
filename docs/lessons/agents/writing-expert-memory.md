@@ -487,3 +487,43 @@ $$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
 
 **修复记录**:
 - Refined vs Original Graham QA（sec:RefinedVsOriginalGraham）→ 删除错误声明，添加反例 + 正确关系 ✅
+
+---
+
+## L712: 公式引用必须用 \cref 而非 式 (★)
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+写作时引用公式使用了 `式 (★★)` 而不是标准的 `\cref{eq:label}`。
+
+**正确做法**:
+```latex
+% 错误 ❌
+将这一结论代入式 (★★)，得到
+$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = ...$$
+
+% 正确 ✅
+将这一结论代入 \cref{eq:skew-divided-diff-zero}，得到
+$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = ... \label{eq:skew-divided-diff-zero}$$
+```
+
+**命名规范**:
+- 公式定义时用 `\label{eq:描述性名称}`
+- 引用时用 `\cref{eq:描述性名称}`
+- 不要用 `\tag{}` 自定义标签
+- 不要手写"式 (X)"
+
+**检查命令**:
+```bash
+grep -n '式 (★)\|式 (★★)' notes/**/*.tex
+grep -n '\\tag*{' notes/**/*.tex
+```
+
+**修复记录**:
+- chapter1.tex line 1269: `式 (★★)` → `\cref{eq:skew-divided-diff-zero}` ✅
+
+**防止措施**:
+- 定义公式时立即加上 `\label{eq:...}`
+- 引用时用 `\cref{eq:...}` 代替手写"式 (X)"
