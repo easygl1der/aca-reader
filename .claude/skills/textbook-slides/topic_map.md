@@ -2,25 +2,42 @@
 
 > 由 topic-mapper agent 生成。
 
-## 测试用例：Gauss-Markov
+## Gauss-Markov PPT 详细映射
 
 | 属性 | 值 |
 |------|-----|
 | **PPT 文件** | `Gauss-Markov.pptx` |
 | **对应教材** | Chapter 04 (Gauss-Markov Theorem) |
-| **Slide 数量** | ~25 张 |
-| **核心内容** | BLUE, 最佳线性无偏估计 |
-| **跳过的内容** | 完整证明、有限样本性质细节 |
+| **PPT 路径** | `PDFs/applied-linear-regression/ALR/Gauss-Markov.pptx` |
+| **教材路径** | `PDFs/applied-linear-regression/chapters/chapter04_gauss.tex` |
+| **Slide 数量** | 20 张 |
+| **核心内容** | BLUE, 最佳线性无偏估计, OLS 性质 |
+| **跳过的内容** | 完整证明细节、 Homework 题目 |
 
-### Slide → 教材映射
+### Slide → 教材详细映射
 
-| Slide 主题 | 教材来源 |
-|-----------|---------|
-| OLS 回顾 | §2.2, §3.1 |
-| BLUE 条件 | §4.1 |
-| Gauss-Markov 定理 | §4.1, Theorem 4.1 |
-| 误差椭圆几何 | §4.2 |
-| 例子 | §4.3 |
+| Slide # | Slide 标题 | 教材来源 | 关键内容 |
+|---------|-----------|---------|---------|
+| 1 | Gauss-Markov Model | §4.1 标题 | Chapter 4 引言：Gauss-Markov 模型与定理 |
+| 2 | Regression model | §4.1 (Assumption 4.1) | $Y = X\beta + \varepsilon$ 模型定义 |
+| 3 | Linear model | §4.1 | 线性模型假设，固定设计矩阵 $X$ |
+| 4 | Enables statistical inference | §4.1 | 为什么需要统计假设才能做统计推断 |
+| 5 | Gauss-Markov | §4.1 (Assumption 4.1) | $E(\varepsilon) = 0$, $\cov(\varepsilon) = \sigma^2 I_n$ |
+| 6 | OLS properties | §4.2, Theorem 4.1 | $E(\hat{\beta}) = \beta$ 无偏性 |
+| 7 | OLS properties | §4.2, Theorem 4.1 | $\cov(\hat{\beta}) = \sigma^2(X^T X)^{-1}$ |
+| 8 | OLS properties | §4.2, Lemma 4.1 | 投影矩阵 $H$ 和 $I_n - H$ 的性质 |
+| 9 | Variance estimation | §4.3 | $\sigma^2$ 估计问题，残差平方和 RSS |
+| 10 | Variance estimation | §4.3, Theorem 4.2 | $\hat{\sigma}^2 = \text{RSS}/(n-p)$ 无偏估计 |
+| 11 | Revisit the sample variance formula | §4.3 | $E(\text{RSS}) = \sigma^2(n-p)$ 推导 |
+| 12 | Revisit the pooled sample variance formula | §4.3 | 为什么用 $n-p$ 而不是 $n$ |
+| 13 | Revisit the SSW (Sum of Squares Within) | §4.3 | $\hat{\varepsilon}^T \hat{\varepsilon}$ 与方差估计关系 |
+| 14 | Gauss-Markov theorem | §4.4, Theorem 4.3 | BLUE 定义：最佳线性无偏估计 |
+| 15 | Gauss-Markov theorem | §4.4 | $\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$ 含义 |
+| 16 | Gauss-Markov theorem | §4.4 | 条件 (C1) 线性性，条件 (C2) 无偏性 |
+| 17 | Gauss-Markov theorem: proof | §4.4, 证明 | 协方差分解：$\cov(\tilde{\beta} - \hat{\beta}) \succeq 0$ |
+| 18 | Other | §4.4 扩展 | 无用回归子、子样本平均等 |
+| 19 | If the Gauss-Markov model holds except for homoskedasticity, what changes? | §4.4 注 | 异方差情况下 OLS 不再 BLUE，需要 WLS |
+| 20 | A modern Gauss-Markov Theorem? | §4.4 | 现代扩展：Lasso 等 penalized 方法 |
 
 ## 完整映射表（16 个 PPT）
 
