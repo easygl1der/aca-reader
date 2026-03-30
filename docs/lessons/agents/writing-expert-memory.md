@@ -257,6 +257,44 @@ Corollary \ref{def:Corollary24} 将几何闭链分解为 Schubert 基底的组�
 
 ---
 
+## L707: Lemma/Theorem 环境内的证明必须用 proof 环境
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+Lemma/Theorem 环境中使用 `\textbf{证明：}` 内联文本，而不是正式的 `proof` 环境。这违反了 LaTeX 排版规范。
+
+**正确做法**:
+```latex
+% 错误 ❌
+\begin{Lemma}
+...
+\textbf{证明：} 这里是证明内容...
+\end{Lemma}
+
+% 正确 ✅
+\begin{Lemma}
+...
+\begin{Proof}
+这里是证明内容...
+\end{Proof}
+\end{Lemma}
+```
+
+**修复位置（Chapter 1）**:
+- Lemma 2.2 (line ~1110): 已有 proof 环境
+- Lemma 2.5 (line ~1139): 已有 proof 环境
+- Corollary 2.4 (line ~1150): 已有 proof 环境
+- Theorem 2.6: 缺失 `\end{Proof}` → 已修复
+- Theorem 2.7: `\textbf{证明：}` → `\begin{Proof}...\end{Proof}` → 已修复
+- Corollary 1.2: `\textbf{证明：}` → `\begin{Proof}...\end{Proof}` → 已修复
+
+**防止措施**:
+- 写 Lemma/Theorem 时直接用 `\begin{Proof}...\end{Proof}`
+- 润色后用 `grep '\\textbf{证明：}' file.tex` 检查
+
+
 ## 领域专属技能
 
 ```latex
