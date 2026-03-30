@@ -172,7 +172,7 @@ S(X; \theta) = \frac{\partial \log f(X; \theta)}{\partial \theta}.
 \textbf{Fisher 信息量}定义为得分函数的方差：
 
 \[
-I(\theta) = \text{Var}(S(X; \theta)) = \mathbb{E}_\theta\left[ \left( \frac{\partial \log f(X; \theta)}{\partial \theta} \right)^2 \right].
+I(\theta) = \text{var}(S(X; \theta)) = \mathbb{E}_\theta\left[ \left( \frac{\partial \log f(X; \theta)}{\partial \theta} \right)^2 \right].
 \tag{6.2.3}\label{eq:fisher-information}
 \]
 
@@ -234,19 +234,19 @@ f_X(x;\theta) = f(x-\theta).
 设 $X_1, \ldots, X_n$ iid $\sim f(x;\theta)$，满足正则条件 (R0)-(R4)。令 $Y = u(X_1, \ldots, X_n)$ 是任意统计量，其期望为 $\mathbb{E}_\theta[Y] = k(\theta)$。则
 
 \[
-\text{Var}(Y) \geq \frac{[k'(\theta)]^2}{n I(\theta)}.
+\text{var}(Y) \geq \frac{[k'(\theta)]^2}{n I(\theta)}.
 \tag{6.2.6}\label{eq:rao-cramer-bound}
 \]
 
 特别地，若 $Y$ 是 $\theta$ 的无偏估计（$k(\theta) = \theta$），则
 
 \[
-\text{Var}(Y) \geq \frac{1}{n I(\theta)}.
+\text{var}(Y) \geq \frac{1}{n I(\theta)}.
 \tag{6.2.7}\label{eq:rao-cramer-bound-unbiased}
 \]
 \end theorem
 
-\textbf{证明思路}：利用 Cauchy-Schwarz 不等式和得分函数的性质。令 $Z = \sum_{i=1}^n \frac{\partial \log f(X_i;\theta)}{\partial \theta}$，则 $\mathbb{E}(Z) = 0$，$\text{Var}(Z) = nI(\theta)$。由 $k'(\theta) = \mathbb{E}(YZ)$ 和 $|\text{corr}(Y,Z)| \leq 1$ 可得结论。\footnote{Rao-Cramér 下界的完整证明见附录 。}
+\textbf{证明思路}：利用 Cauchy-Schwarz 不等式和得分函数的性质。令 $Z = \sum_{i=1}^n \frac{\partial \log f(X_i;\theta)}{\partial \theta}$，则 $\mathbb{E}(Z) = 0$，$\text{var}(Z) = nI(\theta)$。由 $k'(\theta) = \mathbb{E}(YZ)$ 和 $|\text{corr}(Y,Z)| \leq 1$ 可得结论。\footnote{Rao-Cramér 下界的完整证明见附录 。}
 
 \textbf{直观理解}：Fisher 信息量 $I(\theta)$ 决定了估计精度能达到的极限。信息量越大，下界越低，我们能越精确地估计 $\theta$。
 
@@ -255,7 +255,7 @@ f_X(x;\theta) = f(x-\theta).
 \begin{definition}[有效估计量]\label{def:efficient-estimator}
 若无偏估计量 $\widehat{\theta}$ 的方差达到 Rao-Cramér 下界，即
 \[
-\text{Var}(\widehat{\theta}) = \frac{1}{n I(\theta)},
+\text{var}(\widehat{\theta}) = \frac{1}{n I(\theta)},
 \]
 则称 $\widehat{\theta}$ 为 $\theta$ 的\textbf{有效估计量（efficient estimator）}。
 \end{definition}
@@ -263,7 +263,7 @@ f_X(x;\theta) = f(x-\theta).
 \begin{example}[Bernoulli 分布的有效估计]\label{ex:bernoulli-efficient}
 对于 Bernoulli 分布，我们有 $I(\theta) = 1/[\theta(1-\theta)]$，因此 Rao-Cramér 下界为 $\theta(1-\theta)/n$。
 
-样本均值 $\bar{X}$ 是 $\theta$ 的无偏估计，其方差为 $\text{Var}(\bar{X}) = \theta(1-\theta)/n$。
+样本均值 $\bar{X}$ 是 $\theta$ 的无偏估计，其方差为 $\text{var}(\bar{X}) = \theta(1-\theta)/n$。
 
 因此 $\bar{X}$ 是有效估计量！
 
@@ -283,7 +283,7 @@ f_X(x;\theta) = f(x-\theta).
 
 MLE 为 $\widehat{\theta} = -n / \sum_{i=1}^n \log X_i$。
 
-该估计量是有偏的，其方差为 $\text{Var}(\widehat{\theta}) = \theta^2 n^2 / [(n-1)^2(n-2)]$，而 Rao-Cramér 下界为 $\theta^2/n$。
+该估计量是有偏的，其方差为 $\text{var}(\widehat{\theta}) = \theta^2 n^2 / [(n-1)^2(n-2)]$，而 Rao-Cramér 下界为 $\theta^2/n$。
 
 因此 $\widehat{\theta}$ 不是有效的，但修正偏后的估计量 $[(n-1)/n]\widehat{\theta}$ 是渐近有效的。\footnote{Beta 分布 MLE 方差的推导见附录 。}
 \end{example}
@@ -353,8 +353,8 @@ e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
 \subsection{Summary of Section 6.2}
 
 \begin{itemize}
-\item Fisher 信息量 $I(\theta) = \text{Var}(\partial \log f/\partial \theta)$ 衡量分布携带的关于 $\theta$ 的信息
-\item Rao-Cramér 下界：任何无偏估计量 $\widehat{\theta}$ 的方差满足 $\text{Var}(\widehat{\theta}) \geq 1/[nI(\theta)]$
+\item Fisher 信息量 $I(\theta) = \text{var}(\partial \log f/\partial \theta)$ 衡量分布携带的关于 $\theta$ 的信息
+\item Rao-Cramér 下界：任何无偏估计量 $\widehat{\theta}$ 的方差满足 $\text{var}(\widehat{\theta}) \geq 1/[nI(\theta)]$
 \item 达到下界的估计量称为有效估计量（如正态均值、二项比例的样本均值）
 \item 在正则条件下，MLE 是一致且渐近有效的：$\sqrt{n}(\widehat{\theta} - \theta_0) \xrightarrow{D} N(0, 1/I(\theta_0))$
 \item ARE 允许我们比较不同估计量的渐近效率
@@ -587,7 +587,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 在多参数情形，单个参数 $\theta_j$ 的无偏估计量 $\widehat{\theta}_j$ 满足
 
 \[
-\text{Var}(\widehat{\theta}_j) \geq \frac{1}{n} [\mathbf{I}^{-1}(\boldsymbol{\theta})]_{jj}.
+\text{var}(\widehat{\theta}_j) \geq \frac{1}{n} [\mathbf{I}^{-1}(\boldsymbol{\theta})]_{jj}.
 \tag{6.4.6}\label{eq:multiparameter-rao-cramer}
 \]
 
@@ -629,7 +629,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 \begin{itemize}
 \item 多参数情形下，MLE 通过同时求解所有参数的 Score 方程得到
 \item 信息矩阵 $\mathbf{I}(\boldsymbol{\theta})$ 是 Fisher 信息在多参数情形下的推广
-\item Rao-Cramér 下界由信息矩阵的逆给出：$\text{Var}(\widehat{\theta}_j) \geq \frac{1}{n}[\mathbf{I}^{-1}]_{jj}$
+\item Rao-Cramér 下界由信息矩阵的逆给出：$\text{var}(\widehat{\theta}_j) \geq \frac{1}{n}[\mathbf{I}^{-1}]_{jj}$
 \item 在正则条件下，多参数 MLE 联合渐近正态：$\sqrt{n}(\widehat{\boldsymbol{\theta}} - \boldsymbol{\theta}) \xrightarrow{D} N_p(\mathbf{0}, \mathbf{I}^{-1})$
 \item 信息矩阵的对角元素给出每个参数的独立信息
 \end{itemize}
@@ -1631,11 +1631,11 @@ $i=1,2$。原假设是 $H_0: \theta_1 = \theta_2$，而备择假设是 $H_1: \th
 
 \subsection{Rao-Cramér 下界的推导}\label{sec:rao-cramer-proof}
 
-\textbf{背景}：证明任何无偏估计量 $\widehat{\theta}$ 的方差满足 $\text{Var}(\widehat{\theta}) \geq 1/[nI(\theta)]$。
+\textbf{背景}：证明任何无偏估计量 $\widehat{\theta}$ 的方差满足 $\text{var}(\widehat{\theta}) \geq 1/[nI(\theta)]$。
 
 \textbf{证明思路}：利用 Cauchy-Schwarz 不等式。
 
-设 $Y = \widehat{\theta}$，$Z = \sum_{i=1}^n \frac{\partial \log f(X_i;\theta)}{\partial \theta}$。则 $\mathbb{E}(Z) = 0$，$\text{Var}(Z) = nI(\theta)$。
+设 $Y = \widehat{\theta}$，$Z = \sum_{i=1}^n \frac{\partial \log f(X_i;\theta)}{\partial \theta}$。则 $\mathbb{E}(Z) = 0$，$\text{var}(Z) = nI(\theta)$。
 
 对 $k'(\theta) = \frac{d}{d\theta}\mathbb{E}(Y) = \frac{d}{d\theta}\int yL(y)dy$ 利用微分与积分可交换（正则条件），得
 
@@ -1649,7 +1649,7 @@ k'(\theta) = \mathbb{E}\left( Y \cdot \frac{\partial \log L}{\partial \theta} \r
 |\text{corr}(Y,Z)|^2 = \frac{[\text{cov}(Y,Z)]^2}{\text{var}(Y)\text{var}(Z)} \leq 1.
 \]
 
-即 $[k'(\theta)]^2 \leq \text{Var}(Y) \cdot nI(\theta)$，整理得 Rao-Cramér 不等式。
+即 $[k'(\theta)]^2 \leq \text{var}(Y) \cdot nI(\theta)$，整理得 Rao-Cramér 不等式。
 
 \textbf{证毕。}
 
