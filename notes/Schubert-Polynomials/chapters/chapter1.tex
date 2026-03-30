@@ -1121,7 +1121,31 @@ $S_4$ 中的 Schubert 多项式更复杂，但我们可以验证正性仍然成�
 \section{主要定理的证明}
 \label{sec:ProofMain}
 
-本节我们介绍本文主要定理的证明思路.
+本节我们证明本文的三个人定理——Theorem \ref{def:GrahamPositivity}、Theorem \ref{def:RefinedGraham} 和 Theorem \ref{def:Theorem12}。这三个定理层层递进，构成了从特殊到一般的完整理论体系。
+
+\textbf{定理之间的逻辑链条}：
+
+\textbf{第一步}（Theorem \ref{def:GrahamPositivity}，Graham Positivity）：这是整个理论的起点，断言当 $u, v$ 都是 Grassmannian 排列时，乘积 $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ 的展开系数 $c^w_{u,v}(\mathbf{y},\mathbf{t})$ 是关于 $t_i - y_j$ 的非负整数多项式。原始证明依赖于几何相交理论。
+
+\textbf{第二步}（Theorem \ref{def:RefinedGraham}，Refined Graham Positivity）：这是对第一步的根本性推广。关键观察是：原始证明中 "Grassmannian 排列" 这一限制本质上只用到了一点——横截相交性。而横截相交性在更一般的 "descents 条件" 下仍然成立。因此，Refined 版本将假设从 "两个 Grassmannian 排列" 推广到 "满足 separated descents 条件的任意排列"。
+
+\textbf{第三步}（Theorem \ref{def:Theorem12}，Triple Schubert Positivity）：在 Refined 版本的基础上，将两个排列进一步推广到三个排列的乘积 $\mathfrak{S}_u \cdot \mathfrak{S}_v \cdot \mathfrak{S}_w$。这在几何上对应于三个 Schubert 胞腔的相继相交。
+
+\textbf{支撑这三级火箭的底层引理}：
+
+引理之间的依赖关系决定了证明的层次：
+
+\begin{enumerate}
+\item \textbf{Lemma \ref{def:Lemma22}}（正规子群引理）：这是整个归纳法的基石。它证明了若 $ws_i > w$，则 $N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。在李代数层面，这建立了一个理想关系 $\mathfrak{n}^-(ws_i) \subset \mathfrak{n}^-(w)$，允许我们从短长度排列逐步构造长的分解。
+
+\item \textbf{Lemma \ref{def:Lemma25}}（横截相交引理）：这是 Refined 版本的核心技术工具。它断言交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper 且横截的。横截性意味着相交是"好的"——没有奇点、退化或不确定的点个数。横截相交的非负性来自于拓扑学的基本事实：横截相交的交集点个数是良定义的整数。
+
+\item \textbf{Corollary \ref{def:Corollary24}}（闭链分解推论）：这是连接几何与代数的桥梁。它断言在旗流形 $G/B$ 上，任意 $B^-$-不变的有效闭链必是 Schubert 类 $[\overline{B^-wB/B}]_T$ 的非负线性组合。这建立了从几何闭链到代数展开系数的对应关系。
+\end{enumerate}
+
+这三个引理的关系可以概括为：\textbf{Lemma \ref{def:Lemma22} 提供了归纳法的结构，Lemma \ref{def:Lemma25} 保证了横截相交的良定义性，Corollary \ref{def:Corollary24} 将几何闭链分解为 Schubert 基底的组合}。
+
+有了这些准备，我们现在可以进入正式的证明。证明的核心思想是将几何相交（交集在等变上同调中的类）翻译为代数展开系数，然后利用上述引理证明这些系数必为非负。
 
 \subsection{代数群与旗流形的基本设置}
 \label{sec:AlgebraicGroupSetup}
