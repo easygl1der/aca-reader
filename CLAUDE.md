@@ -88,6 +88,21 @@
 | `docs/hooks-subagent.md` | Hooks 与 Subagent 自动化 |
 | `docs/progress.md` | 主题进度 |
 | `docs/knowledge-profile.md` | 用户知识画像系统 |
+| `docs/lessons/web-style-preferences.md` | 网页设计偏好记录 |
+| `.claude/skills/web-style-learner/SKILL.md` | 网页风格分析 skill |
+
+---
+
+## 🌐 网页风格学习系统
+
+当用户分享 URL + "分析这个网页风格"时触发：
+1. Playwright 截图 + 快照分析
+2. 提取色彩/字体/布局/动效/图标/组件
+3. 保存到 `webpage/style-references/<网站名>/`
+4. 更新 `docs/lessons/web-style-preferences.md`
+5. 与用户确认偏好
+
+详见: `.claude/skills/web-style-learner/SKILL.md`
 
 ---
 
