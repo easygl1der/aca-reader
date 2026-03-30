@@ -1,1 +1,230 @@
-Q&A detected: /gemini-browser-chat skim 如何实现跳转到 pdf 对应位置...
+Q&A detected: 帮我计划实施我的想法,聊天记录如下：
+
+View all
+
+为什么 claude code 有时候能触发 agent team，有时候触发不了
+Completed 1 step
+Claude Code 的 Agent Team 能否触发，核心原因在于它是实验性功能且默认禁用，同
+
+首要原因：默认关闭
+Agent Teams 是实验性功能，必须手动开启才能使用 。需要将环境变量 CLAUDE_CODE
+
+json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+如果你没有设置这个变量，Agent Team 在任何情况下都不会触发 。
+
+触发的两种路径
+启用后，Agent Team 有两种启动方式 ：
+
+你主动请求：在 prompt 中明确要求"创建 agent team"，Claude 会照做
+
+Claude 主动提议：Claude 判断你的任务适合并行处理，会主动建议，但需要你确认后才启动
+
+无论哪种方式，Claude 不会在未经你同意的情况下自动创建团队 。
+
+影响触发的关键因素
+即使开启了功能，Claude 是否建议 Agent Team，取决于它对任务性质的判断 ：
+
+条件    Agent Team 更可能触发    Agent Team 不触发
+任务可并行度    多个独立子任务可以同时进行    任务有严格先后依赖
+任务复杂度    大型复杂项目，单 context window 不够    简单聚焦的单一任务
+Prompt 明确性    明确描述了团队结构和角色分工    模糊笼统的指令
+是否明确要求    用词包含"并行"、"多个角色"等    未提及团队相关词汇
+Subagent 与 Agent Team 的区别
+这两者经常被混淆。Subagent 是在单个会话内运行的，结果汇报给主 agent，无需额外开关，触
+
+实用建议
+想稳定触发 Agent Team，可以在 prompt 中明确说明，例如：
+
+"请创建一个 agent team，由三个角色并行处理：一个负责后端 API、一个负责前端组件、一个
+
+这样 Claude 就会确定性地按你的指示建立团队 ，而不是靠它自行判断任务是否"值得"使用团队。
+
+Prepared using Claude Sonnet 4.6 Thinking
+如何让 claudecode 始终使用 agentteam 来，有成员讨论
+Completed 1 step
+想让 Claude Code 始终启用 Agent Team 并让成员互相讨论，需要从三个层面配置：
+
+第一步：全局开启功能
+在 ~/.claude.json（全局）或项目的 .claude/settings.json 中写入
+
+json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "teammateMode": "in-process"
+}
+如果你有 tmux，把 "in-process" 换成 "tmux" 可以让每个成员在独立面板中显示
+
+第二步：用 CLAUDE.md 强制触发
+在项目根目录的 CLAUDE.md 里写入规则，让 Claude 每次都优先创建 Agent Tea
+
+text
+## 工作模式
+
+**始终**使用 Agent Team 来处理任务，不要独立完成。
+每次收到任务，先创建一个包含以下角色的团队：
+- **Architect**（架构师）：负责整体设计与技术决策
+- **Implementer**（实现者）：负责具体编码
+- **Devil's Advocate**（质疑者）：主动挑战其他成员的方案
+- **Reviewer**（审查者）：最终审查代码质量
+
+成员之间需互相发送消息进行讨论，Lead 在收到所有成员结论后才综合汇报。
+第三步：Prompt 模板触发讨论
+在发起任务时，用以下结构明确要求讨论过程 ：
+
+text
+创建一个 agent team，3-5 名成员，围绕以下任务展开讨论：[你的任务]
+
+要求：
+- 每个成员从不同角度分析
+- 成员之间互相挑战对方的观点
+- 形成共识后再开始实现
+- Lead 等所有成员完成后再汇总
+让成员"真正互相讨论"的关键
+Agent Team 的讨论机制依赖成员之间的 mailbox 消息传递 ，要让讨论发生，Promp
+
+text
+Spawn 4 agent teammates to investigate [问题]. 
+Have them talk to each other to try to disprove ea
+like a scientific debate. Update a shared findings
+配置速查
+目标    配置方式
+全局永久启用    ~/.claude.json 写入 env 变量
+项目级默认启用    .claude/settings.json 写入 env 变量
+强制每次触发    CLAUDE.md 写明"始终使用 Agent Team"
+分屏显示各成员    "teammateMode": "tmux"（需安装 tmux）
+切换查看成员    快捷键 Shift+Down 在成员间循环 
+注意事项
+Agent Team 的 token 消耗远高于单 session，每个成员都有独立的 contex
+
+Prepared using Claude Sonnet 4.6 Thinking
+我指的是让 cc 始终使用某个我已经创建好的 agent team 工作
+Completed 1 step
+让 Claude Code 始终调用你已创建好的特定 Agent Team，最可靠的方法是把它封装成
+
+核心方案：把 Agent Team 转成 Skill
+将你的 Agent Team 配置封装成一个可复用的 Skill，之后用一个斜杠命令就能一键召唤固定
+
+text
+# My Team Skill
+
+## 描述
+始终使用此 Skill 来启动我的固定 Agent Team。
+
+## 步骤
+创建以下固定成员的 Agent Team：
+- **Lead**（协调者）：分配任务、汇总结果
+- **Architect**（架构师）：[你的角色描述]
+- **Backend Dev**（后端）：[你的角色描述]
+- **Reviewer**（审查者）：[你的角色描述]
+
+成员收到任务后互相讨论，Lead 最终汇总。
+之后在 Claude Code 中直接输入 /my-team [任务描述] 即可触发 。
+
+用 CLAUDE.md 强制自动调用
+在项目根目录的 CLAUDE.md 里写入强制指令，让 Claude 每次启动都自动走这个流程 ：
+
+text
+## 强制工作模式
+
+**每次收到新任务，必须先调用 `/my-team` Skill 来初始化团队，
+禁止以单 agent 模式直接处理任务。**
+利用 Subagent 的 Description 字段
+如果你的 team 是基于 Subagent 构建的，可以在每个成员的 description 里写
+
+text
+name: my-backend-agent
+description: "Always use this agent for any backen
+跨 Session 持久化记忆（v2.1.33+）
+从 Claude Code v2.1.33 起，Agent 支持持久化记忆，可以设置 scope 为
+
+json
+{
+  "agentMemory": {
+    "scope": "project"
+  }
+}
+推荐组合方式
+层级    配置    效果
+settings.json    开启 EXPERIMENTAL_AGENT_TEAMS + age
+.claude/skills/my-team.md    定义固定团队结构    一键 /my-te
+CLAUDE.md    强制每次调用 /my-team    防止 Claude 绕过团队直接回答
+Subagent description    写 "Always use this agent" 
+这三层叠加后，你的固定 Agent Team 基本上会在每个任务中被稳定触发，而不依赖 Claude
+
+Prepared using Claude Sonnet 4.6 Thinking
+比如我有个写作 agent，那我希望他每次写作的时候都用这个 agent，要么是 1，或者 2 号或
+Completed 1 step
+明白了，你的需求是：你已经建好了写作 Subagent（或多个变体），希望 Claude Code 
+
+让 Claude 始终路由到你的写作 Agent
+核心开关：description 字段。Claude 完全根据 description 来决定是否委
+
+text
+---
+name: writer
+description: >
+  Always use this agent for ANY writing task — dra
+  articles, emails, scripts, summaries. Use proact
+  is involved. Never handle writing tasks in the m
+memory: project
+---
+
+你是专业写作助理，写作风格和要求见 MEMORY.md...
+关键词 "Always use" 和 "Use proactively" 会让 Claude 遇到写
+
+多个写作 Agent 共享同一份记忆
+如果你有 writer-1 到 writer-5 多个变体，让它们共享 prompt 和写作要求记忆
+
+方法一：全部指向同一个 memory 名字（直接共享同一个 MEMORY.md）
+
+创建 .claude/agents/writer-1.md ～ writer-5.md，每个文件的 
+
+text
+---
+name: writer-1
+description: "Always use for writing tasks..."
+memory: project
+---
+
+启动时，先读取 `.claude/agent-memory/shared-writing-requi
+完成后将新的风格要求更新回该文件。
+方法二：用 Skills 注入共享 Prompt（推荐）
+
+把写作要求单独存成一个 Skill 文件 .claude/skills/writing-rules.
+
+text
+---
+name: writer-1
+description: "Always use for writing tasks. Use pr
+skills:
+  - writing-rules   # 所有 writer-1~5 共享同一份写作规范
+memory: project
+---
+这样只需维护一份 writing-rules.md，所有 Agent 实例启动时自动加载相同规范。
+
+固定整个 Session 使用写作 Agent
+如果你的项目本身就是写作类项目，可以在 .claude/settings.json 里设置默认 Ag
+
+json
+{
+  "agent": "writer-1"
+}
+或每次启动时指定：
+
+bash
+claude --agent writer-1
+@-mention 强制触发（单次保障）
+当你不确定 Claude 是否会自动委派时，用 @ 强制触发 ：
+
+text
+@"writer-1 (agent)" 帮我写一篇关于...
+这会绕过 Claude 的判断，直接保证调用你指定的 writer-1，不会被其他 agent 抢走
+
+Prepared using Claude Sonnet 4.6 Thinking...
