@@ -800,3 +800,41 @@ $\sigma(u)^T$ 是什么意思？上标 $T$ 代表什么？
 \end{itemize}
 
 \textbf{笔记中的位置}：正文 \cref{sec:GeometricMeaningCh4} 使用 GW 不变量解释 EQLR 系数的几何意义。
+
+\section{什么是分次 $\Lambda[q]$-代数}\label{sec:graded-Lambda-q-algebra}
+\subsection{问题}
+在 \cref{def:EquivariantQuantumCohomology} 中提到：$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数。什么是分次 $\Lambda[q]$-代数？其中的 $q$ 变量代表什么？
+
+\subsection{回答}
+\textbf{分次 $\Lambda[q]$-代数}是同时包含两种参数的代数结构：
+
+\begin{enumerate}
+\item \textbf{$\Lambda = \mathbb{Z}[x_1, \ldots, x_r]$ 层}：等变量子部分。$x_i$ 对应负根 $-\alpha_i$，编码 torus 作用的权信息。
+
+\item \textbf{$q$ 变量层}：量子修正部分。$q$ 是一个形式变量（formal variable），用来记录曲线的同调类（degree）。当 $q = 0$ 时退化为普通等变量子上同调。
+\end{enumerate}
+
+\textbf{为什么叫"分次"（graded）？} 因为乘法有分次结构：
+$$\deg(\sigma(w)) = \ell(w), \quad \deg(q) = 1, \quad \deg(x_i) = 1$$
+
+在乘积 $\sigma(u) \circ \sigma(v)$ 中，次数是相加的：$\deg(\sigma(u) \circ \sigma(v)) = \deg(\sigma(u)) + \deg(\sigma(v))$。而 $q^d$ 的次数是 $d$，所以量子项自然地增加了次数。
+
+\textbf{$q$ 的几何含义}：在量子上同调中，$q$ 变量编码的是曲线计数的额外信息。形式地说：
+$$\sigma(u) \circ \sigma(v) = \sum_{w,d} q^d c_{u,v}^{w,d} \sigma(w)$$
+
+其中 $d$ 记录曲线的同调类（multi-degree），$c_{u,v}^{w,d}$ 是对应次数为 $d$ 的 Gromov-Witten 不变量。
+
+\textbf{具体例子}：在 $\mathbb{P}^1$ 的情形（\cref{sec:EQCDefinition}）：
+$$\sigma(s_1) \circ \sigma(s_1) = q \cdot \sigma(1)$$
+
+这里 $q$ 出现因为两条直线（在 $\mathbb{P}^1$ 中）相交于一条曲线（亏格 0 曲线），而不是一个点。
+
+\textbf{与经典情形的对比}：
+\begin{center}
+\begin{tabular}{c|c|c}
+情形 & 代数结构 & 退化参数 \\ \hline
+经典上同调 $H^*(X)$ & $\Lambda$-代数（$\Lambda = \mathbb{Z}$） & — \\
+等变量子上同调 $H_T^*(X)$ & $\Lambda$-代数 & $x_i = 0$ \\
+等变量子量子上同调 $QH_T^*(X)$ & 分次 $\Lambda[q]$-代数 & $q = 0$ 退化为 $H_T^*$ \\
+\end{tabular}
+\end{center}
