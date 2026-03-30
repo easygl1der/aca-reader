@@ -393,6 +393,36 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 
 ---
 
+## L911: equivariant cohomology = 等变上同调
+
+**日期**: 2026-03-31
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+错误地将 "equivariant cohomology" 翻译为"等变量子上同调"。
+
+**正确术语**:
+```latex
+% 错误 ❌
+等变量子上同调（equivariant cohomology）
+
+% 正确 ✅
+等变上同调
+```
+
+**术语体系**:
+| 英文 | 中文 |
+|------|------|
+| equivariant cohomology | 等变上同调 |
+| quantum cohomology | 量子上同调 |
+| Equivariant Quantum Schubert Calculus | 等变量子上同调中的量子 Schubert 演算 |
+
+**防止措施**:
+- "equivariant" 简称为"等变"，不是"等变量"
+- 表格中可简化为"等变上同调"、"量子化等变上同调"
+
+---
+
 ## 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
