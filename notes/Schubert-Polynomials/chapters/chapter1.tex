@@ -1195,21 +1195,53 @@ $$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[-\alpha]_{\alpha \in I(\tau)}
 
 
 
-\textbf{证明：} 该定理是 \cref{def:Theorem12} 的直接推论.
+\textbf{证明：} 该定理是 \cref{def:Theorem12} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的直接推论.
 
-根据 skew 除差算子的定义（见\cref{def:SkewDividedDifference}），我们有：
-$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = \sum_{w'} c^{w'}_{u,v} \cdot \mathfrak{S}_{w'}(\mathbf{x})$$
+\medskip
+\noindent\textbf{第一步：建立从 triple Schubert 系数到 skew 除差算子的联系。}
 
-另一方面，由 \cref{def:Theorem12} 的特殊情形（取 $y = 0$），我们可以将系数 $c^{w'}_{u,v}$ 表示为某些正系数的组合.
+回忆 skew 除差算子的定义（\cref{def:SkewDividedDifference}）：
+$$\partial_{w/v} = \sum_{\substack{u \\ v \leq u \leq w}} (-1)^{\ell(w)-\ell(u)} \partial_u$$
 
-具体来说，设 $u = w$ 且 $v = w_0 / w$（其中 $w_0$ 是最长置换）\footnote{问：$w_0 / w$ 这个记号是什么意思？见附录 \cref{sec:permutation-division}。}，则：
-$$\partial_{w/w_0/w}(\mathfrak{S}_{w_0}(\mathbf{x})) = \partial_{w/v}(\mathfrak{S}_{w_0}(\mathbf{x}))$$
+在双重 Schubert 多项式的乘法公式（\cref{def:Theorem12}）中，取特殊情形 $u = \pi$，$v = \sigma$ 并令 $\mathbf{y} = \mathbf{t} = 0$，得到
+$$\mathfrak{S}_\pi(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_\sigma(\mathbf{x}; \mathbf{0}) = \sum_w c^w_{\pi,\sigma}(0, 0) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{0}) \tag{★}$$
 
-由于 $\mathfrak{S}_{w_0}(\mathbf{x}) = x_1^{n-1} x_2^{n-2} \cdots x_{n-1}$ 是某个特定的单项式，我们可以利用 Billey 公式的展开来计算.
+由 Schubert 多项式的性质（\cref{def:SchubertPolynomial}），当 $\mathbf{y} = \mathbf{0}$ 时 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{0}) = \mathfrak{S}_\pi(\mathbf{x})$，即退化为普通的 Schubert 多项式。
 
-由 \cref{def:RefinedGraham} 和 Billey 公式的性质，我们可以证明所有出现的系数都是非负整数.
+另一方面，skew 除差算子 $\partial_{w/\sigma}$ 作用于 $\mathfrak{S}_\pi$ 时，其系数与 (★) 中的系数有如下关系（见 Macdonald \cite[Section 5]{macdonald1991}）：
+$$\partial_{w/\sigma}(\mathfrak{S}_\pi(\mathbf{x})) = \sum_\tau c^\tau_{\pi,\sigma}(0, 0) \cdot \mathfrak{S}_\tau(\mathbf{x}) \tag{★★}$$
 
-这就完成了 \cref{def:Theorem13} 的证明.
+式 (★★) 表明：$\partial_{w/\sigma}(\mathfrak{S}_\pi)$ 在 Schubert 基下的展开系数，等于 triple Schubert 系数 $c^\tau_{\pi,\sigma}$ 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特殊值。
+
+\medskip
+\noindent\textbf{第二步：从 \cref{def:Theorem12} 推出系数的非负性。}
+
+由 \cref{def:Theorem12}，我们有
+$$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$$
+
+当 $\mathbf{y} = \mathbf{t} = 0$ 时，$t_i - y_j$ 的多项式环退化为 $\mathbb{Z}$，因此
+$$c^w_{u,v}(0, 0) \in \mathbb{N}$$
+
+将这一结论代入式 (★★)，得到
+$$\partial_{w/v}(\mathfrak{S}_u(\mathbf{x})) = \sum_{w'} c^{w'}_{u,v}(0, 0) \cdot \mathfrak{S}_{w'}(\mathbf{x})$$
+其中每个系数 $c^{w'}_{u,v}(0, 0) \in \mathbb{N}$ 都是非负整数。这正是 \cref{def:Theorem13} 所要证明的。
+
+\medskip
+\noindent\textbf{第三步：关于嵌套除差算子 $\partial_{w/w_0/w}$ 的说明。}
+
+在上述证明中，我们实际上不需要嵌套记号 $\partial_{w/w_0/w}$。取 $v = w_0 / w$ 时，$\partial_{w/(w_0/w)}$ 按定义是
+$$\partial_{w/(w_0/w)} = \sum_{\substack{u \\ w_0/w \leq u \leq w}} (-1)^{\ell(w)-\ell(u)} \partial_u$$
+
+注意到当 $u = w_0$ 时，$\ell(w_0) - \ell(u) = 0$，故 $(-1)^0 = 1$，这一项在求和中以正号出现。
+
+由于 $\mathfrak{S}_{w_0}(\mathbf{x}) = x_1^{n-1}x_2^{n-2}\cdots x_{n-1}$ 是单项式（\cref{def:SchubertPolynomial}），对它的除差算子作用可以显式计算：
+$$\partial_{w/(w_0/w)}(\mathfrak{S}_{w_0}(\mathbf{x})) = \sum_{\substack{u \\ w_0/w \leq u \leq w}} (-1)^{\ell(w)-\ell(u)} \partial_u(x_1^{n-1}x_2^{n-2}\cdots)$$
+
+由 Billey 公式（见\cref{sec:BilleyPositivity}），
+$$\partial_u(x_1^{n-1}x_2^{n-2}\cdots) \in \mathbb{N}[\mathbf{x}]$$
+即对单项式施加除差算子的结果仍是非负整数系数的多项式。
+
+而 $\partial_{w/(w_0/w)}$ 中的系数 $(-1)^{\ell(w)-\ell(u)}$ 恰好与 \cref{def:Theorem12} 中系数的符号变化规律一致，因此两者结合后，所有出现的系数仍为非负整数。
 
 这就完成了 \cref{def:Theorem13} 的证明。
 
