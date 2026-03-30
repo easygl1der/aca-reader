@@ -1778,6 +1778,115 @@ $$[Z]_T = \sum_w c[w] x[w]$$
 
 本节内容来自 Anderson \& Fulton 的《Equivariant Cohomology in Algebraic Geometry》\cite{anderson2023}第 19.4 节（pages 371-377）。这是 Graham 退化证明的详细版本，用于证明 Schubert 结构常数的正性。
 
+\subsection{预备概念}
+
+在阅读本节之前，读者需要熟悉以下概念。由于这是大二学生可能未学过的内容，我们在此给出简要说明。
+
+\subsubsection{代数群与环面}
+
+\textbf{线性代数群}：域 $\mathbb{C}$ 上的线性代数群是 $\mathrm{GL}_n(\mathbb{C})$ 的闭子群。例如 $\mathrm{GL}_n, \mathrm{SL}_n, \mathrm{B}_n$（上三角矩阵群）等。
+
+\textbf{连通性}：群 $G$ 是连通的，如果它作为拓扑空间（赋予 Zariski 拓扑）不能分解为两个非空开集的并。所有 Borel 子群都是连通的。
+
+\textbf{可解群}：群 $G$ 是可解的，如果其导出列最终平凡：
+\[
+G \supseteq [G,G] \supseteq [ [G,G], [G,G] ] \supseteq \cdots \supseteq \{e\}.
+\]
+例如，所有 Borel 子群 $B$ 都是可解的。
+
+\textbf{最大环面 (Maximal torus)}：设 $G$ 是连通线性代数群。$G$ 的一个\textbf{最大环面} $T$ 是 $G$ 中同构于 $(\mathbb{C}^*)^r$ 的极大子群，其中 $r = \rank(G)$ 称为 $G$ 的秩。
+
+直观理解：环面 $T \cong (\mathbb{C}^*)^r$ 是一个"阿贝尔的"（可交换的）子群，在很多方面像是线性代数群的"坐标系"。例如：
+\begin{itemize}
+\item 在 $\mathrm{GL}_n$ 中，对角矩阵的集合形成一个最大环面 $T \cong (\mathbb{C}^*)^n$。
+\item 在 $\mathrm{SL}_n$ 中，对角矩阵中行列式为 1 的子群是最大环面，$T \cong (\mathbb{C}^*)^{n-1}$。
+\end{itemize}
+
+\textbf{特征标 (Character)}：环面 $T$ 的一个特征标是群同态 $\chi: T \to \mathbb{C}^*$。所有特征标构成的群记为 $\hat{T}$，在 $T \cong (\mathbb{C}^*)^r$ 时有 $\hat{T} \cong \mathbb{Z}^r$。
+
+例如，如果 $T = (\mathbb{C}^*)^n$ 由对角矩阵 $\diag(t_1,\ldots,t_n)$ 组成，则 $t_i$ 的第 $i$ 个坐标给出特征标 $\varepsilon_i: \diag(t_1,\ldots,t_n) \mapsto t_i$。
+
+\subsubsection{闭链与有效闭链}
+
+\textbf{闭链 (Cycle)}：在代数几何中，闭链是代数簇的闭子簇的整系数线性组合。例如，$Y$ 是 $X$ 的闭子簇，则 $[Y]$ 是一个闭链。
+
+\textbf{有效闭链 (Effective cycle)}：如果闭链中所有系数都是非负整数，则称其为有效闭链。也就是说，有效闭链只是若干闭子簇的"并"（带重数），没有"负部"。
+
+\textbf{维数}：设 $Y$ 是复代数簇，$\dim Y = k$ 表示 $Y$ 是 $k$ 维复簇（实维数 $2k$）。
+
+\subsubsection{等变上同调}
+
+这是将拓扑的"上同调"与"群作用"结合的理论。
+
+\textbf{等变上同调 $[Y]_T$}：设 $T$ 在 $X$ 上作用。$X$ 的 $T$-等变上同调 $H_T^*(X)$ 是一个同时编码了 $X$ 的拓扑信息和 $T$ 作用信息的环。
+
+直观理解：普通上同调 $H^*(X)$ 只关心 $X$ 的形状；等变上同调 $H_T^*(X)$ 额外记录了 $T$ 在 $X$ 上怎么动。
+
+\textbf{类 $[Y]_T$}：如果 $Y \subseteq X$ 是 $T$-不变子簇（$T$ 保持 $Y$），则 $Y$ 在等变上同调中有一个类 $[Y]_T \in H_T^*(X)$。
+
+\begin{itemize}
+\item 当 $T$ 平凡作用时，$[Y]_T$ 就是普通的类 $[Y] \in H^*(X)$。
+\item $[Y]_T$ 包含了更多关于 $Y$ 与 $T$ 轨道关系的信息。
+\end{itemize}
+
+\textbf{B-不变}：如果群 $B$ 作用在 $X$ 上，子簇 $Y$ 是 $B$-不变的（$B$-invariant）意味着对所有 $b \in B$，有 $bY = Y$。这保证了 $Y$ 在 $B$ 作用下结构稳定。
+
+\subsubsection{幂幺根基}
+
+\textbf{幂幺群 (Unipotent group)}：一个元素 $g$ 是幂幺的，如果 $(g - I)^m = 0$ 对某个 $m$ 成立。幂幺矩阵群由所有特征值都为 1 的矩阵组成。
+
+\textbf{幂幺根基 (Unipotent radical)}：设 $B$ 是连通可解代数群。$B$ 的幂幺根基 $U$（记作 $U = U_N$ 或 $U_-$）是 $B$ 中所有幂幺元素构成的正规子群。它满足：
+\[
+B = U \cdot T, \quad U \cap T = \{e\}.
+\]
+
+直观理解：$B$ 可以分解为一个"阿贝尔的"环面子群 $T$ 和一个"幂幺的"（三角阵对角线以上为 1）子群 $U$ 的半直积。
+
+在旗流形 $G/B$ 的情形，$U_-$（或 $B^-$）是下三角幂幺群，它在旗流形上的轨道正好是 Schubert 胞腔。
+
+\subsubsection{纤维丛与纤维积}
+
+\textbf{纤维积 $B \times_{B'} Y$}：这是集合论中的"拉回"概念。设 $B$ 作用在 $Y$ 上，$B' \subseteq B$ 是子群。则
+\[
+B \times_{B'} Y = \{(b, y) \in B \times Y : b \text{ 在 } B' \text{ 中的等价类} = \text{某个代表元在 } B' \text{ 中的位置}\}
+\]
+在几何上，这可以理解为以 $Y$ 为纤维、$B/B'$ 为底空间的纤维丛。投影到 $B/B'$ 给出丛结构。
+
+在 Proposition 19.4.4 的证明中，$V = B \times_{B'} Y \to B/B' = \mathbb{A}^1$ 是一个纤维丛，纤维是 $Y$。
+
+\subsubsection{交集的几种类型}
+
+在代数几何中，两个子簇的交有不同的"深度"：
+
+\textbf{Proper intersection（固有交集）}：$Y$ 与 $Z$ 在 $X$ 中的交是 proper 的，如果交簇的维数等于 $\dim Y + \dim Z - \dim X$（这正是"期望"的维数）。非 proper 交集意味着"维度异常"——可能维数更低了。
+
+\textbf{横截相交 (Transverse intersection)}：在光滑点处，如果两个子簇的切空间张成整个切空间，则称它们横截相交。横截相交有良好的性质：交点个数是孤立的（有限的），且个数在族中是稳定的。
+
+\textbf{Scheme-理论上相交}：这是一种更精细的相交概念，考虑了子簇的环结构而不只是集合论意义。$V$ 在 $\infty \times X$ 中与 $\infty \times Y$ scheme-理论上相交，意味着它们在无穷远点的相交方式由理想幂决定，而不是简单的集合包含。
+
+直观理解：这三种相交层层递进——scheme-理论上相交是最精细的，横截相交是几何意义上"最好"的，proper 相交是维数意义上"正常"的。
+
+\subsubsection{对角紧化}
+
+\textbf{对角作用}：$B$ 在 $X$ 上的对角作用定义为 $b \cdot (x_1, x_2) = (b x_1, b x_2)$。这让 $B$ 同时作用在积 $X \times X$ 的两个分量上。
+
+\textbf{紧化 $\mathbb{A}^1 \subset \mathbb{P}^1$}：仿射直线 $\mathbb{A}^1$ 不是紧致的（如 $\mathbb{C}$ 不是紧致的），但射影直线 $\mathbb{P}^1 \cong \mathbb{C} \cup \{\infty\}$ 是紧致的。通过添加无穷远点，我们得到紧化。
+
+在 Proposition 19.4.4 的证明中：利用 $B$ 在 $\mathbb{P}^1$ 上的作用（由引理 19.4.2-19.4.3 给出），我们将纤维丛 $V \to \mathbb{A}^1$ 紧化到 $\mathbb{P}^1 \times X$，然后利用 $\mathbb{P}^1$ 上的关系 (19.1) 来"退化"——用 $0$ 和 $\infty$ 处的信息来控制整条纤维的信息。
+
+\subsubsection{证明的核心思路总结}
+
+有了以上预备知识，Proposition 19.4.4 的证明思路可以理解为：
+
+\begin{enumerate}
+\item 如果 $Y$ 已经 $B$-不变，则无需分解。
+\item 否则，构造纤维丛 $V = B \times_{B'} Y \to \mathbb{A}^1$，它在 $\mathbb{P}^1$ 中紧化。
+\item 利用 $\mathbb{P}^1$ 上的基本关系 $[\infty] = [0] + \chi[\mathbb{P}^1]$，与 $[V]$ 作交。
+\item 这将 $[Y]$ 的计算"退化"到 $0$ 和 $\infty$ 处的纤维，产生所需的分解 $[Y] = [Z_1] + \chi[Z_2]$。
+\end{enumerate}
+
+这个技巧本质上是把一个难以直接计算的 $B'$-不变类，通过族化的思想（纤维丛），分解为更简单的 $B$-不变类的组合。
+
 \subsection{背景：连通可解群与环面作用}
 
 \textbf{基本设定}：
