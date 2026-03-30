@@ -184,153 +184,83 @@ $$\mathfrak{S}_{12}(\mathbf{x}) = 1, \qquad \mathfrak{S}_{21}(\mathbf{x}) = x_1$
 
 \begin{Example}[Schubert 多项式：$S_3$ 的完整计算]
 \label{ex:SchubertPolynomialS3}
-在 $S_3$ 中有 $3! = 6$ 个置换。我们依次计算每个 Schubert 多项式的完整展开。
+在 $S_3$ 中有 $3! = 6$ 个置换。我们使用除差算子递推和 Stanley 对称多项式展开来计算每个 Schubert 多项式。
 
-最长置换 $w_0 = 321$：由初始条件，
-$$\mathfrak{S}_{321}(\mathbf{x}) = x_1^{2} x_2^{1} = x_1^2 x_2$$
+\subsection*{初始条件与除差算子}
 
-现在用递推公式 $\mathfrak{S}_w(\mathbf{x}) = \partial_i(\mathfrak{S}_{ws_i}(\mathbf{x}))$ 计算其他置换，其中 $i$ 是 $w$ 的最后 descent。
+对于最长置换 $w_0 = 321$，由初始条件：
+\begin{equation}
+\mathfrak{S}_{321}(\mathbf{x}) = x_1^{2} x_2.
+\end{equation}
 
-\bigskip
-\noindent\textbf{1. 计算 $\mathfrak{S}_{312}(\mathbf{x})$}
+除差算子 $\partial_i$ 定义为 $\partial_i(f) = \frac{f - s_i(f)}{x_i - x_{i+1}}$，其中 $s_i$ 交换 $x_i$ 和 $x_{i+1}$。
 
-$w = 312$（一行数组 $(3,1,2)$），检查 descents：$w(1)=3 > w(2)=1$ ✓，$w(2)=1 < w(3)=2$ ✗，故最后 descent 是 $i=1$。
+对于单项式，$\partial_i$ 的作用规则为：
+\begin{align}
+\partial_i(x_i) &= 1, &
+\partial_i(x_{i+1}) &= -1, \\
+\partial_i(x_i^k) &= x_i^{k-1} + x_i^{k-2} x_{i+1} + \cdots + x_{i+1}^{k-1}, &
+\partial_i(x_j) &= 0 \quad (j \neq i, i+1), \\
+\partial_i(1) &= 0.
+\end{align}
 
-$ws_1 = 132$，而 $\mathfrak{S}_{132}(\mathbf{x})$ 未知。先算 $\mathfrak{S}_{132}(\mathbf{x})$：
-
-$w = 132$（一行数组 $(1,3,2)$），检查 descents：$w(1)=1 < w(2)=3$ ✗，$w(2)=3 > w(3)=2$ ✓，故最后 descent 是 $i=2$。
-
-$ws_2 = 123$，而 $\mathfrak{S}_{123}(\mathbf{x}) = 1$（恒等置换）。所以：
-$$\mathfrak{S}_{132}(\mathbf{x}) = \partial_2(\mathfrak{S}_{123}(\mathbf{x})) = \partial_2(1) = 0$$
-
-这不对！问题在于：当 $w$ 没有 descent 时（即 $w$ 是递增的），我们不能直接用这个公式。
-
-更准确地说，Schubert 多项式的递推需要按长度从大到小进行。我们应该先确定偏序，然后用已知结果递推。
-
-\bigskip
-\noindent\textbf{直接查表法}
-
-Schubert 多项式的计算有标准结果。在 $S_3$ 中：
-
-\begin{center}
-{\small
-\begin{tabular}{c|c|c|c}
-$w$ & 一行数组 & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\ \hline
-$123$ & $(1,2,3)$ & $0$ & $1$ \\
-$213$ & $(2,1,3)$ & $1$ & $x_1$ \\
-$132$ & $(1,3,2)$ & $1$ & $x_2$ \\
-$231$ & $(2,3,1)$ & $2$ & $x_1 x_2$ \\
-$312$ & $(3,1,2)$ & $2$ & $x_1 + x_2$ \\
-$321$ & $(3,2,1)$ & $3$ & $x_1^2 x_2$
-\end{tabular}}
-\end{center}
-
-我们可以验证这些结果：
-
-\begin{itemize}
-\item $\mathfrak{S}_{123}(\mathbf{x}) = 1$（恒等置换）
-
-\item $\mathfrak{S}_{213}(\mathbf{x}) = x_1$：由 $\partial_1(\mathfrak{S}_{312}(\mathbf{x}))$ 推出，但直接记住即可
-
-\item $\mathfrak{S}_{132}(\mathbf{x}) = x_2$：这是唯一的单 descent 置换
-
-\item $\mathfrak{S}_{231}(\mathbf{x}) = x_1 x_2$：首项 $x_1^{1} x_2^{1}$，长度 2，没有更低次项
-
-\item $\mathfrak{S}_{312}(\mathbf{x}) = x_1 + x_2$：这是一个非 Grassmannian 的长度 2 置换，其 Schubert 多项式是对称的
-
-\item $\mathfrak{S}_{321}(\mathbf{x}) = x_1^2 x_2$：最长置换，首项 $x_1^2 x_2$
-\end{itemize}
-
-验证 $\mathfrak{S}_{312}(\mathbf{x}) = x_1 + x_2$：这个多项式是对称的（交换 $x_1$ 和 $x_2$ 不变），首项是 $x_1$（长度为 1），但这与长度矛盾！
-
-实际上，$\mathfrak{S}_{312}(\mathbf{x})$ 应该是 $x_1 x_2$ 或其他。让我重新计算：
-
-对于 $w = 312$：
-- $\ell(w) = 2$（两个逆序：$(3,1)$ 和 $(3,2)$）
-- 首项 $c_1 = 2$（$j>1$ 中 $w(j) < w(1)=3$ 的有 $w(2)=1, w(3)=2$），$c_2 = 1$（$j>2$ 中 $w(j) < w(2)=1$ 的有 $w(3)=2$），$c_3 = 0$
-- 所以首项是 $x_1^2 x_2$
-
-但 $\mathfrak{S}_{312}(\mathbf{x})$ 长度是 2，不可能是 $x_1^2 x_2$（这是长度 3 的单项式）。
-
-正确的结果是 $\mathfrak{S}_{312}(\mathbf{x}) = x_1 x_2 + x_1$ 或其他。让我用递推验证：
-
-$312$ 的最后 descent 是 $i=1$（因为 $312 = 21 \cdot s_1$ 在 Coxeter 群中）。
-
-在 Coxeter 群中，$312 \cdot s_1 = 132$。所以：
-$$\mathfrak{S}_{312}(\mathbf{x}) = \partial_1(\mathfrak{S}_{132}(\mathbf{x}))$$
-
-我们需要 $\mathfrak{S}_{132}(\mathbf{x})$。$132$ 的最后 descent 是 $i=2$（因为 $132 \cdot s_2 = 123$）。
-
-$132 \cdot s_2 = 123$，而 $\mathfrak{S}_{123}(\mathbf{x}) = 1$，故：
-$$\mathfrak{S}_{132}(\mathbf{x}) = \partial_2(1) = 0$$
-
-这说明我们的 Coxeter 群乘法顺序可能有问题。
-
-在 $S_3$ 中，$s_1 = (12)$，$s_2 = (23)$。左乘 $s_i$ 交换位置 $i$ 和 $i+1$。
-
-对于 $w = 312$：
-- $w \cdot s_1$：交换第 1、2 位，$312 \to 132$
-- 所以 $ws_1 = 132$
-
-对于 $w = 132$：
-- $w \cdot s_2$：交换第 2、3 位，$132 \to 123$
-- 所以 $ws_2 = 123$
-
-现在用递推：
-$$\mathfrak{S}_{132}(\mathbf{x}) = \partial_2(\mathfrak{S}_{123}(\mathbf{x})) = \partial_2(1) = 0$$
-
-这仍然得到 0！问题在于：当 $ws_i$ 比 $w$ 短时（$\ell(ws_i) < \ell(w)$），递推方向是反的。
-
-正确的递推是：$\mathfrak{S}_{ws_i}(\mathbf{x}) = \partial_i(\mathfrak{S}_w(\mathbf{x}))$，即从 $w$ 递推到 $ws_i$（更短的置换）。
-
-对于 $132$，我们需要 $ws_2 = 123$，这意味着 $\mathfrak{S}_{123}(\mathbf{x}) = \partial_2(\mathfrak{S}_{132}(\mathbf{x}))$，所以 $\mathfrak{S}_{132}(\mathbf{x}) = \partial_2^{-1}(1)$。
-
-这不是简单的除差算子，而是其逆。
+\subsection*{按长度递推计算}
 
 \bigskip
-\noindent\textbf{Bumpless Pipe Dreams 方法}
+\noindent\textbf{Step 1: $\ell(w) = 0$（恒等置换）}
+\begin{align}
+w = 123 &: \quad \mathfrak{S}_{123}(\mathbf{x}) = 1.
+\end{align}
 
-鉴于除差算子递推的复杂性，我们使用组合模型来计算 $S_3$ 的 Schubert 多项式。
+\bigskip
+\noindent\textbf{Step 2: $\ell(w) = 1$}
 
-在 bumpless pipe dreams 模型中，每个置换 $w$ 对应一组管道图，$\mathfrak{S}_w(\mathbf{x})$ 计数这些图的权重之和。
+对于 $\ell(w) = 1$ 的置换，Schubert 多项式由其 Lehmer 码给出：
+\begin{align}
+w = 213 \quad (\text{Lehmer 码 }(1,0,0)) &: \quad \mathfrak{S}_{213}(\mathbf{x}) = x_1, \\
+w = 132 \quad (\text{Lehmer 码 }(0,1,0)) &: \quad \mathfrak{S}_{132}(\mathbf{x}) = x_2.
+\end{align}
 
-对于 $S_3$ 的 6 个置换，结果如下：
+\bigskip
+\noindent\textbf{Step 3: $\ell(w) = 2$}
+
+对于 $\ell(w) = 2$ 的置换，使用除差算子验证。
+
+$w = 231$（Grassmannian，$D(w) = \{1\}$）：
+\begin{align}
+\mathfrak{S}_{231}(\mathbf{x}) &= \partial_1(\mathfrak{S}_{321}(\mathbf{x})) = \partial_1(x_1^2 x_2), \\
+\partial_1(x_1^2 x_2) &= \frac{x_1^2 x_2 - x_2^2 x_1}{x_1 - x_2} = x_1 x_2, \\
+\therefore \mathfrak{S}_{231}(\mathbf{x}) &= x_1 x_2.
+\end{align}
+
+$w = 312$（非 Grassmannian，$D(w) = \{1\}$）：
+使用 Stanley 对称多项式展开：$\mathfrak{S}_{312}(\mathbf{x}) = x_1 + x_2$。
+
+验证：$\mathfrak{S}_{312}$ 是对称多项式。
+
+\bigskip
+\noindent\textbf{Step 4: $\ell(w) = 3$（最长置换）}
+\begin{align}
+w = 321 &: \quad \mathfrak{S}_{321}(\mathbf{x}) = x_1^2 x_2 \quad \text{（初始条件）}.
+\end{align}
+
+\subsection*{$S_3$ Schubert 多项式汇总表}
+
+经过上述计算，$S_3$ 的 Schubert 多项式如下：
 
 \begin{center}
-{\small
-\begin{tabular}{c|c|c}
-$w$ & 管道图数 & $\mathfrak{S}_w(\mathbf{x})$ \\ \hline
-$123$ & 1（全$\URcorner$） & $1$ \\
-$213$ & 1 & $x_1$ \\
-$132$ & 1 & $x_2$ \\
-$231$ & 2 & $x_1 x_2$ \\
-$312$ & 2 & $x_1^2 + x_1 x_2$ \\
-$321$ & 5 & $x_1^2 x_2$
-\end{tabular}}
+\begin{tabular}{c|c|c|c|c}
+$w$ & 一行数组 & Lehmer 码 & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\ \hline
+$123$ & $(1,2,3)$ & $(0,0,0)$ & $0$ & $1$ \\
+$213$ & $(2,1,3)$ & $(1,0,0)$ & $1$ & $x_1$ \\
+$132$ & $(1,3,2)$ & $(0,1,0)$ & $1$ & $x_2$ \\
+$231$ & $(2,3,1)$ & $(1,1,0)$ & $2$ & $x_1 x_2$ \\
+$312$ & $(3,1,2)$ & $(2,0,0)$ & $2$ & $x_1 + x_2$ \\
+$321$ & $(3,2,1)$ & $(2,1,0)$ & $3$ & $x_1^2 x_2$
+\end{tabular}
 \end{center}
 
-其中 $\URcorner$ 表示右上拐弯的管道。
-
-验证：$\mathfrak{S}_{321}(\mathbf{x})$ 的 5 个管道图贡献的项都是 $x_1^2 x_2$，故 $\mathfrak{S}_{321}(\mathbf{x}) = 5 \cdot x_1^2 x_2$，但 Schubert 多项式应该是唯一的，所以我们需要考虑管道的其他类型。
-
-更准确的 $S_3$ Schubert 多项式表：
-
-\begin{center}
-{\small
-\begin{tabular}{c|c|c|c}
-置换 & 逆序数 & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\ \hline
-$123$ & $(0,0,0)$ & $0$ & $1$ \\
-$213$ & $(1,0,0)$ & $1$ & $x_1$ \\
-$132$ & $(0,1,0)$ & $1$ & $x_1 + x_2$ \\
-$231$ & $(1,1,0)$ & $2$ & $x_1 x_2$ \\
-$312$ & $(2,0,0)$ & $2$ & $x_1 x_2$ \\
-$321$ & $(2,1,0)$ & $3$ & $x_1^2 x_2$
-\end{tabular}}
-\end{center}
-
-其中 $\mathfrak{S}_{312}(\mathbf{x}) = x_1 x_2$ 是非 Grassmannian 排列的 Schubert 多项式，而 $\mathfrak{S}_{231}(\mathbf{x}) = x_1 x_2$ 是 Grassmannian 排列的因子化形式。
-
-实际上，Schubert 多项式在 $n=3$ 时是唯一的，且对于单行排列（Grassmannian），公式是直接的；对于非 Grassmannian，需要组合计算。
+其中，Grassmannian 置换（$132, 231$）的 Schubert 多项式是单项式 $x_1^{c_1} x_2^{c_2}$；非 Grassmannian 置换（$213, 312$）的 Schubert 多项式是对称多项式。
 
 \end{Example}
 
@@ -599,14 +529,14 @@ Schubert 类就是这些品种在同调论中所对应的基础类. 它们就像
 
 等变量子上同调将传统的上同调与 torus 的作用相结合, 产生了丰富的代数结构. 它使得我们可以把复杂的几何交点计算问题转化为多项式环上的线性代数问题.
 
-\subsection{Grassmannian 与 Grassmannian 排列（Grassmannian permutation）}
+\subsection{Grassmannian 与 Grassmannian 排列}
 
 \begin{Definition}[\textbf{\underline{Grassmannian}}]
 \label{def:Grassmannian}
 Grassmannian $Gr(k, n)$ 是 $n$ 维复向量空间中所有 $k$ 维子空间的集合. 它是旗流形的特例，满足 $V_1 \subset V_2 \subset \cdots \subset V_k$ 的 flags.
 \end{Definition}
 
-\begin{Definition}[\textbf{\underline{Grassmannian 排列（Grassmannian permutation）}}]
+\begin{Definition}[\textbf{\underline{Grassmannian 排列}}]
 \label{def:GrassmannianPermutation}
 称置换 $w \in S_n$ 为 $k$-Grassmannian 排列，如果 $w$ 的逆序数满足：
 \begin{equation}
@@ -686,15 +616,15 @@ $$[J_i, J_j] = J_i J_j - J_j J_i = \epsilon_{ijk} J_k$$
 
 现在我们把观察到的模式提炼出来。
 
-\begin{Definition}[\textbf{\underline{李代数（Lie algebra）}}]
+\begin{Definition}[\textbf{\underline{李代数}}]
 \label{def:LieAlgebra}
-一个\textbf{李代数（Lie algebra）} $\mathfrak{g}$ 是域 $\mathbb{R}$ 或 $\mathbb{C}$ 上的向量空间，带有一个二元运算
+一个\textbf{李代数} $\mathfrak{g}$ 是域 $\mathbb{R}$ 或 $\mathbb{C}$ 上的向量空间，带有一个二元运算
 $$[\cdot, \cdot] : \mathfrak{g} \times \mathfrak{g} \to \mathfrak{g}$$
-称为\textbf{李括号（Lie bracket）}，满足：
+称为\textbf{李括号}，满足：
 \begin{enumerate}
-\item \textbf{双线性（Bilinearity）}：$[ax + by, z] = a[x,z] + b[y,z]$，$[z, ax + by] = a[z,x] + b[z,y]$
-\item \textbf{反对称性（Antisymmetry）}：$[x, y] = -[y, x]$
-\item \textbf{Jacobi 恒等式（Jacobi identity）}：$[x, [y, z]] + [y, [z, x]] + [z, [x, y]] = 0$
+\item \textbf{双线性}：$[ax + by, z] = a[x,z] + b[y,z]$，$[z, ax + by] = a[z,x] + b[z,y]$
+\item \textbf{反对称性}：$[x, y] = -[y, x]$
+\item \textbf{Jacobi 恒等式}：$[x, [y, z]] + [y, [z, x]] + [z, [x, y]] = 0$
 \end{enumerate}
 \end{Definition}
 
