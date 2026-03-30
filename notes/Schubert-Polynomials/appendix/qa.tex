@@ -2073,3 +2073,85 @@ $$x = u' \cdot n(\sigma) \cdot t \cdot u$$
 \textbf{几何意义}：$N^-(w)$ 是旗流形 $G/B$ 中 Schubert 胞腔 $B^-wB/B$ 的坐标空间。具体而言，$N^-(w)$ 同构于 $\mathbb{C}^{\ell(w_0)-\ell(w)}$（仿射空间），这意味着每个 Schubert 胞腔可以用 $\ell(w_0)-\ell(w)$ 个复坐标参数化。
 
 \textbf{连通性}：由于 $N^-(w) \cong \mathbb{C}^d$（仿射空间），它是连通的（甚至单连通）。\footnote{问：Humphreys Section 28 的 Bruhat Decomposition 说了什么？见附录 \cref{sec:HumphreysSection28}。}
+
+\section{为什么 Refined Graham Positivity 的假设是``更强''的？}
+\label{sec:WhyStrongerHypothesis}
+
+\subsection{问题}
+
+在 Remark 中有一段话：
+
+\begin{quote}
+当 $w = w_0$ 是最长元时，$B^-(w_0) = T$，\cref{def:RefinedGraham} 给出原始的 Graham 正性定理。我们的假设比 Graham 的更强，因为 $B^-(w)$-不变的环必是 $T$-不变的，产生更强的正性结果，其中根被限制在 $I(w)$ 而非所有正根。
+\end{quote}
+
+这里有几个令人困惑的点：
+\begin{enumerate}
+\item 为什么说``我们的假设更强''？难道不是要求越多越弱吗？
+\item 为什么根被限制在 $I(w)$ 而非所有正根是``更强''的结果？
+\end{enumerate}
+
+\subsection{回答}
+
+\textbf{1. 假设强度与不变群的关系}：
+
+在几何中，要求一个子簇在某个群作用下不变，条件是越\textbf{小}的群越\textbf{强}（严格）：
+
+\begin{itemize}
+\item \textbf{T-不变}：只在 torus $T$ 作用下不变
+\item \textbf{B^--不变}：在更大的群 $B^-$ 作用下不变
+\item \textbf{B^-(w)-不变}：只在更小的群 $B^-(w)$ 作用下不变
+\end{itemize}
+
+要求在 $B^-(w)$ 下不变比要求在 $T$ 下不变\textbf{更严格}，因为：
+\begin{itemize}
+\item 如果一个子簇在 $B^-(w)$ 下不变，它自动在 $T$ 下不变
+\item 但反过来不一定成立：在 $T$ 下不变的子簇不一定在 $B^-(w)$ 下不变
+\end{itemize}
+
+因此，\cref{def:RefinedGraham} 的假设：
+$$\text{假设：} Y \text{ 是 } B^-(w)\text{-不变的}$$
+比原始 Graham 的假设：
+$$\text{假设：} Y \text{ 是 } T\text{-不变的}$$
+\textbf{更强}（条件更严格）。
+
+\textbf{2. 为什么结果是``更强''的正性？}：
+
+这里的``更强''不是说系数更大，而是说结论给出了\textbf{更精确的信息}。
+
+\cref{def:RefinedGraham} 的结论是：
+$$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
+
+即系数的多项式只涉及 $\{-\alpha \mid \alpha \in I(w)\}$ 这些根。
+
+对比原始 Graham 正性（对应 $w = w_0$ 的情况）：
+$$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in \Phi^+} \cdot [Z_i]_T$$
+
+这里 $\Phi^+$ 是所有正根，$I(w) \subseteq \Phi^+$。
+
+\textbf{关键点}：
+\begin{itemize}
+\item 当 $w = w_0$（最长元）时，$I(w_0) = \Phi^+$（所有正根），两者相同
+\item 当 $w \neq w_0$ 时，$I(w) \subsetneq \Phi^+$（真子集）
+\item $I(w)$ 越小，系数多项式的变量越少，约束越强
+\end{itemize}
+
+\textbf{3. 几何直观}：
+
+$B^-(w)$ 的定义是：
+$$N^-(w) = N^- \cap wN^-w^{-1}$$
+
+$I(w)$ 记录了 $w$ 翻转了哪些正根。$|\alpha \in I(w)| = \ell(w)$，即 $w$ 的长度。
+
+当 $w$ 很短时（接近单位元），$I(w)$ 很小，只有少数根被翻转，因此 $B^-(w)$ 接近 $T$，条件变强，但结果也更精确——系数只涉及少数几个根的多项式。
+
+\textbf{4. 总结}：
+
+\begin{enumerate}
+\item \textbf{假设更强}：$B^-(w)$-不变比 $T$-不变要求更多（更严格的条件）
+\item \textbf{结果更强}：$I(w)$ 越小，系数被限制在更小的根集上，结论更精确
+\end{enumerate}
+
+这似乎矛盾，但实际上反映了``归纳递进''的数学思想：当假设更严格时，我们可以得到更精确的结论。
+
+\textbf{退化情形}：当 $w = w_0$ 时，$B^-(w_0) = T$，假设退化为 $T$-不变，$I(w_0) = \Phi^+$，结论退化为原始 Graham 正性。\footnote{问：为什么假设更强反而结果更强？见附录 \cref{sec:WhyStrongerHypothesis}。}
