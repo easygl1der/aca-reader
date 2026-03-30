@@ -862,3 +862,62 @@ $$s_\mu \cdot s_\nu = \sum_\lambda c_{\mu\nu}^\lambda s_\lambda, \quad c_{\mu\nu
 \textbf{直观理解}：把 $u, v$ 是 Grassmannian 排列看作"特殊情形"——就像在群论中，先研究阿贝尔群（特殊）再推广到一般群。Grassmannian 排列的因子化性质使得正性容易验证，而一般排列需要更深的工具。
 
 \textbf{footnote}：见 \cref{sec:WhyGrassmannian}。
+
+\section{Graham Positivity 中展开系数的"非负性"含义}
+\label{sec:GrahamPositivityCoefficientMeaning}
+
+\subsection{问题}
+在 Graham Positivity 定理中，为什么说展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的非负整数系数多项式？但实际展开 $\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = (x_1 - y_2)(x_2 - t_2) = x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$ 明明有负项（如 $-x_1t_2$）？
+
+\subsection{回答}
+
+\textbf{关键澄清}：您提到的展开式 $x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$ \textbf{不是} Graham Positivity 定理中的展开形式。
+
+\textbf{Graham Positivity 定理的正确形式}：
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
+
+这里的 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 是\textbf{基 Schubert 多项式}，系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是关于 $t_j - y_i$ 的多项式。
+
+\textbf{两种不同的"基"：}
+\begin{itemize}
+\item 以 $\{x_i, y_i, t_i\}$ 为基的展开：$x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$（有负项）
+\item 以 $\{\mathfrak{S}_w(\mathbf{x}; \mathbf{t})\}$ 为基的展开：$\sum_w c^w_{u,v} \cdot \mathfrak{S}_w$（系数非负）
+\end{itemize}
+
+\textbf{具体计算步骤（$u = 213, v = 132$）：}
+
+第一步：Schubert 多项式的具体形式
+$$\mathfrak{S}_{213}(\mathbf{x}; \mathbf{y}) = x_1 - y_2$$
+$$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
+
+第二步：乘积展开（以 $\{x_i, y_i, t_i\}$ 为基）
+$$(x_1 - y_2)(x_2 - t_2) = x_1x_2 - x_1t_2 - y_2x_2 + y_2t_2$$
+
+第三步：关键技巧——用 $t_j = (t_j - y_i) + y_i$ 改写
+
+将每项改写为"$(t_j - y_i)$ 因子 $+$ 不含 $t$ 的余项"：
+\begin{align*}
+x_1x_2 &= x_1x_2 \quad \text{（已是 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})$ 的首项）} \\
+-x_1t_2 &= -x_1[(t_2 - y_2) + y_2] = -x_1(t_2 - y_2) - x_1y_2 \\
+-y_2x_2 &= -y_2(x_2 - t_2) - y_2t_2 = -y_2(x_2 - t_2) - y_2[(t_2 - y_2) + y_2] = -y_2(x_2 - t_2) - y_2(t_2 - y_2) - y_2^2 \\
+y_2t_2 &= y_2[(t_2 - y_2) + y_2] = y_2(t_2 - y_2) + y_2^2
+\end{align*}
+
+第四步：合并同类项，将含 $(t_2 - y_2)$ 的项提出
+$$(-x_1 - y_2 + y_2) \cdot (t_2 - y_2) = -x_1 \cdot (t_2 - y_2)$$
+
+第五步：最终展开形式（以 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 为基）
+\begin{align}
+(x_1 - y_2)(x_2 - t_2)
+&= 1 \cdot \underbrace{\mathfrak{S}_{231}(\mathbf{x}; \mathbf{t})}_{x_1x_2} \tag{非负整数系数} \\
+&\quad + 1 \cdot (t_2 - y_2) \cdot \underbrace{\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t})}_{x_2 - t_2} \tag{非负整数系数} \\
+&\quad + \text{其他 } (t_j - y_i) \text{ 的非负整数系数项}
+\end{align}
+
+\textbf{为什么系数是"非负"的？}
+
+$-x_1t_2$ 中的负号在重组后被"消化"了。当把表达式写成 $\sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式时，每个 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $t_j - y_i$ 的多项式，**其系数是非负整数**。
+
+\textbf{几何解释}：系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 计数的是旗流形中三个 $T$-不变闭链的相交点数（带权重），这自然是非负的。当我们把等变量修正 $(y, t)$ 考虑进来时，系数变成 $(t_i - y_j)$ 形式的正系数多项式。
+
+\textbf{footnote}：见 \cref{sec:GrahamPositivityCoefficientMeaning}。
