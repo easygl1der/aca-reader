@@ -243,6 +243,44 @@ then the sample mean $\bar{X}$ satisfies......
 
 ---
 
+## L907: 表格统一用三线表格式，禁止 resizebox
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+使用 `resizebox{\textwidth}{!}{...}` 让表格缩放到页面宽度，这会让表格看起来很奇怪、比例失调。
+
+**正确做法**:
+使用标准的 `\hline` 三线表，不使用 resizebox：
+```latex
+% 正确 ✅
+\begin{center}
+\begin{tabular}{ccllc}
+$w$ & 一行数组 & Lehmer 码 & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\
+\hline
+$123$ & $(1,2,3)$ & $(0,0,0)$ & $0$ & $1$ \\
+$213$ & $(2,1,3)$ & $(1,0,0)$ & $1$ & $x_1$ \\
+...
+\end{tabular}
+\end{center}
+
+% 错误 ❌
+\resizebox{\textwidth}{!}{\begin{tabular}...}
+```
+
+**三线表标准格式**:
+1. 表格用 `center` 环境包裹
+2. 使用 `\hline` 画横线（只有顶部、底部两条）
+3. 不使用竖线
+4. 列对齐用 `c`（居中）、`l`（左）、`r`（右）
+
+**防止措施**:
+- 禁止使用 `resizebox` 缩放表格
+- 如果表格太宽，考虑调整列宽或减少列数，而不是缩放
+
+---
+
 ## 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
