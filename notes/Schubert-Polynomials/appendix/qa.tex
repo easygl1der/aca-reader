@@ -1757,21 +1757,86 @@ $$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) \in H_T^*(Fl_n) \cong \mathbb{Z}[x_1, \
 \end{tabular}
 \end{center}
 
-\section{Anderson-Fulton Section 19.3：横截性}
+\section{Anderson-Fulton Section 19.3：横截性方法}
 \label{sec:AndersonFulton19-3}
 
 Anderson-Fulton 的 \cite[Section 19.3]{anderson2023} 建立了横截性（transversality）方法，用于证明 Schubert 结构常数的正性。
 
-\textbf{Theorem 19.3.1（Positivity Theorem）}：设 $Z \subseteq G/P$ 是 $T$-不变子簇，在 Schubert 基底下写其类为
-$$[Z]_T = \sum_w c[w] x[w]$$
-则每个 $c[w]$ 属于 $\mathbb{Z}_{\geq 0}[\alpha_1, \ldots, \alpha_r]$，即简单根的正系数多项式。
+\subsection{什么是横截性（Transversality）？}
 
-\textbf{Corollary 19.3.2（Graham）}：在等变上同调 $H_T^*(G/P)$ 中，相乘的结构常数 $c_w^{uv}$ 是正根多项式。
+\textbf{横截相交的定义}：设 $Y, Z \subseteq X$ 是非奇异簇 $X$ 的子簇。如果 $Y \cap Z$ 要么为空，要么是纯维数的，且
+$$\operatorname{codim}_X(Y \cap Z) = \operatorname{codim}_X Y + \operatorname{codim}_X Z$$
+则称 $Y$ 与 $Z$ 横截相交（intersect properly/transversally）。
 
-\textbf{Lemma 19.3.5（Kleiman-Bertini 精细版本）}：
-设 $\Gamma$ 是连通代数群在非奇异不可约簇 $X$ 上作用，有有限多个轨道。设 $Y \subseteq X$ 是不可约子簇，假设 $Y$ 与每个 $\Gamma$-轨道横截相交。给定另一个不可约子簇 $Z$，存在稠密开子集 $\Gamma^\circ \subseteq \Gamma$ 使得对所有 $g \in \Gamma^\circ$，$gY$ 与 $Z$ 横截相交。
+\textbf{几何直观}：想象两条曲线在平面上相交：
+\begin{itemize}
+\item 如果它们在交点处"平滑地"穿过彼此（切向量线性无关），则是横截的
+\item 如果一条曲线在另一点处"相切"或"平滑地接触"，则不是横截的
+\end{itemize}
 
-在引理 2.5 的证明中，横截性由 Kleiman-Bertini 分析保证：设 $w_0^{(m)} \in S_m$ 是最长排列。对于 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为直和。由 $v \in S_n$ 知 $\overline{B^-vB/B}$ 在 $s_i$（$n \leq i < 2n$）下不变。因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$。类似地 $\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$。由于 $u_0^{-1}\tau u_0 = w_0^{(2n)}$，交集的横截性由 \cite[Lemma 19.3.5]{anderson2023} 保证。（Theorem 19.4.4 的退化证明见附录 \cref{sec:AndersonFulton19-4}。）
+\textbf{为什么横截性重要？}：当两个子簇横截相交时，其相交次数（intersection number）是良定义的非负整数。这是因为相交局部上是线性空间的相交，交叉点可以用重数（multiplicity）来计数。
+
+\subsection{核心定理}
+
+\textbf{Theorem 19.3.1（Positivity Theorem，原文）}：
+设 $Z \subseteq G/P$ 是 $T$-不变子簇，在 Schubert 基底下写其类为
+$$[Z]_T = \sum_{[u]} c_{[u]} x[u]$$
+则每个 $c_{[u]}$ 属于 $\mathbb{Z}_{\geq 0}[\alpha_1, \ldots, \alpha_r]$，即简单根的正系数多项式。
+
+\textbf{Corollary 19.3.2（Graham，原文）}：
+在等变上同调 $H_T^*(G/P)$ 中，使用相反 Schubert 基 $\{y[w]\}$ 时的结构常数 $c_{[u][v]}^{[w]}$ 是正根 $\alpha_1, \ldots, \alpha_r$ 的非负系数多项式：
+$$c_{[u][v]}^{[w]} \in \mathbb{Z}_{\geq 0}[\alpha_1, \ldots, \alpha_r]$$
+
+\textbf{Lemma 19.3.4（Kleiman-Bertini 定理，原文）}：
+设 $\Gamma$ 是连通代数群在不可约簇 $X$ 上传递作用，$Y, Z \subseteq X$ 是不可约子簇。存在稠密开子集 $\Gamma^\circ \subseteq \Gamma$ 使得对所有 $g \in \Gamma^\circ$，$gY$ 与 $Z$ 横截相交。
+
+\textbf{Lemma 19.3.5（精细版 Kleiman-Bertini，原文）}：
+设 $\Gamma$ 是连通代数群在非奇异不可约簇 $X$ 上作用，有有限多个轨道 $X_1, \ldots, X_n$。设 $Y \subseteq X$ 是不可约子簇，假设 $Y$ 与每个 $\Gamma$-轨道横截相交。给定另一个不可约子簇 $Z$，存在稠密开子集 $\Gamma^\circ \subseteq \Gamma$ 使得对所有 $g \in \Gamma^\circ$，$gY$ 与 $Z$ 横截相交。
+
+\subsection{非 equivariant 情形的证明思路}
+
+在非 equivariant 情形（$T$ 平凡作用），正性证明非常简洁：
+
+\begin{enumerate}
+\item 由 Lemma 19.3.4，存在 $g \in G$ 使得 $gY[w]$ 与 $Z$ 横截相交
+\item 由基本相交理论（Proposition A.3.3），横截相交的类是：
+$$[Y] \cdot [Z] = \sum_V m_V [V]$$
+其中 $m_V \geq 0$ 是相交重数
+\item Schubert 胞腔的结构常数是：
+$$c_{[w]} = \int y[w] \cdot [Z]$$
+\item 由于 $gY[w]$ 与 $Z$ 横截相交，上式化为 $c_{[w]} = \int [gY[w] \cap Z]$
+\item 由基本性质，$\int[V]$ 在 $V$ 是点时为 $1$，否则为 $0$
+\item 因此 $c_{[w]} \geq 0$（非负整数）
+\end{enumerate}
+
+\subsection{equivariant 情形的证明思路}
+
+equivariant 情形的证明更加精细，因为需要处理 torus 作用带来的权：
+
+\begin{enumerate}
+\item 在 approximation space $\mathbf{X} = \mathbb{E} \times^T G/P$ 上工作
+\item 使用群 $\Gamma = \Gamma_f \rtimes (GL_m)^r$ 在 $\mathbf{X}$ 上的作用
+\item 由 Lemma 19.3.5，存在 $g \in \Gamma$ 使得 $g\mathbf{Y}[w]$ 与 $\mathbf{Z}$ 横截相交
+\item 利用 Poincaré 对偶和 Gysin 映射的基本性质
+\item 由于 Gysin 映射保持有效类（effective class），$c_{[w]}$ 是有效类
+\item 因此 $c_{[w]} \in \mathbb{Z}_{\geq 0}[\alpha_1, \ldots, \alpha_r]$
+\end{enumerate}
+
+\textbf{关键洞察}：在普通上同调中，横截相交给出非负整数；在 equivariant 上同调中，横截相交给出正根多项式的非负系数。
+
+\subsection{在引理 2.5 证明中的应用}
+
+在引理 2.5 的证明中，横截性由 Kleiman-Bertini 分析保证：
+\begin{itemize}
+\item 设 $w_0^{(m)} \in S_m$ 是最长排列
+\item 对于 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为直和
+\item 由 $v \in S_n$ 知 $\overline{B^-vB/B}$ 在 $s_i$（$n \leq i < 2n$）下不变
+\item 因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$
+\item 类似地 $\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$
+\item 由于 $u_0^{-1}\tau u_0 = w_0^{(2n)}$，交集的横截性由 \cite[Lemma 19.3.5]{anderson2023} 保证
+\end{itemize}
+
+\textbf{Footnote}：Theorem 19.4.4 的退化证明见附录 \cref{sec:AndersonFulton19-4}。
 
 \section{Anderson-Fulton Theorem 19.4.4：退化命题}
 \label{sec:AndersonFulton19-4}
