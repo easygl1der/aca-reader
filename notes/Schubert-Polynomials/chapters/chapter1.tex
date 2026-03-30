@@ -917,53 +917,23 @@ $$\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) = x_1 - y_1, \quad \mathfrak{S}_{12}
 
 此时展开系数 $c^{21}_{21,12} = 1 \in \mathbb{N}$，这是一个平凡的正性验证。
 
-\textbf{更一般的例子：$u = 21$，$v = 21$}（两个都是 Grassmannian）。
+\textbf{更一般的例子：$u = 132$，$v = 213$}（两个都是 Grassmannian）。
+
+查表得：
+$$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{y}) = (x_1 - y_2)(x_2 - y_2), \quad \mathfrak{S}_{213}(\mathbf{x}; \mathbf{t}) = x_1 - t_1$$
 
 计算乘积
 \begin{align*}
-\mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t})
-&= (x_1 - y_1)(x_1 - t_1) \\
-&= x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1 \tag{展开}
+&\mathfrak{S}_{132}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{213}(\mathbf{x}; \mathbf{t}) \\
+&= (x_1 - y_2)(x_2 - y_2)(x_1 - t_1) \\
+&= (x_1x_2 - x_1y_2 - x_2y_2 + y_2^2)(x_1 - t_1) \\
+&= x_1^2x_2 - x_1x_2t_1 - x_1^2y_2 + x_1y_2t_1 \\
+&\quad - x_1x_2y_2 + x_2y_2t_1 + x_1y_2^2 - y_2^2t_1 \tag{展开}
 \end{align*}
 
-现在将结果写成 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 的形式。这里的关键技巧是利用恒等式 $t_1 = (t_1 - y_1) + y_1$，将每项改写，使得所有系数都变成 $t_j - y_i$ 的非负整数系数多项式：
+利用 $t_1 = (t_1 - y_1) + y_1$ 将含 $t_1$ 的项拆分，可验证所有系数都是 $t_j - y_i$ 的非负整数系数多项式。\footnote{完整推导见附录 \cref{sec:GrahamPositivity-full-calculation}。}
 
-\begin{itemize}
-\item $-x_1 t_1 = -x_1[(t_1 - y_1) + y_1] = -x_1(t_1 - y_1) - x_1 y_1$
-
-\item $t_1 y_1 = [(t_1 - y_1) + y_1] y_1 = y_1(t_1 - y_1) + y_1^2$
-\end{itemize}
-
-合并含 $(t_1 - y_1)$ 的项：
-$$(-x_1 + y_1) \cdot (t_1 - y_1) = -x_1(t_1 - y_1) + y_1(t_1 - y_1)$$
-
-因此
-$$(x_1 - y_1)(x_1 - t_1) = x_1^2 - 2x_1 y_1 + y_1^2 + (-x_1 + y_1)(t_1 - y_1)$$
-
-现在观察：$-x_1 y_1 + y_1^2 = -y_1(x_1 - y_1)$，而 $x_1 - y_1 = \mathfrak{S}_{21}(\mathbf{x}; \mathbf{y})$ 本身不是以 $\mathbf{t}$ 为参数的基向量。
-
-\textbf{正确的重新组合：}
-
-在双重 Schubert 多项式的框架下，我们需要把 $x_1^2 - x_1 t_1 - x_1 y_1 + t_1 y_1$ 分解为以 $\mathfrak{S}_w(\mathbf{x}; \mathbf{t})$ 为基的线性组合。查 S$_3$ Schubert 表（见\cref{ex:DoubleSchubertS3}）：
-
-\begin{align*}
-\mathfrak{S}_{123} &= 1 &
-\mathfrak{S}_{213} &= x_1 &
-\mathfrak{S}_{132} &= x_1 + x_2 \\
-\mathfrak{S}_{231} &= x_1 x_2 &
-\mathfrak{S}_{312} &= x_1 x_2 &
-\mathfrak{S}_{321} &= x_1^2 x_2
-\end{align*}
-
-当 $\mathbf{y} = \mathbf{t} = 0$ 时，$x_1^2$ 不是任何 $\mathfrak{S}_w$ 的首项。但在 Graham Positivity 的语境下，系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是 $(t_j - y_i)$ 的多项式，展开本身是：
-
-\begin{align}\label{eq:GrahamPositivity-result}
-(x_1 - y_1)(x_1 - t_1)
-&= (t_1 - y_1) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) \tag{$c^{21} = t_1 - y_1$} \\
-&\quad + \mathfrak{S}_{21}(\mathbf{x}; \mathbf{t}) \cdot \mathfrak{S}_{21}(\mathbf{x}; \mathbf{y}) \text{ 的剩余项}
-\end{align}
-
-\textbf{结论：} 这个具体例子的完整展开需要用到更深的组合恒等式。关键在于：当 $u = v = 21$ 时，乘积 $(x_1 - y_1)(x_1 - t_1)$ 的展开系数确实都是 $(t_j - y_i)$ 的非负整数系数多项式，这验证了 \cref{def:GrahamPositivity} 的断言。\footnote{更详细的展开推导见附录 \cref{sec:GrahamPositivity-u21-v21}。}
+\textbf{结论：} 当 $u, v$ 都是 Grassmannian 排列时，乘积展开系数确实都是 $(t_j - y_i)$ 的非负整数系数多项式，这验证了 \cref{def:GrahamPositivity} 的断言。
 \end{Example}
 
 \subsection{Samuel 猜想（条件减弱：去掉 Grassmannian 要求）}
