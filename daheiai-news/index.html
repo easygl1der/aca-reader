@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大黑AI速报 - 每4小时更新的AI行业快讯｜AI日报</title>
+    <meta name="description" content="大黑AI速报（AI日报/AI快讯）：每4小时自动更新，涵盖模型动态、产品工具、技巧教程、硬件动态、行业资讯，快速了解最新AI热点。">
+    <meta name="keywords" content="AI速报,AI日报,AI快讯,AI新闻,每日AI,AI热点">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="alternate" type="application/rss+xml" title="大黑AI速报 RSS" href="rss.php">
+</head>
+<body>
+
+    <div class="landing-wrapper">
+        <!-- Hero 区域 -->
+        <section class="hero">
+            <img src="dahei.jpg" alt="大黑" class="hero-avatar">
+            <h1 class="hero-title">大黑AI速报</h1>
+            <p class="hero-subtitle">每 4 小时自动更新的 AI 行业快讯</p>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">858</div>
+                    <div class="hero-stat-label">已更新期数</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">4h</div>
+                    <div class="hero-stat-label">更新频率</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">5</div>
+                    <div class="hero-stat-label">内容分类</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="realtime.php" class="hero-btn hero-btn-primary">查看最新一期</a>
+                <a href="changelog.php" class="hero-btn hero-btn-secondary">AI工具速报</a>
+                <a href="rss.php" class="hero-btn hero-btn-secondary" target="_blank">RSS 订阅</a>
+                <a href="https://daheiai.com" class="hero-btn hero-btn-secondary" target="_blank">大黑的主页</a>
+            </div>
+        </section>
+
+        <!-- 瀑布流区域 -->
+        <section class="waterfall-section">
+            <div class="waterfall-header">
+                <h2 class="waterfall-title">往期速报</h2>
+            </div>
+
+            <div class="waterfall-grid" id="waterfall-grid">
+                <!-- Cards will be injected by JS -->
+            </div>
+
+            <div class="loading-indicator" id="loading">
+                <span class="loading-spinner"></span>
+                加载中...
+            </div>
+
+            <div class="no-more" id="no-more" style="display: none;">
+                已加载全部内容
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="landing-footer">
+            <p>由 <a href="https://daheiai.com" target="_blank">大黑</a> 用 ❤️ 制作</p>
+            <div class="footer-links-landing">
+                <a href="realtime.php">最新一期</a>
+                <a href="changelog.php">工具速报</a>
+                <a href="rss.php" target="_blank">RSS</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 模拟数据（实际项目中应从 API 获取）
+        const newsData = [
+            {
+                id: 858,
+                time: "2026-03-29 20:00",
+                summary: "本期重点包括ColaMD轻量级Markdown编辑器的发布，以及关于MSA技术提升AI记忆容量的深度探讨。",
+                logos: ["claude"],
+                count: 6,
+                url: "realtime.html?file=quick_2026-03-29_2000"
+            },
+            {
+                id: 857,
+                time: "2026-03-29 16:00",
+                summary: "本期重点关注开源项目Pretext对AI时代UI生成的价值，以及社区对AI智能体产品核心能力的探讨。",
+                logos: ["openai", "minimax"],
+                count: 5,
+                url: "realtime.html?file=quick_2026-03-29_1600"
+            },
+            {
+                id: 856,
+                time: "2026-03-29 12:00",
+                summary: "本期重点关注AI安全与AI编程领域动态，OpenAI推出Codex Security工具，Fireworks发布Kimi K2.5 Turbo编程套餐。",
+                logos: ["openai", "kimi"],
+                count: 6,
+                url: "realtime.html?file=quick_2026-03-29_1200"
+            },
+            {
+                id: 855,
+                time: "2026-03-29 08:00",
+                summary: "本期重点关注AI智能体的技能管理实践与湾区AI人才聚集趋势，同时探讨了人类上下文窗口这一新瓶颈。",
+                logos: ["openai"],
+                count: 5,
+                url: "realtime.html?file=quick_2026-03-29_0800"
+            },
+            {
+                id: 854,
+                time: "2026-03-29 04:00",
+                summary: "本期重点包括Mistral AI开源文档解析模型Magnima、Google推Workspace AI助手免费版等重要更新。",
+                logos: ["openai", "claude"],
+                count: 5,
+                url: "realtime.html?file=quick_2026-03-29_0400"
+            },
+            {
+                id: 853,
+                time: "2026-03-28 20:00",
+                summary: "本期涵盖DeepSeek开源周发布首个超拟人生成模型、OpenAI员工质疑奥特曼纪实等热点内容。",
+                logos: ["deepseek", "openai"],
+                count: 6,
+                url: "realtime.html?file=quick_2026-03-28_2000"
+            }
+        ];
+
+        // Logo 映射
+        const logoMap = {
+            openai: "images/logos/openai.png",
+            claude: "images/logos/claude.png",
+            kimi: "images/logos/kimi.png",
+            minimax: "images/logos/minimax.png",
+            deepseek: "images/logos/deepseek.png"
+        };
+
+        function createCard(item) {
+            const logosHtml = item.logos.map(logo => {
+                const src = logoMap[logo] || `images/logos/${logo}.png`;
+                return `<img src="${src}" alt="${logo}" class="card-logo" onerror="this.style.display='none'">`;
+            }).join('');
+
+            return `
+                <a href="${item.url}" class="card">
+                    <div class="card-header">
+                        <span class="card-issue">第 ${item.id} 期</span>
+                        <span class="card-time">${item.time}</span>
+                    </div>
+                    <div class="card-summary">${item.summary}</div>
+                    <div class="card-footer">
+                        <div class="card-logos">${logosHtml}</div>
+                        <span class="card-count">${item.count} 条快讯</span>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('waterfall-grid');
+            const loading = document.getElementById('loading');
+
+            newsData.forEach(item => {
+                grid.innerHTML += createCard(item);
+            });
+
+            loading.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCards);
+    </script>
+</body>
+</html>
