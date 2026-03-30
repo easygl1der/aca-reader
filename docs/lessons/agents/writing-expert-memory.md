@@ -356,6 +356,51 @@ $$\overline{B^-uB/B} \cap \overline{B^-vB/B} \xrightarrow{\text{横截性}} \tex
 
 ---
 
+## L709: 引用必须与原文完全匹配（含精确定理编号）
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+写作时引用原文定理，但定理编号与原文不匹配。例如：
+- 原文引用 `[1, Section 19.3]`，笔记写成 `[1, Section 19.3, Theorem 19.4.4]`（多了 Theorem 19.4.4）
+- 原文引用 `[1, Proposition 7.3]`，笔记完全遗漏了这个引用
+
+**正确做法**:
+1. 写笔记前，先读取原论文的 markdown 或 PDF 版本
+2. 找到每个引用的**精确编号**（如 Proposition 7.3，不是泛泛的"第7节"）
+3. 在笔记中逐字复制原文的引用格式
+4. 特别注意 `[1, Theorem X.Y]` 和 `[1, Proposition X.Y]` 的区别
+
+**Gao-Xiong 论文引用核查清单**:
+| 原文引用 | 笔记引用 | 状态 |
+|----------|----------|------|
+| [1, Theorem 10.6.4] | ✅ 已有 | 正确 |
+| [1, Section 16.5] | ✅ 已有 | 正确 |
+| [1, Section 19.3] | ⚠️ 原来写成 Section 19.3, Theorem 19.4.4 → 已修正为 Section 19.3 | 需核查 |
+| [1, Proposition 7.3] | ❌ 原来遗漏 → 已补加 | 需核查 |
+| [1, Theorem 3.2] (Graham) | 需核查 | 需核查 |
+
+**检查命令**:
+```bash
+# 检查笔记中的引用格式
+grep -n "\\\\cite\[" notes/Schubert-Polynomials/chapters/chapter*.tex
+
+# 核对原文引用
+# 在原论文 md 文件中搜索：grep "Proposition 7.3\|Theorem 19.4.4\|Section 19.3" *.md
+```
+
+**修复记录**:
+- Lemma 2.5 证明中的 `Section 19.3, Theorem 19.4.4` → 修正为 `Section 19.3` ✅
+- Poincaré pairing 处的 `[1, Proposition 7.3]` → 已补加 ✅
+
+**防止措施**:
+- 写证明前，先通读原论文对应章节
+- 引用时，用 grep 搜索原文 md 文件确认精确编号
+- 写作后，逐条核对笔记引用与原文引用
+
+---
+
 ## PUA 自注入行为
 
 开工前用 Read 工具读取：
