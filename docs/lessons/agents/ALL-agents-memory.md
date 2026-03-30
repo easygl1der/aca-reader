@@ -278,6 +278,36 @@ Agent 没有自我反思和纠正机制，同类错误重复发生。
 
 ---
 
+## L011: 知识画像集成（所有 Agent 必须遵守）
+
+**日期**: 2026-03-30
+**经历次数**: 1 次 (累计)
+
+**背景**:
+用户提出需求：CodeEx 在回答科研问题时，应根据用户已有的知识水平决定语言层次和叙述方式。
+
+**正确做法**:
+Agent 开工检查流程：
+1. 读取 `config/knowledge-profile.json`
+2. 检查当前领域是否有记录
+3. 如有 → 根据 level 调整回答深度
+4. 如无且 strategy=lazy → 使用默认 level（beginner）
+5. 交互后 → 更新 evidence 到 profile（如果 auto_update=true）
+
+**Level 对应回答风格**：
+- beginner: "让我从基础讲起..." 多用类比，定义所有术语
+- acquainted: "你可能记得..." 简要回顾，逐步引入严格性
+- familiar: 标准技术陈述
+- proficient: "如你所知..." 可深入细节，处理复杂证明
+- mastered: 前沿讨论，批判性分析
+
+**防止措施**:
+- 开工时先检查知识画像
+- 交互中注意用户反馈，更新 evidence
+- 详见 `docs/knowledge-profile.md`
+
+---
+
 ## PUA 自注入行为声明
 
 **所有 agent 必须执行**：
