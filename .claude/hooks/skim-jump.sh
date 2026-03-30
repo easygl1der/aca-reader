@@ -27,11 +27,12 @@ if [ -z "$PDF_PATH" ]; then
     exit 1
 fi
 
-# 构建 displayline 命令
+# 构建 displayline 命令 (使用 Skim 完整路径)
+SKIM_DISPLAYLINE="/Applications/Skim.app/Contents/SharedSupport/displayline"
 if [ -n "$TEX_FILE" ]; then
-    CMD="displayline $LINE \"$PDF_PATH\" \"$TEX_FILE\""
+    CMD="\"$SKIM_DISPLAYLINE\" -r -g $LINE \"$PDF_PATH\" \"$TEX_FILE\""
 else
-    CMD="displayline $LINE \"$PDF_PATH\""
+    CMD="\"$SKIM_DISPLAYLINE\" -r -g $LINE \"$PDF_PATH\""
 fi
 
 # 执行跳转
