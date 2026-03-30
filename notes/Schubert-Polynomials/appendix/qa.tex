@@ -2342,3 +2342,53 @@ $I(w)$ 记录了 $w$ 翻转了哪些正根。$|\alpha \in I(w)| = \ell(w)$，即
 这似乎矛盾，但实际上反映了``归纳递进''的数学思想：当假设更严格时，我们可以得到更精确的结论。
 
 \textbf{退化情形}：当 $w = w_0$ 时，$B^-(w_0) = T$，假设退化为 $T$-不变，$I(w_0) = \Phi^+$，结论退化为原始 Graham 正性。\footnote{问：为什么假设更强反而结果更强？见附录 \cref{sec:WhyStrongerHypothesis}。}
+
+\section{Grothendieck 多项式是什么？}
+\label{sec:GrothendieckPolynomial}
+
+\subsection{问题}
+
+笔记中多次提到 Grothendieck 多项式（如\cref{sec:GrothendieckProof}），它与 Schubert 多项式有什么关系？
+
+\subsection{回答}
+
+\textbf{Grothendieck 多项式（Grothendieck polynomial）}是 Schubert 多项式的推广，由 Alexander Grothendieck 在 1950 年代引入。
+
+\textbf{历史背景}：
+
+Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 由 Lascoux 和 Schützenberger 在 1980 年代引入，用于表示旗流形上 Schubert 胞腔的上同调类。但这只解决了旗流形的\textbf{普通上同调}。
+
+1950 年代，Grothendieck 和 Grothendieck 学生 Demazure 研究了旗流形的\textbf{Chow 群}和\textbf{代数 K-理论}。他们发现，在 K-理论中，Schubert 类的代表元不再是多项式，而是更复杂的对象——这就是 Grothendieck 多项式。
+
+\textbf{与 Schubert 多项式的关系}：
+
+在旗流形的 K-理论中，Schubert 胞腔的结构常数不再是非负整数，而是更一般的表达式。Grothendieck 多项式 $\mathfrak{G}_w(\mathbf{x})$ 满足：
+
+\begin{enumerate}
+\item \textbf{退化到 Schubert 多项式}：当限制到上同调时，$\mathfrak{G}_w(\mathbf{x})$ 退化为 $\mathfrak{S}_w(\mathbf{x})$
+$$\mathfrak{G}_w(\mathbf{x}) \equiv \mathfrak{S}_w(\mathbf{x}) \pmod{\mathbb{Z}_{>0}[\text{次数} \geq 1]}$$
+
+\item \textbf{K-理论中的地位}：在 $K^0(Fl_n) \otimes \mathbb{Q}$ 中，$\{\mathfrak{G}_w\}$ 构成基
+\end{enumerate}
+
+\textbf{组合定义}：
+
+Grothendieck 多项式可以用除差算子递归定义：
+$$\mathfrak{G}_w(\mathbf{x}) = \partial_i^{-1} \mathfrak{G}_{ws_i}(\mathbf{x}) \quad \text{（当 } i \text{ 是 } w \text{ 的 descent）}$$
+
+但这里的 $\partial_i^{-1}$ 是\textbf{逆除差算子}，定义为：
+$$\partial_i^{-1}(f) = \sum_{k \geq 0} x_i^k \cdot \partial_i(f)$$
+
+这导致 Grothendieck 多项式是\textbf{无穷级数}，但可以证明在 K-理论中是良定义的。
+
+\textbf{几何意义}：
+
+在代数 K-理论中，旗流形的结构环 $K^0(Fl_n)$ 由 Schubert 类 $[\mathcal{O}_{\overline{B^-wB/B}}]$ 生成。Grothendieck 多项式 $\mathfrak{G}_w(\mathbf{x})$ 是这些 K-理论类的代表元。
+
+\textbf{正性}：
+
+与 Schubert 多项式类似，Grothendieck 多项式的结构常数也满足某种正性。在 Fan-Guo-Xiong \cite{FGL2025} 中，他们建立了双重 Grothendieck 多项式范围的正性公式，使用 puzzles 方法。
+
+\textbf{笔记中的位置}：
+
+在\cref{sec:GrothendieckProof} 中，笔记讨论了关于 Grothendieck 多项式的 positivity 猜想，这是 Gao-Xiong 工作的自然推广方向之一。\footnote{问：Grothendieck 多项式是什么？见附录 \cref{sec:GrothendieckPolynomial}。}
