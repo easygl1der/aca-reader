@@ -17,6 +17,57 @@
 
 ---
 
+## L906: Overfull Hbox 排版问题检查
+
+**日期**: 2026-03-30
+**经历次数**: 1 次
+
+**错误描述**:
+编译日志出现 `Overfull \hbox (Xpt too wide)` 警告，表示有内容超出页面边界。
+
+**常见原因及修复**:
+1. **超长公式（最常见）**: 用 `align`/`aligned` 环境拆解单行公式
+2. **URL 太长**: 用 `\url{}` 包起来，或用 `\href{}{}` 缩短显示
+3. **表格过宽**: 用 `resizebox` 或调整列宽
+4. **itemize 内容过长**: 缩短文本或调整 `\setlength\itemsep{0pt}`
+
+**检查命令**:
+```bash
+# 编译后检查 overfull hbox
+grep -i "overfull\|hbox" schubert-positivity-notes.log
+
+# 示例输出
+# Overfull \hbox (96.06676pt too wide) in paragraph at lines 87--88
+# Overfull \hbox (4.48712pt too wide) in paragraph at lines 689--690
+# Overfull \hbox (87.8959pt too wide) detected at line 1030
+```
+
+**修复示例**:
+```latex
+% 错误 ❌：单行超长公式
+$$\overline{B^-uB/B} \cap \overline{B^-vB/B} \xrightarrow{\text{横截性}} \text{良定义的交点数} \xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w$$
+
+% 正确 ✅：拆解为 align 多行
+\begin{align}
+\overline{B^-uB/B} \cap \overline{B^-vB/B}
+&\xrightarrow{\text{横截性}} \text{良定义的交点数} \label{eq:geo-to-integer} \\
+&\xrightarrow{\text{Corollary 2.4}} \sum_w c^w_{u,v} \cdot [\overline{B^-wB/B}]_T \label{eq:integer-to-cohomology} \\
+&\xrightarrow{\text{多项式代表元}} \mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c^w_{u,v} \cdot \mathfrak{S}_w \label{eq:cohomology-to-polynomial}
+\end{align}
+```
+
+**禁止使用的 hack**:
+- ❌ `\sloppy`
+- ❌ `\emergencystretch`
+- ❌ 手动调整 `\textheight` 或 `\oddsidemargin`
+
+**防止措施**:
+- 每次编译后检查日志中的 `Overfull \hbox` 警告
+- 超长公式立即拆解，不要留到后期
+- 涉及 Schubert 类相交的长表达式特别容易超宽，优先拆分
+
+---
+
 ## L905: theorem 环境 \begin/\end 格式检查
 
 **日期**: 2026-03-29
