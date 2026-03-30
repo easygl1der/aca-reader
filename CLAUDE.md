@@ -141,6 +141,7 @@ literature-experts 团队成员与教训 Memory 文件映射
 | qa-specialist | `docs/lessons/agents/qa-specialist-memory.md` |
 | exercise-expert | `docs/lessons/agents/exercise-expert-memory.md` |
 | gemini-expert | `docs/lessons/agents/gemini-expert-memory.md` |
+| research-expert | `docs/lessons/agents/research-expert-memory.md` |
 
 通用教训: `docs/lessons/agents/ALL-agents-memory.md`
 
