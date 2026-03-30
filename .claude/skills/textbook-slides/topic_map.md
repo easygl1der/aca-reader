@@ -45,7 +45,7 @@
 |----------|-------|---------|------------|
 | OLS asymptotics.pptx | OLS 渐近性 | Ch03 / ChA3 | ~20 |
 | Normal linear model.pptx | 正态线性模型 | Ch05 | ~25 |
-| Gauss-Markov.pptx | BLUE | Ch04 | ~25 |
+| Gauss-Markov.pptx | BLUE | Ch04 | 20 |
 | model checking.pptx | 模型诊断 | Ch13 | ~30 |
 | overfitting.pptx | 过拟合 | Ch13 / Ch14 | ~20 |
 | weighted OLS.pptx | 加权 OLS | Ch19 | ~15 |
