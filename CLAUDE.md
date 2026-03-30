@@ -55,6 +55,12 @@
 5. 重新编译 PDF
 - 详见: `docs/qa-workflow.md`
 
+### 数学问题调研规则
+当用户询问数学问题（计算、证明、为什么、是什么、如何等）时：
+1. 自动使用 `/gemini-browser-chat` 进行深入调研
+2. 同时调研笔记上下文（chapters/, appendix/qa.tex）
+3. 提供详细推导和解释
+
 ### 章节写作一体化
 用户说"生成第X章笔记"时，同时执行：
 1. 生成知识点笔记 → `chapters/chapterX.tex`
