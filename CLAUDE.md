@@ -18,6 +18,9 @@
 - **每次打开 PDF 必须用 Skim**: `open -a Skim <file>`
 - **Skim 跳转**: `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"`
   - 示例: `displayline -r -g 650 "/path/file.pdf" "/path/chapter1.tex"`
+- **便捷跳转 Hook**: `~/.claude/hooks/skim-jump.sh <line> [tex-file]`
+  - 自动查找当前目录的 PDF 并跳转到对应位置
+  - 示例: `~/.claude/hooks/skim-jump.sh 890 "/path/chapter1.tex"`
 
 ### Playwright 浏览器缓存保护（绝对红线！）
 - ❌ **禁止清除 Playwright 浏览器缓存**
