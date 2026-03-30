@@ -1230,3 +1230,56 @@ $$\boxed{\mathfrak{S}_w(\mathbf{x}, \mathbf{y}) = \partial_{w^{-1}w_0}^{(x)} \pr
 \end{itemize}
 
 \textbf{除差算子的几何意义}：除差算子 $\partial_i$ 在几何上对应于沿第 $i$ 个超平面进行截面，递归地将高维相交问题降维。\footnote{除差算子的几何意义见附录 \cref{sec:GeoToAlgebraTranslation}。}
+
+\section{$N^{-}(w)$ 与 Schubert 胞腔 $B^{-}wB/B$ 的同构}
+\label{sec:NMinusW-Schubert-Cell}
+
+\subsection*{问题}
+为什么 $N^{-}(w)$ 同构于 Schubert 胞腔 $B^{-}wB/B \cong \mathbb{C}^{\ell(w_0)-\ell(w)}$？请解释几何直观、代数同构映射的意义，以及为什么这个同构说明 $N^{-}(w)$ 是连通的。
+
+\subsection*{回答}
+
+\textbf{1. 几何直观：维数公式 $\dim N^{-}(w) = \ell(w_0) - \ell(w)$}
+
+$N^{-}$ 是单位下三角矩阵群，维数为 $\binom{n}{2}$（下三角矩阵的非对角元有 $\binom{n}{2}$ 个自由参数）。作为簇，$N^{-}$ 同构于 $\mathbb{C}^{\binom{n}{2}}$，因为每个元素可以唯一写为根子群的乘积：
+$$N^{-} \cong \prod_{\alpha \in \Phi^{-}} U_{\alpha}$$
+其中 $U_{\alpha} \cong \mathbb{C}$ 是对应负根 $\alpha$ 的单参子群。
+
+$N^{-}(w) = N^{-} \cap wN^{-}w^{-1}$ 的维数取决于哪些负根 $\alpha$ 满足 $w(\alpha) > 0$（即 $w$ 把负根变成正根）。关键在于：
+$$N^{-}(w) = \prod_{\substack{\alpha \in \Phi^{-} \\ w(\alpha) > 0}} U_{\alpha}$$
+
+负根是 $\Phi^{-} = \{-\epsilon_i + \epsilon_j : 1 \leq j < i \leq n\}$，共 $\binom{n}{2}$ 个。$w(\alpha) > 0$ 的负根 $\alpha$ 个数等于 $|J(w)| = \binom{n}{2} - \ell(w)$，其中 $J(w) = \{(i,j) : i < j, w(i) < w(j)\}$ 是 $w$ 的非逆序集。
+
+因此：
+$$\dim N^{-}(w) = \binom{n}{2} - \ell(w) = \ell(w_0) - \ell(w)$$
+
+\textbf{几何图像}：$N^{-}$ 本身同构于最大的相反 Schubert 胞腔 $B^{-}w_0B/B \cong \mathbb{C}^{\binom{n}{2}}$。而 $N^{-}(w)$ 是 $N^{-}$ 的一个"切片"，只保留那些 $w$ 不翻转的负根方向。
+
+\textbf{2. 代数同构：$N^{-}(w) \cong B^{-}wB/B$}
+
+构造同构映射：
+$$\phi: N^{-}(w) \to B^{-}wB/B, \quad x \mapsto xwB/B$$
+
+\textbf{验证是良好定义的}：若 $x \in N^{-}(w)$，则 $x \in N^{-} \subset B^{-}$，所以 $xwB \in B^{-}wB$，陪集 $xwB/B$ 落在 $B^{-}wB/B$ 内。
+
+\textbf{单射性}：若 $xwB/B = ywB/B$，则 $w^{-1}x^{-1}yw \in B$。同时 $w^{-1}x^{-1}yw \in w^{-1}N^{-}w \cap N^{-} = N^{-}(w)$。但 $B \cap N^{-}(w) = \{e\}$，所以 $x = y$。
+
+\textbf{满射性}：任取 $B^{-}wB/B$ 中元素。由于 $B^{-} = N^{-}T$，任意元素可写为 $n_1 twB = n_1 w(w^{-1}tw)B$。但 $w^{-1}tw \in T \subset B$，所以实际上 $n_1 twB = n_1 wB$，且 $n_1 \in N^{-}$,$n_1 \in N^{-}(w)$。
+
+\textbf{3. 同构映射 $x \mapsto xwB/B$ 的意义}
+
+$G/B$ 是齐性空间，$B^{-}wB/B$ 是过基点 $wB/B$ 的胞腔。映射 $x \mapsto xwB/B$ 把 $N^{-}(w)$ 中的元素 $x$ 看作"旗的位移"——把基旗 $wB/B$ 推到旗 $xwB/B$。
+
+$N^{-}(w) \cong \mathbb{C}^{\ell(w_0)-\ell(w)}$ 提供了胞腔 $B^{-}wB/B$ 的自然坐标系。每个 $x \in N^{-}(w)$ 指定了胞腔中一个唯一点。
+
+从齐性空间角度看，$wB/B$ 的稳定化子是 $B$，而 $N^{-}(w)$ 是那些"与 $w$ 的相对位置在 $N^{-}$ 中"的元素构成的子群。
+
+\textbf{4. 连通性}
+
+$N^{-}$ 是幂幺群（unipotent group），指数映射 $\exp: \mathfrak{n}^{-} \to N^{-}$ 是双射（代数群情形的对数映射）。因此 $N^{-}$ 微分同胚于其李代数 $\mathfrak{n}^{-} \cong \mathbb{C}^{\binom{n}{2}}$，是连通的。
+
+$N^{-}(w)$ 是 $N^{-}$ 的闭子群，因此作为代数群也是连通的。
+
+同构 $N^{-}(w) \cong \mathbb{C}^{\ell(w_0)-\ell(w)}$ 说明 $N^{-}(w)$ 是仿射空间。仿射空间是连通的（甚至单连通）。
+
+\textbf{参考文献}：Humphreys, \cite[Section 28]{humphreys1975}。\footnote{问：为什么 $N^{-}(w) \cong B^{-}wB/B$？见附录 \cref{sec:NMinusW-Schubert-Cell}。}
