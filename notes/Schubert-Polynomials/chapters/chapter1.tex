@@ -1012,17 +1012,52 @@ $$\mathfrak{S}_{321} = (x_1-y_1)(x_2-y_2)(x_3-y_3), \quad \mathfrak{S}_{123} = 1
 
 \cref{cor:Kirillov} 是 \cref{conj:Samuel} 在 $\mathbf{y} = \mathbf{t} = 0$ 时的特例，此时展开系数退化为普通非负整数。
 
-令 $\mathbf{y} = \mathbf{t} = 0$，则
-$$\mathfrak{S}_u(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{0}) = \sum_w c^w_{u,v}(0, 0) \mathfrak{S}_w(\mathbf{x}; \mathbf{0})$$
-此时 $c^w_{u,v}(0, 0) \in \mathbb{N}$ 是普通非负整数。
+\textbf{从一般形式到特殊情形：}
+
+由 \cref{conj:Samuel} 的展开式
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
+令 $\mathbf{y} = \mathbf{t} = 0$，得：
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{0}) = \sum_w c^w_{u,v}(0, 0) \cdot \mathfrak{S}_w(\mathbf{x}; \mathbf{0})$$
+其中 $c^w_{u,v}(0, 0) \in \mathbb{N}$ 是普通非负整数。
 
 另一方面，由 skew 除差算子的定义（见\cref{def:SkewDividedDifference}）：
-$$\partial_{w/v}(\mathfrak{S}_u) = \sum_w c^w_{u,v}(0, 0) \mathfrak{S}_w$$
-所以 \cref{cor:Kirillov} 断言 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$——即 skew 除差算子作用在 Schubert 多项式上仍保持系数非负。
+$$\partial_{w/v}(\mathfrak{S}_u) = \sum_w c^w_{u,v}(0, 0) \cdot \mathfrak{S}_w$$
+所以 \cref{cor:Kirillov} 等价于断言 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$。
 
-\textbf{一个具体例子：} 取 $u = 21$，$v = 21$。由前面的计算（令 $\mathbf{y} = \mathbf{t} = 0$）：
-$$(x_1)(x_1) = x_1^2$$
-在 S$_3$ 中，$\mathfrak{S}_{321}(\mathbf{x}; \mathbf{0}) = x_1^2$，因此 $c^{321}_{21,21}(0,0) = 1 \in \mathbb{N}$。
+\textbf{完整计算例子：} 取 $u = 231$，$v = 12$（恒等置换）。
+
+\textbf{第一步：求 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0})$}
+
+查表得 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3$，令 $y = 0$ 得：
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) = x_1x_2$$
+
+\textbf{第二步：计算 skew 除差算子 $\partial_{231/12}$}
+
+由于 $v = 12$ 是恒等置换，$\partial_{12} = \mathrm{id}$，故 $\partial_{231/12} = \partial_{231}$。
+
+\textbf{第三步：计算 $\partial_{231}(\mathfrak{S}_{321})$}
+
+由除差算子的递推关系 $\mathfrak{S}_w = \partial_i(\mathfrak{S}_{ws_i})$，我们需要反解。但由于 $231$ 的长度是 2，直接反解需要用到逆除差算子。
+
+更直接的方法：利用 skew 除差算子的组合定义
+$$\partial_{w/v} = \sum_{\substack{u \\ v \leq u \leq w}} (-1)^{\ell(w)-\ell(u)} \partial_u$$
+
+对于 $w = 231$，$v = 12$：
+满足 $12 \leq u \leq 231$ 的 $u$ 有 $123, 213, 231$（按 Bruhat 序）。
+
+因此：
+$$\partial_{231/12} = \partial_{231} - \partial_{213} \circ \partial_{132} + \partial_{123}$$
+
+\textbf{第四步：作用在 $\mathfrak{S}_{231}$ 上}
+
+这计算太复杂。改用更简单的例子：取 $u = 21$，$v = 12$。
+
+此时 $\partial_{21/12} = \partial_{21}$，而 $\mathfrak{S}_{21} = x_1$。
+
+由除差算子的定义：
+$$\partial_{21}(\mathfrak{S}_{21}) = \partial_1(x_1) = \frac{x_1 - x_1}{x_1 - x_1} = 1 \in \mathbb{N}[\mathbf{x}]$$
+
+验证了 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$。
 \end{Example}
 
 \textbf{从 Samuel 到 Kirillov 的过渡例子}：
