@@ -290,7 +290,7 @@ $w$ & 一行数组 & Lehmer 码 & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\
 $123$ & $(1,2,3)$ & $(0,0,0)$ & $0$ & $1$ \\
 $213$ & $(2,1,3)$ & $(1,0,0)$ & $1$ & $x_1$ \\
 $132$ & $(1,3,2)$ & $(0,1,0)$ & $1$ & $x_2$ \\
-$231$ & $(2,3,1)$ & $(1,1,0)$ & $2$ & $x_1x_2$ \\
+$231$ & $(2,3,1)$ & $(1,1,0)$ & $2$ & $x_1 x_2$ \\
 $312$ & $(3,1,2)$ & $(2,0,0)$ & $2$ & $x_1+x_2$ \\
 $321$ & $(3,2,1)$ & $(2,1,0)$ & $3$ & $x_1^2x_2$
 \end{tabular}
@@ -908,9 +908,9 @@ $$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{y}) = (x_1 - y_2)(x_2 - y_2), \quad \ma
 \begin{align}
 &\mathfrak{S}_{132}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{213}(\mathbf{x}; \mathbf{t}) \label{eq:u132-v213-product} \\
 &= (x_1 - y_2)(x_2 - y_2)(x_1 - t_1) \label{eq:u132-v213-expand1} \\
-&= (x_1x_2 - x_1y_2 - x_2y_2 + y_2^2)(x_1 - t_1) \label{eq:u132-v213-expand2} \\
-&= x_1^2x_2 - x_1x_2t_1 - x_1^2y_2 + x_1y_2t_1 \label{eq:u132-v213-expand3} \\
-&\quad - x_1x_2y_2 + x_2y_2t_1 + x_1y_2^2 - y_2^2t_1 \label{eq:u132-v213-full}
+&= (x_1 x_2 - x_1y_2 - x_2y_2 + y_2^2)(x_1 - t_1) \label{eq:u132-v213-expand2} \\
+&= x_1^2x_2 - x_1 x_2t_1 - x_1^2y_2 + x_1y_2t_1 \label{eq:u132-v213-expand3} \\
+&\quad - x_1 x_2y_2 + x_2y_2t_1 + x_1y_2^2 - y_2^2t_1 \label{eq:u132-v213-full}
 \end{align}
 
 由 \cref{eq:u132-v213-full}，利用 $t_1 = (t_1 - y_1) + y_1$ 将含 $t_1$ 的项拆分，可验证所有系数都是 $t_j - y_i$ 的非负整数系数多项式。\footnote{完整推导见附录 \cref{sec:GrahamPositivity-u21-v21}。}
@@ -927,7 +927,7 @@ $$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{y}) = (x_1 - y_2)(x_2 - y_2), \quad \ma
 
 \textbf{非 Grassmannian 排列 $u = 231$ 的结构：}
 $u = 231$ 的数组为 $(2,3,1)$，有两个 descents（$2>3$ 和 $3>1$），因此不是 Grassmannian。查表得：
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1y_3 - x_2y_3 + y_2y_3$$
 注意这不是线性因子的乘积，而是二次多项式——这正是与 Grassmannian 情形的本质区别。
 
 取 $v = 312$（也是非 Grassmannian）：
@@ -936,16 +936,16 @@ $$\mathfrak{S}_{312}(\mathbf{x}; \mathbf{t}) = x_1 - t_3$$
 \textbf{第一步：展开乘积}（按单项式基展开）
 \begin{align}
 &\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_{312}(\mathbf{x}; \mathbf{t}) \label{eq:u231-v312-product} \\
-&= (x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3)(x_1 - t_3) \label{eq:u231-v312-expand1} \\
-&= x_1^2x_2 - x_1x_2t_3 - x_1^2y_3 + x_1y_3t_3 \label{eq:u231-v312-expand2} \\
-&\quad - x_1x_2y_3 + x_2y_3t_3 + x_1y_2y_3 - y_2y_3t_3 \label{eq:u231-v312-full}
+&= (x_1 x_2 - x_1y_3 - x_2y_3 + y_2y_3)(x_1 - t_3) \label{eq:u231-v312-expand1} \\
+&= x_1^2x_2 - x_1 x_2t_3 - x_1^2y_3 + x_1y_3t_3 \label{eq:u231-v312-expand2} \\
+&\quad - x_1 x_2y_3 + x_2y_3t_3 + x_1y_2y_3 - y_2y_3t_3 \label{eq:u231-v312-full}
 \end{align}
 
 \textbf{第二步：将每项写成 $t_j - y_i$ 的形式}
 
 利用恒等式 $t_3 = (t_3 - y_3) + y_3$，将含 $t_3$ 的项拆分：
 \begin{align*}
--x_1x_2t_3 &= -x_1x_2[(t_3 - y_3) + y_3] = -x_1x_2(t_3 - y_3) - x_1x_2y_3 \\
+-x_1 x_2t_3 &= -x_1 x_2[(t_3 - y_3) + y_3] = -x_1 x_2(t_3 - y_3) - x_1 x_2y_3 \\
 x_1y_3t_3 &= x_1y_3[(t_3 - y_3) + y_3] = x_1y_3(t_3 - y_3) + x_1y_3^2 \\
 x_2y_3t_3 &= x_2y_3[(t_3 - y_3) + y_3] = x_2y_3(t_3 - y_3) + x_2y_3^2 \\
 -y_2y_3t_3 &= -y_2y_3[(t_3 - y_3) + y_3] = -y_2y_3(t_3 - y_3) - y_2y_3^2
@@ -954,7 +954,7 @@ x_2y_3t_3 &= x_2y_3[(t_3 - y_3) + y_3] = x_2y_3(t_3 - y_3) + x_2y_3^2 \\
 \textbf{第三步：合并同类项}
 
 将所有含 $(t_3 - y_3)$ 的项提出：
-$$[-x_1x_2 + x_1y_3 + x_2y_3 - y_2y_3] \cdot (t_3 - y_3)$$
+$$[-x_1 x_2 + x_1y_3 + x_2y_3 - y_2y_3] \cdot (t_3 - y_3)$$
 
 \textbf{第四步：写成 $c^w_{u,v} \cdot \mathfrak{S}_w$ 的形式}
 
@@ -965,8 +965,8 @@ $w$ & $\ell(w)$ & $\mathfrak{S}_w(\mathbf{x})$ \\ \hline
 $123$ & $0$ & $1$ \\
 $213$ & $1$ & $x_1$ \\
 $132$ & $1$ & $x_1 + x_2$ \\
-$231$ & $2$ & $x_1x_2$ \\
-$312$ & $2$ & $x_1x_2$ \\
+$231$ & $2$ & $x_1 x_2$ \\
+$312$ & $2$ & $x_1 x_2$ \\
 $321$ & $3$ & $x_1^2x_2$
 \end{tabular}
 \end{center}
@@ -1008,17 +1008,17 @@ $$\mathfrak{S}_u(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathb
 \textbf{第一步：求 $\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0})$ 和 $\mathfrak{S}_{132}(\mathbf{x}; \mathbf{0})$}
 
 查表得：
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1y_3 - x_2y_3 + y_2y_3, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
 令 $\mathbf{y} = \mathbf{t} = 0$ 得：
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) = x_1x_2, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_2$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) = x_1 x_2, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_2$$
 
 \textbf{第二步：计算乘积}
-$$x_1x_2 \cdot x_2 = x_1x_2^2$$
+$$x_1 x_2 \cdot x_2 = x_1 x_2^2$$
 
 \textbf{第三步：写成 $\mathfrak{S}_w$ 的线性组合}
 
 查 S$_3$ 单重 Schubert 表：
-$$\mathfrak{S}_{123}(\mathbf{x}) = 1, \quad \mathfrak{S}_{231}(\mathbf{x}) = x_1x_2, \quad \mathfrak{S}_{321}(\mathbf{x}) = x_1^2x_2$$
+$$\mathfrak{S}_{123}(\mathbf{x}) = 1, \quad \mathfrak{S}_{231}(\mathbf{x}) = x_1 x_2, \quad \mathfrak{S}_{321}(\mathbf{x}) = x_1^2x_2$$
 
 展开系数为 $1 \in \mathbb{N}$（对应 $\mathfrak{S}_{231}$ 的某个倍数），验证了 $\partial_{w/v}(\mathfrak{S}_u) \in \mathbb{N}[\mathbf{x}]$。
 \end{Example}
@@ -1031,20 +1031,20 @@ $$\mathfrak{S}_{123}(\mathbf{x}) = 1, \quad \mathfrak{S}_{231}(\mathbf{x}) = x_1
 当 \cref{conj:Samuel} 中的 $\mathbf{y} = \mathbf{t} = 0$ 时，双重 Schubert 多项式退化为普通 Schubert 多项式，展开系数退化为非负整数。
 
 取 $u = 231$，$v = 132$（两个非 Grassmannian 排列）：
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{y}) = x_1 x_2 - x_1y_3 - x_2y_3 + y_2y_3$$
 $$\mathfrak{S}_{132}(\mathbf{x}; \mathbf{t}) = x_2 - t_2$$
 
 一般情形下（\cref{conj:Samuel}）：
 {\small
 \begin{align*}
 \mathfrak{S}_{231}(\mathbf{x},\mathbf{y}) \cdot \mathfrak{S}_{132}(\mathbf{x},\mathbf{t})
-&= (x_1x_2 - x_1y_3 - x_2y_3 + y_2y_3)(x_2 - t_2) \\
-&= x_1x_2^2 - x_1x_2t_2 - x_1y_3x_2 + x_1y_3t_2
+&= (x_1 x_2 - x_1y_3 - x_2y_3 + y_2y_3)(x_2 - t_2) \\
+&= x_1 x_2^2 - x_1 x_2t_2 - x_1y_3x_2 + x_1y_3t_2
 \end{align*}}
 
 令 $\mathbf{y} = \mathbf{t} = 0$（\cref{cor:Kirillov}）：
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) = x_1x_2, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_2$$
-$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_1x_2 \cdot x_2 = x_1x_2^2$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) = x_1 x_2, \quad \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_2$$
+$$\mathfrak{S}_{231}(\mathbf{x}; \mathbf{0}) \cdot \mathfrak{S}_{132}(\mathbf{x}; \mathbf{0}) = x_1 x_2 \cdot x_2 = x_1 x_2^2$$
 
 展开系数为 $1 \in \mathbb{N}$，验证了 \cref{cor:Kirillov}。
 \end{Example}
