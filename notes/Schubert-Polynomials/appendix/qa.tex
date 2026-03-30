@@ -1664,11 +1664,13 @@ $\epsilon_3 - \epsilon_2$ & $E_{32}$ & 负根 & $-\gamma$
 
 \subsection{问题}
 
-引理证明中引用了 \cite[Section 19.3]{anderson2023}，该节讨论了什么内容？
+引理证明中引用了 \cite[Section 19.3, Section 19.4]{anderson2023}，该节讨论了什么内容？
 
 \subsection{回答}
 
-Anderson-Fulton 的 \cite[Section 19.3]{anderson2023} 建立了等变上同调中 Schubert 结构常数的正性定理。核心内容包括：
+Anderson-Fulton 的 \cite[Section 19.3-19.4]{anderson2023} 建立了等变上同调中 Schubert 结构常数的两种正性证明方法：横截性与退化。
+
+\textbf{Section 19.3：横截性证明}
 
 \textbf{Theorem 19.3.1（Positivity Theorem）}：设 $Z \subseteq G/P$ 是 $T$-不变子簇，在 Schubert 基底下写其类为
 $$[Z]_T = \sum_w c[w] x[w]$$
@@ -1676,9 +1678,22 @@ $$[Z]_T = \sum_w c[w] x[w]$$
 
 \textbf{Corollary 19.3.2（Graham）}：在等变上同调 $H_T^*(G/P)$ 中，相乘的结构常数 $c_w^{uv}$ 是正根多项式。
 
-\textbf{关键引理（Lemma 19.3.5，Kleiman-Bertini 精细版本）}：
-\begin{Lemma}
-设 $\Gamma$ 是连通代数群在非奇异不可约簇 $X$ 上作用，有有限多个轨道 $X_1, \ldots, X_n$。设 $Y \subseteq X$ 是不可约子簇，假设 $Y$ 与每个 $\Gamma$-轨道横截相交。给定另一个不可约子簇 $Z$，存在稠密开子集 $\Gamma^\circ \subseteq \Gamma$ 使得对所有 $g \in \Gamma^\circ$，$gY$ 与 $Z$ 横截相交。
-\end{Lemma}
+\textbf{Lemma 19.3.5（Kleiman-Bertini 精细版本）}：
+设 $\Gamma$ 是连通代数群在非奇异不可约簇 $X$ 上作用，有有限多个轨道。设 $Y \subseteq X$ 是不可约子簇，假设 $Y$ 与每个 $\Gamma$-轨道横截相交。给定另一个不可约子簇 $Z$，存在稠密开子集 $\Gamma^\circ \subseteq \Gamma$ 使得对所有 $g \in \Gamma^\circ$，$gY$ 与 $Z$ 横截相交。
 
-\textbf{引理 2.5 的证明}：设 $w_0^{(m)} \in S_m$ 是最长排列。对于 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为直和。由 $v \in S_n$ 知 $\overline{B^-vB/B}$ 在 $s_i$（$n \leq i < 2n$）下不变。因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$。类似地 $\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$。由于 $u_0^{-1}\tau u_0 = w_0^{(2n)}$，横截性由 Anderson-Fulton 的 Kleiman-Bertini 分析（\cite[Section 19.3]{anderson2023}）保证。\footnote{关于 Section 19.3 的详细内容见附录 \cref{sec:AndersonFulton19-3}。}
+\textbf{引理 2.5 的证明}：设 $w_0^{(m)} \in S_m$ 是最长排列。对于 $w, \pi \in S_n$，记 $w \times \pi \in S_{2n}$ 为直和。由 $v \in S_n$ 知 $\overline{B^-vB/B}$ 在 $s_i$（$n \leq i < 2n$）下不变。因此 $\overline{B^-vB/B} = u_0 \overline{B^-vB/B}$，其中 $u_0 = 1 \times w_0^{(n)}$。类似地 $\tau \overline{B^-uB/B} = \tau u_0 \overline{B^-uB/B}$。由于 $u_0^{-1}\tau u_0 = w_0^{(2n)}$，横截性由 Anderson-Fulton 的 Kleiman-Bertini 分析保证。
+
+\textbf{Section 19.4：退化证明（Theorem 19.4.4）}
+
+\textbf{Proposition 19.4.4}（退化命题）：设 $B$ 是连通可解群在非奇异簇 $X$ 上作用，$T$ 是最大环面。设 $B' \subset B$ 是闭子群，$\chi : T \to \mathbb{C}^*$ 是特征标。假设 $Y \subseteq X$ 是 $B'$-不变的有效闭链，维数为 $k$。则存在典则定义的 $B$-不变有效闭链 $Z_1$ 和 $Z_2$（$\dim Z_1 = k$，$\dim Z_2 = k+1$），使得
+$$[Y]_T = [Z_1]_T + \chi [Z_2]_T$$
+在 $H_T^{2n-2k}X$ 中。\footnote{Proposition 19.4.4 是退化法证明正性的核心引理，见附录 \cref{sec:AndersonFulton19-4}。}
+
+\textbf{证明思路}：若 $Y$ 已是 $B$-不变，则 $Z_1 = Y$，$Z_2 = 0$。否则，令 $W$ 为 $BY$ 的闭包（维数 $k+1$）。考虑纤维丛 $V = B \times_{B'} Y \to B/B' = \mathbb{A}^1$，并将其紧化为 $\mathbb{P}^1 \times X$。利用 (19.1) 式的类关系 $[∞]_T = [0]_T + \chi$，与 $[V]_T$ 作交，可得到所需的分解。
+
+\textbf{Theorem 19.4.5}：设 $U = U_N \supset U_{N-1} \supset \cdots \supset U_0$ 是 $T$-不变的正规子群链，$\chi_i$ 是 $T$ 在 $\mathfrak{u}_i/\mathfrak{u}_{i-1}$ 上的权。设 $Y$ 是 $B_0$-不变的有效 $k$-闭链。则存在典则定义的 $B$-不变有效闭链 $Z_I$（$\dim Z_I = k + |I|$），使得
+$$[Y]_T = \sum_{I \subseteq \{1,\ldots,N\}} \left(\prod_{i \in I} \chi_i\right) [Z_I]_T$$
+
+\textbf{Corollary 19.4.7}：对于对角嵌入 $\delta : G/P \hookrightarrow G/P \times G/P$，有
+$$\delta_*(x^{[w]}) = \sum_{[u],[v]} c_{[u][v]}^{[w]} x^{[u]} \times x^{[v]}$$
+其中系数 $c_{[u][v]}^{[w]}$ 是正根的单项式的非负和。\footnote{关于 Theorem 19.4.4 的详细内容见附录 \cref{sec:AndersonFulton19-4}。}
