@@ -168,6 +168,8 @@ notes/<主题>/
 | 2026-03-29 | Agent 无响应 → 立即 respawn |
 | 2026-03-29 | CLAUDE.md 太长导致 AI 忘记规则 → 重构为索引模式 |
 | 2026-03-30 | 编译后必须检查 overfull hbox 警告，超长公式用 align 拆解 |
+| 2026-03-31 | Proofread 时：AI 报告的问题需用户视觉确认；Theorem 后的等式、Theorem 内的脚注不一定都是问题 |
+| 2026-03-31 | 统一用 `\cref` 而非 `\ref` 引用 label |
 
 详见: `docs/lessons/`
 
