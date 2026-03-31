@@ -1437,3 +1437,72 @@ $$\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w} q^d c_{u,v}^{w,d} \sigma(w)$$
 \item 普通量子上同调（当 $x_i = 0$ 时）——对应普通量子结构常数
 \end{itemize}
 这就是 Kim 的核心洞察：等变量子上同调不是两个独立理论的简单组合，而是一个统一框架。$x_i$ encode 了"在哪一点附近做相交"的信息（torus 固定的权重），而 $q$ 变量 encode 了"用多少维的曲线"来做相交的信息。前者是空间位置，后者是拓扑维数。
+\section{当 $x_i = 0$ 时退化为普通量子上同调的机制}\label{sec:xi-zero-degeneracy}
+\subsection{问题}
+在 \cref{def:EquivariantQuantumCohomology} 中提到"当所有 $x_i = 0$ 时，退化为普通量子上同调（quantum cohomology）$QH^*(X)$。" 为什么会有这个退化？请解释其中的数学机制。
+
+\subsection{回答}
+\textbf{1. $x_i$ 的数学含义（作为负根的坐标）}
+
+在等变量子上同调中，$x_i$ 是负单根（negative simple roots）的坐标：
+$$\Lambda = H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_r]$$
+其中 $x_i$ 对应负单根 $-\alpha_i$。这来自以下事实：
+\begin{itemize}
+\item $H_T^*(pt) = H^*(BT)$，其中 $BT$ 是分类空间
+\item $H^*(BT) \cong \mathbb{Z}[t_1, \ldots, t_r]$，每个 $t_i$ 对应 torus $T \cong (\mathbb{C}^\times)^r$ 的一个权
+\item 在 Schubert 演算的记号中，我们通常取 $x_i = -\alpha_i$（负根），这使得正性结论更自然
+\end{itemize}
+
+\textbf{2. 等变量子上同调 $QH_T^*(X)$ 的结构}
+
+等变量子上同调 $QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数：
+\begin{itemize}
+\item 基础环：$\Lambda[q] = \mathbb{Z}[x_1, \ldots, x_r; q_1, \ldots, q_{n-1}]$
+\item 基底：$\{\sigma(w) \mid w \in W^P\}$（Schubert 类）
+\item 乘法：$\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w} q^d c_{u,v}^{w,d} \sigma(w)$
+\item 结构常数：$c_{u,v}^{w,d} \in \Lambda = \mathbb{Z}[x_1, \ldots, x_r]$ 是多项式
+\end{itemize}
+
+\textbf{3. 当 $x_i = 0$ 时发生了什么？}
+
+当我们令所有 $x_i = 0$ 时，相当于取张量积：
+$$QH_T^*(X) \otimes_{\Lambda} \mathbb{Z} = QH_T^*(X) / \langle x_1, \ldots, x_r \rangle$$
+
+这相当于在 Kim 的结构定理（\cref{th:KimStructure}）中取以下同构：
+$$A / \langle \Lambda^{+} \cdot A \rangle \simeq QH^*(X)$$
+其中 $\Lambda^{+} \subset \Lambda$ 是由正次数元素（即所有 $x_i$）生成的真理想。
+
+\textbf{4. 为什么这对应于"忘掉"了 torus 作用？}
+
+\textbf{几何直觉}：
+\begin{itemize}
+\item 等变量子上同调 $H_T^*(X) = H^*(X \times_T ET)$ 是 lift 到 homotopy quotient 上的类
+\item 当在 $H_T^*(X) \otimes_{\mathbb{Z}[x_1,\ldots,x_r]} \mathbb{Z}$ 中令 $x_i = 0$ 时
+\item 相当于从商空间 $X \times_T ET$ 退回原始空间 $X$
+\item 这正是"忘掉" torus 作用的几何操作
+\end{itemize}
+
+\textbf{代数解释}：
+\begin{itemize}
+\item 在等变量子上同调中，结构常数 $c_{u,v}^{w,d}$ 是 $x_i$ 的多项式
+\item 当 $x_i = 0$ 时，多项式 $c_{u,v}^{w,d}$ 退化为整数 $c_{u,v}^{w,d}\big|_{x_i=0}$
+\item 这正是普通量子上同调中的结构常数
+\end{itemize}
+
+\textbf{5. 具体例子：$\mathbb{P}^1$}
+
+设 $X = \mathbb{P}^1$，则：
+\begin{itemize}
+\item $T = \mathbb{C}^\times$ 作用在 $\mathbb{P}^1$ 上
+\item $H_T^*(\mathbb{P}^1) \cong \mathbb{Z}[x][H] / (H^2 = x H)$，其中 $H$ 是超平面类，$x$ 是负根参数
+\item 等变量子量子上同调乘法：$\sigma(s_1) \circ \sigma(s_1) = q \sigma(1)$
+\end{itemize}
+
+当 $x = 0$ 时：
+\begin{itemize}
+\item 关系变为 $H^2 = 0$（这是普通 $\mathbb{P}^1$ 的上同调关系）
+\item $q$ 参数保留，得到普通量子上同调 $QH^*(\mathbb{P}^1) \cong \mathbb{Z}[q][H] / (H^2 = q)$
+\end{itemize}
+
+\textbf{总结}：$x_i = 0$ 的退化本质上是将系数环从 $\Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ 替换为 $\mathbb{Z}$（通过取商），这相当于在几何上从 homotopy quotient $X \times_T ET$ 退回原始空间 $X$，从而"忘掉"了 torus 作用，只保留量子修正结构。\footnote{问：为什么 $x_i = 0$ 时退化为普通量子上同调？见附录 \cref{sec:xi-zero-degeneracy}。}
+
