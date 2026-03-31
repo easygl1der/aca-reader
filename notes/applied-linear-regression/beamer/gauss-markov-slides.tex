@@ -1,403 +1,366 @@
-\documentclass{beamer}
+\documentclass[]{beamer}
 \usetheme{CambridgeUS}
-\usepackage{xeCJK}
-\usepackage{amsmath, amssymb, bm, mathtools, relsize}
-\usepackage{color}
+\usecolortheme{dolphin}
+\usefonttheme{serif,professionalfonts}
+\usefonttheme{structurebold}
+\usepackage{tikz}
+\usepackage{graphicx,pstricks,listings,stackengine}
+\usepackage{xeCJK,amsfonts,amssymb,bm,amsthm,mathrsfs,latexsym,geometry,fancyhdr,mathtools}
+\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+
+% Custom colors（蒋智超老师风格）
+\definecolor{myblue}{rgb}{0.2, 0.5, 0.8}      % 深蓝
+\definecolor{mygreen}{rgb}{0.3, 0.7, 0.3}     % 绿色
+\definecolor{myred}{rgb}{0.8, 0.2, 0.2}        % 红色/强调
+\definecolor{gold}{RGB}{255,192,0}              % 金黄强调
+
+% Block styles
+\setbeamercolor{block title}{bg=myblue!80!black, fg=white}
+\setbeamercolor{block body}{bg=myblue!10!white}
+\setbeamercolor{alertblock title}{bg=gold!80!black, fg=black}
+\setbeamercolor{alertblock body}{bg=gold!10!white}
+\setbeamercolor{block title example}{bg=mygreen!70!black, fg=white}
+\setbeamercolor{block body example}{bg=mygreen!10!white}
+
+\renewenvironment{alertblock}[1]{%
+  \setbeamercolor{block title}{use=alertblock title,fg=alertblock title.fg,bg=alertblock title.bg}%
+  \setbeamercolor{block body}{use=alertblock body,fg=alertblock body.fg,bg=alertblock body.bg}%
+  \begin{block}{#1}}{\end{block}%
+
+\renewenvironment{exampleblock}[1]{%
+  \setbeamercolor{block title}{use=block title example,fg=block title example.fg,bg=block title example.bg}%
+  \setbeamercolor{block body}{use=block body example,fg=block body example.fg,bg=block body example.bg}%
+  \begin{block}{#1}}{\end{block}%
+
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+
+% Chinese fonts
+\setCJKmainfont{Source Han Serif SC}[AutoFakeBold=true, AutoFakeSlant=true]
+\setCJKmonofont{Source Han Sans CN}[AutoFakeBold=true, AutoFakeSlant=true]
+
+% Math operators
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
 
-% 配色（蒋智超老师风格）
-\definecolor{gold}{RGB}{255,192,0}    % 金黄强调 #FFC000
-\definecolor{deepblue}{RGB}{5,99,193}  % 深蓝标题 #0563C1
-\definecolor{grayblue}{RGB}{68,84,106} % 灰蓝正文 #44546A
-
-\usecolortheme{default}
-\setbeamercolor{title}{fg=deepblue}
-\setbeamercolor{subtitle}{fg=grayblue}
-\setbeamercolor{item}{fg=gold}
-
+% === SLIDE CONTENT ===
 \begin{document}
 
 % ============================================================
 % Slide 1: 封面
 % ============================================================
 \begin{frame}
-  \titlepage
+\titlepage
 \end{frame}
 
 % ============================================================
 % Slide 2: Motivation - 为什么需要 Gauss-Markov？
 % ============================================================
 \begin{frame}{为什么需要 Gauss-Markov？}
-  \begin{block}{核心问题}
-    OLS 估计凭什么``最好''？
-  \end{block}
-  \vspace{1em}
-  \begin{itemize}
-    \item 有没有比 OLS 更好的估计？
-    \item 第 3 章 OLS 是纯代数运算，没有随机假设谈不上``最优''
-  \end{itemize}
-  \vspace{1em}
-  \textbf{直觉说明：} Without any stochastic assumptions, the OLS in Chapter 3 is purely algebraic. If we want to discuss the statistical properties of OLS, we must invoke some statistical modeling assumptions.
+\begin{block}{核心问题}
+\begin{itemize}
+  \item OLS 估计凭什么"最好"？
+  \item 有没有比 OLS 更好的估计？
+  \item 第 3 章 OLS 是纯代数运算，没有随机假设谈不上"最优"
+\end{itemize}
+\end{block}
+\vspace{1em}
+\textbf{直觉说明：} Without any stochastic assumptions, the OLS in Chapter 3 is purely algebraic. If we want to discuss the statistical properties of OLS, we must invoke some statistical modeling assumptions.
 \end{frame}
 
 % ============================================================
-% Slide 3: Motivation - 从代数到统计
+% Slide 3: 从代数到统计
 % ============================================================
 \begin{frame}{从代数到统计：引入随机假设的必要性}
-  \begin{block}{核心观点}
-    没有随机假设谈不上``最优''
-  \end{block}
-  \vspace{1em}
-  \begin{itemize}
-    \item 第 3 章 OLS 是纯代数运算
-    \item Gauss-Markov 模型给出了讨论统计性质的基础
-    \item 需要引入误差项 $\varepsilon$ 的前二阶矩假设
-  \end{itemize}
-  \vspace{1em}
-  \textbf{直觉说明：} Gauss-Markov 模型 Assumption \S 4.1 给出随机假设，使得讨论估计量的均值、方差、协方差成为可能。
+\begin{block}{Gauss-Markov 模型}
+Gauss-Markov 模型 Assumption \S 4.1 给出随机假设，使得讨论估计量的均值、方差、协方差成为可能。
+\end{block}
+\vspace{1em}
+\begin{alertblock}{关键洞察}
+第 3 章 OLS 是纯代数运算 $\Rightarrow$ 没有随机假设谈不上"最优"
+\end{alertblock}
 \end{frame}
 
 % ============================================================
 % Slide 4: 章节路线图
 % ============================================================
 \begin{frame}{章节路线图}
-  \begin{block}{本章知识结构}
-    \begin{enumerate}
-      \item Gauss-Markov 模型假设
-      \item OLS 估计量的性质（均值、方差）
-      \item Gauss-Markov 定理（核心）
-      \item 定理的直观解释与证明思路
-    \end{enumerate}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} 本章从模型假设出发，逐步建立 OLS 的统计性质，最终导出 Gauss-Markov 定理。
+\begin{block}{本章知识结构}
+\begin{enumerate}
+  \item Gauss-Markov 模型假设
+  \item OLS 估计量的性质（均值、方差）
+  \item Gauss-Markov 定理（核心）
+  \item 定理的直观解释与证明思路
+\end{enumerate}
+\end{block}
 \end{frame}
 
 % ============================================================
-% Slide 5: Gauss-Markov 模型假设 (Assumption 4.1)
+% Slide 5: Gauss-Markov 模型假设
 % ============================================================
 \begin{frame}{Gauss-Markov 模型假设}
-  \begin{block}{Assumption 4.1}
-    \begin{align}
-      Y &= X\beta + \varepsilon \quad \text{(线性形式)} \\
-      E(\varepsilon) &= 0 \quad \text{(误差均值零)} \\
-      \cov(\varepsilon) &= \sigma^2 I_n \quad \text{(同方差、不相关)} \\
-      X &\text{ 固定且列线性无关}
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  未知参数为 $(\beta, \sigma^2)$。
-
-  \vspace{1em}
-  \textbf{直觉说明：} $X$ 固定非本质（可条件于 $X$），关键是误差的前二阶矩。
+\begin{block}{Assumption (C1): 线性形式}
+\[
+y_i = x_i^\top \beta + \varepsilon_i, \quad i = 1, \ldots, n
+\]
+其中 $x_i$ 是 $p$ 维回归量，$\varepsilon_i$ 是误差项。
+\end{block}
+\vspace{0.5em}
+\textbf{关键条件：}
+\begin{itemize}
+  \item $X$ 固定且列线性无关
+  \item $E(\varepsilon_i) = 0$
+  \item $\cov(\varepsilon_i, \varepsilon_j) = \sigma^2 \mathbf{1}\{i=j\}$（同方差、不相关）
+\end{itemize}
 \end{frame}
 
 % ============================================================
 % Slide 6: 个体水平视角
 % ============================================================
 \begin{frame}{个体水平视角：$y_i = x_i^\top \beta + \varepsilon_i$}
-  \begin{block}{逐观测形式}
-    \begin{align}
-      E(\varepsilon_i) &= 0 \\
-      \var(\varepsilon_i) &= \sigma^2 \quad \text{(同方差)} \\
-      \cov(\varepsilon_i, \varepsilon_j) &= 0, \quad i \neq j \quad \text{(不相关)}
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} 向量形式展开为 $n$ 个方程，每个误差独立满足相同的前二阶矩。
+\begin{block}{Assumption 的直观理解}
+\begin{itemize}
+  \item 每个观测的误差均值 0：$E(\varepsilon_i) = 0$
+  \item 每个误差方差 $\sigma^2$（同方差）：$\var(\varepsilon_i) = \sigma^2$
+  \item 不同观测间误差不相关：$\cov(\varepsilon_i, \varepsilon_j) = 0, i \neq j$
+\end{itemize}
+\end{block}
 \end{frame}
 
 % ============================================================
-% Slide 7: 同方差假设的含义与重要性
+% Slide 7: 同方差假设
 % ============================================================
 \begin{frame}{同方差假设的含义与重要性}
-  \begin{block}{homoskedasticity}
-    homoskedasticity = 相同方差（词源：homo = 相同，skedasis = 散布）
-  \end{block}
-  \vspace{1em}
-  \begin{itemize}
-    \item 误差项 $\varepsilon_i$ 具有相同方差 $\sigma^2$
-    \item 异方差情形需要加权最小二乘（见第 19 章）
-    \item 同方差假设是 Gauss-Markov 定理成立的关键
-  \end{itemize}
-  \vspace{1em}
-  \textbf{直觉说明：} The assumption that the error terms have the same variance $\sigma^2$ is called homoskedasticity. The critiques on the assumptions aside, I will derive the properties of $\hat{\beta}$ under the Gauss-Markov model.
+\begin{alertblock}{Homoskedasticity（同方差）}
+\begin{itemize}
+  \item homoskedasticity = 相同方差
+  \item 词源学：homo 更好地表示 variance 含义
+  \item 异方差情形需要加权最小二乘（见第 19 章）
+\end{itemize}
+\end{alertblock}
 \end{frame}
 
 % ============================================================
-% Slide 8: OLS 估计量：矩阵形式
+% Slide 8: OLS 估计量矩阵形式
 % ============================================================
 \begin{frame}{OLS 估计量：矩阵形式}
-  \begin{block}{OLS 估计量}
-    \begin{align}
-      \hat{\beta} = (X^\top X)^{-1} X^\top Y
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \begin{itemize}
-    \item $\hat{\beta}$ 是 $Y$ 的线性函数
-    \item 仅依赖矩阵运算
-  \end{itemize}
-  \vspace{1em}
-  \textbf{直觉说明：} 令 $A = (X^\top X)^{-1} X^\top$，则 $\hat{\beta} = AY$，$A$ 不依赖 $Y$，所以 OLS 是线性估计量。
+\begin{block}{OLS 估计量}
+\[
+\hat{\beta} = (X^\top X)^{-1} X^\top Y
+\]
+\end{block}
+\vspace{1em}
+\textbf{关键性质：}
+\begin{itemize}
+  \item $\hat{\beta}$ 是 $Y$ 的线性函数
+  \item 仅依赖矩阵运算
+  \item $A = (X^\top X)^{-1} X^\top$ 不依赖 $Y$
+\end{itemize}
 \end{frame}
 
 % ============================================================
-% Slide 9: Theorem 4.1 - OLS 估计量的均值与方差
+% Slide 9: OLS 估计量的均值与方差 (Theorem 4.1)
 % ============================================================
-\begin{frame}{OLS 估计量的均值与方差}
-  \begin{block}{Theorem 4.1 (无偏性)}
-    在 Gauss-Markov 模型 Assumption 4.1 下：
-    \begin{align}
-      E(\hat{\beta}) = \beta
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \begin{block}{协方差矩阵}
-    \begin{align}
-      \cov(\hat{\beta}) = \sigma^2 (X^\top X)^{-1}
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} OLS 估计量 $\hat{\beta}$ 是 $\beta$ 的无偏估计，其协方差矩阵完全由 $\sigma^2$ 和 $X$ 决定。
+\begin{frame}{OLS 估计量的均值与方差 (Theorem 4.1)}
+\begin{block}{Theorem 4.1}
+在 Gauss-Markov 假设下：
+\[
+E(\hat{\beta}) = \beta \quad \text{（无偏性）}
+\]
+\[
+\cov(\hat{\beta}) = \sigma^2 (X^\top X)^{-1}
+\]
+\end{block}
+\vspace{0.5em}
+\textbf{证明思路：} 利用 $E(Y) = X\beta$ 和 $\cov(Y) = \sigma^2 I_n$
 \end{frame}
 
 % ============================================================
 % Slide 10: Gauss-Markov 定理（核心）
 % ============================================================
 \begin{frame}{Gauss-Markov 定理（核心）}
-  \begin{block}{Gauss-Markov Theorem 4.2}
-    在 Gauss-Markov 模型 Assumption 4.1 下，$\hat{\beta}$ 是 BLUE（Best Linear Unbiased Estimator）。
-  \end{block}
-  \vspace{1em}
-  \begin{block}{条件 C1 与 C2}
-    对任意线性估计量 $\tilde{\beta} = AY$（$A$ 不依赖 $Y$）满足 $E(\tilde{\beta}) = \beta$（对所有 $\beta$ 无偏），有：
-    \begin{align}
-      \cov(\tilde{\beta}) \succeq \cov(\hat{\beta})
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} We write $M_1 \succeq M_2$ if $M_1 - M_2$ is positive semi-definite.
+\begin{block}{Theorem 4.2 (Gauss-Markov)}
+$\hat{\beta}$ 是 $\beta$ 的 BLUE (Best Linear Unbiased Estimator)：
+\begin{itemize}
+  \item[(C1)] $\tilde{\beta} = AY$ 对 $Y$ 线性
+  \item[(C2)] $E(\tilde{\beta}) = \beta$（对所有 $\beta$ 无偏）
+  \item[$\Rightarrow$] $\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$（正定半定序）
+\end{itemize}
+\end{block}
 \end{frame}
 
 % ============================================================
-% Slide 11: BLUE 的含义：协方差矩阵序
+% Slide 11: BLUE 的含义
 % ============================================================
 \begin{frame}{BLUE 的含义：协方差矩阵序}
-  \begin{block}{协方差序的等价定义}
-    $\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$ 等价于：对任意 $c \in \mathbb{R}^p$，
-    \begin{align}
-      \var(c^\top \tilde{\beta}) \geq \var(c^\top \hat{\beta})
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  \begin{itemize}
-    \item 每个坐标分量 $\hat{\beta}_j$ 方差最小
-    \item 对任意线性组合 $c^\top \tilde{\beta}$ 方差不小于 $c^\top \hat{\beta}$
-  \end{itemize}
-  \vspace{1em}
-  \textbf{直觉说明：} So the OLS estimator has a smaller variance than other estimators for all coordinates.
+\begin{block}{正定半定序 $\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$}
+\begin{itemize}
+  \item 对任意线性组合 $c^\top \tilde{\beta}$ 方差不小于 $c^\top \hat{\beta}$
+  \item 特别地：每个坐标分量 $\hat{\beta}_j$ 方差最小
+  \item 等价形式：$\var(c^\top \tilde{\beta}) \geq \var(c^\top \hat{\beta})$
+\end{itemize}
+\end{block}
 \end{frame}
 
 % ============================================================
 % Slide 12: 为什么只比较线性估计量？
 % ============================================================
 \begin{frame}{为什么只比较线性估计量？}
-  \begin{block}{线性约束的合理性}
-    \begin{itemize}
-      \item $A$ 可以是 $X$ 的任意非线性函数，线性约束已包含极广的估计量类
-      \item 无偏性是自然要求
-      \item 在许多现代应用中，有偏估计（如 Ridge、Lasso）方差更小
-    \end{itemize}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} Why do we restrict the estimator to be linear? The class of linear estimator is actually quite large because $A$ can be any nonlinear function of $X$.
+\begin{block}{"线性"约束的合理性}
+\begin{itemize}
+  \item $A$ 可以是 $X$ 的任意非线性函数
+  \item 线性约束已经包含极广的估计量类
+  \item 无偏性是自然要求
+  \item 在许多现代应用中，有偏估计（如 Ridge、Lasso）方差更小
+\end{itemize}
+\end{block}
 \end{frame}
 
 % ============================================================
 % Slide 13: OLS 投影几何直观
 % ============================================================
 \begin{frame}{OLS 投影几何直观}
-  \begin{block}{投影矩阵与分解}
-    \begin{align}
-      H &= X(X^\top X)^{-1} X^\top \quad \text{(投影矩阵)} \\
-      \hat{Y} &= HY \quad \text{是 $Y$ 到 $X$ 列空间的投影} \\
-      \hat{\varepsilon} &= (I_n - H)Y \quad \text{与列空间正交}
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  OLS 将 $Y$ 分解为拟合值 $+$ 残差：$Y = \hat{Y} + \hat{\varepsilon}$
-
-  \vspace{1em}
-  \textbf{直觉说明：} $H$ 和 $I_n - H$ 是投影矩阵，$HX = X$，$(I_n - H)X = 0$，两者正交：$H(I_n - H) = 0$。
+\begin{block}{投影矩阵}
+\[
+H = X(X^\top X)^{-1}X^\top
+\]
+\end{block}
+\vspace{0.5em}
+\textbf{几何含义：}
+\begin{itemize}
+  \item $\hat{Y} = HY$ 是 $Y$ 到 $X$ 列空间的投影
+  \item 残差 $\hat{\varepsilon} = (I-H)Y$ 与列空间正交
+  \item OLS 将 $Y$ 分解为拟合值 + 残差
+\end{itemize}
 \end{frame}
 
 % ============================================================
 % Slide 14: 拟合值与残差的分布性质 (Theorem 4.2)
 % ============================================================
-\begin{frame}{拟合值与残差的分布性质}
-  \begin{block}{Theorem 4.2}
-    \begin{align}
-      E(\hat{Y}) &= X\beta, \quad E(\hat{\varepsilon}) = 0 \\
-      \cov(\hat{Y}) &= \sigma^2 H \\
-      \cov(\hat{\varepsilon}) &= \sigma^2(I_n - H)
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
-
-  \vspace{1em}
-  \textbf{直觉说明：} 注意 $\hat{y}_i$ 和 $\hat{\varepsilon}_i$ 自身不同观测间是相关的（协方差非零）。
+\begin{frame}{拟合值与残差的分布性质 (Theorem 4.2)}
+\begin{block}{Theorem 4.2}
+\[
+E(\hat{Y}) = X\beta, \quad E(\hat{\varepsilon}) = 0
+\]
+\[
+\cov(\hat{Y}) = \sigma^2 H, \quad \cov(\hat{\varepsilon}) = \sigma^2(I-H)
+\]
+$\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
+\end{block}
 \end{frame}
 
 % ============================================================
-% Slide 15: 正交 vs. 不相关：两个关键陈述的区别
+% Slide 15: 正交 vs. 不相关
 % ============================================================
 \begin{frame}{正交 vs. 不相关：两个关键陈述的区别}
-  \begin{block}{陈述 (S1)}
-    $\hat{Y}$ 与 $\hat{\varepsilon}$ 正交——代数事实，无需随机假设（OLS 投影性质）
-  \end{block}
-  \vspace{0.5em}
-  \begin{block}{陈述 (S2)}
-    $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关——随机陈述，需要 Gauss-Markov 假设
-  \end{block}
-  \vspace{1em}
-  两者含义不同，不能混淆。
-
-  \vspace{1em}
-  \textbf{直觉说明：} S1 是纯代数结论（Lemma 4.1），S2 需要 $\cov(Y) = \sigma^2 I_n$ 才能推导。
+\begin{alertblock}{常见误区}
+\begin{itemize}
+  \item \textbf{陈述 (S1)：} $\hat{Y}$ 与 $\hat{\varepsilon}$ 正交 --- 代数事实，无需随机假设
+  \item \textbf{陈述 (S2)：} $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关 --- 随机陈述，需要 Gauss-Markov 假设
+\end{itemize}
+两者含义不同，不能混淆。
+\end{alertblock}
 \end{frame}
 
 % ============================================================
-% Slide 16: 误差椭圆可视化：``最佳''的含义
+% Slide 16: 误差椭圆可视化
 % ============================================================
-\begin{frame}{误差椭圆可视化：``最佳''的含义}
-  \begin{block}{几何直观}
-    \begin{itemize}
-      \item $\hat{\beta}$ 的置信椭圆
-      \item 其他线性无偏估计的置信椭圆
-      \item OLS 的置信椭圆最小（被其他所有椭圆包裹）
-      \item $\Rightarrow$ $\hat{\beta}$ 在所有方向上方差最小
-    \end{itemize}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} 几何直观：协方差矩阵正定半定序意味着椭圆包含关系，OLS 的置信椭圆被所有其他线性无偏估计的置信椭圆包含。
+\begin{frame}{误差椭圆可视化："最佳"的含义}
+\begin{block}{二维情形}
+\begin{itemize}
+  \item $\hat{\beta}$ 的置信椭圆
+  \item 其他线性无偏估计的置信椭圆
+  \item OLS 的置信椭圆最小（被其他所有椭圆包裹）
+  \item $\Rightarrow$ $\hat{\beta}$ 在所有方向上方差最小
+\end{itemize}
+\end{block}
 \end{frame}
 
 % ============================================================
 % Slide 17: Gauss-Markov 定理证明思路
 % ============================================================
 \begin{frame}{Gauss-Markov 定理证明思路}
-  \begin{block}{四步框架}
-    \textbf{第一步：} OLS 满足无偏性条件 $\Rightarrow AX = I_p$（由 $E(AY) = AX\beta = \beta$ 对所有 $\beta$ 成立推得）
-
-    \vspace{0.5em}
-    \textbf{第二步：} 协方差分解
-    \begin{align}
-      \cov(\tilde{\beta}) = \cov(\hat{\beta}) + \cov(\tilde{\beta} - \hat{\beta})
-    \end{align}
-
-    \vspace{0.5em}
-    \textbf{第三步：} 交叉协方差项 $\cov(\hat{\beta}, \tilde{\beta} - \hat{\beta}) = 0$
-
-    \vspace{0.5em}
-    \textbf{第四步：} $\cov(\tilde{\beta} - \hat{\beta}) \succeq 0 \Rightarrow \cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} 证明核心是利用无偏性条件 $AX = I_p$ 消去交叉协方差项中的待定矩阵 $A$，从而分解式只剩 $\cov(\tilde{\beta} - \hat{\beta}) \succeq 0$。
+\begin{block}{四步框架}
+\begin{enumerate}
+  \item 第一步：OLS 满足无偏性条件 $\Rightarrow AX = I_p$
+  \item 第二步：协方差分解 $\cov(\tilde{\beta}) = \cov(\hat{\beta}) + \cov(\tilde{\beta} - \hat{\beta})$
+  \item 第三步：交叉协方差项为零
+  \item 第四步：$\cov(\tilde{\beta} - \hat{\beta}) \succeq 0 \Rightarrow \cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$
+\end{enumerate}
+\end{block}
 \end{frame}
 
 % ============================================================
 % Slide 18: 例子：简单线性回归的 BLUE
 % ============================================================
 \begin{frame}{例子：简单线性回归的 BLUE}
-  \begin{block}{一元情形}
-    \begin{align}
-      y_i &= \alpha + \beta x_i + \varepsilon_i \\
-      \var(\hat{\beta}) &= \frac{\sigma^2}{\sum (x_i - \bar{x})^2}
-    \end{align}
-  \end{block}
-  \vspace{1em}
-  任何线性无偏估计的 $\beta$ 系数方差都不小于此值。
-
-  \vspace{1em}
-  \textbf{直觉说明：} 设计越分散（$\sum (x_i - \bar{x})^2$ 越大），OLS 估计越精确。
+\begin{exampleblock}{Example}
+\begin{itemize}
+  \item $y_i = \alpha + \beta x_i + \varepsilon_i$
+  \item $\var(\hat{\beta}) = \sigma^2 / \sum (x_i - \bar{x})^2$
+  \item 任何线性无偏估计的 $\beta$ 系数方差都不小于此值
+\end{itemize}
+\end{exampleblock}
 \end{frame}
 
 % ============================================================
 % Slide 19: 例子：均值的 BLUE
 % ============================================================
 \begin{frame}{例子：均值的 BLUE}
-  \begin{block}{均值估计问题}
-    $y_i \sim$ 均值 $\mu$，方差 $\sigma^2$，互不相关
-  \end{block}
-  \vspace{1em}
-  线性估计 $\hat{\mu} = \sum a_i y_i$，无偏要求 $\sum a_i = 1$。
-
-  \vspace{0.5em}
-  \begin{block}{最优选择}
-    $a_i = 1/n$（简单平均），方差 $\var(\hat{\mu}) = \sigma^2/n$ 为最小
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} 在无偏约束 $\sum a_i = 1$ 下，用 Lagrange 乘子法最小化 $\var(\hat{\mu}) = \sigma^2 \sum a_i^2$，最优解为均匀权重。
+\begin{exampleblock}{Example}
+\begin{itemize}
+  \item $y_i \sim$ 均值 $\mu$，方差 $\sigma^2$，互不相关
+  \item 线性估计 $\hat{\mu} = \sum a_i y_i$，无偏要求 $\sum a_i = 1$
+  \item 最优选择：$a_i = 1/n$（简单平均）
+  \item 方差 $\var(\hat{\mu}) = \sigma^2/n$ 为最小
+\end{itemize}
+\end{exampleblock}
 \end{frame}
 
 % ============================================================
 % Slide 20: 例子：Gauss-Markov 预测定理
 % ============================================================
 \begin{frame}{例子：Gauss-Markov 预测定理}
-  \begin{block}{Theorem (Gauss-Markov for Prediction)}
-    $\hat{Y} = X\hat{\beta}$ 是 $X\beta$ 的最佳线性无偏预测
-  \end{block}
-  \vspace{1em}
-  适用于任何线性预测 $\tilde{Y} = \tilde{H} Y$。
-
-  \vspace{0.5em}
-  \begin{block}{核心不等式}
-    \begin{align}
-      \cov(\tilde{Y}) \succeq \cov(\hat{Y})
-    \end{align}
-  \end{block}
-  条件：无偏 $E(\tilde{Y}) = X\beta$，线性 $\tilde{Y} = \tilde{H} Y$。
-
-  \vspace{1em}
-  \textbf{直觉说明：} 定理可推广到预测情形：OLS 预测 $\hat{Y}$ 在协方差矩阵序意义下优于所有线性无偏预测量。
+\begin{exampleblock}{Example}
+\begin{itemize}
+  \item $\hat{Y} = X\hat{\beta}$ 是 $X\beta$ 的最佳线性无偏预测
+  \item 适用于任何线性预测 $\tilde{Y} = \tilde{H}Y$
+  \item $\cov(\tilde{Y}) \succeq \cov(\hat{Y})$
+\end{itemize}
+\end{exampleblock}
 \end{frame}
 
 % ============================================================
 % Slide 21: 总结
 % ============================================================
-\begin{frame}{总结}
-  \begin{block}{Gauss-Markov 定理核心要点}
-    \begin{enumerate}
-      \item \textbf{Gauss-Markov 模型}：线性 $+$ 同方差 $+$ 不相关
-      \item \textbf{OLS $\hat{\beta}$ 是 BLUE}：$\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$
-      \item \textbf{核心不等式}：$\cov(\tilde{\beta}) - \cov(\hat{\beta}) = \cov(\tilde{\beta} - \hat{\beta}) \succeq 0$
-    \end{enumerate}
-  \end{block}
-  \vspace{1em}
-  \begin{block}{三个局限性}
-    \begin{itemize}
-      \item 不谈非线性估计（Ridge、Lasso 等有偏估计在现代高维问题中方差更小）
-      \item 不谈正态假设（Normal 模型下 OLS 还具有 MLE 性质）
-      \item 不谈稳健性（违背假设时的表现）
-    \end{itemize}
-  \end{block}
-  \vspace{1em}
-  \textbf{直觉说明：} Gauss-Markov 定理是线性估计理论的基础，核心洞察是：在唯一指定``线性 $+$ 无偏''后，OLS 自动最优，无需进一步选择。
+\begin{frame}{Gauss-Markov 定理总结}
+\begin{block}{主要结论}
+\begin{itemize}
+  \item Gauss-Markov 模型：线性 + 同方差 + 不相关
+  \item OLS $\hat{\beta}$ 是 BLUE
+  \item 核心：$\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$
+\end{itemize}
+\end{block}
+\vspace{1em}
+\begin{alertblock}{局限}
+\begin{itemize}
+  \item 不谈非线性估计
+  \item 不谈正态假设
+  \item 不谈稳健性
+\end{itemize}
+\end{alertblock}
 \end{frame}
 
 % ============================================================
 % Slide 22: 参考文献
 % ============================================================
 \begin{frame}{参考文献}
-  \begin{thebibliography}{99}
-    \bibitem{PengDing2024} Peng Ding. \textit{A First Course in Causal Inference}. 2024.
-    \bibitem{Sheather2009} Sheather, S.J. \textit{A Modern Approach to Regression with R}. Springer, 2009.
-    \bibitem{McCulloch1985} McCulloch, J.H. \textit{On Heteroscedasticity}. Econometrica, 1985.
-  \end{thebibliography}
+\begin{thebibliography}{99}
+  \bibitem Ding2023} Peng Ding. \textit{Linear Model and Extensions}. 2023.
+  \bibitem Full1972} Full1982. Note on the Gauss-Markov Theorem. \textit{J. Amer. Statist. Assoc.}, 1972.
+\end{thebibliography}
 \end{frame}
 
 \end{document}
