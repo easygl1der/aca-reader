@@ -56,6 +56,24 @@
 5. 重新编译 PDF
 - 详见: `docs/qa-workflow.md`
 
+### 引用补充规范（核心习惯！）⚠️
+当正文中引用了某个定理/定义/例子（如 `\cite{xxx}` 或直接引用某文献的 Theorem/Lemma），但**没有给出该定理/定义/例子的具体内容**时，必须执行：
+1. **查找源文件**：在 `PDFs/` 或 `PDFs/<topic>/transcript/` 目录下找到该文献的 PDF 或 markdown 转录文件
+2. **提取内容**：从源文件中找到该定理/定义/例子的完整陈述
+3. **添加到正文**：将内容以 footnote 或直接叙述的形式添加到引用位置
+4. **引用原文**：在补充内容后加上 `\footnote{详见 \cite[ Theorem X.Y]{key}}`
+
+**示例**：
+```latex
+% 原文本（只有引用，没有内容）
+... 由 \cite[Lemma 2.3]{Mihalcea} 可知 ...
+
+% 补充后
+... 由 \cite[Lemma 2.3]{Mihalcea}\footnote{Lemma 2.3 (Mihalcea): [引理的完整陈述]。详见 \cite[ Lemma 2.3]{Mihalcea}。} 可知 ...
+```
+
+**操作习惯**：这个习惯必须固化到所有 literature-experts 团队成员的 behavior 中。
+
 ### 数学问题调研规则
 当用户询问**数学问题**，或需要**修复（修正）数学问题**，或进行 **proofreading** 时：
 1. 自动使用 `/gemini-browser-chat` 进行深入调研
