@@ -190,6 +190,7 @@ notes/<主题>/
 | 2026-03-30 | 编译后必须检查 overfull hbox 警告，超长公式用 align 拆解 |
 | 2026-03-31 | Proofread 时：AI 报告的问题需用户视觉确认；Theorem 后的等式、Theorem 内的脚注不一定都是问题 |
 | 2026-03-31 | 统一用 `\cref` 而非 `\ref` 引用 label |
+| 2026-03-31 | equivariant quantum cohomology 翻译为"等变量子上同调"（不是"等变上同调"）；专有名词翻译见 `.claude/rules/translation.rules` |
 
 详见: `docs/lessons/`
 
