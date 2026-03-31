@@ -22,6 +22,41 @@
 | L012 | Team Lead 不应擅自派活 | 1 |
 | L013 | Minor overfull hbox 不值得反复修复 | 1 |
 | L014 | 图片/表格 overfull hbox 除非用户提示，否则不主动修复 | 1 |
+| L015 | 引用文献时必须补充定理/定义/例子的具体内容 | 1 |
+
+---
+
+## L015: 引用文献时必须补充定理/定义/例子的具体内容
+
+**日期**: 2026-03-31
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+当正文中引用了某个定理/定义/例子（如 `\cite{xxx}` 或直接引用某文献的 Theorem/Lemma），但没有给出该定理/定义/例子的具体内容时，读者需要翻书查找。
+
+**正确做法**:
+1. **查找源文件**：在 `PDFs/` 或 `PDFs/<topic>/transcript/` 目录下找到该文献的 PDF 或 markdown 转录文件
+2. **提取内容**：从源文件中找到该定理/定义/例子的完整陈述
+3. **添加到正文**：将内容以 footnote 或直接叙述的形式添加到引用位置
+4. **引用原文**：在补充内容后加上 `\footnote{详见 \cite[ Theorem X.Y]{key}}`
+
+**示例**：
+```latex
+% 原文本（只有引用，没有内容）
+... 由 \cite[Lemma 2.3]{Mihalcea} 可知 ...
+
+% 补充后
+... 由 \cite[Lemma 2.3]{Mihalcea}\footnote{Lemma 2.3 (Mihalcea): [引理的完整陈述]。详见 \cite[ Lemma 2.3]{Mihalcea}。} 可知 ...
+```
+
+**常见缺口位置**：
+- Chapter 4 中 Mihalcea §6 的 Lemma 6.4, Corollary 6.2, Eq. (1)(2)
+- Chapter 4 中等变 Poincaré 对偶 (Lemma 2.3)
+- Chapter 4 中投影公式 (Lemma 2.5, Anderson-Fulton)
+
+**防止措施**:
+- 每次引用文献时，检查是否有对应的完整陈述
+- 如果只有引用没有内容，立即查找源文件补充
 
 ---
 
