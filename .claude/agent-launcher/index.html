@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Team Launcher</title>
+  <style>
+    :root {
+      --bg-primary: #0f0f14;
+      --bg-secondary: #1a1a24;
+      --bg-card: #22222e;
+      --bg-hover: #2a2a3a;
+      --border: #333344;
+      --text-primary: #e8e8f0;
+      --text-secondary: #8888a0;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 1rem;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238888a0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    select:focus { outline: none; border-color: var(--accent); }
+
+    .team-desc {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .agent-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0.75rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .agent-item:hover { background: var(--bg-hover); border-color: var(--accent); }
+    .agent-item.selected { border-color: var(--accent); background: rgba(99, 102, 241, 0.1); }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .agent-item.selected .checkbox {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .checkbox svg {
+      width: 12px;
+      height: 12px;
+      stroke: white;
+      stroke-width: 3;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .agent-item.selected .checkbox svg { opacity: 1; }
+
+    .agent-name { font-size: 0.9rem; font-weight: 500; }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    textarea:focus { outline: none; border-color: var(--accent); }
+    textarea::placeholder { color: var(--text-secondary); }
+
+    .btn-launch {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--accent), #818cf8);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-launch:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-launch:active { transform: translateY(0); }
+    .btn-launch:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .output {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .output.show { display: block; }
+    .output.success { border-color: var(--success); }
+    .output.error { border-color: var(--error); }
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .output.success .output-header { color: var(--success); }
+    .output.error .output-header { color: var(--error); }
+
+    .output-content {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--text-secondary);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .loading.show { display: flex; }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .selected-agents {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: var(--bg-card);
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .selected-agents-label { color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+    .selected-agents-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .agent-tag {
+      padding: 0.25rem 0.6rem;
+      background: rgba(99, 102, 241, 0.15);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--accent-hover);
+    }
+
+    .agent-tag::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+      background: currentColor;
+    }
+
+    .no-agents {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+    }
+
+    .copy-hint {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Agent Team Launcher</h1>
+      <p class="subtitle">启动 Agent 团队，辅助文献阅读与讲义生成</p>
+    </header>
+
+    <div class="card">
+      <div class="card-label">选择团队</div>
+      <select id="team-select">
+        <option value="">-- 选择团队 --</option>
+      </select>
+      <div id="team-desc" class="team-desc" style="display: none;"></div>
+    </div>
+
+    <div class="card" id="agent-card" style="display: none;">
+      <div class="card-label">选择 Agent（可多选）</div>
+      <div id="agent-list" class="agent-grid"></div>
+      <div id="selected-agents" class="selected-agents" style="display: none;">
+        <div class="selected-agents-label">已选择：</div>
+        <div id="selected-agents-list" class="selected-agents-list"></div>
+      </div>
+    </div>
+
+    <div class="card" id="task-card" style="display: none;">
+      <div class="card-label">任务描述</div>
+      <textarea id="task-input" placeholder="请输入任务描述...&#10;例如：帮我解释 Schubert 多项式的几何意义"></textarea>
+    </div>
+
+    <button class="btn-launch" id="launch-btn" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+      </svg>
+      启动 Agent
+    </button>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <span>正在读取团队配置...</span>
+    </div>
+
+    <div id="output" class="output">
+      <div class="output-header" id="output-header"></div>
+      <div class="output-content" id="output-content"></div>
+      <div class="copy-hint" id="copy-hint" style="display: none;">点击内容即可复制</div>
+    </div>
+
+    <div class="footer">
+      <p>配置文件路径：~/.claude/teams/</p>
+      <p>输出目录：.claude/agent-launcher/</p>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let teams = [];
+    let currentTeam = null;
+    let selectedAgents = new Set();
+
+    // DOM elements
+    const teamSelect = document.getElementById('team-select');
+    const teamDesc = document.getElementById('team-desc');
+    const agentCard = document.getElementById('agent-card');
+    const agentList = document.getElementById('agent-list');
+    const selectedAgentsDiv = document.getElementById('selected-agents');
+    const selectedAgentsList = document.getElementById('selected-agents-list');
+    const taskCard = document.getElementById('task-card');
+    const taskInput = document.getElementById('task-input');
+    const launchBtn = document.getElementById('launch-btn');
+    const loading = document.getElementById('loading');
+    const output = document.getElementById('output');
+    const outputHeader = document.getElementById('output-header');
+    const outputContent = document.getElementById('output-content');
+    const copyHint = document.getElementById('copy-hint');
+
+    // Team directories to scan
+    const teamDirs = [
+      'academic-writing-ch5', 'agent-memory-system', 'default',
+      'fix-math-stat-refs', 'github-trend-analyzer', 'harmonic-swinging-plum',
+      'literature-experts', 'proof-reading-experts', 'research-automation',
+      'research-team', 'textbook-slides-team', 'weather-trader'
+    ];
+
+    // Load team configs
+    async function loadTeams() {
+      loading.classList.add('show');
+      teams = [];
+
+      for (const dir of teamDirs) {
+        try {
+          const response = await fetch('../teams/' + dir + '/config.json');
+          if (response.ok) {
+            const config = await response.json();
+            teams.push({
+              name: dir,
+              description: config.description || '',
+              members: config.members || []
+            });
+          }
+        } catch (e) {
+          console.warn('Failed to load ' + dir, e);
+        }
+      }
+
+      // Populate select
+      teams.forEach(function(team) {
+        const option = document.createElement('option');
+        option.value = team.name;
+        option.textContent = team.name;
+        teamSelect.appendChild(option);
+      });
+
+      loading.classList.remove('show');
+    }
+
+    // Format agent name for display
+    function formatAgentName(name) {
+      return name.replace(/-/g, ' ').replace(/\b\w/g, function(c) {
+        return c.toUpperCase();
+      });
+    }
+
+    // Create SVG element safely
+    function createCheckSVG() {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      polyline.setAttribute('points', '20 6 9 17 4 12');
+      svg.appendChild(polyline);
+      return svg;
+    }
+
+    // Render agents for selected team
+    function renderAgents(team) {
+      agentList.innerHTML = '';
+
+      // Filter out team-lead entries
+      const agents = team.members.filter(function(m) {
+        return m.name !== 'team-lead' && m.name !== team.name + '-lead';
+      });
+
+      if (agents.length === 0) {
+        const noAgents = document.createElement('div');
+        noAgents.className = 'no-agents';
+        noAgents.textContent = '该团队暂无其他成员';
+        agentList.appendChild(noAgents);
+        return;
+      }
+
+      agents.forEach(function(agent) {
+        const item = document.createElement('label');
+        item.className = 'agent-item';
+        item.dataset.name = agent.name;
+
+        const checkbox = document.createElement('span');
+        checkbox.className = 'checkbox';
+        checkbox.appendChild(createCheckSVG());
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'agent-name';
+        nameSpan.textContent = formatAgentName(agent.name);
+
+        item.appendChild(checkbox);
+        item.appendChild(nameSpan);
+
+        item.addEventListener('click', function(e) {
+          e.preventDefault();
+          toggleAgent(agent.name, item);
+        });
+
+        agentList.appendChild(item);
+      });
+    }
+
+    // Toggle agent selection
+    function toggleAgent(name, element) {
+      if (selectedAgents.has(name)) {
+        selectedAgents.delete(name);
+        element.classList.remove('selected');
+      } else {
+        selectedAgents.add(name);
+        element.classList.add('selected');
+      }
+
+      updateSelectedAgentsUI();
+      updateLaunchButton();
+    }
+
+    // Update selected agents display
+    function updateSelectedAgentsUI() {
+      if (selectedAgents.size === 0) {
+        selectedAgentsDiv.style.display = 'none';
+        return;
+      }
+
+      selectedAgentsDiv.style.display = 'block';
+      selectedAgentsList.innerHTML = '';
+
+      selectedAgents.forEach(function(name) {
+        const tag = document.createElement('span');
+        tag.className = 'agent-tag';
+        tag.textContent = formatAgentName(name);
+        selectedAgentsList.appendChild(tag);
+      });
+    }
+
+    // Update launch button state
+    function updateLaunchButton() {
+      launchBtn.disabled = selectedAgents.size === 0 || !taskInput.value.trim();
+    }
+
+    // Generate launch command
+    function generateLaunchCommand() {
+      const agents = Array.from(selectedAgents);
+      const task = taskInput.value.trim();
+
+      const commands = agents.map(function(name) {
+        return 'Agent(\n  description="启动 ' + name + '",\n  prompt="' + task + '",\n  subagent_type="general-purpose",\n  team_name="' + currentTeam + '"\n)';
+      });
+
+      return commands.join('\n\n');
+    }
+
+    // Show output
+    function showOutput(type, content) {
+      output.className = 'output show ' + type;
+
+      // Clear and set header
+      outputHeader.innerHTML = '';
+      if (type === 'success') {
+        outputHeader.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 启动命令已生成';
+      } else {
+        outputHeader.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> 错误';
+      }
+
+      outputContent.textContent = content;
+      copyHint.style.display = 'block';
+    }
+
+    // Copy to clipboard
+    outputContent.addEventListener('click', function() {
+      navigator.clipboard.writeText(outputContent.textContent).then(function() {
+        copyHint.textContent = '已复制到剪贴板';
+        setTimeout(function() {
+          copyHint.textContent = '点击内容即可复制';
+        }, 2000);
+      });
+    });
+
+    // Event listeners
+    teamSelect.addEventListener('change', function(e) {
+      const teamName = e.target.value;
+      output.classList.remove('show');
+      selectedAgents.clear();
+
+      if (!teamName) {
+        agentCard.style.display = 'none';
+        taskCard.style.display = 'none';
+        teamDesc.style.display = 'none';
+        currentTeam = null;
+        return;
+      }
+
+      currentTeam = teamName;
+      const team = teams.find(function(t) { return t.name === teamName; });
+
+      if (team) {
+        teamDesc.textContent = team.description;
+        teamDesc.style.display = 'block';
+        renderAgents(team);
+        agentCard.style.display = 'block';
+        taskCard.style.display = 'block';
+        updateSelectedAgentsUI();
+        updateLaunchButton();
+      }
+    });
+
+    taskInput.addEventListener('input', updateLaunchButton);
+
+    launchBtn.addEventListener('click', function() {
+      if (selectedAgents.size === 0 || !taskInput.value.trim()) return;
+
+      const command = generateLaunchCommand();
+      showOutput('success', command);
+    });
+
+    // Initialize
+    loadTeams();
+  </script>
+</body>
+</html>
