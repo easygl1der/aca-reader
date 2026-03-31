@@ -1049,3 +1049,35 @@ Kim 在 1996 年的论文 \textit{On equivariant quantum cohomology} 中的核�
 然后 Mihalcea 在这个代数存在性的基础上，\textbf{结合 Graham 的几何横截性和投影公式}，来证明这些结构常数不仅存在，而且具有非负系数的正性 (positivity)。
 
 \textbf{核心洞察}：Kim 的贡献是范畴化的提升（从整数到多项式），Mihalcea 的贡献则是利用这个提升的结构来证明正性。\footnote{问：Kim 的思想如何迁移到 Mihalcea 的等变量子 Schubert 演算？见附录 \cref{sec:kim-to-mihalcea}。}
+\section{q^d 形式变量与量子乘积公式}\label{sec:q-formal-variable}
+\subsection{问题}
+$\sigma(u) \star \sigma(v) = \sum_d \sum_w q^d c_{u,v}^{w,d} \sigma(w)$ 这个公式中，$q^d$ 是形式变量，$q$ 是什么？求和是对什么？$u, v, w$ 是什么？
+\subsection{回答}
+\textbf{$q$ 和 $q^d$：形式变量的含义}
+
+$q$ 是一个\textbf{形式变量（formal variable）}，它编码了"量子修正"的信息。在经典 Schubert 演算中，两个 Schubert 类的乘积只产生另一个 Schubert 类，系数是非负整数。但在量子版本中，乘积的结构更复杂——它不仅取决于 Schubert 类本身，还取决于曲线的\textbf{次数（degree）}。
+
+这里的 $d$ 是\textbf{曲线类的多重次数（multi-degree）}，而 $q^d$ 是说"如果我们有次数为 $d$ 的曲线，就带上 $q^d$ 这个因子"。$q^d$ 是形式变量——这意味着它不是一个要具体计算的数值，而是一个\textbf{符号标记}，用来追踪我们讨论的是哪种曲线。
+
+\textbf{求和的对象}：$$\sigma(u) \star \sigma(v) = \sum_{d} \sum_{w} q^d c_{u,v}^{w,d} \sigma(w)$$
+求和是对：
+\begin{itemize}
+\item $d$：所有可能的曲线类次数（multi-degree）
+\item $w$：所有可能的 Schubert 类索引（Weyl 群元素）
+\end{itemize}
+
+\textbf{$u, v, w$ 的身份}：$u, v, w$ 是\textbf{Weyl 群中的元素}（更准确地说，是 $W^P$——相对于抛子群 $P$ 的 Weyl 群陪集代表元）。它们索引了：
+\begin{itemize}
+\item $\sigma(u)$：次数为 $u$ 的 Schubert 类
+\item $\sigma(v)$：次数为 $v$ 的 Schubert 类
+\item $\sigma(w)$：次数为 $w$ 的 Schubert 类（出现在乘积结果中）
+\end{itemize}
+
+\textbf{公式的整体含义}：这个公式是说：两个 Schubert 类 $\sigma(u)$ 和 $\sigma(v)$ 的\textbf{量子乘积}（$\star$）等于对所有次数 $d$ 和所有 Weyl 群元素 $w$ 求和，每一项是：
+\begin{itemize}
+\item $q^d$：形式变量，标记曲线次数
+\item $c_{u,v}^{w,d}$：\textbf{结构常数}，是 Mihalcea 论文中证明正性的对象，是 $x_i$ 的非负系数多项式
+\item $\sigma(w)$：结果中的 Schubert 类
+\end{itemize}
+
+\textbf{为什么需要形式变量 $q$？} 在代数几何中，量子上同调的"量子"体现在对曲线的计数上。不同次数的曲线贡献不同的 Gromov-Witten 不变量。$q^d$ 就像一个"占位符"，让我们能把"次数为 $d$ 的曲线贡献了多少"这件事形式化。整个表达式其实是一个\textbf{多项式环} $\mathbb{Z}[q_1, q_2, ...]$（每个 $q_i$ 对应一个次数方向）中的等式。\footnote{问：$q^d$ 是形式变量是什么意思？见附录 \cref{sec:q-formal-variable}。}
