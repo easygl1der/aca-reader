@@ -36,7 +36,7 @@
 - ❌ 禁止 unicode 下标 `n₁` → 必须用 `$n_1$`
 - ❌ 禁止用 `\tag{}` 或 `式 (★)` 引用公式 — 必须用 `\label{eq:名称}` + `\cref{eq:名称}`
 - ✅ 必须用纯 LaTeX: `\textbf{}`, `\textit{}`, `enumerate/itemize`
-- 详见: `docs/latex-style.md`
+- ✅ 详细规范见 `.claude/rules/latex-tex.rules`（自动应用于所有 .tex 文件）
 
 ### Git 大文件禁止
 - ❌ 禁止 git 处理 >50MB 文件
