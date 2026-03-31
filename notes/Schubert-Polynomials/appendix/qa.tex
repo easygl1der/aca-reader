@@ -1306,3 +1306,39 @@ $$ev_i([C, x_1, x_2, x_3, f]) = f(x_i)$$
 \textbf{在 EQLR 系数中的作用}：EQLR 系数 $c_{u,v}^{w,d}$ 计数的是满足以下条件的稳定映射个数：
 $$c_{u,v}^{w,d} = \langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d}$$
 其中评估映射 $ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X$ 记录了 $f(x_i)$ 落在哪个 Schubert 胞腔中。
+\section{$w_0$ 的反转作用与 $I(w_0 w)$ 的含义}\label{sec:w0-inversion}
+\subsection{问题}
+$I(w_0 w)$ 在数学上有什么内涵吗？是不是 $w_0$ 会把 $w$ 反转？
+\subsection{回答}
+\textbf{是的，$w_0$ 确实会"反转"置换。}
+
+在对称群 $S_n$ 中，最长元 $w_0$ 定义为：
+$$w_0 = (n, n-1, \ldots, 2, 1)$$
+
+它将每个位置 $i$ 映射到 $w_0(i) = n - i + 1$——确实是把序列完全颠倒。
+
+\textbf{$I(w)$ 和 $J(w)$ 的含义}：
+
+$I(w)$ 表示置换 $w$ 的反转集（inversion set）：
+$$I(w) = \{(i,j) : i < j \text{ 且 } w(i) > w(j)\}$$
+
+而 $J(w) = I(w_0 w)$ 表示非反转集（complement）：
+$$J(w) = \{(i,j) : i < j \text{ 且 } w(i) < w(j)\}$$
+
+\textbf{验证例子}：设 $w = 213$（即 $w(1)=2, w(2)=1, w(3)=3$）：
+\begin{itemize}
+\item $w_0 w$：先 $w$ 再 $w_0$ → $w_0(213) = (3,2,1)$（完全反转）
+\item $I(w) = \{(1,2)\}$（因为 $2 > 1$）
+\item $I(w_0 w) = I(321) = \{(1,2), (1,3), (2,3)\}$（所有对都是反转）
+\item $J(w) = \{(2,3)\}$（因为 $1 < 3$）
+\end{itemize}
+
+\textbf{为什么 $I(w_0 w)$ 是"非反转"？}：
+
+因为 $w_0(i) > w_0(j) \iff i < j$，所以：
+\begin{itemize}
+\item $I(w_0 w)$ 中的条件 $w_0 w(i) > w_0 w(j)$ 变成 $w(i) < w(j)$
+\item 这恰好是"顺序对"而非"反转对"
+\end{itemize}
+
+\textbf{$w_0$ 的代数性质}：在 Weyl 群中，$w_0$ 是一个特殊的对合（involution），满足 $w_0^2 = e$（恒等变换）。它的作用是反转偏序。对于 $S_n$，$w_0$ 将每个排列反转为"逆序"排列。因为 $w_0^2 = e$，所以 $I(w_0(w_0 w)) = I(w)$——两次反转回到原点。\footnote{问：$w_0$ 的反转作用是什么？$I(w_0 w)$ 是什么意思？见附录 \cref{sec:w0-inversion}。}
