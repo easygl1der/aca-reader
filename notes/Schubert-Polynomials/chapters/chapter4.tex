@@ -234,28 +234,77 @@ $$c_{u,v}^w \in \mathbb{N} \Longrightarrow c_{u,v}^w \in \mathbb{Z}[x_i] \Longri
 
 这暗示着正性不仅仅是技术性的巧合，而是反映了 Schubert calculus 深层的不变结构。
 
-\subsubsection{三种正性定理的正式陈述}
+\subsubsection{三种正性定理的正式陈述与符号溯源}
 
-\begin{Theorem}[Schubert Positivity]
-设 $X = G/P$ 为齐次空间，$u, v, w \in W^P$。则经典 Schubert calculus 中的结构常数
-$$c_{u,v}^w \in \mathbb{N}$$
-是非负整数。
+为了清晰理解三者关系，我们逐一给出完整的乘法公式。ootnote{问：经典 Schubert 乘法、 Graham 正性、 Mihalcea 正性三者公式形式上有什么共同点和区别？分别写出它们的完整乘法公式。见附录 \cref{sec:ThreePositivityCompare}。}
+
+\smallskip
+\noindent\textbf{定理一：经典 Schubert Positivity（几何相交版本）}
+
+\begin{Theorem}[Schubert Positivity — 几何版本]
+\label{th:ClassicalSchubertPositivity}
+在普通上同调 $H^*(G/P)$ 中，Schubert 胞腔类满足乘法
+\begin{equation}
+\label{eq:ClassicalSchubertProduct}
+\sigma(u) \cdot \sigma(v) = \sum_{w \in W^P} c_{u,v}^w \, \sigma(w),
+\end{equation}
+其中结构常数 $c_{u,v}^w \in \mathbb{N}$ 是非负整数，等于三个 Schubert 簇 $X(u), X(v), X(w^\perp)$ 在旗流形中的一般位置相交点数。
 \end{Theorem}
 
-\begin{Theorem}[Graham Positivity {\cite[ Theorem 3.2]{Gr}}]
-设 $X = G/P$ 为齐次空间，$u, v, w \in W^P$。则在等变量子上同调中，结构常数
-$$c_{u,v}^w \in \mathbb{Z}[x_1,\ldots,x_r]$$
-是非负整数系数的多项式。
+\smallskip
+\noindent\textbf{定理二：Graham Positivity（等变上同调版本）}
+
+\begin{Theorem}[Graham Positivity — 等变上同调版本 {\cite[ Theorem 3.2]{Gr}}]
+\label{th:GrahamPositivityCh4}
+在等变上同调 $H_T^*(G/P)$ 中，Schubert 类满足乘法
+\begin{equation}
+\label{eq:GrahamProduct}
+\sigma^T(u) \cdot \sigma^T(v) = \sum_{w \in W^P} c_{u,v}^w(\mathbf{x}) \, \sigma^T(w),
+\end{equation}
+其中结构常数 $c_{u,v}^w(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_r]$ 是关于 torus 权 $x_i$（即负根 $-\alpha_i$）的非负整数系数多项式。\footnote{问：Graham 正性中的 $c_{u,v}^w(\mathbf{x})$ 和第一章 Graham 公式中的 $c^w_{u,v}(\mathbf{y},\mathbf{t}) \in \mathbb{Z}_\geq0[t_i - y_j]$ 有什么关系？它们的变量分别代表什么？见附录 \cref{sec:GrahamVariableRelation}。}
 \end{Theorem}
 
-\begin{Theorem}[Mihalcea Positivity {\cite[ Theorem 1]{Mihalcea}}]
-\label{th:MihalceaPositivity}
-设 $X = G/P$ 为齐次空间，$u, v, w \in W^P$ 且 $d$ 为多重次数。则在等变量子上同调中，结构常数
-$$c_{u,v}^{w,d} \in \mathbb{Z}[x_1,\ldots,x_r]$$
-是非负整数系数的多项式。
+\smallskip
+\noindent\textbf{定理三：Mihalcea Positivity（等变量子量子版本）}
+
+\begin{Theorem}[Mihalcea Positivity — 等变量子量子 cohomology 版本 {\cite[ Theorem 1]{Mihalcea}}]
+\label{th:MihalceaPositivityCh4}
+在等变量子量子上同调 $QH_T^*(G/P)$ 中，Schubert 类满足乘法
+\begin{equation}
+\label{eq:MihalceaProduct}
+\sigma^T(u) \star \sigma^T(v) = \sum_{w,d} q^d \, c_{u,v}^{w,d}(\mathbf{x}) \, \sigma^T(w),
+\end{equation}
+其中 $d \in \mathbb{N}^r$ 是多重次数（degree），$q^d$ 是形式量子变量，结构常数 $c_{u,v}^{w,d}(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_r]$ 是非负整数系数的多项式。
 \end{Theorem}
 
-这暗示着正性不仅仅是技术性的巧合，而是反映了 Schubert calculus 深层的不变结构。
+\smallskip
+\noindent\textbf{三者退化关系与符号对应}：\footnote{问：$x_i$、$y_j$、$t_k$ 三种符号体系分别出现在哪些公式中？它们之间的对应关系是什么？见附录 \cref{sec:XYZVariableCorrespondence}。}
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+正性定理 & 上同调层次 & 结构常数 & 变量环 \\ \hline
+\hline
+Schubert（定理一） & 普通 $H^*(G/P)$ & $c_{u,v}^w \in \mathbb{N}$ & 无参数 \\ \hline
+Graham（定理二） & 等变 $H_T^*(G/P)$ & $c_{u,v}^w(\mathbf{x}) \in \mathbb{Z}[x_i]$ & $x_i$：torus 权 / 负根 \\ \hline
+Mihalcea（定理三） & 量子 $QH_T^*(G/P)$ & $c_{u,v}^{w,d}(\mathbf{x}) \in \mathbb{Z}[x_i]$ & $x_i$ 同上，$q^d$：量子修正 \\ \hline
+\hline
+\multicolumn{4}{c}{\textbf{与第一章 Triple Schubert 的符号对应}} \\ \hline
+\hline
+第一章 Graham & 双重 $\mathfrak{S}_u(\mathbf{x};\mathbf{y})$ & $c^w_{u,v}(\mathbf{y},\mathbf{t}) \in \mathbb{Z}_\geq0[t_i - y_j]$ & $(\mathbf{y},\mathbf{t})$：辅助变量组 \\ \hline
+第一章 Triple & 三重 $\mathfrak{S}_u(\mathbf{x};\mathbf{y};\mathbf{z})$ & $c^w_{u,v}(\mathbf{y},\mathbf{t}) \in \mathbb{Z}_\geq0[t_i - y_j]$ & $(x;y;t)$ 三重组 \\ \hline
+\end{tabular}
+\end{center}
+
+关键符号对应关系：
+\begin{itemize}
+\item $x_i$（ch4）$= -\alpha_i$（torus 权 = 负根），对应第一章中的 $t_i - y_j$ 当 $y_j$ 取特定值时
+\item \eqref{eq:GrahamProduct} 中的 $c_{u,v}^w(\mathbf{x})$ 与 \cref{def:GrahamPositivity} 中的 $c^w_{u,v}(\mathbf{y},\mathbf{t})$ 是同一常数在不同变量系下的表示
+\item \eqref{eq:ClassicalSchubertProduct} 是 \eqref{eq:GrahamProduct} 在 $x_i \to 0$（忘掉 torus 作用）的退化
+\item \eqref{eq:MihalceaProduct} 是 \eqref{eq:GrahamProduct} 加入量子修正 $q^d$ 的推广
+\end{itemize}
+
+这暗示着正性不仅仅是技术性的巧合，而是反映了 Schubert calculus 深层的不变结构——无论从几何相交（古典）、等变上同调（Graham）、还是量子上同调（Mihalcea）切入，本质都是 Schubert 胞腔相交计数的非负性。
 
 \section{证明思路：归约到 Graham 定理}
 \label{sec:ProofOutlineCh4}
