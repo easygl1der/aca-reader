@@ -1081,3 +1081,48 @@ $q$ 是一个\textbf{形式变量（formal variable）}，它编码了"量子修
 \end{itemize}
 
 \textbf{为什么需要形式变量 $q$？} 在代数几何中，量子上同调的"量子"体现在对曲线的计数上。不同次数的曲线贡献不同的 Gromov-Witten 不变量。$q^d$ 就像一个"占位符"，让我们能把"次数为 $d$ 的曲线贡献了多少"这件事形式化。整个表达式其实是一个\textbf{多项式环} $\mathbb{Z}[q_1, q_2, ...]$（每个 $q_i$ 对应一个次数方向）中的等式。\footnote{问：$q^d$ 是形式变量是什么意思？见附录 \cref{sec:q-formal-variable}。}
+\section{$QH_T^*(X)$ 分次 $\Lambda[q]$-代数的定义与含义}\label{sec:QH-T-graded-Lambda}
+\subsection{问题}
+$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数，其 $\Lambda[q]$-基底为 $\{\sigma(w) \mid w \in W^P\}$。这个定义是如何来的？是推导出来的吗？说明一下这是什么意思。
+\subsection{回答}
+\textbf{这首先是一个定义，不是从其他定理推导出来的}。
+
+当我们说"$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数"，意思是：我们把 $QH_T^*(X)$ 配上这些结构（基底、乘法），然后研究它的性质。这不是从其他事实推导出来的，而是 Kim (1996) 根据几何动机主动赋予的结构。
+
+\textbf{逐层拆解定义的含义}：
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+成分 & 含义 \\
+\hline
+$QH_T^*(X)$ & 等变量子量子上同调环 \\
+\hline
+$\Lambda$ & $H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_r]$，torus 等变上同调（多项式环） \\
+\hline
+$q$ & 量子修正的形式变量 \\
+\hline
+$\Lambda[q]$ & 系数在 $\Lambda$ 中、添加了 $q$ 变量的多项式环 \\
+\hline
+$\{\sigma(w) \mid w \in W^P\}$ & 基底——每个 Weyl 群陪集代表元 $w$ 对应一个 Schubert 类 \\
+\hline
+\textbf{分次} & 乘法保持次数：$\deg(\sigma(u) \circ \sigma(v)) = \deg(\sigma(u)) + \deg(\sigma(v))$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{基底 $\{\sigma(w) \mid w \in W^P\}$ 的含义}：$W^P$ 是相对于抛子群 $P$ 的 Weyl 群陪集代表元集合。每个元素 $w \in W^P$ 对应旗流形 $X = G/P$ 中的一个 Schubert 细胞，从而有一个 Schubert 类 $\sigma(w)$。这些类在 $H_T^*(X)$ 中线性无关，构成一组基。
+
+\textbf{定义的来源（从哪来）}：这个定义是 Kim (1996) 提出的，他认识到：
+\begin{enumerate}
+\item \textbf{经典上同调} $H^*(X)$ 以 Schubert 类为基，乘法是相交的计数
+\item \textbf{等变上同调} $H_T^*(X)$ 把系数从 $\mathbb{Z}$ 提升到 $\mathbb{Z}[x_1,\ldots,x_r]$（torus 作用参数）
+\item \textbf{量子上同调} $QH^*(X)$ 把系数环扩展到 $\mathbb{Z}[q]$（量子修正）
+\end{enumerate}
+
+Kim 的创新：把这三个结构\textbf{合并}——同时考虑 torus 参数 $x_i$ 和量子修正 $q$，得到 $\Lambda[q]$-代数结构。
+
+\textbf{乘法的定义}：定义中最关键的是乘法公式：
+$$\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w)$$
+
+这里的 $c_{u,v}^{w,d}$ 是等变量子量子 Littlewood-Richardson 系数，正是 Mihalcea 证明正性的对象。\footnote{问：$QH_T^*(X)$ 分次 $\Lambda[q]$-代数是什么？见附录 \cref{sec:QH-T-graded-Lambda}。}
