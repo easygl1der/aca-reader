@@ -228,15 +228,15 @@ GET https://api.semanticscholar.org/graph/v1/paper/search
 
 ### Phase 1: 基础搭建
 - [x] SPEC.md 编写
-- [ ] Next.js 项目初始化
-- [ ] Tailwind + shadcn/ui 配置
-- [ ] 侧边栏组件
-- [ ] Header 组件
+- [x] Next.js 项目初始化
+- [x] Tailwind + shadcn/ui 配置
+- [x] 侧边栏组件
+- [x] Header 组件
 
 ### Phase 2: 首页 + Chat PDF
-- [ ] 首页 `/`
-- [ ] Chat with PDF `/chat-pdf`
-- [ ] PDF 上传与渲染
+- [x] 首页 `/`
+- [x] Chat with PDF `/chat-pdf`
+- [x] PDF 上传与渲染
 - [ ] AI 对话界面
 
 ### Phase 3: 论文搜索
