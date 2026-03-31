@@ -1815,3 +1815,43 @@ QH^*(G/B) \cong \mathbb{C}[p_1, \ldots, p_l, e^{q_1}, \ldots, e^{q_l}] / \langle
 \end{itemize}
 
 ★ Insight：Kim 的定理揭示了看似不同的两个领域——代数几何中的曲线计数与数学物理中的 Toda 格子——在深层结构上是等价的。这种等价性是数学统一性的又一例证。
+\section{修复所有章节的 citation/cref 引用规范}\label{sec:fix-citation-cref}
+\subsection{问题}
+用户要求：\textbf{有 citation 就必须有 cref；正文里必须有引理/定理/公式的完整内容}。Subagent 检查发现 13 处问题，分布在 Chapter 1, 2, 4。
+\subsection{回答}
+\textbf{修复内容汇总}：
+
+\bigskip\textbf{Chapter 1（7 处）}：
+\begin{itemize}
+\item L1170, L1242：\verb|\cref{def:Lemma25}| 后添加 \verb|(\cite[Lemma 2.5]{GX2025})|
+\item L1176, L1204, L1251：\verb|\cref{def:Corollary24}| 后添加 \verb|(\cite[Corollary 2.4]{GX2025})|
+\item L1202：\verb|\cref{def:Corollary24}| 后添加 \verb|(\cite[Corollary 2.4]{GX2025})|
+\item L1256：\verb|\cref{def:Theorem12}| 后添加 \verb|(\cite[ Theorem 1.1]{GX2025})|
+\end{itemize}
+
+\bigskip\textbf{Chapter 2（3 处）}：
+\begin{itemize}
+\item L29：descents 定义处添加 \verb|（见 \cref{def:SDuv}）|
+\item L353：添加 \verb|（见 \cref{sec:appendix-ch2-proof}）|
+\item L409：添加 \verb|（见 \cref{sec:appendix-ch2-dominant}）|
+\end{itemize}
+
+\bigskip\textbf{Chapter 4（3 处）}：
+\begin{itemize}
+\item L287：\verb|\cite[Lemma 7.2]{FW}| 后添加 \verb|（见 \cref{prop:KleimanTransversality}）|
+\item L467：\verb|\cite[Definition 1.2]{Mihalcea}| 后添加 \verb|（亦见 \cref{def:GromovWittenClass}）|
+\item L613：改为 \verb|由 \cref{prop:ev3inverse}（\cite[Lemma 6.4]{Mihalcea}）|\\
+（注：\verb|def:GromovWittenClass| 定义在 chapter6.tex，但引用在 chapter4.tex）
+\end{itemize}
+
+\bigskip\textbf{发现的问题}：\verb|def:GromovWittenClass| 标签定义在 chapter6.tex，但引用在 chapter4.tex —— 标签系统是\textbf{跨章节}的。添加 \verb|\cref| 时必须先确认标签存在位置。
+
+\bigskip\textbf{验证结果}：
+\begin{itemize}
+\item 编译成功：PDF 136 pages, 1566061 bytes
+\item 无 natbib undefined citation 警告
+\item 存在少量 pre-existing LaTeX 错误（itemize environment, undefined references）与本次修复无关
+\end{itemize}
+
+\bigskip\textbf{底层逻辑}：citation + cref 的配对规范确保了\textbf{双向可追溯性}——从正文可以追溯到具体论文引用，从论文引用可以追溯到正文位置。这是学术笔记的\textbf{闭环管理}。
+
