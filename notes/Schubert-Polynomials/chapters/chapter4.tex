@@ -74,31 +74,45 @@ Graham 定理的证明利用了等变量子上同调的几何性质\footnote{问
 
 \subsection{设置}
 
-\begin{Definition}[连通复半单李群与抛物子群]\label{def:G-P-definition}
-$G$ 为\textbf{连通复半单李群}（connected complex semisimple Lie group），$P \subset G$ 为\textbf{抛物子群}（parabolic subgroup）。
+以下 Setup 列出本文所需的核心几何对象。带 $\cref{}$ 引用的是 Chapter 1 中已有正式定义的概念；其余给出详细定义。
+
+\begin{Definition}[\textbf{连通复半单李群}]\label{def:ConnectedComplexSemisimpleLieGroup}
+$G$ 为\textbf{连通复半单李群}（connected complex semisimple Lie group）。这意味着：
+\begin{enumerate}
+\item $G$ 是复流形，同时带有光滑群结构；
+\item 作为实流形，$G$ 是连通的；
+\item 其李代数 $\mathfrak{g}$ 是半单（semisimple）的——即 $\mathfrak{g}$ 没有非平凡可解理想。
+\end{enumerate}
+典型例子：$\mathrm{GL}_n(\mathbb{C})$、$\mathrm{SL}_n(\mathbb{C})$、$\mathrm{Sp}_{2n}(\mathbb{C})$、$\mathrm{SO}_n(\mathbb{C})$ 等。
 \end{Definition}
 
-\begin{Definition}[Borel 子群与极大环面]\label{def:B-T-definition}
-$B \subset P$ 为\textbf{Borel 子群}（Borel subgroup），$T \subset B$ 为\textbf{极大环面}（maximal torus）。
+\begin{Definition}[\textbf{抛物子群}]\label{def:ParabolicSubgroup}
+$P \subset G$ 为\textbf{抛物子群}（parabolic subgroup）。这等价于：存在一个 Borel 子群 $B \subset G$（极大连通可解子群）使得 $B \subset P$。几何上，$G/P$ 是紧齐次空间（compact homogeneous space），称为旗流形（flag variety）的推广。
 \end{Definition}
 
-\begin{Definition}[齐次空间]\label{def:homogeneous-space}
-$X = G/P$ 为\textbf{齐次空间}（homogeneous space）。
+\begin{Definition}[\textbf{Borel 子群与极大环面}]\label{def:BorelAndMaximalTorus}
+$B \subset P$ 为\textbf{Borel 子群}（Borel subgroup），即 $G$ 的极大连通可解子群。$T \subset B$ 为\textbf{极大环面}（maximal torus），满足 $T \cong (\mathbb{C}^\times)^r$，其中 $r = \rank(G)$ 为 $G$ 的秩（rank）。$T$ 在 $G$ 的结构理论中扮演中心角色：它决定了根系统的几何。
 \end{Definition}
 
-\begin{Definition}[Weyl 群与抛物子群确定的子群]\label{def:Weyl-group}
-$W$ 为 $G$ 的\textbf{Weyl 群}（Weyl group），$W_P \subset W$ 为由 $P$ 确定的子群。
+\begin{Definition}[\textbf{齐次空间}]\label{def:HomogeneousSpace}
+$X = G/P$ 为\textbf{齐次空间}（homogeneous space）。这意味着群 $G$ 通过左乘作用传递地作用在 $X$ 上，$P$ 为该作用的迷向子群（isotropy subgroup）。当 $P = B$ 时，$X = G/B$ 是旗流形（flag variety）；当 $P$ 对应 Grassmannian 型子群时，$X$ 是部分旗流形。
 \end{Definition}
 
-\begin{Definition}[正单根系]\label{def:root-system}
-$\Delta = \{\alpha_1, \ldots, \alpha_r\}$ 为\textbf{正单根系}（positive simple root system），$\Delta_P \subset \Delta$ 为由 $P$ 确定的子集。
+\begin{Definition}[\textbf{Weyl 群与 $W_P$ 子群}]\label{def:WeylGroupAndWP}
+$W$ 为 $G$ 的\textbf{Weyl 群}（Weyl group），见 \cref{def:WeylGroup}（Chapter 1）。$W_P \subset W$ 为由 $P$ 确定的子群：它是 $W$ 中所有使 $\Delta_P$（见下）保持不变的 Weyl 反射生成的子群。
 \end{Definition}
 
-\begin{Definition}[最短长度代表元]\label{def:shortest-length-representatives}
-$W^P \subset W$ 为 $W/W_P$ 的\textbf{最短长度代表元集合}（shortest length representatives）。
+\begin{Definition}[\textbf{正单根系与 $\Delta_P$}]\label{def:PositiveRootSystemAndDeltaP}
+$\Delta = \{\alpha_1, \ldots, \alpha_r\}$ 为\textbf{正单根系}（positive simple root system），见 \cref{def:RootSystem}（Chapter 1）。选取一个 Borel 子群 $B$ 对应一个正根的选择。$\Delta_P \subset \Delta$ 为由 $P$ 确定的子集：它是 $\Delta$ 中被 $P$（或等价地，被其对应的抛物子群）包含的简单根的集合。直观上，$\Delta_P$ 记录了 $P$ 在 Weyl 群中"忘记"了哪些反射方向。
 \end{Definition}
 
-记 $\Lambda = H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_r]$\footnote{问：$H_T^*(pt)$ 是什么意思？等变上同调类如何定义？见附录 \cref{sec:EquivariantCohomologyClass}。}，其中 $x_i$ 对应负单根 $-\alpha_i$（negative simple roots）。
+\begin{Definition}[\textbf{最短长度代表元 $W^P$}]\label{def:ShortestLengthRepresentatives}
+$W^P \subset W$ 为 $W/W_P$ 的\textbf{最短长度代表元集合}（shortest length representatives）。即：每个陪集 $wW_P \in W/W_P$ 中唯一的长度最短元素。形式化地，
+$$W^P = \{w \in W \mid \ell(w) \leqslant \ell(w') \text{ 对所有 } w' \in wW_P\}$$
+其中 $\ell(w)$ 是 Weyl 群的长度函数（$w$ 的 inversion 个数）。$W^P$ 在 Schubert 理论中扮演关键角色：$G/P$ 的 Schubert 细胞由 $W^P$ 参数化。
+\end{Definition}
+
+记 $\Lambda = H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_r]$记 $\Lambda = H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_r]$\footnote{问：$H_T^*(pt)$ 是什么意思？等变上同调类如何定义？见附录 \cref{sec:EquivariantCohomologyClass}。}，其中 $x_i$ 对应负单根 $-\alpha_i$（negative simple roots）。
 
 \subsection{等变量子上同调}
 
