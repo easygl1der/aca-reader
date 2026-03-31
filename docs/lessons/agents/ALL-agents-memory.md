@@ -20,6 +20,7 @@
 | L009 | LaTeX theorem 环境格式检查 | 1 |
 | L010 | QA 记录时必须同步在正文中添加 footnote 引用 | 1 |
 | L012 | Team Lead 不应擅自派活 | 1 |
+| L013 | Minor overfull hbox 不值得反复修复 | 1 |
 
 ---
 
