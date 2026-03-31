@@ -1710,3 +1710,60 @@ $q$ 标记的是 $\mathbb{P}^1$ 的同调类。几何上：在 $\mathbb{P}^1$ �
 \textbf{置换的例子}：在 $S_3$ 中考虑 $w = s_1 s_2$。如果 $P = B$（$W_P = \{1\}$），则 $w \notin W_B$。如果 $P = P_1$（$W_P = \{1, s_2\}$），则 $w = s_1 s_2 \notin W_P$，因为 $s_1 \notin W_P$。
 
 ★ Insight：$W_P$ 的核心作用是刻画从 $G$ 到 $G/P$ 的商空间中，哪些 Weyl 反射变得平凡。$\Delta_P$ 则精确记录了这些"被忘记"的方向。
+\section{等变量子上同调中量子修正系数的几何意义}\label{sec:QuantumCorrectionCoefficients}
+\subsection{问题}
+在第四步（$d=1$ 情形）的计算中，笔记直接给出了：
+$$\sigma(s_1) \circ \sigma(s_1) = q_1 c_{s_1,s_1}^{1,1} \sigma(1) + q_1 c_{s_1,s_1}^{s_1,s_1} \sigma(s_1).$$
+然后通过几何直觉（$\mathbb{P}^1$ 上两点之间有且仅有一条有理曲线）得出 $c_{s_1,s_1}^{1,1} = 1$，$c_{s_1,s_1}^{s_1,s_1} = 0$。
+
+\textbf{用户的疑问}：为什么可以直接算出 $c_{s_1,s_1}^{1,1} = 1$？这个系数具体是如何算出来的？背后的数学机制是什么？
+
+\subsection{回答}
+\textbf{1. EQLR 系数 $c_{u,v}^{w,d}$ 的定义}
+
+在经典上同调中，Littlewood-Richardson 系数告诉你 Schubert  cycles 如何相交。在等变量子量子情形中，这些系数 $c_{u,v}^{w,d}$ 是等变参数的多项式。乘法公式为：
+$$\sigma_u \star \sigma_v = \sum_{d \geq 0} \sum_w q^d c_{u,v}^{w,d} \sigma_w$$
+
+其中：
+\begin{itemize}
+\item $u, v, w$：这些表示 Schubert 类（对应 Schubert varieties $X_u, X_v, X_w$）。在 $\mathbb{P}^1$ 中，$\sigma(1)$ 是单位类（整个空间），$\sigma(s_1)$ 是点类。
+\item $d$：这是曲线的次数（degree），表示一条复曲线"缠绕"空间 $X$ 的基本圈的次数。对于 $\mathbb{P}^1$，$d=1$ 意味着我们考虑的是直线（1次曲线）。
+\item $q$：Novikov 变量，记录曲线的同调类。
+\end{itemize}
+
+\textbf{2. Gromov-Witten 不变量如何计数曲线}
+
+Gromov-Witten（GW）不变量 $\langle \sigma_u, \sigma_v, \sigma_w^\vee \rangle_d$ 是这些系数的基本构建模块。从几何上看，它们计数从亏格0曲线（球面）到空间 $X$ 的稳定映射 $f : C \to X$。
+
+\textbf{几何直观}：想象有三个固定位置的 Schubert varieties $X_u, X_v, X_w^\vee$。GW 不变量问的是："有多少条 $d$ 次有理曲线同时与这三个 varieties 相交？"
+
+在等变情形下，我们不仅得到一个数字，而是得到一个多项式——这个多项式跟踪了 torus 作用 $T$ 的不动点如何贡献到计数中。
+
+\textbf{3. 为什么对于 $\mathbb{P}^1$，$d=1$ 时 $c_{s_1,s_1}^{1,1} = 1$？}
+
+这个系数对应于 $q_1 \sigma(1)$ 项。几何上，这个问题变成了："有多少条1次曲线（直线）通过两个点（$\sigma(s_1)$ 和 $\sigma(s_1)$）并与整个空间类（$\sigma(1)$）相交？"
+
+答案很简单：在 $\mathbb{P}^1$ 上，过任意两点的直线恰好有一条。由于 $d=1$ 且条件被唯一曲线满足，系数为1。
+
+这就是笔记中"两点之间有且仅有一条有理曲线"说法的精确数学表述。
+
+\textbf{4. 为什么 $c_{s_1,s_1}^{s_1,s_1} = 0$（次数不对是什么意思）？}
+
+这个系数对应于 $q_1 \sigma(s_1)$ 项。几何上，这个问题变成了："有多少条1次曲线通过两个点（$\sigma(s_1)$ 和 $\sigma(s_1)$）并与另一点（$\sigma(s_1)$）相交？"
+
+这涉及到上同调中的\textbf{维数平衡原理}。对于一个 GW 不变量非零（在上同调极限中），约束条件的维数必须加起来等于曲线模空间的维数。
+
+模空间维数公式：
+$$\dim \mathcal{M}_{0,3}(\mathbb{P}^1, d) = \dim(\mathbb{P}^1) + \int_d c_1(T\mathbb{P}^1) + (3 - 3) = 1 + 2(1) + 0 = 3$$
+
+约束条件的"代价"（余维数）：
+\begin{itemize}
+\item $\sigma(1)$：余维数为0（整个空间）
+\item $\sigma(s_1)$（一个点）：余维数为1
+\end{itemize}
+
+对于 $c_{s_1,s_1}^{1,1}$：约束是 $\sigma(s_1), \sigma(s_1), \sigma(s_1)^\vee = \sigma(1)$。总余维数：$1 + 1 + 0 = 2$。但模空间期望维数是3。不匹配！这就是为什么系数为0。
+
+\textbf{几何直觉}："次数不对"意味着你试图把一条曲线放入一个约束太严格或太松散的空间。在 $c_{s_1,s_1}^{s_1,s_1} = 0$ 的情形中，你在寻找一条只满足两个点约束的1次曲线，而在这个量子世界中，如果维数不能精确填充模空间，对该空间的积分就会消失。
+
+\textbf{关键洞察}：在量子上同调中，乘法 $\sigma(s_1) \circ \sigma(s_1)$ 的结果必须满足维数平衡。$\sigma(s_1)$ 是余维1的类，所以两个 $\sigma(s_1)$ 的乘积应该给出余维2的类。但在量子修正中，$q$ 变量贡献了额外的维数。对于 $d=1$，$q$ 贡献了 $c_1(T\mathbb{P}^1) = 2$ 个维数。所以 $q_1 \sigma(1)$（$q$ 贡献2，维数0，总计2）与 $2\sigma(s_1)$（每个贡献1）的维数不匹配！这导致了只有 $q_1 \sigma(1)$ 项出现。\footnote{问：为什么 $c_{s_1,s_1}^{1,1} = 1$？这个量子修正系数背后的数学机制是什么？见附录 \cref{sec:QuantumCorrectionCoefficients}。}
