@@ -6,6 +6,9 @@
 |-----------|----------|----------|
 | `PostToolUse:Edit` | 编辑 .tex 文件 | auto-compile-latex.sh + auto-commit-push.sh |
 | `PostToolUse:Bash` | 运行 compile.sh | auto-commit-push.sh |
+| `Stop` | 会话停止 | compact-reload.sh（检测上下文压缩并提醒 CLAUDE.md 关键规则） |
+
+**Hook 脚本位置**: `.claude/hooks/`
 
 **Hook 脚本位置**: `.claude/hooks/`
 
