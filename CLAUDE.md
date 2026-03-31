@@ -69,6 +69,27 @@
 3. 推导放附录 → 用 `\footnote{推导见附录 \cref{sec:appendix-chX}}`
 - 详见: `docs/exercise-workflow.md`, `docs/stein-writing-style.md`
 
+### 写作任务强制路由 ⚠️
+
+**触发条件**：当 prompt 包含以下关键词时：
+- "生成第X章笔记"
+- "写" + "chapters/"
+- "润色" + ".tex"
+- "写作任务"
+- "生成章节笔记"
+
+**强制规则**：
+1. 必须使用 `/writing-team` Skill 启动 Agent Team
+2. Team 成员必须包含主笔 writer + 评审 writer
+3. 成员之间必须互发消息讨论（至少 2 轮）
+4. 最终结论由 Team Lead 汇总
+
+**禁止**：
+- 主 agent 直接处理写作任务
+- 单 agent 不经讨论直接输出
+
+**Round-robin 轮询**：按 `.claude/writer-round-robin.json` 选择 writer pair
+
 ---
 
 ## 📚 规范文档索引
