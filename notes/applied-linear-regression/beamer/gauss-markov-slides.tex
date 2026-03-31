@@ -3,61 +3,42 @@
 \usecolortheme{dolphin}
 \usefonttheme{serif,professionalfonts}
 \usefonttheme{structurebold}
-\usepackage{tikz}
-\usepackage{graphicx,pstricks,listings,stackengine}
-\usepackage{xeCJK,amsfonts,amssymb,bm,amsthm,mathrsfs,latexsym,geometry,fancyhdr,mathtools}
+\usepackage{graphicx}
+\usepackage{xeCJK}
+\usepackage{amssymb,bm,amsthm,mathrsfs,mathtools}
 \usepackage{hyperref}
-\usepackage[T1]{fontenc}
 
 % Custom colors（蒋智超老师风格）
-\definecolor{myblue}{rgb}{0.2, 0.5, 0.8}      % 深蓝
-\definecolor{mygreen}{rgb}{0.3, 0.7, 0.3}     % 绿色
-\definecolor{myred}{rgb}{0.8, 0.2, 0.2}        % 红色/强调
-\definecolor{gold}{RGB}{255,192,0}              % 金黄强调
+\definecolor{myblue}{rgb}{0.2, 0.5, 0.8}
+\definecolor{mygreen}{rgb}{0.3, 0.7, 0.3}
+\definecolor{gold}{RGB}{255,192,0}
 
 % Block styles
 \setbeamercolor{block title}{bg=myblue!80!black, fg=white}
 \setbeamercolor{block body}{bg=myblue!10!white}
 \setbeamercolor{alertblock title}{bg=gold!80!black, fg=black}
 \setbeamercolor{alertblock body}{bg=gold!10!white}
-\setbeamercolor{block title example}{bg=mygreen!70!black, fg=white}
-\setbeamercolor{block body example}{bg=mygreen!10!white}
-
-\renewenvironment{alertblock}[1]{%
-  \setbeamercolor{block title}{use=alertblock title,fg=alertblock title.fg,bg=alertblock title.bg}%
-  \setbeamercolor{block body}{use=alertblock body,fg=alertblock body.fg,bg=alertblock body.bg}%
-  \begin{block}{#1}}{\end{block}}
-
-\renewenvironment{exampleblock}[1]{%
-  \setbeamercolor{block title}{use=block title example,fg=block title example.fg,bg=block title example.bg}%
-  \setbeamercolor{block body}{use=block body example,fg=block body example.fg,bg=block body example.bg}%
-  \begin{block}{#1}}{\end{block}}
 
 \setbeamercovered{transparent}
 \setbeamertemplate{navigation symbols}{}
 
 % Chinese fonts
-\setCJKmainfont{Source Han Serif SC}[AutoFakeBold=true, AutoFakeSlant=true]
-\setCJKmonofont{Source Han Sans CN}[AutoFakeBold=true, AutoFakeSlant=true]
+\setCJKmainfont{STSong}
+\setCJKsansfont{STHei}
 
 % Math operators
 \DeclareMathOperator{\cov}{cov}
 \DeclareMathOperator{\var}{var}
 \DeclareMathOperator{\E}{E}
 
-% === SLIDE CONTENT ===
 \begin{document}
 
-% ============================================================
 % Slide 1: 封面
-% ============================================================
 \begin{frame}
 \titlepage
 \end{frame}
 
-% ============================================================
-% Slide 2: Motivation - 为什么需要 Gauss-Markov？
-% ============================================================
+% Slide 2: Motivation
 \begin{frame}{为什么需要 Gauss-Markov？}
 \begin{block}{核心问题}
 \begin{itemize}
@@ -67,12 +48,10 @@
 \end{itemize}
 \end{block}
 \vspace{1em}
-\textbf{直觉说明：} Without any stochastic assumptions, the OLS in Chapter 3 is purely algebraic. If we want to discuss the statistical properties of OLS, we must invoke some statistical modeling assumptions.
+\textbf{直觉说明：} Without any stochastic assumptions, the OLS in Chapter 3 is purely algebraic.
 \end{frame}
 
-% ============================================================
 % Slide 3: 从代数到统计
-% ============================================================
 \begin{frame}{从代数到统计：引入随机假设的必要性}
 \begin{block}{Gauss-Markov 模型}
 Gauss-Markov 模型 Assumption \S 4.1 给出随机假设，使得讨论估计量的均值、方差、协方差成为可能。
@@ -83,9 +62,7 @@ Gauss-Markov 模型 Assumption \S 4.1 给出随机假设，使得讨论估计量
 \end{alertblock}
 \end{frame}
 
-% ============================================================
 % Slide 4: 章节路线图
-% ============================================================
 \begin{frame}{章节路线图}
 \begin{block}{本章知识结构}
 \begin{enumerate}
@@ -97,9 +74,7 @@ Gauss-Markov 模型 Assumption \S 4.1 给出随机假设，使得讨论估计量
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 5: Gauss-Markov 模型假设
-% ============================================================
 \begin{frame}{Gauss-Markov 模型假设}
 \begin{block}{Assumption (C1): 线性形式}
 \[
@@ -116,9 +91,7 @@ y_i = x_i^\top \beta + \varepsilon_i, \quad i = 1, \ldots, n
 \end{itemize}
 \end{frame}
 
-% ============================================================
 % Slide 6: 个体水平视角
-% ============================================================
 \begin{frame}{个体水平视角：$y_i = x_i^\top \beta + \varepsilon_i$}
 \begin{block}{Assumption 的直观理解}
 \begin{itemize}
@@ -129,9 +102,7 @@ y_i = x_i^\top \beta + \varepsilon_i, \quad i = 1, \ldots, n
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 7: 同方差假设
-% ============================================================
 \begin{frame}{同方差假设的含义与重要性}
 \begin{alertblock}{Homoskedasticity（同方差）}
 \begin{itemize}
@@ -142,9 +113,7 @@ y_i = x_i^\top \beta + \varepsilon_i, \quad i = 1, \ldots, n
 \end{alertblock}
 \end{frame}
 
-% ============================================================
 % Slide 8: OLS 估计量矩阵形式
-% ============================================================
 \begin{frame}{OLS 估计量：矩阵形式}
 \begin{block}{OLS 估计量}
 \[
@@ -160,9 +129,7 @@ y_i = x_i^\top \beta + \varepsilon_i, \quad i = 1, \ldots, n
 \end{itemize}
 \end{frame}
 
-% ============================================================
-% Slide 9: OLS 估计量的均值与方差 (Theorem 4.1)
-% ============================================================
+% Slide 9: Theorem 4.1
 \begin{frame}{OLS 估计量的均值与方差 (Theorem 4.1)}
 \begin{block}{Theorem 4.1}
 在 Gauss-Markov 假设下：
@@ -177,9 +144,7 @@ E(\hat{\beta}) = \beta \quad \text{（无偏性）}
 \textbf{证明思路：} 利用 $E(Y) = X\beta$ 和 $\cov(Y) = \sigma^2 I_n$
 \end{frame}
 
-% ============================================================
-% Slide 10: Gauss-Markov 定理（核心）
-% ============================================================
+% Slide 10: Gauss-Markov 定理
 \begin{frame}{Gauss-Markov 定理（核心）}
 \begin{block}{Theorem 4.2 (Gauss-Markov)}
 $\hat{\beta}$ 是 $\beta$ 的 BLUE (Best Linear Unbiased Estimator)：
@@ -191,9 +156,7 @@ $\hat{\beta}$ 是 $\beta$ 的 BLUE (Best Linear Unbiased Estimator)：
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 11: BLUE 的含义
-% ============================================================
 \begin{frame}{BLUE 的含义：协方差矩阵序}
 \begin{block}{正定半定序 $\cov(\tilde{\beta}) \succeq \cov(\hat{\beta})$}
 \begin{itemize}
@@ -204,9 +167,7 @@ $\hat{\beta}$ 是 $\beta$ 的 BLUE (Best Linear Unbiased Estimator)：
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 12: 为什么只比较线性估计量？
-% ============================================================
 \begin{frame}{为什么只比较线性估计量？}
 \begin{block}{"线性"约束的合理性}
 \begin{itemize}
@@ -218,9 +179,7 @@ $\hat{\beta}$ 是 $\beta$ 的 BLUE (Best Linear Unbiased Estimator)：
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 13: OLS 投影几何直观
-% ============================================================
 \begin{frame}{OLS 投影几何直观}
 \begin{block}{投影矩阵}
 \[
@@ -236,9 +195,7 @@ H = X(X^\top X)^{-1}X^\top
 \end{itemize}
 \end{frame}
 
-% ============================================================
-% Slide 14: 拟合值与残差的分布性质 (Theorem 4.2)
-% ============================================================
+% Slide 14: 拟合值与残差的分布性质
 \begin{frame}{拟合值与残差的分布性质 (Theorem 4.2)}
 \begin{block}{Theorem 4.2}
 \[
@@ -251,9 +208,7 @@ $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 15: 正交 vs. 不相关
-% ============================================================
 \begin{frame}{正交 vs. 不相关：两个关键陈述的区别}
 \begin{alertblock}{常见误区}
 \begin{itemize}
@@ -264,9 +219,7 @@ $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
 \end{alertblock}
 \end{frame}
 
-% ============================================================
 % Slide 16: 误差椭圆可视化
-% ============================================================
 \begin{frame}{误差椭圆可视化："最佳"的含义}
 \begin{block}{二维情形}
 \begin{itemize}
@@ -278,9 +231,7 @@ $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 17: Gauss-Markov 定理证明思路
-% ============================================================
 \begin{frame}{Gauss-Markov 定理证明思路}
 \begin{block}{四步框架}
 \begin{enumerate}
@@ -292,49 +243,41 @@ $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
 \end{block}
 \end{frame}
 
-% ============================================================
 % Slide 18: 例子：简单线性回归的 BLUE
-% ============================================================
 \begin{frame}{例子：简单线性回归的 BLUE}
-\begin{exampleblock}{Example}
+\begin{block}{Example}
 \begin{itemize}
   \item $y_i = \alpha + \beta x_i + \varepsilon_i$
   \item $\var(\hat{\beta}) = \sigma^2 / \sum (x_i - \bar{x})^2$
   \item 任何线性无偏估计的 $\beta$ 系数方差都不小于此值
 \end{itemize}
-\end{exampleblock}
+\end{block}
 \end{frame}
 
-% ============================================================
 % Slide 19: 例子：均值的 BLUE
-% ============================================================
 \begin{frame}{例子：均值的 BLUE}
-\begin{exampleblock}{Example}
+\begin{block}{Example}
 \begin{itemize}
   \item $y_i \sim$ 均值 $\mu$，方差 $\sigma^2$，互不相关
   \item 线性估计 $\hat{\mu} = \sum a_i y_i$，无偏要求 $\sum a_i = 1$
   \item 最优选择：$a_i = 1/n$（简单平均）
   \item 方差 $\var(\hat{\mu}) = \sigma^2/n$ 为最小
 \end{itemize}
-\end{exampleblock}
+\end{block}
 \end{frame}
 
-% ============================================================
 % Slide 20: 例子：Gauss-Markov 预测定理
-% ============================================================
 \begin{frame}{例子：Gauss-Markov 预测定理}
-\begin{exampleblock}{Example}
+\begin{block}{Example}
 \begin{itemize}
   \item $\hat{Y} = X\hat{\beta}$ 是 $X\beta$ 的最佳线性无偏预测
   \item 适用于任何线性预测 $\tilde{Y} = \tilde{H}Y$
   \item $\cov(\tilde{Y}) \succeq \cov(\hat{Y})$
 \end{itemize}
-\end{exampleblock}
+\end{block}
 \end{frame}
 
-% ============================================================
 % Slide 21: 总结
-% ============================================================
 \begin{frame}{Gauss-Markov 定理总结}
 \begin{block}{主要结论}
 \begin{itemize}
@@ -353,13 +296,10 @@ $\hat{Y}$ 与 $\hat{\varepsilon}$ 不相关。
 \end{alertblock}
 \end{frame}
 
-% ============================================================
 % Slide 22: 参考文献
-% ============================================================
 \begin{frame}{参考文献}
 \begin{thebibliography}{99}
-  \bibitem Ding2023} Peng Ding. \textit{Linear Model and Extensions}. 2023.
-  \bibitem Full1972} Full1982. Note on the Gauss-Markov Theorem. \textit{J. Amer. Statist. Assoc.}, 1972.
+  \bibitem{Ding2023} Peng Ding. \textit{Linear Model and Extensions}. 2023.
 \end{thebibliography}
 \end{frame}
 
