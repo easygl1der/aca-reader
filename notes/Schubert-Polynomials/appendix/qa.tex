@@ -1181,3 +1181,68 @@ Path 图的详细定义与权重公式见 \cref{sec:appendix-ch2-path}（即本�
 Dominant approximation 的完整证明见正文哪里？
 \subsection{回答}
 Dominant approximation 的完整证明见 \cref{sec:appendix-ch2-dominant}（即本章正文第 393 页开始的附录部分）。
+\section{Mihalcea 论文 $Gr(2,4)$ 例子的详细解释}\label{sec:qa-gr24}
+\subsection{问题}
+请详细解释 Mihalcea 论文中关于 $Gr(2,4)$ 的例子（chapter4.tex 第 143-156 行），用最简单的语言说明：
+\begin{enumerate}
+\item $Gr(2,4)$ 是什么？为什么叫 Grassmannian？
+\item $W = S_4$ 是什么？最短代表元是什么意思？为什么有 6 个？
+\item $u = s_1$, $v = s_3$ 是什么？$\sigma$ 是什么？
+\item 乘积 $\sigma(s_1) \circ \sigma(s_3)$ 是什么意思？
+\item 右边两项 $\sigma(s_1 s_3)$ 和 $(x_2 - x_3) q \sigma(1)$ 各自代表什么几何意义？
+\item 为什么要验证 $x_2 - x_3$ 是"非负系数"？这为什么重要？
+\item 量子修正项 $(x_2 - x_3) q \sigma(1)$ 中的 $q$ 是什么？$q$ 记录曲线的同调类是什么意思？
+\end{enumerate}
+\subsection{回答}
+\textbf{1. $Gr(2,4)$ 是什么？}
+\begin{itemize}
+\item $Gr(2,4)$ 是所有 2 维平面构成的空间。想象在 4 维空间（4 维坐标系）中，所有可能的 2 维平面的"集合"就是 $Gr(2,4)$。
+\item 叫 Grassmannian 是为了纪念德国数学家 Hermann Grassmann，他是线性几何的先驱。
+\item 类比：$Gr(1,3)$ = 所有直线构成的空间 = $\mathbb{P}^2$（射影平面）；$Gr(2,4)$ = 所有 2 维平面构成的空间。
+\item $Gr(2,4)$ 是一个紧致流形（没有边界闭合的"弯曲"空间）。
+\end{itemize}
+
+\textbf{2. $W = S_4$ 是什么？最短代表元是什么？为什么有 6 个？}
+\begin{itemize}
+\item $S_4$ 是 4 个物体的对称群，包含所有对 $\{1,2,3,4\}$ 的置换，总共有 $4! = 24$ 个元素。
+\item 生成元是 $s_1 = (12)$, $s_2 = (23)$, $s_3 = (34)$（相邻置换）。
+\item 每个置换都可以用这些 $s_i$ 的乘积表示，但有些写法更长，有些更短。\textbf{最短代表元}就是用最少的生成元表示的置换。
+\item 6 个最短代表元对应 $Gr(2,4)$ 上的 6 个 Schubert 类。
+\end{itemize}
+
+\textbf{3. $u = s_1$, $v = s_3$ 是什么？$\sigma$ 是什么？}
+\begin{itemize}
+\item $s_1 = (12)$ 和 $s_3 = (34)$ 是 Weyl 群的简单反射（相邻置换），它们之间隔着 $s_2$，所以不相邻。
+\item $\sigma$ 是 Schubert 类，与置换 $w$ 相关联的上同调类，可以理解为一种"测量"几何对象的方式。
+\end{itemize}
+
+\textbf{4. 乘积 $\sigma(s_1) \circ \sigma(s_3)$ 是什么意思？}
+\begin{itemize}
+\item 乘法 $\circ$ 表示 Schubert 类的乘法（杯积，cup product）。
+\item $\sigma(s_1)$ 对应"满足某个几何条件的平面"，$\sigma(s_3)$ 对应"满足另一个几何条件的平面"。
+\item $\sigma(s_1) \circ \sigma(s_3)$ 问的是"同时满足两个条件的平面有多少？"
+\end{itemize}
+
+\textbf{5. 两项 $\sigma(s_1 s_3)$ 和 $(x_2 - x_3) q \sigma(1)$ 各自代表什么？}
+\begin{itemize}
+\item $\sigma(s_1 s_3)$：\textbf{普通项}，$s_1 s_3$ 表示先做 $s_1$ 置换再做 $s_3$ 置换。几何意义：两个条件在同一条直线上同时满足的交集。
+\item $(x_2 - x_3) q \sigma(1)$：\textbf{量子修正项}，$\sigma(1)$ 是单位元。几何意义：两个条件通过一条曲线连接满足。
+\end{itemize}
+
+\textbf{6. 为什么要验证 $x_2 - x_3$ 是"非负系数"？}
+\begin{itemize}
+\item Mihalcea positivity 的核心结论：量子 Schubert 演算的系数必须是关于负根的非负整数系数多项式。
+\item $x_i - x_j$（当 $i < j$ 时）是负根，所以 $x_2 - x_3$ 是负根。
+\item \textbf{非负系数}保证了几何可解释性——如果系数是负数，就无法解释为"计数几何对象"。
+\item 这里 $x_2 - x_3$ 的系数是 1（正的），验证了 Mihalcea positivity 确实成立。
+\end{itemize}
+
+\textbf{7. $q$ 是什么？"记录曲线的同调类"是什么意思？}
+\begin{itemize}
+\item $q$ 是量子参数，\textbf{标记曲线的同调类}。
+\item 同调类是对空间中的"孔"或"圈"的分类。比如 $\mathbb{P}^1$ 的基本群是 $\mathbb{Z}$（整数）。
+\item 在量子几何中，两个条件可以通过曲线连接，而不仅仅是直接相交。$q$ 标记了这条曲线的类型（它的同调类）。
+\item $(x_2 - x_3) q \sigma(1)$ 表示：存在一条由 $q$ 标记的曲线，它"修复"了普通乘法中缺失的部分。
+\end{itemize}
+
+\textbf{几何直觉总结}：这个例子展示了等变量子上同调中量子修正的机制。普通乘法 $\sigma(s_1 s_3)$ 给出直观的交集计数；量子修正项 $(x_2 - x_3) q \sigma(1)$ 考虑了通过曲线连接的情况——这反映了量子场论的思想：粒子可以通过虚粒子云（曲线）相互作用。
