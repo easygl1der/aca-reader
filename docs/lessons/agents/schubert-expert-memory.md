@@ -20,6 +20,46 @@
 | L509 | sed 替换破坏文件换行结构 | 1 |
 | L510 | Team Lead 不应擅自派活 | 1 |
 | L511 | 第一次出现的概念必须补充定义 | 1 |
+| L512 | Chapter 5 量子双重 Schubert 符号规范 | 1 |
+
+---
+
+## L512: Chapter 5 量子双重 Schubert 符号规范
+
+**日期**: 2026-03-31
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+Chapter 5 中 `x; y` 写成裸变量而非 `\mathbf{x}; \mathbf{y}`，如 `\mathfrak{S}_u(x; y)` 而不是 `\mathfrak{S}_u(\mathbf{x}; \mathbf{y})`。
+
+**正确做法**:
+```latex
+% 错误 ❌
+\mathfrak{S}_u(x; y) \cdot \mathfrak{S}_v(x; z)
+
+% 正确 ✅
+\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{z})
+```
+
+**符号强制规范（L506 补充）**:
+| 类型 | 正确写法 | 禁止 |
+|------|----------|------|
+| 单重 Schubert | `\mathfrak{S}_u(\mathbf{x})` | `S_w(x)`, `S_u(x)` |
+| 双重 Schubert | `\mathfrak{S}_w(\mathbf{x}; \mathbf{y})` | `S_w(x;y)` |
+| 三重 Schubert | `\mathfrak{S}_w(\mathbf{x}; \mathbf{y}; \mathbf{z})` | 任何不带 `\mathfrak` 的写法 |
+| 量子参数 | `q_k`（下标） | `q1`, `qk` |
+| 变量下标 | `x_1`, `y_2`（下划线） | `x1`, `y2`（无下划线） |
+
+**检查命令**:
+```bash
+grep -n "S_[a-z](" notes/Schubert-Polynomials/chapters/chapter*.tex
+grep -n "\\mathfrak{S}_[a-z_]*{[^}]*}[^;]*;" notes/Schubert-Polynomials/chapters/chapter*.tex
+```
+
+**防止措施**:
+- 写多项式前先检查符号规范表
+- 每次编译后用 grep 抽查
+- 经验教训：参考 schubert-expert-memory.md 中的符号规范（L506, L507）
 
 ---
 
