@@ -1,0 +1,168 @@
+{
+  "topic": "Gauss-Markov",
+  "course": "Applied Linear Regression",
+  "chapter": 4,
+  "total_slides": 20,
+  "slides": [
+    {
+      "slide_id": "gm_s01",
+      "type": "motivation",
+      "title": "为什么需要 Gauss-Markov？",
+      "teaching_intent": "建立 OLS 最优性的直觉",
+      "key_elements": ["OLS 估计凭什么"最好"？", "有没有比 OLS 更好的估计？"],
+      "skip_elements": ["严格证明"]
+    },
+    {
+      "slide_id": "gm_s02",
+      "type": "motivation",
+      "title": "从代数到统计：引入随机假设的必要性",
+      "teaching_intent": "说明统计最优性需要额外的模型假设",
+      "key_elements": ["第3章 OLS 是纯代数运算", "没有随机假设谈不上"最优"", "Gauss-Markov 模型给出了讨论统计性质的基础"],
+      "skip_elements": ["详细证明"]
+    },
+    {
+      "slide_id": "gm_s03",
+      "type": "transition",
+      "title": "章节路线图",
+      "teaching_intent": "让学生了解本章的知识结构",
+      "key_elements": ["Gauss-Markov 模型假设", "OLS 估计量的性质", "Gauss-Markov 定理（核心）", "定理的直观解释与证明思路"],
+      "skip_elements": []
+    },
+    {
+      "slide_id": "gm_s04",
+      "type": "concept",
+      "title": "Gauss-Markov 模型假设",
+      "teaching_intent": "逐条讲解假设条件的含义",
+      "key_elements": ["线性形式：$Y = X\\beta + \\varepsilon$", "$X$ 固定且列线性无关", "$E(\\varepsilon) = 0$", "$\\cov(\\varepsilon) = \\sigma^2 I_n$（同方差、不相关）"],
+      "skip_elements": ["矩阵形式的推导细节"]
+    },
+    {
+      "slide_id": "gm_s05",
+      "type": "concept",
+      "title": "个体水平视角：$y_i = x_i^\\top \\beta + \\varepsilon_i$",
+      "teaching_intent": "将向量形式展开到每个观测",
+      "key_elements": ["每个观测的误差均值 0", "每个误差方差 $\\sigma^2$（同方差）", "不同观测间误差不相关"],
+      "skip_elements": ["与随机设计矩阵的对比（正文已说明 $X$ 固定非本质）"]
+    },
+    {
+      "slide_id": "gm_s06",
+      "type": "concept",
+      "title": "同方差假设的含义与重要性",
+      "teaching_intent": "强调同方差假设是 Gauss-Markov 定理成立的关键",
+      "key_elements": ["homoskedasticity = 相同方差", "词源学：k 更好地表示 variance 含义", "异方差情形需要加权最小二乘（见第19章）"],
+      "skip_elements": ["异方差的正式检验方法"]
+    },
+    {
+      "slide_id": "gm_s07",
+      "type": "concept",
+      "title": "OLS 估计量：矩阵形式",
+      "teaching_intent": "给出 $\\hat{\\beta} = (X^\\top X)^{-1} X^\\top Y$ 并说明这是线性估计",
+      "key_elements": ["$\\hat{\\beta}$ 是 $Y$ 的线性函数", "仅依赖矩阵运算", "$A = (X^\\top X)^{-1} X^\\top$ 不依赖 $Y$"],
+      "skip_elements": ["证明细节"]
+    },
+    {
+      "slide_id": "gm_s08",
+      "type": "theorem",
+      "title": "OLS 估计量的均值与方差（定理）",
+      "teaching_intent": "陈述 Theorem 4.1，给出无偏性和协方差矩阵",
+      "key_elements": ["$E(\\hat{\\beta}) = \\beta$（无偏）", "$\\cov(\\hat{\\beta}) = \\sigma^2 (X^\\top X)^{-1}$", "证明思路：利用 $E(Y) = X\\beta$ 和 $\\cov(Y) = \\sigma^2 I_n$"],
+      "skip_elements": ["完整代数推导"]
+    },
+    {
+      "slide_id": "gm_s09",
+      "type": "theorem",
+      "title": "Gauss-Markov 定理（核心）",
+      "teaching_intent": "本章最重要的定理，精确陈述",
+      "key_elements": ["$\\hat{\\beta}$ 是 BLUE（Best Linear Unbiased Estimator）", "条件 C1：$\\tilde{\\beta} = AY$ 对 $Y$ 线性", "条件 C2：$E(\\tilde{\\beta}) = \\beta$（对所有 $\\beta$ 无偏）", "$\\cov(\\tilde{\\beta}) \\succeq \\cov(\\hat{\\beta})$（正定半定序）"],
+      "skip_elements": ["正定半定序的定义细节（见附录 A2）"]
+    },
+    {
+      "slide_id": "gm_s10",
+      "type": "theorem",
+      "title": "BLUE 的含义：协方差矩阵序",
+      "teaching_intent": "解释 $\\cov(\\tilde{\\beta}) \\succeq \\cov(\\hat{\\beta})$ 的实际意义",
+      "key_elements": ["正定半定序 $\\Rightarrow$ 对任意线性组合 $c^\\top \\tilde{\\beta}$ 方差不小于 $c^\\top \\hat{\\beta}$", "特别地：每个坐标分量 $\\hat{\\beta}_j$ 方差最小", "等价形式：$\\var(c^\\top \\tilde{\\beta}) \\geq \\var(c^\\top \\hat{\\beta})$"],
+      "skip_elements": ["正定半定矩阵的正式定义"]
+    },
+    {
+      "slide_id": "gm_s11",
+      "type": "intuition",
+      "title": "为什么只比较线性估计量？",
+      "teaching_intent": "说明"线性"约束的合理性",
+      "key_elements": ["$A$ 可以是 $X$ 的任意非线性函数", "线性约束已经包含极广的估计量类", "无偏性是自然要求", "在许多现代应用中，有偏估计（如 Ridge、Lasso）方差更小"],
+      "skip_elements": ["Ridge/Lasso 的具体形式（见第14、15章）"]
+    },
+    {
+      "slide_id": "gm_s12",
+      "type": "intuition",
+      "title": "OLS 投影几何直观",
+      "teaching_intent": "用几何图像建立对 OLS 最优性的直觉",
+      "key_elements": ["$H = X(X^\\top X)^{-1}X^\\top$ 是投影矩阵", "$\\hat{Y} = HY$ 是 $Y$ 到 $X$ 列空间的投影", "残差 $\\hat{\\varepsilon} = (I-H)Y$ 与列空间正交", "OLS 将 $Y$ 分解为拟合值 + 残差"],
+      "skip_elements": ["引理 4.1 的完整证明"]
+    },
+    {
+      "slide_id": "gm_s13",
+      "type": "intuition",
+      "title": "拟合值与残差的分布性质",
+      "teaching_intent": "陈述 Theorem 4.2，说明 $\\hat{Y}$ 与 $\\hat{\\varepsilon}$ 的分布",
+      "key_elements": ["$E(\\hat{Y}) = X\\beta$, $E(\\hat{\\varepsilon}) = 0$", "$\\cov(\\hat{Y}) = \\sigma^2 H$, $\\cov(\\hat{\\varepsilon}) = \\sigma^2(I-H)$", "$\\hat{Y}$ 与 $\\hat{\\varepsilon}$ 不相关"],
+      "skip_elements": ["协方差矩阵的具体推导"]
+    },
+    {
+      "slide_id": "gm_s14",
+      "type": "intuition",
+      "title": "正交 vs. 不相关：两个关键陈述的区别",
+      "teaching_intent": "澄清学生的常见困惑",
+      "key_elements": ["陈述 (S1)：$\\hat{Y}$ 与 $\\hat{\\varepsilon}$ 正交 —— 代数事实，无需随机假设", "陈述 (S2)：$\\hat{Y}$ 与 $\\hat{\\varepsilon}$ 不相关 —— 随机陈述，需要 Gauss-Markov 假设", "两者含义不同，不能混淆"],
+      "skip_elements": []
+    },
+    {
+      "slide_id": "gm_s15",
+      "type": "intuition",
+      "title": "误差椭圆可视化："最佳"的含义",
+      "teaching_intent": "用二维情形可视化理解 BLUE",
+      "key_elements": ["$\\hat{\\beta}$ 的置信椭圆", "其他线性无偏估计的置信椭圆", "OLS 的置信椭圆最小（被其他所有椭圆包裹）", "$\\Rightarrow \\hat{\\beta}$ 在所有方向上方差最小"],
+      "skip_elements": ["椭圆方程的数学推导"]
+    },
+    {
+      "slide_id": "gm_s16",
+      "type": "intuition",
+      "title": "Gauss-Markov 定理证明思路",
+      "teaching_intent": "给出证明的核心步骤，不进入细节",
+      "key_elements": ["第一步：OLS 满足无偏性条件 $\\Rightarrow AX = I_p$", "第二步：协方差分解 $\\cov(\\tilde{\\beta}) = \\cov(\\hat{\\beta}) + \\cov(\\tilde{\\beta} - \\hat{\\beta})$", "第三步：交叉协方差项为零", "第四步：$\\cov(\\tilde{\\beta} - \\hat{\\beta}) \\succeq 0 \\Rightarrow \\cov(\\tilde{\\beta}) \\succeq \\cov(\\hat{\\beta})$"],
+      "skip_elements": ["矩阵恒等变形的每一步细节"]
+    },
+    {
+      "slide_id": "gm_s17",
+      "type": "example",
+      "title": "例子：简单线性回归的 BLUE",
+      "teaching_intent": "具体计算一元情形下的 OLS 方差",
+      "key_elements": ["$y_i = \\alpha + \\beta x_i + \\varepsilon_i$", "$\\var(\\hat{\\beta}) = \\sigma^2 / \\sum (x_i - \\bar{x})^2$", "任何线性无偏估计的 $\\beta$ 系数方差都不小于此值"],
+      "skip_elements": ["最优设计问题（作业题 4.1）"]
+    },
+    {
+      "slide_id": "gm_s18",
+      "type": "example",
+      "title": "例子：均值的 BLUE",
+      "teaching_intent": "最简单的例子，理解 BLUE 概念",
+      "key_elements": ["$y_i \\sim$ 均值 $\\mu$，方差 $\\sigma^2$，互不相关", "线性估计 $\\hat{\\mu} = \\sum a_i y_i$，无偏要求 $\\sum a_i = 1$", "最优选择：$a_i = 1/n$（简单平均）", "方差 $\\var(\\hat{\\mu}) = \\sigma^2/n$ 为最小"],
+      "skip_elements": ["权函数一般形式（见第19章加权 LS）"]
+    },
+    {
+      "slide_id": "gm_s19",
+      "type": "example",
+      "title": "例子：Gauss-Markov 预测定理",
+      "teaching_intent": "介绍定理的预测版本",
+      "key_elements": ["$\\hat{Y} = X\\hat{\\beta}$ 是 $X\\beta$ 的最佳线性无偏预测", "适用于任何线性预测 $\\tilde{Y} = \\tilde{H}Y$", "$\\cov(\\tilde{Y}) \\succeq \\cov(\\hat{Y})$"],
+      "skip_elements": ["预测误差分解的详细推导"]
+    },
+    {
+      "slide_id": "gm_s20",
+      "type": "summary",
+      "title": "Gauss-Markov 定理总结",
+      "teaching_intent": "回顾核心内容与局限性",
+      "key_elements": ["Gauss-Markov 模型：线性 + 同方差 + 不相关", "OLS $\\hat{\\beta}$ 是 BLUE", "核心：$\\cov(\\tilde{\\beta}) \\succeq \\cov(\\hat{\\beta})$", "局限：不谈非线性估计、不谈正态假设、不谈稳健性"],
+      "skip_elements": []
+    }
+  ]
+}
