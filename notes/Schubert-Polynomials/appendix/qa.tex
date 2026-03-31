@@ -1506,3 +1506,126 @@ $$A / \langle \Lambda^{+} \cdot A \rangle \simeq QH^*(X)$$
 
 \textbf{总结}：$x_i = 0$ 的退化本质上是将系数环从 $\Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ 替换为 $\mathbb{Z}$（通过取商），这相当于在几何上从 homotopy quotient $X \times_T ET$ 退回原始空间 $X$，从而"忘掉"了 torus 作用，只保留量子修正结构。\footnote{问：为什么 $x_i = 0$ 时退化为普通量子上同调？见附录 \cref{sec:xi-zero-degeneracy}。}
 
+\section{$Gr(1,2) = \mathbb{P}^1$ 例子的逐变量映射}\label{sec:Gr12-P1-example}
+\subsection{问题}
+请详细解释 $Gr(1,2) = \mathbb{P}^1$ 的例子（chapter4.tex 第 168-180 行），逐变量映射到一般公式，并验证其性质。
+
+\subsection{回答}
+\textbf{例子的完整公式}：
+$$\sigma(s_1) \circ \sigma(s_1) = q \sigma(1).$$
+
+\textbf{第一步：定位每个几何对象}
+
+\begin{enumerate}
+\item[$X = Gr(1,2) = \mathbb{P}^1$]：这是最简单的 Grassmannian——1维平面（即直线）构成的空间，等距于射影直线 $\mathbb{P}^1$。几何上，它是 2 维复向量空间 $\mathbb{C}^2$ 中所有过原点的直线（1 维子空间）的集合。
+
+\item[$W = S_2$]：$S_2$ 是 2 元素的对称群，只有两个元素：单位元 $1$（恒等置换）和 $s_1 = (12)$（唯一非平凡置换）。$W$ 的秩（rank）为 1，所以 $T \cong \mathbb{C}^\times$，只有一个参数 $x_1$。
+
+\item[$\sigma(1) = 1$（单位类）]：这是上同调环的乘法单位元。在 Schubert 理论中，$\sigma(w)$ 的次数是 $2\ell(w)$。对于 $w = 1$（长度 0），$\sigma(1)$ 位于上同调次数 0，因此就是常数函数 $1 \in H^0(\mathbb{P}^1) = \mathbb{Z}$。
+
+\item[$\sigma(s_1) = H$（超平面类）]：对于 $Gr(1,2) = \mathbb{P}^1$，$s_1$ 的长度 $\ell(s_1) = 1$，所以 $\sigma(s_1) \in H^2(\mathbb{P}^1)$。在 $\mathbb{P}^1$ 上，$H^2$ 的生成元就是超平面类 $[H]$（一个点的上同调类）。这是上同调环中除单位元外唯一的生成元。
+\end{enumerate}
+
+\textbf{第二步：对照一般公式理解量子乘积}
+
+回忆一般量子乘积公式（\cref{eq:EQCDefinition}）：
+$$\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w).$$
+
+这里有两个求和：
+\begin{itemize}
+\item 对 $d$（曲线的同调类）求和——$d$ 记录曲线的亏格和次数
+\item 对 $w \in W^P$（Weyl 群的最短代表元）求和
+\end{itemize}
+
+\textbf{在 $Gr(1,2) = \mathbb{P}^1$ 例子中}：
+
+取 $u = s_1$，$v = s_1$，代入公式：
+$$\sigma(s_1) \circ \sigma(s_1) = \sum_{d} \sum_{w \in W^{P}} q^d c_{s_1,s_1}^{w,d} \sigma(w).$$
+
+其中 $W^{P} = W = \{1, s_1\}$。我们需要分别检查 $d = 0$ 和 $d = 1$ 的情形。
+
+\textbf{第三步：$d = 0$ 的情形（无量子修正）}
+
+当 $d = 0$ 时，$q^0 = 1$，公式退化为普通等变 Schubert 乘法：
+$$\sigma(s_1) \circ \sigma(s_1) = \cdots + c_{s_1,s_1}^{w,0} \sigma(w) + \cdots$$
+
+在 $d = 0$ 时，$\sigma(s_1) \circ \sigma(s_1)$ 的经典结果是什么？在 $\mathbb{P}^1$ 上，两个点（$H$ 类）相交是什么？由于 $\mathbb{P}^1$ 是一维的，两个点没有理由相交在正维子上——实际上是空的！所以 $d = 0$ 时没有非零项。
+
+\textbf{为什么 $d = 0$ 给出零项？}在经典相交理论中，$\sigma(s_1)$ 对应一个点（$\mathbb{P}^1$ 的闭点），两个点只有在它们相同（重合）时才相交。但在一般位置下，两个不同点是不相交的。因此 $c_{s_1,s_1}^{w,0} = 0$ 对所有 $w$ 成立。
+
+\textbf{第四步：$d = 1$ 的情形（量子修正）}
+
+当 $d = 1$ 时，公式给出：
+$$\sigma(s_1) \circ \sigma(s_1) = q^1 c_{s_1,s_1}^{1,1} \sigma(1) + q^1 c_{s_1,s_1}^{s_1,1} \sigma(s_1).$$
+
+几何直觉：在 $\mathbb{P}^1$ 上取两个点 $p, q \in \mathbb{P}^1$。问：有多少条亏格 0 曲线（$\mathbb{P}^1$）经过 $p$ 和 $q$？答案是恰好一条——就是 $\mathbb{P}^1$ 本身经过任何两点！所以交点由亏格 0 曲线（一条从 $p$ 到 $q$ 的有理曲线）给出。
+
+这条曲线的同调类是 $d = 1$（在 $H_2(\mathbb{P}^1) \cong \mathbb{Z}$ 中是生成元）。因此 $c_{s_1,s_1}^{1,1} = 1$，而 $c_{s_1,s_1}^{s_1,1} = 0$（$w = s_1$ 不可能出现，因为那样次数不对）。
+
+代入得到：
+$$\sigma(s_1) \circ \sigma(s_1) = q \cdot 1 \cdot \sigma(1) = q \sigma(1).$$
+
+\textbf{第五步：逐变量对应关系表}
+
+\begin{center}
+\begin{tabular}{p{3.5cm}p{5cm}p{5cm}}
+\hline
+\textbf{一般符号} & \textbf{在 $Gr(1,2)$ 中的含义} & \textbf{具体值} \\ \hline
+$X = G/P$ & 旗流形 & $Gr(1,2) = \mathbb{P}^1$ \\
+$W$ & Weyl 群 & $S_2 = \{1, s_1\}$ \\
+$T$ & 极大环面 & $\mathbb{C}^\times$（秩为 1）\\
+$x_i$ 变量 & 等变参数（负根） & $x_1$（唯一的 $x$）\\
+$u, v$ & 乘法的 Schubert 类指标 & $u = v = s_1$ \\
+$d$ & 曲线的同调类 & $d = 0$（点相交）或 $d = 1$（曲线相交）\\
+$w$ & 结果的 Schubert 类 & $w = 1$（单位元）\\
+$q^d$ & 量子修正因子 & $q^0 = 1$（无修正）或 $q^1 = q$（有修正）\\
+$c_{u,v}^{w,d}$ & 结构常数 & $c_{s_1,s_1}^{1,1} = 1$ \\
+$\sigma(w)$ & Schubert 类 & $\sigma(1) = 1$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{第六步：求和的范围}
+
+公式 $\sigma(s_1) \circ \sigma(s_1) = \sum_{d}\sum_{w \in W^P} q^d c_{s_1,s_1}^{w,d} \sigma(w)$ 的完整展开：
+
+\begin{enumerate}
+\item \textbf{对 $d$ 求和}：$d$ 遍历曲线同调类的非负整数组合。在 $Gr(1,2) = \mathbb{P}^1$ 中，$H_2(\mathbb{P}^1) \cong \mathbb{Z}$，所以 $d \in \mathbb{N}$（非负整数）。但实际上只有 $d = 0$ 和 $d = 1$ 有非零贡献。
+
+\item \textbf{对 $w \in W^P$ 求和}：$W^{P} = W = \{1, s_1\}$。所以内层求和是对两个指标 $w = 1$ 和 $w = s_1$ 求和。
+\end{enumerate}
+
+完整展开：
+$$\sigma(s_1) \circ \sigma(s_1) = \underbrace{d=0, w=s_1}_{=0} + \underbrace{d=0, w=1}_{=0} + \underbrace{d=1, w=s_1}_{=0} + \underbrace{d=1, w=1}_{=q\sigma(1)}.$$
+
+只有 $d=1, w=1$ 给出非零贡献 $q\sigma(1)$。
+
+\textbf{第七步：正性验证}
+
+在 Mihalcea positivity 中，$c_{u,v}^{w,d}$ 必须是关于 $x_i$ 的非负整数系数多项式。这里 $c_{s_1,s_1}^{1,1} = 1$ 是平凡的非负整数（常数多项式），符合正性要求。
+
+而在 $d = 0$ 的经典情形，$c_{s_1,s_1}^{w,0} = 0$ 也是符合正性的（零是平凡的非负数）。
+
+\textbf{第八步：$q$ 的几何意义}
+
+$q$ 标记的是 $\mathbb{P}^1$ 的同调类。几何上：在 $\mathbb{P}^1$ 上，$[pt] \in H_2(\mathbb{P}^1)$ 是生成元。任何从 $p$ 到 $q$ 的亏格 0 稳定映射都同调于这条基线，所以 $q$ 记录的就是"这条线的存在"。
+
+\textbf{几何直觉总结}：
+
+\begin{enumerate}
+\item \textbf{普通相交（$d=0$）失败}：在 $\mathbb{P}^1$ 上，两个不同点的交集为空。
+\item \textbf{量子修正（$d=1$）介入}：存在唯一一条 $\mathbb{P}^1$（亏格 0 曲线）经过这两个点。
+\item \textbf{结果}：$\sigma(s_1) \circ \sigma(s_1) = q \sigma(1)$ 表示"通过亏格 0 曲线（用 $q$ 标记）相连的两个点，在量子上相交得到单位类"。
+\end{enumerate}
+
+\textbf{为什么这是最简单的非平凡例子？}：
+
+因为 $Gr(1,2) = \mathbb{P}^1$ 的 Schubert 胞腔只有两层（$0$ 维点和 $2$ 维超平面），没有中间维数。这意味着：
+\begin{itemize}
+\item 当 $d = 0$ 时，无法产生非零相交（两点不相交）
+\item 必须借助 $d = 1$ 的量子修正才能得到非零结果
+\item 整个公式只包含一项，结构最为清晰
+\end{itemize}
+
+这就是为什么 $Gr(1,2)$ 是验证等变量子量子乘积结构的最理想起点。
+
