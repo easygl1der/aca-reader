@@ -1659,18 +1659,20 @@ $q$ 标记的是 $\mathbb{P}^1$ 的同调类。几何上：在 $\mathbb{P}^1$ �
 本次修复了 Chapter 6 中的 citation 问题和环境定义问题：
 
 \begin{enumerate}
-\item \textbf{Citation 错误}：
+\item \textbf{Gromov 引用年份核实}：
   \begin{itemize}
-    \item 原文：``Gromov \cite\{Gromov1985\}'' — `Gromov1985' 在 references.bib 中不存在
-    \item 修改后：``Gromov \cite\{Gromov1995\}''
-    \item 原因：经核实 Kim (1996) 原文，Gromov 的引用编号为 [11]，对应 Gromov1995
+    \item 原文：``Gromov \cite\{Gromov1985\}'' — 编译警告说 `Gromov1985' 未定义
+    \item 错误修改：盲目改为 `Gromov1995'（这是错的！）
+    \item 正确修复：经核实 Kim (1996) 原文参考文献 [11]，Gromov 的论文确实发表于 \textbf{1985} 年 (Inventiones Mathematicae 82, 307-347)
+    \item 根本原因：references.bib 中的条目 key 是 `Gromov1995' 但 year 字段是 1985，造成了混淆
+    \item 最终修复：将 references.bib 条目 key 改为 `Gromov1985'，并更新 chapter4.tex 和 chapter6.tex 中的引用
   \end{itemize}
 
-\item \textbf{缺少引用}：
+\item \textbf{Kim1995 引用}：
   \begin{itemize}
-    \item 原文：``Kim \cite\{Kim1995\}'' — `Kim1995' 在 references.bib 中不存在
-    \item 修改后：已在 references.bib 中添加 Kim1995 的完整条目
-    \item 原因：Kim 1995 年的论文 ``Quantum cohomology of partial flag manifolds and a residue formula for their intersection pairings'' (IMRN 1995) 是独立猜想的来源
+    \item 原警告：`Kim1995' 在 references.bib 中不存在
+    \item 核实结果：Kim 1995 年的论文确实存在！``Quantum cohomology of partial flag manifolds and a residue formula for their intersection pairings'' (IMRN 1995, No.1, 1-16)
+    \item 修复：已在 references.bib 中添加 Kim1995 的完整条目
   \end{itemize}
 
 \item \textbf{环境未定义}：
@@ -1680,6 +1682,8 @@ $q$ 标记的是 $\mathbb{P}^1$ 的同调类。几何上：在 $\mathbb{P}^1$ �
     \item 原因：`Definition-Theorem` 环境不存在，应使用标准的 `Theorem` 环境
   \end{itemize}
 \end{enumerate}
+
+\textbf{经验教训}：修改引用年份必须先核实原始文献，不能仅根据编译警告盲目修改！Gromov 的论文是 1985，不是 1995。
 
 \subsection{Weyl 群与 $W_P$ 子群的具体例子}\label{sec:qa-WeylGroupAndWP}
 
