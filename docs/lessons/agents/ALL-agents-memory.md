@@ -21,6 +21,7 @@
 | L010 | QA 记录时必须同步在正文中添加 footnote 引用 | 1 |
 | L012 | Team Lead 不应擅自派活 | 1 |
 | L013 | Minor overfull hbox 不值得反复修复 | 1 |
+| L014 | 图片/表格 overfull hbox 除非用户提示，否则不主动修复 | 1 |
 
 ---
 
