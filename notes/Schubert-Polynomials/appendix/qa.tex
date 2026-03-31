@@ -1354,3 +1354,58 @@ $$J(w) = \{(i,j) : i < j \text{ 且 } w(i) < w(j)\}$$
 \textbf{三重 Schubert 演算}（三变量 $\mathbf{x}; \mathbf{y}; \mathbf{t}$）：研究三个 Schubert 类的乘积 $\mathfrak{S}_u \cdot \mathfrak{S}_v \cdot \mathfrak{S}_w$，几何上是三类 Schubert 胞腔的相继相交。三组变量分别记录三次位移。
 
 \textbf{为什么需要三组变量？}：在旗流形中，三类 Schubert 簇 $X(u), Y(v), Z(w)$（分别相对于三个不同 Borel 子群 $B, B^-, B'$）的相继相交产生三个方向的 torus 位移。三组变量 $(\mathbf{x}; \mathbf{y}; \mathbf{t})$ 正是记录这三次位移的代数工具。\footnote{问：三重舒伯特演算是什么？见附录 \cref{sec:TripleSchubertCalculus}。}
+
+\section{投影公式（Projection Formula）详解}\label{sec:ProjectionFormula}
+\subsection{问题}
+什么是投影公式（projection formula）？它和上同调中的 pullback ($f^*$)、pushforward ($f_*$) 有什么关系？为什么说它把 $\overline{\mathcal{M}}_{0,3}(X,d)$ 上的问题归约到 $X \times X$？
+
+\subsection{回答}
+\textbf{一、投影公式的严谨陈述}
+
+设 $f: X \to Y$ 是光滑投影代数簇之间的适当态射（proper morphism）。记 $H^*(X)$、$H^*(Y)$ 为上同调环（系数通常取 $\mathbb{Q}$ 或 $\mathbb{C}$）。
+
+关键观察：$f^*$ 诱导 $H^*(X)$ 成为 $H^*(Y)$-模。投影公式指出：
+$$f_*(f^*(\beta) \cup \alpha) = \beta \cup f_*(\alpha)$$
+其中 $\alpha \in H^*(X)$，$\beta \in H^*(Y)$。
+
+换句话说，$f_*$ 是一个 \textbf{$H^*(Y)$-模同态}。
+
+\textbf{二、Pullback ($f^*$) vs Pushforward ($f_*$) 的对比}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+ & $f^*$（拉回） & $f_*$（前推） \\
+\hline
+\textbf{名称} & 环同态 & Gysin map \\
+\hline
+\textbf{类型} & 环同态（保持杯积） & 群同态（非环同态）\\
+\hline
+\textbf{保持杯积？} & \checkmark $f^*(\beta_1 \cup \beta_2) = f^*(\beta_1) \cup f^*(\beta_2)$ & \text{\texttimes} 一般不行 \\
+\hline
+\textbf{度数变化} & $H^k(Y) \to H^k(X)$（不变） & $H^k(X) \to H^{k - \dim X + \dim Y}(Y)$（改变）\\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{三、为什么需要投影公式？}
+
+因为 $f_*$ 不是环同态，一般情况下：
+$$f_*(\alpha \cup \gamma) \neq f_*(\alpha) \cup f_*(\gamma)$$
+但当我们知道其中一个类来自目标空间 $Y$（即 $\gamma = f^*(\beta)$）时，投影公式给出了正确的乘法公式。
+
+\textbf{四、在量子上同调中如何归约问题？}
+
+3 点 Gromov-Witten 不变量 $\langle \gamma_1, \gamma_2, \gamma_3 \rangle_{0,3,d}$ 计数的是：满足特定条件的亏格 0 稳定映射 $f: \mathbb{P}^1 \to X$ 的个数。
+
+直接计算很困难，因为 $\overline{\mathcal{M}}_{0,3}(X,d)$ 的结构非常复杂。归约策略如下：
+
+\begin{enumerate}
+\item 通过评估映射 $ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X$，把 $\overline{\mathcal{M}}_{0,3}(X,d)$ 上的相交问题拉回到 $X$ 上
+\item 利用投影公式，将问题前推到 $X \times X$ 上
+\item 在 $X \times X$ 上，我们实际上是在做标准的上同调杯积——这是我们熟悉的 Graham positivity 已经解决的问题
+\end{enumerate}
+
+\textbf{用人话讲}：把在"迷宫"（$\overline{\mathcal{M}}_{0,3}(X,d)$）里找路，变成在"大路"（$X \times X$）上走路。投影公式告诉你：只要你知道"大路"上的走法（Graham positivity），就能推断出迷宫里的走法（EQLR 系数）。
+
+\textbf{几何直觉}：评估映射 $ev_3: \overline{\mathcal{M}}_{0,3}(X,d) \to X$ 把稳定映射打到目标空间中的第三个标记点的像。然后我们问：这个像落在哪个 Schubert 胞腔里？通过 pushforward（$ev_{3*}$）把这些信息收集起来，就得到了 EQLR 系数。
