@@ -45,6 +45,16 @@ Each has `appendix/qa.tex` and `compile.sh`.
 
 ## Workflow (MANDATORY after each question)
 
+### Step 0: Read Memory File (BEFORE any action)
+**Agent must read the qa-specialist memory file before executing:**
+
+1. 用 Read 工具读取 `docs/lessons/agents/qa-specialist-memory.md`
+2. 检查教训索引表，避免重复犯错：
+   - **L1001**: 是否搞混了 qa.tex 路径？
+   - **L1002**: QA 格式是否规范（`\subsection` + `\label` + `\textbf{问/答}`）？
+   - **L1003**: 脚注引用是否遗漏？
+3. 如有风险 → 先规避，再执行 Step 1
+
 ### Step 1: Answer Conversationally
 - Provide clear, educational answer in Chinese (or the user's language)
 - Use Stein writing style: motivation before technical details
