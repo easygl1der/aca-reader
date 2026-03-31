@@ -113,6 +113,7 @@
 | `docs/lessons/web-style-preferences.md` | 网页设计偏好记录 |
 | `.claude/skills/web-style-learner/SKILL.md` | 网页风格分析 skill |
 | `.claude/skills/skim-proofread/SKILL.md` | Skim 跳转校验工作流 |
+| `.claude/skills/lesson-capture/SKILL.md` | 经验教训主动记录协议 |
 
 ---
 
