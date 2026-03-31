@@ -1248,41 +1248,61 @@ Dominant approximation 的完整证明见 \cref{sec:appendix-ch2-dominant}（即
 \textbf{几何直觉总结}：这个例子展示了等变量子上同调中量子修正的机制。普通乘法 $\sigma(s_1 s_3)$ 给出直观的交集计数；量子修正项 $(x_2 - x_3) q \sigma(1)$ 考虑了通过曲线连接的情况——这反映了量子场论的思想：粒子可以通过虚粒子云（曲线）相互作用。
 \section{稳定映射模空间 $\overline{\mathcal{M}}_{0,3}(X,d)$ 的定义}\label{sec:MOD-space}
 \subsection{问题}
-$\overline{\mathcal{M}}_{0,3}(X,d)$ 是什么？每个符号的含义是什么？
+$\overline{\mathcal{M}}_{0,3}(X,d)$ 是什么？每个符号的含义是什么？为什么要有紧化？什么是评估映射 $ev_i$？能举一个 $\mathrm{Gr}(2,4)$ 的具体例子吗？
+
 \subsection{回答}
 \textbf{$\overline{\mathcal{M}}_{0,3}(X,d)$ 是稳定映射的模空间（stable map moduli space）}，这是量子上同调理论中的核心几何对象。
 
-\textbf{逐层拆解}：
+\textbf{一、下标 0 和 3 的含义}
 
-\begin{center}
-\begin{tabular}{|c|c|}
-\hline
-符号 & 含义 \\
-\hline
-$\mathcal{M}$ & moduli space（模空间）——"空间的空间"，收集所有某种类型的对象 \\
-\hline
-$\overline{\mathcal{M}}$ & 带紧化的模空间（上方的横线表示紧化） \\
-\hline
-$0$ & 曲线的亏格（genus）为 0——即 $\mathbb{P}^1$（亏格 0 曲线） \\
-\hline
-$3$ & 三个标记点（marked points）——$p_1, p_2, p_3 \in \mathbb{P}^1$ \\
-\hline
-$X$ & 目标空间——通常为齐次空间 $G/P$（如 Grassmannian、旗流形） \\
-\hline
-$d$ & 曲线的同调类（homology class）——$\mathbb{P}^1$ 在 $X$ 中的像代表哪个同调类 \\
-\hline
-\end{tabular}
-\end{center}
-
-\textbf{完整含义}：$\overline{\mathcal{M}}_{0,3}(X,d)$ 参数化了所有满足以下条件的稳定映射：
+下标描述的是域曲线的拓扑性质：
 \begin{itemize}
-\item $f: \mathbb{P}^1 \to X$ 是一个代数曲线（亏格 0）
-\item $\mathbb{P}^1$ 上有三个标记点 $p_1, p_2, p_3$
-\item $f_*[\mathbb{P}^1] = d \in H_2(X, \mathbb{Z})$（曲线的同调类是 $d$）
+\item \textbf{$0$}：域曲线的算术亏格（arithmetic genus）。亏格 0 的曲线是\textbf{有理曲线}。若光滑则同构于 $\mathbb{P}^1$；若不光滑，则是若干个 $\mathbb{P}^1$ 通过节点连成的"树"（tree of $\mathbb{P}^1$'s joined at nodes）。
+\item \textbf{$3$}：曲线上的 3 个\textbf{有序标记点}（marked points）$x_1, x_2, x_3$，它们必须位于曲线的光滑点上（不能位于节点）。
 \end{itemize}
 
-\textbf{紧化的意义}：$\mathcal{M}_{0,3}(X,d)$ 是非紧的（稳定映射可以是退化的），加上横线 $\overline{\mathcal{M}}$ 表示 Grothendieck 的紧化——添加了边界点，使得空间是紧的，便于计算相交数。
+\textbf{二、上划线 $\overline{\mathcal{M}}$ 的含义——为什么需要紧化？}
+
+若只考虑光滑曲线的映射模空间 $\mathcal{M}_{0,3}(X,d)$，则一般\textbf{不是紧的}（不 proper）。序列的光滑曲线映射可以退化（degenerating），导致无法在其上做积分。
+
+\textbf{Kontsevich 紧化（1995）}：通过添加"边界除子"（boundary divisors）来让空间 proper。边界除子由\textbf{结点曲线}（nodal curves）上的稳定映射组成。这使得我们可以对空间做积分、提取 Gromov-Witten 不变量。
+
+\textbf{三、稳定映射的严谨定义}
+
+由于上述紧化，$\overline{\mathcal{M}}_{0,3}(X,d)$ 中的稳定映射不一定来自光滑 $\mathbb{P}^1$。一个稳定映射是一个 tuple：
+$$(C, x_1, x_2, x_3, f)$$
+其中：
+\begin{enumerate}
+\item $C$ 是连通、投影、约化曲线，亏格 0，最多节点奇点；
+\item $x_1, x_2, x_3$ 是 $C$ 上 3 个不同的光滑点；
+\item $f: C \to X$ 是代数簇之间的态射；
+\item $f_*[C] = d \in H_2(X, \mathbb{Z})$（同调类条件）；
+\item \textbf{稳定性条件}：映射 $f$ 的自同构群必须有限。
+\end{enumerate}
+
+\textbf{稳定性条件的具体含义}：若某个不可约分支 $E \cong \mathbb{P}^1$ 被 $f$ 收缩到 $X$ 中一个点（$f(E) = \mathrm{pt}$），则 $E$ 必须至少含 3 个\textbf{特殊点}（特殊点 = 标记点或与其他分支相交的节点）。这排除了"幽灵分支"（ghost component）——即没有足够结构来固定自身的无用分支。
+
+\textbf{四、评估映射 $ev_i$ 的定义}
+
+评估映射是连接模空间与目标空间的桥梁：
+$$ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X$$
+$$ev_i([C, x_1, x_2, x_3, f]) = f(x_i)$$
+
+它将稳定映射的同构类打到 $X$ 中第 $i$ 个标记点的像。在量子上同调中，我们利用这些映射从 $X$ 上拉回上同调类（如 Schubert 类），在模空间上做杯积，然后推送向前以计数曲线。
+
+\textbf{五、具体例子：$\mathrm{Gr}(2,4)$}
+
+设 $X = \mathrm{Gr}(2,4)$（2 维平面在 $\mathbb{C}^4$ 中，几何上对应 $\mathbb{P}^3$ 中的线）。此时 $H_2(\mathrm{Gr}(2,4), \mathbb{Z}) \cong \mathbb{Z}$。看 degree $d=1$ 的情形：
+
+\textbf{内部（光滑情形）}：一个点是光滑 $\mathbb{P}^1 \cong C$ 到 $\mathrm{Gr}(2,4)$ 的 1 次映射。1 次曲线在 $\mathrm{Gr}(2,4)$ 中是一条线（line）。在 Plücker 嵌入下，这对应 $\mathbb{P}^3$ 中过单点的线束。映射 $f: \mathbb{P}^1 \to \mathrm{Gr}(2,4)$ 同构地打到这条线。
+
+\textbf{边界（退化情形）}：域曲线退化为两个分支 $C = C_A \cup C_B$，由一个节点连接。总度数必须为 1，因此：
+\begin{itemize}
+\item $C_A$ 映射度 1，打到 $\mathrm{Gr}(2,4)$ 中一条线；
+\item $C_B$ 映射度 0（收缩到一点 $p \in \mathrm{Gr}(2,4)$，即节点处 $f$ 的像）。
+\end{itemize}
+由稳定性条件：$C_B$ 被收缩，所以必须至少含 3 个特殊点。它已有 1 个节点，因此必须至少含 2 个标记点。比如 $x_1, x_2 \in C_B$，而 $x_3 \in C_A$。
 
 \textbf{在 EQLR 系数中的作用}：EQLR 系数 $c_{u,v}^{w,d}$ 计数的是满足以下条件的稳定映射个数：
 $$c_{u,v}^{w,d} = \langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d}$$
-其中评估映射 $ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X$ 记录了 $f(p_i)$ 落在哪个 Schubert 胞腔中。\footnote{问：$\overline{\mathcal{M}}_{0,3}(X,d)$ 是什么？见附录 \cref{sec:MOD-space}。}
+其中评估映射 $ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X$ 记录了 $f(x_i)$ 落在哪个 Schubert 胞腔中。
