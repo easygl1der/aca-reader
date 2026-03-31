@@ -1,0 +1,37 @@
+- generic [active] [ref=e1]:
+  - 'button "Google Account: glider easy (easyglider458@gmail.com)" [ref=e8] [cursor=pointer]':
+    - img [ref=e10]
+    - img [ref=e16]
+  - main [ref=e18]:
+    - button "New chat" [ref=e20] [cursor=pointer]:
+      - generic [ref=e22]: Gemini
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - button "Navigate to Gemini developer landing page" [ref=e27]:
+          - generic [ref=e28]: For developers
+        - button "Navigate to Gemini enterprise landing page" [ref=e31]:
+          - generic [ref=e32]: For business
+        - link "Navigate to the Frequently Asked Questions page" [ref=e35] [cursor=pointer]:
+          - /url: /faq
+          - generic [ref=e36]: FAQ
+      - generic [ref=e40]:
+        - button "PRO" [disabled]:
+          - generic: PRO
+    - generic [ref=e49]:
+      - generic [ref=e51]:
+        - generic [ref=e65]: "Sure, here is an image of a futuristic car driving through an old mountain road surrounded by nature:"
+        - generic [ref=e66]:
+          - heading "Gemini" [level=1] [ref=e68]
+          - generic [ref=e69]:
+            - heading "Supercharge your creativity and productivity" [level=2] [ref=e70]
+            - paragraph [ref=e71]: Chat to start writing, planning, learning and more with Google AI
+            - paragraph [ref=e72]:
+              - strong [ref=e73]: Gemini isn’t currently supported in your country. Stay tuned!
+      - generic [ref=e74]:
+        - link "Google" [ref=e75] [cursor=pointer]:
+          - /url: https://www.google.com
+          - img "Google" [ref=e76]
+        - link "Privacy & Terms Opens in a new window" [ref=e77] [cursor=pointer]:
+          - /url: https://policies.google.com
+          - text: Privacy & Terms
+          - generic [ref=e78]: Opens in a new window

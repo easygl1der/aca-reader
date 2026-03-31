@@ -1,0 +1,116 @@
+# LaTeX Format Rules for .tex files
+
+paths:
+  - "**/*.tex"
+
+---
+
+## ABSOLUTE PROHIBITIONS
+
+- NO Markdown syntax in .tex files: `**bold**`, `*italic*`, `- list`, `1. numbered`
+- NO `\bm` for vectors/matrices — use `\mathbf{}` or `\boldsymbol{}`
+- NO `\I` for indicator — use `\mathbb{I}`
+- NO Unicode subscripts like `n₁` — use `$n_1$`
+- NO `\tag{}` or hardcoded equation numbers like `式 (★)` — use `\label{}` + `\cref{}`
+- NO Obsidian callout blocks like `> [!note]`, `> [!example]`, `> [!thm]`
+- NO `\ref{}` — must use `\cref{}` for all references
+
+## REQUIRED
+
+- Lists: `\begin{enumerate}...\end{enumerate}` or `\begin{itemize}...\end{itemize}`
+- Bold text: `\textbf{}`
+- Italic text: `\textit{}`
+- References: `\label{}` + `\cref{}` (NOT bare `\ref{}`)
+- Indicator function: `\mathbb{I}`
+- Theorem/Definition inside: NO itemize — use enumerate with semicolons
+
+## LABEL & REFERENCE RULES
+
+Label naming conventions:
+- Definitions/Theorems: `\label{def:NameXX}`
+- Lemmas: `\label{def:LemmaXX}`
+- Sections: `\label{sec:name}`
+- Equations: `\label{eq:name}`
+- Figures: `\label{fig:descriptive-name}`
+- Exercises: `\label{exr:chapter-num}`
+
+**Examples:**
+```latex
+\begin{Theorem}[Neyman's Theorem]\label{def:NeymanTheorem}
+...
+\end{Theorem}
+见 \cref{def:NeymanTheorem}。
+
+\begin{equation}\label{eq:ATE}
+\tau = \bar{Y}(1) - \bar{Y}(0)
+\end{equation}
+见 \cref{eq:ATE}。
+```
+
+## EXERCISE FORMAT
+
+### Book Template (do Carmo / geometry notes)
+```latex
+\begin{exercise}{1-2, 1 — do Carmo, Exercise 1-2, 1}
+Find a parametrized curve $\alpha(t)$ whose trace is the circle...
+\end{exercise}
+```
+- Format: `{section, num — do Carmo, Exercise section, num}`
+- Hard problems: mark with `*` like `{1-3, 8* — do Carmo, ...}`
+- Use `\begin{enumerate}` for sub-parts
+
+### Causal Inference Template (Peng Ding)
+```latex
+\begin{Exercise}{\ref{exr:5-1} Covariate balance in the CRE}\label{exr:5-1}
+证明 \eqref{eq:balance-discrete-CRE}：在 CRE 下，...
+\end{Exercise}
+```
+- Format: `{\ref{exr:chapter-num} English Title}\label{exr:chapter-num}`
+- Label: `exr:{chapter}-{number}`
+- MUST use `\eqref{}` to reference textbook equation numbers
+- English title from textbook
+
+## MATH SYMBOLS (User Conventions)
+
+| Concept | Symbol | Command |
+|---------|--------|---------|
+| Probability | P | `\mathbb{P}(A)` |
+| Expectation (single var) | E | `\mathbb{E}X` (no parentheses) |
+| Expectation (multiple var) | E | `\mathbb{E}(XY)` (with parentheses) |
+| Variance | var | `\text{var}(X)` |
+| Covariance | cov | `\text{cov}(X,Y)` |
+| Correlation | corr | `\text{corr}(X,Y)` |
+| Indicator | I | `\mathbb{I}` |
+| p-value | p | `\text{p}_{}` (empty subscript) |
+| Independence | Perp | `$A \Perp B$` |
+
+## SYMBOL FIRST APPEARANCE RULE
+
+When a symbol appears for the first time, you MUST:
+1. Define its meaning in the text
+2. Use standard LaTeX: `\sqrt{}`, `\frac{}{}`, etc.
+3. Convention: hat (^) = sample estimate, no hat = population truth
+
+## PROOF ENVIRONMENT
+
+```latex
+\newtheorem*{Proof}{证明}
+\begin{Proof}[Optional Title]
+...proof content...
+\end{Proof}
+```
+
+## EXAMPLE ENVIRONMENT (Motivation-First Principle)
+
+| Type | Location | Purpose |
+|------|----------|---------|
+| Motivation | BEFORE concept definition | Show why the concept is needed |
+| Application | AFTER concept definition | Show how to use the concept |
+| Demonstration | AFTER theorem | Show real-world application |
+
+## APPENDIX CITATION
+
+Detailed derivations go in appendix. Reference from main text:
+```latex
+...theorem statement...\footnote{推导见附录 \cref{sec:appendix-derivation}。}
+```
