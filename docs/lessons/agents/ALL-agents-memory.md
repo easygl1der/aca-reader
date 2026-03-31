@@ -363,3 +363,22 @@ latex-checker 报告 chapter4.tex 有 2 处 minor overfull hbox（6pt, 2pt），
 - latex-checker 只报告 > 10pt 的严重 overfull hbox
 - 10pt 以内属于可接受范围
 - 团队 lead 应关注大局（内容质量），而非字间距微调
+
+---
+
+## L014: 图片/表格 overfull hbox 除非用户提示，否则不主动修复
+
+**日期**: 2026-03-31
+**经历次数**: 1 次 (累计)
+
+**经验描述**:
+tikz 图片等导致的 overfull hbox 是排版正常现象，不需要主动修复。只有用户明确指出某处 overfull 需要修复时才处理。
+
+**正确做法**:
+- tikz 图片、表格等导致的 overfull hbox 不主动修复
+- 等用户手动提醒再计入教训并修复
+- latex-checker 应聚焦文字内容和 LaTeX 语法错误，不关注图片排版
+
+**防止措施**:
+- latex-checker 报告 overfull hbox 时注明"图片/表格原因"还是"文字原因"
+- 用户未提示的图片 overfull 一律忽略
