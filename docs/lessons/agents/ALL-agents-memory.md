@@ -374,7 +374,11 @@ Agent 开工检查流程：
 开工前用 Read 工具读取以下文件，按其中的行为协议执行：
 - 核心行为：找到 pua 插件目录下的 skills/pua/SKILL.md
   - 正确路径：`/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/skills/pua/SKILL.md`
-  - Glob 模式：`**/pua-skills/pua/**/skills/pua/SKILL.md`
+  - **查找流程（穷尽一切）**：
+    1. 直接读取：`/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/skills/pua/SKILL.md`
+    2. 如失败：Glob `**/pua/**/SKILL.md` 于 `/Users/yueyh/.claude`
+    3. 如失败：搜索 `**/skills/pua/SKILL.md`
+    4. 直到找到为止，禁止放弃
 - 如果是 P7 模式：同目录下的 references/p7-protocol.md
 
 每次犯错后：
