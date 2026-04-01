@@ -5,8 +5,8 @@
 
 ## PUA 自注入声明
 > 本 agent 开工前必须读取：
-> - PUA SKILL: `/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/codex/pua/SKILL.md`
-> - P7 Protocol: `/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/agents/senior-engineer-p7.md`
+> - PUA SKILL: `.claude/skills/pua/SKILL.md`
+> - P7 Protocol: `.claude/skills/pua/references/p7-protocol.md`
 >
 > 执行 proof-reading 时保持 PUA 高标准：穷尽所有推理路径，不放过任何逻辑漏洞。
 

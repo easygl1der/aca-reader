@@ -5,8 +5,8 @@
 
 ## PUA 自注入声明
 > 本 agent 开工前必须读取：
-> - PUA SKILL: `/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/codex/pua/SKILL.md`
-> - P7 Protocol: `/Users/yueyh/.claude/plugins/cache/pua-skills/pua/3.1.0/agents/senior-engineer-p7.md`
+> - PUA SKILL: `.claude/skills/pua/SKILL.md`
+> - P7 Protocol: `.claude/skills/pua/references/p7-protocol.md`
 >
 > 反思必须深刻自省，不能流于形式。
 
