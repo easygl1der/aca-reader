@@ -682,3 +682,252 @@ Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995} 计数的是......
 - 写完章节后，用 grep 检查所有数学符号是否在首次出现时有脚注定义
 - 检查命令：`grep -n "\\\$.*\\\$.*\$" chapters/chapter*.tex`（查找行内数学表达式）
 - 原则：宁可多给一个定义，也不能让读者困惑
+
+---
+
+## 附录：标准 LaTeX 模板规范（写作专家必须掌握）
+
+本节是写作专家的标准模板知识库，涵盖笔记、习题、作业三大场景。
+
+### 一、笔记模板（notes/ 目录）
+
+#### 1.1 主文件 preamble
+
+```latex
+\documentclass[12pt]{amsbook}
+\usepackage{amsmath, amssymb, amsthm, amsbsy, mathtools}
+\usepackage{xeCJK}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{natbib}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning}
+\geometry{margin=1in}
+
+% Theorem styles
+\theoremstyle{plain}
+\newtheorem{Definition}{定义}[chapter]
+\newtheorem{Theorem}[Definition]{定理}
+\newtheorem{Lemma}[Definition]{引理}
+\newtheorem{Corollary}[Definition]{推论}
+\newtheorem{Proposition}[Definition]{命题}
+\newtheorem{Example}{例}[chapter]
+\newtheorem{Remark}{注}[chapter]
+\newtheorem{Exercise}{练习}[chapter]
+\newtheorem{Assumption}{假设}[chapter]
+\newtheorem*{Proof}{证明}
+
+% 用户注解命令
+\newcommand{\userannotation}[2]{%
+  \begin{Remark}
+    \textbf{#1:} #2
+  \end{Remark}
+}
+
+% 常用数学符号
+\DeclareMathOperator{\Perp}{\mathrel{\perp\!\!\!\perp}}
+```
+
+#### 1.2 章节文件结构
+
+```latex
+% Chapter X: 章标题
+\chapter{章标题}\label{ch:X}
+
+\section{本章导论}
+% Stein 风格动机引入
+
+\section{第一节标题}
+% 内容
+
+\section{第二节标题}
+% 内容
+
+\section{习题}\label{sec:chapterX-exercises}
+\begin{Exercise}{\ref{exr:X-1} 英文标题}\label{exr:X-1}
+习题内容。
+\end{Exercise}
+```
+
+#### 1.3 定理环境使用规范
+
+```latex
+% 定义
+\begin{Definition}[名称]\label{def:名称}
+定义内容...
+\end{Definition}
+
+% 定理
+\begin{Theorem}[名称]\label{def:TheoremName}
+定理内容...
+\begin{Proof}
+证明内容...
+\end{Proof}
+\end{Theorem}
+
+% 引理
+\begin{Lemma}[名称]\label{def:LemmaName}
+引理内容...
+\begin{Proof}
+证明...
+\end{Proof}
+\end{Lemma}
+
+% 例子（Example 环境内不写"推导见附录"，在 \end{Example} 之后用脚注引用）
+\begin{Example}[名称]\label{ex:ExampleName}
+例子内容...
+\end{Example}
+推导见附录 \cref{sec:appendix-xxx}。}
+```
+
+#### 1.4 脚注规范（自包含原则）
+
+```latex
+% 错误 ❌
+...概念...\footnote{见附录 \cref{sec:xxx}。}
+
+% 正确 ✅
+...概念...\footnote{概念定义：一句话说明。例如 $x = ...$（具体例子）。详细推导见附录 \cref{sec:xxx}。}
+```
+
+---
+
+### 二、习题模板
+
+#### 2.1 因果推断模板（Peng Ding 风格）
+
+```latex
+\section{习题}\label{sec:chapterX-exercises}
+
+\begin{Exercise}{\ref{exr:X-1} Covariate balance in the CRE}\label{exr:X-1}
+证明 \eqref{eq:balance-discrete-CRE}...
+\end{Exercise}
+
+% 分部题目
+\begin{Exercise}{\ref{exr:X-2} Some property}\label{exr:X-2}
+\begin{enumerate}
+  \item 第一问...
+  \item 第二问...
+\end{enumerate}
+\end{Exercise}
+```
+
+#### 2.2 do Carmo 模板（微分几何风格）
+
+```latex
+\begin{exercise}{1-2, 1 — do Carmo, Exercise 1-2, 1}
+Find a parametrized curve $\alpha(t)$ whose trace is the circle...
+\end{exercise}
+
+% 分部题目
+\begin{exercise}{1-3, 3 — do Carmo, Exercise 1-3, 3}
+Let $0A = 2a$ be the diameter...
+\begin{enumerate}
+\item[a.] ...
+\item[b.] ...
+\end{enumerate}
+\end{exercise}
+```
+
+---
+
+### 三、作业模板（homework/ 目录）
+
+#### 3.1 标准 preamble
+
+```latex
+\documentclass[12pt]{article}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% 习题环境
+\newtheorem{exercise}{习题}
+\newtheorem{solution}{解}  % 解环境（可选）
+```
+
+#### 3.2 作业结构
+
+```latex
+\begin{document}
+\title{作业标题}
+\author{}
+\date{\today}
+\maketitle
+
+\section*{教材信息}
+教材名称 \& 作者 \\
+章节: X-Y 章节名称
+
+\section*{X-Y 习题}
+
+% 计算/辨认题
+\begin{exercise} 第 X 题 (a)
+题目内容...
+\end{exercise}
+
+\begin{solution}
+\begin{itemize}
+  \item \textbf{约束变元}：$x$, $y$
+  \item \textbf{自由变元}：$z$
+\end{itemize}
+\end{solution}
+
+% 证明题
+\begin{exercise} 第 Y 题
+求证 $(\exists x)(A(x) \rightarrow B(x)) \Leftrightarrow ...$
+\end{exercise}
+
+\begin{Proof}
+左侧 $\Rightarrow$ 右侧：
+
+$(\exists x)(A(x) \rightarrow B(x))$
+&$\Leftrightarrow$ $(\exists x)(\neg A(x) \vee B(x))$ &（蕴含等值）
+...
+\end{Proof}
+```
+
+#### 3.3 解答环境选择
+
+| 环境 | 来源 | 适用场景 | 特点 |
+|------|------|----------|------|
+| `\begin{Proof}...\end{Proof}` | amsthm | 正式数学证明 | 自动加 "Proof." + QED 符号 (□) |
+| `\begin{Solution}...\end{Solution}` | 自定义 | 作业解答 | 只加 "解" 标题，无 QED |
+| `\begin{itemize}...\end{itemize}` | 原生 | 分点列举 | 仅用于辨认/计算题分点 |
+
+---
+
+### 四、符号规范（必须遵守）
+
+| 概念 | 符号 | 命令 |
+|------|------|------|
+| 概率 | $\mathbb{P}(A)$ | `\mathbb{P}(A)` |
+| 期望（单变量） | $\mathbb{E}X$ | `\mathbb{E}X` |
+| 期望（多变量） | $\mathbb{E}(XY)$ | `\mathbb{E}(XY)` |
+| 方差 | $\text{var}(X)$ | `\text{var}` |
+| 协方差 | $\text{cov}(X,Y)$ | `\text{cov}` |
+| 独立性 | $A \Perp B$ | `\Perp` |
+| 示性函数 | $\mathbb{I}(X \in A)$ | `\mathbb{I}` |
+| 向量 | $\mathbf{x}$ | `\mathbf` |
+| 矩阵 | $\boldsymbol{X}$ | `\boldsymbol` |
+
+**禁止**：`\bm{}`（用 `\mathbf`/`\boldsymbol` 替代）
+
+---
+
+### 五、格式红线（绝对禁止）
+
+1. ❌ Markdown 语法：`**加粗**`, `*斜体*`, `- 列表`, `> [!note]`
+2. ❌ Unicode 下标：`n₁` → 必须 `$n_1$`
+3. ❌ 中文弯引号：`""` → 必须 `` '' ``
+4. ❌ 手写公式引用：`式 (★)` → 必须 `\cref{eq:label}`
+5. ❌ Theorem 内使用 itemize → 用 enumerate 替代
+
+---
+
+**最后更新**: 2026-04-03
