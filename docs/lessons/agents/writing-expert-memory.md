@@ -960,7 +960,14 @@ $(\exists x)(A(x) \rightarrow B(x))$
 **日期**: 2026-04-03
 **经历次数**: 1 次 (累计)
 
-**来源**: 用户 2026-spring vault 的 math-booster 插件配置
+**关键区别**:
+
+| 模板 | proof 环境命令 |
+|------|---------------|
+| **amsbook**（我们的笔记模板） | `\begin Proof}...\end Proof}`（大写 P） |
+| **amsart / article / ctexart**（用户的 2026-spring） | `\begin proof}...\end proof}`（小写 p） |
+
+**来源**: amsbook 用大写 Proof；amsart/article/ctexart 用小写 proof
 
 **正确配置** (math-booster data.json):
 ```json
