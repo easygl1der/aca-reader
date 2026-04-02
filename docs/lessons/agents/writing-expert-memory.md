@@ -971,10 +971,10 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 **LaTeX 中的使用**:
 ```latex
-% 标准 amsthm proof 环境
-\begin{Proof}
+% 标准 amsthm proof 环境（注意是小写 p）
+\begin{proof}
 这里是证明内容...
-\end{Proof}
+\end{proof}
 % 自动输出 "Proof." 标题 + □ QED 符号
 ```
 
