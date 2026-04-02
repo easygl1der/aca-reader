@@ -892,11 +892,27 @@ $(\exists x)(A(x) \rightarrow B(x))$
 \end{Proof}
 ```
 
-#### 3.3 解答环境选择
+#### 3.3 Proof 环境（amsthm 自带 QED）
+
+**重要**：`\begin{Proof}...\end{Proof}` 是 amsthm 的标准证明环境，**自动添加 QED 符号 (□) 和 "Proof." 标题**，不需要手动输入。
+
+**错误做法**：手动在证明末尾加 `\qed` 或 `$\square$`——这是冗余的。
+
+**正确写法**：
+```latex
+\begin{Proof}
+证明内容...
+\end{Proof}
+% 证明结束时自动输出 □，无需手动添加
+```
+
+**写作检查时**：检查是否有手动添加 `\qed` 或 `$\square$` 的冗余写法，一经发现应删除。
+
+#### 3.4 解答环境选择
 
 | 环境 | 来源 | 适用场景 | 特点 |
 |------|------|----------|------|
-| `\begin{Proof}...\end{Proof}` | amsthm | 正式数学证明 | 自动加 "Proof." + QED 符号 (□) |
+| `\begin{Proof}...\end{Proof}` | amsthm | 正式数学证明 | 自动加 "Proof." + QED 符号 (□)，禁止手动加 |
 | `\begin{Solution}...\end{Solution}` | 自定义 | 作业解答 | 只加 "解" 标题，无 QED |
 | `\begin{itemize}...\end{itemize}` | 原生 | 分点列举 | 仅用于辨认/计算题分点 |
 
