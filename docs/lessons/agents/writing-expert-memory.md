@@ -720,7 +720,10 @@ Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995} 计数的是......
 \newtheorem{Remark}{注}[chapter]
 \newtheorem{Exercise}{练习}[chapter]
 \newtheorem{Assumption}{假设}[chapter]
-\newtheorem*{Proof}{证明}
+
+% amsthm 自带 \begin{proof}...\end{proof}，无需定义
+% 如需中文标题的 proof 环境（不推荐），用：
+% \newtheorem*{proof*}{证明}  % 注意是小写 proof*
 
 % 用户注解命令
 \newcommand{\userannotation}[2]{%
