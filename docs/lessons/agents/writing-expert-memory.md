@@ -284,7 +284,7 @@ Lemma/Theorem 环境中使用 `\textbf{证明：}` 内联文本，而不是正�
 % 正确 ✅
 \begin{Lemma}
 ...
-\begin{Proof}
+\begin{proof}
 这里是证明内容...
 \end{Proof}
 \end{Lemma}
@@ -295,11 +295,11 @@ Lemma/Theorem 环境中使用 `\textbf{证明：}` 内联文本，而不是正�
 - Lemma 2.5 (line ~1139): 已有 proof 环境
 - Corollary 2.4 (line ~1150): 已有 proof 环境
 - Theorem 2.6: 缺失 `\end{Proof}` → 已修复
-- Theorem 2.7: `\textbf{证明：}` → `\begin{Proof}...\end{Proof}` → 已修复
-- Corollary 1.2: `\textbf{证明：}` → `\begin{Proof}...\end{Proof}` → 已修复
+- Theorem 2.7: `\textbf{证明：}` → `\begin{proof}...\end{Proof}` → 已修复
+- Corollary 1.2: `\textbf{证明：}` → `\begin{proof}...\end{Proof}` → 已修复
 
 **防止措施**:
-- 写 Lemma/Theorem 时直接用 `\begin{Proof}...\end{Proof}`
+- 写 Lemma/Theorem 时直接用 `\begin{proof}...\end{Proof}`
 - 润色后用 `grep '\\textbf{证明：}' file.tex` 检查
 
 
@@ -765,7 +765,7 @@ Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995} 计数的是......
 % 定理
 \begin{Theorem}[名称]\label{def:TheoremName}
 定理内容...
-\begin{Proof}
+\begin{proof}
 证明内容...
 \end{Proof}
 \end{Theorem}
@@ -773,7 +773,7 @@ Gromov-Witten 不变量 \cite{Kontsevich1994,Gromov1995} 计数的是......
 % 引理
 \begin{Lemma}[名称]\label{def:LemmaName}
 引理内容...
-\begin{Proof}
+\begin{proof}
 证明...
 \end{Proof}
 \end{Lemma}
@@ -884,7 +884,7 @@ Let $0A = 2a$ be the diameter...
 求证 $(\exists x)(A(x) \rightarrow B(x)) \Leftrightarrow ...$
 \end{exercise}
 
-\begin{Proof}
+\begin{proof}
 左侧 $\Rightarrow$ 右侧：
 
 $(\exists x)(A(x) \rightarrow B(x))$
@@ -895,13 +895,13 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 #### 3.3 Proof 环境（amsthm 自带 QED）
 
-**重要**：`\begin{Proof}...\end{Proof}` 是 amsthm 的标准证明环境，**自动添加 QED 符号 (□) 和 "Proof." 标题**，不需要手动输入。
+**重要**：`\begin{proof}...\end{Proof}` 是 amsthm 的标准证明环境，**自动添加 QED 符号 (□) 和 "Proof." 标题**，不需要手动输入。
 
 **错误做法**：手动在证明末尾加 `\qed` 或 `$\square$`——这是冗余的。
 
 **正确写法**：
 ```latex
-\begin{Proof}
+\begin{proof}
 证明内容...
 \end{Proof}
 % 证明结束时自动输出 □，无需手动添加
@@ -913,7 +913,7 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 | 环境 | 来源 | 适用场景 | 特点 |
 |------|------|----------|------|
-| `\begin{Proof}...\end{Proof}` | amsthm | 正式数学证明 | 自动加 "Proof." + QED 符号 (□)，禁止手动加 |
+| `\begin{proof}...\end{Proof}` | amsthm | 正式数学证明 | 自动加 "Proof." + QED 符号 (□)，禁止手动加 |
 | `\begin{Solution}...\end{Solution}` | 自定义 | 作业解答 | 只加 "解" 标题，无 QED |
 | `\begin{itemize}...\end{itemize}` | 原生 | 分点列举 | 仅用于辨认/计算题分点 |
 
@@ -989,7 +989,7 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 **验证来源**:
 - `/Users/yueyh/Projects/aca-workflow/PDFs/2025-summer/.obsidian/plugins/math-booster/data.json`
-- 2025-summer 各 .tex 文件均使用 amsthm 标准 `\begin{Proof}...\end{Proof}`
+- 2025-summer 各 .tex 文件均使用 amsthm 标准 `\begin{proof}...\end{Proof}`
 
 ---
 
@@ -997,10 +997,10 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 ### Proof 环境检查
 - [ ] Proof 环境内没有手动添加 `\qed` 或 `$\square$`
-- [ ] Proof 环境使用 `\begin{Proof}...\end{Proof}` 而非 `\textbf{证明：}`
+- [ ] Proof 环境使用 `\begin{proof}...\end{Proof}` 而非 `\textbf{证明：}`
 
 ### 环境选择检查
-- [ ] 证明题 → `\begin{Proof}`
+- [ ] 证明题 → `\begin{proof}`
 - [ ] 作业计算题分点 → `\begin{itemize}`
 - [ ] 作业解答（不带 QED）→ `\begin{Solution}`
 
