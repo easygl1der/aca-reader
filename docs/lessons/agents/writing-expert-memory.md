@@ -1059,4 +1059,136 @@ aliases:
 ==高亮文本==                  # 高亮语法
 $e^{i\pi} + 1 = 0$          # 行内公式
 $$ \frac{a}{b} = c $$        # 独立公式（LaTeX）
-```  ```
+---
+
+### 六、Obsidian Markdown 规范（Obsidian作业解答）
+
+#### 6.1 作业解答 Markdown 格式（不用 callout 块）
+
+从 `hw4_solutions.md` 观察到的实际格式：
+
+```markdown
+## Problem 1d (Section 2-4)
+
+**Problem statement:** Identify bound and free variables in: `(∃x)(∃y)(P(x,y) ∧ Q(z))`
+
+**Solution:**
+
+- `x` is bound by the existential quantifier `(∃x)`
+- `y` is bound by the existential quantifier `(∃y)`
+- `z` is **free** (not bound by any quantifier)
+
+**Answer:** Bound variables: `x`, `y`; Free variable: `z`
+```
+
+**解答步骤格式**：
+```markdown
+**Step 1:** Evaluate `P`
+- P: 2 > 1 is **TRUE**
+
+**Step 2:** Evaluate `(∀x)(P → Q(x))`
+...
+```
+
+**注意**：作业解答不使用 callout 块，直接用 Markdown 标题和加粗/列表。
+
+#### 6.2 Callout 块类型
+
+**常用 Obsidian callout**：
+| 类型 | 用途 |
+|------|------|
+| `> [!note]` | 普通笔记、说明 |
+| `> [!info]` | 信息提示 |
+| `> [!tip]` | 技巧、提示 |
+| `> [!warning]` | 警告 |
+| `> [!example]` | 示例 |
+
+**学术/作业专用 callout**（需要自定义 CSS）：
+| 类型 | 用途 | 使用场景 |
+|------|------|----------|
+| `> [!exr]` | 习题/作业题 | 每个题目单独一个 block |
+| `> [!solution]` | 解答 | 习题解答，独立成 block |
+| `> [!def]` | 定义 | 关键概念定义 |
+| `> [!thm]` | 定理 | 重要定理 |
+| `> [!lemma]` | 引理 | 辅助性定理 |
+| `> [!proof]` | 证明 | 完整证明过程 |
+| `> [!rmk]` | 备注 | 补充说明、解释 |
+| `> [!cor]` | 推论 | 定理的推论 |
+
+#### 6.3 作业文件模板（Callout 风格）
+
+```markdown
+> [!exr] Problem X.X
+> **Section X.X** — *Title*
+>
+> 题目内容...
+
+> [!solution] Solution to Problem X.X
+>
+> **Step 1:** ...
+> **Step 2:** ...
+> Therefore, ...
+```
+
+**多部分题目格式**：
+```markdown
+> [!exr] Part 2 · (a)
+> 子问题内容...
+
+> [!solution] Solution to Part 2(a)
+> 解答...
+
+---
+
+> [!exr] Part 2 · (b)
+> ...
+
+> [!solution] Solution to Part 2(b)
+> ...
+```
+
+#### 6.4 Obsidian 链接与嵌入
+
+| 语法 | 用途 |
+|------|------|
+| `[[Note Name]]` | 链接到笔记 |
+| `[[Note Name\|显示文本]]` | 自定义显示文本 |
+| `[[Note#Heading]]` | 链接到章节 |
+| `![[image.png]]` | 嵌入图片 |
+| `![[document.pdf#page=3]]` | 嵌入 PDF 页 |
+| `[[Note#^block-id]]` | 链接到块 ID |
+
+#### 6.5 Obsidian 属性（Frontmatter）
+
+```yaml
+---
+title: 笔记标题
+date: 2024-01-15
+tags:
+  - 标签1
+  - nested/tag2
+aliases:
+  - 备用名称
+---
+```
+
+#### 6.6 常用格式
+
+```markdown
+==高亮文本==                  # 高亮语法
+$e^{i\pi} + 1 = 0$          # 行内公式
+$$ \frac{a}{b} = c $$        # 独立公式（LaTeX）
+```
+
+---
+
+### 七、Obsidian 写作检查清单
+
+- [ ] 无 Unicode 下标：$x_1$ 而非 x₁
+- [ ] 无中文弯引号：`""` → `''` 或英文引号
+- [ ] 长公式在逻辑断点（`∨`, `∧`, `→`）处用 `\\` 换行
+- [ ] 图片用 `![[path.png]]` 而非 `![](path)`
+- [ ] Callout 之间用 `---` 分隔
+- [ ] 证明题完整呈现直觉、推导、结论
+- [ ] 解答放在独立的 solution block 内（非嵌套在 exercise 内）
+
