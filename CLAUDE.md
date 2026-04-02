@@ -54,7 +54,7 @@
 3. 使用 `\subsection{标题}\label{sec:qa-xxx}`
 4. 正文用 `\footnote{问：...？见附录 \cref{sec:qa-xxx}}`
 5. 重新编译 PDF
-- 详见: `docs/qa-workflow.md`
+- ✅ 详细规范见 `.claude/rules/qa-workflow.rules`
 
 ### 引用补充规范（核心习惯！）⚠️
 当正文中引用了某个定理/定义/例子（如 `\cite{xxx}` 或直接引用某文献的 Theorem/Lemma），但**没有给出该定理/定义/例子的具体内容**时，必须执行：
