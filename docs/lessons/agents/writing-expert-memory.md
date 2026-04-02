@@ -960,9 +960,15 @@ $(\exists x)(A(x) \rightarrow B(x))$
 **日期**: 2026-04-03
 **经历次数**: 1 次 (累计)
 
-**来源**: 从 2025-summer 文件夹的 math-booster 插件配置中确认
+**来源**: 用户 2026-spring vault 的 math-booster 插件配置
 
 **正确配置** (math-booster data.json):
+```json
+"beginProof": "\\begin proof}",
+"endProof": "\\end proof}"
+```
+
+以及 Obsidian callout 中的 proof 格式：
 ```json
 "proof": {
   "begin": "Proof.",
@@ -975,9 +981,9 @@ $(\exists x)(A(x) \rightarrow B(x))$
 **LaTeX 中的使用**:
 ```latex
 % 标准 amsthm proof 环境（注意是小写 p）
-\begin{proof}
+\begin proof}
 这里是证明内容...
-\end{proof}
+\end proof}
 % 自动输出 "Proof." 标题 + □ QED 符号
 ```
 
@@ -986,12 +992,12 @@ $(\exists x)(A(x) \rightarrow B(x))$
 - 结束符号: `□`
 
 **关键要点**:
-1. amsthm 的 `proof` 环境（小写）**自带** "Proof." 标题和 □ QED 符号
+1. amsthm 的 `proof` 环境（小写 p）**自带** "Proof." 标题和 □ QED 符号
 2. 禁止在 proof 环境内手动添加 `\qed` 或 `$\square$`
 3. Obsidian callout 格式中 proof 的 begin text 是 "Proof."，end text 是 "□"
 
 **验证来源**:
-- `/Users/yueyh/Projects/aca-workflow/PDFs/2025-summer/.obsidian/plugins/math-booster/data.json`
+- `/Users/yueyh/Library/Mobile Documents/iCloud~md~obsidian/Documents/2026-spring/.obsidian/plugins/math-booster/data.json`
 - 2025-summer 各 .tex 文件均使用 amsthm 标准 `\begin{proof}...\end{proof}`
 
 ---
