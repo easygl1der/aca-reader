@@ -951,15 +951,44 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 ---
 
-## 待补充：latex like thm & eq 插件文档
+## L715: Proof 环境配置（来自 math-booster 插件）
 
-**状态**: 待查阅
+**日期**: 2026-04-03
+**经历次数**: 1 次 (累计)
 
-**问题**: 用户指出 proof 环境的使用方式应以 "latex like thm & eq" 插件文档为准，但该插件位于 Google Drive，连接超时无法访问。
+**来源**: 从 2025-summer 文件夹的 math-booster 插件配置中确认
 
-**下一步**:
-- 联系 team-lead 获取插件文档路径
-- 或请用户直接告知该插件中关于 Proof 环境的用法
+**正确配置** (math-booster data.json):
+```json
+"proof": {
+  "begin": "Proof.",
+  "end": "□",
+  "linkedBeginPrefix": "Proof of ",
+  "linkedBeginSuffix": "."
+}
+```
+
+**LaTeX 中的使用**:
+```latex
+% 标准 amsthm proof 环境
+\begin{Proof}
+这里是证明内容...
+\end{Proof}
+% 自动输出 "Proof." 标题 + □ QED 符号
+```
+
+**Obsidian callout 中的对应写法**:
+- 标题: `Proof.`
+- 结束符号: `□`
+
+**关键要点**:
+1. amsthm 的 `Proof` 环境**自带** "Proof." 标题和 □ QED 符号
+2. 禁止在 Proof 环境内手动添加 `\qed` 或 `$\square$`
+3. Obsidian callout 格式中 proof 的 begin text 是 "Proof."，end text 是 "□"
+
+**验证来源**:
+- `/Users/yueyh/Projects/aca-workflow/PDFs/2025-summer/.obsidian/plugins/math-booster/data.json`
+- 2025-summer 各 .tex 文件均使用 amsthm 标准 `\begin{Proof}...\end{Proof}`
 
 ---
 
