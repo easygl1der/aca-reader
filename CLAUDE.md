@@ -41,7 +41,7 @@
 ### Git 大文件禁止
 - ❌ 禁止 git 处理 >50MB 文件
 - ❌ 禁止 `git lfs` / `filter-repo` / force push
-- 详见: `docs/git-rules.md`
+- ✅ 详细规范见 `.claude/rules/git-workflow.rules`
 
 ### 编译规范
 - 必须使用各目录的 `compile.sh`（xelatex, 3次）
