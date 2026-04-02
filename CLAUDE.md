@@ -29,6 +29,17 @@
 - ✅ 原因：清除缓存会丢失 Google 账号登录状态，导致 Gemini 无法使用
 - ✅ 如需释放空间，使用 `pkill -f ms-playwright` 而非删除缓存
 
+### `/btw` 历史存储
+- `/btw` 条目在会话结束时自动保存为 JSON
+- 存储位置: `.claude/btw-history/<session-id>.json`
+- 格式: `[{timestamp, btw_message, session_id}]`
+- 示例:
+  ```json
+  [
+    {"timestamp": "2026-04-02T07:00:29.554Z", "btw_message": "remember to check this", "session_id": "c838b33a-..."}
+  ]
+  ```
+
 ### LaTeX 格式红线
 - ❌ 禁止 Markdown 语法在 .tex 文件中: `**加粗**`, `*斜体*`, `- 列表`, `> [!note]`
 - ❌ 禁止 `\bm` — 向量用 `\mathbf`，矩阵用 `\boldsymbol`
