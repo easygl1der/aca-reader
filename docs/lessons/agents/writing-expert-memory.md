@@ -951,6 +951,18 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 ---
 
+## 待补充：latex like thm & eq 插件文档
+
+**状态**: 待查阅
+
+**问题**: 用户指出 proof 环境的使用方式应以 "latex like thm & eq" 插件文档为准，但该插件位于 Google Drive，连接超时无法访问。
+
+**下一步**:
+- 联系 team-lead 获取插件文档路径
+- 或请用户直接告知该插件中关于 Proof 环境的用法
+
+---
+
 ## 附录：写作检查清单（每次润色时执行）
 
 ### Proof 环境检查
