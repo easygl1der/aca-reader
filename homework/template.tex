@@ -1,0 +1,137 @@
+% SYSU Branded Homework Template
+% Modified from UNICHRISTUS template for XeLaTeX
+% Requires XeLaTeX engine
+
+% xeCJK and fontspec MUST be loaded before documentclass for proper CJK font setup
+\usepackage{fontspec}
+\usepackage{xeCJK}
+
+% Set main font for English text
+\setmainfont{Times New Roman}
+
+% Set Chinese font (Source Han Serif CN / 思源宋体)
+\setCJKmainfont{Source Han Serif CN}[%
+  BoldFont={Source Han Serif CN Bold}
+]
+
+% Load the UNICHRISTUS document class (after fontspec/xeCJK)
+% Note: unichristusdoc.cls uses \LoadClass{article}, so we use \documentclass[...]{article}
+% with matching options to avoid conflicts
+\documentclass[onecolumn, a4paper]{article}
+\makeatletter
+\@ifpackageloaded{unichristusdoc}{}{\RequirePackage{unichristusdoc}}
+\makeatother
+
+% Override university name
+\def\university{Sun Yat-sen University (中山大学)}
+
+% Logo path relative to subject subdirectories (where .tex file will be placed)
+% From e.g. ~/aca-reader/homework/causal-inference/homework.tex
+% the logo is at ~/aca-reader/homework/sysu-logo.pdf = ../homework/sysu-logo.pdf
+\def\@logoPath{../homework/sysu-logo.pdf}
+
+% Course code placeholder
+\def\codeCourse{{COURSE_CODE}}
+
+% Student information (customizable fields)
+\def\course{{COURSE_NAME}}
+\def\prof{{PROFESSOR}}
+\def\semester{{SEMESTER}}
+\def\registration{23363017}
+\def\student{乐绎华}
+\def\graduate{School of Mathematics}
+\def\theme{}
+
+% Redefine makeheader to use SYSU logo and English labels
+\makeatletter
+\let\old@makeheader\makeheader
+\def\makeheader{%
+  \begin{table}
+    \fontsize{0.38cm}{0.5cm}\selectfont
+    \begin{tabular}{|l|p{11.7cm}|p{4cm}|}
+      \hline
+      \multirow{6}{*}{*}{\includegraphics[scale=0.6]{\@logoPath}} &
+      \multicolumn{2}{l|}{\textbf{\university}} \\ \cline{2-3}
+      & \textbf{Course:} \course{} & \textbf{Code:} \codeCourse{} \\ \cline{2-3}
+      & \multicolumn{2}{l|}{\textbf{Professor:} \prof{}} \\ \cline{2-3}
+      & \multicolumn{2}{l|}{\textbf{Semester:} \semester{}} \\ \cline{2-3}
+      & \textbf{Student:} \student{} & \textbf{ID:} \registration{} \\ \cline{2-3}
+      & \multicolumn{2}{l|}{\textbf{School:} \graduate{}} \\ \hline
+    \end{tabular}
+  \end{table}
+  \fontsize{0.38cm}{0.5cm}\selectfont
+  \begin{center}
+    \centering{\textbf{\theme{}}}
+  \end{center}
+}
+\makeatother
+
+\begin{document}
+  \makeheader
+
+  % Instructions
+  \fbox{
+    \parbox{\textwidth}{
+      \begin{minipage}{\textwidth}
+        \makeinstructions
+        {
+          \begin{instlist}
+            \item Fill in the header with your personal information.
+            \item All answer sheets must include your name and student ID.
+            \item Write answers using a black or blue pen.
+          \end{instlist}
+        }
+      \end{minipage}
+    }
+  }
+  \vspace*{1cm}
+
+  % Question instructions
+  \fbox{
+    \parbox{\textwidth}{
+      \begin{minipage}{\textwidth}
+        \titlequestion
+        {
+          \begin{questinst}
+            \item Read each question carefully.
+            \item Show all your work.
+            \item Write your answers clearly.
+          \end{questinst}
+        }
+      \end{minipage}
+    }
+  }
+
+  % Exercises will be added here using \problem and \subproblem commands
+  \problem Example problem.\points{3}
+  \subproblem Example subproblem.
+
+  \vspace{1cm}
+  \problem Another example with points.\points{4}
+
+  \vspace{1cm}
+  \problem An example with an answer.\points{3}
+  \answer This is the answer.
+
+  \vspace{1cm}
+  \problem An example with a hint.\points{3}
+  \hint{Think about the definition carefully.}
+
+  % Examples of theorem-like environments
+  \begin{homeworkthm}[Theorem Name]
+    This is a numbered theorem environment.
+  \end{homeworkthm}
+
+  \begin{homeworklem}
+    This is a numbered lemma.
+  \end{homeworklem}
+
+  \begin{homeworkdef}
+    This is a numbered definition.
+  \end{homeworkdef}
+
+  \begin{homeworkex}
+    This is a numbered example.
+  \end{homeworkex}
+
+\end{document}
