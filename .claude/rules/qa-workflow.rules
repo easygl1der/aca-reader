@@ -1,0 +1,53 @@
+# QA Workflow Rules
+
+---
+
+## MANDATORY: After Every User Question
+
+After answering a user question, you MUST execute:
+
+1. **Answer user** in conversational tone
+2. **Record to `appendix/qa.tex`** (REQUIRED, don't forget!)
+3. **Add footnote reference** in main text at first occurrence
+4. **Recompile PDF**
+
+## QA FORMAT (MANDATORY)
+
+```latex
+\subsection{Question Title}\label{sec:qa-descriptive-key}
+
+\textbf{问}：User's question?
+
+\textbf{答}：Answer content...
+```
+
+## FOOTNOTE REFERENCE FORMAT
+
+```latex
+...concept...\footnote{问：What is X? 见附录 \cref{sec:qa-descriptive-key}。}
+```
+
+## TOPIC → QA FILE MAPPING
+
+| Topic | QA File |
+|-------|---------|
+| 因果推断 | notes/A-First-Course-in-Causal-Inference/appendix/qa.tex |
+| 微分几何 | notes/differential-geometry/do-carmo-curves-surfaces/appendix/qa.tex |
+| 贝叶斯统计 | notes/bayesian/appendix/qa.tex |
+| 信息几何 | notes/information-geometry/appendix/qa.tex |
+| Schubert演算 | notes/Schubert-Polynomials/appendix/qa.tex |
+
+## TOPIC → EXPERT MAPPING
+
+| Topic | Expert Agent |
+|-------|--------------|
+| 因果推断 | causal-expert |
+| 微分几何 | geometry-expert |
+| 贝叶斯统计 | bayesian-expert |
+| 信息几何 | info-geo-expert |
+| Schubert | schubert-expert |
+
+## FALLBACK MECHANISM
+
+- If expert unresponsive, answer directly as fallback
+- Complex questions: trigger `/gemini-browser-chat` for comprehensive answer

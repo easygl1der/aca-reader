@@ -1,0 +1,53 @@
+# Git Workflow Rules
+
+---
+
+## GIT COMMIT RULES
+
+- Commit after each successful compilation (LaTeX notes)
+- Commit after updating docs/
+- Commit style: concise description of what changed
+
+## GIT WORKTREE SAFETY (MANDATORY!)
+
+**Use git worktree for isolation when:**
+- Handling files >50MB
+- Executing destructive operations: `filter-repo`, `rebase`, `reset --hard`
+- Any operation that might affect main branch
+- Uncertain about operation safety
+
+**Procedure:**
+```bash
+# Create isolated worktree
+git worktree add ../workspace-backup -b backup-branch
+
+# Operate in worktree
+cd ../workspace-backup
+# Execute dangerous operation...
+
+# If safe: merge back
+git merge backup-branch
+
+# If unsafe: remove worktree
+git worktree remove ../workspace-backup
+git worktree prune
+```
+
+## BIG FILE PROHIBITIONS (ABSOLUTE!)
+
+- NO git handling of files >50MB
+- NO `git filter-repo` (rewrites history, deletes all paths except specified)
+- NO `git lfs track` / `git lfs install` / any git lfs commands
+- NO `git add` large files then commit
+- NO pushing files >100MB to GitHub (pre-receive hook rejection)
+
+**If you need to handle large files:**
+1. Do NOT commit to git
+2. Backup to Google Drive or external storage
+3. Or ask user explicitly before any operation
+
+**Why (2026-03-19 lesson):**
+- `filter-repo --path A --path B` is WHITELIST mode — deletes all history except A and B
+- `git lfs` DELETES local large file after `git add`, keeps only 134-byte pointer
+- Files >100MB get REJECTED by GitHub pre-receive hook
+- If push fails after `git add` + `git commit`, local file is already deleted by lfs

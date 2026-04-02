@@ -1,0 +1,125 @@
+# Note Directory Structure Rules
+
+paths:
+  - "notes/**/*"
+
+---
+
+## DIRECTORY STRUCTURE
+
+Each topic folder must follow this structure:
+```
+notes/<topic>/
+├── <topic>-notes.tex      # Main entry (NOT main.tex)
+├── compile.sh             # Compilation script
+├── progress.json           # Reading progress
+├── chapters/
+│   ├── chapter0.tex      # Literature overview (REQUIRED)
+│   ├── chapter1.tex      # Chapter 1
+│   └── ...
+└── appendix/
+    └── qa.tex            # Q&A records (REQUIRED)
+```
+
+### Multi-Part Books (e.g., do Carmo)
+```
+notes/differential-geometry/
+├── differential-geometry-notes.tex
+├── compile.sh
+└── do-carmo-curves-surfaces/          # Part I
+    ├── do-carmo-curves-surfaces-notes.tex
+    └── chapters/chapter1.tex
+```
+
+## CHAPTER0 LITERATURE OVERVIEW FORMAT
+
+```latex
+\chapter*{引言：文献概述}\label{chap:introduction}
+\addcontentsline{toc}{chapter}{引言：文献概述}
+```
+
+### Content Structure (in order)
+1. **总述** - Background and motivation for learning this topic
+2. **文献摘要总结** - Details of each paper
+3. **补充参考资料** - Other relevant books/papers
+4. **学习路径与前置基础知识** - Prerequisites
+5. **最终目标** - Learning objectives
+
+### Each Paper Format
+```latex
+\subsection{Paper Title}
+\begin{enumerate}
+    \item \textbf{作者:} Author names
+    \item \textbf{链接:} \url{arxiv.org/abs/...} or DOI
+    \item \textbf{年份:} 20XX
+    \item \textbf{篇幅:} XX pages
+    \item \textbf{核心贡献:}
+        \begin{itemize}
+            \item Contribution 1
+            \item Contribution 2
+        \end{itemize}
+    \item \textbf{摘要:} Abstract content...
+    \item \textbf{关键词:} Keyword1; Keyword2; Keyword3
+\end{enumerate}
+```
+
+## COMPILE.SH SCRIPT
+
+```bash
+#!/bin/bash
+FILE="causal-inference-notes"
+
+for i in 1 2 3; do
+    xelatex -interaction=nonstopmode "$FILE.tex" > /dev/null 2>&1
+done
+
+open -a Skim "$FILE.pdf"
+```
+
+## USER ANNOTATION COMMAND
+
+```latex
+\newcommand{\userannotation}[2]{%
+  \begin{Remark}
+    \textbf{#1:} #2
+  \end{Remark}
+}
+```
+
+Usage:
+```latex
+\userannotation{问题}{这是用户提问的内容}
+\userannotation{思考}{这是用户的思考记录}
+```
+
+## HOMEWORK PATH
+
+Homework files location:
+`/Users/yueyh/Library/CloudStorage/GoogleDrive-easyasy@gmail.com/My Drive/homework`
+
+## HOMEWORK FILE FORMAT (Obsidian callout)
+
+```markdown
+> [!exr] Problem X.X
+> **Section X.X** — *Title*
+>
+> 题目内容...
+
+> [!exr] Part 2 · (a)
+> 子问题内容...
+
+> [!solution] Solution to Part 2(a)
+> 解答内容...
+```
+
+## OBSIDIAN CALLOUT → LATEX MAPPING
+
+| Obsidian | LaTeX |
+|----------|-------|
+| `> [!note]` | `\begin{note}...\end{note}` |
+| `> [!example]` | `\begin{Example}[名称]...\end{Example}` |
+| `> [!thm]` | `\begin{Theorem}[名称]...\end{Theorem}` |
+| `> [!def]` | `\begin{Definition}[名称]...\end{Definition}` |
+| `> [!exr]` | `\begin{Exercise}{题号}...\end{Exercise}` |
+| `> [!solution]` | `\begin{Proof}...\end{Proof}` |
+| `> [!rmk]` | `\begin{Remark}...\end{Remark}` |

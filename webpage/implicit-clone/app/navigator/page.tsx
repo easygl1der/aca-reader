@@ -159,16 +159,16 @@ export default function NavigatorPage() {
               animate={{ width: 280, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="bg-white border-r border-gray-200 flex flex-col overflow-hidden"
+              className="bg-white border-r border-gray-200 flex flex-col h-full"
             >
               {/* Sidebar Header */}
-              <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+              <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
                 <h2 className="font-semibold text-gray-900">Nodes</h2>
                 <span className="text-xs text-gray-500">{nodes.length}</span>
               </div>
 
               {/* Filter Section */}
-              <div className="px-4 py-2 border-b border-gray-100">
+              <div className="px-4 py-2 border-b border-gray-100 flex-shrink-0">
                 <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                   <Filter className="w-3.5 h-3.5" />
                   <span>Filter</span>
