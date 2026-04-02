@@ -1,7 +1,7 @@
 # 写作专家教训记忆
 
 **适用对象**: writing-expert, writing-expert-2, writing-expert-3
-**最后更新**: 2026-03-30
+**最后更新**: 2026-04-03
 
 ---
 
