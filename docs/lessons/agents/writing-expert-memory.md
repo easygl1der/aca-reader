@@ -999,9 +999,10 @@ $(\exists x)(A(x) \rightarrow B(x))$
 - 结束符号: `□`
 
 **关键要点**:
-1. amsthm 的 `proof` 环境（小写 p）**自带** "Proof." 标题和 □ QED 符号
+1. amsthm 的 proof 环境**自带** "Proof." 标题和 □ QED 符号
 2. 禁止在 proof 环境内手动添加 `\qed` 或 `$\square$`
-3. Obsidian callout 格式中 proof 的 begin text 是 "Proof."，end text 是 "□"
+3. amsbook 用大写 Proof，其他模板（amsart/article/ctexart）用小写 proof
+4. 先检查目标 .tex 文件的 documentclass，确定用大写还是小写
 
 **验证来源**:
 - `/Users/yueyh/Library/Mobile Documents/iCloud~md~obsidian/Documents/2026-spring/.obsidian/plugins/math-booster/data.json`
