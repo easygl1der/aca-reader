@@ -112,18 +112,21 @@
 
 ## 📚 规范文档索引
 
+### `.claude/rules/` — 自动加载的规则（核心！）
+
+| 文件 | 作用域 | 内容 |
+|------|--------|------|
+| `latex-tex.rules` | 所有 .tex 文件 | LaTeX 语法、习题格式、数学符号、引用规范 |
+| `git-workflow.rules` | 全局 | Git 规范、大文件禁止、worktree 安全 |
+| `qa-workflow.rules` | 全局 | QA 记录流程、脚注格式 |
+| `note-structure.rules` | notes/** | 目录结构、chapter0 格式、Obsidian callout |
+
+### `docs/` — 完整参考文档
+
 | 文件 | 内容 |
 |------|------|
-| `docs/latex-style.md` | LaTeX 格式规范、数学符号 |
-| `docs/stein-writing-style.md` | Stein 写作风格、推导→附录规则 |
-| `docs/exercise-format.md` | 习题格式 (book/Peng Ding 模板) |
-| `docs/exercise-workflow.md` | 章节写作工作流 |
-| `docs/obsidian-blocks.md` | Obsidian callout 块 |
-| `docs/label-reference.md` | label/cref 引用规范 |
-| `docs/structure.md` | 目录结构规范、文献库、PDF命名 |
-| `docs/qa-workflow.md` | QA 记录工作流 |
+| `docs/stein-writing-style.md` | Stein 写作风格、推导→附录规则（详细） |
 | `docs/learning-philosophy.md` | 学习理念 |
-| `docs/git-rules.md` | Git 规范 |
 | `docs/team-lead-protocol.md` | Team Lead 协议、PUA 注入 |
 | `docs/hooks-subagent.md` | Hooks 与 Subagent 自动化 |
 | `docs/progress.md` | 主题进度 |
