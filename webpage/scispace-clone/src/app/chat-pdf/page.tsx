@@ -2,10 +2,12 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Upload, Library, FileText } from 'lucide-react';
+import { Upload, Library, FileText, File, FileDown } from 'lucide-react';
 import { useChatStore } from '@/store/use-chat-store';
 import UploadZone from '@/components/chat-pdf/upload-zone';
 import ChatArea from '@/components/chat-pdf/chat-area';
+import LibrarySidebar from '@/components/chat-pdf/library-sidebar';
+import MarkdownViewer from '@/components/chat-pdf/markdown-viewer';
 
 // Dynamic import for PdfViewer with ssr disabled (pdfjs-dist requires browser APIs)
 const PdfViewer = dynamic(
@@ -23,6 +25,7 @@ const PdfViewer = dynamic(
 export default function ChatPdfPage() {
   const [mounted, setMounted] = useState(false);
   const [showUploadZone, setShowUploadZone] = useState(true);
+  const [showLibrary, setShowLibrary] = useState(true);
 
   const {
     pdfFile,
@@ -30,11 +33,21 @@ export default function ChatPdfPage() {
     currentPage,
     totalPages,
     scope,
+    viewMode,
+    markdownContent,
+    library,
+    currentItem,
+    transcriptionStatus,
     setPdfFile,
     setPdfUrl,
     setCurrentPage,
     setTotalPages,
     setScope,
+    setViewMode,
+    setMarkdown,
+    addToLibrary,
+    selectItem,
+    setTranscriptionStatus,
   } = useChatStore();
 
   // Handle hydration
@@ -58,20 +71,28 @@ export default function ChatPdfPage() {
         const loadingTask = pdfjsLib.getDocument(url);
         const pdf = await loadingTask.promise;
         setTotalPages(pdf.numPages);
+
+        // Add to library
+        addToLibrary(file, url, pdf.numPages);
       } catch (error) {
         console.error('Error loading PDF:', error);
       }
     },
-    [setPdfFile, setPdfUrl, setTotalPages]
+    [setPdfFile, setPdfUrl, setTotalPages, addToLibrary]
   );
 
   const handleUploadClick = () => {
     setShowUploadZone(true);
+    setShowLibrary(false);
+    selectItem(null);
   };
 
   const handleLibraryClick = () => {
-    // Mock library action
-    alert('Library feature coming soon!');
+    setShowLibrary(!showLibrary);
+  };
+
+  const handleViewModeToggle = (mode: 'pdf' | 'markdown') => {
+    setViewMode(mode);
   };
 
   if (!mounted) {
@@ -94,7 +115,7 @@ export default function ChatPdfPage() {
               flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium
               transition-all duration-200
               ${
-                showUploadZone
+                showUploadZone && !pdfUrl
                   ? 'bg-violet-600 text-white'
                   : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
               }
@@ -105,14 +126,63 @@ export default function ChatPdfPage() {
           </button>
           <button
             onClick={handleLibraryClick}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium
-              bg-zinc-800 text-zinc-300 hover:bg-zinc-700
-              transition-all duration-200"
+            className={`
+              flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium
+              transition-all duration-200
+              ${
+                showLibrary
+                  ? 'bg-violet-600 text-white'
+                  : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+              }
+            `}
           >
             <Library className="w-4 h-4" />
             My Library
+            {library.length > 0 && (
+              <span className="ml-1 px-1.5 py-0.5 bg-violet-500/30 text-violet-300 text-xs rounded-md">
+                {library.length}
+              </span>
+            )}
           </button>
         </div>
+
+        {/* Center - View mode toggle (when document is loaded) */}
+        {currentItem && (
+          <div className="flex items-center gap-1 p-1 bg-zinc-800 rounded-xl">
+            <button
+              onClick={() => handleViewModeToggle('pdf')}
+              className={`
+                flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
+                transition-all duration-200
+                ${
+                  viewMode === 'pdf'
+                    ? 'bg-violet-600 text-white'
+                    : 'text-zinc-400 hover:text-white'
+                }
+              `}
+            >
+              <File className="w-4 h-4" />
+              PDF
+            </button>
+            <button
+              onClick={() => handleViewModeToggle('markdown')}
+              disabled={transcriptionStatus !== 'done'}
+              className={`
+                flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium
+                transition-all duration-200
+                ${
+                  viewMode === 'markdown'
+                    ? 'bg-violet-600 text-white'
+                    : 'text-zinc-400 hover:text-white'
+                }
+                ${transcriptionStatus !== 'done' ? 'opacity-50 cursor-not-allowed' : ''}
+              `}
+            >
+              <FileDown className="w-4 h-4" />
+              Markdown
+            </button>
+          </div>
+        )}
 
         {/* Right side - Scope toggles */}
         <div className="flex items-center gap-1 p-1 bg-zinc-800 rounded-xl">
@@ -147,12 +217,20 @@ export default function ChatPdfPage() {
         </div>
       </div>
 
-      {/* Main Content - Two Panel Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 min-h-0">
-        {/* Left Panel - PDF Viewer */}
-        <div className="flex-1 lg:w-1/2 min-h-[300px] lg:min-h-0">
+      {/* Main Content - Three Panel Layout */}
+      <div className="flex-1 flex min-h-0">
+        {/* Library Sidebar */}
+        {showLibrary && (
+          <div className="w-72 flex-shrink-0 border-r border-zinc-700">
+            <LibrarySidebar onUploadClick={handleUploadClick} />
+          </div>
+        )}
+
+        {/* Document Viewer Area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Show Upload Zone when uploading and no PDF selected */}
           {showUploadZone && !pdfUrl ? (
-            <div className="h-full flex flex-col">
+            <div className="flex-1 flex flex-col p-4 min-h-0">
               <UploadZone onFileSelect={handleFileSelect} />
 
               {/* Show current PDF info if loaded */}
@@ -181,19 +259,44 @@ export default function ChatPdfPage() {
                 </div>
               )}
             </div>
+          ) : currentItem ? (
+            /* View toggle between PDF and Markdown */
+            viewMode === 'pdf' ? (
+              <div className="flex-1 p-4 min-h-0">
+                <PdfViewer
+                  pdfUrl={currentItem.url}
+                  currentPage={currentPage}
+                  totalPages={currentItem.totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+            ) : (
+              <div className="flex-1 p-4 min-h-0">
+                <MarkdownViewer
+                  content={markdownContent}
+                  isLoading={transcriptionStatus === 'processing'}
+                />
+              </div>
+            )
           ) : (
-            <PdfViewer
-              pdfUrl={pdfUrl}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            /* No document selected */
+            <div className="flex-1 flex items-center justify-center">
+              <div className="text-center">
+                <FileText className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                <p className="text-zinc-400 text-lg mb-2">
+                  No document selected
+                </p>
+                <p className="text-zinc-500 text-sm">
+                  Upload a PDF or select one from your library
+                </p>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Right Panel - Chat Area */}
-        <div className="flex-1 lg:w-1/2 min-h-[400px] lg:min-h-0">
-          <ChatArea pdfFileName={pdfFile?.name || null} />
+        {/* Chat Area */}
+        <div className="w-[400px] flex-shrink-0 border-l border-zinc-700 p-4">
+          <ChatArea pdfFileName={currentItem?.name || pdfFile?.name || null} />
         </div>
       </div>
     </div>

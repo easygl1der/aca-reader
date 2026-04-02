@@ -35,7 +35,7 @@ export default function RootLayout({
           <Sidebar />
 
           {/* Main content area */}
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col overflow-hidden ml-16">
             {/* Header */}
             <Header />
 
