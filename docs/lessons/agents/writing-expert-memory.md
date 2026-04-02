@@ -948,3 +948,23 @@ $(\exists x)(A(x) \rightarrow B(x))$
 ---
 
 **最后更新**: 2026-04-03
+
+---
+
+## 附录：写作检查清单（每次润色时执行）
+
+### Proof 环境检查
+- [ ] Proof 环境内没有手动添加 `\qed` 或 `$\square$`
+- [ ] Proof 环境使用 `\begin{Proof}...\end{Proof}` 而非 `\textbf{证明：}`
+
+### 环境选择检查
+- [ ] 证明题 → `\begin{Proof}`
+- [ ] 作业计算题分点 → `\begin{itemize}`
+- [ ] 作业解答（不带 QED）→ `\begin{Solution}`
+
+### 格式红线检查
+- [ ] 无 Markdown 语法
+- [ ] 无 Unicode 下标
+- [ ] 无中文弯引号
+- [ ] 公式引用用 `\cref{eq:label}` 而非 `式 (★)`
+- [ ] Theorem 内用 enumerate 而非 itemize
