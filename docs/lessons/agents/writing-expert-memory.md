@@ -943,6 +943,7 @@ $(\exists x)(A(x) \rightarrow B(x))$
 3. ❌ 中文弯引号：`""` → 必须 `` '' ``
 4. ❌ 手写公式引用：`式 (★)` → 必须 `\cref{eq:label}`
 5. ❌ Theorem 内使用 itemize → 用 enumerate 替代
+6. ❌ 手动添加 QED：Proof 环境自带 QED 符号，手动加 `\qed` 或 `$\square$` 是冗余的
 
 ---
 
