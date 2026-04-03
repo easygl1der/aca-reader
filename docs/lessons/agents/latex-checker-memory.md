@@ -427,7 +427,7 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 ## L912: solution vs proof 环境选择规则
 
 **日期**: 2026-04-03
-**经历次数**: 1 次 (累计)
+**经历次数**: 2 次 (累计)
 
 **规则**：
 - 问题**不涉及证明** → 用 `solution` 环境
@@ -436,26 +436,31 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 
 **正确做法**：
 ```latex
+% 定义时用 \newtheorem* 让 solution 无编号
+\newtheorem{exercise}{习题}
+\newtheorem*{solution}{解答}
+
 % 非证明题 → solution 环境，无编号
 \begin{solution}
 ...
 \end{solution}
 
-% 证明题 → proof 环境，无编号
-\begin{proof}
+% 证明题 → proof 环境，无编号（amsthm 自动带 "Proof." 标题和 ∎）
+\begin proof}
 ...
 \end proof}
 ```
 
-**注意**：`proof` 环境来自 `amsthm` 包，自动带有 "Proof." 标题和 ∎ 结尾符号。
+**注意**：
+- `proof` 环境来自 `amsthm` 包，自动带有 "Proof." 标题和 ∎ 结尾符号
+- `solution` 必须用 `\newtheorem*{solution}{解答}`（带 `*`）才能无编号
+- `\newtheorem{solution}{解答}`（不带 `*`）会导致 solution 带编号
 
 **防止措施**：
 - 写作前先判断题目是否涉及证明
-- 检查已写的解答是否与题目类型匹配
+- 检查 solution 定义是否带 `*`
 
----
-
-## 核心检查清单
+核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
 - [ ] 无 `\bm{}` 命令
