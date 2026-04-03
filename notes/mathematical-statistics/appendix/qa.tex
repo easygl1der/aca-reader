@@ -170,4 +170,33 @@
 
 \textbf{数学写作手法}：先介绍概念，再指出局限性，自然引出下一个概念——这是 Stein 风格的典型特征，强调"为什么需要"而非直接罗列。
 
+\subsection{正则条件 (R0)-(R2) 的定义}\label{sec:qa-regularity-conditions}
+
+\textbf{问}：在 Chapter 6 中多次提到"正则条件 (R0)-(R2)"，但没有给出正确定义。这些条件具体是什么？
+
+\textbf{答}：正则条件 (R0)-(R2) 是 MLE 渐近理论中的经典正则条件，确保 MLE 具有一致性和渐近正态性。
+
+\textbf{(R0) 可辨识性 (Identifiability)}：
+参数 $\theta$ 可辨识，即若对所有 $x$ 有 $f(x;\theta) = f(x;\theta')$，则 $\theta = \theta'$。这保证了不同参数值对应不同的分布。
+
+\textbf{(R1) 参数空间正则性}：
+参数空间 $\Omega$ 是 $\mathbb{R}^p$ 的开子集，且真参数 $\theta_0$ 是 $\Omega$ 的内点。这保证了在 $\theta_0$ 附近可以进行泰勒展开。
+
+\textbf{(R2) 密度函数光滑性}：
+密度 $f(x;\theta)$ 对 $\theta$ 足够光滑，满足：
+\begin{itemize}
+\item 积分号下可微分：$\frac{\partial}{\partial\theta}\int f(x;\theta)dx = \int \frac{\partial}{\partial\theta}f(x;\theta)dx$
+\item 得分函数 $S(X,\theta) = \nabla_\theta \log f(X;\theta)$ 有有限二阶矩
+\item Fisher 信息矩阵 $I(\theta) = \mathbb{E}[S(X,\theta) S(X,\theta)^T]$ 在 $\theta_0$ 处存在且正定
+\end{itemize}
+
+\textbf{这些条件的作用}：
+\begin{itemize}
+\item (R0) 保证参数可以被唯一估计
+\item (R1) 允许在真参数附近进行局部分析
+\item (R2) 使得大数定律和中心极限定理可以应用于得分函数，从而建立 MLE 的渐近理论
+\end{itemize}
+
+\textbf{注}：Cauchy 分布的 MLE 不满足某些正则条件，因此需要特殊处理（见 \S 6.1 的例子）。
+
 \subsection*{学习笔记}
