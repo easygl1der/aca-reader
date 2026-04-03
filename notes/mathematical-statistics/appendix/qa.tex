@@ -170,26 +170,4 @@
 
 \textbf{数学写作手法}：先介绍概念，再指出局限性，自然引出下一个概念——这是 Stein 风格的典型特征，强调"为什么需要"而非直接罗列。
 
-\subsection{chapter6.tex 定理环境语法修复}\label{sec:qa-chapter6-theorem-fix}
-
-\textbf{问}：编译 chapter6.tex 时发现 8 处定理环境语法错误，错误类型是什么？如何修复？
-
-\textbf{答}：错误为 `\begin theorem}[` 应为 `\begin theorem}[`。具体来说，Hogg 风格笔记使用了 8 个 theorem 环境，caption 在方括号中，但源文件中缺失左花括号 `{`，导致 LaTeX 将 caption 识别为可选参数而非必选参数。
-
-\textbf{修复方法}：使用 replace_all 将所有 `\begin theorem}[` 替换为 `\begin theorem}[`。
-
-\textbf{修复后的定理列表}（8 处）：
-\begin{enumerate}
-\item \texttt{th:likelihood-asymptotic} — 似然函数的渐近支撑
-\item \texttt{th:mle-consistency} — MLE 的相合性
-\item \texttt{th:rao-cramer-bound} — Rao-Cramér 下界
-\item \texttt{th:mle-asymptotic} — MLE 的渐近正态性和有效性
-\item \texttt{th:lrt-asymptotic} — 似然比检验的渐近分布
-\item \texttt{th:multiparameter-mle-asymptotic} — 多参数 MLE 的渐近分布
-\item \texttt{th:multiparameter-lrt} — 多参数似然比检验的渐近分布
-\item \texttt{th:em-monotonicity} — EM 算法的单调性
-\end{enumerate}
-
-编译验证：xelatex 通过，生成 PDF（1.8MB），仅有 overfull hbox 警告。
-
 \subsection*{学习笔记}
