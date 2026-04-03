@@ -1191,3 +1191,59 @@ $$ \frac{a}{b} = c $$        # 独立公式（LaTeX）
 - [ ] 证明题完整呈现直觉、推导、结论
 - [ ] 解答放在独立的 solution block 内（非嵌套在 exercise 内）
 
+---
+
+## L717: 正文附录脚注引用格式（来源：qa-specialist）
+
+**日期**: 2026-04-03
+**来源**: qa-specialist 指导
+
+**核心规则**:
+1. 脚注放在正文**首次出现**该结论/公式时添加
+2. 脚注放在公式编号**之前**
+3. 句号在 `\cref` **外面**
+
+**正确格式**:
+```latex
+后验均值由下式给出：\footnote{推导见附录 \cref{sec:beta-binomial-posterior-mean}}
+\[
+\mathbb{E}(\theta|y) = \frac{\alpha+y}{\alpha+\beta+n}
+\]
+```
+
+**错误格式**:
+```latex
+% 错误 ❌：句号在 \cref 里面
+后验均值由下式给出：\footnote{推导见附录 \cref{sec:beta-binomial-posterior-mean}。}
+
+% 错误 ❌：脚注放在公式之后
+\[
+\mathbb{E}(\theta|y) = \frac{\alpha+y}{\alpha+\beta+n}
+\]\footnote{推导见附录 \cref{sec:beta-binomial-posterior-mean}。}
+```
+
+**附录章节 label 格式建议**:
+```
+sec:appendix-{topic}-{name}
+例如：sec:appendix-beta-binomial-posterior-mean
+```
+
+**附录推导标准结构**:
+```latex
+\section{附录：公式推导}\label{sec:appendix-xxx}
+
+\subsection{Beta-Binomial 共轭后验均值推导}\label{sec:appendix-beta-binomial-posterior-mean}
+\textbf{背景（Background）}：...
+
+\textbf{目标（Goal）}：...
+
+\textbf{详细推导步骤（Derivation Steps）}：
+1. ...
+2. ...
+```
+
+**放置原则**:
+- 只在**第一次出现**时添加脚注
+- 不是每处引用都加
+- 后续引用直接用 `\cref` 跳转公式编号即可
+
