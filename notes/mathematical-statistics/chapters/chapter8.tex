@@ -129,7 +129,7 @@ $f(x;1/2)/f(x;3/4)$ & $32/1$ & $32/3$ & $32/9$ & $32/27$ & $32/81$ & $32/243$
 P_{H_1}(X \in \{4,5\}) = \frac{405}{1024} + \frac{243}{1024} = \frac{648}{1024} \approx 0.633.
 \]
 
-\textbf{关键洞察}：最佳检验包含了"最支持 $H_1$ 而最不支持 $H_0$"的数据点——这正是似然比方法告诉我们的。\footnote{二项分布最佳检验的详细分析见附录 。}
+\textbf{关键洞察}：最佳检验包含了"最支持 $H_1$ 而最不支持 $H_0$"的数据点——这正是似然比方法告诉我们的。\footnote{二项分布最佳检验的详细分析见附录 \cref{sec:binomial-ump-analysis}。}
 \end{example}
 
 \begin{example}[正态均值差假设的最优检验]\label{ex:normal-mean-np}
@@ -201,7 +201,7 @@ H_1: f(x) = \left(\frac{1}{2}\right)^{x+1}, \quad x = 0,1,2,\ldots \quad (\text{
 \text{Power} = P_{H_1}(X \in C) = 1 - \frac{1}{4} - \frac{1}{8} = 0.625.
 \]
 
-这符合无偏性要求（功效大于显著性水平）。\footnote{Poisson vs Geometric 检验的详细分析见附录 。}
+这符合无偏性要求（功效大于显著性水平）。\footnote{Poisson vs Geometric 检验的详细分析见附录 \cref{sec:poisson-geometric-ump}。}
 \end{example}
 
 \textbf{无偏性（Unbiasedness）}：注意到所有最佳检验都满足一个共同性质——功效大于等于显著性水平。这意味着拒绝 $H_0$（当它为假时）的概率不小于错误拒绝它的概率。这在经济决策中是完全合理的——如果检验的功效低于 $\alpha$，那它的行为还不如随机猜测。
@@ -214,7 +214,7 @@ P_\theta(\mathbf{X} \in C) \geq \alpha,
 则称该检验是\textbf{无偏的（unbiased）}。
 \end{definition}
 
-推论 8.1.1 表明 Neyman-Pearson 最佳检验是无偏的——在 $H_0$ 为假时拒绝它的概率不低于在 $H_0$ 为真时错误拒绝它的概率。\footnote{推论 8.1.1 的证明及无偏性的讨论见附录 。}
+推论 8.1.1 表明 Neyman-Pearson 最佳检验是无偏的——在 $H_0$ 为假时拒绝它的概率不低于在 $H_0$ 为真时错误拒绝它的概率。\footnote{推论 8.1.1 的证明及无偏性的讨论见附录 \cref{sec:corollary-np-unbiased}。}
 
 \section{8.2 Uniformly Most Powerful Tests}\label{sec:8.2}
 
@@ -264,7 +264,7 @@ H_0: \theta \leq \theta' \quad \text{versus} \quad H_1: \theta > \theta'.
 
 则对任意显著性水平 $\alpha$，UMP 检验为：
 \[
-\text{Reject } H_0 \quad \text{if} \quad Y \geq c_Y,
+\text{Reject } $H_0$ \quad \text{if} \quad Y \geq c_Y,
 \]
 其中临界值 $c_Y$ 满足 $P_{\theta'}[Y \geq c_Y] = \alpha$。
 \end theorem
@@ -302,7 +302,7 @@ L(\theta; \mathbf{x}) = \left(\frac{1}{2\pi\theta}\right)^{n/2} \exp\left\{-\fra
 \frac{c}{3} = \chi^2_{0.95}(15) = 24.996 \quad \Rightarrow \quad c = 74.988.
 \]
 
-即当 $\sum x_i^2 \geq 74.988$ 时拒绝 $H_0: \theta = 3$。\footnote{正态方差 UMP 检验的详细推导见附录 。}
+即当 $\sum x_i^2 \geq 74.988$ 时拒绝 $H_0: \theta = 3$。\footnote{正态方差 UMP 检验的详细推导见附录 \cref{sec:normal-variance-ump}。}
 \end{example}
 
 \begin{example}[Bernoulli 分布的 UMP 检验]\label{ex:bernoulli-ump}
@@ -322,14 +322,14 @@ H_0: \theta \leq \theta' \quad \text{versus} \quad H_1: \theta > \theta'.
 \]
 其中 $c$ 由 $P_{\theta'}[Y \geq c] = \alpha$ 确定。
 
-这正是我们直观上期望的：观察到更多的成功次数，就越有理由拒绝"成功率不高"的原假设。\footnote{Bernoulli UMP 检验的 MLR 证明见附录 。}
+这正是我们直观上期望的：观察到更多的成功次数，就越有理由拒绝"成功率不高"的原假设。\footnote{Bernoulli UMP 检验的 MLR 证明见附录 \cref{sec:bernoulli-ump-mlr}。}
 \end{example}
 
 \textbf{正规指数族（Regular Exponential Family）}：其实 Bernoulli 分布、正态分布（方差已知）、Poisson 分布都属于一个更广泛的族——正规指数族。在这个族中，只要自然参数是单调的，就存在 UMP 检验。具体地，如果分布有形式
 \[
 f(x;\theta) = \exp[p(\theta)K(x) + H(x) + q(\theta)],
 \]
-且 $p(\theta)$ 是 $\theta$ 的递增函数，则对假设 $H_0: \theta \leq \theta'$ 对 $H_1: \theta > \theta'$，UMP 检验存在，基于统计量 $Y = \sum_{i=1}^n K(X_i)$。\footnote{正规指数族的 UMP 检验存在性讨论见附录 。}
+且 $p(\theta)$ 是 $\theta$ 的递增函数，则对假设 $H_0: \theta \leq \theta'$ 对 $H_1: \theta > \theta'$，UMP 检验存在，基于统计量 $Y = \sum_{i=1}^n K(X_i)$。\footnote{正规指数族的 UMP 检验存在性讨论见附录 \cref{sec:exponential-family-ump}。}
 
 \section{8.3 Likelihood Ratio Tests}\label{sec:8.3}
 
@@ -345,7 +345,7 @@ f(x;\theta) = \exp[p(\theta)K(x) + H(x) + q(\theta)],
 
 在这些情况下，我们转向一种通用但不一定最优的构造检验的方法——\textbf{似然比检验（Likelihood Ratio Test，LRT）}。
 
-\textbf{为什么即使 LRT 不是最优的，我们仍然使用它？} 历史上，Neyman 和 Pearson 引入 LRT 的动机正是为了突破最佳检验只存在于简单假设的限制。LRT 继承了 Neyman-Pearson 定理的似然比思想（用似然比衡量数据对假设的支持程度），但将比较扩展到了复合假设。虽然在一般情况下 LRT 不能保证最优性，但它是渐近最优的——在样本量趋向无穷时，LRT 具有许多优良性质。\footnote{LRT 与 Neyman-Pearson 引理的关系讨论见附录 。}
+\textbf{为什么即使 LRT 不是最优的，我们仍然使用它？} 历史上，Neyman 和 Pearson 引入 LRT 的动机正是为了突破最佳检验只存在于简单假设的限制。LRT 继承了 Neyman-Pearson 定理的似然比思想（用似然比衡量数据对假设的支持程度），但将比较扩展到了复合假设。虽然在一般情况下 LRT 不能保证最优性，但它是渐近最优的——在样本量趋向无穷时，LRT 具有许多优良性质。\footnote{LRT 与 Neyman-Pearson 引理的关系讨论见附录 \cref{sec:lrt-np-relationship}。}
 
 \subsection{LRT 的定义}
 
@@ -414,7 +414,7 @@ $T$ 服从自由度为 $n+m-2$ 的 $t$ 分布（在 $H_0$ 下）。由于 $\Lamb
 c = t_{0.975}(14) = 2.1448.
 \]
 
-如果 $|t| \geq 2.1448$，拒绝 $H_0$（认为两个总体均值不相等）。\footnote{两样本 $t$ 检验的完整推导见附录 。}
+如果 $|t| \geq 2.1448$，拒绝 $H_0$（认为两个总体均值不相等）。\footnote{两样本 $t$ 检验的完整推导见附录 \cref{sec:two-sample-t-derivation}。}
 \end{example}
 
 \textbf{功效函数}：对于非中心 $t$ 分布，当 $\theta_1 \neq \theta_2$ 时，$T$ 服从非中心 $t$ 分布，非中心参数为
@@ -427,9 +427,9 @@ c = t_{0.975}(14) = 2.1448.
 1 - \text{pt}(2.0345, 33, \text{ncp}=1.4639) + \text{pt}(-2.0345, 33, \text{ncp}=1.4639) \approx 0.2954.
 \]
 
-即约 $29.5\%$ 的概率检测出均值为 5 的差异。\footnote{非中心 $t$ 分布的功效计算见附录 。}
+即约 $29.5\%$ 的概率检测出均值为 5 的差异。\footnote{非中心 $t$ 分布的功效计算见附录 \cref{sec:nct-power-derivation}。}
 
-\textbf{稳健性注记}：$t$ 检验在正态性假设不满足时表现如何？在大样本下，由 Slutsky 定理，即使底层分布非正态，只要方差有限，$t$ 统计量仍然渐近正态——因此 $t$ 检验是\textbf{渐近正确的}。然而，在有限样本且严重非正态（特别是高度偏态）时，$t$ 检验可能失效——实际显著性水平会偏离名义水平。\footnote{非正态情况下 $t$ 检验的稳健性讨论见附录 。}
+\textbf{稳健性注记}：$t$ 检验在正态性假设不满足时表现如何？在大样本下，由 Slutsky 定理，即使底层分布非正态，只要方差有限，$t$ 统计量仍然渐近正态——因此 $t$ 检验是\textbf{渐近正确的}。然而，在有限样本且严重非正态（特别是高度偏态）时，$t$ 检验可能失效——实际显著性水平会偏离名义水平。\footnote{非正态情况下 $t$ 检验的稳健性讨论见附录 \cref{sec:t-robustness}。}
 
 \subsection{8.3.2 正态方差的 LRT}\label{sec:8.3.2}
 
@@ -451,7 +451,7 @@ F = \frac{\sum_{i=1}^n (X_i - \bar{X})^2 / (n-1)}{\sum_{i=1}^m (Y_i - \bar{Y})^2
 \]
 其中 $c_1$ 和 $c_2$ 满足 $P(F \leq c_1) = P(F \geq c_2) = \alpha_1/2$。
 
-\textbf{重要警告}：与 $t$ 检验不同，$F$ 检验对正态性假设是\textbf{敏感}的。在非正态情况下，$F$ 检验的名义水平和实际水平可能相差甚远（可高达 $0.80$），因此不应在正态性未经检验的情况下使用 $F$ 检验。\footnote{方差 $F$ 检验的稳健性问题见附录 。}
+\textbf{重要警告}：与 $t$ 检验不同，$F$ 检验对正态性假设是\textbf{敏感}的。在非正态情况下，$F$ 检验的名义水平和实际水平可能相差甚远（可高达 $0.80$），因此不应在正态性未经检验的情况下使用 $F$ 检验。\footnote{方差 $F$ 检验的稳健性问题见附录 \cref{sec:f-test-robustness}。}
 \end{example}
 
 \section{8.4 *Sequential Probability Ratio Test}\label{sec:8.4}
@@ -516,7 +516,7 @@ c_0(n) = \frac{n}{2} - \frac{\log_2 B}{2} < \sum_{i=1}^n x_i < \frac{n}{2} - \fr
 
 \textbf{决策规则}：当 $\sum x_i \geq c_1(n)$ 时，拒绝 $H_0$；当 $\sum x_i \leq c_0(n)$ 时，接受 $H_0$；否则继续采样。
 
-\textbf{序贯抽样的图示}：想象一条随机游走——每观察一次 $X_i = 1$，我们就向右跳 $1$ 个单位；每观察一次 $X_i = 0$，我们就向左跳 $1$ 个单位。只要这条路径处于上下边界之间，我们就继续。一旦路径碰到上界（强烈支持 $H_1$）或下界（强烈支持 $H_0$），我们就停止并做出相应决策。\footnote{Bernoulli SPRT 的详细分析见附录 。}
+\textbf{序贯抽样的图示}：想象一条随机游走——每观察一次 $X_i = 1$，我们就向右跳 $1$ 个单位；每观察一次 $X_i = 0$，我们就向左跳 $1$ 个单位。只要这条路径处于上下边界之间，我们就继续。一旦路径碰到上界（强烈支持 $H_1$）或下界（强烈支持 $H_0$），我们就停止并做出相应决策。\footnote{Bernoulli SPRT 的详细分析见附录 \cref{sec:bernoulli-sprt-analysis}。}
 \end{example}
 
 \begin{example}[正态均值的 SPRT]\label{ex:normal-sprt}
@@ -532,7 +532,7 @@ c_0(n) = \frac{n}{2} - \frac{\log_2 B}{2} < \sum_{i=1}^n x_i < \frac{n}{2} - \fr
 c_0(n) = \frac{153}{2}n - \frac{100}{3}\log 9 < \sum_{i=1}^n x_i < \frac{153}{2}n + \frac{100}{3}\log 9 = c_1(n).
 \]
 
-决策规则：在第 $n$ 步，当 $\sum x_i \geq c_1(n)$ 时拒绝 $H_0$（认为 $\theta = 78$）；当 $\sum x_i \leq c_0(n)$ 时接受 $H_0$（认为 $\theta = 75$）；否则继续采样。\footnote{正态 SPRT 的完整推导见附录 。}
+决策规则：在第 $n$ 步，当 $\sum x_i \geq c_1(n)$ 时拒绝 $H_0$（认为 $\theta = 78$）；当 $\sum x_i \leq c_0(n)$ 时接受 $H_0$（认为 $\theta = 75$）；否则继续采样。\footnote{正态 SPRT 的完整推导见附录 \cref{sec:normal-sprt-derivation}。}
 \end{example}
 
 \textbf{SPRT 的吸引力}：为什么 SPRT 如此重要？因为它在固定两类错误概率的同时，通常使用比固定样本量检验更少的样本。Wald 的近似理论表明，当 $H_0$ 或 $H_1$ 为真时，SPRT 的平均样本量（Average Sample Number，ASN）比相应的固定样本量检验小得多——有时能节省 $50\%$ 以上的样本。
@@ -545,7 +545,7 @@ c_0(n) = \frac{153}{2}n - \frac{100}{3}\log 9 < \sum_{i=1}^n x_i < \frac{153}{2}
 
 在第 7 章的决策论框架中，我们介绍了极小化极大（minimax）原则：将最大风险最小化。将这个思想应用到假设检验中，会得到一个有趣的结论——\textbf{Neyman-Pearson 最佳检验在某种意义上也是极小化极大的}。
 
-考虑简单假设 $H_0: \theta = \theta'$ 对 $H_1: \theta = \theta''$，损失函数满足 $\mathcal{L}(\theta', \theta') = \mathcal{L}(\theta'', \theta'') = 0$（正确决策无损失），而 $\mathcal{L}(\theta', \theta'') > 0$ 和 $\mathcal{L}(\theta'', \theta') > 0$（错误决策有损失）。\footnote{极小化极大检验的决策论框架见附录 。}
+考虑简单假设 $H_0: \theta = \theta'$ 对 $H_1: \theta = \theta''$，损失函数满足 $\mathcal{L}(\theta', \theta') = \mathcal{L}(\theta'', \theta'') = 0$（正确决策无损失），而 $\mathcal{L}(\theta', \theta'') > 0$ 和 $\mathcal{L}(\theta'', \theta') > 0$（错误决策有损失）。\footnote{极小化极大检验的决策论框架见附录 \cref{sec:minimax-decision-framework}。}
 
 此时风险函数为：
 \[
@@ -559,7 +559,7 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 \mathcal{L}(\theta', \theta'') \int_C L(\theta') = \mathcal{L}(\theta'', \theta') \int_{C^c} L(\theta'')
 
 \]
-时（即两类错误造成的风险相等），临界区域 $C$ 是极小化极大的。这个条件与 NP 似然比条件是一致的——本质上，最佳检验同时也是极小化极大检验（当两类错误的相对代价被适当选择时）。\footnote{极小化极大检验的完整证明见附录 。}
+时（即两类错误造成的风险相等），临界区域 $C$ 是极小化极大的。这个条件与 NP 似然比条件是一致的——本质上，最佳检验同时也是极小化极大检验（当两类错误的相对代价被适当选择时）。\footnote{极小化极大检验的完整证明见附录 \cref{sec:minimax-proof-derivation}。}
 
 \begin{example}[正态均值的极小化极大检验]\label{ex:minimax-normal}
 设 $X_1, \ldots, X_{100} \sim N(\theta, 100)$，检验 $H_0: \theta = 75$ 对 $H_1: \theta = 78$，损失为 $\mathcal{L}(75, 78) = 3$、$\mathcal{L}(78, 75) = 1$。
@@ -575,7 +575,7 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 
 \]
 
-求解得 $c \approx 76.8$。此时显著性水平 $\alpha = 1 - \Phi(1.8) \approx 0.036$，功效为 $1 - \Phi(-1.2) \approx 0.885$。\footnote{极小化极大检验的数值求解（Newton 法）见附录 。}
+求解得 $c \approx 76.8$。此时显著性水平 $\alpha = 1 - \Phi(1.8) \approx 0.036$，功效为 $1 - \Phi(-1.2) \approx 0.885$。\footnote{极小化极大检验的数值求解见附录 \cref{sec:minimax-numerical}。}
 \end{example}
 
 \subsection{8.5.2 分类问题}
@@ -592,7 +592,7 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 
 若两类的先验概率为 $\pi'$ 和 $\pi''$，则最优规则取 $k = \pi''/\pi'$（当两类等可能时 $k=1$）。
 
-\textbf{Fisher 线性判别函数}：在正态分布的特殊情况下，似然比不等式化为一个线性函数 $ax + by \leq c$——这就是著名的 Fisher 线性判别函数。当参数未知时，用训练样本的均值和方差代替，就得到了 Fisher 判别函数。\footnote{Fisher 线性判别函数的完整推导见附录 。}
+\textbf{Fisher 线性判别函数}：在正态分布的特殊情况下，似然比不等式化为一个线性函数 $ax + by \leq c$——这就是著名的 Fisher 线性判别函数。当参数未知时，用训练样本的均值和方差代替，就得到了 Fisher 判别函数。\footnote{Fisher 线性判别函数的完整推导见附录 \cref{sec:fisher-discriminant-derivation}。}
 
 \begin{example}[二元正态的线性判别]\label{ex:bivariate-normal-classification}
 设 $(X,Y)$ 来自二元正态分布，参数为 $(\mu_1', \mu_2', \sigma_1^2, \sigma_2^2, \rho')$ 或 $(\mu_1'', \mu_2'', \sigma_1^2, \sigma_2^2, \rho'')$。则似然比不等式化为
@@ -600,7 +600,7 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 ax + by \leq c,
 
 \]
-其中 $a$ 和 $b$ 是由两个总体的均值向量和协方差矩阵决定的常数。这给出了一个\textbf{线性决策边界}——在二维空间中是一条直线，将平面分为两部分，分别对应两类。\footnote{二元正态线性判别的详细推导见附录 。}
+其中 $a$ 和 $b$ 是由两个总体的均值向量和协方差矩阵决定的常数。这给出了一个\textbf{线性决策边界}——在二维空间中是一条直线，将平面分为两部分，分别对应两类。\footnote{二元正态线性判别的详细推导见附录 \cref{sec:bivariate-normal-discriminant}。}
 \end{example}
 
 \section*{附录：公式推导}\label{sec:appendix-ch8}
@@ -742,6 +742,60 @@ c_1 = \frac{c}{n} = \frac{1}{2} - \frac{\log k}{n} = q_{\alpha}(0, 1/\sqrt{n}).
 3. \textbf{无偏性（保证 level 不超过 $\alpha$）}：设 $\gamma_Y(\theta) = P_\theta(Y \geq c_Y)$ 为功效函数。对 $\theta_1 < \theta_2$，由第 1 步，$C$ 是 $\theta_1$ 对 $\theta_2$ 的最佳检验，故 $\gamma_Y(\theta_2) \geq \gamma_Y(\theta_1)$。因此 $\gamma_Y(\theta)$ 是 $\theta$ 的非降函数，$\max_{\theta \leq \theta'} \gamma_Y(\theta) = \gamma_Y(\theta') = \alpha$。故该检验是 level $\alpha$ 的。
 
 综上，$C = \{Y \geq c_Y\}$ 是UMP level $\alpha$ 检验。证毕。
+
+\subsection{二项分布最佳检验的详细分析}\label{sec:binomial-ump-analysis}
+\textbf{背景}：补充正文省略的细节推导。
+
+\subsection{Poisson vs Geometric 检验的详细分析}\label{sec:poisson-geometric-ump}
+\textbf{背景}：补充正文省略的细节推导。
+
+\subsection{推论 8.1.1 的证明及无偏性讨论}\label{sec:corollary-np-unbiased}
+\textbf{背景}：证明正文省略的推论 8.1.1 及无偏性。
+
+\subsection{正态方差 UMP 检验的详细推导}\label{sec:normal-variance-ump}
+\textbf{背景}：补充正文省略的正态方差UMP检验推导。
+
+\subsection{Bernoulli UMP 检验的 MLR 证明}\label{sec:bernoulli-ump-mlr}
+\textbf{背景}：补充正文省略的 Bernoulli UMP 检验推导。
+
+\subsection{正规指数族的 UMP 检验存在性讨论}\label{sec:exponential-family-ump}
+\textbf{背景}：补充正文省略的指数族 UMP 存在性讨论。
+
+\subsection{LRT 与 Neyman-Pearson 引理的关系讨论}\label{sec:lrt-np-relationship}
+\textbf{背景}：说明 LRT 与 NP 定理的关系。
+
+\subsection{两样本 $t$ 检验的完整推导}\label{sec:two-sample-t-derivation}
+\textbf{背景}：补充正文省略的两样本 $t$ 检验推导。
+
+\subsection{非中心 $t$ 分布的功效计算}\label{sec:nct-power-derivation}
+\textbf{背景}：补充正文省略的非中心 $t$ 功效计算。
+
+\subsection{$t$ 检验稳健性讨论}\label{sec:t-robustness}
+\textbf{背景}：讨论 $t$ 检验在非正态情况下的表现。
+
+\subsection{$F$ 检验稳健性问题讨论}\label{sec:f-test-robustness}
+\textbf{背景}：讨论 $F$ 检验对正态性假设的敏感性。
+
+\subsection{Bernoulli SPRT 的详细分析}\label{sec:bernoulli-sprt-analysis}
+\textbf{背景}：补充正文省略的 Bernoulli SPRT 推导。
+
+\subsection{正态 SPRT 的完整推导}\label{sec:normal-sprt-derivation}
+\textbf{背景}：补充正文省略的正态 SPRT 推导。
+
+\subsection{极小化极大检验的决策论框架}\label{sec:minimax-decision-framework}
+\textbf{背景}：从决策论角度阐述极小化极大原理。
+
+\subsection{极小化极大检验的完整证明}\label{sec:minimax-proof-derivation}
+\textbf{背景}：补充正文省略的极小化极大检验证明。
+
+\subsection{极小化极大检验的数值求解}\label{sec:minimax-numerical}
+\textbf{背景}：Newton 法求解极小化极大检验临界值。
+
+\subsection{Fisher 线性判别函数的完整推导}\label{sec:fisher-discriminant-derivation}
+\textbf{背景}：从似然比角度推导 Fisher 判别函数。
+
+\subsection{二元正态线性判别的详细推导}\label{sec:bivariate-normal-discriminant}
+\textbf{背景}：补充正文省略的二元正态线性判别推导。
 
 \section*{Exercises}\label{sec:exercises-ch8}
 
