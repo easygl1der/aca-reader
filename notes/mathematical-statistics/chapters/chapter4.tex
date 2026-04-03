@@ -243,7 +243,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \left[ \bar{X} - t_{\alpha/2,n-1}\frac{S}{\sqrt{n}},\quad \bar{X} + t_{\alpha/2,n-1}\frac{S}{\sqrt{n}} \right].
 \label{eq:ci-normal-unknown}\]
 
-\textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}
+\textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{枢轴量  = (\bar{X}-\mu)/(S/\sqrt{n}) \sim t_{n-1}$，自由度为 -1$。详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}
 \end{example}
 
 \begin{theorem}[方差置信区间]\label{th:ci-variance-ch4}
@@ -251,7 +251,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \[
 \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}},\quad \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}} \right].
 \label{eq:ci-variance}\]
-其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{详细推导见附录 \cref{sec:derivation-variance-ci}。}
+其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{方差置信区间基于 $(n-1)S^2/\sigma^2 \sim \chi^2_{n-1}$，解不等式得置信区间。详细推导见附录 \cref{sec:derivation-variance-ci}。}
 \end{theorem}
 
 \begin{figure}[H]
@@ -518,7 +518,7 @@ $H_0$ 为假 & 第二类错误（概率 $\beta$） & 正确（功效 $1-\beta$�
 Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 \label{eq:z-test-statistic}\]
 
-在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
+在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{检验统计量 $Z = (\bar{X}-\mu_0)/(\sigma/\sqrt{n}) \sim N(0,1)$，拒绝域 $Z > z_\alpha$。详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
 \end{example}
 
 \begin{example}[正态均值检验、未知方差]\label{ex:test-normal-unknown}
@@ -529,7 +529,7 @@ Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 \label{eq:t-test-statistic}\]
 
-在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
+在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{检验统计量 $T = (\bar{X}-\mu_0)/(S/\sqrt{n}) \sim t_{n-1}$，拒绝域 $|T| > t_{\alpha/2,n-1}$。详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
 \end{example}
 
 \textbf{$p$ 值}：在 $H_0$ 为真条件下，观察到比当前样本更极端结果的概率。$p$ 值越小，拒绝 $H_0$ 的证据越强。
@@ -639,7 +639,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2(k-1)$（大样本近似）。拒绝 $H_0$ 当 $\chi^2 > \chi^2_{\alpha, k-1}$。
 
-\textbf{直观理解}：$(O_i - E_i)^2/E_i$ 衡量每个类别的偏差，平方消去正负号，除以 $E_i$ 进行标准化，求和得到总体偏差。\footnote{详细推导见附录 \cref{sec:derivation-chi-square}。}
+\textbf{直观理解}：$(O_i - E_i)^2/E_i$ 衡量每个类别的偏差，平方消去正负号，除以 $E_i$ 进行标准化，求和得到总体偏差。\footnote{检验统计量 $\chi^2 = \sum(O_i-E_i)^2/E_i \approx \chi^2_{k-1}$，大样本下近似卡方分布。详细推导见附录 \cref{sec:derivation-chi-square}。}
 
 \begin{figure}[H]
 \centering
