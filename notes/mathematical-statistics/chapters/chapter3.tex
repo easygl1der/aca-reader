@@ -95,7 +95,7 @@ p(x) = \binom{n}{x} p^{x}(1-p)^{n-x}, \quad x = 0, 1, \ldots, n.
 M(t) = \mathbb{E}[e^{tX}] = \sum_{x=0}^{n} e^{tx} \binom{n}{x} p^{x}(1-p)^{n-x} = [(1-p) + pe^{t}]^{n}.
 \end{equation}
 
-由此可得均值和方差：\footnote{推导见附录 。}
+由此可得均值和方差：\footnote{二项分布矩母函数的推导见附录 \cref{sec:derivation-binomial-moments}。}
 \begin{equation}\label{eq:binomial-moments-ch3}
 \mathbb{E}X = M'(0) = np, \quad \text{var}(X) = M''(0) - [M'(0)]^{2} = np(1-p).
 \end{equation}
@@ -122,7 +122,7 @@ X_1 + X_2 \sim \text{Bin}(n_1 + n_2, p).
 \]
 \end{theorem}
 
-\textbf{直观理解}：想象两堆独立的硬币翻转。第一堆 $n_1$ 枚硬币产生 $X_1$ 个正面，第二堆 $n_2$ 枚硬币产生 $X_2$ 个正面。合并后，我们有 $n_1 + n_2$ 枚硬币，总正面数为 $X_1 + X_2$。这仍然服从二项分布，样本量是合并后的总量。\footnote{使用 mgf 的证明见附录 。}
+\textbf{直观理解}：想象两堆独立的硬币翻转。第一堆 $n_1$ 枚硬币产生 $X_1$ 个正面，第二堆 $n_2$ 枚硬币产生 $X_2$ 个正面。合并后，我们有 $n_1 + n_2$ 枚硬币，总正面数为 $X_1 + X_2$。这仍然服从二项分布，样本量是合并后的总量。\footnote{二项分布可加性的证明见附录 \cref{sec:derivation-binomial-additivity}。}
 
 这种可加性反映了计数的本质：如果我们在两批试验（每批具有相同成功概率）中计数成功次数，总数就是简单求和。
 
@@ -142,7 +142,7 @@ $\text{Bin}(n, p)$ 分布的众数（最可能取值）为 $\lfloor (n+1)p \rflo
 p_Y(y) = \binom{y+r-1}{r-1} p^{r}(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 
-记作 $Y \sim \text{NB}(r, p)$。该分布的名称来源于 $p_Y(y)$ 是 $p^{r}[1-(1-p)]^{-r}$ 展开式中的通项。\footnote{推导见附录 。}
+记作 $Y \sim \text{NB}(r, p)$。该分布的名称来源于 $p_Y(y)$ 是 $p^{r}[1-(1-p)]^{-r}$ 展开式中的通项。\footnote{推导见附录 \cref{sec:derivation-negative-binomial}。}
 
 当 $r=1$ 时，得到\textbf{几何分布（geometric distribution）}：
 \begin{equation}\label{eq:geometric-pmf-ch3}
@@ -175,9 +175,9 @@ p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 \end{equation}
 \end{example}
 
-\textbf{这是什么意思？} 如果你已经失败了 $k$ 次，那么距离第一次成功的剩余等待时间与开始时完全相同。过去的失败不会改变未来的期望。这个性质刻画了 $\{0,1,2,\ldots\}$ 上所有离散分布中几何分布的独特地位。\footnote{证明见附录 。}
+\textbf{这是什么意思？} 如果你已经失败了 $k$ 次，那么距离第一次成功的剩余等待时间与开始时完全相同。过去的失败不会改变未来的期望。这个性质刻画了 $\{0,1,2,\ldots\}$ 上所有离散分布中几何分布的独特地位。\footnote{几何分布无记忆性的证明见附录 \cref{sec:derivation-memoryless}。}
 
-几何分布（支撑集为 $\{0,1,2,\ldots\}$）的均值和方差为：\footnote{推导见附录 。}
+几何分布（支撑集为 $\{0,1,2,\ldots\}$）的均值和方差为：\footnote{几何分布矩的推导见附录 \cref{sec:derivation-geometric-moments}。}
 \begin{equation}\label{eq:geometric-moments-ch3}
 \mathbb{E}Y = \frac{1-p}{p}, \quad \text{var}(Y) = \frac{1-p}{p^{2}}.
 \end{equation}
@@ -188,7 +188,7 @@ p_Y(y) = p(1-p)^{y}, \quad y = 0, 1, 2, \ldots
 M(t) = \frac{p^{r}}{[1 - (1-p)e^{t}]^{r}}, \quad t < -\log(1-p).
 \]
 
-这可以用负二项级数推导。\footnote{推导见附录 。}
+这可以用负二项级数推导。\footnote{负二项分布矩母函数的推导见附录 \cref{sec:derivation-nb-mgf}。}
 \end{example}
 
 \subsection{多项分布（Multinomial Distribution）}\label{sub:multinomial-ch3}
@@ -203,7 +203,7 @@ $(X_1, X_2, \ldots, X_k)$ 的联合 pmf 为：
 \end{equation}
 其中 $\sum_{i=1}^{k} x_i = n$。
 
-称 $(X_1, \ldots, X_k)$ 服从参数为 $n$ 和 $p_1, \ldots, p_k$ 的\textbf{多项分布}。二项分布是 $k=2$ 的特殊情形。\footnote{推导见附录 。}
+称 $(X_1, \ldots, X_k)$ 服从参数为 $n$ 和 $p_1, \ldots, p_k$ 的\textbf{多项分布}。二项分布是 $k=2$ 的特殊情形。\footnote{多项分布的推导见附录 \cref{sec:derivation-multinomial}。}
 
 \textbf{性质}：对每个 $i$，$X_i$ 的边缘分布为 $\text{Bin}(n, p_i)$。$X_i$ 和 $X_j$（$i \neq j$）之间的协方差为：
 \begin{equation}\label{eq:multinomial-covariance-ch3}
@@ -246,7 +246,7 @@ p(x) = \frac{\binom{N-D}{n-x}\binom{D}{x}}{\binom{N}{n}}, \quad x = 0, 1, \ldots
 \mathbb{E}X = n\frac{D}{N}, \quad \text{var}(X) = n\frac{D}{N}\left(1-\frac{D}{N}\right)\frac{N-n}{N-1}.
 \end{equation}
 
-因子 $\frac{N-n}{N-1}$ 是\textbf{有限总体校正因子（finite population correction factor）}。当 $N \gg n$ 时，它趋近于 1，超几何分布近似于 $p = D/N$ 的二项分布。\footnote{推导见附录 。}
+因子 $\frac{N-n}{N-1}$ 是\textbf{有限总体校正因子（finite population correction factor）}。当 $N \gg n$ 时，它趋近于 1，超几何分布近似于 $p = D/N$ 的二项分布。\footnote{超几何分布的推导见附录 \cref{sec:derivation-hypergeometric}。}
 
 这个近似反映了一个重要原理：当样本量相对于总体较小时，不放回抽样几乎等同于放回抽样。
 
@@ -343,7 +343,7 @@ p(x) = \mathbb{P}(X=x) = \frac{\lambda^{x} e^{-\lambda}}{x!}, \quad x = 0, 1, 2,
 即 $X_n \xrightarrow{d} \text{Poisson}(\lambda)$。
 \end{theorem}
 
-\textbf{直观理解}：当 $n$ 很大且 $p$ 很小时，二项分布的行为几乎与 Poisson 分布完全相同。关键洞见是：在极限中只有 $\lambda = np$（均值）起作用。\footnote{证明见附录 。}
+\textbf{直观理解}：当 $n$ 很大且 $p$ 很小时，二项分布的行为几乎与 Poisson 分布完全相同。关键洞见是：在极限中只有 $\lambda = np$（均值）起作用。\footnote{Poisson 近似二项分布的证明见附录 \cref{sec:derivation-poisson-limit}。}
 
 \begin{example}[印刷错误]\label{ex:poisson-errors-ch3}
 一份手稿有 500 页，每页约 300 个单词。一个单词拼写错误的概率为 $p = 1/10{,}000$，则每页错误数服从 $\text{Bin}(300, 1/10000) \approx \text{Poisson}(0.03)$。
@@ -382,7 +382,7 @@ Gamma 函数架起了阶乘与积分之间的桥梁——这是数学中最美�
 \label{eq:gamma-recursion-ch3}
 \]
 
-这来自分部积分：\footnote{推导见附录 。}：
+这来自分部积分：\footnote{Gamma 函数递归公式的推导见附录 \cref{sec:derivation-gamma-function}。}：
 \[
 \Gamma(\alpha+1) = \int_{0}^{\infty} x^{\alpha} e^{-x} dx = \left[-x^{\alpha} e^{-x}\right]_{0}^{\infty} + \alpha \int_{0}^{\infty} x^{\alpha-1} e^{-x} dx = \alpha\Gamma(\alpha).
 \]
@@ -696,7 +696,7 @@ X_2 \mid X_1 = 6.3 \sim N\left(5.3 + 0.6 \cdot \frac{0.2}{0.2}(6.3-5.8), 0.04(1-
 因此预测妻子身高为 5.6 英尺，标准差为 $0.16$ 英尺。95\% 预测区间为 $5.6 \pm 1.96 \times 0.16 = (5.29, 5.91)$ 英尺。
 \end{example}
 
-二元正态分布的联合 mgf 为：\footnote{推导见附录 。}
+二元正态分布的联合 mgf 为：\footnote{二元正态分布矩母函数的推导见附录 \cref{sec:derivation-bivariate-mgf}。}
 \[
 M(t_1, t_2) = \exp\left\{ t_1\mu_1 + t_2\mu_2 + \frac{1}{2}(t_1^{2}\sigma_1^{2} + 2t_1 t_2 \rho\sigma_1\sigma_2 + t_2^{2}\sigma_2^{2}) \right\}.
 \label{eq:bivariate-normal-mgf-ch3}
