@@ -980,7 +980,12 @@ Bootstrap 方法：
    \item 计算 bootstrap 复制 $T^* = \bar{x}_1^* - \bar{x}_2^*$
    \end{itemize}
 \item 重复步骤 2-3 共 $B$ 次，得到 $B$ 个 $T^*$ 值
-\item 计算 p 值：$\hat{p} = \frac{\#\{|T_i^*| \geq |T_{\mathrm{obs}}|\}}{B}$
+\item 计算 p 值
+\[
+\hat{p} = \frac{1}{B}\sum_{b=1}^B I\!\left(|T_b^*| \geq |T_{\mathrm{obs}}|\right).
+\tag{4.9.2}\label{eq:bootstrap-pvalue}
+\]
+其中 $T_{\mathrm{obs}} = \bar{x}_1 - \bar{x}_2$ 是观测到的统计量。
 \end{enumerate}
 
 \textbf{核心思想}：在 $H_0$ 下，两总体分布相同，因此从合并数据中有放回抽样相当于``模拟''在原假设成立时重复实验的过程。
