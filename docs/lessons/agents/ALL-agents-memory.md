@@ -461,3 +461,19 @@ tikz 图片等导致的 overfull hbox 是排版正常现象，不需要主动修
 - 写完章节后，用 grep 检查所有数学符号是否在首次出现时有脚注定义
 - 检查命令：`grep -n "\\\$.*\\\$.*\$" chapters/chapter*.tex`（查找行内数学表达式）
 - 原则：宁可多给一个定义，也不能让读者困惑
+
+---
+
+## L017: 重复 Label 定义导致编译警告
+
+**日期**: 2026-04-03
+**经历次数**: 1 次
+
+**错误描述**:
+编译日志出现 `Label ... multiply defined` 警告，表明同一个 label 被多次定义。这通常发生在多 agent 并发写作或复制内容时未修改 label。
+
+**防止措施**:
+- Label 命名必须带章节后缀：`eq:mle-definition-ch4`, `eq:mle-definition-ch6`
+- 同一章节内不同位置用后缀区分：`ex:example-a`, `ex:example-b`
+- 并发写作时协调 label 分配
+- 禁止在未协调的情况下复制含 label 的内容
