@@ -1,4 +1,15 @@
 
+## 2026-04-03: LaTeX 修复不记录到 qa.tex
+
+**问题**：把 LaTeX 语法修复记录到了 `appendix/qa.tex`，但 qa.tex 是用于记录"用户提问"的，不应记录内部修复。
+
+**正确路由**：
+- **用户提问** → 记录到 `appendix/qa.tex`
+- **内部修复 / 经验教训** → 记录到 `docs/lessons/lessons-log.md`
+
+**教训**：区分"用户问题回答"和"内部经验教训"，前者进 qa.tex，后者进 lessons-log.md。
+
+
 ## 2026-03-31: bash heredoc 导致 LaTeX 命令损坏
 
 **问题**：使用 `echo '...' >> file.tex` 或 heredoc 追加内容时，反斜杠 `\`，导致 `\textbf`、`\begin{itemize}` 等 LaTeX 命令被损坏（变成 `extbf`、`egin{itemize}`）。
