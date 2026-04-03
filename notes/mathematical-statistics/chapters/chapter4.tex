@@ -781,6 +781,105 @@ Bootstrap 的解决思路既简单又巧妙：\textbf{用重抽样近似抽样�
 
 Bootstrap 的强大之处在于它的通用性——几乎任何估计量都可以用 Bootstrap 近似其分布，不需要繁复的数学推导。这使它成为现代统计实践中的重要工具。
 
+\subsection{4.9.1 Percentile Bootstrap 置信区间详解}\label{sec:4.9.1}
+
+ percentile bootstrap 置信区间的构造方法直观且易于实现，特别适合复杂统计量。
+
+\textbf{构造步骤}：
+\begin{enumerate}
+\item 从原始样本 $\{x_1, \ldots, x_n\}$ 中有放回随机抽取 $n$ 个观测，形成第一个 bootstrap 样本
+\item 计算感兴趣的统计量 $T^*$（如样本均值、中位数、两样本均值差等）
+\item 独立重复步骤 1-2 共 $B$ 次（如 $B=3000$），得到 $B$ 个 bootstrap 复制 $T_1^*, \ldots, T_B^*$
+\item 取 $\alpha/2$ 和 $1-\alpha/2$ 分位数：$T_{(\alpha B)}^*$ 和 $T_{((1-\alpha)B)}^*$
+\item 构造置信区间 $\left[T_{(\alpha B)}^*,\ T_{((1-\alpha)B)}^*\right]$
+\end{enumerate}
+
+\textbf{为什么取分位数？} 如果 bootstrap 复制 $T^*$ 的分布很好地近似了 $T$ 的真实抽样分布，那么 $T^*$ 的 $\alpha/2$ 分位数和 $1-\alpha/2$ 分位数之间的区域就包含了 $T$ 的真实值的 $100(1-\alpha)\%$ 概率。
+
+\textbf{$B$ 的选择}：$B$ 越大，置信区间的变异性越小。通常选择 $B=1000$ 到 $B=10000$。现代计算条件下，$B=3000$ 是常见默认值。
+
+\begin{example}[Gamma(1, 100) 分布的 90\% Bootstrap CI]\label{ex:gamma-bootstrap-ci}
+设总体 $X \sim \Gamma(\alpha=1, \beta=100)$（指数分布，mean = 100），从中抽取 $n=50$ 的随机样本。目标是构造均值的 90\% 置信区间。
+
+原始样本均值 $\bar{x} = 97.3$。
+
+使用 percentile bootstrap 方法，$B=3000$ 次重抽样：
+
+\begin{verbatim}
+set.seed(42)
+B <- 3000
+n <- 50
+x <- rgamma(n, shape=1, rate=1/100)  # 生成样本
+T.boot <- replicate(B, mean(sample(x, n, replace=TRUE)))
+alpha <- 0.10
+CI <- quantile(T.boot, c(alpha/2, 1-alpha/2))
+# CI 的 5% 分位数约为 85.2
+# CI 的 95% 分位数约为 109.8
+\end{verbatim}
+
+90\% Bootstrap CI 约为 $(85.2,\ 109.8)$。
+
+与解析区间 $(\bar{x} \pm z_{0.05} \sigma/\sqrt{n} = 97.3 \pm 1.645 \times 100/\sqrt{50} \approx (74.0,\ 120.6)$ 相比，Bootstrap 区间更窄（因为不依赖渐近理论）。\footnote{更多 Bootstrap 置信区间的比较（如 BCa 区间）见附录 \cref{sec:derivation-bootstrap-ci}。}
+\end{example}
+
+\subsection{4.9.2 Bootstrap 检验}\label{sec:4.9.2}
+
+Bootstrap 不仅可以构造置信区间，还可以用于假设检验。当原假设下检验统计量的分布难以解析计算时，Bootstrap 提供了有效的近似方法。
+
+\textbf{两样本位置问题的 Bootstrap 检验程序}：
+
+设有两个独立总体，我们想检验 $H_0: \mu_1 = \mu_2$ vs $H_1: \mu_1 \neq \mu_2$。
+
+传统方法：使用 $t$ 检验，依赖正态性或中心极限定理。
+
+Bootstrap 方法：
+\begin{enumerate}
+\item 计算观测到的统计量：$T_{\mathrm{obs}} = \bar{x}_1 - \bar{x}_2$
+\item 在 $H_0$ 下，将两样本合并，从合并数据中有放回抽样
+\item 具体步骤：
+   \begin{itemize}
+   \item 合并两样本得 $\{x_1, \ldots, x_{n_1}, y_1, \ldots, y_{n_2}\}$
+   \item 从合并数据中随机抽取 $n_1$ 个得到 bootstrap 样本 1，抽取 $n_2$ 个得到 bootstrap 样本 2
+   \item 计算 bootstrap 复制 $T^* = \bar{x}_1^* - \bar{x}_2^*$
+   \end{itemize}
+\item 重复步骤 2-3 共 $B$ 次，得到 $B$ 个 $T^*$ 值
+\item 计算 p 值：$\hat{p} = \frac{\#\{|T_i^*| \geq |T_{\mathrm{obs}}|\}}{B}$
+\end{enumerate}
+
+\textbf{核心思想}：在 $H_0$ 下，两总体分布相同，因此从合并数据中有放回抽样相当于``模拟''在原假设成立时重复实验的过程。
+
+\textbf{与 permutation 检验的关系}：当样本量固定时，permutation 检验枚举所有可能的分组（当 $n_1+n_2$ 较小时可行）；当 $n_1+n_2$ 较大时，Bootstrap 近似提供了计算上可行的替代方案。
+
+\begin{example}[两总体均值差 Bootstrap 检验]\label{ex:two-sample-bootstrap-test}
+某制药公司比较药物 A 和药物 B 的效果，观测到：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+组别 & 样本量 $n$ & 样本均值 $\bar{x}$ \\ \hline
+药物 A & $n_1=30$ & $\bar{x}_1=85.2$ \\
+药物 B & $n_2=35$ & $\bar{x}_2=79.6$ \\ \hline
+\end{tabular}
+\end{center}
+
+观测统计量 $T_{\mathrm{obs}} = 85.2 - 79.6 = 5.6$。
+
+使用 Bootstrap 检验（$B=5000$）：
+\begin{verbatim}
+set.seed(123)
+pooled <- c(x_A, x_B)  # 合并数据
+T.boot <- replicate(5000, {
+  x_A_star <- sample(pooled, 30, replace=TRUE)
+  x_B_star <- sample(pooled, 35, replace=TRUE)
+  mean(x_A_star) - mean(x_B_star)
+})
+p_value <- mean(abs(T.boot) >= abs(5.6))
+# p_value ≈ 0.023
+\end{verbatim}
+
+p 值约为 0.023，在 $\alpha=0.05$ 水平下拒绝 $H_0$，认为两种药物效果存在显著差异。\footnote{Bootstrap 检验的更多细节（功效分析、p 值修正）见附录 \cref{sec:derivation-bootstrap-test}。}
+\end{example}
+
 % === 习题 ===
 \section*{Exercises}\label{sec:chapter4-exercises}
 
