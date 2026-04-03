@@ -217,6 +217,161 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 \label{fig:chi-square-ci}
 \end{figure}
 
+\subsection{4.2.1 两总体均值差的置信区间}\label{sec:4.2.1}
+
+在实际问题中，我们经常需要比较两个总体的均值。例如，比较两种教学方法的效果、两种药物的疗效差异等。设有两个独立总体：
+
+\begin{itemize}
+\item 总体 1：$X_1, \ldots, X_{n_1} \sim N(\mu_1, \sigma_1^2)$
+\item 总体 2：$Y_1, \ldots, Y_{n_2} \sim N(\mu_2, \sigma_2^2)$
+\end{itemize}
+
+我们关心均值差 $\Delta = \mu_1 - \mu_2$ 的置信区间。
+
+\textbf{情形一：大样本近似（不要求正态性）}
+
+当样本量较大时（通常 $n_1 \geq 30$, $n_2 \geq 30$），由中心极限定理，样本均值近似正态：
+\[
+\widehat{\Delta} = \bar{X} - \bar{Y} \approx N\!\left(\Delta,\ \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}\right).
+\]
+
+若总体方差未知，用样本方差 $S_1^2$、$S_2^2$ 替代，则
+\[
+Z = \frac{\widehat{\Delta} - \Delta}{\sqrt{S_1^2/n_1 + S_2^2/n_2}} \approx N(0,1).
+\tag{4.2.4}\label{eq:two-sample-z-statistic}
+\]
+
+因此 $\Delta$ 的近似 $100(1-\alpha)\%$ 置信区间为
+\[
+\left((\bar{x}-\bar{y}) \pm z_{\alpha/2}\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}\right).
+\tag{4.2.5}\label{eq:two-sample-ci-large}
+\]
+
+\textbf{情形二：正态等方差（精确区间）}
+
+当两个总体均为正态分布且方差相等（$\sigma_1^2 = \sigma_2^2 = \sigma^2$）时，可以利用合并方差估计：
+\[
+S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2},
+\tag{4.2.6}\label{eq:pooled-variance}
+\]
+其中 $S_p^2$ 称为\textbf{合并样本方差（pooled sample variance）}。
+
+此时枢轴量
+\[
+T = \frac{\widehat{\Delta} - \Delta}{S_p\sqrt{1/n_1 + 1/n_2}} \sim t_{n_1+n_2-2}
+\tag{4.2.7}\label{eq:two-sample-t-statistic}
+\]
+服从自由度为 $n_1+n_2-2$ 的 $t$ 分布。故 $\Delta$ 的精确 $100(1-\alpha)\%$ 置信区间为
+\[
+\left[(\bar{x}-\bar{y}) \pm t_{\alpha/2,\,n_1+n_2-2}\,S_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}\right].
+\tag{4.2.8}\label{eq:two-sample-ci-pooled}
+\]
+
+\textbf{为什么要分情况讨论？} 大样本方法不要求正态性，但依赖中心极限定理；等方差小样本方法给出精确区间，但要求更强的假设。
+
+\begin{example}[棒球运动员身高差]\label{ex:two-sample-baseball}
+比较 MLB 投手（pitcher）与击球手（hitter）的平均身高。
+
+收集两组独立随机样本：
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+组别 & 样本量 $n$ & 样本均值 $\bar{x}$ (in) & 样本标准差 $s$ (in) \\ \hline
+投手 & $n_1=30$ & $\bar{x}_1=74.6$ & $s_1=2.1$ \\
+击球手 & $n_2=40$ & $\bar{x}_2=72.8$ & $s_2=2.3$ \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{研究问题}：投手的平均身高是否显著高于击球手？
+
+样本均值差 $\widehat{\Delta} = \bar{x}_1 - \bar{x}_2 = 74.6 - 72.8 = 1.8$ 英寸。
+
+等方差假设下，合并方差为
+\[
+S_p^2 = \frac{(30-1)(2.1)^2 + (40-1)(2.3)^2}{30+40-2} = \frac{29\cdot4.41 + 39\cdot5.29}{68} \approx 4.89,
+\]
+$S_p \approx 2.21$。
+
+自由度 $df = 68$，$t_{0.025,68} \approx 2.00$。
+
+95\% 置信区间为
+\[
+1.8 \pm 2.00 \times 2.21 \times \sqrt{\frac{1}{30}+\frac{1}{40}}
+= 1.8 \pm 2.00 \times 2.21 \times 0.156
+= 1.8 \pm 0.69
+= (1.11,\ 2.49).
+\]
+
+\textbf{解读}：我们 95\% 确信投手比击球手平均高 1.11 到 2.49 英寸。由于区间不包含 0，投手平均身高显著高于击球手。\footnote{详细推导见附录 \cref{sec:derivation-two-sample-ci}。}
+\end{example}
+
+\textbf{方差不等时的处理}：如果 $\sigma_1^2 \neq \sigma_2^2$，可以使用 Welch 近似（不要求合并方差），自由度由 Welch-Satterthwaite 公式给出：
+\[
+\mathrm{df} \approx \frac{\left(S_1^2/n_1 + S_2^2/n_2\right)^2}
+{S_1^4/[n_1^2(n_1-1)] + S_2^4/[n_2^2(n_2-1)]}.
+\tag{4.2.9}\label{eq:welch-satterthwaite}
+\]
+
+\subsection{4.2.2 两总体比例差的置信区间}\label{sec:4.2.2}
+
+比较两个二项总体中成功概率的差异是统计学中的经典问题。例如，比较两种药物的治愈率、两个地区的患病率等。
+
+设有两个独立总体：
+\begin{itemize}
+\item 总体 1：$X \sim \mathrm{Binomial}(n_1, p_1)$，观测值 $x$
+\item 总体 2：$Y \sim \mathrm{Binomial}(n_2, p_2)$，观测值 $y$
+\end{itemize}
+
+样本比例 $\widehat{p}_1 = x/n_1$，$\widehat{p}_2 = y/n_2$。我们关心比例差 $\Delta_p = p_1 - p_2$。
+
+\textbf{大样本近似置信区间}
+
+当样本量较大时（$n_1\widehat{p}_1$、$n_1(1-\widehat{p}_1)$、$n_2\widehat{p}_2$、$n_2(1-\widehat{p}_2)$ 均 $\geq 5$），由中心极限定理：
+\[
+\widehat{p}_1 - \widehat{p}_2 \approx N\!\left(\Delta_p,\ \frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2}\right).
+\]
+
+用样本比例替代总体比例，得到 $\Delta_p$ 的近似 $100(1-\alpha)\%$ 置信区间：
+\[
+\left(\widehat{p}_1 - \widehat{p}_2\right) \pm z_{\alpha/2}
+\sqrt{\frac{\widehat{p}_1(1-\widehat{p}_1)}{n_1} + \frac{\widehat{p}_2(1-\widehat{p}_2)}{n_2}}.
+\tag{4.2.10}\label{eq:two-proportion-ci}
+\]
+
+\textbf{为什么比例差的置信区间很重要？} 在医学试验、调查研究中，我们经常需要回答"两组之间的差异是否显著"，比例差及其置信区间提供了回答这个问题的框架。
+
+\begin{example}[1954 年脊髓灰质炎疫苗试验]\label{ex:polio-vaccine}
+1954 年 Salk 脊髓灰质炎疫苗试验是医学史上最著名的随机对照试验之一。
+
+试验设计：将儿童随机分配到疫苗组或安慰剂组。
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+组别 & 样本量 $n$ & 脊髓灰质炎病例数 & 比例 $\widehat{p}$ \\ \hline
+疫苗组 & $n_1=200,745$ & $x=56$ & $\widehat{p}_1=56/200745\approx 0.00028$ \\
+安慰剂组 & $n_2=201,229$ & $y=142$ & $\widehat{p}_2=142/201229\approx 0.00071$ \\ \hline
+\end{tabular}
+\end{center}
+
+样本比例差 $\widehat{\Delta}_p = \widehat{p}_1 - \widehat{p}_2 = -0.00043$（疫苗组更低，说明疫苗有效）。
+
+计算标准误：
+\[
+\mathrm{SE} = \sqrt{\frac{0.00028(1-0.00028)}{200745} + \frac{0.00071(1-0.00071)}{201229}}
+\approx \sqrt{1.39\times10^{-9} + 3.52\times10^{-9}}
+\approx 0.000070.
+\]
+
+95\% 置信区间为
+\[
+-0.00043 \pm 1.96 \times 0.000070 = (-0.00057,\ -0.00029).
+\]
+
+\textbf{解读}：我们 95\% 确信疫苗使脊髓灰质炎发病率降低了 0.029\% 到 0.057\%。由于区间完全为负，疫苗效果高度显著。这一结果直接推动了疫苗的批准上市。\footnote{该分析的统计方法见 \cite{Salk1955}。}
+\end{example}
+
+\textbf{替代方法：Wilson 区间}，对于小样本或极端比例，标准正态近似可能失效。Wilson 区间（1947 年提出）提供了更稳健的替代方案，详见 \cite{Wilson1927}。
+
 \section{4.3 Order Statistics}\label{sec:4.3}
 
 \subsection{次序统计量的定义}
