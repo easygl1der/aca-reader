@@ -65,7 +65,7 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 \lim_{n \to \infty} \mathbb{P}_{\theta_0}\left[ L(\theta_0; \mathbf{X}) > L(\theta; \mathbf{X}) \right] = 1, \quad \forall \theta \neq \theta_0.
 \label{eq:likelihood-asymptotic}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{证明思路}：由于 $\theta_0$ 是内点，存在领域使得似然函数在该领域内取得最大值。随着 $n$ 增大，似然函数在 $\theta_0$ 处超过相邻点的概率趋于 1，因此解序列收敛到 $\theta_0$。\footnote{证明关键：记 $Z_i(\theta) = \log\frac{f(X_i;\theta)}{f(X_i;\theta_0)}$，由 Jensen 不等式得 $\mathbb{E}_{\theta_0}[Z_1(\theta)] < 0$，从而似然比以概率1趋向 $\theta_0$。该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}
 
@@ -120,12 +120,12 @@ Cauchy 分布的似然函数无解析解，需通过数值优化（如 Newton �
 
 下面证明在正则条件下，MLE 是真值的相合估计量。
 
-\begin theorem}[MLE 的相合性]\label{th:mle-consistency}
+\begin{theorem}[MLE 的相合性]\label{th:mle-consistency}
 在正则条件 (R0)-(R2) 下，设 $\widehat{\theta}_n$ 是似然方程的解序列。则
 \[
 \widehat{\theta}_n \xrightarrow{P} \theta_0.
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{证明思路}：由于 $\theta_0$ 是内点，存在领域使得似然函数在该领域内取得最大值。随着 $n$ 增大，似然函数在 $\theta_0$ 处超过相邻点的概率趋于 1，因此解序列收敛到 $\theta_0$。\footnote{证明关键：记 $Z_i(\theta) = \log\frac{f(X_i;\theta)}{f(X_i;\theta_0)}$，由 Jensen 不等式得 $\mathbb{E}_{\theta_0}[Z_1(\theta)] < 0$，从而似然比以概率1趋向 $\theta_0$。该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}
 
@@ -230,7 +230,7 @@ f_X(x;\theta) = f(x-\theta).
 
 现在我们可以陈述主要结果。
 
-\begin theorem}[Rao-Cramér 下界]\label{th:rao-cramer-bound}
+\begin{theorem}[Rao-Cramér 下界]\label{th:rao-cramer-bound}
 设 $X_1, \ldots, X_n$ iid $\sim f(x;\theta)$，满足正则条件 (R0)-(R4)。令 $Y = u(X_1, \ldots, X_n)$ 是任意统计量，其期望为 $\mathbb{E}_\theta[Y] = k(\theta)$。则
 
 \[
@@ -244,7 +244,7 @@ f_X(x;\theta) = f(x-\theta).
 \text{var}(Y) \geq \frac{1}{n I(\theta)}.
 \label{eq:rao-cramer-bound-unbiased}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{证明思路}：利用 Cauchy-Schwarz 不等式和得分函数的性质。令 $Z = \sum_{i=1}^n \frac{\partial \log f(X_i;\theta)}{\partial \theta}$，则 $\mathbb{E}(Z) = 0$，$\text{var}(Z) = nI(\theta)$。由 $k'(\theta) = \mathbb{E}(YZ)$ 和 $|\text{corr}(Y,Z)| \leq 1$ 可得结论。\footnote{由 Cauchy-Schwarz：$[k'(\theta)]^2 \leq \text{var}(Y) \cdot nI(\theta)$，即 $\text{var}(\widehat{\theta}) \geq 1/[nI(\theta)]$。Rao-Cramér 下界的完整证明见附录 \cref{sec:rao-cramer-proof}。}
 
@@ -309,14 +309,14 @@ e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
 
 下面定理表明，在正则条件下，MLE 是渐近有效的。
 
-\begin theorem}[MLE 的渐近正态性和有效性]\label{th:mle-asymptotic}
+\begin{theorem}[MLE 的渐近正态性和有效性]\label{th:mle-asymptotic}
 在正则条件 (R0)-(R5) 下，设 $\widehat{\theta}_n$ 是似然方程的一致解序列。则
 
 \[
 \sqrt{n}(\widehat{\theta}_n - \theta_0) \xrightarrow{D} N\left(0, \frac{1}{I(\theta_0)}\right).
 \label{eq:mle-asymptotic-normal}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{证明思路}：对数似然函数在 $\theta_0$ 处 Taylor 展开，利用大数定律和中心极限定理。\footnote{关键步骤：$\sqrt{n}(\widehat{\theta}-\theta_0) \Rightarrow N(0, I(\theta_0)^{-1})$，其中 $I(\theta_0)$ 为 Fisher 信息量。MLE 渐近正态性的完整证明见附录 \cref{sec:mle-asymptotic-proof}。}
 
@@ -425,14 +425,14 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 
 定理 6.3.1 揭示了似然比统计量在正则条件下的渐近分布。
 
-\begin theorem}[似然比检验的渐近分布]\label{th:lrt-asymptotic}
+\begin{theorem}[似然比检验的渐近分布]\label{th:lrt-asymptotic}
 在正则条件下，若 $H_0: \theta = \theta_0$ 为真，则
 
 \[
 -2\log\Lambda \xrightarrow{D} \chi^2(1).
 \label{eq:lrt-asymptotic}
 \]
-\end theorem}
+\end{theorem}
 
 这一定理意味着：\textbf{对于任意分布，在大样本下，似然比检验都有渐近レベル $\alpha$}。
 
@@ -601,14 +601,14 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 
 \subsection{多参数 MLE 的渐近性质}
 
-\begin theorem}[多参数 MLE 的渐近分布]\label{th:multiparameter-mle-asymptotic}
+\begin{theorem}[多参数 MLE 的渐近分布]\label{th:multiparameter-mle-asymptotic}
 在正则条件下，设 $\widehat{\boldsymbol{\theta}}_n$ 是一致解序列。则
 
 \[
 \sqrt{n}(\widehat{\boldsymbol{\theta}}_n - \boldsymbol{\theta}_0) \xrightarrow{D} N_p(\mathbf{0}, \mathbf{I}^{-1}(\boldsymbol{\theta}_0)).
 \label{eq:multiparameter-mle-asymptotic}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{含义}：每个参数分量 $\widehat{\theta}_{nj}$ 满足
 \[
@@ -658,14 +658,14 @@ H_0: \boldsymbol{\theta} \in \omega \quad \text{vs} \quad H_1: \boldsymbol{\thet
 
 定理 6.5.1 给出了其渐近分布。
 
-\begin theorem}[多参数似然比检验的渐近分布]\label{th:multiparameter-lrt}
+\begin{theorem}[多参数似然比检验的渐近分布]\label{th:multiparameter-lrt}
 在正则条件下，若 $H_0$ 由 $q$ 个独立约束定义，则
 
 \[
 -2\log\Lambda \xrightarrow{D} \chi^2(q).
 \label{eq:multiparameter-lrt-asymptotic}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{含义}：渐近分布的自由度等于约束的个数，而不是原始参数的个数。
 
@@ -763,13 +763,13 @@ Q(\theta|\theta^{(m)}, \mathbf{x}) = \mathbb{E}_{\theta^{(m)}}\left[ \log L^c(\t
 }
 }
 
-\begin theorem}[EM 算法的单调性]\label{th:em-monotonicity}
+\begin{theorem}[EM 算法的单调性]\label{th:em-monotonicity}
 设 $\theta^{(m+1)}$ 由 E 步和 M 步得到。则
 \[
 L(\theta^{(m+1)}|\mathbf{x}) \geq L(\theta^{(m)}|\mathbf{x}).
 \label{eq:em-monotonicity}
 \]
-\end theorem}
+\end{theorem}
 
 \textbf{证明思路}：利用 $Q$ 函数的定义和 Jensen 不等式。\footnote{关键：$Q(\theta|\theta^{(t)}) = \mathbb{E}_{Z|\theta^{(t)}}[\log L(\theta;X,Z)]$，由 Jensen 不等式可得 $L(\theta^{(t+1)}) \geq L(\theta^{(t)})$。EM 算法单调性的完整证明见附录 \cref{sec:em-monotonicity-proof}。}
 

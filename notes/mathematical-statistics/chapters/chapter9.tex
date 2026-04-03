@@ -52,14 +52,14 @@ q(X_1, \ldots, X_n) = \sum_{i=1}^n \sum_{j=1}^n X_i a_{ij} X_j
 \textbf{模型}为：
 \[
 X_{ij} = \mu_j + e_{ij}, \quad i = 1, \ldots, n_j,\ j = 1, \ldots, b,
-\tag{9.2.1}\label{eq:one-way-model}
+\label{eq:one-way-model}
 \]
 其中 $e_{ij}$ 是 iid $N(0, \sigma^2)$ 随机误差。
 
 \textbf{我们想检验}：所有 $b$ 个总体的均值是否相等——
 \[
 H_0: \mu_1 = \mu_2 = \cdots = \mu_b \quad \text{vs} \quad H_1: \mu_j \neq \mu_{j'} \text{ 对某些 } j \neq j'.
-\tag{9.2.2}\label{eq:one-way-hypotheses}
+\label{eq:one-way-hypotheses}
 \]
 
 \textbf{实际背景}：例如，$b$ 种药物对某种疾病的疗效比较；或 $b$ 种肥料对作物产量的影响。这里"一种因素（factor）"处于 $b$ 个"水平（level）"，因此称为\textbf{单因素实验（one-way layout）}。
@@ -80,32 +80,32 @@ H_0: \mu_1 = \mu_2 = \cdots = \mu_b \quad \text{vs} \quad H_1: \mu_j \neq \mu_{j
 \[
 \hat{\mu}_j = \bar{X}_{.j} = \frac{1}{n_j}\sum_{i=1}^{n_j} X_{ij},\quad
 \hat{\sigma}_\Omega^2 = \frac{1}{n}\sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{.j})^2.
-\tag{9.2.7}\label{eq:one-way-mle-omega}
+\label{eq:one-way-mle-omega}
 \]
 
 约束模型下的 MLE（此时等价于单样本问题）：
 \[
 \hat{\mu}_\omega = \bar{X}_{..} = \frac{1}{n}\sum_{j=1}^b \sum_{i=1}^{n_j} X_{ij},\quad
 \hat{\sigma}_\omega^2 = \frac{1}{n}\sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{..})^2.
-\tag{9.2.3}\label{eq:one-way-mle-omega-constraint}
+\label{eq:one-way-mle-omega-constraint}
 \]
 
 似然比统计量简化后的形式为：
 \[
 \Lambda^{n/2} = \frac{\hat{\sigma}_\Omega^2}{\hat{\sigma}_\omega^2}.
-\tag{9.2.9}\label{eq:one-way-lrt}
+\label{eq:one-way-lrt}
 \]
 
 拒绝 $H_0$ 等价于 $F$ 统计量过大，其中
 \[
 F = \frac{Q_4 / (b-1)}{Q_3 / (n-b)},
-\tag{9.2.11}\label{eq:one-way-F}
+\label{eq:one-way-F}
 \]
 而
 \[
 Q_3 = \sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{.j})^2,\quad
 Q_4 = \sum_{j=1}^b n_j (\bar{X}_{.j} - \bar{X}_{..})^2.
-\tag{9.2.10}\label{eq:one-way-sum-squares}
+\label{eq:one-way-sum-squares}
 \]
 
 \textbf{核心分解}：
@@ -113,7 +113,7 @@ Q_4 = \sum_{j=1}^b n_j (\bar{X}_{.j} - \bar{X}_{..})^2.
 \underbrace{\sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{..})^2}_{Q} =
 \underbrace{\sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{.j})^2}_{Q_3\text{（组内）}} +
 \underbrace{\sum_{j=1}^b n_j (\bar{X}_{.j} - \bar{X}_{..})^2}_{Q_4\text{（组间）}}.
-\tag{9.2.10}\label{eq:one-way-ss-decomposition}
+\label{eq:one-way-ss-decomposition}
 \]
 
 在 $H_0$ 下，$Q_3/\sigma^2 \sim \chi^2(n-b)$，$Q_4/\sigma^2 \sim \chi^2(b-1)$，且二者独立。因此 $F \sim F(b-1, n-b)$。
@@ -158,7 +158,7 @@ Y = \sum_{i=1}^n \frac{X_i^2}{\sigma^2}
 的 mgf 为
 \[
 M(t) = \frac{1}{(1-2t)^{n/2}} \exp\left\{\frac{t\sum_{i=1}^n \mu_i^2}{\sigma^2(1-2t)}\right\},\quad t < \frac{1}{2}.
-\tag{9.3.1}\label{eq:noncentral-chisq-mgf}
+\label{eq:noncentral-chisq-mgf}
 \]
 此时称 $Y \sim \chi^2(r, \theta)$，其中 $r = n$ 是自由度，$\theta = \sum_{i=1}^n \mu_i^2/\sigma^2$ 是\textbf{非中心参数（noncentrality parameter）}。
 \end{definition}
@@ -180,7 +180,7 @@ F = \frac{r_2 U}{r_1 V}
 \[
 \theta = \frac{1}{\sigma^2}\sum_{j=1}^b n_j (\mu_j - \bar{\mu})^2,\quad
 \bar{\mu} = \frac{1}{n}\sum_{j=1}^b n_j \mu_j.
-\tag{9.3.5}\label{eq:anova-noncentrality}
+\label{eq:anova-noncentrality}
 \]
 
 当 $H_0$ 成立时，$\theta = 0$，回到中心 $F$ 分布；当 $H_1$ 成立时，$\theta > 0$，$F$ 分布向右偏移，偏移程度由 $\theta$ 刻画。这解释了为什么 $F$ 检验在 $H_0$ 不成立时倾向于取更大的值。
@@ -201,7 +201,7 @@ F = \frac{r_2 U}{r_1 V}
 Bonferroni 方法基于一个简单的不等式：对 $k$ 个参数 $\theta_i$，若每个区间 $I_i$ 的置信水平为 $1-\alpha$，则
 \[
 P(\text{所有 } \theta_i \in I_i) \geq 1 - k\alpha.
-\tag{9.4.2}\label{eq:bonferroni-inequality}
+\label{eq:bonferroni-inequality}
 \]
 
 \textbf{核心思想}：将每个区间的置信水平从 $1-\alpha$ 调整为 $1-\alpha/k$，则整体的置信水平至少为 $1-\alpha$。
@@ -209,7 +209,7 @@ P(\text{所有 } \theta_i \in I_i) \geq 1 - k\alpha.
 对 one-way ANOVA，成对差值 $\mu_j - \mu_{j'}$ 的 Bonferroni 置信区间为：
 \[
 \bar{X}_{.j} - \bar{X}_{.j'} \pm t_{\alpha/(2k),\ n-b}\ \hat{\sigma}_\Omega \sqrt{\frac{1}{n_j} + \frac{1}{n_{j'}}}.
-\tag{9.4.3}\label{eq:bonferroni-ci}
+\label{eq:bonferroni-ci}
 \]
 
 \textbf{优点}：通用性强，适用于任何成对比较。
@@ -222,14 +222,14 @@ Tukey 方法利用\textbf{学生化极差分布（Studentized range distribution
 当所有组样本容量相等（$n_j = a$，$j = 1, \ldots, b$）时，所有成对比较的\textbf{同时置信区间}为：
 \[
 \bar{X}_{.j} - \bar{X}_{.j'} \pm q_{1-\alpha,\ b,\ n-b}\ \frac{\hat{\sigma}_\Omega}{\sqrt{a}},\quad \forall j \neq j'.
-\tag{9.4.4}\label{eq:tukey-ci}
+\label{eq:tukey-ci}
 \]
 其中 $q_{1-\alpha,\ b,\ n-b}$ 是自由度为 $b$ 和 $n-b$ 的学生化极差分布分位数。
 
 对于 unbalanced 情形，使用 Tukey-Kramer 修正：
 \[
 \bar{X}_{.j} - \bar{X}_{.j'} \pm \frac{q_{1-\alpha,\ b,\ n-b}}{\sqrt{2}}\ \hat{\sigma}_\Omega \sqrt{\frac{1}{n_j} + \frac{1}{n_{j'}}}.
-\tag{9.4.5}\label{eq:tukey-kramer-ci}
+\label{eq:tukey-kramer-ci}
 \]
 
 \begin{example}[赛车速度比较]\label{ex:car-speed-tukey}
@@ -261,7 +261,7 @@ Fisher 方法不保证整体覆盖率为 $1-\alpha$，但 $F$ 检验提供了"�
 设因素 A 有 $a$ 个水平，因素 B 有 $b$ 个水平，每个组合有一个观测值 $X_{ij}$。模型为：
 \[
 X_{ij} = \mu + \alpha_i + \beta_j + e_{ij},\quad i = 1,\ldots,a,\ j = 1,\ldots,b,
-\tag{9.5.2}\label{eq:two-way-additive-model}
+\label{eq:two-way-additive-model}
 \]
 其中 $e_{ij} \sim N(0, \sigma^2)$ iid，且 $\sum_{i=1}^a \alpha_i = 0$，$\sum_{j=1}^b \beta_j = 0$。
 
@@ -286,18 +286,18 @@ X_{ij} = \mu + \alpha_i + \beta_j + e_{ij},\quad i = 1,\ldots,a,\ j = 1,\ldots,b
 我们需要检验两个主效应假设：
 \[
 H_{0A}: \alpha_1 = \cdots = \alpha_a = 0 \quad \text{vs} \quad H_{1A}: \text{某些 } \alpha_i \neq 0,
-\tag{9.5.3}\label{eq:two-way-H0A}
+\label{eq:two-way-H0A}
 \]
 \[
 H_{0B}: \beta_1 = \cdots = \beta_b = 0 \quad \text{vs} \quad H_{1B}: \text{某些 } \beta_j \neq 0.
-\tag{9.5.4}\label{eq:two-way-H0B}
+\label{eq:two-way-H0B}
 \]
 
 检验 $H_{0B}$ 的 $F$ 统计量：
 \[
 F_B = \frac{a\sum_{j=1}^b (\bar{X}_{.j} - \bar{X}_{..})^2 / (b-1)}
 {\sum_{i=1}^a \sum_{j=1}^b (X_{ij} - \bar{X}_{i.} - \bar{X}_{.j} + \bar{X}_{..})^2 / [(a-1)(b-1)]}.
-\tag{9.5.12}\label{eq:two-way-FB}
+\label{eq:two-way-FB}
 \]
 在 $H_{0B}$ 下，$F_B \sim F(b-1,\ (a-1)(b-1))$。
 
@@ -310,7 +310,7 @@ F_B = \frac{a\sum_{j=1}^b (\bar{X}_{.j} - \bar{X}_{..})^2 / (b-1)}
 在模型中引入交互参数 $\gamma_{ij}$：
 \[
 \mu_{ij} = \mu + \alpha_i + \beta_j + \gamma_{ij},
-\tag{9.5.15}\label{eq:two-way-interaction-model}
+\label{eq:two-way-interaction-model}
 \]
 其中 $\sum_i \gamma_{ij} = \sum_j \gamma_{ij} = 0$。
 
@@ -340,7 +340,7 @@ ANOVA 研究的是类别型（categorical）自变量对因变量的影响。但
 \textbf{线性模型}：假设 $\mathbb{E}(Y) = \mu(x)$ 是 $x$ 的线性函数——
 \[
 Y_i = \alpha + \beta(x_i - \bar{x}) + e_i,\quad i = 1, \ldots, n,
-\tag{9.6.1}\label{eq:regression-model}
+\label{eq:regression-model}
 \]
 其中 $e_i \sim N(0, \sigma^2)$ iid。
 
@@ -353,13 +353,13 @@ Y_i = \alpha + \beta(x_i - \bar{x}) + e_i,\quad i = 1, \ldots, n,
 对模型 \eqref{eq:regression-model}，似然函数为
 \[
 L(\alpha, \beta, \sigma^2) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left\{-\frac{[Y_i - \alpha - \beta(x_i - \bar{x})]^2}{2\sigma^2}\right\}.
-\tag{9.6.12}\label{eq:regression-likelihood}
+\label{eq:regression-likelihood}
 \]
 
 最大化似然等价于最小化
 \[
 H(\alpha, \beta) = \sum_{i=1}^n [Y_i - \alpha - \beta(x_i - \bar{x})]^2.
-\tag{9.6.3}\label{eq:regression-ls}
+\label{eq:regression-ls}
 \]
 这正是\textbf{最小二乘法（least squares）}——选择使残差平方和最小的 $\alpha, \beta$。
 
@@ -368,25 +368,25 @@ H(\alpha, \beta) = \sum_{i=1}^n [Y_i - \alpha - \beta(x_i - \bar{x})]^2.
 MLE 的解：
 \[
 \hat{\alpha} = \bar{Y},
-\tag{9.6.3}\label{eq:regression-alpha-hat}
+\label{eq:regression-alpha-hat}
 \]
 \[
 \hat{\beta} = \frac{\sum_{i=1}^n (Y_i - \bar{Y})(x_i - \bar{x})}{\sum_{i=1}^n (x_i - \bar{x})^2}
 = \frac{\sum_{i=1}^n Y_i(x_i - \bar{x})}{\sum_{i=1}^n (x_i - \bar{x})^2}.
-\tag{9.6.5}\label{eq:regression-beta-hat}
+\label{eq:regression-beta-hat}
 \]
 
 $\hat{\sigma}^2$ 的 MLE：
 \[
 \hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n [Y_i - \hat{\alpha} - \hat{\beta}(x_i - \bar{x})]^2.
-\tag{9.6.8}\label{eq:regression-sigma-hat}
+\label{eq:regression-sigma-hat}
 \]
 
 \textbf{拟合值与残差}：
 \[
 \hat{Y}_i = \hat{\alpha} + \hat{\beta}(x_i - \bar{x}),\quad
 \hat{e}_i = Y_i - \hat{Y}_i.
-\tag{9.6.6}\label{eq:regression-fitted}
+\label{eq:regression-fitted}
 \]
 
 \textbf{估计量的分布}：可以证明
@@ -400,7 +400,7 @@ $\hat{\sigma}^2$ 的 MLE：
 0 & \frac{1}{\sum_{i=1}^n (x_i - \bar{x})^2}
 \end{pmatrix}
 \right).
-\tag{9.6.9}\label{eq:regression-joint-dist}
+\label{eq:regression-joint-dist}
 \]
 
 \begin{example}[男子 1500 米奥运会成绩]\label{ex:olympic-1500m}
@@ -418,7 +418,7 @@ R 拟合结果：$\hat{y} = 12.33 - 0.0044 \times \text{year}$。斜率的 $95\%
 将数据写成向量形式 $\mathbf{Y} = (Y_1, \ldots, Y_n)'$，设计矩阵 $\mathbf{X}$ 的列为 $\mathbf{1}$ 和 $\mathbf{x}_c = (x_1 - \bar{x}, \ldots, x_n - \bar{x})'$。模型为
 \[
 \mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{e},\quad \mathbf{e} \sim N(\mathbf{0}, \sigma^2\mathbf{I}).
-\tag{9.6.13}\label{eq:regression-matrix-model}
+\label{eq:regression-matrix-model}
 \]
 
 设 $V$ 为 $\mathbf{X}$ 列张成的 $\mathbb{R}^n$ 中的二维子空间（拟合空间）。最小二乘估计 $\hat{\boldsymbol{\theta}} = \mathbf{X}\hat{\boldsymbol{\beta}}$ 正是 $\mathbf{Y}$ 在子空间 $V$ 上的\textbf{正交投影}——即使得 $\|\mathbf{Y} - \boldsymbol{\theta}\|^2$ 最小的 $V$ 中元素。
@@ -434,20 +434,20 @@ R 拟合结果：$\hat{y} = 12.33 - 0.0044 \times \text{year}$。斜率的 $95\%
 在许多应用中，我们需要检验两个连续变量 $X$ 和 $Y$ 是否独立。对于二元正态分布，$X$ 和 $Y$ 独立当且仅当它们的相关系数 $\rho = 0$。因此我们检验：
 \[
 H_0: \rho = 0 \quad \text{vs} \quad H_1: \rho \neq 0.
-\tag{9.7.1}\label{eq:independence-hypotheses}
+\label{eq:independence-hypotheses}
 \]
 
 \textbf{样本相关系数}：
 \[
 R = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}
 {\sqrt{\sum_{i=1}^n (X_i - \bar{X})^2 \cdot \sum_{i=1}^n (Y_i - \bar{Y})^2}}.
-\tag{9.7.1}\label{eq:sample-correlation}
+\label{eq:sample-correlation}
 \]
 
 \textbf{关键定理}：在 $H_0$ 下（即 $\rho = 0$ 时），$R$ 的分布不依赖于 $X$ 的具体分布——只要 $X$ 与 $Y$ 独立，$R$ 的分布在正态情况下就有上式 \eqref{eq:noncentral-chisq-mgf} 给出的精确形式。特别是，
 \[
 T = \frac{R\sqrt{n-2}}{\sqrt{1-R^2}} \sim t(n-2).
-\tag{9.7.3}\label{eq:correlation-t-stat}
+\label{eq:correlation-t-stat}
 \]
 
 因此，$H_0$ 的拒绝域为 $|T| \geq t_{\alpha/2,\ n-2}$，或等价地 $|R| \geq c$。
@@ -461,7 +461,7 @@ T = \frac{R\sqrt{n-2}}{\sqrt{1-R^2}} \sim t(n-2).
 设 $\mathbf{X}' = (X_1, \ldots, X_n)$，其中 $X_i \sim N(\mu_i, \sigma^2)$ iid。二次型 $Q = \sigma^{-2}\mathbf{X}'\mathbf{A}\mathbf{X}$ 的 mgf 为：
 \[
 M_Q(t) = \frac{1}{(1-2t)^{n/2}} \exp\left\{\frac{t\sum_{i=1}^n \mu_i^2}{\sigma^2(1-2t)}\right\}.
-\tag{9.8.10}\label{eq:quadratic-form-mgf}
+\label{eq:quadratic-form-mgf}
 \]
 
 特别地，若 $\mathbf{A}$ 是对称幂等矩阵（$\mathbf{A}^2 = \mathbf{A}$），则 $Q \sim \chi^2(r, \theta)$，其中 $r = \mathrm{tr}(\mathbf{A}) = \mathrm{rank}(\mathbf{A})$，$\theta = \boldsymbol{\mu}'\mathbf{A}\boldsymbol{\mu}/\sigma^2$。若进一步 $\boldsymbol{\mu} = \mu\mathbf{1}$ 且 $\sum_{i,j}a_{ij} = 0$，则 $\theta = 0$，$Q$ 为中心 $\chi^2(r)$。
@@ -1097,7 +1097,7 @@ Q = (\boldsymbol{\Sigma}^{-1/2}\mathbf{X})' \boldsymbol{\Sigma}^{1/2} \mathbf{A}
 \sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{..})^2
 = \sum_{j=1}^b \sum_{i=1}^{n_j} (X_{ij} - \bar{X}_{.j})^2
 + \sum_{j=1}^b n_j (\bar{X}_{.j} - \bar{X}_{..})^2.
-\tag{A9.1}\label{eq:appendix-ss-identity}
+\label{eq:appendix-ss-identity}
 \]
 
 \textbf{推导}：记 $d_{ij} = X_{ij} - \bar{X}_{..}$。则
@@ -1128,7 +1128,7 @@ d_{ij} = (X_{ij} - \bar{X}_{.j}) + (\bar{X}_{.j} - \bar{X}_{..}).
 \[
 \frac{Q_3}{\sigma^2} = \sum_{j=1}^b \frac{\sum_{i=1}^{n_j}(X_{ij} - \bar{X}_{.j})^2}{\sigma^2}
 \sim \chi^2\!\left(\sum_{j=1}^b (n_j - 1)\right) = \chi^2(n-b).
-\tag{A9.2}\label{eq:appendix-Q3-chisq}
+\label{eq:appendix-Q3-chisq}
 \]
 
 \textbf{步骤 2：$Q_4$ 与 $Q_3$ 的独立性。} 注意 $\bar{X}_{.j}$ 与 $Q_3$ 独立（由正态样本的性质），且 $\bar{X}_{..}$ 是 $\bar{X}_{.1}, \ldots, \bar{X}_{.b}$ 的线性组合，因此 $\bar{X}_{..}$ 也与 $Q_3$ 独立。故 $Q_4$（$\bar{X}_{.j}$ 的函数）与 $Q_3$ 独立。
@@ -1142,7 +1142,7 @@ d_{ij} = (X_{ij} - \bar{X}_{.j}) + (\bar{X}_{.j} - \bar{X}_{..}).
 \textbf{步骤 4：$F$ 分布。} 由步骤 1、2、3 及 $F$ 分布定义，
 \[
 F = \frac{Q_4/(b-1)}{Q_3/(n-b)} \sim F(b-1,\ n-b).
-\tag{A9.3}\label{eq:appendix-F-dist}
+\label{eq:appendix-F-dist}
 \]
 \qed
 
@@ -1178,7 +1178,7 @@ M'(t) = \left[r(1-2t)^{-r/2-1} + \frac{r\theta}{(1-2t)^{r/2+1}}\right] \exp\left
 即残差向量 $\hat{\mathbf{e}} = \mathbf{Y} - \hat{\boldsymbol{\theta}}$ 与 $\mathbf{1}$ 和 $\mathbf{x}_c$ 都正交：
 \[
 \mathbf{1}'\hat{\mathbf{e}} = 0,\quad \mathbf{x}_c'\hat{\mathbf{e}} = 0.
-\tag{A9.4}\label{eq:appendix-orthogonality}
+\label{eq:appendix-orthogonality}
 \]
 
 由 $\mathbf{1}'\hat{\mathbf{e}} = 0$ 得 $\sum_i \hat{e}_i = 0$（残差之和为零）。
