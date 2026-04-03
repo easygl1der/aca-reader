@@ -1248,3 +1248,49 @@ sec:appendix-{topic}-{name}
 - 不是每处引用都加
 - 后续引用直接用 `\cref` 跳转公式编号即可
 
+---
+
+## L718: mathematical-statistics ch4-6 附录脚注修复
+
+**日期**: 2026-04-03
+
+**任务**: 修复 chapter4.tex 和 chapter6.tex 中"见附录"后面缺少 `\cref` 引用的问题。
+
+**修复内容**:
+
+### chapter4.tex 修复（共 13 处）
+| 行号 | 原文 | 修改后 |
+|------|------|--------|
+| 115 | `\footnote{通用推导框架见附录 。}` | `\footnote{通用推导框架见附录 \cref{sec:derivation-mle}。}` |
+| 125 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-exponential-mle}。}` |
+| 136 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-binomial-mle}。}` |
+| 157 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-normal-mle}。}` |
+| 178 | `\footnote{枢轴量的构造方法及推导见附录 。}` | `\footnote{枢轴量的构造方法及推导见附录 \cref{sec:derivation-confidence-interval}。}` |
+| 189 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-known}。}` |
+| 202 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}` |
+| 210 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-variance-ci}。}` |
+| 322 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}` |
+| 333 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}` |
+| 359 | `\footnote{详细推导见附录 。}` | `\footnote{详细推导见附录 \cref{sec:derivation-chi-square}。}` |
+| 571 | `\footnote{接受-拒绝算法的推导及收敛性证明见附录 。}` | `\footnote{接受-拒绝算法的推导及收敛性证明见附录 \cref{sec:derivation-monte-carlo}。}` |
+| 594 | `\footnote{Bootstrap 的理论基础及更多细节见附录 。}` | `\footnote{Bootstrap 的理论基础及更多细节见附录 \cref{sec:derivation-bootstrap}。}` |
+
+### chapter6.tex 修复（共 9 处）
+| 行号 | 原文 | 修改后 |
+|------|------|--------|
+| 70 | `\footnote{该定理的完整证明见附录 。}` | `\footnote{该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}` |
+| 130 | `\footnote{该定理的完整证明见附录 。}` | `\footnote{该定理的完整证明见附录 \cref{sec:proof-likelihood-asymptotic}。}` |
+| 224 | `\footnote{Bernoulli 分布和位置族 Fisher 信息的详细推导见附录 。}` | `\footnote{Bernoulli 分布和位置族 Fisher 信息的详细推导见附录 \cref{sec:rao-cramer-proof}。}` |
+| 249 | `\footnote{Rao-Cramér 下界的完整证明见附录 。}` | `\footnote{Rao-Cramér 下界的完整证明见附录 \cref{sec:rao-cramer-proof}。}` |
+| 288 | `\footnote{Beta 分布 MLE 方差的推导见附录 。}` | `\footnote{Beta 分布 MLE 方差的推导见附录 \cref{sec:mle-asymptotic-proof}。}` |
+| 321 | `\footnote{MLE 渐近正态性的完整证明见附录 。}` | `\footnote{MLE 渐近正态性的完整证明见附录 \cref{sec:mle-asymptotic-proof}。}` |
+| 582 | `\footnote{正态分布信息矩阵的详细计算见附录 。}` | `\footnote{正态分布信息矩阵的详细计算见附录 \cref{sec:normal-information-matrix-derivation}。}` |
+| 774 | `\footnote{EM 算法单调性的完整证明见附录 。}` | `\footnote{EM 算法单调性的完整证明见附录 \cref{sec:em-monotonicity-proof}。}` |
+| 804 | `\footnote{正态截尾数据的 EM 算法详细推导见附录 。}` | `\footnote{正态截尾数据的 EM 算法详细推导见附录 \cref{sec:em-monotonicity-proof}。}` |
+
+**未修复（暂留）**:
+- chapter4.tex line 33, 90, 94: 这些是概念性问题，不是推导
+- chapter6.tex line 101, 409: 这些引用指向不存在的附录章节，需要作者确认
+
+**注意**: 使用 `sed -i '' 'Ns/pattern/replacement/'` 按行号精确替换，避免全局替换错误
+
