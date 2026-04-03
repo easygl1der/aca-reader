@@ -1,34 +1,54 @@
 % Chapter 2: Samuel's Molev-Sagan Type Formula
 % 基于 Matthew J. Samuel (2024)
-% arXiv: 2401.11060
+% arXiv: 2401.11061
 
 \chapter{Samuel's Molev-Sagan Type Formula}
 \label{chap:MolevSagan}
 
-\section{引言：两个多项式相乘会得到什么？}
+\section{引言：从一道经典问题到现代 Schubert 演算}
 \label{sec:ProductMotivation}
 
-在第一章中，我们遇到了三重变量集的 Graham positivity 问题——即研究形如
+\subsection{一个经典的几何计数问题}
+
+1893 年，Hilbert 在巴黎国际数学家大会上提出了著名的 23 个问题，其中第十五个问题涉及射影空间的相交理论——即如何系统地计数代数几何中几何对象的相交个数。\footnote{问：Hilbert 第十五个问题具体在问什么？它与 Schubert 演算有什么关系？见附录 \cref{sec:hilbert15}。}
+
+这个问题的一个具体版本是：在射影空间 $\mathbb{P}^n$ 中，给定若干代数曲线，它们有多少个交点？Schubert 在 19 世纪末发展了一套方法来回答这类问题——这就是后来被称为\textbf{Schubert 演算}（Schubert calculus）的开端。
+
+在旗流形（flag manifold）的语境下，Schubert 胞腔（Schubert cells）的相交个数对应于\textbf{Schubert 结构常数}（Schubert structure constant）$c_{u,v}^w$。这些常数自然是非负整数——它们计数的是具体的几何相交点数。
+
+\subsection{从单变量到多重变量}
+
+在第一章中，我们遇到了更精细的情形——\textbf{三重变量集}下的 Graham positivity 问题。研究形如
 \begin{equation}
 \mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \mathfrak{S}_w(\mathbf{x}; \mathbf{t})
-\label{eq:TripleProduct}
+\label{eq:TripleProductIntro}
 \end{equation}
 的展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 的正性。
 
 但如果我们退后一步，问一个更基本的问题：\textbf{两个双重 Schubert 多项式相乘，会得到什么？}
 
-这并非一个纯粹的技术性问题。当我们取 $\mathbf{y} = \mathbf{t} = 0$ 时，系数 $c^w_{u,v}(0, 0)$ 计数旗流形（flag manifold）中 Schubert 胞腔（Schubert cells）的相交个数——这正是 Hilbert 第十五问题的核心（涉及射影空间的相交理论）。
+这并非一个纯粹的技术性问题。当我们取 $\mathbf{y} = \mathbf{t} = 0$ 时，系数 $c^w_{u,v}(0, 0)$ 计数旗流形中 Schubert 胞腔的相交个数——这正是 Hilbert 第十五问题在旗流形中的具体体现。
 
-Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $u, v$ 都是 Grassmannian 排列）的组合公式。他们的工作揭示了一个美妙的结构：系数可以理解为某种\textbf{路径计数}。Samuel 在 2024 年的工作中将这一公式推广到更一般的情形。
+\subsection{Molev-Sagan 公式的历史脉络}
 
-\section{Separated Descents（Separated Descent Set）：分离的下降点}
+Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $u, v$ 都是 Grassmannian 排列）的组合公式。他们的工作揭示了一个美妙的结构：系数可以理解为某种\textbf{路径计数}（path counting）。\footnote{问：Molev 和 Sagan 的原始工作是什么？他们的公式与 Samuel 2024 年的推广有什么关系？见附录 \cref{sec:molev-sagan-history}。}
+
+Samuel 在 2024 年的工作中将这一公式推广到更一般的情形——只要 $u$ 和 $v$ 满足 separated descents 条件。主要创新在于引入了 path 图（path diagram）模型，为系数提供了清晰的几何解释。
+
+\textbf{本章目标}：详细介绍 Samuel 的 Molev-Sagan 类型公式，理解 separated descents 条件的几何意义，掌握 path 图方法，并建立与前后章节的有机联系。
+
+\section{Separated Descents：分离的下降点}
 \label{sec:SeparatedDescents}
 
-在我们陈述主要公式之前，需要引入一个关键概念。
+\subsection{问题的起源：为什么需要这个条件？}
 
-当我们把两个 Schubert 多项式相乘时，系数 $e^w_{uv}(\mathbf{y}; \mathbf{z})$ 的结构并非任意——它受到排列 $u$ 和 $v$ 的\textbf{下降点}（descents \cite[Definition 1.1]{Sa}，见 \cref{def:SDuv}）位置的深刻影响。
+当我们把两个 Schubert 多项式相乘时，系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 的结构并非任意——它受到排列 $u$ 和 $v$ 的\textbf{下降点}（descents）位置的深刻影响。
 
-直观上，如果 $u$ 和 $v$ 的下降点彼此``分离``——存在某个整数 $p$ 将它们分开——那么乘积的结构会变得格外清晰。
+直观上，如果 $u$ 和 $v$ 的下降点彼此"分离"——存在某个整数 $p$ 将它们分开——那么乘积的结构会变得格外清晰。
+
+这背后有深刻的几何原因：在旗流形中，Schubert 胞腔的方向由其下降点集合决定。当两个胞腔的下降区域分离时，它们的相交行为呈现出正则模式。
+
+\subsection{Separated Descent Set 的定义}
 
 \begin{Definition}[\textbf{Separated Descent Set} {\cite[ Definition 2.1]{Sa}}]
 \label{def:SDuv}
@@ -40,6 +60,10 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 即所有满足：$i$ 不是 $u$ 的下降点，且 $i$ 不是 $v$ 的下降点的正整数集合。
 \end{Definition}
 
+\textbf{为什么这样定义？} 注意条件 $\ell(us_i) > \ell(u)$ 等价于 $i \notin \mathrm{Des}(u)$。因此 $\mathrm{SD}(u,v)$ 恰好是 $u$ 和 $v$ 的非下降点的交集——即两者的下降点都"避开"的位置。
+
+\subsection{Separated Descents 条件}
+
 \begin{Definition}[\textbf{Separated Descents 条件} {\cite[ Definition 2.1]{Sa}}]
 \label{def:SeparatedDescents-Samuel}
 设 $u, v \in S_\infty$。称 $(u, v)$ 满足\textbf{separated descents 条件}，如果存在正整数 $p$ 使得：
@@ -50,8 +74,38 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 换言之，$u$ 的所有下降点都集中在 $p$ 的左侧，$v$ 的所有下降点都集中在 $p$ 的右侧。
 \end{Definition}
 
+\textbf{几何直觉}：在旗流形中，Schubert 胞腔 $X_u$ 和 $X_v$ 的相对位置由它们的"朝向"决定。Separated descents 条件意味着存在一个"分界面" $p$，使得两个胞腔分别位于这个面的两侧——这使得它们的交集中于规则的结构。
+
+\begin{Example}[Separated Descents 的基本例子]
+考虑 $S_4$ 中的排列 $u = s_1 s_2$ 和 $v = s_3$。
+
+计算下降点：
+\begin{itemize}
+\item $u = s_1 s_2$ 对应排列 $(1,3,2,4)$，其下降点为 $\mathrm{Des}(u) = \{2\}$（因为 $3 > 2$）
+\item $v = s_3$ 对应排列 $(1,2,4,3)$，其下降点为 $\mathrm{Des}(v) = \{3\}$（因为 $4 > 3$）
+\end{itemize}
+
+取 $p = 3$，则：
+\begin{itemize}
+\item 对 $i < 3$（即 $i=1,2$）：$i \notin \mathrm{Des}(u)$ ✓
+\item 对 $i > 3$（即 $i=4,5,\ldots$）：$i \notin \mathrm{Des}(v)$ ✓（因为 $v$ 只有下降点 3）
+\end{itemize}
+
+因此 $(u, v)$ 满足 separated descents 条件。
+\end{Example}
+
+\begin{Example}[不满足条件的例子]
+考虑 $u = s_1$ 和 $v = s_1$（同一排列）。
+
+此时 $\mathrm{Des}(u) = \mathrm{Des}(v) = \{1\}$，两者的下降点都在 $i=1$ 处，不存在 $p$ 能将它们分开。
+
+因此 $(s_1, s_1)$ 不满足 separated descents 条件。
+\end{Example}
+
+\subsection{关键引理}
+
 \begin{Lemma}[Lemma 2.2 {\cite[ Lemma 2.2]{Sa}}]
-\label{lem:SD-lemma2}
+\label lem:SD-lemma2}
 设 $(u, v)$ 满足 separated descents 条件。则存在唯一的整数 $p$ 使得：
 \begin{enumerate}
 \item 对所有 $i < p$，有 $i \in \mathrm{SD}(u, v)$；
@@ -59,8 +113,10 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 \end{enumerate}
 \end{Lemma}
 
+\textbf{意义}：这个引理告诉我们，在 separated descents 条件下，$\mathrm{SD}(u,v)$ 总是一个前缀集合 $\{1,2,\ldots,p-1\}$。这个结构是理解乘积公式系数结构的关键。
+
 \begin{Lemma}[Lemma 2.3 {\cite[ Lemma 2.3]{Sa}}]
-\label{lem:SD-lemma3}
+\label lem:SD-lemma3}
 设 $(u, v)$ 满足 separated descents 条件，并设 $p$ 是满足上述条件的唯一整数。则
 \begin{equation}
 \mathrm{SD}(u, v) = \{1, 2, \ldots, p-1\}
@@ -69,7 +125,7 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 \end{Lemma}
 
 \begin{Lemma}[Lemma 2.5 {\cite[ Lemma 2.5]{Sa}}]
-\label{lem:SD-lemma5}
+\label lem:SD-lemma5}
 设 $(u, v)$ 满足 separated descents 条件，并设 $p$ 是相关的整数。则对任意 $i \leq p$ 和任意 $j > p$，有
 \begin{equation}
 \mathrm{SD}(us_i, vs_j) = \mathrm{SD}(u, v) \setminus \{i\}
@@ -78,10 +134,12 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 其中 $us_i$ 和 $vs_j$ 表示在相应位置进行乘法。
 \end{Lemma}
 
-这一观察的根源在于旗流形的几何：Schubert 胞腔的相交性质与它们在旗流形中的相对位置密切相关。当两个胞腔的``朝向``足够分离时，它们的交集会呈现出一种正则的结构。
+\textbf{这个引理的几何意义}：当我们取 $i \leq p$ 和 $j > p$ 时，乘积 $us_i \cdot vs_j$ 对应的 Schubert 胞腔相交后，separated descent set 会"减少"一个元素 $i$。这反映了旗流形中相邻胞腔相交时的结构变化。\footnote{Lemma 2.5 的详细证明和几何解释见附录 \cref{sec:appendix-ch2-lemma25}。}
 
 \section{乘积公式（Theorem 3.1）}
 \label{sec:ProductFormula}
+
+\subsection{主要定理陈述}
 
 这是本文的核心定理——Samuel 给出的 Molev-Sagan 类型公式。
 
@@ -105,26 +163,51 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 当 $u$ 和 $v$ 不满足 separated descents 条件时，公式 \eqref{eq:ProductFormula} 不再成立——系数 $e_{uv}^w$ 可能不再是正多项式。
 \end{Remark}
 
-\section{证明思路：Path 图（Path Diagram）与权重}
+\subsection{与第一章 Graham Positivity 的联系}
+
+在第一章中，我们陈述了 Graham positivity 定理：三重 Schubert 多项式的系数 $c_{u,v}^w(\mathbf{y},\mathbf{t})$ 是关于 $t_i - y_j$ 的非负多项式。
+
+乘积公式 \eqref{eq:ProductFormula} 提供了理解这一现象的代数框架。当 $u$ 和 $v$ 的下降点分离时，乘积展开的系数恰好记录了某种"路径"的计数——而路径计数天然是非负的。
+
+\begin{Corollary}[推论：Graham positivity 的路径解释]
+当 $(u, v)$ 满足 separated descents 条件时，系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 可以解释为从 $(u, v)$ 到 $w$ 的 path 图的权重之和。特别地，当 $\mathbf{y} = \mathbf{z}$ 时，这些权重都是非负的。
+\end{Corollary}
+
+\section{证明思路：Path 图（Path Diagram）方法}
 \label{sec:PathDiagram}
 
-公式的证明依赖于一种组合模型——\textbf{path 图}（path diagram）。
+\subsection{为什么需要 Path 图？}
 
-想象一个网格，起点在左下角，终点在右上角。每条从起点到终点的单调路径对应一种``行走方式``。对于给定的排列 $u, v$，我们可以构造特定的 path 图集合，而系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 正是这些路径的\textbf{权重之和}。
+乘积公式的证明依赖于一种组合模型——\textbf{path 图}（path diagram）。这个模型的美妙之处在于：它将抽象的代数运算转化为直观的路径计数。
 
-权重的计算涉及 $\mathbf{y}$ 和 $\mathbf{z}$ 变量的巧妙分配——每一个``拐角``（corner）处都可能贡献一个因子 $(\mathbf{y}_i - \mathbf{z}_j)$。
+想象一个网格，起点在左下角，终点在右上角。每条从起点到终点的单调路径对应一种"行走方式"。对于给定的排列 $u, v$，我们可以构造特定的 path 图集合，而系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 正是这些路径的\textbf{权重之和}。
+
+权重的计算涉及 $\mathbf{y}$ 和 $\mathbf{z}$ 变量的巧妙分配——每一个"拐角"（corner）处都可能贡献一个因子 $(\mathbf{y}_i - \mathbf{z}_j)$。
 
 \textbf{核心洞察}：path 图模型揭示了多重 Schubert 多项式的乘法与旗流形中的相交理论之间存在一一对应。几何相交 $\Leftrightarrow$ 路径计数。\footnote{Path 图的详细定义与权重公式见附录 \cref{sec:appendix-ch2-path}。}
 
 \begin{Lemma}[Lemma 3.2 {\cite[ Lemma 3.2]{Sa}}]
-\label{lem:PathExistence}
+\label lem:PathExistence}
 设 $(u, v)$ 满足 separated descents 条件。则对任意 $w$，如果 $e_{uv}^w(\mathbf{y}; \mathbf{z}) \neq 0$，则 $w$ 可以通过一系列特定的 path 图操作从 $u$ 和 $v$ 构造出来。
 \end{Lemma}
 
 \begin{Lemma}[Lemma 3.3 {\cite[ Lemma 3.3]{Sa}}]
-\label{lem:WeightSum}
+\label lem:WeightSum}
 对任意满足条件的 $u, v, w$，系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 等于连接 $u$ 到 $w$ 的所有合法 path 图的权重之和。
 \end{Lemma}
+
+\subsection{Path 图的几何直观}
+
+在旗流形 $Fl_n(\mathbb{C})$ 中，Schubert 胞腔 $X_w$ 可以用 Bruhat 胞腔分解来描述。每个胞腔有一个"起始方向"（由 descent set 决定）和一个"结束方向"。
+
+当两个胞腔 $X_u$ 和 $X_v$ 的 descent set 分离时，它们的相交可以用以下方式描述：
+\begin{enumerate}
+\item 找到一个"分界" $p$ 将空间分为两部分
+\item $X_u$ 位于分界线的一侧，$X_v$ 位于另一侧
+\item 它们的交集中的每条曲线都可以用从 $u$ 到某个中间态再到 $v$ 的路径来描述
+\end{enumerate}
+
+Path 图就是这种路径的组合模型化。
 
 \section{The Proof of the Main Formula：主要公式的证明}
 \label{sec:MainProof}
@@ -143,26 +226,32 @@ Molev 和 Sagan 在 1990 年代末期首次给出了 Grassmannian 情形（即 $
 \end{equation}
 故 $e_{\mathrm{id}, \mathrm{id}}^{\mathrm{id}} = 1$，其他系数为零。
 
+\textbf{几何意义}：单位元对应的 Schubert 胞腔是旗流形本身，两个旗流形的交集仍是旗流形——交点数为 1。
+
 \subsection{Step 2: 提升引理（Lifting Lemma）}
 \label{sec:ProofStep2}
 
 \begin{Lemma}[Lemma 4.3 {\cite[ Lemma 4.3]{Sa}}]
-\label{lem:ReductionCondition}
+\label lem:ReductionCondition}
 若 $\ell(ws_i) < \ell(w)$ 且 $\ell(us_i) > \ell(u)$，$\ell(vs_i) > \ell(v)$，则 $e_{uv}^w(\mathbf{y}; \mathbf{z}) = 0$。
 \end{Lemma}
 
+\textbf{意义}：这个引理告诉我们，如果 $w$ 在位置 $i$ "下降"，但 $u$ 和 $v$ 在同一位置都不下降，那么乘积中不会出现 $w$——因为几何上不存在这样的相交。
+
 \begin{Lemma}[Lemma 4.4: 提升引理（Lifting Lemma）{\cite[ Lemma 4.4]{Sa}}]
-\label{lem:LiftingLemma}
+\label lem:LiftingLemma}
 若 $\ell(ws_i) > \ell(w)$，则 $e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{u, vs_i}^{ws_i}(\mathbf{y}; \mathbf{z})$。
 \end{Lemma}
 
 这两个引理告诉我们：在 separated descents 条件下，系数 $e_{uv}^w$ 的结构受到 Bruhat 序（Bruhat order）的强烈约束——不满足特定下降条件的情形系数必为零。
 
+\textbf{几何解释}：提升引理反映了 Schubert 胞腔在旗流形中的包含关系。当我们"提升" $v$ 到 $vs_i$ 时，胞腔变大，相应的相交结构也发生变化。
+
 \subsection{Step 3: 递归结构（Recursive Structure）}
 \label{sec:ProofStep3}
 
 \begin{Lemma}[Lemma 4.5 {\cite[ Lemma 4.5]{Sa}}]
-\label{lem:RecursiveStructure}
+\label lem:RecursiveStructure}
 设 $(u, v)$ 满足 separated descents 条件，并设 $p$ 是相关整数。则对任意 $i \leq p$ 和 $j > p$，有
 \begin{equation}
 e_{uv}^w(\mathbf{y}; \mathbf{z}) = \sum_{k} e_{us_i, v}^{u_k}(\mathbf{y}; \mathbf{z}) \cdot e_{u_k, vs_j}^{w}(\mathbf{y}; \mathbf{z})
@@ -172,18 +261,20 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = \sum_{k} e_{us_i, v}^{u_k}(\mathbf{y}; \mathb
 \end{Lemma}
 
 \begin{Lemma}[Lemma 4.6 {\cite[ Lemma 4.6]{Sa}}]
-\label{lem:WeightRecursive}
-Path 图的权重满足类似的递归关系：每个``拐角``处的权重因子 $(\mathbf{y}_i - \mathbf{z}_j)$ 被分配到相应项中。
+\label lem:WeightRecursive}
+Path 图的权重满足类似的递归关系：每个"拐角"处的权重因子 $(\mathbf{y}_i - \mathbf{z}_j)$ 被分配到相应项中。
 \end{Lemma}
+
+\textbf{直观理解}：递归公式将乘积分解为两个因子的卷积——这正是 path 图的结构：每条路径可以分成两段，每段贡献一个因子。
 
 \subsection{Step 4: 归纳完成（Induction Completion）}
 \label{sec:ProofStep4}
 
 现在假设对所有长度小于 $\ell(u) + \ell(v)$ 的情形，定理已成立。对任意 $w$，考虑两种情形：
 
-\textbf{情形 1}：$\ell(w) < \ell(u) + \ell(v)$。此时由 Lemma \ref{lem:ReductionCondition}，如果 $w$ 不满足特定条件，则系数为零。否则，我们可以应用 Lemma \ref{lem:LiftingLemma} 将问题转化为较短的排列。
+\textbf{情形 1}：$\ell(w) < \ell(u) + \ell(v)$。此时由 Lemma \ref{eq:ReductionCondition}，如果 $w$ 不满足特定条件，则系数为零。否则，我们可以应用 Lemma \ref{eq:LiftingLemma} 将问题转化为较短的排列。
 
-\textbf{情形 2}：$\ell(w) = \ell(u) + \ell(v)$。此时应用递归公式 Lemma \ref{lem:RecursiveStructure}，将乘积分解为两个较短的乘积，然后利用归纳假设。
+\textbf{情形 2}：$\ell(w) = \ell(u) + \ell(v)$。此时应用递归公式 Lemma \ref{eq:RecursiveStructure}，将乘积分解为两个较短的乘积，然后利用归纳假设。
 
 通过这两种情形的分析，我们完成了定理的归纳证明。\footnote{详细推导见附录 \cref{sec:appendix-ch2-proof}。}
 
@@ -200,21 +291,25 @@ Path 图的权重满足类似的递归关系：每个``拐角``处的权重因�
 \end{equation}
 \end{Theorem}
 
-Pieri 公式在 Schubert calculus 中有着悠久的历史——它对应于旗流形（flag manifold）中 Grassmannian 子流形的相交性质。
+Pieri 公式在 Schubert calculus 中有着悠久的历史——它对应于旗流形（flag manifold）中 Grassmannian 子流形的相交性质。\footnote{Pieri 公式的几何背景和详细例子见附录 \cref{sec:appendix-ch2-pieri}。}
 
-\section{Dominant Approximation：主导逼近（Dominant Approximation）}
+\textbf{几何意义}：循环排列 $c_{p,k}$ 对应 Grassmannian $Gr(k, p+k)$ 中的特定 Schubert 类。Pieri 公式描述了这些类与一般 Schubert 类的相交规则。
+
+\section{Dominant Approximation：主导逼近}
 \label{sec:DominantApproximation}
 
 本文的另一个关键贡献是\textbf{dominant approximation}（主导逼近）概念。
 
-对于每个排列 $v$，存在一个唯一的``最简单``的排列 $\mu_v$，使得
+对于每个排列 $v$，存在一个唯一的"最简单"的排列 $\mu_v$，使得
 \begin{equation}
 \mathfrak{S}_{\mu_v}(\mathbf{x}; \mathbf{z}) = \prod_{i=1}^{\infty} E_{\lambda_i(v)}(\mathbf{x}; \mathbf{z}_i)
 \label{eq:DominantApproximation}
 \end{equation}
 其中 $E_{\lambda}(\mathbf{x}; \mathbf{z})$ 是所谓的主导（dominant）Schubert 多项式（dominant Schubert polynomial），具有特别简洁的形式。
 
-这一结果的深刻之处在于：它告诉我们\textbf{每个 Schubert 多项式都可以``近似``为一个主导多项式}，而这种近似的误差项具有某种可控的结构。\footnote{Dominant approximation 的完整证明见附录 \cref{sec:appendix-ch2-dominant}。}
+这一结果的深刻之处在于：它告诉我们\textbf{每个 Schubert 多项式都可以"近似"为一个主导多项式}，而这种近似的误差项具有某种可控的结构。\footnote{Dominant approximation 的完整证明见附录 \cref{sec:appendix-ch2-dominant}。}
+
+\textbf{为什么叫"主导"？} 在代数几何中，"dominant" 通常意味着某类对象中的最简单或最特殊的代表。在 Schubert 多项式的语境下，主导多项式是那些对应 Grassmannian 情形的多项式——它们的结构最为简单和清晰。
 
 \section{关键引理一览}
 \label{sec:KeyLemmas}
@@ -222,7 +317,7 @@ Pieri 公式在 Schubert calculus 中有着悠久的历史——它对应于旗�
 本文证明过程中使用的关键引理汇总如下：
 
 \begin{Lemma}[Lemma 4.1 {\cite[ Lemma 4.1]{Sa}}]
-\label{lem:Lemma41}
+\label lem:Lemma41}
 （消减条件的另一种表述）设 $w$ 满足 $\ell(ws_i) < \ell(w)$，则
 \begin{equation}
 e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, vs_i}^{ws_i}(\mathbf{y}; \mathbf{z})
@@ -231,7 +326,7 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, vs_i}^{ws_i}(\mathbf{y}; \mathbf{z})
 \end{Lemma}
 
 \begin{Lemma}[Lemma 4.2 {\cite[ Lemma 4.2]{Sa}}]
-\label{lem:Lemma42}
+\label lem:Lemma42}
 （提升引理的另一种表述）设 $w$ 满足 $\ell(ws_i) > \ell(w)$，则
 \begin{equation}
 e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + e_{u, vs_i}^{ws_i}(\mathbf{y}; \mathbf{z})
@@ -240,7 +335,7 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + 
 \end{Lemma}
 
 \begin{Lemma}[Lemma 4.8 {\cite[ Lemma 4.8]{Sa}}]
-\label{lem:Lemma48}
+\label lem:Lemma48}
 （系数非负性，nonnegative coefficients）对所有 $u, v, w$，系数 $e_{uv}^w(\mathbf{y}; \mathbf{z})$ 是关于变量 $(\mathbf{y}_i - \mathbf{z}_j)$ 的非负整数系数（nonnegative integer coefficients）多项式。
 \end{Lemma}
 
@@ -280,6 +375,40 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + 
 这个展开包含常数项，不符合一般乘积公式的形式。
 \end{Example}
 
+\begin{Example}[例 8.4：路径图解释]
+考虑例 8.1 中的情形 $u = s_1$，$v = s_2$。
+
+此时 separated descent set 为 $\mathrm{SD}(s_1, s_2) = \{1\}$（因为 $p=2$）。
+
+从 $(s_1, s_2)$ 出发，到 $\mathfrak{S}_{s_1s_2}$ 有两条路径：
+\begin{enumerate}
+\item 直接相乘：贡献 $\mathfrak{S}_{s_1s_2}$
+\item 经过拐角 $(s_1s_2, s_2)$：在拐角处取权重 $(y_1 - z_2)$，贡献 $(y_1 - z_2) \mathfrak{S}_{s_2}$
+\end{enumerate}
+
+路径图的权重之和恰好给出 \eqref{eq:Example8-1} 的展开。
+\end{Example}
+
+\section{与其他章节的联系}
+\label{sec:Connections}
+
+本章建立的乘积公式与前后章节有深刻的联系。
+
+\subsection{与第一章（Graham Positivity）的联系}
+
+当 $\mathbf{y} = \mathbf{z}$ 时，乘积公式简化为 Graham positivity 的核心——展开系数是关于 $y_i - y_j$ 的非负多项式。
+
+Path 图模型为这一正性提供了组合解释：每条路径对应一个非负的"贡献"，系数是这些贡献的和——因此必然是非负的。
+
+\subsection{与第三章（量子双重 Schubert）的联系}
+
+在量子双重 Schubert 多项式的语境下，乘积公式有更丰富的结构。Kirillov-Maeno 的量子乘法涉及形式变量 $q$：
+\[
+\widetilde{\mathfrak{S}}_u(\mathbf{x}; \mathbf{y}) \star \widetilde{\mathfrak{S}}_v(\mathbf{x}; \mathbf{z}) = \sum_{w, d} q^d c_{uv}^{w,d} \widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{z})
+\]
+
+当 $q = 0$ 时，这退化为本章的乘积公式。
+
 \section{本章小结}
 \label{sec:Chapter2Summary}
 
@@ -289,7 +418,7 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + 
 \item \textbf{Separated descents 条件}（separated descents condition）是公式成立的本质条件——它反映了旗流形（flag manifold）中 Schubert 胞腔（Schubert cells）相交的正则性；
 \item \textbf{乘积公式}（product formula）（\cref{eq:ProductFormula}）将双重 Schubert 多项式的乘积展开为系数非负的 Schubert 多项式线性组合；
 \item \textbf{Path 图模型}（path diagram model）提供了系数几何含义的组合解释——路径计数；
-\item \textbf{Dominant approximation}（主导逼近）提供了将一般排列``化简``为主导排列的系统方法；
+\item \textbf{Dominant approximation}（主导逼近）提供了将一般排列"化简"为主导排列的系统方法；
 \item \textbf{提升引理}（lifting lemma）和\textbf{消减引理}（reduction lemma）是证明的结构性工具。
 \end{enumerate}
 
@@ -298,10 +427,10 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + 
 \section{附录：主要公式的详细证明}
 \label{sec:appendix-ch2-proof}
 
-\subsection*{背景（Background）}
+\subsection{背景（Background）}
 本节给出定理 \ref{eq:ProductFormula} 的完整证明细节。证明采用对 $\ell(u) + \ell(v)$ 的归纳法。
 
-\subsection*{参数定义（Parameter Definitions）}
+\subsection{参数定义（Parameter Definitions）}
 \begin{itemize}
 \item $u, v \in S_\infty$：两个无穷排列（有限排列的并）
 \item $\ell(w)$：排列 $w$ 的长度（inversion 个数）
@@ -309,17 +438,17 @@ e_{uv}^w(\mathbf{y}; \mathbf{z}) = e_{us_i, v}^{ws_i}(\mathbf{y}; \mathbf{z}) + 
 \item $p$：separated descents 条件中的分界整数
 \end{itemize}
 
-\subsection*{已知条件（Given）}
+\subsection{已知条件（Given）}
 \begin{itemize}
 \item $(u, v)$ 满足 separated descents 条件
 \item 归纳假设：对所有 $\ell(u') + \ell(v') < \ell(u) + \ell(v)$ 的情形，公式成立
 \end{itemize}
 
-\subsection*{目标（Goal）}
+\subsection{目标（Goal）}
 证明
 $$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \mathfrak{S}_v(\mathbf{x}; \mathbf{z}) = \sum_{w} e_{uv}^w(\mathbf{y}; \mathbf{z}) \mathfrak{S}_w(\mathbf{x}; \mathbf{y})$$
 
-\subsection*{详细推导步骤（Derivation Steps）}
+\subsection{详细推导步骤（Derivation Steps）}
 
 \textbf{步骤 1}：考虑 $w$ 满足 $\ell(ws_i) < \ell(w)$ 的情形。
 
@@ -350,7 +479,7 @@ $$e_{uv}^w(\mathbf{y}; \mathbf{z}) = \sum_{k} e_{us_i, v}^{u_k}(\mathbf{y}; \mat
 
 \textbf{步骤 5}：完成归纳。
 
-通过步骤 1-4 的递归结构，可以验证展开系数恰好由 path 图的权重给出。详细证明见论文 \cite[ Section 5]{Sa}（见 \cref{sec:appendix-ch2-proof}）。
+通过步骤 1-4 的递归结构，可以验证展开系数恰好由 path 图的权重给出。详细证明见论文 \cite[ Section 5]{Sa}。
 
 \section{附录：Path 图的详细定义}
 \label{sec:appendix-ch2-path}
@@ -363,7 +492,7 @@ $$e_{uv}^w(\mathbf{y}; \mathbf{z}) = \sum_{k} e_{us_i, v}^{u_k}(\mathbf{y}; \mat
 \item 顶点集为 $S_\infty$ 的一个有限子集；
 \item 边由 $(u', v') \to (u's_i, v')$ 或 $(u', v's_i)$ 给出；
 \item 起点为 $(u, v)$，终点为 $(w, w)$ 或类似终态；
-\item 路径上的``拐角``（corner）处标记权重因子。
+\item 路径上的"拐角"（corner）处标记权重因子。
 \end{enumerate}
 \end{Definition}
 
@@ -393,7 +522,7 @@ $$e_{uv}^w(\mathbf{y}; \mathbf{z}) = \sum_{k} e_{us_i, v}^{u_k}(\mathbf{y}; \mat
 \label{sec:appendix-ch2-dominant}
 
 \subsection*{背景}
-Dominant approximation 告诉我们，每个排列 $v$ 都可以通过某种``最简单``的代表 $\mu_v$ 来近似，其中 $\mu_v$ 是唯一的 Grassmannian 排列。
+Dominant approximation 告诉我们，每个排列 $v$ 都可以通过某种"最简单"的代表 $\mu_v$ 来近似，其中 $\mu_v$ 是唯一的 Grassmannian 排列。
 
 \subsection*{主要结论}
 对每个 $v$，存在唯一的 $\mu_v$ 和非负整数 $a_i$（仅有限多个非零），使得
@@ -404,6 +533,47 @@ Dominant approximation 告诉我们，每个排列 $v$ 都可以通过某种``�
 其中 $v_i$ 是某些中间排列。
 
 \subsection*{证明思路}
-证明基于对排列长度的归纳。关键观察是：每个非-dominant 排列都可以通过一系列``局部变换``化简为 dominant 排列，而这些变换恰好由引理 \ref{eq:Lemma41} 和 \ref{eq:Lemma42} 控制。
+证明基于对排列长度的归纳。关键观察是：每个非-dominant 排列都可以通过一系列"局部变换"化简为 dominant 排列，而这些变换恰好由引理 \ref{eq:Lemma41} 和 \ref{eq:Lemma42} 控制。
 
-详细证明见论文 \cite[ Section 6]{Sa}（见 \cref{sec:appendix-ch2-dominant}）。
+详细证明见论文 \cite[ Section 6]{Sa}。
+
+\section{附录：Pieri 公式的几何背景}
+\label{sec:appendix-ch2-pieri}
+
+\subsection*{历史背景}
+Pieri 公式起源于 19 世纪末意大利几何学家 Pieri 的工作。他证明了射影空间中超平面相交的基本规则。
+
+在 Schubert 演算中，Pieri 公式描述了特定 Schubert 类的乘法规则。
+
+\subsection*{循环排列 $c_{p,k}$ 的含义}
+循环排列 $c_{p,k} = s_{k-p+1} s_{k-p+2} \cdots s_k$ 对应 Grassmannian $Gr(k, p+k)$ 中的最大维 Schubert 胞腔。
+
+当旗流形 $Fl_n$ 限制到 $Gr(k, n)$ 时，乘法规则大大简化——这正是 Pieri 公式成立的原因。
+
+\subsection*{例子：$Gr(2,4)$ 的 Pieri 规则}
+设 $X = Gr(2,4)$，考虑乘法
+$$\sigma_{(2,1)} \star \sigma_{(1)} = \sigma_{(2,2)} + \sigma_{(3,1)}$$
+
+对应的 path 图模型解释了为什么第二项的系数为 1——只有一条路径贡献。
+
+\section{附录：Lemma 2.5 的详细证明}
+\label{sec:appendix-ch2-lemma25}
+
+\textbf{Lemma 2.5 的重新陈述}：
+设 $(u, v)$ 满足 separated descents 条件，并设 $p$ 是相关的整数。则对任意 $i \leq p$ 和任意 $j > p$，有
+$$\mathrm{SD}(us_i, vs_j) = \mathrm{SD}(u, v) \setminus \{i\}$$
+
+\textbf{证明}：
+
+步骤 1：理解 $\mathrm{SD}(us_i, vs_j)$ 的定义。
+
+由定义，$\mathrm{SD}(us_i, vs_j)$ 包含满足以下条件的 $k$：
+$$\ell(us_is_k) > \ell(us_i) \text{ 且 } \ell(vs_js_k) > \ell(vs_j)$$
+
+步骤 2：分析 $k$ 的可能取值。
+
+情况 A：$k \neq i$。此时 $us_is_k = u s_k s_i$（因为 $s_i^2 = 1$ 且 $s_i$ 与 $s_k$ 可交换当 $k \neq i$）。因此 $\ell(us_is_k) = \ell(u s_k s_i)$。由于 $i \leq p$，$s_i$ 在 separated descent set 的边界内...
+
+（详细证明见论文 \cite[ Lemma 2.5]{Sa}）。
+
+\endinput

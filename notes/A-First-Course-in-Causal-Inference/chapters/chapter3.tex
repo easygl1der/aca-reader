@@ -4,18 +4,21 @@
 
 \chapter{完全随机实验与费舍尔随机化检验}
 
-\section{从潜在结果到随机实验}
+\section{从潜在结果框架到随机实验：问题的起源}
 
-在上一章中，我们建立了潜在结果框架，学会了如何清晰地定义因果效应。平均因果效应定义为：
+在第 \ref{ch:2} 章中，我们建立了\textbf{潜在结果框架（Potential Outcomes Framework）}，学会了如何清晰地定义因果效应。平均因果效应定义为：
 \[
 \tau = \mathbb{E}[Y_i(1) - Y_i(0)] = \bar{Y}(1) - \bar{Y}(0)
+\tag{3.1}
 \]
 
-但我们也清楚地看到了因果推断的根本问题：对于每个个体，我们只能观察到一种潜在结果，$Y_i(1)$ 和 $Y_i(0)$ 无法同时被观测。\footnote{问：什么是潜在结果？见附录 \cref{sec:qa-potential-outcomes}。}
+但我们也清楚地看到了因果推断的\textbf{根本问题（Fundamental Problem of Causal Inference）}：对于每个个体，我们只能观察到一种潜在结果，$Y_i(1)$ 和 $Y_i(0)$ 无法同时被观测。\footnote{问：什么是潜在结果？见附录 \cref{sec:qa-potential-outcomes}。} 这意味着，即使我们定义了因果效应，我们也不知道如何用数据来估计它——因为每个单元的"反事实结果"永远无法被观测到。
 
-那么，一个自然的问题是：我们能否设计某种数据收集过程，使得即使无法观察反事实，我们仍然可以估计因果效应？
+\textbf{第 \ref{ch:1} 章的类比}：在第 \ref{ch:1} 章中，我们讨论了\textbf{相关性不等于因果性}——即使 $X$ 和 $Y$ 相关，我们也无法断定 $X$ 导致 $Y$。第 \ref{ch:2} 章通过潜在结果框架给因果效应一个精确的定义，但它留下的核心问题是：我们如何用实际观测到的数据来\textbf{识别（identify）}和\textbf{估计（estimate）}这些潜在结果？
 
-这个问题的答案是肯定的，而解决方案就是\textbf{随机实验（Randomized Experiment）}——统计学的黄金标准。
+那么，一个自然的问题是：我们能否设计某种\textbf{数据收集过程}，使得即使无法观察反事实，我们仍然可以估计因果效应？
+
+这个问题的答案是肯定的，而解决方案就是\textbf{随机实验（Randomized Experiment）}——统计学的黄金标准，也是 Fisher 称之为"the design of experiments"的精髓所在。
 
 \section{Fisher 的洞见：随机化的两个原则}
 
