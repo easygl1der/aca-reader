@@ -1047,7 +1047,8 @@ $(\exists x)(A(x) \rightarrow B(x))$
 ### 环境选择检查
 - [ ] 证明题 → `\begin{proof}`
 - [ ] 作业计算题分点 → `\begin{itemize}`
-- [ ] 作业解答（不带 QED）→ `\begin{Solution}`
+- [ ] 非证明题 → \begin{solution}
+- [ ] 证明题 → \begin proof}
 
 ### 格式红线检查
 - [ ] 无 Markdown 语法
