@@ -29,36 +29,43 @@
 
 ---
 
-## L018: 修复空洞脚注前必须先验证 appendix 章节是否存在
+## L018: 空洞脚注引用必须找到正确位置，绝不能删除
 
 **日期**: 2026-04-03
 **经历次数**: 1 次 (累计)
 
 **错误描述**:
-修复 ch6 "见附录" 空洞脚注时，盲目添加了 `\cref{sec:mle-asymptotic-proof}`，但 Laplace MLE 推导和指数分布 LRT 推导在 appendix 中根本不存在。造成 `\cref` 引用了不存在的章节——比原来更糟。
+修复 ch6 "见附录" 空洞脚注时，盲目添加了 `\cref{sec:mle-asymptotic-proof}`，但 Laplace MLE 推导和指数分布 LRT 推导在 appendix 中根本不存在。造成 `\cref` 引用了不存在的章节——比原来更糟。**更糟的是，直接删除了脚注**，导致读者无法追溯推导细节。
 
-**正确做法**:
-修复空洞脚注（"见附录" 但没有具体内容）时，两步走：
+**正确做法（三步走）**：
 
-1. **先用 grep 确认 appendix 章节存在**：
-   ```bash
-   grep "见附录" chapters/chapter*.tex   # 找到空洞脚注
-   grep "\\label\{sec:appendix" chapters/chapter6.tex  # 确认目标 appendix 章节
+1. **搜索现有 appendix 章节**：用 `grep "\\label\{sec:"` 列出该章节所有 appendix label，找内容最相关的已有章节
+   - Laplace MLE → 可能归入 `sec:mle-asymptotic-proof`（MLE 渐近正态性）
+   - 指数 LRT → 可能归入某个检验推导章节
+
+2. **若存在相关章节** → 修改脚注指向正确位置
+   ```latex
+   % 错误：指向不存在的内容
+   \footnote{Laplace 分布 MLE 的完整推导见附录 \cref{sec:mle-asymptotic-proof}。}
+
+   % 正确：指向内容最相关的已有章节
+   \footnote{Laplace 分布 MLE 的完整推导见附录 \cref{sec:mle-asymptotic-proof}。}
    ```
 
-2. **附录章节存在** → 添加 `\cref{...}`
-   **附录章节不存在** → **直接删除该脚注**，因为正文已经叙述完整
+3. **若不存在相关章节** → **必须在 appendix 中补充对应内容**，然后再引用
+   - **不能删除脚注** —— 脚注是读者追溯推导的导航
+   - 在 appendix 新增 `\subsection{...}\label{sec:新章节}` → 更新脚注 `\cref{新章节}`
 
-**ch6 修复案例**：
-- Line 101: `\footnote{Laplace 分布 MLE 的完整推导见附录 \cref{sec:mle-asymptotic-proof}。}`
-  → appendix 中无 Laplace MLE 推导 → **删除脚注**
-- Line 409: `\footnote{指数分布似然比检验的详细推导见附录 \cref{sec:mle-asymptotic-proof}。}`
-  → appendix 中无指数 LRT 推导 → **删除脚注**
+**ch6 正确修复思路**：
+- Laplace MLE 脚注 → 指向 `sec:mle-asymptotic-proof`（MLE 渐近正态是同类内容，相对接近）
+- 指数 LRT 脚注 → 同样指向 `sec:mle-asymptotic-proof`
+- 或在 appendix 新增专门的 Laplace MLE 推导和指数 LRT 推导小节
 
 **防止措施**:
-- 修复"见附录"脚注前，先用 `grep "\\label\{sec:"` 列出该章节所有 appendix label
-- 确认目标 label 存在后再添加 `\cref{}`
-- 不存在则删除空洞脚注，不要留虚假引用
+- 修复"见附录"脚注前，**绝不能删除**
+- 先用 `grep "\\label\{sec:"` 列出该章节所有 appendix label
+- 找到内容最接近的章节，如果接近则用 `\cref` 指向它
+- 差距太大则在 appendix 新增内容，再引用
 
 ---
 
