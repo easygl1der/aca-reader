@@ -1044,10 +1044,88 @@ $t$ 分布的 pdf 如上所示，当 $n \to \infty$ 时趋于标准正态分布�
 \subsection{卡方检验的详细推导}\label{sec:chi-square-test-derivation}
 
 \textbf{背景（Background）}：
-拟合优度 $\chi^2$ 检验的理论基础。
+拟合优度 $\chi^2$ 检验（Goodness-of-Fit Test）由 Karl Pearson 于 1900 年提出，是统计推断的早期方法之一。该检验用于检验观测频数与期望频数之间的偏离程度。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $X_i \sim \text{Multinomial}(n, p_1, \ldots, p_k)$：多项分布，$X_i$ 为落入第 $i$ 类的频数
+\item $p_i$：落入第 $i$ 类的真实概率
+\item $p_{i0}$：原假设 $H_0$ 下指定的概率值
+\item $np_{i0}$：原假设下第 $i$ 类的期望频数
+\item $Q_{k-1} = \sum_{i=1}^k \frac{(X_i - np_{i0})^2}{np_{i0}}$：Pearson $\chi^2$ 统计量
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+\item 当 $H_0$ 为真时，$p_i = p_{i0}$，$i = 1, \ldots, k$
+\item 由中心极限定理，当 $n \to \infty$ 且 $np_i > 0$ 时，
+\[
+\frac{X_i - np_i}{\sqrt{np_i(1-p_i)}} \xrightarrow{D} N(0, 1).
+\]
+\item 当 $H_0$ 为真时，$X_i \approx N(np_{i0}, np_{i0}(1-p_{i0}))$
+\end{itemize}
 
 \textbf{目标（Goal）}：
-推导 $\chi^2$ 统计量的渐近分布。
+证明在 $H_0$ 下，$Q_{k-1} \xrightarrow{D} \chi^2(k-1)$。
 
 \textbf{推导步骤（Derivation Steps）}：
-占位符内容（待补充）。
+
+1. 首先考虑二项分布情形。设 $X_1 \sim b(n, p_1)$，$X_2 = n - X_1$，$p_2 = 1 - p_1$。
+定义标准化变量
+\[
+Z = \frac{X_1 - np_1}{\sqrt{np_1(1-p_1)}}.
+\]
+由 CLT，$Z \xrightarrow{D} N(0, 1)$。
+
+2. 则 $Z^2 \xrightarrow{D} \chi^2(1)$（标准正态变量的平方服从自由度为 1 的卡方分布）。
+
+3. 展开 $Z^2$：
+\[
+Z^2 = \frac{(X_1 - np_1)^2}{np_1(1-p_1)} = \frac{(X_1 - np_1)^2}{np_1} + \frac{(X_1 - np_1)^2}{n(1-p_1)}.
+\]
+
+4. 利用 $X_2 = n - X_1$，有 $(X_1 - np_1)^2 = (n - X_2 - n + np_2)^2 = (X_2 - np_2)^2$。
+因此
+\[
+Z^2 = \frac{(X_1 - np_1)^2}{np_1} + \frac{(X_2 - np_2)^2}{np_2} = Q_1,
+\]
+即二项情形的 Pearson $\chi^2$ 统计量。
+
+5. 推广到多项分布。设 $(X_1, \ldots, X_{k-1}) \sim \text{Multinomial}(n, p_1, \ldots, p_{k-1})$，$X_k = n - \sum_{i=1}^{k-1} X_i$，$p_k = 1 - \sum_{i=1}^{k-1} p_i$。
+
+定义 Pearson 统计量
+\[
+Q_{k-1} = \sum_{i=1}^k \frac{(X_i - np_i)^2}{np_i}.
+\]
+
+6. 关键步骤：将 $Q_{k-1}$ 表示为平方和形式。令
+\[
+Y_i = \frac{X_i - np_i}{\sqrt{np_i}}, \quad i = 1, \ldots, k.
+\]
+则 $Q_{k-1} = \sum_{i=1}^k Y_i^2$。
+
+7. 向量形式：设 $\mathbf{Y} = (Y_1, \ldots, Y_k)$。可以证明（见 Hogg, McKean, Craig Theorem 4.7.1 或更高级课程的证明），当 $n \to \infty$ 时，$\mathbf{Y}$ 的协方差矩阵为
+\[
+\Sigma = I_k - \mathbf{p}\mathbf{p}',
+\]
+其中 $\mathbf{p} = (p_1, \ldots, p_k)'$，$I_k$ 为 $k \times k$ 单位矩阵。
+
+8. 该协方差矩阵 $\Sigma$ 是**幂等矩阵**（idempotent），且 $\text{rank}(\Sigma) = k - 1$。对于幂等矩阵，其特征值为 0 或 1。
+
+9. 因此，$Q_{k-1} = \mathbf{Y}'\mathbf{Y}$ 服从（渐近）$\chi^2(k-1)$ 分布。这基于以下事实：若 $\mathbf{Y} \xrightarrow{D} N(\mathbf{0}, \Sigma)$，且 $\Sigma$ 是幂等的，则 $\mathbf{Y}'\Sigma^-\mathbf{Y} \xrightarrow{D} \chi^2(\text{rank}(\Sigma))$，其中 $\Sigma^-$ 为广义逆。
+
+10. 具体推导（来自 Hogg）：设 $Z_i = (X_i - np_i) / \sqrt{np_i}$，则 $\sum_{i=1}^k \sqrt{p_i} Z_i = 0$（因为 $\sum X_i = n$）。定义
+\[
+Q_{k-1} = \sum_{i=1}^k Z_i^2 = \sum_{i=1}^k (Z_i - \bar{Z}_w)^2 + (\text{某个组合})^2,
+\]
+其中 $\bar{Z}_w = \sum_{i=1}^k p_i Z_i / \sum_{i=1}^k p_i = 0$。
+
+最终得到 $Q_{k-1}$ 可以分解为一个 $\chi^2(1)$ 变量（来自组合约束）和一个 $\chi^2(k-2)$ 变量之和，即 $\chi^2(k-1)$。
+
+\textbf{结论}：
+在原假设 $H_0: p_i = p_{i0}, i = 1, \ldots, k$ 下，当样本量 $n \to \infty$ 时，
+\[
+Q_{k-1} = \sum_{i=1}^k \frac{(X_i - np_{i0})^2}{np_{i0}} \xrightarrow{D} \chi^2(k-1).
+\]
+
+因此，对于大样本，$Q_{k-1}$ 具有近似卡方分布，自由度为 $k-1$（减去一个约束 $\sum p_i = 1$）。这就是 Karl Pearson 于 1900 年提出的拟合优度 $\chi^2$ 检验的理论基础。$\blacksquare$
