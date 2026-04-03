@@ -470,10 +470,17 @@ tikz 图片等导致的 overfull hbox 是排版正常现象，不需要主动修
 **经历次数**: 1 次
 
 **错误描述**:
-编译日志出现 `Label ... multiply defined` 警告，表明同一个 label 被多次定义。这通常发生在多 agent 并发写作或复制内容时未修改 label。
+编译日志出现 `Label ... multiply defined` 警告，表明同一个 label 被多次定义。这通常发生在：
+- 多 agent 并发写作时，不同人定义了相同 label
+- 复制内容时未修改 label
+
+**修复案例（mathematical-statistics）**：
+1. `ex:bivariate-normal-simulation-ch2` 在 chapter2.tex:73 和 840 重复 → 第二个改为 `ch2b`
+2. `sec:derivation-poisson-limit` 在 chapter1.tex:1026 和 chapter3.tex:1460 重复 → 删除 chapter1 的
+3. `eq:mle-definition` 在 chapter4.tex:109 和 chapter6.tex:55 重复 → chapter6 改为 `eq:mle-definition-ch6`
 
 **防止措施**:
 - Label 命名必须带章节后缀：`eq:mle-definition-ch4`, `eq:mle-definition-ch6`
 - 同一章节内不同位置用后缀区分：`ex:example-a`, `ex:example-b`
 - 并发写作时协调 label 分配
-- 禁止在未协调的情况下复制含 label 的内容
+- 复制含 label 内容时必须修改或删除 label
