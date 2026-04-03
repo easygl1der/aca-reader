@@ -461,6 +461,40 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 - 写作前先判断题目是否涉及证明
 - 检查 solution 定义是否带 `*`
 
+---
+
+## L913: 重复 Label 定义检查
+
+**日期**: 2026-04-03
+**经历次数**: 1 次
+
+**错误描述**:
+编译日志出现 `Label ... multiply defined` 警告，表明同一个 label 被多次定义。这通常发生在：
+1. 多 agent 并发写作时，不同人定义了相同 label
+2. 同一内容被复制到多个位置，但 label 未修改
+
+**本次发现的重复 label**：
+| Label | 重复位置 | 正确位置 |
+|-------|---------|---------|
+| `ex:bivariate-normal-simulation-ch2` | chapter2.tex:73, chapter2.tex:840 | chapter2.tex:840 → 改为 `ex:bivariate-normal-simulation-ch2b` |
+| `sec:derivation-poisson-limit` | chapter1.tex:1026, chapter3.tex:1460 | chapter3:1460 是正确位置，chapter1:1026 应删除或改名 |
+| `eq:mle-definition` | chapter4.tex:109, chapter6.tex:55 | chapter6:55 应改为 `eq:mle-definition-ch6` |
+
+**检查命令**:
+```bash
+# 编译后检查重复 label
+grep -n "multiply defined" notes/**/mathematical-statistics-notes.log
+
+# 搜索所有 label 定义
+grep -r "label{" notes/ --include="*.tex" | sort | uniq -c | sort -rn | head -20
+```
+
+**防止措施**:
+- Label 命名必须带章节后缀：`eq:mle-definition-ch4`, `eq:mle-definition-ch6`
+- 同一章节内不同位置用后缀区分：`ex:bivariate-normal-simulation-ch2`, `ex:bivariate-normal-simulation-ch2b`
+- 并发写作时，team lead 应协调 label 分配
+- 禁止在未协调的情况下复制含 label 的内容
+
 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
