@@ -953,13 +953,93 @@ $t$ 分布的 pdf 如上所示，当 $n \to \infty$ 时趋于标准正态分布�
 \subsection{卡方分布 $\Delta$ 方法的详细推导}\label{sec:chi-square-delta-method}
 
 \textbf{背景（Background）}：
-将 $\Delta$ 方法应用于卡方变量的标准差。
+将 $\Delta$ 方法应用于卡方变量的标准差。设 $V_n \sim \chi^2(n)$（即 $n$ 个标准正态变量的平方和），则 $V_n / n \xrightarrow{P} 1$，我们希望求 $\sqrt{n}(\sqrt{V_n} - \sqrt{n})$ 的渐近分布。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+\item $V_n \sim \chi^2(n)$：自由度为 $n$ 的卡方分布
+\item $v = n$：卡方分布的均值
+\item $g(x) = \sqrt{x}$：平方根变换函数
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{itemize}
+\item 由大数定律：$V_n / n \xrightarrow{P} 1$
+\item 由中心极限定理：$\sqrt{n}(V_n/n - 1) \xrightarrow{D} N(0, 2)$
+\item $\Delta$ 方法（Theorem 5.2.9, Hogg）：若 $\sqrt{n}(X_n - \theta) \xrightarrow{D} N(0, \sigma^2)$，且 $g(x)$ 在 $\theta$ 处可导且 $g'(\theta) \neq 0$，则
+\[
+\sqrt{n}(g(X_n) - g(\theta)) \xrightarrow{D} N\left(0, \sigma^2 [g'(\theta)]^2\right).
+\]
+\end{itemize}
 
 \textbf{目标（Goal）}：
-求 $\sqrt{n}(\sqrt{V_n} - \sqrt{v})$ 的渐近分布。
+求 $\sqrt{n}(\sqrt{V_n} - \sqrt{n})$ 的渐近分布。
 
 \textbf{推导步骤（Derivation Steps）}：
-占位符内容（待补充）。
+
+1. 令 $X_n = V_n / n$，则 $X_n \xrightarrow{P} 1 = \theta$。
+
+2. 计算 $g'(x) = \frac{d}{dx} \sqrt{x} = \frac{1}{2\sqrt{x}}$，因此 $g'(\theta) = g'(1) = \frac{1}{2}$。
+
+3. 验证 $\Delta$ 方法条件：
+   - $X_n = V_n / n$ 依概率收敛到 $\theta = 1$
+   - $g(x) = \sqrt{x}$ 在 $x = 1$ 处可导
+   - 由 CLT：$\sqrt{n}(X_n - 1) = \frac{1}{\sqrt{n}}(V_n - n) \xrightarrow{D} N(0, 2)$
+
+4. 应用 $\Delta$ 方法：
+\[
+\sqrt{n}(g(V_n/n) - g(1)) = \sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right) \xrightarrow{D} N\left(0, 2 \cdot \left(\frac{1}{2}\right)^2\right) = N(0, \tfrac{1}{2}).
+\]
+
+5. 注意到
+\[
+\sqrt{n}(\sqrt{V_n} - \sqrt{n}) = n \cdot \sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right) = n \cdot \sqrt{n}\left(\frac{\sqrt{V_n}}{\sqrt{n}} - 1\right).
+\]
+实际上更直接的方式是：直接对 $g(V_n) = \sqrt{V_n}$ 在 $v = n$ 处应用 $\Delta$ 方法。
+
+6. 设 $Y_n = V_n$，则 $\sqrt{n}(Y_n - n) \xrightarrow{D} N(0, 2n)$。但更好的做法是利用 $V_n / n \xrightarrow{P} 1$：
+
+由步骤 4 的结果，乘以 $\sqrt{n}$：
+\[
+\sqrt{n}(\sqrt{V_n} - \sqrt{n}) = \sqrt{n} \cdot \sqrt{n} \cdot \left(\sqrt{\frac{V_n}{n}} - 1\right) = n \cdot \sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right).
+\]
+
+更直接地：对 $X_n = V_n / n$ 应用 $\Delta$ 方法得
+\[
+\sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right) \xrightarrow{D} N\left(0, \frac{1}{2}\right).
+\]
+
+两边乘以 $\sqrt{n}$：
+\[
+\sqrt{n}(\sqrt{V_n} - \sqrt{n}) = \sqrt{n} \cdot \sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right) \xrightarrow{D} \sqrt{n} \cdot N\left(0, \frac{1}{2}\right).
+\]
+
+但这不是正确的缩放。正确的做法是直接对 $\sqrt{V_n}$ 应用 $\Delta$ 方法到 $\sqrt{n}$：
+
+因为 $\sqrt{n}(\frac{V_n}{n} - 1) \xrightarrow{D} N(0, 2)$，且 $g'(1) = \frac{1}{2}$，所以
+\[
+\sqrt{n}\left(\sqrt{\frac{V_n}{n}} - 1\right) \xrightarrow{D} N\left(0, 2 \cdot \frac{1}{4}\right) = N\left(0, \frac{1}{2}\right).
+\]
+
+即
+\[
+\sqrt{n}\left(\frac{\sqrt{V_n}}{\sqrt{n}} - 1\right) \xrightarrow{D} N\left(0, \frac{1}{2}\right).
+\]
+
+因此
+\[
+\sqrt{n}(\sqrt{V_n} - \sqrt{n}) \xrightarrow{D} N\left(0, \frac{1}{2} \cdot n\right) = N\left(0, \frac{n}{2}\right).
+\]
+
+这表明 $\sqrt{V_n}$ 的渐近方差与 $\sqrt{n}$ 成正比。
+
+\textbf{结论}：
+应用 $\Delta$ 方法于卡方变量的平方根变换，得到
+\[
+\sqrt{n}(\sqrt{V_n} - \sqrt{n}) \xrightarrow{D} N\left(0, \frac{1}{2}\right) \cdot \sqrt{n} = N\left(0, \frac{n}{2}\right).
+\]
+
+更精确地，$\sqrt{n}(\sqrt{V_n} - \sqrt{n}) / \sqrt{n/2} = \sqrt{2}(\sqrt{V_n} - \sqrt{n}) / \sqrt{V_n/2} \xrightarrow{D} N(0, 1)$。$\blacksquare$
 
 \subsection{卡方检验的详细推导}\label{sec:chi-square-test-derivation}
 
