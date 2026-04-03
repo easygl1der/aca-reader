@@ -1011,6 +1011,33 @@ $(\exists x)(A(x) \rightarrow B(x))$
 
 ---
 
+## L716: Solution vs Proof 环境选择规则
+
+**日期**: 2026-04-03
+**来源**: latex-checker-new 提醒
+
+**解答环境选择规则**:
+- 问题**不涉及证明** → 用 `solution` 环境
+- 问题**涉及证明** → 用 `proof` 环境
+- `solution` 和 `proof` 都**不需要标号**
+
+**示例**:
+```latex
+% 非证明题 → solution 环境，无编号
+\begin{solution}
+...
+\end{solution}
+
+% 证明题 → proof 环境，无编号
+\begin proof}
+...
+\end proof}
+```
+
+**注意**: `proof` 环境来自 `amsthm` 包，自动带有 "Proof." 标题和 ∎ 结尾符号。
+
+---
+
 ## 附录：写作检查清单（每次润色时执行）
 
 ### Proof 环境检查
