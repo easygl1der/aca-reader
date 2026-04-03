@@ -25,6 +25,40 @@
 | L015 | 引用文献时必须补充定理/定义/例子的具体内容 | 1 |
 | L016 | 第一次出现的概念必须补充定义 | 1 |
 | L017 | 重复 Label 定义导致编译警告 | 1 |
+| L018 | 修复空洞脚注前必须先验证 appendix 章节是否存在 | 1 |
+
+---
+
+## L018: 修复空洞脚注前必须先验证 appendix 章节是否存在
+
+**日期**: 2026-04-03
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+修复 ch6 "见附录" 空洞脚注时，盲目添加了 `\cref{sec:mle-asymptotic-proof}`，但 Laplace MLE 推导和指数分布 LRT 推导在 appendix 中根本不存在。造成 `\cref` 引用了不存在的章节——比原来更糟。
+
+**正确做法**:
+修复空洞脚注（"见附录" 但没有具体内容）时，两步走：
+
+1. **先用 grep 确认 appendix 章节存在**：
+   ```bash
+   grep "见附录" chapters/chapter*.tex   # 找到空洞脚注
+   grep "\\label\{sec:appendix" chapters/chapter6.tex  # 确认目标 appendix 章节
+   ```
+
+2. **附录章节存在** → 添加 `\cref{...}`
+   **附录章节不存在** → **直接删除该脚注**，因为正文已经叙述完整
+
+**ch6 修复案例**：
+- Line 101: `\footnote{Laplace 分布 MLE 的完整推导见附录 \cref{sec:mle-asymptotic-proof}。}`
+  → appendix 中无 Laplace MLE 推导 → **删除脚注**
+- Line 409: `\footnote{指数分布似然比检验的详细推导见附录 \cref{sec:mle-asymptotic-proof}。}`
+  → appendix 中无指数 LRT 推导 → **删除脚注**
+
+**防止措施**:
+- 修复"见附录"脚注前，先用 `grep "\\label\{sec:"` 列出该章节所有 appendix label
+- 确认目标 label 存在后再添加 `\cref{}`
+- 不存在则删除空洞脚注，不要留虚假引用
 
 ---
 
