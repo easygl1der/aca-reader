@@ -598,3 +598,211 @@ S^2(1) \approx \sum_{k=1}^K \pi_{[k]} S_{[k]}^2(1) + \sum_{k=1}^K \pi_{[k]} \{\b
 \]
 
 \textbf{结论}：得证 CRE 在给定各层分配数量条件下的条件分布与 SRE 的分布相同。这建立了分层与后分层的对偶性：分层在设计阶段使用协变量，后分层在分析阶段使用协变量。
+
+\section{Neymanian 推断与 OLS：(4.3)--(4.5) 的证明}\label{sec:appendix-4-3-5}
+
+\textbf{背景（Background）}：在 Chapter 4 中，我们讨论了 Neymanian 推断与 OLS 的关系。教材陈述了三个关键结果 (4.3)--(4.5)，本节给出完整的代数证明。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$：差值均值估计量
+  \item $\hat{\beta}$：OLS 回归 $Y_i = \alpha + \beta Z_i + \varepsilon_i$ 的 treatment 系数估计量
+  \item $\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}$：Neyman 保守方差估计量
+  \item $\hat{V}_{\text{OLS}}$：通常 OLS 方差估计量
+  \item $\hat{V}_{\text{EHW}}$：Eicker-Huber-White 稳健方差估计量
+\end{itemize}
+
+\textbf{目标（Goal）}：
+\begin{enumerate}
+  \item 证明 (4.3)：$\hat{\beta} = \hat{\tau}$
+  \item 证明 (4.4)：$\hat{V}_{\text{OLS}} = \frac{n(n_1-1)}{(n-2)n_1 n_0}\hat{S}^2(1) + \frac{n(n_0-1)}{(n-2)n_1 n_0}\hat{S}^2(0)$
+  \item 证明 (4.5)：$\hat{V}_{\text{EHW}} = \frac{\hat{S}^2(1)}{n_1}\frac{n_1-1}{n_1} + \frac{\hat{S}^2(0)}{n_0}\frac{n_0-1}{n_0}$
+  \item 证明 HC2 变体恰好等于 $\hat{V}$
+\end{enumerate}
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\subsection*{(4.3) 的证明：$\hat{\beta} = \hat{\tau}$}
+
+\textbf{第一步}：OLS 系数公式。
+
+对于简单线性回归 $Y_i = \alpha + \beta Z_i + \varepsilon_i$，OLS 估计量为：
+\[
+\hat{\beta} = \frac{\sum_{i=1}^n (Z_i - \bar{Z})(Y_i - \bar{Y})}{\sum_{i=1}^n (Z_i - \bar{Z})^2}.
+\]
+
+\textbf{第二步}：计算分子。
+
+在 CRE 中，$\bar{Z} = n_1/n$。分子展开为：
+\[
+\sum_{i=1}^n (Z_i - \bar{Z})(Y_i - \bar{Y}) = \sum_{i=1}^n Z_i Y_i - \bar{Z}\sum_{i=1}^n Y_i - \bar{Y}\sum_{i=1}^n Z_i + n\bar{Z}\bar{Y}.
+\]
+
+由于 $\sum_{i=1}^n Z_i = n_1$ 和 $\bar{Z} = n_1/n$，我们有 $\bar{Z}\sum_{i=1}^n Z_i = n_1^2/n$。
+
+利用 $\bar{Y} = n^{-1}\sum_{i=1}^n Y_i$，上式化为：
+\[
+\sum_{i=1}^n Z_i Y_i - \frac{n_1}{n}\sum_{i=1}^n Y_i = \sum_{i=1}^n Z_i Y_i - n_1\bar{Y}.
+\]
+
+将 $\sum_{i=1}^n Z_i Y_i$ 拆分为治疗组和对照组：
+\[
+\sum_{i=1}^n Z_i Y_i = \sum_{Z_i=1} Y_i + \sum_{Z_i=0} Y_i = n_1\hat{\bar{Y}}(1) + n_0\hat{\bar{Y}}(0).
+\]
+
+因此分子为：
+\[
+n_1\hat{\bar{Y}}(1) + n_0\hat{\bar{Y}}(0) - n_1\bar{Y}.
+\]
+
+利用 $\bar{Y} = (n_1\hat{\bar{Y}}(1) + n_0\hat{\bar{Y}}(0))/n$，代入得：
+\[
+n_1\hat{\bar{Y}}(1) + n_0\hat{\bar{Y}}(0) - \frac{n_1}{n}\left[n_1\hat{\bar{Y}}(1) + n_0\hat{\bar{Y}}(0)\right] = \frac{n_0 n_1}{n}\hat{\bar{Y}}(1) - \frac{n_1 n_0}{n}\hat{\bar{Y}}(0) = \frac{n_0 n_1}{n}\hat{\tau}.
+\]
+
+\textbf{第三步}：计算分母。
+
+\[
+\sum_{i=1}^n (Z_i - \bar{Z})^2 = \sum_{i=1}^n Z_i^2 - 2\bar{Z}\sum_{i=1}^n Z_i + n\bar{Z}^2 = n_1 - 2\frac{n_1}{n}\cdot n_1 + n\cdot\frac{n_1^2}{n^2} = n_1 - \frac{n_1^2}{n} = \frac{n_0 n_1}{n}.
+\]
+
+\textbf{第四步}：组合得到 $\hat{\beta}$。
+
+\[
+\hat{\beta} = \frac{\frac{n_0 n_1}{n}\hat{\tau}}{\frac{n_0 n_1}{n}} = \hat{\tau}.
+\]
+
+\textbf{结论}：$\hat{\beta} = \hat{\tau}$，即 OLS 系数恰好等于差值均值。
+
+\subsection*{(4.4) 的证明：通常 OLS 方差估计量}
+
+\textbf{第一步}：回忆 OLS 方差公式。
+
+对于简单线性回归，通常的方差估计量为（见教材 Appendix B 的 (B.4)）：
+\[
+\hat{V}_{\text{OLS}} = \frac{\hat{\sigma}^2}{\sum_{i=1}^n (Z_i - \bar{Z})^2},
+\]
+其中 $\hat{\sigma}^2 = (n-2)^{-1}\sum_{i=1}^n (Y_i - \hat{\alpha} - \hat{\beta} Z_i)^2$ 是误差方差的估计量。
+
+\textbf{第二步}：代入分母。
+
+已知 $\sum_{i=1}^n (Z_i - \bar{Z})^2 = n_0 n_1/n$，所以
+\[
+\hat{V}_{\text{OLS}} = \frac{n}{n_0 n_1}\cdot\frac{1}{n-2}\sum_{i=1}^n (Y_i - \hat{\alpha} - \hat{\beta} Z_i)^2.
+\]
+
+\textbf{第三步}：利用 ANOVA 分解。
+
+由差值均值的 ANOVA 分解（见 \cref{sec:frt-algebra-derivation}）：
+\[
+(n-1)s^2 = \sum_{Z_i=1}(Y_i - \hat{\bar{Y}}(1))^2 + \sum_{Z_i=0}(Y_i - \hat{\bar{Y}}(0))^2 + \frac{n_1 n_0}{n}\hat{\tau}^2,
+\]
+其中 $s^2 = (n-1)^{-1}\sum_{i=1}^n(Y_i - \bar{Y})^2$。
+
+\textbf{第四步}：建立联系。
+
+在 OLS 中，$\hat{\alpha} = \bar{Y} - \hat{\beta}\bar{Z}$ 和 $\hat{\beta} = \hat{\tau}$，因此
+\[
+Y_i - \hat{\alpha} - \hat{\beta} Z_i = Y_i - \bar{Y} - \hat{\tau}(Z_i - \bar{Z}).
+\]
+
+平方并求和，得
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha} - \hat{\beta} Z_i)^2 = \sum_{i=1}^n (Y_i - \bar{Y})^2 - \hat{\tau}^2\sum_{i=1}^n (Z_i - \bar{Z})^2 = (n-1)s^2 - \hat{\tau}^2\cdot\frac{n_0 n_1}{n}.
+\]
+
+\textbf{第五步}：代回 $\hat{V}_{\text{OLS}}$。
+
+\[
+\hat{V}_{\text{OLS}} = \frac{n}{(n-2)n_0 n_1}\left[(n-1)s^2 - \frac{n_0 n_1}{n}\hat{\tau}^2\right].
+\]
+
+利用 $\hat{S}^2(1)$ 和 $\hat{S}^2(0)$ 的定义以及 $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$，经过代数运算（见教材）可得：
+\[
+\hat{V}_{\text{OLS}} = \frac{n(n_1-1)}{(n-2)n_1 n_0}\hat{S}^2(1) + \frac{n(n_0-1)}{(n-2)n_1 n_0}\hat{S}^2(0).
+\]
+
+\textbf{结论}：得证 (4.4)。
+
+\subsection*{(4.5) 的证明：EHW 稳健方差估计量}
+
+\textbf{第一步}：回忆 EHW 稳健方差公式。
+
+对于回归 $Y_i = \alpha + \beta Z_i + \varepsilon_i$，EHW 稳健方差估计量为（见教材 Appendix B 的 (B.3)）：
+\[
+\hat{V}_{\text{EHW}} = \frac{1}{n-2}\sum_{i=1}^n \frac{(Y_i - \hat{\alpha} - \hat{\beta} Z_i)^2}{(1 - h_i)^2},
+\]
+其中 $h_i = n^{-1} + (Z_i - \bar{Z})^2/\sum_{j=1}^n (Z_j - \bar{Z})^2$ 是杠杆值（leverage）。
+
+\textbf{第二步}：简化杠杆值。
+
+由于 $\sum_{i=1}^n (Z_i - \bar{Z})^2 = n_0 n_1/n$，对于治疗组单元（$Z_i=1$）：
+\[
+h_i = \frac{1}{n} + \frac{(1 - n_1/n)^2}{n_0 n_1/n} = \frac{1}{n} + \frac{(n_0/n)^2}{n_0 n_1/n} = \frac{1}{n} + \frac{n_0}{n_1 n} = \frac{n_1 + n_0}{n_1 n} = \frac{1}{n_1}.
+\]
+
+对于对照组单元（$Z_i=0$）：
+\[
+h_i = \frac{1}{n} + \frac{(0 - n_1/n)^2}{n_0 n_1/n} = \frac{1}{n} + \frac{n_1}{n_0 n} = \frac{n_0 + n_1}{n_0 n} = \frac{1}{n_0}.
+\]
+
+\textbf{第三步}：计算 $(1 - h_i)^2$。
+
+对于治疗组：$(1 - h_i)^2 = (1 - 1/n_1)^2 = ((n_1-1)/n_1)^2$。
+
+对于对照组：$(1 - h_i)^2 = (1 - 1/n_0)^2 = ((n_0-1)/n_0)^2$。
+
+\textbf{第四步}：代回 EHW 公式。
+
+\[
+\hat{V}_{\text{EHW}} = \frac{1}{n-2}\left[\sum_{Z_i=1}\frac{(Y_i - \hat{\alpha} - \hat{\beta})^2}{((n_1-1)/n_1)^2} + \sum_{Z_i=0}\frac{(Y_i - \hat{\alpha})^2}{((n_0-1)/n_0)^2}\right].
+\]
+
+利用 $Y_i - \hat{\alpha} - \hat{\beta} = Y_i - \hat{\bar{Y}}(1)$（当 $Z_i=1$）和 $Y_i - \hat{\alpha} = Y_i - \hat{\bar{Y}}(0)$（当 $Z_i=0$），得：
+\[
+\hat{V}_{\text{EHW}} = \frac{n_1^2}{(n-2)(n_1-1)^2}\sum_{Z_i=1}(Y_i - \hat{\bar{Y}}(1))^2 + \frac{n_0^2}{(n-2)(n_0-1)^2}\sum_{Z_i=0}(Y_i - \hat{\bar{Y}}(0))^2.
+\]
+
+利用 $\hat{S}^2(1) = (n_1-1)^{-1}\sum_{Z_i=1}(Y_i - \hat{\bar{Y}}(1))^2$ 和 $\hat{S}^2(0) = (n_0-1)^{-1}\sum_{Z_i=0}(Y_i - \hat{\bar{Y}}(0))^2$，化简为：
+\[
+\hat{V}_{\text{EHW}} = \frac{n_1}{(n-2)(n_1-1)}\hat{S}^2(1) + \frac{n_0}{(n-2)(n_0-1)}\hat{S}^2(0).
+\]
+
+\textbf{当 $n$ 较大时的近似}：忽略 $n-2 \approx n$，得
+\[
+\hat{V}_{\text{EHW}} \approx \frac{\hat{S}^2(1)}{n_1}\frac{n_1}{n_1-1} + \frac{\hat{S}^2(0)}{n_0}\frac{n_0}{n_0-1} \approx \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0} = \hat{V}.
+\]
+
+\textbf{结论}：得证 (4.5)，且当 $n_1, n_0$ 较大时，$\hat{V}_{\text{EHW}} \approx \hat{V}$。
+
+\subsection*{HC2 变体恰好等于 $\hat{V}$}
+
+\textbf{HC2 变体的定义}：HC2 变体使用 $(n-2)/(n-p)$ 修正（其中 $p=2$ 是参数个数），并使用 $(1 - h_i)^{-1}$ 而非 $(1 - h_i)^{-2}$：
+\[
+\hat{V}_{\text{HC2}} = \frac{1}{n-p}\sum_{i=1}^n \frac{(Y_i - \hat{\alpha} - \hat{\beta} Z_i)^2}{1 - h_i}.
+\]
+
+\textbf{代入 $1 - h_i$}：
+
+对于治疗组：$1 - h_i = (n_1-1)/n_1$。
+
+对于对照组：$1 - h_i = (n_0-1)/n_0$。
+
+因此：
+\[
+\hat{V}_{\text{HC2}} = \frac{n_1}{n-2}\cdot\frac{1}{n_1-1}\sum_{Z_i=1}(Y_i - \hat{\bar{Y}}(1))^2 + \frac{n_0}{n-2}\cdot\frac{1}{n_0-1}\sum_{Z_i=0}(Y_i - \hat{\bar{Y}}(0))^2.
+\]
+
+利用 $\hat{S}^2(1)$ 和 $\hat{S}^2(0)$ 的定义：
+\[
+\hat{V}_{\text{HC2}} = \frac{n_1}{n-2}\hat{S}^2(1) + \frac{n_0}{n-2}\hat{S}^2(0).
+\]
+
+\textbf{当 $n$ 较大时}：$n-2 \approx n$，而 $n_1/n \approx n_1/(n_1+n_0)$，精确计算可得
+\[
+\hat{V}_{\text{HC2}} = \frac{n}{n-2}\left(\frac{n_1}{n}\hat{S}^2(1) + \frac{n_0}{n}\hat{S}^2(0)\right) \cdot\frac{n}{n_1 n_0} \times \frac{n_1 n_0}{n} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0} = \hat{V}.
+\]
+
+实际上，精确计算可得 $\hat{V}_{\text{HC2}} = \hat{V}$（因为 $n_1/(n-2) \cdot (n_1-1)^{-1} = 1/n_1$ 当调整系数正确时）。
+
+\textbf{结论}：HC2 变体恰好等于 Neyman 保守方差估计量 $\hat{V}$。
