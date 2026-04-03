@@ -536,6 +536,48 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 
 \textbf{与置信区间的联系}：假设检验和置信区间在本质上是等价的——如果 $\mu_0$ 落在置信区间内，我们就不拒绝 $H_0: \mu = \mu_0$；反之则拒绝。
 
+\subsection{4.4.1 分位数理论}\label{sec:4.4.1}
+
+在描述数据分布时，均值和方差并非全部。分位数（quantile）提供了分布的更多视角——它们描述了数据的秩次特征，不受极端值影响。
+
+\textbf{$p$ 分位数的定义}：设随机变量 $X$ 的分布函数为 $F(x) = \mathbb{P}(X \leq x)$。则 $F$ 的 $p$ 分位数（下侧 $p$ 分位数）定义为
+\[
+\xi_p = F^{-1}(p) = \inf\{x : F(x) \geq p\},
+\tag{4.4.3}\label{eq:quantile-definition}
+\]
+即满足 $F(\xi_p) \geq p$ 的最小值。
+
+类似地，\textbf{上侧 $p$ 分位数}为 $F^{-1}(1-p)$。
+
+\textbf{样本分位数}：设 $Y_1 < Y_2 < \cdots < Y_n$ 为次序统计量。取 $k = [p(n+1)]$（或 $k = \lfloor p(n+1) \rfloor$），则 $Y_k$ 是 $p$ 分位数的估计。
+
+\textbf{五数概括}：最小值 $Y_1$、第一四分位数 $Q_1 = Y_{[0.25(n+1)]}$、中位数 $M = Y_{[(n+1)/2]}$、第三四分位数 $Q_3 = Y_{[0.75(n+1)]}$、最大值 $Y_n$。这五个数简洁地描述了数据的分布位置。
+
+\textbf{箱线图（boxplot）}基于五数概括：
+
+\begin{itemize}
+\item 箱子：从 $Q_1$ 到 $Q_3$（包含中间 50\% 数据）
+\item 箱内中位线：$M$
+\item 内围栏（inner fence）：$Q_1 - 1.5\cdot\text{IQR}$ 到 $Q_3 + 1.5\cdot\text{IQR}$，其中 $\text{IQR} = Q_3 - Q_1$ 是四分位距
+\item 外围栏（outer fence）：$Q_1 - 3\cdot\text{IQR}$ 到 $Q_3 + 3\cdot\text{IQR}$
+\item 异常值（outlier）：落在外围栏之外的数据点
+\end{itemize}
+
+箱线图的优势在于能够直观识别异常值，同时展示数据的对称性和分散程度。
+
+\textbf{Q-Q 图（分位数-分位数图）}：将样本分位数与理论分布分位数画在散点图上。如果数据来自该理论分布，点应近似落在一条直线上。Q-Q 图是检验分布假设的有力工具。
+
+\begin{example}[正态 Q-Q 图的解读]\label{ex:normal-qq}
+设样本来自标准正态分布 $N(0,1)$。在正态 Q-Q 图上：
+\begin{itemize}
+\item 如果点\textbf{近似在直线上} $\Rightarrow$ 数据可能来自正态分布
+\item 如果点\textbf{呈曲线形} $\Rightarrow$ 数据可能是偏态分布
+\item 如果点\textbf{在尾部偏离直线} $\Rightarrow$ 数据可能有厚尾或薄尾
+\end{itemize}
+
+实际解读中，轻微的弯曲在样本量较小时是正常的，不必过度解读。\footnote{Q-Q 图的更多应用（比较多个分布、检测异常值）见 \cite{Wilks2006}。}
+\end{example}
+
 \section{4.5 Chi-Square Tests}\label{sec:4.5}
 
 直到现在，我们讨论的都是连续型数据。但统计学同样关注\textbf{分类数据（categorical data）}——即计数数据。例如：选举中支持不同候选人的选民人数、不同药物治疗后的治愈/未治愈人数。
