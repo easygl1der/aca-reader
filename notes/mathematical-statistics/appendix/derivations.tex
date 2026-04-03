@@ -926,7 +926,29 @@ $t$ 分布的 pdf 如上所示，当 $n \to \infty$ 时趋于标准正态分布�
 证明对任意 $\epsilon > 0$，存在 $\eta$ 使得 $\mathbb{P}[|X| > \eta] < \epsilon$。
 
 \textbf{推导步骤（Derivation Steps）}：
-占位符内容（待补充）。
+
+1. 设 $X \sim N(\mu, \sigma^2)$，考虑尾部概率 $\mathbb{P}(|X| > \eta)$。
+
+2. 利用 Markov 不等式：对任意 $t > 0$，
+\[
+\mathbb{P}(|X - \mu| > \eta) = \mathbb{P}((X - \mu)^2 > \eta^2) \leq \frac{\mathbb{E}[(X - \mu)^2]}{\eta^2} = \frac{\sigma^2}{\eta^2}.
+\]
+
+3. 由 Chebyshev 不等式可直接得出：对于任意 $\epsilon > 0$，取 $\eta > \sigma / \sqrt{\epsilon}$，则
+\[
+\mathbb{P}(|X - \mu| > \eta) \leq \frac{\sigma^2}{\eta^2} < \epsilon.
+\]
+
+4. 进一步，对于标准正态分布 $Z \sim N(0,1)$，尾部概率有更精确的界：由积分不等式
+\[
+\int_\eta^\infty e^{-t^2/2} \, dt \leq \frac{1}{\eta} e^{-\eta^2/2}, \quad \eta > 0,
+\]
+可得 $\mathbb{P}(|Z| > \eta) \leq \sqrt{\frac{2}{\pi}} \frac{e^{-\eta^2/2}}{\eta}$。
+
+5. 因此，无论使用 Chebyshev 的粗略界还是正态分布的精确界，均可证明：对于任意 $\epsilon > 0$，存在 $\eta$ 使得 $\mathbb{P}(|X| > \eta) < \epsilon$。这说明正态分布的尾部概率可以任意小。
+
+\textbf{结论}：
+正态分布的尾部概率可以任意小，即 $\lim_{\eta \to \infty} \mathbb{P}(|X| > \eta) = 0$。这体现了正态分布的**有界性**（tails vanish）。$\blacksquare$
 
 \subsection{卡方分布 $\Delta$ 方法的详细推导}\label{sec:chi-square-delta-method}
 
