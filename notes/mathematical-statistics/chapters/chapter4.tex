@@ -2105,3 +2105,69 @@ Bootstrap 的误差来源：
 \]
 
 偏差校正的置信区间为 $\left[ \theta^*_{\alpha_1}, \theta^*_{\alpha_2} \right]$，其中 $\alpha_1 = \Phi(2\widehat{a} + z_\alpha)$，$\alpha_2 = \Phi(2\widehat{a} - z_\alpha)$。
+
+\subsection{两总体均值差置信区间的推导}\label{sec:derivation-two-sample-ci}
+
+\textbf{背景}：推导两总体均值差 $\Delta = \mu_1 - \mu_2$ 的置信区间。
+
+\textbf{情形一：正态等方差（精确区间）}
+
+设 $X_1, \ldots, X_{n_1} \sim N(\mu_1, \sigma^2)$，$Y_1, \ldots, Y_{n_2} \sim N(\mu_2, \sigma^2)$，且两样本独立。
+
+合并方差 $S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}$。
+
+标准化：
+\[
+T = \frac{\bar{X} - \bar{Y} - (\mu_1-\mu_2)}{S_p\sqrt{1/n_1 + 1/n_2}}
+= \frac{\widehat{\Delta} - \Delta}{S_p\sqrt{1/n_1 + 1/n_2}}.
+\]
+
+由 $\mathbb{P}(-t_{\alpha/2} \leq T \leq t_{\alpha/2}) = 1-\alpha$，解出 $\Delta$ 得置信区间：
+\[
+\left[(\bar{x}-\bar{y}) \pm t_{\alpha/2,\,n_1+n_2-2}\,S_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}\right].
+\]
+
+\textbf{情形二：方差不等（Welch 近似）}
+
+当 $\sigma_1^2 \neq \sigma_2^2$ 时，Welch-Satterthwaite 自由度近似为：
+\[
+\mathrm{df} \approx \frac{\left(S_1^2/n_1 + S_2^2/n_2\right)^2}
+{S_1^4/[n_1^2(n_1-1)] + S_2^4/[n_2^2(n_2-1)]}.
+\]
+
+\subsection{接受-拒绝算法的收敛性证明}\label{sec:derivation-accept-reject}
+
+\textbf{背景}：证明接受-拒绝算法生成的样本确实来自目标分布 $f(x)$。
+
+\textbf{算法}：生成 $Y \sim g$，若 $U \leq f(Y)/[Mg(Y)]$ 则接受 $X=Y$。
+
+接受概率 $\mathbb{P}(A) = \frac{1}{M}$。
+
+生成的 $X$ 的分布满足 $\mathbb{P}(X \leq x) = F(x)$，故 $X \sim f$。
+
+\textbf{接受率优化}：$M$ 越小，接受率越高，应选择 $M = \sup_x f(x)/g(x)$ 的紧近似。
+
+\subsection{Bootstrap 置信区间的比较}\label{sec:derivation-bootstrap-ci}
+
+\textbf{Percentile Bootstrap CI}：$\left[T_{(\alpha B)}^*,\ T_{((1-\alpha)B)}^*\right]$。
+
+\textbf{BCa 区间}（Bias-Corrected and Accelerated）多两步校正：
+\begin{enumerate}
+\item 偏差校正因子 $\widehat{a}$
+\item 加速因子修正偏度
+\end{enumerate}
+
+\textbf{选择建议}：$n \geq 100$ 且分布对称时用 Percentile；存在偏倚或偏度时用 BCa。
+
+\subsection{Bootstrap 检验的细节}\label{sec:derivation-bootstrap-test}
+
+设 $H_0: \mu_1 = \mu_2$，在 $H_0$ 下合并样本，从合并数据中有放回抽样：
+
+p 值：$\hat{p} = \frac{1}{B}\sum_{b=1}^B I\!\left(|T_b^*| \geq |T_{\mathrm{obs}}|\right)$。
+
+\textbf{注意事项}：
+\begin{itemize}
+\item Bootstrap 检验不依赖正态性假设
+\item 样本量较小时增大 $B$ 可改善稳定性
+\item 与 permutation 检验的区别：Bootstrap 允许方差不齐
+\end{itemize}
