@@ -26,6 +26,7 @@
 | L715 | Proof 环境配置（不同文档类有不同写法） | 1 |
 | L716 | Solution vs Proof 环境选择规则 | 1 |
 | L717 | 正文附录脚注引用格式（首次出现处 + 句号在 \cref 外） | 1 |
+| L718 | mathematical-statistics ch4-6 附录脚注修复 | 1 |
 
 ---
 
