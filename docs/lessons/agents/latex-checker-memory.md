@@ -473,27 +473,43 @@ grep -n "等变量子量子上同调\|等变量量子上同调" notes/Schubert-P
 1. 多 agent 并发写作时，不同人定义了相同 label
 2. 同一内容被复制到多个位置，但 label 未修改
 
-**本次发现的重复 label**：
-| Label | 重复位置 | 正确位置 |
+**本次发现的重复 label 及修复**：
+| Label | 重复位置 | 修复方案 |
 |-------|---------|---------|
-| `ex:bivariate-normal-simulation-ch2` | chapter2.tex:73, chapter2.tex:840 | chapter2.tex:840 → 改为 `ex:bivariate-normal-simulation-ch2b` |
-| `sec:derivation-poisson-limit` | chapter1.tex:1026, chapter3.tex:1460 | chapter3:1460 是正确位置，chapter1:1026 应删除或改名 |
-| `eq:mle-definition` | chapter4.tex:109, chapter6.tex:55 | chapter6:55 应改为 `eq:mle-definition-ch6` |
+| `ex:bivariate-normal-simulation-ch2` | chapter2.tex:73, chapter2.tex:840（两个完全相同的例子） | 第二个改为 `ex:bivariate-normal-simulation-ch2b` |
+| `sec:derivation-poisson-limit` | chapter1.tex:1026, chapter3.tex:1460（完全相同的章节） | 删除 chapter1.tex 的 label（保留 chapter3 正确位置） |
+| `eq:mle-definition` | chapter4.tex:109, chapter6.tex:55（不同章节不同公式） | chapter6 改为 `eq:mle-definition-ch6` + 删除 `\tag{6.1.2}` |
+
+**修复命令**:
+```bash
+# 1. chapter2.tex:840 — 同一章节内第二个相同例子
+# 改前：\begin{example}[生成二元正态样本]\label{ex:bivariate-normal-simulation-ch2}
+# 改后：\begin{example}[生成二元正态样本]\label{ex:bivariate-normal-simulation-ch2b}
+
+# 2. chapter1.tex:1026 — 删除重复的 section label
+# 改前：\subsection{Poisson 近似二项分布的证明}\label{sec:derivation-poisson-limit}
+# 改后：\subsection{Poisson 近似二项分布的证明}
+
+# 3. chapter6.tex:55 — 不同章节同名 label + 违规 \tag{}
+# 改前：\tag{6.1.2}\label{eq:mle-definition}
+# 改后：\label{eq:mle-definition-ch6}
+```
 
 **检查命令**:
 ```bash
 # 编译后检查重复 label
 grep -n "multiply defined" notes/**/mathematical-statistics-notes.log
 
-# 搜索所有 label 定义
-grep -r "label{" notes/ --include="*.tex" | sort | uniq -c | sort -rn | head -20
+# 搜索所有 label 定义并找出重复
+grep -r "\\\\label{" notes/ --include="*.tex" | sort | uniq -c | sort -rn | head -20
 ```
 
 **防止措施**:
 - Label 命名必须带章节后缀：`eq:mle-definition-ch4`, `eq:mle-definition-ch6`
-- 同一章节内不同位置用后缀区分：`ex:bivariate-normal-simulation-ch2`, `ex:bivariate-normal-simulation-ch2b`
+- 同一章节内不同位置用后缀区分：`ex:example-a`, `ex:example-b`
 - 并发写作时，team lead 应协调 label 分配
 - 禁止在未协调的情况下复制含 label 的内容
+- 复制内容时必须检查是否含 label，如有必须修改或删除
 
 核心检查清单
 
