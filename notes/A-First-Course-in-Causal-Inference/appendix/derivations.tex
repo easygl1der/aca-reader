@@ -4,6 +4,72 @@
 \appendix
 \chapter{公式推导}
 
+\section{Lemma 4.1 的证明：方差与协方差的关系}\label{sec:appendix-lemma-4-1}
+
+\textbf{Lemma 4.1}（教材第 1975 页）：
+\[
+2S(1,0) = S^2(1) + S^2(0) - S^2(\tau).
+\]
+
+\textbf{背景（Background）}：Lemma 4.1 是 Neyman (1923) 定理证明中的一个关键代数恒等式，它建立了有限总体协方差与各个方差之间的关系。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $S^2(1) = (n-1)^{-1}\sum_{i=1}^n \{Y_i(1) - \bar{Y}(1)\}^2$：潜在结果 $Y_i(1)$ 的有限总体方差
+  \item $S^2(0) = (n-1)^{-1}\sum_{i=1}^n \{Y_i(0) - \bar{Y}(0)\}^2$：潜在结果 $Y_i(0)$ 的有限总体方差
+  \item $S(1,0) = (n-1)^{-1}\sum_{i=1}^n \{Y_i(1) - \bar{Y}(1)\}\{Y_i(0) - \bar{Y}(0)\}$：$Y_i(1)$ 与 $Y_i(0)$ 之间的有限总体协方差
+  \item $\tau_i = Y_i(1) - Y_i(0)$：个体因果效应
+  \item $\tau = n^{-1}\sum_{i=1}^n \tau_i = \bar{Y}(1) - \bar{Y}(0)$：平均因果效应
+  \item $S^2(\tau) = (n-1)^{-1}\sum_{i=1}^n (\tau_i - \tau)^2$：个体因果效应的有限总体方差
+\end{itemize}
+
+\textbf{目标（Goal）}：证明
+\[
+2S(1,0) = S^2(1) + S^2(0) - S^2(\tau).
+\]
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：从 $S^2(\tau)$ 的定义出发。
+
+\[
+\begin{aligned}
+S^2(\tau) &= (n-1)^{-1}\sum_{i=1}^n (\tau_i - \tau)^2 \\
+&= (n-1)^{-1}\sum_{i=1}^n \left[(Y_i(1) - Y_i(0)) - (\bar{Y}(1) - \bar{Y}(0))\right]^2 \\
+&= (n-1)^{-1}\sum_{i=1}^n \left[(Y_i(1) - \bar{Y}(1)) - (Y_i(0) - \bar{Y}(0))\right]^2.
+\end{aligned}
+\]
+
+\textbf{第二步}：展开平方。
+
+\[
+\begin{aligned}
+S^2(\tau) &= (n-1)^{-1}\sum_{i=1}^n \Big[ (Y_i(1) - \bar{Y}(1))^2 + (Y_i(0) - \bar{Y}(0))^2 \\
+&\quad - 2(Y_i(1) - \bar{Y}(1))(Y_i(0) - \bar{Y}(0)) \Big] \\
+&= (n-1)^{-1}\sum_{i=1}^n (Y_i(1) - \bar{Y}(1))^2 + (n-1)^{-1}\sum_{i=1}^n (Y_i(0) - \bar{Y}(0))^2 \\
+&\quad - 2(n-1)^{-1}\sum_{i=1}^n (Y_i(1) - \bar{Y}(1))(Y_i(0) - \bar{Y}(0)) \\
+&= S^2(1) + S^2(0) - 2S(1,0).
+\end{aligned}
+\]
+
+\textbf{第三步}：移项得到目标恒等式。
+
+\[
+S^2(1) + S^2(0) - S^2(\tau) = 2S(1,0).
+\]
+
+\textbf{结论}：得证
+\[
+\boxed{2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)}.
+\]
+
+\textbf{直观理解}：这个恒等式揭示了潜在结果之间的相关性（$S(1,0)$）与个体因果效应变异（$S^2(\tau)$）之间的联系。当个体因果效应完全恒定（$S^2(\tau) = 0$）时，$2S(1,0) = S^2(1) + S^2(0)$，即 $Y(1)$ 和 $Y(0)$ 完全正相关（相关系数为 1）。当 $S^2(\tau) > 0$ 时，等式右侧变小，意味着 $S(1,0)$ 变小或变为负值。
+
+\textbf{在方差公式中的应用}：这个恒等式允许我们将 Neyman 方差公式写成两种等价形式：
+\[
+\text{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n} = \frac{n_0}{n_1 n}S^2(1) + \frac{n_1}{n_0 n}S^2(0) + \frac{2}{n}S(1,0).
+\]
+
 \section{差值均值统计量的方差分解}\label{sec:frt-algebra-derivation}
 
 \textbf{背景}：在 \cref{eq:frt-algebra} 中，我们声称
