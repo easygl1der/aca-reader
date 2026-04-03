@@ -39,7 +39,7 @@
 
 \[
 L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
-\tag{6.1.1}\label{eq:likelihood-function}
+\label{eq:likelihood-function}
 \]
 
 \textbf{为什么叫"似然"（Likelihood）而不是"概率"（Probability）？} 这里的关键在于：概率是关于数据的函数（已知参数，求数据的概率），而似然是关于参数的函数（已知数据，求参数的可能性）。虽然数学形式相同，但解释的角度不同。
@@ -63,7 +63,7 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 设 $\theta_0$ 是参数真值，在正则条件 (R0)-(R2) 下，
 \[
 \lim_{n \to \infty} \mathbb{P}_{\theta_0}\left[ L(\theta_0; \mathbf{X}) > L(\theta; \mathbf{X}) \right] = 1, \quad \forall \theta \neq \theta_0.
-\tag{6.1.3}\label{eq:likelihood-asymptotic}
+\label{eq:likelihood-asymptotic}
 \]
 \end theorem
 
@@ -73,7 +73,7 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 
 \[
 \frac{\partial l(\theta)}{\partial \theta} = 0.
-\tag{6.1.4}\label{eq:likelihood-equation}
+\label{eq:likelihood-equation}
 \]
 
 但要注意：\textbf{MLE 不唯一存在，且可能没有解析解}。
@@ -159,21 +159,21 @@ Rao-Cramér 下界回答了这个问题。
 
 \[
 S(X; \theta) = \frac{\partial \log f(X; \theta)}{\partial \theta}.
-\tag{6.2.1}\label{eq:score-function}
+\label{eq:score-function}
 \]
 
 得分函数的期望为零（这是正则条件的直接结果）：
 
 \[
 \mathbb{E}_\theta[S(X; \theta)] = 0.
-\tag{6.2.2}\label{eq:score-expectation-zero}
+\label{eq:score-expectation-zero}
 \]
 
 \textbf{Fisher 信息量}定义为得分函数的方差：
 
 \[
 I(\theta) = \text{var}(S(X; \theta)) = \mathbb{E}_\theta\left[ \left( \frac{\partial \log f(X; \theta)}{\partial \theta} \right)^2 \right].
-\tag{6.2.3}\label{eq:fisher-information}
+\label{eq:fisher-information}
 \]
 
 直观上理解：若 $\theta$ 的微小变化会导致密度函数较大的变化，则我们对 $\theta$ 的了解就更多，信息量就越大。
@@ -182,14 +182,14 @@ I(\theta) = \text{var}(S(X; \theta)) = \mathbb{E}_\theta\left[ \left( \frac{\par
 
 \[
 I(\theta) = -\mathbb{E}_\theta\left[ \frac{\partial^2 \log f(X; \theta)}{\partial \theta^2} \right].
-\tag{6.2.4}\label{eq:fisher-information-negative-hessian}
+\label{eq:fisher-information-negative-hessian}
 \]
 
 对于样本 $X_1, \ldots, X_n$（iid），Fisher 信息为单个样本信息的 $n$ 倍：
 
 \[
 I_n(\theta) = n I(\theta).
-\tag{6.2.5}\label{eq:fisher-information-sample}
+\label{eq:fisher-information-sample}
 \]
 
 \begin{example}[Bernoulli 分布的 Fisher 信息]\label{ex:bernoulli-fisher-info}
@@ -235,14 +235,14 @@ f_X(x;\theta) = f(x-\theta).
 
 \[
 \text{var}(Y) \geq \frac{[k'(\theta)]^2}{n I(\theta)}.
-\tag{6.2.6}\label{eq:rao-cramer-bound}
+\label{eq:rao-cramer-bound}
 \]
 
 特别地，若 $Y$ 是 $\theta$ 的无偏估计（$k(\theta) = \theta$），则
 
 \[
 \text{var}(Y) \geq \frac{1}{n I(\theta)}.
-\tag{6.2.7}\label{eq:rao-cramer-bound-unbiased}
+\label{eq:rao-cramer-bound-unbiased}
 \]
 \end theorem
 
@@ -301,7 +301,7 @@ MLE 为 $\widehat{\theta} = -n / \sum_{i=1}^n \log X_i$。
 则 $\widehat{\theta}_n$ 的\textbf{渐近效率（asymptotic efficiency）}定义为
 \[
 e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
-\tag{6.2.8}\label{eq:asymptotic-efficiency}
+\label{eq:asymptotic-efficiency}
 \]
 
 若 $e(\widehat{\theta}_n) = 1$，则称 $\widehat{\theta}_n$ 是\textbf{渐近有效的}。
@@ -314,7 +314,7 @@ e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
 
 \[
 \sqrt{n}(\widehat{\theta}_n - \theta_0) \xrightarrow{D} N\left(0, \frac{1}{I(\theta_0)}\right).
-\tag{6.2.9}\label{eq:mle-asymptotic-normal}
+\label{eq:mle-asymptotic-normal}
 \]
 \end theorem
 
@@ -335,7 +335,7 @@ e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
 则 $\widehat{\theta}_{1n}$ 相对于 $\widehat{\theta}_{2n}$ 的 ARE 定义为
 \[
 \text{ARE}(\widehat{\theta}_{1n}, \widehat{\theta}_{2n}) = \frac{\sigma_2^2}{\sigma_1^2}.
-\tag{6.2.10}\label{eq:are-definition}
+\label{eq:are-definition}
 \]
 \end{definition}
 
@@ -370,7 +370,7 @@ e(\widehat{\theta}_n) = \frac{1/I(\theta_0)}{\sigma^2_{\widehat{\theta}}}.
 
 \[
 H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
-\tag{6.3.1}\label{eq:simple-hypothesis-test}
+\label{eq:simple-hypothesis-test}
 \]
 
 直觉告诉我们：若 $H_0$ 为真，则似然函数在 $\theta_0$ 处应该接近最大值；若 $H_1$ 为真，似然函数在 $\theta_0$ 处应该明显小于在 $\widehat{\theta}$ 处。
@@ -379,7 +379,7 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 
 \[
 \Lambda = \frac{L(\theta_0)}{L(\widehat{\theta})}.
-\tag{6.3.2}\label{eq:likelihood-ratio}
+\label{eq:likelihood-ratio}
 \]
 
 显然 $\Lambda \leq 1$。若 $\Lambda$ 太小（即 $L(\theta_0)$ 远小于 $L(\widehat{\theta})$），则拒绝 $H_0$。
@@ -430,7 +430,7 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 
 \[
 -2\log\Lambda \xrightarrow{D} \chi^2(1).
-\tag{6.3.3}\label{eq:lrt-asymptotic}
+\label{eq:lrt-asymptotic}
 \]
 \end theorem
 
@@ -442,13 +442,13 @@ H_0: \theta = \theta_0 \quad \text{vs} \quad H_1: \theta \neq \theta_0.
 \item \textbf{Wald 检验}：基于 $\widehat{\theta}$ 与 $\theta_0$ 的距离
 \[
 \chi_W^2 = n I(\widehat{\theta})(\widehat{\theta} - \theta_0)^2 \xrightarrow{D} \chi^2(1).
-\tag{6.3.4}\label{eq:wald-statistic}
+\label{eq:wald-statistic}
 \]
 
 \item \textbf{Score 检验}：基于得分函数在 $\theta_0$ 处的值
 \[
 \chi_R^2 = \frac{[l'(\theta_0)]^2}{n I(\theta_0)} \xrightarrow{D} \chi^2(1).
-\tag{6.3.5}\label{eq:score-statistic}
+\label{eq:score-statistic}
 \]
 \end{enumerate}
 
@@ -502,14 +502,14 @@ Score 统计量 $\chi_R^2 = \frac{[\sum(X_i-\mu)^2 - n\theta_0]^2}{n\theta_0^2}$
 
 \[
 L(\boldsymbol{\theta}) = \prod_{i=1}^n f(x_i; \boldsymbol{\theta}), \quad l(\boldsymbol{\theta}) = \sum_{i=1}^n \log f(x_i; \boldsymbol{\theta}).
-\tag{6.4.1}\label{eq:multiparameter-likelihood}
+\label{eq:multiparameter-likelihood}
 \]
 
 MLE $\widehat{\boldsymbol{\theta}}$ 通过求解 Score 向量方程组得到：
 
 \[
 \frac{\partial l(\boldsymbol{\theta})}{\partial \boldsymbol{\theta}} = \mathbf{0}.
-\tag{6.4.2}\label{eq:score-equation-multiparameter}
+\label{eq:score-equation-multiparameter}
 \]
 
 \begin{example}[正态分布的 MLE]\label{ex:normal-mle-multiparameter}
@@ -549,7 +549,7 @@ MLE：
 
 \[
 \mathbf{I}(\boldsymbol{\theta}) = \text{Cov}\left( \nabla \log f(X; \boldsymbol{\theta}) \right),
-\tag{6.4.3}\label{eq:information-matrix}
+\label{eq:information-matrix}
 \]
 
 其中 $\nabla \log f = (\partial \log f/\partial \theta_1, \ldots, \partial \log f/\partial \theta_p)'$。
@@ -558,7 +558,7 @@ MLE：
 
 \[
 I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\partial \theta_j} \cdot \frac{\partial \log f}{\partial \theta_k} \right] = -\mathbb{E}_\theta\left[ \frac{\partial^2 \log f}{\partial \theta_j \partial \theta_k} \right].
-\tag{6.4.4}\label{eq:information-matrix-elements}
+\label{eq:information-matrix-elements}
 \]
 
 对于样本，信息矩阵是单个样本信息的 $n$ 倍：$\mathbf{I}_n(\boldsymbol{\theta}) = n\mathbf{I}(\boldsymbol{\theta})$。
@@ -576,7 +576,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 
 \[
 \mathbf{I}(\mu, \sigma^2) = \begin{pmatrix} \frac{1}{\sigma^2} & 0 \\ 0 & \frac{1}{2(\sigma^2)^2} \end{pmatrix}.
-\tag{6.4.5}\label{eq:normal-information-matrix}
+\label{eq:normal-information-matrix}
 \]
 
 注意对角线元素，这意味着 $\mu$ 和 $\sigma^2$ 的信息在正态分布下是独立的！\footnote{正态分布信息矩阵的详细计算见附录 \cref{sec:normal-information-matrix-derivation}。}
@@ -588,7 +588,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 
 \[
 \text{var}(\widehat{\theta}_j) \geq \frac{1}{n} [\mathbf{I}^{-1}(\boldsymbol{\theta})]_{jj}.
-\tag{6.4.6}\label{eq:multiparameter-rao-cramer}
+\label{eq:multiparameter-rao-cramer}
 \]
 
 特别地，当信息矩阵是对角矩阵时，每个参数的 Rao-Cramér 下界与其单参数情形相同。
@@ -606,7 +606,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 
 \[
 \sqrt{n}(\widehat{\boldsymbol{\theta}}_n - \boldsymbol{\theta}_0) \xrightarrow{D} N_p(\mathbf{0}, \mathbf{I}^{-1}(\boldsymbol{\theta}_0)).
-\tag{6.4.7}\label{eq:multiparameter-mle-asymptotic}
+\label{eq:multiparameter-mle-asymptotic}
 \]
 \end theorem
 
@@ -644,7 +644,7 @@ I_{jk}(\boldsymbol{\theta}) = \mathbb{E}_\theta\left[ \frac{\partial \log f}{\pa
 
 \[
 H_0: \boldsymbol{\theta} \in \omega \quad \text{vs} \quad H_1: \boldsymbol{\theta} \in \Omega \cap \omega^c.
-\tag{6.5.1}\label{eq:multiparameter-hypothesis}
+\label{eq:multiparameter-hypothesis}
 \]
 
 例如，对于 $N(\mu, \sigma^2)$，检验 $H_0: \mu = \mu_0$ 相当于检验约束 $\mu = \mu_0$ 下的子空间。
@@ -653,7 +653,7 @@ H_0: \boldsymbol{\theta} \in \omega \quad \text{vs} \quad H_1: \boldsymbol{\thet
 
 \[
 \Lambda = \frac{\max_{\boldsymbol{\theta} \in \omega} L(\boldsymbol{\theta})}{\max_{\boldsymbol{\theta} \in \Omega} L(\boldsymbol{\theta})}.
-\tag{6.5.2}\label{eq:multiparameter-lrt}
+\label{eq:multiparameter-lrt}
 \]
 
 定理 6.5.1 给出了其渐近分布。
@@ -663,7 +663,7 @@ H_0: \boldsymbol{\theta} \in \omega \quad \text{vs} \quad H_1: \boldsymbol{\thet
 
 \[
 -2\log\Lambda \xrightarrow{D} \chi^2(q).
-\tag{6.5.3}\label{eq:multiparameter-lrt-asymptotic}
+\label{eq:multiparameter-lrt-asymptotic}
 \]
 \end theorem
 
@@ -747,13 +747,13 @@ EM 算法通过引入"缺失数据"（可以是真正的缺失值，也可以是
 \item \textbf{E 步（Expectation）}：计算完整数据对数似然在当前估计 $\theta^{(m)}$ 下的条件期望
 \[
 Q(\theta|\theta^{(m)}, \mathbf{x}) = \mathbb{E}_{\theta^{(m)}}\left[ \log L^c(\theta|\mathbf{x}, \mathbf{Z}) \mid \theta^{(m)}, \mathbf{x} \right].
-\tag{6.6.1}\label{eq:em-e-step}
+\label{eq:em-e-step}
 \]
 
 \item \textbf{M 步（Maximization）}：找到使 $Q$ 最大化的 $\theta$
 \[
 \theta^{(m+1)} = \arg\max_{\theta} Q(\theta|\theta^{(m)}, \mathbf{x}).
-\tag{6.6.2}\label{eq:em-m-step}
+\label{eq:em-m-step}
 \]
 \end{enumerate}
 
@@ -767,7 +767,7 @@ Q(\theta|\theta^{(m)}, \mathbf{x}) = \mathbb{E}_{\theta^{(m)}}\left[ \log L^c(\t
 设 $\theta^{(m+1)}$ 由 E 步和 M 步得到。则
 \[
 L(\theta^{(m+1)}|\mathbf{x}) \geq L(\theta^{(m)}|\mathbf{x}).
-\tag{6.6.3}\label{eq:em-monotonicity}
+\label{eq:em-monotonicity}
 \]
 \end theorem
 
@@ -798,7 +798,7 @@ E 步：需要计算 $\mathbb{E}[Z_j - \theta | Z_j > a, \theta^{(m)}]$。
 因此
 \[
 \theta^{(m+1)} = \frac{n_1\bar{x} + n_2\theta^{(m)} + n_2\frac{\phi(a-\theta^{(m)})}{1-\Phi(a-\theta^{(m)})}}{n_1+n_2}.
-\tag{6.6.4}\label{eq:em-normal-missing-update}
+\label{eq:em-normal-missing-update}
 \]
 
 \textbf{解释}：新估计是样本均值、当前估计和截尾部分期望的加权平均。\footnote{正态截尾数据的 EM 算法详细推导见附录 \cref{sec:em-monotonicity-proof}。}
@@ -816,13 +816,13 @@ X_i \sim (1-\epsilon) N(\mu_1, \sigma_1^2) + \epsilon N(\mu_2, \sigma_2^2),
 完整数据对数似然：
 \[
 \log L^c = \sum_{i=1}^n \left[ (1-w_i)\log f_1(x_i) + w_i\log f_2(x_i) \right].
-\tag{6.6.5}\label{eq:mixture-complete-loglikelihood}
+\label{eq:mixture-complete-loglikelihood}
 \]
 
 E 步：计算 $w_i$ 的后验概率
 \[
 \gamma_i^{(m)} = \mathbb{P}(W_i=1|\theta^{(m)}, x_i) = \frac{\epsilon^{(m)} f_2(x_i|\theta^{(m)})}{(1-\epsilon^{(m)}) f_1(x_i|\theta^{(m)}) + \epsilon^{(m)} f_2(x_i|\theta^{(m)})}.
-\tag{6.6.6}\label{eq:mixture-e-step}
+\label{eq:mixture-e-step}
 \]
 
 M 步：更新参数
@@ -836,7 +836,7 @@ M 步：更新参数
 \]
 \[
 \widehat{\epsilon} = \frac{1}{n}\sum_{i=1}^n \gamma_i.
-\tag{6.6.7}\label{eq:mixture-m-step}
+\label{eq:mixture-m-step}
 \]
 
 \textbf{直观解释}：E 步根据当前参数估计每个观测来自各成分的概率；M 步根据这些概率重新估计各成分的参数。这等价于"软聚类"然后重新估计。
@@ -879,7 +879,7 @@ EM 算法的收敛性由以下事实保证：
 
 \[
 \theta^{(m+1)} = \frac{x_1\theta^{(m)} + 2x_4 + x_4\theta^{(m)}}{n\theta^{(m)} + 2(x_2 + x_3 + x_4)}.
-\tag{6.6.8}\label{eq:genetics-em-update}
+\label{eq:genetics-em-update}
 \]
 
 该公式收敛到重组率 $\theta$ 的 MLE。

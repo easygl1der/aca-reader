@@ -90,7 +90,7 @@ I_j(X_i) =
 则 $p_j$ 的无偏估计为
 \[
 \widehat{p}(a_j) = \frac{1}{n}\sum_{i=1}^n I_j(X_i),
-\tag{4.1.10}\label{eq:frequency-estimator}
+\label{eq:frequency-estimator}
 \]
 即样本中取值为 $a_j$ 的频率。\footnote{该估计的方差分析见习题 \ref{exr:4.1.6}。}
 
@@ -101,7 +101,7 @@ I_j(X_i) =
 设区间划分 $a_0 < a_1 < \cdots < a_k$，区间宽度 $h_j = a_j - a_{j-1}$（等宽时 $h$ 为公共宽度）。则直方图在区间 $(a_{j-1}, a_j]$ 上的高度为
 \[
 \widehat{f}_j = \frac{\#\{x_i \in (a_{j-1}, a_j]\}}{n h_j},
-\tag{4.1.11}\label{eq:histogram-estimator}
+\label{eq:histogram-estimator}
 \]
 其中 $\#\{\cdot\}$ 表示计数。
 
@@ -109,7 +109,7 @@ I_j(X_i) =
 \[
 \widehat{f}(x) = \frac{1}{2nh}\sum_{i=1}^n I\!\left(\frac{x - X_i}{h} \in [-1,1]\right)
 = \frac{\#\{x-h < X_i < x+h\}}{2nh},
-\tag{4.1.12}\label{eq:kernel-density}
+\label{eq:kernel-density}
 \]
 其中 $I(\cdot)$ 是示性函数，$h$ 称为带宽（bandwidth）。
 
@@ -150,11 +150,11 @@ L(\theta) = L(\theta; x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i; \theta)
 最大似然估计量（MLE）：
 \[
 \widehat{\theta} = \underset{\theta}{\operatorname{argmax}} \, L(\theta).
-\tag{4.2.1}\label{eq:mle-definition}\]
+\label{eq:mle-definition}\]
 
 在实际计算中，通常使用对数似然 $l(\theta) = \log L(\theta)$，因为 $\log$ 是严格递增函数，最大化 $l(\theta)$ 等价于最大化 $L(\theta)$。在正则条件下，$\widehat{\theta}$ 满足
 \[
-\frac{\partial l(\theta)}{\partial \theta} = 0. \tag{4.2.2}\label{eq:mle-score-equation}\]
+\frac{\partial l(\theta)}{\partial \theta} = 0. \label{eq:mle-score-equation}\]
 
 这个方程称为\textbf{似然方程（score equation）}。\footnote{似然方程 $\partial l(\theta)/\partial\theta = 0$ 的解即为 MLE。通用推导框架见附录 \cref{sec:derivation-mle}。}
 
@@ -186,13 +186,13 @@ L(\theta) = \theta^{\sum x_i}(1-\theta)^{n-\sum x_i}.
 对数似然为
 \[
 l(\mu, \sigma) = -\frac{n}{2}\log 2\pi - n\log\sigma - \frac{1}{2}\sum_{i=1}^n\left(\frac{x_i - \mu}{\sigma}\right)^2.
-\tag{4.2.3}\label{eq:normal-log-likelihood}\]
+\label{eq:normal-log-likelihood}\]
 
 对 $\mu$ 和 $\sigma$ 分别求偏导并令为零，解得
 \[
-\widehat{\mu} = \bar{X}, \tag{4.2.4}\label{eq:mle-normal-mu}\]
+\widehat{\mu} = \bar{X}, \label{eq:mle-normal-mu}\]
 \[
-\widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2. \tag{4.2.5}\label{eq:mle-normal-sigma}\]
+\widehat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2. \label{eq:mle-normal-sigma}\]
 
 \textbf{一个重要发现}：$\widehat{\mu} = \bar{X}$ 是无偏的（$\mathbb{E}(\bar{X}) = \mu$），但 $\widehat{\sigma}^2$ 是\textbf{有偏}的——
 \[
@@ -227,7 +227,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 已知。则 $\mu$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}},\quad \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right],
-\tag{4.3.1}\label{eq:ci-normal-known}\]
+\label{eq:ci-normal-known}\]
 其中 $z_{\alpha/2}$ 满足 $\Phi(z_{\alpha/2}) = 1 - \alpha/2$。
 
 \textbf{直觉理解}：区间宽度 $\propto \sigma/\sqrt{n}$——样本量越大，估计越精确。这与大数定律的直觉一致：更多信息带来更精确的估计。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-known}。}
@@ -237,11 +237,11 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$，$\sigma^2$ 未知。用 $S^2$ 替代 $\sigma^2$，则
 \[
 \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t_{n-1},
-\tag{4.3.2}\label{eq:t-statistic}\]
+\label{eq:t-statistic}\]
 故 $\mu$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \bar{X} - t_{\alpha/2,n-1}\frac{S}{\sqrt{n}},\quad \bar{X} + t_{\alpha/2,n-1}\frac{S}{\sqrt{n}} \right].
-\tag{4.3.3}\label{eq:ci-normal-unknown}\]
+\label{eq:ci-normal-unknown}\]
 
 \textbf{用 $t$ 分布替代正态分布}：当方差未知时，我们用样本标准差 $S$ 替代总体标准差 $\sigma$。这引入了额外的随机性，导致分布从正态变为 $t$ 分布。$t$ 分布比正态分布更"重尾"，反映了未知方差带来的不确定性。\footnote{详细推导见附录 \cref{sec:derivation-normal-ci-unknown}。}
 \end{example}
@@ -250,7 +250,7 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 设 $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$。则 $\sigma^2$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2,n-1}},\quad \frac{(n-1)S^2}{\chi^2_{1-\alpha/2,n-1}} \right].
-\tag{4.3.4}\label{eq:ci-variance}\]
+\label{eq:ci-variance}\]
 其中 $\chi^2_{p, k}$ 是 $\chi^2(k)$ 分布的上侧 $p$ 分位数。\footnote{详细推导见附录 \cref{sec:derivation-variance-ci}。}
 \end{theorem}
 
@@ -282,13 +282,13 @@ MLE 的吸引力来自其渐近理论：在温和条件下，MLE 是渐近正态
 若总体方差未知，用样本方差 $S_1^2$、$S_2^2$ 替代，则
 \[
 Z = \frac{\widehat{\Delta} - \Delta}{\sqrt{S_1^2/n_1 + S_2^2/n_2}} \approx N(0,1).
-\tag{4.2.4}\label{eq:two-sample-z-statistic}
+\label{eq:two-sample-z-statistic}
 \]
 
 因此 $\Delta$ 的近似 $100(1-\alpha)\%$ 置信区间为
 \[
 \left((\bar{x}-\bar{y}) \pm z_{\alpha/2}\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}\right).
-\tag{4.2.5}\label{eq:two-sample-ci-large}
+\label{eq:two-sample-ci-large}
 \]
 
 \textbf{情形二：正态等方差（精确区间）}
@@ -296,19 +296,19 @@ Z = \frac{\widehat{\Delta} - \Delta}{\sqrt{S_1^2/n_1 + S_2^2/n_2}} \approx N(0,1
 当两个总体均为正态分布且方差相等（$\sigma_1^2 = \sigma_2^2 = \sigma^2$）时，可以利用合并方差估计：
 \[
 S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2},
-\tag{4.2.6}\label{eq:pooled-variance}
+\label{eq:pooled-variance}
 \]
 其中 $S_p^2$ 称为\textbf{合并样本方差（pooled sample variance）}。
 
 此时枢轴量
 \[
 T = \frac{\widehat{\Delta} - \Delta}{S_p\sqrt{1/n_1 + 1/n_2}} \sim t_{n_1+n_2-2}
-\tag{4.2.7}\label{eq:two-sample-t-statistic}
+\label{eq:two-sample-t-statistic}
 \]
 服从自由度为 $n_1+n_2-2$ 的 $t$ 分布。故 $\Delta$ 的精确 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[(\bar{x}-\bar{y}) \pm t_{\alpha/2,\,n_1+n_2-2}\,S_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}\right].
-\tag{4.2.8}\label{eq:two-sample-ci-pooled}
+\label{eq:two-sample-ci-pooled}
 \]
 
 \textbf{为什么要分情况讨论？} 大样本方法不要求正态性，但依赖中心极限定理；等方差小样本方法给出精确区间，但要求更强的假设。
@@ -353,7 +353,7 @@ $S_p \approx 2.21$。
 \[
 \mathrm{df} \approx \frac{\left(S_1^2/n_1 + S_2^2/n_2\right)^2}
 {S_1^4/[n_1^2(n_1-1)] + S_2^4/[n_2^2(n_2-1)]}.
-\tag{4.2.9}\label{eq:welch-satterthwaite}
+\label{eq:welch-satterthwaite}
 \]
 
 \subsection{4.2.2 两总体比例差的置信区间}\label{sec:4.2.2}
@@ -379,7 +379,7 @@ $S_p \approx 2.21$。
 \[
 \left(\widehat{p}_1 - \widehat{p}_2\right) \pm z_{\alpha/2}
 \sqrt{\frac{\widehat{p}_1(1-\widehat{p}_1)}{n_1} + \frac{\widehat{p}_2(1-\widehat{p}_2)}{n_2}}.
-\tag{4.2.10}\label{eq:two-proportion-ci}
+\label{eq:two-proportion-ci}
 \]
 
 \textbf{为什么比例差的置信区间很重要？} 在医学试验、调查研究中，我们经常需要回答"两组之间的差异是否显著"，比例差及其置信区间提供了回答这个问题的框架。
@@ -441,7 +441,7 @@ g(y_1, y_2, \ldots, y_n) =
 n! \, f(y_1) f(y_2) \cdots f(y_n) & a < y_1 < y_2 < \cdots < y_n < b \\
 0 & \text{otherwise}
 \end{cases}
-\tag{4.3.1}\label{eq:order-statistics-joint}
+\label{eq:order-statistics-joint}
 \]
 \end{theorem}
 
@@ -457,7 +457,7 @@ g_k(y_k) =
 \frac{n!}{(k-1)!\,(n-k)!} [F(y_k)]^{k-1} [1-F(y_k)]^{n-k} f(y_k) & a < y_k < b \\
 0 & \text{otherwise}
 \end{cases}
-\tag{4.3.2}\label{eq:single-order-statistic}
+\label{eq:single-order-statistic}
 \]
 
 其中 $F(x)$ 是母体分布函数。
@@ -516,7 +516,7 @@ $H_0$ 为假 & 第二类错误（概率 $\beta$） & 正确（功效 $1-\beta$�
 检验统计量：
 \[
 Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
-\tag{4.4.1}\label{eq:z-test-statistic}\]
+\label{eq:z-test-statistic}\]
 
 在 $\alpha$ 水平下，当 $Z > z_\alpha$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
 \end{example}
@@ -527,7 +527,7 @@ Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}.
 检验统计量：
 \[
 T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
-\tag{4.4.2}\label{eq:t-test-statistic}\]
+\label{eq:t-test-statistic}\]
 
 在 $\alpha$ 水平下，当 $|T| > t_{\alpha/2,n-1}$ 时拒绝 $H_0$。\footnote{详细推导见附录 \cref{sec:derivation-hypothesis-testing}。}
 \end{example}
@@ -551,7 +551,7 @@ T = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}.
 \textbf{检验统计量}：
 \[
 \chi^2 = \sum_{i=1}^k \frac{(O_i - E_i)^2}{E_i}.
-\tag{4.5.1}\label{eq:chi-square-goodness}\]
+\label{eq:chi-square-goodness}\]
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2(k-1)$（大样本近似）。拒绝 $H_0$ 当 $\chi^2 > \chi^2_{\alpha, k-1}$。
 
@@ -649,12 +649,12 @@ E_{\text{aa}} = 300 \times \widehat{q}^2 = 300 \times 0.583^2 \approx 102.1.
 在独立性假设下，行合计与列合计的乘积除以总数给出期望频数：
 \[
 E_{ij} = \frac{O_{i\cdot} O_{\cdot j}}{n}.
-\tag{4.5.2}\label{eq:expected-frequency}\]
+\label{eq:expected-frequency}\]
 
 \textbf{检验统计量}：
 \[
 \chi^2 = \sum_{i=1}^r\sum_{j=1}^c \frac{(O_{ij} - E_{ij})^2}{E_{ij}}.
-\tag{4.5.3}\label{eq:chi-square-independence}\]
+\label{eq:chi-square-independence}\]
 
 在 $H_0$ 下，$\chi^2 \approx \chi^2((r-1)(c-1))$。
 
@@ -755,7 +755,7 @@ E_{22} = \frac{60 \times 45}{120} = 22.5.
 大数定律保证了模拟的收敛性：
 \[
 \frac{1}{n}\sum_{i=1}^n g(X_i) \xrightarrow{P} \mathbb{E}[g(X)].
-\tag{4.6.1}\label{eq:lln-monte-carlo}\]
+\label{eq:lln-monte-carlo}\]
 
 这意味着：只要模拟次数足够多，样本均值可以任意接近真实期望。
 
@@ -819,7 +819,7 @@ Bootstrap 的解决思路既简单又巧妙：\textbf{用重抽样近似抽样�
 \textbf{percentile bootstrap 置信区间}：$\theta$ 的 $100(1-\alpha)\%$ 置信区间为
 \[
 \left[ T_{(\alpha B)}^*,\quad T_{((1-\alpha)B)}^* \right].
-\tag{4.7.1}\label{eq:bootstrap-ci}\]
+\label{eq:bootstrap-ci}\]
 
 \textbf{直觉}：如果样本是总体的良好代表，那么从样本有放回抽样就是在模拟"从总体中抽取样本"的过程。$T^*$ 的分布反映了 $T$ 的抽样分布的近似。\footnote{Bootstrap 的理论基础及更多细节见附录 \cref{sec:derivation-bootstrap}。}
 
