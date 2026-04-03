@@ -1295,3 +1295,32 @@ sec:appendix-{topic}-{name}
 
 **注意**: 使用 `sed -i '' 'Ns/pattern/replacement/'` 按行号精确替换，避免全局替换错误
 
+---
+
+## L719: 推论/定理/引理/定义必须放在对应数学环境中
+
+**日期**: 2026-04-03
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+在添加 Bootstrap 方法内容时，将关键数学结论（如"接受概率为 $1/M$"、"p 值公式"等）仅作为行内文本，没有放入对应的数学环境（definition、proposition、equation 等）。
+
+**正确做法**:
+关键数学结论必须放入对应的 LaTeX 环境中：
+1. **算法/方法的正式陈述** → `\begin{algorithm}...\end{algorithm}` 或 `\begin{procedure}...\end{procedure}`
+2. **关键概率/公式** → `\begin{equation}...\end{equation}` 或 `\begin{align}...\end{align}`
+3. **正式的定义** → `\begin{Definition}...\end{Definition}`
+4. **正式的命题/引理** → `\begin{Proposition}...\end{Proposition}` 或 `\begin{Lemma}...\end{Lemma}`
+
+**需要修复的位置（chapter4.tex）**:
+| 位置 | 问题 | 修复方式 |
+|------|------|---------|
+| 接受概率 $1/M$（854行） | 行内文本 | 改为 equation 环境 |
+| Bootstrap CI 公式 $\left[T_{(\alpha B)}^*,\ T_{((1-\alpha)B)}^*\right]$ | 行内文本 | 改为 equation 环境 |
+| p 值公式 $\hat{p} = \frac{\#\{...\}}{B}$ | 行内文本 | 改为 equation 环境 |
+
+**防止措施**:
+- 写完数学结论后，检查是否需要放入专门的数学环境
+- 关键公式（特别是有编号需要的）必须用 equation/align 环境
+- 算法步骤如果需要正式化，使用 algorithm 环境
+
