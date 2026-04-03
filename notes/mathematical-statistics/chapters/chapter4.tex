@@ -73,6 +73,50 @@ f(x_1, \ldots, x_n; \theta) = \prod_{i=1}^n f(x_i; \theta),
 
 点估计提供一个单一数值（记作 $\widehat{\theta}$）作为未知参数 $\theta$ 的估计。但这里立刻产生一个问题：如何找到"好"的估计量？
 
+\subsection{4.1.2 直方图估计与密度估计}\label{sec:4.1.2}
+
+在参数估计中，我们假设数据来自某个已知形式的分布（如正态、指数），只是参数未知。但如果我们\textbf{不知道数据的分布形式}呢？这就需要非参数方法。
+
+\textbf{离散分布的频率估计}：
+
+设总体是离散的，取值于 $\{a_1, a_2, \ldots\}$。则 $p_j = \mathbb{P}(X = a_j)$。从总体中抽取样本 $X_1, \ldots, X_n$，定义示性函数
+\[
+I_j(X_i) =
+\begin{cases}
+1 & X_i = a_j \\
+0 & \text{otherwise}
+\end{cases}
+\]
+则 $p_j$ 的无偏估计为
+\[
+\widehat{p}(a_j) = \frac{1}{n}\sum_{i=1}^n I_j(X_i),
+\tag{4.1.10}\label{eq:frequency-estimator}
+\]
+即样本中取值为 $a_j$ 的频率。\footnote{该估计的方差分析见习题 \ref{exr:4.1.6}。}
+
+\textbf{连续分布的直方图估计}：
+
+对于连续型数据，直方图是最基本非参数密度估计方法。将实数轴划分为若干个相邻的区间（bin），统计每个区间内观测值的个数。
+
+设区间划分 $a_0 < a_1 < \cdots < a_k$，区间宽度 $h_j = a_j - a_{j-1}$（等宽时 $h$ 为公共宽度）。则直方图在区间 $(a_{j-1}, a_j]$ 上的高度为
+\[
+\widehat{f}_j = \frac{\#\{x_i \in (a_{j-1}, a_j]\}}{n h_j},
+\tag{4.1.11}\label{eq:histogram-estimator}
+\]
+其中 $\#\{\cdot\}$ 表示计数。
+
+直方图的\textbf{核密度估计}推广：令区间宽度趋于无穷小，得到核密度估计
+\[
+\widehat{f}(x) = \frac{1}{2nh}\sum_{i=1}^n I\!\left(\frac{x - X_i}{h} \in [-1,1]\right)
+= \frac{\#\{x-h < X_i < x+h\}}{2nh},
+\tag{4.1.12}\label{eq:kernel-density}
+\]
+其中 $I(\cdot)$ 是示性函数，$h$ 称为带宽（bandwidth）。
+
+\textbf{带宽的选择}：$h$ 太大，直方图过于平滑；$h$ 太小，直方图过于粗糙。实践中使用交叉验证（cross-validation）或拇指法则（rule of thumb）选择 $h$。\footnote{核密度估计的偏差-方差权衡分析见习题 \ref{exr:4.1.9}。}
+
+直方图的优点是直观、计算简单；缺点是依赖于区间起点的选择（不平滑）。核密度估计解决了不平滑的问题，是更现代的方法。
+
 \subsection{无偏性}
 
 \textbf{我们希望估计量具有什么性质？} 最基本的要求是无偏性——如果反复抽样，估计量的平均值应该等于真实参数值。
