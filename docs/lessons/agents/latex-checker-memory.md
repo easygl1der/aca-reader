@@ -18,7 +18,7 @@
 | L907 | 表格统一用三线表格式，禁止 resizebox | 1 |
 | L908 | 中文引号规范检查 | 1 |
 | L909 | 公式引用必须用 \cref 而非 \tag/式(★) | 1 |
-| L912 | solution vs proof 环境选择规则 | 1 |
+| L912 | solution vs proof 环境选择规则 | 2 |
 
 ---
 
