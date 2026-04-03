@@ -725,6 +725,37 @@ E_{22} = \frac{60 \times 45}{120} = 22.5.
 
 接受概率为 $1/M$。\footnote{接受-拒绝算法的推导及收敛性证明见附录 \cref{sec:derivation-monte-carlo}。}
 
+\textbf{接受率的意义}：接受率 $1/M$ 是算法的效率指标。若 $M$ 很大，接受率很低，算法效率差。寻找紧的 $M$ 值（即尽可能小的上界）是算法实现的关键。
+
+\begin{example}[用 Cauchy 生成标准正态随机变量]\label{ex:accept-reject-cauchy}
+设目标分布 $f(x) = \phi(x) = (2\pi)^{-1/2}\exp\{-x^2/2\}$（标准正态），提议分布 $g(x) = \pi^{-1}(1+x^2)^{-1}$（标准 Cauchy）。由于
+\[
+\sup_x \frac{f(x)}{g(x)} = \sup_x \frac{(2\pi)^{-1/2}\exp\{-x^2/2\}}{\pi^{-1}(1+x^2)^{-1}}
+= \sqrt{\frac{\pi}{2}}\,\sup_x (1+x^2)e^{-x^2/2} \approx 1.52,
+\]
+取 $M \approx 1.52$。
+
+\textbf{R 算法步骤}：
+\begin{verbatim}
+M <- sqrt(pi/2) * exp(0.5)
+N <- 10000
+accepted <- 0
+for (i in 1:(N*M)) {
+  Y <- rcauchy(1)       # 生成 Cauchy
+  U <- runif(1)         # 生成 Uniform
+  if (U < dnorm(Y) / (M * dcauchy(Y))) {
+    accepted <- c(accepted, Y)
+    if (length(accepted) >= N) break
+  }
+}
+接受率 = N / length(accepted[-1])  # 约 65.77%
+\end{verbatim}
+
+\textbf{结果}：接受率约为 $1/1.52 \approx 65.77\%$，即每生成约 1.52 个 Cauchy 样本得到一个正态样本。生成的样本通过 Kolmogorov-Smirnov 检验（$p > 0.3$），确认确实来自标准正态分布。
+
+\textbf{为什么选择 Cauchy 作为提议分布？} Cauchy 分布与正态分布形态相似（都是钟形、对称），但尾部更重。这使得比值 $f(x)/g(x)$ 在整个实数轴上有界且接近常数，从而获得较高的接受率。\footnote{Cauchy 提议分布的选取技巧及 $M$ 的优化方法见附录 \cref{sec:derivation-accept-reject}。}
+\end{example}
+
 \section{4.7 Bootstrap Methods}\label{sec:4.7}
 
 \textbf{核心困境}：估计量的抽样分布是统计推断的基础，但这个分布在大多数情况下难以解析计算。例如，样本中位数 $\widehat{m}$ 的分布无法用初等函数表达。
