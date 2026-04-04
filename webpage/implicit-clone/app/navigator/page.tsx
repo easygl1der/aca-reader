@@ -91,24 +91,38 @@ export default function NavigatorPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
-    setMessages((prev) => [...prev, { type: "user", text: input }]);
-    const userQuestion = input;
+    const userMessage = input;
+    const conversationMessages = [
+      ...messages.map((m) => ({ role: m.type === "user" ? "user" : "assistant", content: m.text })),
+      { role: "user", content: userMessage },
+    ];
+
+    setMessages((prev) => [...prev, { type: "user", text: userMessage }]);
     setInput("");
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversationMessages }),
+      });
+
+      const data = await response.json();
+      const reply = data.reply || "Sorry, I couldn't get a response.";
+
+      setMessages((prev) => [...prev, { type: "ai", text: reply }]);
+    } catch (error) {
       setMessages((prev) => [
         ...prev,
-        {
-          type: "ai",
-          text: `Based on the knowledge graph, here's what I found about "${userQuestion}"...\n\nThe AGI node connects to several key areas including Alignment (focused on ensuring AI systems behave as intended) and Safety (preventing unintended harm). The relationships shown are sourced from leading research.`,
-        },
+        { type: "ai", text: "Error: Failed to connect to AI service." },
       ]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (

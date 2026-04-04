@@ -238,10 +238,22 @@ def append_to_obsidian(results: list):
 def generate_script_for_folder(folder: Path) -> str:
     """调用 generate_script.py 为文件夹生成书面稿"""
     print(f"    📝 生成书面稿: {folder.name}")
+
+    # 先删除旧的 script.txt 确保持续更新
+    old_script = folder / "script.txt"
+    if old_script.exists():
+        old_script.unlink()
+
     result = subprocess.run(
         ["python3", str(GENERATE_SCRIPT), str(folder)],
         capture_output=True, text=True, timeout=600  # 10分钟超时，视频转录较慢
     )
+
+    # 打印 subprocess 的输出（包含 MiniMax 处理过程）
+    if result.stdout:
+        for line in result.stdout.strip().split('\n'):
+            if line.strip():
+                print(f"    {line}")
     if result.returncode != 0:
         print(f"    ⚠️ 书面稿生成失败: {result.stderr[:100] if result.stderr else 'unknown'}")
         return ""

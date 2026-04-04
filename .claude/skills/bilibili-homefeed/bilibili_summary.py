@@ -34,30 +34,191 @@ TRANSCRIPT_FILE = OBSIDIAN_DIR / "bilibili_transcripts.md"
 OBSIDIAN_DIR.mkdir(parents=True, exist_ok=True)
 BILIBILI_DIR.mkdir(parents=True, exist_ok=True)
 
-# 提示词
-PROMPT_MINIMAX = """你是一个专业的视频内容分析专家。根据提供的字幕文本，生成详细的结构化总结。
+# 提示词 - 智能类型判断 + 按类型深度总结
+PROMPT_ANALYSIS = """你是一个B站视频内容分析助手。请根据以下输入，判断视频类型并执行对应的完整总结。
 
-输出格式要求：
-1. 视频信息：一句话总结
-2. 核心要点：干货盘点 + 对比分析
-3. 主题提炼
-4. 时间线摘要
+===【第一步：判断视频类型】===
+请先判断属于以下哪种主类型：
+- A. 知识科普类（财经/历史/科学/社会解读，10分钟以上）
+- B. 技术教程类（编程/设计/工具使用，常为多P长视频）
+- C. 观点评论类（时事/影评/测评，表达个人立场）
+- D. Vlog/生活记录类（旅行/日常/美食探店）
+- E. 技能干货类（健身/学习方法/职场，短小精悍）
+- F. 番剧/纪录片类（剧情向，按集播放）
+- G. 娱乐/鬼畜/搞笑类（纯娱乐向）
 
-语言：中文
-格式：Markdown"""
+===【第二步：提取基础信息（所有类型通用）】===
 
-PROMPT_GEMINI = """你是一个专业的视频内容分析专家。根据提供的视频内容，生成详细的结构化总结。
+**1. 核心速览**
+- 视频类型：
+- 核心主题（一句话）：
+- UP主背景/定位：
+- 视频时长 & 信息密度：（轻松/中等/高密度）
 
-输出格式要求：
-1. 视频信息：一句话总结
-2. 核心要点：干货盘点 + 对比分析
-3. 主题提炼
-4. 时间线摘要
+**2. 数据表现**
+- 播放量 / 点赞率（点赞÷播放）/ 收藏率（收藏÷播放）
+- 高收藏率（>2%）说明内容有较高"留存价值"，请特别标注
 
-语言：中文
-格式：Markdown
+===【第三步：按类型执行深度总结】===
 
-注意：本视频没有字幕，以上内容是通过分析视频画面得出的总结。"""
+▶ 如果是 A 类（知识科普）：
+1. 【核心论点】视频想回答的核心问题是什么？结论是什么？
+2. 【完整知识框架】按视频叙述逻辑逐层展开所有论点和论据，不遗漏关键数据、案例，时间节点
+3. 【关键数据/案例】单独列出视频中引用的重要数字、历史事件、人物案例
+4. 【UP主立场/倾向】是否有明显的价值观立场或情感倾向？
+5. 【评论区补充与争议】
+   - 观众认同的核心观点
+   - 有价值的补充信息或不同视角
+   - 争议点或被质疑的地方
+6. 【可延伸阅读/关联话题】评论区或简介提到的相关内容推荐
+
+▶ 如果是 B 类（技术教程 / 多P长视频）：
+1. 【课程定位】面向什么水平的学习者？需要什么前置知识？
+2. 【完整目录梳理】按分P或时间轴章节，逐节列出每部分的核心内容和关键知识点
+3. 【核心技术要点】提炼全程最重要的方法论、命令、配置、原理
+4. 【重要注意事项 & 常见坑】教程中特别强调的错误做法或易踩的坑
+5. 【学完能做什么】完成学习后可以实现的具体能力或项目
+6. 【评论区精华】
+   - 观众反馈的补充技巧或更优方案
+   - 提问高频的难点（说明这些地方需要重点注意）
+   - 版本更新/过时内容提示
+
+▶ 如果是 C 类（观点评论 / 时事）：
+1. 【事件/话题背景】用2-3句话交代来龙去脉
+2. 【UP主核心观点】完整还原其论证逻辑：前提→论据→结论
+3. 【支持论据清单】所有用于支撑观点的事实，数据、类比
+4. 【反驳/局限性】视频中是否自我反驳或留有盲点？
+5. 【评论区观点图谱】
+   - 支持方主要理由
+   - 反对方主要理由
+   - 补充信息（评论中提到视频未涉及的重要内容）
+6. 【综合判断】结合正文+评论，这个观点的可信度和完整度如何？
+
+▶ 如果是 D 类（Vlog / 生活记录）：
+1. 【内容概述】去了哪/做了什么/经历了什么
+2. 【有参考价值的具体信息】地点名称、店铺、交通方式、费用，时间安排等
+3. 【UP主的感受与建议】主观评价和推荐/避坑建议
+4. 【弹幕/评论中的实用补充】其他人提供的补充信息或纠正
+
+▶ 如果是 E 类（技能干货 / 方法论）：
+1. 【核心方法】完整列出所有步骤/技巧/原则，不遗漏
+2. 【背后的底层逻辑】为什么这个方法有效？原理是什么？
+3. 【适用场景与限制】什么情况下适用？有哪些前提条件？
+4. 【评论区实践反馈】有人亲测有效吗？有改进建议吗？
+
+▶ 如果是 F 类（番剧/纪录片）：
+1. 【本集/本视频内容梗概】
+2. 【关键剧情点 / 信息点】
+3. 【评论区解析与讨论亮点】
+
+===【第四步：弹幕信号分析（适用于所有类型）】===
+弹幕密度高的时间节点往往是视频的精华/爆点/争议点，请提取：
+- 弹幕爆发的时间段 → 对应视频内容是什么
+- 高频重复出现的词或句子 → 说明什么
+
+===【第五步：综合评价与行动建议】===
+1. 【值得关注的核心收获】：看完这个视频最重要的1-3个takeaway
+2. 【局限性提示】：视频内容有哪些可能的偏差、过时信息或遗漏视角
+3. 【适合谁看】：这个视频最值得推荐给什么类型的观众
+4. 【下一步行动】：看完后可以做什么、看什么、搜什么
+
+===【输出格式要求】===
+- 使用清晰的层级标题
+- 关键数据、结论加粗
+- 列表项简洁，保留专业术语
+- 最后附：【标签】{{原始标签}} | 【合集】{{合集名（如有）}}
+
+===【输入内容】===
+视频标题：{title}
+UP主：{author}
+BV号：{bvid}
+
+字幕/口播文本：
+{transcript}
+
+请按照上述格式输出。"""
+
+PROMPT_GEMINI = """你是一个B站视频内容分析助手。请根据以下输入，判断视频类型并执行对应的完整总结。
+
+[注意：本视频没有字幕，以下内容是通过分析视频画面得出的总结]
+
+===【第一步：判断视频类型】===
+请先判断属于以下哪种主类型：
+- A. 知识科普类（财经/历史/科学/社会解读，10分钟以上）
+- B. 技术教程类（编程/设计/工具使用，常为多P长视频）
+- C. 观点评论类（时事/影评/测评，表达个人立场）
+- D. Vlog/生活记录类（旅行/日常/美食探店）
+- E. 技能干货类（健身/学习方法/职场，短小精悍）
+- F. 番剧/纪录片类（剧情向，按集播放）
+- G. 娱乐/鬼畜/搞笑类（纯娱乐向）
+
+===【第二步：提取基础信息（所有类型通用）】===
+
+**1. 核心速览**
+- 视频类型：
+- 核心主题（一句话）：
+- UP主背景/定位：
+- 视频时长 & 信息密度：（轻松/中等/高密度）
+
+**2. 数据表现**
+- 根据画面内容推断视频定位和目标受众
+
+===【第三步：按类型执行深度总结】===
+
+▶ 如果是 A 类（知识科普）：
+1. 【核心论点】视频想回答的核心问题是什么？结论是什么？
+2. 【完整知识框架】按视频叙述逻辑逐层展开所有论点和论据
+3. 【关键数据/案例】单独列出重要数字、历史事件、人物案例
+4. 【UP主立场/倾向】是否有明显的价值观立场或情感倾向？
+
+▶ 如果是 B 类（技术教程 / 多P长视频）：
+1. 【课程定位】面向什么水平的学习者？需要什么前置知识？
+2. 【完整目录梳理】按时间轴章节，逐节列出核心内容和关键知识点
+3. 【核心技术要点】提炼最重要的方法论、命令、配置、原理
+4. 【重要注意事项 & 常见坑】特别强调的错误做法或易踩的坑
+5. 【学完能做什么】完成后可以实现的具体能力或项目
+
+▶ 如果是 C 类（观点评论 / 时事）：
+1. 【事件/话题背景】用2-3句话交代来龙去脉
+2. 【UP主核心观点】完整还原其论证逻辑：前提→论据→结论
+3. 【支持论据清单】所有用于支撑观点的事实、数据、类比
+4. 【反驳/局限性】视频中是否自我反驳或留有盲点？
+
+▶ 如果是 D 类（Vlog / 生活记录）：
+1. 【内容概述】去了哪/做了什么/经历了什么
+2. 【有参考价值的具体信息】地点名称、店铺、交通方式、费用等
+3. 【UP主的感受与建议】主观评价和推荐/避坑建议
+
+▶ 如果是 E 类（技能干货 / 方法论）：
+1. 【核心方法】完整列出所有步骤/技巧/原则，不遗漏
+2. 【背后的底层逻辑】为什么这个方法有效？原理是什么？
+3. 【适用场景与限制】什么情况下适用？有哪些前提条件？
+
+▶ 如果是 F 类（番剧/纪录片）：
+1. 【本集/本视频内容梗概】
+2. 【关键剧情点 / 信息点】
+
+===【第四步：综合评价与行动建议】===
+1. 【值得关注的核心收获】：看完这个视频最重要的1-3个takeaway
+2. 【局限性提示】：视频内容有哪些可能的偏差或遗漏视角
+3. 【适合谁看】：这个视频最值得推荐给什么类型的观众
+4. 【下一步行动】：看完后可以做什么、看什么、搜什么
+
+===【输出格式要求】===
+- 使用清晰的层级标题
+- 关键数据、结论加粗
+- 列表项简洁，保留专业术语
+- 最后附：【标签】{{原始标签}}
+
+===【输入内容】===
+视频标题：{title}
+UP主：{author}
+BV号：{bvid}
+
+视频内容：
+{transcript}
+
+请按照上述格式输出。"""
 
 
 def run_mcp(cmd: list) -> dict:
@@ -99,23 +260,18 @@ def call_minimax_with_retry(transcript: str, title: str, bvid: str, author: str,
             api_url = f"{base_url}/v1/messages"
             token = os.environ.get("ANTHROPIC_AUTH_TOKEN")
 
-            user_prompt = f"""请分析以下视频字幕，生成详细总结：
-
-视频标题：{title}
-BV号：{bvid}
-UP主：{author}
-
-字幕内容：
-{transcript}
-
-请按照上述格式输出。"""
+            user_prompt = PROMPT_ANALYSIS.format(
+                title=title,
+                author=author,
+                bvid=bvid,
+                transcript=transcript
+            )
 
             resp = requests.post(
                 api_url,
                 json={
-                    "model": "MiniMax-M2.5",
-                    "max_tokens": 4096,
-                    "system": PROMPT_MINIMAX,
+                    "model": "MiniMax-M2.7",
+                    "max_tokens": 8192,
                     "messages": [
                         {"role": "user", "content": user_prompt}
                     ]
@@ -264,12 +420,13 @@ def clean_video(bvid: str):
 # ========== AssemblyAI + MiniMax 字幕提取功能 ==========
 
 def extract_audio(video_path: str, bvid: str) -> str:
-    """从视频提取音频"""
+    """从视频提取音频，优先用 ffmpeg，失败则用 yt-dlp"""
     print(f"    提取音频...")
     audio_dir = BILIBILI_DIR / bvid
     audio_dir.mkdir(parents=True, exist_ok=True)
     audio_path = audio_dir / "audio.mp3"
 
+    # 先尝试 ffmpeg
     cmd = [
         "ffmpeg", "-i", video_path,
         "-vn", "-acodec", "libmp3lame", "-q:a", "2",
@@ -278,12 +435,32 @@ def extract_audio(video_path: str, bvid: str) -> str:
 
     try:
         subprocess.run(cmd, capture_output=True, timeout=60)
-        if audio_path.exists():
+        if audio_path.exists() and audio_path.stat().st_size > 1000:
             size_mb = audio_path.stat().st_size / 1024 / 1024
-            print(f"    音频提取完成: {size_mb:.1f} MB")
+            print(f"    音频提取完成 (ffmpeg): {size_mb:.1f} MB")
             return str(audio_path)
     except Exception as e:
-        print(f"    音频提取失败: {e}")
+        print(f"    ffmpeg 失败: {e}")
+
+    # ffmpeg 失败，用 yt-dlp 直接下载音频
+    print(f"    使用 yt-dlp 提取音频...")
+    try:
+        subprocess.run([
+            "yt-dlp", "-x", "--audio-format", "mp3",
+            "-o", str(audio_dir / "audio.%(ext)s"),
+            "--no-playlist",
+            f"https://www.bilibili.com/video/{bvid}"
+        ], capture_output=True, timeout=300)
+
+        # 找 mp3 文件
+        for f in audio_dir.iterdir():
+            if f.suffix == '.mp3' and f.stat().st_size > 1000:
+                size_mb = f.stat().st_size / 1024 / 1024
+                print(f"    音频提取完成 (yt-dlp): {size_mb:.1f} MB")
+                return str(f)
+    except Exception as e:
+        print(f"    yt-dlp 失败: {e}")
+
     return None
 
 
@@ -368,7 +545,7 @@ def minimax_format_transcript(raw_text: str) -> str:
     resp = requests.post(
         api_url,
         json={
-            "model": "MiniMax-M2.5",
+            "model": "MiniMax-M2.7",
             "max_tokens": 4096,
             "system": system_prompt,
             "messages": [
@@ -656,19 +833,124 @@ def write_obsidian(results: list):
     print(f"    ✓ 目录已更新 ({len(all_titles)} 条)")
 
 
+def extract_bvid(url: str) -> str:
+    """从 URL 提取 BV号"""
+    import re
+    bv_match = re.search(r"(BV[0-9A-Za-z]{10})", url)
+    if bv_match:
+        return bv_match.group(1)
+    return url.strip()
+
+
+def get_video_info_from_mcp(bvid: str) -> dict:
+    """通过 MCP 获取单个视频信息"""
+    print(f"获取视频信息...")
+    result = run_mcp(["mcporter", "call", "bilibili-mcp", "bili_video_info", f"bvid={bvid}"])
+    if result:
+        return {
+            'bvid': result.get('bvid', bvid),
+            'title': result.get('title', '未知'),
+            'author': result.get('author', '未知'),
+            'desc': result.get('description', ''),
+            'duration': result.get('duration', 0),
+        }
+    return {'bvid': bvid, 'title': '未知', 'author': '未知'}
+
+
+def process_single_video(bvid: str, transcript_only: bool = False) -> tuple:
+    """处理单个视频，返回 (results, transcripts)"""
+    video = get_video_info_from_mcp(bvid)
+    title = video.get('title', '未知')[:30]
+    author = video.get('author', '未知')
+
+    print(f"\n[处理] {bvid}: {title}...")
+
+    # 获取字幕
+    subtitle_data = get_subtitle(bvid)
+    subtitle_text = subtitle_data.get('text', '')
+    no_subtitle_msg = subtitle_data.get('message', '')
+
+    transcript_for_summary = None
+    transcript_method = None
+    analysis = None
+    has_subtitle = False
+    transcripts = []
+
+    if subtitle_text and len(subtitle_text) > 50:
+        # 有原生字幕
+        print(f"    检测到字幕 ({len(subtitle_text)} 字符)")
+        transcript_for_summary = minimax_format_transcript(subtitle_text)
+        transcript_method = "bili"
+        has_subtitle = True
+
+        if not transcript_only:
+            analysis = call_minimax_with_retry(subtitle_text, video.get('title', ''), bvid, author)
+            if "分析失败" not in analysis:
+                print(f"    ✓ 有字幕，MiniMax 分析成功")
+    elif "没有字幕" in no_subtitle_msg:
+        print(f"    检测到无字幕，使用 AssemblyAI 转录...")
+        transcript_for_summary = extract_transcript(bvid, video.get('title', ''), author)
+        transcript_method = "assemblyai"
+        has_subtitle = False
+
+        if transcript_for_summary:
+            if not transcript_only:
+                analysis = call_minimax_with_retry(transcript_for_summary, video.get('title', ''), bvid, author)
+                if "分析失败" not in analysis:
+                    print(f"    ✓ AssemblyAI 转录 + MiniMax 分析成功")
+            transcripts.append({
+                'title': video.get('title', ''),
+                'bvid': bvid,
+                'author': author,
+                'transcript': transcript_for_summary
+            })
+    else:
+        print(f"    ⚠ 字幕无效")
+        analysis = "⚠️ 字幕无效"
+        has_subtitle = True
+
+    results = [{
+        'video': video,
+        'analysis': analysis,
+        'has_subtitle': has_subtitle,
+        'transcript': transcript_for_summary,
+        'transcript_method': transcript_method
+    }]
+
+    return results, transcripts
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="B站首页推荐视频批量总结")
     parser.add_argument("--count", "-c", type=int, default=5, help="处理的视频数量")
     parser.add_argument("--transcript", "-t", action="store_true", help="同时提取字幕书面稿 (AssemblyAI + MiniMax)")
     parser.add_argument("--transcript-only", action="store_true", help="仅提取字幕书面稿，不生成总结")
+    parser.add_argument("--url", "-u", type=str, default=None, help="单视频模式：直接处理指定BV号或URL")
     args = parser.parse_args()
 
     print("=" * 60)
-    print("B站首页推荐视频批量总结")
+    print("B站视频批量总结")
     print("=" * 60)
 
-    # 1. 获取首页推荐
+    # 单链接模式
+    if args.url:
+        bvid = extract_bvid(args.url)
+        print(f"单视频模式: {bvid}")
+
+        results, transcripts = process_single_video(bvid, args.transcript_only)
+
+        # 写入 Obsidian
+        if not args.transcript_only:
+            write_obsidian(results)
+
+        if transcripts:
+            write_transcripts_to_obsidian(transcripts)
+
+        print(f"\n✅ 完成！")
+        return
+
+    # 批量模式 - 获取首页推荐
     videos = get_homefeed(args.count)
 
     # 2-4. 处理每个视频
@@ -736,18 +1018,18 @@ def main():
                 transcript_for_summary = extract_transcript(bvid, video.get('title', ''), author)
                 transcript_method = "assemblyai"
             else:
-                # 否则用 Gemini 分析视频
-                video_path = download_video(bvid)
-                if video_path:
-                    analysis = call_gemini_video_with_retry(video_path, video.get('title', ''), bvid, author)
-                    clean_video(bvid)
+                # 使用 AssemblyAI 转录 + MiniMax 分析（不再使用 Gemini）
+                transcript_for_summary = extract_transcript(bvid, video.get('title', ''), author)
+                transcript_method = "assemblyai"
+                if transcript_for_summary:
+                    analysis = call_minimax_with_retry(transcript_for_summary, video.get('title', ''), bvid, author)
                     has_subtitle = False
                     if "分析失败" not in analysis:
-                        print(f"    ✓ 无字幕，Gemini 分析成功")
+                        print(f"    ✓ 无字幕，AssemblyAI 转录 + MiniMax 分析成功")
                     else:
-                        print(f"    ⚠ Gemini 分析失败")
+                        print(f"    ⚠ MiniMax 分析失败")
                 else:
-                    analysis = "❌ 视频下载失败"
+                    analysis = "❌ AssemblyAI 转录失败"
                     has_subtitle = False
         else:
             print(f"    ⚠ 字幕无效或太短")

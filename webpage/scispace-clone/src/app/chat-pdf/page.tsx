@@ -55,6 +55,13 @@ export default function ChatPdfPage() {
     setMounted(true);
   }, []);
 
+  // Debug logging
+  useEffect(() => {
+    console.log('[ChatPdf] currentItem:', currentItem?.name, 'url:', currentItem?.url);
+    console.log('[ChatPdf] pdfUrl:', pdfUrl);
+    console.log('[ChatPdf] viewMode:', viewMode);
+  }, [currentItem, pdfUrl, viewMode]);
+
   // Update total pages when pdfDoc is ready
   const handleFileSelect = useCallback(
     async (file: File) => {
@@ -72,8 +79,9 @@ export default function ChatPdfPage() {
         const pdf = await loadingTask.promise;
         setTotalPages(pdf.numPages);
 
-        // Add to library
-        addToLibrary(file, url, pdf.numPages);
+        // Add to library and select it
+        const newItem = addToLibrary(file, url, pdf.numPages);
+        selectItem(newItem);
       } catch (error) {
         console.error('Error loading PDF:', error);
       }
