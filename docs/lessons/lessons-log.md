@@ -108,3 +108,38 @@
 **替代方案**：
 - 使用项目内的 compile wrapper script 处理辅助文件删除
 - 或每次手动确认
+
+---
+
+## 2026-04-04: 定理引用时同时标注文献和笔记交叉引用
+
+**情境**：用户引用 Theorem 5.1 (Classical Double Schubert Positivity) 时，表示引用文献时如果该内容在笔记中已有对应位置，则**不仅加 `\cite{}` 文献引用，也要加 `\cref{}` 指向笔记内的对应位置**。
+
+**用户习惯**：
+> 定理引用时，如果该文献/定理已经在笔记中有对应内容，**不仅要加文献引用 `\cite{...}`，也要加 `\cref{...}` 指向笔记内的对应位置**。格式为在同一括号内同时写 citation 和 cref。
+
+**示例**：
+```latex
+% 原文
+The proof follows the strategy of Gao--Xiong \cite[Section 2]{GX2025}...
+
+% 改为：文献引用 + 笔记交叉引用（双管齐下）
+The proof follows the strategy of Gao--Xiong \cite[Section 2]{GX2025}\footnote{详见\cref{sec:GX2025-Section2}（\cite[Section 2]{GX2025}）}，which extends Graham's positivity framework \cite{Gr}\footnote{详见\cref{def:GrahamPositivity}（\cite[Section 2.2]{Gr}）}...
+```
+
+**适用场景**：
+- 定理证明中引用他人工作时
+- 引用已在本笔记中定义的概念（如 `\cref{def:DoubleSchubertPolynomial}`）
+- 引用已在本笔记中证明的定理（如 `\cref{th:GrahamPositivityRefined}`）
+
+**本次操作**：
+- Theorem 5.1 证明中：
+  - `\cite[Section 2]{GX2025}` → 加 `\footnote{详见\cref{sec:GX2025-Section2}（\cite[Section 2]{GX2025}）}`
+  - `\cite{Gr}` → 加 `\footnote{详见\cref{def:GrahamPositivity}（\cite[Section 2.2]{Gr}）}`
+  - $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ → 加 `\footnote{双Schubert多项式定义见\cref{def:DoubleSchubertPolynomial}}`
+  - Graham positivity theorem → 加 `\footnote{详见\cref{th:GrahamPositivityRefined}（\cite[Corollary 2.4]{GX2025}）}`
+
+**待办**：
+- [ ] 检查 Lemma 2.5 是否在笔记中有对应位置
+- [ ] 检查 moment graph 相关定义是否有 label
+- [ ] 检查其他章节是否有类似需要补充双引用的情况
