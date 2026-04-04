@@ -526,3 +526,42 @@ tikz 图片等导致的 overfull hbox 是排版正常现象，不需要主动修
 - 同一章节内不同位置用后缀区分：`ex:example-a`, `ex:example-b`
 - 并发写作时协调 label 分配
 - 复制含 label 内容时必须修改或删除 label
+
+---
+
+## L019: 引用文献时同时添加 citation 和 \cref 交叉引用
+
+**日期**: 2026-04-04
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+引用文献时只有 `\cite{...}`，没有 `\cref{...}` 指向笔记内已有对应内容的位置。读者想追溯时不知道去笔记哪里找。
+
+**正确做法**:
+当引用文献中的定理/定义/工作时，同时检查笔记中是否已有对应内容：
+1. **文献引用**：`\cite[ Theorem X.Y]{key}`
+2. **笔记交叉引用**：如果有对应位置，加 `\cref{label}`
+
+**格式（两种）**：
+```latex
+% 格式A：括号内双引用
+...\cite[Section 2]{GX2025}\footnote{详见\cref{sec:GX2025-Section2}（\cite[Section 2]{GX2025}）}...
+
+% 格式B：cite 后直接跟 creq
+... extends Graham's positivity framework \cite{Gr}\footnote{详见\cref{def:GrahamPositivity}（\cite[Section 2.2]{Gr}）}...
+```
+
+**适用场景**：
+- 定理证明中引用他人工作时
+- 引用已在本笔记中定义的概念（如 `\cref{def:DoubleSchubertPolynomial}`）
+- 引用已在本笔记中证明的定理（如 `\cref{th:GrahamPositivityRefined}`）
+
+**本次案例**：
+Theorem 5.1 (Classical Double Schubert Positivity) 证明中：
+- `\cite[Section 2]{GX2025}` → 加 `\footnote{详见\cref{sec:GX2025-Section2}（\cite[Section 2]{GX2025}）}`
+- `\cite{Gr}` → 加 `\footnote{详见\cref{def:GrahamPositivity}（\cite[Section 2.2]{Gr}）}`
+- $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ → 加 `\footnote{双Schubert多项式定义见\cref{def:DoubleSchubertPolynomial}}`
+
+**防止措施**:
+- 每次写 `\cite{...}` 时问自己：笔记中是否有对应位置？
+- 如果有，同时添加 `\cref{...}` 或 footnote 引用
