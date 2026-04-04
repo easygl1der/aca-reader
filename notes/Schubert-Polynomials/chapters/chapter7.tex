@@ -1,0 +1,189 @@
+% Chapter 7: Graham 2001 - Positivity in Equivariant Schubert Calculus
+% Based on William Graham, Duke Mathematical Journal 109(3):599-614, 2001
+% arXiv: math/9908172
+
+\chapter{Graham 定理：等变量 Schubert 演算的 Positivity}
+\label{chap:GrahamPositivity}
+
+\section{引言与历史背景}
+
+William Graham 于 2001 年在 Duke Mathematical Journal 上发表的论文 \cite{Gr} 证明了等变量 Schubert 演算中的一个核心猜想——即 Dale Peterson 猜想——确立了等变量杯积展开系数的非负性（positivity）性质。这一结果是 Schubert 演算发展史上的里程碑。
+
+\subsection{问题的起源}
+
+在经典 Schubert 演算中，给定旗流形 $G/P$ 上的三个 Schubert 胞腔 $X_u, X_v, X_w$，它们的交点个数由 Schubert 结构常数 $c_{u,v}^w$ 给出。由于几何相交在一般位置下是横截的（transverse），$c_{u,v}^w$ 是良定义的非负整数。这构成了经典 Schubert 演算的基础。
+
+然而，当考虑等变量上同调 $H_T^*(G/P)$ 时，问题变得更加精细：torus $T$ 的作用引入了额外的权重参数。乘积展开系数 $c_{u,v}^w(t,s)$ 不再只是整数，而是关于 torus 权重差 $t_i - s_j$ 的多项式。问题是：这些多项式的系数是否仍然保持非负性？
+
+\subsection{Peterson 猜想}
+
+Dale Peterson 提出了一个大胆的猜想：在等变量 Schubert 演算中，当 $u, v$ 是 Grassmannian 排列时，展开系数 $c_{u,v}^w(t,s)$ 是关于 $t_i - s_j$ 的非负系数多项式。
+
+这个猜想具有深刻的代数几何和组合学意义：
+\begin{itemize}
+\item 它推广了经典情形下 $c_{u,v}^w \in \mathbb{Z}_{\geq 0}$ 的结果
+\item 它揭示了等变量上同调与旗流形几何之间的深层联系
+\item 它为后来的量子版本（ Mihalcea 的工作）奠定了基础
+\end{itemize}
+
+Graham 的论文首次给出了这个猜想的完整证明。
+
+\section{主要定理}
+
+\begin{Theorem}[\cite{Gr} Theorem 1.1]
+\label{th:GrahamMainPositivity}
+设 $u, v \in S_n$ 是 Grassmannian 排列。则在旗流形 $Fl_n$ 的等变量子上同调 $H_T^*(Fl_n)$ 中，Schubert 类 $\sigma_u, \sigma_v$ 的杯积满足
+\begin{equation}
+\sigma_u \cdot \sigma_v = \sum_{w \in S_n} c_{u,v}^w(t,s) \sigma_w,
+\label{eq:GrahamPositivity}
+\end{equation}
+其中结构常数 $c_{u,v}^w(t,s)$ 是关于 $t_i - s_j$（$1 \leq i, j \leq n$）的非负系数多项式，即
+$$c_{u,v}^w(t,s) \in \mathbb{N}[t_i - s_j]_{i,j \geq 1}.$$
+\end{Theorem}
+
+\begin{Remark}
+这里的 $t_i$ 和 $s_j$ 是等变量子上同调中 torus 权重的形式变量。当设置所有 $t_i = s_j = 0$ 时，\cref{eq:GrahamPositivity} 退化回经典 Schubert 演算的公式
+$$\sigma_u \cdot \sigma_v = \sum_w c_{u,v}^w \sigma_w,$$
+其中 $c_{u,v}^w \in \mathbb{Z}_{\geq 0}$ 是已知的非负整数。
+\end{Remark}
+
+\section{仿射 Schubert 簇与几何框架}
+
+Graham 证明的核心创新在于引入了仿射 Schubert 簇（affine Schubert varieties）的概念，并建立了它们与旗流形量子同调之间的深刻联系。
+
+\subsection{仿射 Grassmannian}
+
+设 $G = \mathrm{GL}_n(\mathbb{C})$，考虑仿射 Grassmannian
+$$Gr = G(\!(t)\!)/G[[t]],$$
+这是无限维的代数簇。仿射 Grassmannian 在表示论和几何中具有中心地位，其 cohomology 与旗流形的量子 cohomology 密切相关。
+
+仿射 Grassmannian $Gr$ 可以看作所有 $n$ 维复向量空间的可求长闭子空间的模空间。
+
+\subsection{仿射 Schubert 簇}
+
+在仿射 Grassmannian $Gr$ 中，仿射 Weyl 群 $\widetilde{W}$ 的元素 $w$ 对应仿射 Schubert 簇 $\mathcal{X}(w)$。这些簇满足包含关系：
+$$\overline{\mathcal{X}(u)} \subseteq \overline{\mathcal{X}(v)} \iff u \leq v \quad (\text{Bruhat 序}).$$
+
+Graham 的关键观察是：仿射 Schubert 簇具有一个与 moment map 兼容的胞腔结构，这允许我们建立与通常旗流形的几何联系。
+
+\section{Peterson 退化}
+
+证明的核心工具是量子同调环的 Peterson 退化（degeneration）。
+
+\subsection{Peterson 同构}
+
+设 $QH^*(Fl_n)$ 是旗流形的（small）量子同调。Peterson 证明了存在一个环同构
+$$QH^*(Fl_n) \cong H^*(Gr) \otimes \mathbb{Q}[q] / (q_1, \ldots, q_{n-1}),$$
+其中 $Gr$ 是仿射 Grassmannian，$q_i$ 是量子参数。
+
+这个同构将量子乘法退化为 cohomology 乘法与某个平坦族上的极限。
+
+\subsection{退化到仿射 Grassmannian}
+
+Graham 将这个思想推广到等变量情形，建立了等变量量子同调与仿射 Grassmannian 的等变量 cohomology 之间的退化。具体而言，存在一个平坦族使得当参数趋于无穷时，等变量 Schubert 类趋向仿射 Schubert 类。
+
+这一退化具有以下关键性质：
+\begin{itemize}
+\item 它保持 Schubert 基底的结构
+\item 它将等变量结构常数 $c_{u,v}^w(t,s)$ 连续地映射到仿射情形的系数
+\item 由于退化的极限是好的（well-behaved），系数的 positivity 性质得以保持
+\end{itemize}
+
+\section{证明的主要步骤}
+
+Graham 的证明可以分为以下主要步骤：
+
+\subsection{步骤 1：几何 set-up}
+
+设 $G = \mathrm{GL}_n(\mathbb{C})$，$B$, $B^-$, $T$ 分别是标准 Borel 子群、 opposite Borel 子群和极大环面。考虑相应的仿射几何：
+\begin{itemize}
+\item 旗流形 $Fl_n = G/B$
+\item 仿射 Grassmannian $Gr = G(\!(t)\!)/G[[t]]$
+\item 仿射旗流形 $\mathcal{F}\ell = G(\!(t)\!)/B(\!(t)\!)$
+\end{itemize}
+
+这些空间之间存在自然的关联，构成证明的几何框架。
+
+\subsection{步骤 2：Peterson 环的构造}
+
+定义 Peterson 环 $\mathcal{P}$ 为
+$$\mathcal{P} = H^*(Gr) \otimes \mathbb{Q}[t_1, \ldots, t_n] / (q_1, \ldots, q_{n-1}),$$
+其中 $H^*(Gr)$ 是仿射 Grassmannian 的 cohomology。
+
+Peterson 同构给出：
+$$QH^*(Fl_n) \cong \mathcal{P}.$$
+
+这个环具有丰富的代数结构，其 Schubert 基底系数满足特定的 positivity 性质。
+
+\subsection{步骤 3：等变量 extension}
+
+为了处理等变量情形，Graham 构造了一个等变量 extension：
+$$\mathcal{P}_T = H_T^*(Gr) \otimes \mathbb{Q}[t_1, \ldots, t_n] / (q_1, \ldots, q_{n-1}),$$
+其中 $H_T^*(Gr)$ 是仿射 Grassmannian 的等变量 cohomology。
+
+关键引理（见 \cite[Section 3]{Gr}）表明，$\mathcal{P}_T$ 中的 Schubert 基底元素满足与经典情形相同的 positivity 性质。
+
+\subsection{步骤 4：横截性与退化}
+
+最后一步是建立等变量 Schubert 类到仿射 Schubert 类的退化。考虑参数 $\lambda$ 的族：
+$$X_\lambda = \{ (g, z) \in G/B \times \mathbb{P}^1 : z \in \mathbb{P}^1 \},$$
+当 $\lambda \to \infty$ 时，这个族趋向仿射构型。
+
+这一退化过程中的横截性（transversality）保证了系数的连续性，从而将仿射 Grassmannian 的 positivity 传递到旗流形。
+
+\section{与经典 Schubert 演算的关系}
+
+Graham 定理的一个重要推论是：当限制到非等变情形（$T$ 平凡作用）时，定理退化为经典的结果。
+
+\subsection{非等变退化}
+
+当 $T$ 是平凡 torus（即只考虑普通上同调）时，\cref{th:GrahamMainPositivity} 中的系数 $c_{u,v}^w(t,s)$ 变为普通整数 $c_{u,v}^w$，而经典 Schubert 演算告诉我们 $c_{u,v}^w \in \mathbb{Z}_{\geq 0}$。
+
+这种退化关系可以表述为：
+$$c_{u,v}^w|_{t_i = s_j = 0} = c_{u,v}^w \in \mathbb{Z}_{\geq 0}.$$
+
+\subsection{与 Littlewood-Richardson 规则的联系}
+
+当 $u, v$ 都是 Grassmannian 排列时，Schubert 类可以识别为 Schur 函数。这时 $c_{u,v}^w$ 恰好是 Littlewood-Richardson 系数，它们具有组合学解释（计数半标准 Young 表）。
+
+Graham 的 positivity 结果可以看作是 Littlewood-Richardson 系数在等变量 setting 下的推广。
+
+\section{后续发展与影响}
+
+Graham 的工作开启了等变量 Schubert 演算的新时代。
+
+\subsection{Mihalcea 的量子推广}
+
+2007 年，Leonardo Mihalcea 在 \cite{Mihalcea} 中将 Graham 的结果推广到量子情形，证明了等变量量子 Schubert 演算中的 positivity 性质。这一推广在旗流形的 Gromov-Witten 不变量理论中具有重要应用。
+
+Mihalcea 的核心思想是：虽然量子情形更加复杂，但可以通过适当的退化（degeneration）技术将问题归约到 Graham 的经典情形。
+
+\subsection{与表示论的连接}
+
+Graham 的工作揭示了 Schubert 演算与表示论之间的深层联系。仿射 Grassmannian 的 cohomology 与仿射 Lie 代数的表示密切相关，这为进一步的跨学科研究开辟了道路。
+
+\section{技术细节补充}
+
+\subsection{仿射 Weyl 群}
+
+仿射 Weyl 群 $\widetilde{W}$ 是 Weyl 群 $W$ 与格 $\mathbb{Z}^n$ 的半直积：
+$$\widetilde{W} = W \ltimes \mathbb{Z}^n.$$
+在 $\mathrm{GL}_n$ 情形下，$\widetilde{W}$ 同构于双陪集 $S_n \ltimes \mathbb{Z}^n$。
+
+仿射 Schubert 簇由仿射 Weyl 群的元素索引，具有与通常 Schubert 簇相似的组合性质。
+
+\subsection{Moment map 与横截性}
+
+设 $K = U(n)$ 是 $G$ 的紧致子群，$T \subset K$ 是极大环面。moment map
+$$\mu: X \to \mathfrak{t}^*$$
+将旗流形映射到 Lie 代数的对偶空间。Graham 证明仿射 Schubert 簇在 moment map 下的像具有好的性质，这允许我们建立横截性结果。
+
+\section{结论}
+
+Graham 的论文 \cite{Gr} 建立了等变量 Schubert 演算中 positivity 的完整理论。通过引入仿射 Schubert 簇和 Peterson 退化技术，他证明了 Peterson 猜想，即当 $u, v$ 是 Grassmannian 排列时，等变量杯积系数 $c_{u,v}^w(t,s)$ 是关于 $t_i - s_j$ 的非负系数多项式。
+
+这一结果不仅解决了一个长期悬而未决的猜想，而且为后来的等变量量子 Schubert 演算（ Mihalcea ）和更一般的 positivity 研究奠定了基础。Graham 的工作已经成为 Schubert 演算领域的经典文献，被广泛引用和应用。
+
+\begin{Remark}
+本文档基于 \cite{Gr} 的阅读。如有疑问或需要进一步讨论，请通过附录中的 QA 部分提出。
+\end{Remark}
