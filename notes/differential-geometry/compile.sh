@@ -1,14 +1,12 @@
 #!/bin/bash
-# Compile LaTeX notes three times for proper cross-references
+# Compile script for do Carmo - Differential Geometry
 
-FILE="differential-geometry-notes"
+FILE="do-carmo-curves-surfaces-notes"
 
-echo "Compiling $FILE.tex (3 passes)..."
-
+# Compile 3 times for proper cross-references
 for i in 1 2 3; do
-    echo "Pass $i..."
     xelatex -interaction=nonstopmode -synctex=1 "$FILE.tex" > /dev/null 2>&1
 done
 
-echo "Done! Output: $FILE.pdf"
+# Open PDF in Skim
 open -a Skim "$FILE.pdf"
