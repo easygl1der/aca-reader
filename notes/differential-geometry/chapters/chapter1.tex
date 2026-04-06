@@ -1776,6 +1776,16 @@ Let $C$ be a plane curve and let $T$ be the tangent line at a point $p \in C$. D
 If a closed plane curve $C$ is contained inside a disk of radius $r$, prove that there exists a point $p \in C$ such that the curvature $k$ of $C$ at $p$ satisfies $|k| \geq 1/r$.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：若曲线被限制在半径为 $r$ 的圆盘内，则曲线在任意点的曲率不能太小——否则可以构造一个更大的圆弧完全包含该曲线部分，从而与"曲线在圆盘内"矛盾。具体地，曲率 $|k| \geq 1/r$ 意味着在该点附近曲线的弯曲程度至少与半径为 $r$ 的圆相同。
+
+\textbf{证明}：设 $\alpha(s)$ 为单位速度参数化的闭合曲线，$L$ 为其长度。由于 $\alpha$ 包含在半径为 $r$ 的圆盘内，$\alpha$ 的直径不超过 $2r$。设 $p = \alpha(s_0)$ 为 $\alpha$ 上使得 $|p|$ 达到最大的点（由紧性保证存在）。令 $R$ 为以原点 $O$ 为圆心、半径为 $r$ 的圆，则 $p$ 在 $R$ 的边界上。
+
+考虑单位切向量 $\mathbf{t}(s_0)$ 和法向量 $\mathbf{n}(s_0)$。由于 $p$ 是距原点最远的点，向量 $\alpha(s_0) = p$ 与切向量 $\mathbf{t}(s_0)$ 垂直（否则沿切方向微小的移动会使 $|\alpha|$ 增大）。于是 $\mathbf{n}(s_0)$ 与 $p$ 方向相同或相反，即 $\mathbf{n}(s_0) = \pm p/r$。
+
+在 $p$ 附近，曲线可由 $k(s_0) = \langle \alpha''(s_0), \mathbf{n}(s_0) \rangle$ 近似。设 $\mathbf{n}(s_0) = p/r$（另一方向类似）。由曲线的闭合性和 $\alpha$ 在圆盘内部，若在 $p$ 处 $|k| < 1/r$，则在 $p$ 附近曲线会"弯曲得比圆弧更慢"，从而必然超出圆盘边界，与假设矛盾。故 $|k(p)| \geq 1/r$。$\square$
+\end{solution}
+
 \begin{exercise}{1-7, 6 — do Carmo, Exercise 1-7, 6}
 Let $\alpha(s)$, $s \in [0, l]$ be a closed convex plane curve positively oriented. The curve $\beta(s) = \alpha(s) - r\mathbf{n}(s)$, where $r$ is a positive constant and $\mathbf{n}$ is the normal vector, is called a parallel curve to $\alpha$. Show that:
 \begin{enumerate}
