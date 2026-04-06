@@ -32,3 +32,103 @@
 \textbf{问}：挠率 $\tau(s)$ 描述的是什么？
 
 \textbf{答}：挠率描述曲线在空间中的"扭曲"程度。曲率只告诉我们曲线在密切平面内如何弯曲，但曲线可能"偏离"密切平面——这种偏离的速度由挠率度量。对于平面曲线，$\alpha', \alpha'', \alpha'''$ 始终共面，$\det(\alpha', \alpha'', \alpha''') = 0$，故挠率为零。螺旋线的挠率为常数，描述其均匀扭曲的特性。
+
+\subsection*{曲率另一个表达式的推导}\label{sec:appendix-ch1-curvature-alt}
+
+\textbf{背景}：命题 1-5, 2 给出了曲率在一般参数化下的表达式：
+\[
+k(t) = \frac{\|\alpha'(t) \times \alpha''(t)\|}{\|\alpha'(t)\|^3}.
+\]
+
+\textbf{目标}：从单位速度曲率的定义 $k(s) = \|\alpha''(s)\|$ 推导出一般参数下的表达式。
+
+\textbf{推导步骤}：
+
+设 $\alpha(t)$ 是正则曲线，$s = s(t)$ 是弧长参数。回忆弧长公式：
+\[
+s(t) = \int_{t_0}^t \|\alpha'(u)\| \, du, \quad \frac{ds}{dt} = \|\alpha'(t)\|.
+\]
+
+由链式法则，$\alpha'(s) = \dfrac{\alpha'(t)}{ds/dt} = \dfrac{\alpha'(t)}{\|\alpha'(t)\|}$。
+
+进一步，
+\[
+\alpha''(s) = \frac{d}{ds}\alpha'(s) = \frac{d}{dt}\left(\frac{\alpha'(t)}{\|\alpha'(t)\|}\right) \cdot \frac{dt}{ds}.
+\]
+
+经过计算（利用向量积的模长公式 $\|u \times v\| = \|u\|\|v\|\sin\theta$），可得：
+\[
+\|\alpha''(s)\| = \frac{\|\alpha'(t) \times \alpha''(t)\|}{\|\alpha'(t)\|^3}.
+\]
+
+因此在参数 $t$ 下，曲率为 $k(t) = \dfrac{\|\alpha'(t) \times \alpha''(t)\|}{\|\alpha'(t)\|^3}$。
+
+\subsection*{挠率另一个表达式的推导}\label{sec:appendix-ch1-torsion-alt}
+
+\textbf{背景}：命题 1-5, 4 给出了挠率的另一个表达式：
+\[
+\tau(s) = -\langle \mathbf{b}'(s), \mathbf{n}(s) \rangle.
+\]
+
+\textbf{目标}：从挠率的行列式定义 $\tau = \dfrac{\det(\alpha', \alpha'', \alpha''')}{k^2}$ 推导出 $\tau = -\langle \mathbf{b}', \mathbf{n} \rangle$。
+
+\textbf{推导步骤}：
+
+由 Frenet 标架的定义：$\mathbf{t} = \alpha'$，$\mathbf{n} = \dfrac{\alpha''}{k}$，$\mathbf{b} = \mathbf{t} \times \mathbf{n}$。
+
+对 $\mathbf{b} = \mathbf{t} \times \mathbf{n}$ 求导：
+\[
+\mathbf{b}' = \mathbf{t}' \times \mathbf{n} + \mathbf{t} \times \mathbf{n}' = (k\mathbf{n}) \times \mathbf{n} + \mathbf{t} \times \mathbf{n}' = \mathbf{t} \times \mathbf{n}'.
+\]
+
+由于 $\mathbf{n}'$ 可以分解为 $A\mathbf{t} + B\mathbf{n} + C\mathbf{b}$（由正交性），且 $\|\mathbf{n}\|=1$ 蕴含 $\langle \mathbf{n}', \mathbf{n} \rangle = 0$，故 $\mathbf{n}' = -k\mathbf{t} + \tau\mathbf{b}$（这正是 Frenet-Serret 公式的第二式）。
+
+于是
+\[
+\mathbf{b}' = \mathbf{t} \times (-k\mathbf{t} + \tau\mathbf{b}) = \mathbf{t} \times \tau\mathbf{b} = \tau(\mathbf{t} \times \mathbf{b}) = -\tau\mathbf{n},
+\]
+因为 $\mathbf{t} \times \mathbf{b} = -\mathbf{b} \times \mathbf{t} = -\mathbf{n}$。
+
+因此 $\mathbf{b}' = -\tau\mathbf{n}$，取与 $\mathbf{n}$ 的内积即得
+\[
+\tau = -\langle \mathbf{b}', \mathbf{n} \rangle.
+\]
+
+\subsection*{Frenet-Serret 公式的直观解释与推导思路}\label{sec:appendix-ch1-frenet-serret}
+
+\textbf{背景}：Frenet-Serret 公式是曲线局部理论的核心：
+\[
+\begin{cases}
+\mathbf{t}' = k \mathbf{n}, \\
+\mathbf{n}' = -k \mathbf{t} + \tau \mathbf{b}, \\
+\mathbf{b}' = -\tau \mathbf{n}.
+\end{cases}
+\]
+
+\textbf{直观解释}：
+
+可以将 Frenet 标架 $\{\mathbf{t}, \mathbf{n}, \mathbf{b}\}$ 想象为沿曲线运动的"观察者"的坐标系。这个坐标系随着曲线在空间中移动而转动和摆动。
+
+\begin{itemize}
+\item $\mathbf{t}' = k\mathbf{n}$：切向量的变化完全由法向分量决定，系数 $k$ 正是弯曲程度——$k$ 越大，切向量转动得越快。
+
+\item $\mathbf{n}' = -k\mathbf{t} + \tau\mathbf{b}$：主法向量的变化涉及两个方面：$-k\mathbf{t}$ 部分反映了主法向量试图"追回"切向量方向变化（与 $\mathbf{t}' = k\mathbf{n}$ 相呼应），而 $\tau\mathbf{b}$ 部分则反映了曲线在空间中的扭曲。
+
+\item $\mathbf{b}' = -\tau\mathbf{n}$：副法向量的变化只与挠率有关——它描述了密切平面的旋转。
+\end{itemize}
+
+\textbf{几何图像}：想象一个骑自行车的人沿着曲线运动。人的朝向就是 $\mathbf{t}$ 方向，车把的指向是 $\mathbf{n}$，而 $\mathbf{b}$ 则垂直于前两者。曲率 $k$ 决定了人在转弯时需要倾斜多少（这对应 $\mathbf{t}' = k\mathbf{n}$），而挠率 $\tau$ 则描述了车子在转弯的同时是否还在上下颠簸（对应 $\mathbf{b}' = -\tau\mathbf{n}$）。
+
+\textbf{推导思路}（简述）：
+
+Frenet-Serret 公式可从正交性条件出发推导。由于 $\{\mathbf{t}, \mathbf{n}, \mathbf{b}\}$ 是标准正交基，有 $\langle \mathbf{t}, \mathbf{n} \rangle = 0$，$\langle \mathbf{t}, \mathbf{b} \rangle = 0$，$\langle \mathbf{n}, \mathbf{b} \rangle = 0$，以及 $\|\mathbf{t}\| = \|\mathbf{n}\| = \|\mathbf{b}\| = 1$。
+
+对正交性条件求导，并利用 $\mathbf{b} = \mathbf{t} \times \mathbf{n}$，可以逐步得到三个公式。例如：
+
+\begin{enumerate}
+\item 由 $\langle \mathbf{t}, \mathbf{n} \rangle = 0$ 求导：$\langle \mathbf{t}', \mathbf{n} \rangle + \langle \mathbf{t}, \mathbf{n}' \rangle = 0$。
+\item 由于 $\mathbf{t}' = \alpha''$ 与 $\mathbf{n}$ 平行（定义 $\mathbf{n} = \mathbf{t}'/|\mathbf{t}'|$），得 $\langle \mathbf{t}', \mathbf{n} \rangle = |\mathbf{t}'| = k$。
+\item 结合 $\|\mathbf{n}'\|$ 的计算，可得 $\mathbf{t}' = k\mathbf{n}$ 和 $\mathbf{n}' = -k\mathbf{t} + \tau\mathbf{b}$。
+\end{enumerate}
+
+详细证明见 do Carmo, Proposition 1-5, 4。
