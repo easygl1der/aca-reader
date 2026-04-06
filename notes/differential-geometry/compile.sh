@@ -1,7 +1,7 @@
 #!/bin/bash
 # Compile script for do Carmo - Differential Geometry
 
-FILE="do-carmo-curves-surfaces-notes"
+FILE="differential-geometry-notes"
 
 # Compile 3 times for proper cross-references
 for i in 1 2 3; do
