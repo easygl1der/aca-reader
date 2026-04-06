@@ -744,9 +744,23 @@ Check whether the following bases are positive:
 A plane $P$ contained in $\mathbb{R}^3$ is given by the equation $ax + by + cz + d = 0$. Show that the vector $v = (a, b, c)$ is perpendicular to the plane and that $|d| / \sqrt{a^2 + b^2 + c^2}$ measures the distance from the plane to the origin $(0, 0, 0)$.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：平面方程 $ax+by+cz+d=0$ 中，$(a,b,c)$ 是平面的法向量。点到平面的距离即该点沿法向量方向到平面的有向距离的绝对值。
+
+\textbf{证明}：设 $p = (x,y,z)$ 是平面上任一点，$p_0 = (x_0,y_0,z_0)$ 是原点到平面的垂足。则 $p_0$ 满足 $ax_0+by_0+cz_0+d=0$，且向量 $\overrightarrow{p_0O} = (x_0,y_0,z_0)$ 与 $(a,b,c)$ 平行。故存在 $\lambda$ 使得 $(x_0,y_0,z_0) = \lambda(a,b,c)$。代入得 $\lambda(a^2+b^2+c^2) + d = 0$，故 $\lambda = -d/(a^2+b^2+c^2)$。于是 $|p_0| = |\lambda|\sqrt{a^2+b^2+c^2} = |d|/\sqrt{a^2+b^2+c^2}$。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 3* — do Carmo, Exercise 1-4, 3}
 Determine the angle of intersection of the two planes $5x + 3y + 2z - 4 = 0$ and $3x + 4y - 7z = 0$.
 \end{exercise}
+
+\begin{solution}
+两平面的法向量分别为 $n_1 = (5,3,2)$ 和 $n_2 = (3,4,-7)$。两平面夹角 $\theta$ 满足
+\[
+\cos\theta = \frac{|n_1 \cdot n_2|}{|n_1||n_2|} = \frac{|15+12-14|}{\sqrt{25+9+4}\sqrt{9+16+49}} = \frac{13}{\sqrt{38}\sqrt{74}}.
+\]
+故 $\theta = \arccos\left(\frac{13}{\sqrt{2812}}\right)$。$\square$
+\end{solution}
 
 \begin{exercise}{1-4, 4* — do Carmo, Exercise 1-4, 4}
 Given two planes $a_i x + b_i y + c_i z + d_i = 0$, $i = 1, 2$, prove that a necessary and sufficient condition for them to be parallel is
@@ -756,6 +770,10 @@ Given two planes $a_i x + b_i y + c_i z + d_i = 0$, $i = 1, 2$, prove that a nec
 where the convention is made that if a denominator is zero, the corresponding numerator is also zero.
 \end{exercise}
 
+\begin{solution}
+两平面平行的充要条件是它们的法向量平行，即存在 $\lambda \neq 0$ 使得 $(a_1,b_1,c_1) = \lambda(a_2,b_2,c_2)$，这等价于 $\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$（约定分母为零时分子亦为零）。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 5 — do Carmo, Exercise 1-4, 5}
 Show that an equation of a plane passing through three noncollinear points $p_1 = (x_1, y_1, z_1)$, $p_2 = (x_2, y_2, z_2)$, $p_3 = (x_3, y_3, z_3)$ is given by
 \[
@@ -763,6 +781,12 @@ Show that an equation of a plane passing through three noncollinear points $p_1 
 \]
 where $p = (x, y, z)$ is an arbitrary point of the plane.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：向量积 $(p-p_1)\times(p-p_2)$ 与平面法向量平行。三点共面时，$(p_3-p_1)\times(p_3-p_2)$ 与法向量也平行。两者点积为零即为平面方程。
+
+\textbf{证明}：当 $p$ 在 $p_1,p_2,p_3$ 所在平面上时，$(p-p_1)$、$(p-p_2)$、$(p-p_3)$ 三者共面，故混合积 $(p-p_1)\cdot[(p-p_2)\times(p-p_3)] = 0$，即 $(p-p_1)\wedge(p-p_2)\cdot(p-p_3) = 0$。$\square$
+\end{solution}
 
 \begin{exercise}{1-4, 6* — do Carmo, Exercise 1-4, 6}
 Given two nonparallel planes $a_i x + b_i y + c_i z + d_i = 0$, $i = 1, 2$, show that their line of intersection may be parametrized as
@@ -772,9 +796,19 @@ x - x_0 = u_1 t, \quad y - y_0 = u_2 t, \quad z - z_0 = u_3 t,
 where $(x_0, y_0, z_0)$ belongs to the intersection and $u = (u_1, u_2, u_3)$ is the vector product $u = v_1 \wedge v_2$, $v_i = (a_i, b_i, c_i)$, $i = 1, 2$.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：两平面交线的方向向量同时垂直于两个平面的法向量，即为两法向量的叉积。
+
+\textbf{证明}：设 $v_i = (a_i,b_i,c_i)$ 为两平面的法向量。交线的方向向量 $u = v_1 \times v_2$ 同时垂直于 $v_1$ 和 $v_2$，故 $u$ 在两平面上。在两平面方程构成的方程组中取一点 $(x_0,y_0,z_0)$，则参数方程 $r(t) = (x_0,y_0,z_0) + t(u_1,u_2,u_3)$ 给出交线。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 7* — do Carmo, Exercise 1-4, 7}
 Prove that a necessary and sufficient condition for the plane $ax + by + cz + d = 0$ and the line $x - x_0 = u_1 t$, $y - y_0 = u_2 t$, $z - z_0 = u_3 t$ to be parallel is $a u_1 + b u_2 + c u_3 = 0$.
 \end{exercise}
+
+\begin{solution}
+平面与直线平行等价于直线的方向向量 $(u_1,u_2,u_3)$ 与平面的法向量 $(a,b,c)$ 垂直，即 $au_1+bu_2+cu_3 = 0$。$\square$
+\end{solution}
 
 \begin{exercise}{1-4, 8* — do Carmo, Exercise 1-4, 8}
 Prove that the distance $\rho$ between the nonparallel lines
@@ -791,13 +825,31 @@ is given by
 where $u = (u_1, u_2, u_3)$, $v = (v_1, v_2, v_3)$, $r = (x_0 - x_1, y_0 - y_1, z_0 - z_1)$.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：两异面直线间的距离等于连接它们的公垂线段的长度。该公垂线与 $u\times v$ 平行，而 $|(u\times v)\cdot r|$ 是以 $u,v,r$ 为棱的平行六面体体积，除以底面积 $|u\times v|$ 即得高（即距离）。
+
+\textbf{证明}：设 $d = \frac{|(u\times v)\cdot r|}{|u\times v|}$。由于 $u\times v$ 同时垂直于两直线的方向向量，$d$ 正是公垂线段的长度，即两直线间的距离。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 9 — do Carmo, Exercise 1-4, 9}
 Determine the angle of intersection of the plane $3x + 4y + 7z + 8 = 0$ and the line $x - 2 = 3t$, $y - 3 = 5t$, $z - 5 = 9t$.
 \end{exercise}
 
+\begin{solution}
+平面法向量 $n = (3,4,7)$，直线方向向量 $u = (3,5,9)$。直线与平面夹角 $\theta$（直线与平面法线的夹角为 $\pi/2-\theta$）满足
+\[
+\sin\theta = \frac{|n \cdot u|}{|n||u|} = \frac{|9+20+63|}{\sqrt{9+16+49}\sqrt{9+25+81}} = \frac{92}{\sqrt{74}\sqrt{115}}.
+\]
+故 $\theta = \arcsin\left(\frac{92}{\sqrt{8510}}\right)$。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 10 — do Carmo, Exercise 1-4, 10}
 The natural orientation of $\mathbb{R}^2$ makes it possible to associate a sign to the area $A$ of a parallelogram generated by two linearly independent vectors $u, v \in \mathbb{R}^2$. Show that $A^2 = \left| \begin{smallmatrix} u_1 & u_2 \\ v_1 & v_2 \end{smallmatrix} \right|^2$.
-\end{exercise}
+\end{solution}
+
+\begin{solution}
+平行四边形面积为 $|u||v|\sin\theta = |u_1v_2-u_2v_1| = \left|\det\begin{pmatrix}u_1&u_2\\v_1&v_2\end{pmatrix}\right|$，故 $A^2 = (\det)^2$。$\square$
+\end{solution}
 
 \begin{exercise}{1-4, 11 — do Carmo, Exercise 1-4, 11}
 \begin{enumerate}
@@ -813,9 +865,21 @@ w \cdot u & w \cdot v & w \cdot w
 \end{enumerate}
 \end{exercise}
 
+\begin{solution}
+\textbf{（a）}：以 $u,v$ 为边的平行四边形面积为 $|u\times v|$，$w$ 在该法向量方向的分量之绝对值为 $\frac{|(u\times v)\cdot w|}{|u\times v|}$，故平行六面体体积 $V = |u\times v| \cdot \frac{|(u\times v)\cdot w|}{|u\times v|} = |(u\times v)\cdot w|$。定向体积为 $(u\times v)\cdot w$。
+
+\textbf{（b）}：由行列式的性质，$V^2 = \det(G)$，其中 $G$ 为 Gram 矩阵，即 $V^2 = \det\begin{pmatrix}u\cdot u&u\cdot v&u\cdot w\\ v\cdot u&v\cdot v&v\cdot w\\ w\cdot u&w\cdot v&w\cdot w\end{pmatrix}$。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 12 — do Carmo, Exercise 1-4, 12}
 Given the vectors $v \neq 0$ and $w$, show that there exists a vector $u$ such that $u \wedge v = w$ if and only if $v$ is perpendicular to $w$. Is this vector $u$ uniquely determined? If not, what is the most general solution?
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：叉积 $u\times v$ 的结果必与 $v$ 垂直，因此若 $u\times v = w$，则 $w$ 必与 $v$ 垂直。反之，若 $w\perp v$，可取 $u$ 使得 $u\times v = w$。
+
+\textbf{证明}：必要性由叉积定义直接得出。若 $w\perp v$，令 $u_0 = \frac{w\times v}{|v|^2}$，则 $u_0\times v = w$。一般解为 $u = u_0 + \lambda v$（$\lambda\in\mathbb{R}$），因为 $(u_0+\lambda v)\times v = u_0\times v + \lambda(v\times v) = w$。$\square$
+\end{solution}
 
 \begin{exercise}{1-4, 13 — do Carmo, Exercise 1-4, 13}
 Let $u(t) = (u_1(t), u_2(t), u_3(t))$ and $v(t) = (v_1(t), v_2(t), v_3(t))$ be differentiable maps from the interval $(a, b)$ into $\mathbb{R}^3$. If the derivatives $u'(t)$ and $v'(t)$ satisfy the conditions
@@ -825,9 +889,21 @@ u'(t) = a u(t) + b v(t), \quad v'(t) = c u(t) - a v(t),
 where $a, b$, and $c$ are constants, show that $u(t) \wedge v(t)$ is a constant vector.
 \end{exercise}
 
+\begin{solution}
+计算
+\[
+\frac{d}{dt}(u \times v) = u' \times v + u \times v' = (au+bv)\times v + u \times (cv-av) = a(u\times v) + b(v\times v) + c(u\times u) - a(u\times v) = 0.
+\]
+故 $u(t)\times v(t)$ 为常向量。$\square$
+\end{solution}
+
 \begin{exercise}{1-4, 14 — do Carmo, Exercise 1-4, 14}
 Find all unit vectors which are perpendicular to the vector $(2, 2, 1)$ and parallel to the plane determined by the points $(0, 0, 0)$, $(1, -2, 1)$, $(-1, 1, 1)$.
 \end{exercise}
+
+\begin{solution}
+平面由原点、$(1,-2,1)$、$(-1,1,1)$ 决定，其法向量为 $(1,-2,1)\times(-1,1,1) = (-3,-2,-1)$。所求单位向量 $u$ 需满足 $u\cdot(2,2,1)=0$（垂直于 $(2,2,1)$）且 $u\cdot(-3,-2,-1)=0$（平行于平面，即垂直于平面法向量）。解联立方程得 $u = \pm\frac{1}{\sqrt{5}}(1,-2,0)$。$\square$
+\end{solution}
 
 % ==================== Section 1-5: The Local Theory of Curves ====================
 \section{The Local Theory of Curves Parametrized by Arc Length}\label{sec:local-theory-ch1}
