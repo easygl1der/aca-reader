@@ -554,6 +554,47 @@ Geometrically, $l(\alpha, P)$ is the length of a polygon inscribed in $\alpha([a
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：弱切线只要求从固定点到动点连线的极限位置存在；强切线则要求任意两点连线的极限位置存在。$\alpha(t) = (t^3, t^2)$ 在 $t=0$ 处的弱切线存在（$y$ 轴），但强切线不存在。
+
+\textbf{解答}：
+
+\textbf{（a）}：对 $\alpha(t) = (t^3, t^2)$，从 $\alpha(0)$ 到 $\alpha(h)$ 的割线斜率为 $\frac{h^2}{h^3} = \frac{1}{h} \to \infty$（$h \to 0$），故弱切线趋向 $y$ 轴。但对强切线，$\alpha(h)$ 与 $\alpha(k)$ 之间的斜率为 $\frac{k^2 - h^2}{k^3 - h^3} = \frac{k+h}{k^2 + kh + h^2}$，该值依赖于 $h/k$ 的比值，故无唯一极限位置。
+
+\textbf{（b）}：若 $\alpha$ 在 $t_0$ 处 $C^1$ 且正则，则 $\alpha'(t_0) \neq 0$ 为切线方向。由连续性，当 $h, k \to 0$ 时，$\alpha(t_0+h)$ 与 $\alpha(t_0+k)$ 的连线方向趋近 $\alpha'(t_0)$，故强切线存在。
+
+\textbf{（c）}：曲线 $\alpha(t) = (t^2, t^2)$（$t \geq 0$）和 $\alpha(t) = (t^2, -t^2)$（$t \leq 0$）在 $t=0$ 处 $C^1$（左右导数均为 $(0,0)$），但 $C^2$ 不成立（左右二阶导数不同）。$\square$
+\end{solution}
+
+\begin{exercise}{1-3, 8* — do Carmo, Exercise 1-3, 8}
+Let $\alpha: I \to \mathbb{R}^3$ be a differentiable curve and let $[a, b] \subset I$ be a closed interval. For every partition
+\[
+a = t_0 < t_1 < \dots < t_n = b
+\]
+of $[a, b]$, consider the sum $\sum_{i=1}^n |\alpha(t_i) - \alpha(t_{i-1})| = l(\alpha, P)$, where $P$ stands for the given partition. The norm $|P|$ of a partition $P$ is defined as
+\[
+|P| = \max(t_i - t_{i-1}), \quad i = 1, \dots, n.
+\]
+Geometrically, $l(\alpha, P)$ is the length of a polygon inscribed in $\alpha([a, b])$ with vertices in $\alpha(t_i)$. Prove that given $\epsilon > 0$ there exists $\delta > 0$ such that if $|P| < \delta$ then
+\[
+\left| \int_a^b |\alpha'(t)| dt - l(\alpha, P) \right| < \epsilon.
+\]
+\end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：这给出了弧长公式的严格证明。弧长定义为内接多边形长度的上确界。
+
+\textbf{证明}：由微分学基本定理，对每个小区间 $[t_{i-1}, t_i]$，存在 $\xi_i \in (t_{i-1}, t_i)$ 使得
+\[
+|\alpha(t_i) - \alpha(t_{i-1})| = |\alpha'(\xi_i)|(t_i - t_{i-1}).
+\]
+故
+\[
+l(\alpha, P) = \sum_{i=1}^n |\alpha'(\xi_i)|(t_i - t_{i-1}).
+\]
+当 $|P| \to 0$ 时，该 Riemann 和趋近于 $\int_a^b |\alpha'(t)|\, dt$。$\square$
+\end{solution}
+
 \begin{exercise}{1-3, 9 — do Carmo, Exercise 1-3, 9}
 \begin{enumerate}
 \item[a.] Let $\alpha: I \to \mathbb{R}^3$ be a curve of class $C^0$. Use the approximation by polygons described in Exercise 8 to give a reasonable definition of arc length of $\alpha$.
