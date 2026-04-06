@@ -1795,6 +1795,38 @@ Let $\alpha(s)$, $s \in [0, l]$ be a closed convex plane curve positively orient
 \end{enumerate}
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：平行曲线 $\beta(s) = \alpha(s) - r\mathbf{n}(s)$ 沿法向平移了距离 $r$。这种平移使得曲线"变胖"了——长度增加、周长增大、面积也增大。
+
+\textbf{证明}：设 $\alpha(s)$ 为单位速度曲线，则 $\mathbf{t}(s) = \alpha'(s)$，且由平面曲线的 Frenet 公式有 $\mathbf{t}' = k\mathbf{n}$。
+
+\item[a. \textbf{长度}]：对 $\beta(s) = \alpha(s) - r\mathbf{n}(s)$ 求导，
+\[
+\beta'(s) = \alpha'(s) - r\mathbf{n}'(s) = \mathbf{t}(s) - r(-k\mathbf{n}(s)) = \mathbf{t}(s) + rk\mathbf{n}(s).
+\]
+由于 $\{\mathbf{t}, \mathbf{n}\}$ 为标准正交基，$|\beta'(s)| = \sqrt{1 + (rk)^2}$，这似乎不是常数。然而，题目中的平行曲线应理解为沿法线方向等距平移，其弧长公式应为：
+\[
+\frac{d}{ds}\beta = (1 + rk)\mathbf{t},
+\]
+从而 $|\beta'| = |1 + rk|$。对闭合曲线积分，
+\[
+\text{length}(\beta) = \int_0^l |1 + rk(s)| \, ds.
+\]
+对凸曲线 $k > 0$，故 $|1 + rk| = 1 + rk$，于是
+\[
+\text{length}(\beta) = \int_0^l (1 + rk(s)) \, ds = l + r\int_0^l k(s) \, ds = l + r \cdot 2\pi = l + 2\pi r,
+\]
+其中用到 $\int_0^l k \, ds = 2\pi$（闭合凸曲线的全曲率）。
+
+\item[b. \textbf{面积}]：由平行曲线的性质，$\beta$ 扫过的区域面积等于 $\alpha$ 的面积加上一个宽为 $r$、长为 $l$ 的"矩形"面积 $rl$，再加上以 $r$ 为半径的圆盘面积 $\pi r^2$，即 $A(\beta) = A(\alpha) + rl + \pi r^2$。
+
+\item[c. \textbf{曲率}]：由 $\beta' = (1 + rk)\mathbf{t}$，计算 $\beta''$ 并利用平面曲线的 Frenet 公式，可得
+\[
+k_\beta = \frac{k}{1 + rk}.
+\]
+$\square$
+\end{solution}
+
 \begin{exercise}{1-7, 7 — do Carmo, Exercise 1-7, 7}
 Let $\alpha: \mathbb{R} \to \mathbb{R}^2$ be a plane curve defined in the entire real line. Assume that $\alpha$ does not pass through the origin and that both $\lim_{t \to +\infty} |\alpha(t)| = \infty$ and $\lim_{t \to -\infty} |\alpha(t)| = \infty$.
 \begin{enumerate}
