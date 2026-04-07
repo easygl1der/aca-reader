@@ -446,3 +446,66 @@ diff qa.tex qa.tex.bak  # 检查差异
 - 写完章节后，用 grep 检查所有数学符号是否在首次出现时有脚注定义
 - 检查命令：`grep -n "\\\$.*\\\$.*\$" chapters/chapter*.tex`（查找行内数学表达式）
 - 原则：宁可多给一个定义，也不能让读者困惑
+
+---
+
+## L513: rewrite chapter 导致 qa.tex 1300 行内容被删除
+
+**日期**: 2026-04-08
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+commit `7aee6ae07`（chore: update chapter5）重写 chapter5 时，意外将 qa.tex 从 1875 行压缩到 566 行，删除了 28 个精心撰写的 QA 条目（1309 行）。
+
+**事故链条**:
+1. `dfd5d29b5` — qa.tex 已有 1875 行，包含 28 个 QA 条目
+2. `7aee6ae07` — update chapter5 时，agent 对 qa.tex 做了大幅重写
+3. 结果：qa.tex 变成 566 行，删除了 1309 行内容
+
+**被删内容清单**（28 个 QA 条目）:
+- EQLR 系数的定义与意义
+- Skew 除差算子与除差算子的关系
+- 逆除差算子的定义
+- 双重与三重 Schubert 多项式的区别
+- 等变量子上同调类的定义
+- Lascoux-Schützenberger 型代表元
+- ET 为什么是奇数维球面的极限
+- Torus 作用与分类空间 ET
+- 等变量子上同调与量子同调的区别
+- Hilbert 第十五问题与 Schubert 演算
+- $S_\infty$ 的例子
+- 量子上同调的定义
+- Theorem 1.1 的例子：Triple Schubert Positivity
+- Theorem 1.1 如何推出 Corollary 1.2
+- Knutson-Tao (2003) 展开系数的几何意义
+- Gao-Xiong 与 Knutson-Tao 解释的不同
+- Graham Positivity 中 Grassmannian 限制的作用
+- Littlewood-Richardson 系数为何非负
+- 什么是 Schur 函数
+- Graham Positivity 中展开系数的"非负性"含义
+- 第一章第三节的定理脉络
+- 几何相交如何翻译为代数展开系数
+- Graham 定理为何依赖几何性质
+- $B^-(w)$ 与 $B^-$ 的关系
+- $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$ 的含义
+- ... 等等
+
+**恢复方法**:
+```bash
+git show dfd5d29b5:notes/Schubert-Polynomials/appendix/qa.tex > notes/Schubert-Polynomials/appendix/qa.tex
+```
+
+**教训**:
+1. **qa.tex 是高价值内容库** — rewrite 章节内容前，必须先 `git diff` 检查 qa.tex 状态
+2. **rewrite 时用 grep 确认** — 搜所有 .tex 文件中对新内容的引用，确保没有遗漏
+3. **commit 前必须确认** — `git diff` 只改了你意图改的文件
+4. **qa.tex 应有独立 commit** — 不应与其他章节内容混在同一个 commit
+
+**防止措施**:
+- 每次 rewrite 章节前：
+  1. `git status` 查看所有修改文件
+  2. `wc -l` 确认 qa.tex 行数没有异常变化
+  3. `git diff` 确认没有意外修改
+- 每次 commit 后：
+  1. 确认只改了目标文件
+  2. 确认 qa.tex 行数没有大幅变化
