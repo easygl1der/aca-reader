@@ -1873,3 +1873,174 @@ $$\Lambda[q] = \mathbb{Z}[q_1, q_2, \dots, q_n] / \text{(relation)}$$
 \item \textbf{等变量子上同调语境}：在 equivariant quantum cohomology 中，$q$ 对应 equivariant parameter。Λ[q] 是配备 $\lambda_q$ 运算的分次交换环，是 Λ-环（λ-ring）的 q-变形。
 \end{enumerate}
 
+
+\section{ET 分类空间的直觉理解}\label{sec:ETIntuition}
+\subsection{问题}
+ET 分类空间有什么直觉理解？
+
+\subsection{回答}
+\textbf{ET 的拓扑构造}：
+$T$ 的分类空间（Classifying space）$ET$ 的定义：一个拓扑空间 $X$，配备连续的 $T$ 作用，满足：
+\begin{enumerate}
+\item $X$ 是**可缩的**（$\pi_i(X) = 0$ for all $i \geq 1$）
+\item $T$ 在 $X$ 上的作用是**自由的**（$t \cdot x = x \implies t = e$）
+\end{enumerate}
+
+\textbf{为什么叫"分类空间"}：任何自由 $T$ 空间 $E$ 都是某个唯一确定的 $T$-映射 $E \to ET$ 的纤维——这正是"万有分类"的意义。
+
+\textbf{直观理解}：从几何上看，$ET$ 可以理解为所有主 $T$ 丛的"通用族"。对于紧致 Lie 群 $T$，$ET$ 可以具体构造为 $S^\infty$ 的无穷维球面塔：
+$$ET = \bigcup_{n \to \infty} S^{2n-1}$$
+其中 $T = S^1$ 作用在 $S^{2n-1}$ 上以对角方式。对于高维 torus $T \cong (S^1)^r$，$ET = (S^\infty)^r$。
+
+\textbf{ET 作为无穷维球面的极限}：注意 $S^{2n-1}$ 是 $2n-1$ 维（奇数维）球面。当 $n \to \infty$ 时，我们得到 $S^\infty$，它在拓扑上可缩——这正是极限的妙处：有限维时我们得到的是非平凡的流形，无穷维时却收缩成一点。
+
+\textbf{等变上同调中的角色}：在等变上同调 $H_T^*(X)$ 的定义中，$ET$ 扮演着"坐标环"的角色——
+$$H_T^*(X) = H^*(X \times_T ET)$$
+其中 $X \times_T ET = (X \times ET)/T$ 是扭积（twisted product）。
+
+\section{为何限制到 $\mathrm{GL}_m(\mathbb{C})$}\label{sec:WhyGLm}
+\subsection{问题}
+在证明 Schubert 多项式 positivity 时，为什么可以将一般约化群 $G$ 限制到 $G = \mathrm{GL}_m(\mathbb{C})$？
+
+\subsection{回答}
+\textbf{归约技术的底层逻辑}：
+\begin{enumerate}
+\item \textbf{嵌入保持胞腔结构}：
+任何约化群 $G$ 都可以嵌入到某个 $\mathrm{GL}_m(\mathbb{C})$ 中，嵌入是单的且是代数群态射。旗流形 $G/P$ 通过此嵌入嵌入到 $\mathrm{GL}_m/P'$ 中，Schubert 胞腔的闭包关系被保持：
+$$\overline{B^-\pi B/P} \subseteq \overline{B^-\sigma B/P} \iff \overline{B^-\pi B/P'} \subseteq \overline{B^-\sigma B/P'}$$
+
+\item \textbf{多项式代表元的函子性}：
+由 \cite[ Theorem 10.6.4]{anderson2023}，类 $[\overline{B^-\pi B/B}]_T$ 由双重 Schubert 多项式 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{t})$ 表示。当限制到 $\mathrm{GL}_m$ 时，这个代表元关系保持。
+
+\item \textbf{Positivity 的稳健性}：
+Graham positivity 猜想涉及 Schubert 多项式展开系数的非负性。这个性质在嵌入下保持——如果一般群的情形有 positivity，则其 $\mathrm{GL}_m$ 实现也有 positivity；反之如果 $\mathrm{GL}_m$ 情形有 negativity，通过嵌入的逆映射可以构造反例。
+\end{enumerate}
+
+\textbf{技术便利性}：$\mathrm{GL}_m(\mathbb{C})$ 有明确的多项式基（Schubert 多项式），而一般约化群没有这么好的多项式代表元系统。
+
+\section{Gromov-Witten 不变量的物理起源}\label{sec:GW-physics-origin}
+\subsection{问题}
+Gromov-Witten 不变量最初是如何从物理中推导出来的？A-model 和 B-model 是什么？
+
+\subsection{回答}
+\textbf{物理背景}：
+Gromov-Witten 不变量最初来自 1990 年代物理学家对拓扑场论（Topological Field Theory, TFT）的研究。在弦论中，紧化到一个卡勒流形的Compactification会产生一个2D共形场论（CFT）。
+
+\textbf{A-model vs B-model}：
+\begin{itemize}
+\item \textbf{A-model}（拓扑 σ-模型）：依赖辛结构（symplectic structure）。可观测量是 $TT^*$ 型的上同调类。配分函数定义为
+$$Z_A(q) = \sum_{d \in H_2(X,\mathbb{Z})} q^d \int_{[\overline{\mathcal{M}}_{g,n}(X,\beta)]^{\text{virt}}} 1$$
+\item \textbf{B-model}（拓扑 σ-模型）：依赖复结构（complex structure）。可观测量是 $(p,q)$ 型的超荷闭链。
+\end{itemize}
+
+\textbf{GW 不变量的物理起源}：
+Witten 在 1990 年代初期提出，AJ 猜想（Asymptotic Jacobian）将模空间上的相交数与某种规范理论的配分函数联系起来。Gromov 和 Witten 的关键贡献是：将模空间 $\overline{\mathcal{M}}_{g,n}(X,\beta)$ 的虚拟基本类（virtual fundamental class）用于定义不变量，从而在数学上严格化了物理直觉。
+
+\textbf{与 Schubert 演算的联系}：
+在旗流形 $G/P$ 中，GW 不变量恰好编码了量子上同调环的结构常数：
+$$\sigma(u) \cup_q \sigma(v) = \sum_w \text{GW}_{u,v}^w \cdot \sigma(w)$$
+其中 $\sigma(w)$ 是 Schubert 类，$\cup_q$ 是量子乘积。
+
+\section{量子 Cauchy 恒等式的物理起源}\label{sec:cauchy-physics-origin}
+\subsection{问题}
+量子 Cauchy 恒等式在数学物理中有什么深刻根源？
+
+\subsection{回答}
+\textbf{拓扑场论对偶性}：
+量子 Cauchy 恒等式
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{y}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
+在数学物理中源于 \textbf{AGT 对偶性}（Alday-Gaiotto-Tachikawa correspondence）。
+
+\textbf{关键洞察}：
+这个恒等式可以理解为某种配分函数的对偶性：左边是 $(\mathbf{x}, \mathbf{y})$ 域中两个一级因子的积，右边是在中间变量 $\mathbf{y}$ 上求和后的结果——这正是矩阵模型中著名的 Cauchy 公式的量子变形。
+
+\textbf{与几何 Langlands 的联系}：
+在数学物理的更深刻框架下，量子 Schubert 恒等式与 \textbf{几何 Langlands 纲领}有深层联系。量子参数 $q$ 对应于 Langlands 对偶群 ${}^L G$ 的某个表示参数，而 Cauchy 恒等式编码了这种对偶性下的"层交换"（sheaf exchange）。
+
+\section{Kirillov-Maeno 1996 工作的背景}\label{sec:KM1996-background}
+\subsection{问题}
+Kirillov-Maeno 1996 年的工作背景及其与先前工作的关系是什么？
+
+\subsection{回答}
+\textbf{历史脉络}：
+\begin{enumerate}
+\item \textbf{Lascoux-Schützenberger (1980s)}：首次引入 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 作为旗流形上上同调类的代表元，建立了胞腔分解与多项式之间的对应。
+
+\item \textbf{Kirillov-Maeno (1996)}：Kirillov 和 Maeno 在 \cite{KM1996} 中引入了\textbf{量子双重 Schubert 多项式} $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$，这是对 Lascoux-Schützenberger 多项式的量子变形。他们的动机是：
+  \begin{itemize}
+  \item 将 Schubert 演算推广到\textbf{量子上同调}的框架
+  \item 研究旗流形 $G/B$ 的等变量子乘积结构
+  \item 探索多项式代表元在量子修正下的行为
+  \end{itemize}
+  
+\item \textbf{关键创新}：引入第三组变量 $\mathbf{q}$（量子参数），使得多项式可以同时编码经典上同调和量子修正两部分信息。
+\end{enumerate}
+
+\textbf{与本文的关系}：
+本文第三章介绍 Kirillov-Maeno 的工作，作为进入量子 Schubert 演算的入门框架。他们的多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x}; \mathbf{y}; \mathbf{q})$ 是理解 Buch, Mihalcea 等人后续工作的基础。
+
+\section{Molev-Sagan 公式的历史脉络}\label{sec:molev-sagan-history}
+\subsection{问题}
+Molev 和 Sagan 的原始工作是什么？他们的公式与 Samuel 2024 年的推广有什么关系？
+
+\subsection{回答}
+\textbf{历史背景}：
+Molev 和 Sagan 在 1990 年代末期研究了 Grassmannian 情形（即 $u, v$ 都是 Grassmannian 排列）的展开系数公式。他们的核心贡献是揭示了一个美妙的\textbf{组合结构}：系数可以理解为某种路径计数（path counting）。
+
+\textbf{Molev-Sagan 公式（Grassmannian 情形）}：
+对于 Grassmannian 排列 $u, v$，有
+$$c^w_{u,v} = \sum_{\pi} \#\{\text{满足特定条件的东北路径}\}$$
+其中路径计数发生在特定的格状区域（lattice path）。这与经典的 Littlewood-Richardson 规则有深刻的联系。
+
+\textbf{Samuel 2024 年的推广}（见 \cite{Sa2024}）：
+Samuel 将 Molev-Sagan 的路径计数公式推广到了**一般旗流形**情形（即 $u, v$ 不限于 Grassmannian 排列）。这一定理的证明依赖于：
+\begin{enumerate}
+\item 对偶 Chevalley 公式（Dual Chevalley formula）
+\item 组合表示论中的甬道模型（gallery model）
+\item 等变量子上同调的Localization技术
+\end{enumerate}
+
+\textbf{关系总结}：
+Molev-Sagan (1990s) $\xrightarrow{\text{路径计数解释}}$ Samuel (2024) $\xrightarrow{\text{本文 Theorem 1.1}}$ 三重 Schubert Positivity
+
+\section{量子上同调的历史发展}\label{sec:quantum-cohomology-history}
+\subsection{问题}
+量子上同调是如何发展起来的？各数学家贡献的顺序和相互关系是什么？
+
+\subsection{回答}
+\textbf{发展时间线}：
+\begin{enumerate}
+\item \textbf{1995-1997: 开创期}
+  \begin{itemize}
+  \item Givental 引入量子上同调环的公理化定义
+  \item Kim 将量子上同调与镜面对称联系起来
+  \item Ciocan-Fontanine 确定了一般旗流形的量子乘积结构
+  \end{itemize}
+
+\item \textbf{1998-2002: 成熟期}
+  \begin{itemize}
+  \item P Sharpe, Ruan 等人发展了orbifold量子上同调
+  \item Buch, Mihalcea 分别独立证明了量子 Schubert calculus 的 positivity
+  \item Kontsevich 的扭结不变量与GW不变量建立了深层联系
+  \end{itemize}
+
+\item \textbf{2003-至今: 精密化期}
+  \begin{itemize}
+  \item Knutson-Tao 的帐篷公式（tent formula）给出了结构常数的组合描述
+  \item Graham positivity 定理将问题提升到等变量子上同调层面
+  \item Anderson-Fulton 的工作建立了等变量子上同调的统一框架
+  \item Gao-Xiong (2025) 将 positivity 推广到三重情形
+  \end{itemize}
+\end{enumerate}
+
+\textbf{核心人物关系图}：
+Givental $\rightarrow$ Kim $\rightarrow$ Ciocan-Fontanine（旗流形量子上同调）
+
+Buch $\leftrightarrow$ Mihalcea（独立发现量子Positivity）
+
+Knutson-Tao $\rightarrow$ Graham $\rightarrow$ Anderson-Fulton（等变量子框架）
+
+$\rightarrow$ Gao-Xiong (2025)（三重推广）
+
+\APPENDIX_EOF
+echo "Done - appended 8 sections"
