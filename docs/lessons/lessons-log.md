@@ -143,3 +143,36 @@ The proof follows the strategy of Gao--Xiong \cite[Section 2]{GX2025}\footnote{�
 - [ ] 检查 Lemma 2.5 是否在笔记中有对应位置
 - [ ] 检查 moment graph 相关定义是否有 label
 - [ ] 检查其他章节是否有类似需要补充双引用的情况
+
+---
+
+## 2026-04-08: rewrite chapter 导致 qa.tex 1300 行内容被删除
+
+**问题**：commit `7aee6ae07`（chore: update chapter5）重写 chapter5 时，意外删除了 qa.tex 的 28 个 QA 条目（从 1875 行骤降到 566 行）。
+
+**事故链条**：
+1. `dfd5d29b5` — qa.tex 已有 1875 行，包含 28 个精心撰写的 QA 条目
+2. `7aee6ae07` — update chapter5 时，agent 对 qa.tex 做了大幅重写/替换
+3. 结果：qa.tex 变成 566 行，删除了 1309 行内容，包括：
+   - EQLR 系数定义与意义
+   - Skew 除差算子与除差算子的关系
+   - 逆除差算子的定义
+   - 双重与三重 Schubert 多项式的区别
+   - 等变量子上同调类的定义
+   - Hilbert 第十五问题与 Schubert 演算
+   - 量子上同调的定义
+   - Theorem 1.1 的例子：Triple Schubert Positivity
+   - Knutson-Tao (2003) 展开系数的几何意义
+   - Graham Positivity 中 Grassmannian 限制的作用
+   - Littlewood-Richardson 系数为何非负
+   - ... 共 28 个条目
+
+**恢复方法**：`git show dfd5d29b5:notes/Schubert-Polynomials/appendix/qa.tex > notes/Schubert-Polynomials/appendix/qa.tex`
+
+**Root cause**：agent 在 rewrite 一个章节时，没有意识到 qa.tex 也在被同时处理，且没有检查 qa.tex 是否有未提交的宝贵内容。
+
+**教训**：
+1. **qa.tex 是高价值内容库** — 每次 rewrite 章节内容前，必须先检查 qa.tex 是否有相关的新内容
+2. **rewrite 时要 grep 检查** — 搜所有 .tex 文件中是否有对新内容的引用，确保没有遗漏
+3. **commit 前用 `git diff` 确认** — 确认只改了你意图改的文件，没有意外副作用
+4. **qa.tex 应该有独立的 commit** — 不应与其他章节内容混在同一个 commit 里
