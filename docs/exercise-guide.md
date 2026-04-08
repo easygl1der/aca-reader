@@ -35,31 +35,86 @@
 
 ---
 
-## 二、支持的教材模板
+## 二、教材模板识别（优先级流程）
 
-| 模板 | 教材示例 | 习题环境 | 标题格式 | 内容语言 |
+**核心原则**：先识别当前笔记 LaTeX 中**已定义的 exercise 环境**，再决定使用哪个。
+
+### 识别流程
+
+```
+Step 1: 读取笔记的 LaTeX 主文件或 chapter 文件
+        ↓
+Step 2: 搜索 \begin{exercise} 或 \begin{Exercise}
+        ↓
+        ├─ 找到 \begin{exercise}（小写）
+        │   → 使用 exercise 环境（小写）
+        │
+        ├─ 找到 \begin{Exercise}（大写）
+        │   → 使用 Exercise 环境（大写）
+        │
+        └─ 都没找到
+            ↓
+Step 3: 检查 documentclass 和宏包定义
+        ├─ book 类 + 无特殊定义 → Exercise（大写）
+        └─ article 类 + 无特殊定义 → Exercise（大写）
+```
+
+### 支持的教材模板
+
+| 教材 | 笔记位置 | 习题环境 | 标题格式 | 内容语言 |
 |------|----------|----------|----------|----------|
-| **do Carmo** | 微分几何 | `exercise` | `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}` | 英文原文 |
-| **Peng Ding** | 因果推断 | `Exercise` | `{\ref{标签} 英文标题}` | 中文描述 + `\eqref{}` 引用 |
-| **通用** | 其他教材 | `Exercise` | `{\ref{标签} 英文标题}` | 中文或英文 |
+| **do Carmo** | `notes/differential-geometry/do-carmo-curves-surfaces/` | `exercise`（小写） | `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}` | 英文原文 |
+| **Peng Ding** | `notes/A-First-Course-in-Causal-Inference/` | `Exercise`（大写） | `{\ref{标签} 英文标题}` | 中文描述 + `\eqref{}` 引用 |
+| **其他教材** | 先检查笔记 LaTeX | **由笔记定义决定** | 同上 | 由笔记决定 |
+
+**重要**：不要假设"其他教材都用大写 Exercise"。必须先读笔记 LaTeX，看它定义了哪个环境。
+
+### 正确 vs 错误做法
+
+```latex
+% ❌ 错误：按目录名假设模板
+notes/differential-geometry/ → exercise
+notes/A-First-Course/ → Exercise
+notes/其他/ → Exercise  % 不要这样假设！
+
+% ✅ 正确：先读笔记 LaTeX 中的实际定义
+% 读取 notes/其他教材/chapters/chapterX.tex
+% 搜索 \begin{exercise} 或 \begin{Exercise}
+% 使用笔记实际定义的环境
+```
 
 ---
 
-## 三、模板判断流程
+## 三、环境判断决策树
 
 ```
-1. 读取目标 .tex 文件
-2. 检查 \begin{exercise} 是否存在
-   → 存在 → do Carmo 模板，用 exercise（小写）
-   → 不存在 → 检查 documentclass
-3. 默认用 Exercise（大写，首字母大写）
-```
-
-**按目录判断是错误的**：
-```latex
-% 错误！
-notes/differential-geometry/do-carmo-*/ → exercise
-notes/A-First-Course-in-Causal-Inference/ → Exercise
+                    ┌─────────────────────────┐
+                    │ 读取笔记 LaTeX 文件      │
+                    └───────────┬─────────────┘
+                                ↓
+              ┌───────────────────────────────┐
+              │ \begin{exercise} 存在？        │
+              └───────────────┬───────────────┘
+                    ┌─────────┴─────────┐
+                    ↓                   ↓
+                   是                  否
+                    ↓                   ↓
+              ┌─────────┐    ┌──────────────────────┐
+              │exercise │    │ \begin{Exercise} 存在？│
+              │(小写)   │    └──────────┬───────────┘
+              └─────────┘       ┌────────┴────────┐
+                                 ↓                 ↓
+                                是                否
+                                 ↓                 ↓
+                          ┌──────────┐    ┌───────────────────┐
+                          │Exercise  │    │检查 documentclass │
+                          │(大写)    │    │和宏包定义         │
+                          └──────────┘    └─────────┬─────────┘
+                                          ┌─────────┴─────────┐
+                                          ↓                   ↓
+                                      有定义              无定义
+                                          ↓                   ↓
+                                    用定义的           用 Exercise(大写)
 ```
 
 ---
