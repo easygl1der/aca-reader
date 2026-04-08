@@ -231,9 +231,57 @@ Here $I(w) = \{\alpha \in \Phi^+ \mid w^{-1}\alpha \in \Phi^-\}$ is the (left) i
 When $w = w_0$ (the longest element), $B^-(w_0) = T$ and \cref{th:RefinedGrahamPositivity} recovers Graham's original positivity theorem \cite[Theorem 3.2]{Gr}. The refined version yields stronger results when $B^-(w)$ is larger than $T$, as the root set is restricted to $I(w)$ rather than all positive roots.
 \end{Remark}
 
+\section{Grothendieck Polynomials: Definition}
+
+Grothendieck polynomials are $K$-theoretic generalizations of Schubert polynomials, arising from $K$-theory of flag varieties rather than cohomology. We follow the presentation of \cite{GX2025}.
+
+\begin{Definition}[Grothendieck polynomial]
+\label{def:GrothendieckPolynomial}
+The Grothendieck polynomial $\mathfrak{G}_w(\mathbf{x}; \mathbf{y}) \in \mathbb{Z}[\beta][x_1, \ldots, x_n; y_1, \ldots, y_n]$ for $w \in S_n$ is defined recursively by the \emph{divided difference operators} $\pi_i$ acting on the polynomial ring:
+
+\begin{enumerate}
+\item[(i)] For the longest element $w_0 \in S_n$:
+\[
+\mathfrak{G}_{w_0}(\mathbf{x}; \mathbf{y}) = \prod_{i+j \leq n} (x_i - y_j + \beta y_j);
+\]
+
+\item[(ii)] For any $w \in S_n$ and simple reflection $s_i$:
+\[
+\mathfrak{G}_{ws_i}(\mathbf{x}; \mathbf{y}) = \mathfrak{G}_w(\mathbf{x}; \mathbf{y}) \cdot \frac{x_i - y_{w(i)} + \beta y_{w(i)}}{x_i - x_{w(i)}} - \beta \cdot \pi_i(\mathfrak{G}_w),
+\]
+where $\pi_i$ acts by
+\[
+\pi_i(f) = \frac{f - s_i(f)}{x_i - x_{w(i)}},
+\]
+and $s_i$ swaps $x_i$ and $x_{w(i)}$ while leaving other variables fixed.
+\end{enumerate}
+\end{Definition}
+
+The parameter $\beta$ is a formal deformation parameter; setting $\beta = 0$ recovers the usual (double) Schubert polynomial:
+\[
+\mathfrak{G}_w(\mathbf{x}; \mathbf{y})\big|_{\beta=0} = \mathfrak{S}_w(\mathbf{x}; \mathbf{y}).
+\]
+
+The operator $\ominus$ appearing in the positivity conjecture is defined as:
+\[
+a \ominus b := \frac{a - b}{1 + \beta b} = \frac{a}{1 + \beta b} - \frac{b}{1 + \beta b}.
+\]
+When $\beta = 0$, this reduces to ordinary subtraction $a - b$.
+
+\begin{Lemma}[Stability]
+\label{Lem:GrothendieckStability}
+The Grothendieck polynomials form a stable family: for $w \in S_n \subset S_{n+1}$, we have
+\[
+\mathfrak{G}_w^{(n+1)}(\mathbf{x}; \mathbf{y}) = \mathfrak{G}_w^{(n)}(\mathbf{x}; \mathbf{y}),
+\]
+where the superscript indicates the ambient symmetric group.
+\end{Lemma}
+
+This stability allows us to define $\mathfrak{G}_w$ for all $w \in S_\infty$ by stabilization.
+
 \section{Grothendieck Positivity Conjecture}
 
-Inspired by the positivity phenomenon for Schubert polynomials, Gao--Xiong propose an analogous conjecture for Grothendieck polynomials.
+Building on the positivity phenomenon for Schubert polynomials, Gao--Xiong propose an analogous conjecture for Grothendieck polynomials.
 
 \begin{Conjecture}[Grothendieck Positivity, {\cite[Conjecture 2.7]{GX2025}}]
 \label{conj:GrothendieckPositivity}
