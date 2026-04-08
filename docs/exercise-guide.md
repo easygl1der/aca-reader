@@ -521,24 +521,25 @@ grep -rn "\\\\tag{" notes/*/chapters/
 ## 八、工作流程
 
 ```
-1. 读取 Memory 文件
-   → docs/lessons/agents/exercise-expert-memory.md
-   → docs/lessons/agents/ALL-agents-memory.md
+1. 确定教材模板
+   → 读取目标 .tex 文件，搜索 \begin{exercise} 或 \begin{Exercise}
+   → 确定使用 exercise（小写）还是 Exercise（大写）
 
-2. 确定教材模板
-   → 读取目标 .tex 文件，判断模板类型
+2. 查找习题来源
+   → 优先下载 arXiv tex → 其次 tag 文件 → 最后 transcript markdown
 
-3. 查找习题来源
-   → 优先 tag 文件 → 其次 transcript
+3. 提取习题内容
+   → 从教材中识别并提取习题
+   → 注意识别硬编码引用：(X.Y)、Example X.Y、Figure X.Y 等
 
-4. 提取并格式化
+4. 格式化习题
    → 按模板格式生成 LaTeX
+   → 替换硬编码引用为 \cref{}/\eqref{}
+   → 如引用目标不存在，在教材中找到并添加到笔记中
 
 5. 质量校验
-   → 逐项检查清单
-
-6. 更新 Memory
-   → 记录重要决策和教训
+   → 逐项检查清单（见第六节）
+   → 编译验证
 ```
 
 ---
