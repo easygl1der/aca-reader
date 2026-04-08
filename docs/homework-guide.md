@@ -32,7 +32,7 @@ Part 3: 双格式输出（Obsidian + LaTeX）
 | 格式 | 存储位置 | 说明 |
 |------|----------|------|
 | **Obsidian** | Google Drive `/My Drive/homework/<课程名>/hw<N>.md` | Markdown + callout |
-| **LaTeX** | iCloud workflow `/homework/<学科>/homework-one.tex` 等 | .tex 格式 |
+| **LaTeX** | `homework/<学科>/homework-<N>.tex` | .tex 格式 |
 
 ### 输出文件命名
 

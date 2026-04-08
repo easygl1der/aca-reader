@@ -19,6 +19,7 @@ Before starting ANY task, you MUST execute the following in order:
    - `/Users/yueyh/Projects/aca-workflow/docs/note-taking-habits.md` — note-taking habits
    - `/Users/yueyh/Projects/aca-workflow/docs/latex-style.md` — LaTeX format specifications
    - `/Users/yueyh/Projects/aca-workflow/docs/exercise-guide.md` - Exercise extracting rules and writing format
+   - `/Users/yueyh/Projects/aca-workflow/docs/homework-guide.md` - Homework instructions (about how to do homework)
 
 2. **Read agent memory files**:
    - `/Users/yueyh/Projects/aca-workflow/docs/lessons/agents/ALL-agents-memory.md` — universal agent lessons
