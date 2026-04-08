@@ -374,7 +374,7 @@ Step 4: 按格式规范写入 homework
 
 ---
 
-## 七、Exercise 编号规范
+## 九、Exercise 编号规范
 
 ### 标签命名
 
