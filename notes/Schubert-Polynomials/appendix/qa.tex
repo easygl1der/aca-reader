@@ -2874,17 +2874,46 @@ $$\alpha \cup \beta = \alpha \smile \beta$$
 
 \textbf{例子}：在 $\overline{\mathcal{M}}_{0,3}$ 上，$[pt] \cup [pt] = [pt]$（维数相加：$0+0=0$）
 
-\subsection{等变量子 GW 不变量的两种等价公式}\label{sec:qa-eqc-gw-invariant}
-\textbf{问}：为什么 $c_{u,v}^{w,d} = \langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d}$？又为什么 $c_{u,v}^{w,d} = \pi_*^T\left((ev_1^T)^* \sigma(u)^T \cdot (ev_2^T)^* \sigma(v)^T \cdot (ev_3^T)^* \widetilde{\sigma}(w)^T\right)$？
+\subsection{The Two Equivalent Formulas for Equivariant Quantum GW Invariants}\label{sec:qa-eqc-gw-invariant}
 
-\textbf{答}：这两个公式是 $G/B$ 上等变量子量子上同调 Littlewood-Richardson 系数的等价表达。
+This section explains the relationship between equivariant quantum cohomology and Gromov-Witten invariants on the flag manifold $G/B$.
 
-\begin{enumerate}
-\item[\textbf{第一个公式}]：在小量子上同调中，乘积 $\sigma(u) \star \sigma(v) = \sum_{w,d} \langle \sigma(u), \sigma(v), \sigma(w) \rangle_{0,3,d} q^d \sigma(w^\vee)$ 定义了系数。通过 Bott-Samelson 对偶 $\widetilde{\sigma}(w) = \sigma(w^\vee)$ 得到等式。
+\textbf{The First Formula}
 
-\item[\textbf{第二个公式}]：这是 GW 不变量的等变推公式。评估映射 $ev_i^T: \overline{M}_{0,3}(G/B, d) \to G/B$ 拉回 Schubert 类，其积在虚拟基本类上积分（通过 $\pi_*^T$），得到相同的数。
-\end{enumerate}
+The equality
+$$c_{u,v}^{w,d} = \langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d}$$
+says that the (equivariant) quantum Littlewood-Richardson coefficient equals a 3-pointed, genus-0 Gromov-Witten invariant. Here:
+\begin{itemize}
+\item $c_{u,v}^{w,d}$ is the coefficient of $\sigma(w) q^d$ in the quantum product $\sigma(u) \star \sigma(v)$
+\item $\widetilde{\sigma}(w)$ denotes the dual Schubert class (often in the quantum cohomology context, $\widetilde{\sigma}$ indicates a class in $H^*_T(G/B)$)
+\item $\langle \cdot \rangle_{0,3,d}$ denotes GW invariants counting stable maps from genus-0 curves with 3 marked points of degree $d$
+\end{itemize}
 
-两者等价，因为模空间上的 GW 不变量定义通过分割公理（splitting axiom）化约为代数定义。
+\textbf{Why?} In the small quantum cohomology ring, the product is defined by:
+$$\sigma(u) \star \sigma(v) = \sum_{w,d} \langle \sigma(u), \sigma(v), \sigma(w) \rangle_{0,3,d} \, q^d \, \sigma(w^\vee)$$
 
-\textbf{参考文献}：\cite{Fulton's notes on quantum cohomology of flag manifolds}, \cite{Kim's quantum cohomology of G/B}。
+The identification $\widetilde{\sigma}(w) = \sigma(w^\vee)$ (Bott-Samelson resolution duality) gives the formula.
+
+\textbf{The Second Formula}
+
+The second formula:
+$$c_{u,v}^{w,d} = \pi_*^T\left((ev_1^T)^* \sigma(u)^T \cdot (ev_2^T)^* \sigma(v)^T \cdot (ev_3^T)^* \widetilde{\sigma}(w)^T\right)$$
+
+expresses the GW invariant as an equivariant pushforward of a product of equivariant pullbacks via evaluation maps. Specifically:
+\begin{itemize}
+\item $ev_i^T: \overline{M}_{0,3}(G/B, d) \to G/B$ are the evaluation maps (the $T$ denotes their equivariant version)
+\item $(ev_i^T)^*$ pulls back equivariant cohomology classes from $G/B$ to the moduli space
+\item The product is taken in $H_T^*(\overline{M}_{0,3}(G/B, d))$
+\item $\pi_*^T$ is the equivariant pushforward to a point (or equivalently, taking the degree-zero part / integrating over the virtual fundamental class)
+\end{itemize}
+
+This is the definition of the GW invariant in terms of equivariant cohomology --- it translates ``counting curves'' into integration on the moduli space.
+
+\textbf{The Bridge}
+
+The connection between the two is that the GW invariant can be computed as:
+$$\langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d} = \int_{[\overline{M}_{0,3}(G/B, d)]^{vir}} ev_1^* \sigma(u) \cup ev_2^* \sigma(v) \cup ev_3^* \widetilde{\sigma}(w)$$
+
+In the equivariant setting, this becomes the pushforward formula you cited.
+
+\textbf{References}: \cite{FultonQuntum1997}, \cite{Kim2000}.
