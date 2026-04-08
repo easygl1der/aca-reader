@@ -102,8 +102,8 @@ LaTeX:    homework-one.tex, homework-two.tex, ...
 ### 模板文件位置
 
 ```
-AkexStar: /tmp/LaTeX-Homework-Template/
-Jacky-Lzx: /tmp/template.LaTeX.homework/
+AkexStar: templates/LaTeX-Homework-Template/
+Jacky-Lzx: templates/template.LaTeX.homework/
 ```
 
 ---
