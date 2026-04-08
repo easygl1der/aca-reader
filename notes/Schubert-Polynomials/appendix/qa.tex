@@ -2611,3 +2611,50 @@ $$\langle \sigma(u)^T, \widetilde{\sigma}(v)^T \rangle_T = \delta_{u,v}$$
 \item 在 Lefschetz 对偶意义下，两者配对得到 Kronecker delta
 \end{itemize}
 
+\section{等式 $[X(u) \times X(v)]_T = (pr_1^T)^* \sigma(u)^T \cdot (pr_2^T)^* \sigma(v)^T$ 的来源}\label{sec:qa-product-class-pullback}
+\subsection{问题}
+在 ch4 的 projection formula 应用中（大约第 677 行），第一个等式是：
+
+$$[X(u) \times X(v)]_T \cdot [Y(u_j) \times Y(v_j)]_T = (pr_1^T)^* \sigma(u)^T \cdot (pr_2^T)^* \sigma(v)^T \cdot [Y(u_j) \times Y(v_j)]_T$$
+
+这个等式是怎么来的？为什么 $[X(u) \times X(v)]_T = (pr_1^T)^* \sigma(u)^T \cdot (pr_2^T)^* \sigma(v)^T$？
+
+\subsection{回答}
+\textbf{核心答案：这是 Schubert 类在投影下的自然 pullback 行为。}
+
+\textbf{第一步：理解 $X(u) \times X$ 的类}
+
+在乘积空间 $X \times X$ 上，考虑第一个投影：
+$$pr_1: X \times X \to X$$
+
+这个投影拉回 Schubert 类 $\sigma(u)^T \in H_T^*(X)$，得到：
+$$(pr_1^T)^* \sigma(u)^T \in H_T^*(X \times X)$$
+
+几何上，$(pr_1^T)^* \sigma(u)^T$ 正是子簇 $pr_1^{-1}(X(u)) = X(u) \times X$ 的等变上同调类。
+
+\textbf{第二步：理解 $X \times X(v)$ 的类}
+
+同理，第二个投影 $pr_2: X \times X \to X$ 给出：
+$$(pr_2^T)^* \sigma(v)^T \in H_T^*(X \times X)$$
+
+这正是子簇 $X \times X(v)$ 的等变类。
+
+\textbf{第三步：两者的 cup product}
+
+在 $X \times X$ 中，子簇 $X(u) \times X(v)$ 是两个子簇的交集：
+$$X(u) \times X(v) = (X(u) \times X) \cap (X \times X(v))$$
+
+因此它的类是两者 cup product：
+$$[X(u) \times X(v)]_T = [X(u) \times X]_T \cup [X \times X(v)]_T = (pr_1^T)^* \sigma(u)^T \cdot (pr_2^T)^* \sigma(v)^T$$
+
+\textbf{第四步：几何直观}
+
+可以把 $X(u) \times X(v)$ 看作"第一因子在 $X(u)$ 中，第二因子在 $X(v)$ 中"。拉回操作把每个因子上的 Schubert 类拉到乘积空间上，cup product 编码了两个条件的交集。
+
+\textbf{形式化描述}
+
+设 $i_u: X(u) \hookrightarrow X$ 和 $i_v: X(v) \hookrightarrow X$ 是嵌入。则在 $H_T^*(X \times X)$ 中：
+$$[X(u) \times X(v)]_T = (pr_1^T \circ i_u^T)^*[pt]_T \cup (pr_2^T \circ i_v^T)^*[pt]_T = (pr_1^T)^* \sigma(u)^T \cdot (pr_2^T)^* \sigma(v)^T$$
+
+这正是笔记中使用的恒等式。
+
