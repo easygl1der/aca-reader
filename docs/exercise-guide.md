@@ -128,7 +128,7 @@ notes/其他/ → Exercise  % 不要这样假设！
 #### 通用格式模板
 
 ```latex
-\begin{Exercise}{\ref{exr:X-Y} Exercise X-Y \cite{bookkey}}\label{exr:X-Y}
+\begin{Exercise}{\cref{exr:X-Y} Exercise X-Y \cite{bookkey}}\label{exr:X-Y}
 习题内容。
 \end{Exercise}
 ```
@@ -332,27 +332,97 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 ---
 
-## 五、标签与引用规范
+## 五、⭐ 硬编码引用处理（核心规范）
 
-### 标签类型命名
+> **⚠️ 极其重要**：习题中出现的硬编码编号（如 `(5.2)`、`Example 4.1.3`、`Figure 3-1`）如果不转成引用，读者无法知道这些编号指向什么内容。
 
-| 类型 | 格式 | 示例 |
-|------|------|------|
-| 公式 | `eq:{描述性名称}` | `eq:balance-discrete-CRE` |
-| 习题 | `exr:{章号}-{题号}` | `exr:5-1`, `exr:3-7` |
-| 定义 | `def:{描述性名称}` | `def:potential-outcome` |
-| 定理 | `thm:{描述性名称}` | `thm:consistency-ols` |
+### 硬编码类型与处理方式
 
-### 公式引用规则
+| 硬编码类型 | 示例 | 处理方式 |
+|-----------|------|----------|
+| 公式引用 | `(5.2)`, `式 (5.2)` | 找到对应公式，替换为 `\eqref{eq:xxx}` |
+| 图表引用 | `Figure 3-1`, `图 4.2` | 找到对应图片，替换为 `\cref{fig:xxx}` |
+| 章节/例题引用 | `Example 4.1.3`, `Section 5.2` | 找到对应章节，替换为 `\cref{sec:xxx}` 或 `\cref{exa:xxx}` |
+| 其他习题引用 | `Exercise 5.1` | 替换为 `\cref{exr:5-1}` |
 
-**必须用 `\eqref{}`**，禁止硬编码编号：
+### 处理流程
+
+**Step 1: 识别硬编码引用**
+
+读取习题文本，找出所有硬编码编号模式：
+
+```
+- (X.Y) 或 式 (X.Y) → 公式引用
+- Example X.Y → 例题引用
+- Figure X.Y → 图片引用
+- Exercise X.Y → 其他习题引用
+- Section X.Y → 章节引用
+```
+
+**Step 2: 在教材中定位**
+
+根据编号在教材（tag 文件或 transcript）中找到对应的公式/图片/章节/例题。
+
+**Step 3: 在笔记中查找是否已存在**
+
+搜索笔记 LaTeX 文件，检查对应 label 是否已存在：
+
+```bash
+# 检查公式标签
+grep -n "\\\\label{eq:" notes/*/chapter*.tex
+
+# 检查图表标签
+grep -n "\\\\label{fig:" notes/*/chapter*.tex
+```
+
+**Step 4: 添加或引用**
+
+| 情况 | 操作 |
+|------|------|
+| 笔记中已存在标签 | 直接使用 `\cref{}` 或 `\eqref{}` 替换硬编码编号 |
+| 笔记中不存在 | 将对应内容（公式/图片/章节摘要）添加到笔记中，再引用 |
+
+**Step 5: 替换硬编码**
 
 ```latex
-% ❌ 错误
+% 处理前（❌ 硬编码）
+For Example 4.1.3, verify equations (4.1.4)-(4.1.8).
+
+% 处理后（✅ 引用）
+For \cref{exa:4-1-3}, verify \eqref{eq:4-1-4}--\eqref{eq:4-1-8}.
+```
+
+### 处理示例
+
+**示例：习题引用教材公式**
+
+```latex
+% 处理前
 证明 (5.2) 给出的公式
 
-% ✅ 正确
-证明 \eqref{eq:balance-discrete-CRE} 给出的公式
+% Step 1: 识别 (5.2) 是公式引用
+% Step 2: 在教材/笔记中找到 eq:5-2-balance
+% Step 3-4: 检查笔记，已存在
+% Step 5: 替换
+
+% 处理后
+证明 \eqref{eq:5-2-balance} 给出的公式
+```
+
+**示例：习题引用例题**
+
+```latex
+% 处理前
+For Example 4.1.3, verify equations (4.1.4)-(4.1.8).
+
+% Step 1: 识别 Example 4.1.3 和 (4.1.4)-(4.1.8)
+% Step 2: 在教材中定位
+% Step 3: 检查笔记 — 例题 label 不存在，需要添加
+% Step 4: 在笔记中添加 \label{exa:4-1-3}
+% Step 5: 替换
+
+% 处理后
+For \cref{exa:4-1-3}, verify \eqref{eq:4-1-4}--\eqref{eq:4-1-8}.
 ```
 
 ---
@@ -361,13 +431,24 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 完成习题后，逐项检查：
 
+- [ ] **⭐ 硬编码引用已替换**：所有 `(X.Y)`、`Example X.Y`、`Figure X.Y` 等已转为 `\cref{}` 或 `\eqref{}`
+- [ ] **⭐ 引用目标存在**：每个引用在笔记中都能找到对应 label
 - [ ] 习题编号与教材一致
-- [ ] 公式引用 `\eqref{}` 指向正确标签
 - [ ] 标签命名 `exr:{章号}-{题号}` 规范
-- [ ] do Carmo 模板用 `exercise`（小写）
-- [ ] Peng Ding 模板用 `Exercise`（大写）
+- [ ] exercise 环境大小写正确（do Carmo 用小写，其他用大写）
+- [ ] 公式引用使用 `\eqref{}`，禁止硬编码
 - [ ] 中文专有名词保留英文
 - [ ] 编译无错误
+
+### 编译验证命令
+
+```bash
+# 编译并检查错误
+./compile.sh 2>&1 | grep -i "error\|warning"
+
+# 检查是否有未解析的引用
+grep -n "???" notes/*/chapters/chapter*.tex
+```
 
 ---
 
