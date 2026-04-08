@@ -2466,3 +2466,55 @@ $$u \cdot (B/B) = uB/B = \begin{pmatrix} 1 & 0 \\ b & 1 \end{pmatrix} B/B$$
 
 在 $GL_n$ 中，$U^-$ 是下三角幂幺矩阵，它们把标准旗 $V_i = \langle e_1, \ldots, e_i \rangle$ 变成斜旗 $u V_i$。
 
+\section{映射的次数（degree）如何定义}\label{sec:qa-morphism-degree}
+\subsection{问题}
+在 push-forward 公式
+$$F_*^T\left((ev_3^T)^*[Y(w)]_T\right) = \sum_i a_i [F(V_i)]_T$$
+中，$a_i$ 是映射 $F|_{V_i} : V_i \to F(V_i)$ 的次数（degree）。映射的次数是如何定义的？
+\subsection{回答}
+\textbf{一、次数的基本定义}
+
+在代数几何中，映射的次数（degree）有以下几种等价定义：
+
+\textbf{1. 点计数定义（适用于有限态射）}
+
+设 $f: X \to Y$ 是有限态射（finite morphism），$k$ 是代数闭域。则 $f$ 的次数是每个一般点的原像个数：
+$$\deg(f) = [k(X) : f^*k(Y)]$$
+即函数域的扩张次数。
+
+\textbf{2. 对于曲线间的态射}
+
+若 $f: C \to D$ 是亏格 $g$ 的光滑曲线之间的态射，则 $\deg(f) = \deg(f^*\mathcal{O}(1))$，即 pullback of an ample divisor 的次数。
+
+\textbf{二、此处的具体含义}
+
+在 Mihalcea 的证明中：
+$$F|_{V_i} : V_i \to F(V_i)$$
+
+这里 $V_i$ 是 $ev_3^{-1}(Y(w))$ 的一个不可约分支，$F = (ev_1, ev_2)$。
+
+由于：
+\begin{itemize}
+\item $V_i$ 是 $T$-稳定、约化的、不可约分支
+\item $F$ 是 $T$-等变且适当的（proper）映射
+\end{itemize}
+
+$F|_{V_i}$ 是一个有限的、满的、支配的映射。
+
+\textbf{三、次数的几何含义}
+
+$a_i = \deg(F|_{V_i})$ 是在 push-forward 公式中的几何因子：
+
+当推送一个上同调类 $[Y(w)]_T$ 时，每个分支 $V_i$ 的贡献要乘以该映射的次数 $a_i$。
+
+这与交集理论中的基本事实一致：若 $f: X \to Y$ 是有限态射，次数为 $d$，则
+$$f_*[X] = d \cdot [f(X)]$$
+即像的次数是原像个数的叠加。
+
+\textbf{四、为什么次数重要}
+
+在 GW 不变量的计算中，次数因子 $a_i$ 保证了推送公式的正确性：
+$$F_*^T\left((ev_3^T)^*[Y(w)]_T\right) = \sum_i a_i [F(V_i)]_T$$
+
+这表示每个分支 $V_i$ 的 push-forward 是以其映射次数为权重的像类的叠加。
+
