@@ -1,0 +1,172 @@
+% Chapter 5: Proof Sketch of Mihalcea's Positivity Theorem
+% Draft version — to be integrated into chapter 5
+% Based on Mihalcea (2007) \cite{Mihalcea}
+
+\section{Proof of Mihalcea's Positivity Theorem}
+\label{sec:MihalceaProof}
+
+In this section we give a sketch of the proof of Mihalcea's main positivity theorem,
+referring to \cite[Section 6, pages 8--11]{Mihalcea} for full details.
+
+\subsection{Main Theorem}
+
+\begin{Theorem}[Mihalcea Positivity Theorem {\cite[Theorem 1]{Mihalcea}}]
+\label{th:MihalceaPositivity}
+Let $u, v, w \in W^{P}$ and let $d$ be a multidegree.
+Then the equivariant quantum Littlewood--Richardson coefficient
+$c_{u,v}^{w,d}$ belongs to $\Lambda = \mathbb{Z}[x_{1},\ldots,x_{r}]$
+and is a polynomial with nonnegative integer coefficients.
+\end{Theorem}
+
+The proof proceeds by reducing the computation of $c_{u,v}^{w,d}$ to
+Graham's positivity theorem on the product space $X \times X$.
+This reduction is the content of \S 6 of \cite{Mihalcea}.
+
+\subsection{Setup}
+
+Let
+\begin{itemize}
+\item $X = G/P$ be a homogeneous space,
+\item $B = T \cdot U$ the Borel subgroup, $B^{-}=w_{0}Bw_{0}$ the opposite Borel,
+\item $B' = T\cdot(U^{-}\times U^{-})$ the semidirect product,
+\item $\overline{\mathcal{M}}=\overline{\mathcal{M}}_{0,3}(X,d)$ the stable map moduli space,
+\item $ev_{i}:\overline{\mathcal{M}}\to X$ the evaluation maps ($i=1,2,3$),
+\item $F=(ev_{1},ev_{2}):\overline{\mathcal{M}}\to X\times X$,
+\item $\Lambda=H_{T}^{*}(pt)=\mathbb{Z}[x_{1},\ldots,x_{r}]$.
+\end{itemize}
+
+The torus $T$ acts on $X\times X$ via the diagonal action.
+The semidirect product $B'$ acts on $X\times X$ by
+\[
+t\cdot(u_{1},u_{2})(\bar g_{1},\bar g_{2})
+=(tu_{1}\bar g_{1},\,tu_{2}\bar g_{2}).
+\]
+
+The equivariant quantum Littlewood--Richardson coefficient is defined by
+\begin{equation}
+c_{u,v}^{w,d}
+=\pi_{*}^{T}\bigl((ev_{1}^{T})^{*}\sigma(u)^{T}
+\cdot (ev_{2}^{T})^{*}\sigma(v)^{T}
+\cdot (ev_{3}^{T})^{*}\widetilde{\sigma}(w)^{T}\bigr),
+\label{eq:EQCLRDef}
+\end{equation}
+where $\pi:\overline{\mathcal{M}}\to\operatorname{Spec}\Lambda$ is the projection
+and $\widetilde{\sigma}(w)^{T}$ denotes the equivariant quantum Schubert class
+(Poincar\'e dual of $\sigma(w)^{T}$).
+
+\subsection{Three auxiliary results}
+
+The proof rests on three geometric ingredients from \cite{Mihalcea}.
+
+\begin{Lemma}[{\cite[Lemma 6.4]{Mihalcea}}; $ev_{3}^{-1}(Y(w))$ components]
+\label lem:ev3inverse}
+Let $w\in W^{P}$. Then $ev_{3}^{-1}(Y(w))$ is $T$--stable, reduced,
+and is a disjoint union of irreducible components $V_{i}$, each of codimension
+$\ell(w)$ in $\overline{\mathcal{M}}$.
+\end{Lemma}
+
+\begin{Lemma}[{\cite[Lemma 6.3]{Mihalcea}}; Kleiman transversality]
+\label lem:KleimanTransversality}
+Let $Z$ be an irreducible $G$--variety and
+$F:Z\to X\times X$ a $G$--equivariant morphism
+($G$ acts diagonally on $X\times X$).
+Then for any $u,v\in W^{P}$,
+$F^{-1}(X(u)\times Y(v))$ is reduced and locally irreducible,
+of codimension $c(u)+\ell(v)$ in $Z$.
+\end{Lemma}
+
+\begin{Corollary}[{\cite[Corollary 6.2]{Mihalcea}}; Graham positivity on $X\times X$]
+\label cor:GrahamOnXX}
+Let $V\subset X\times X$ be a $T$--stable subvariety.
+In $H_{T}^{*}(X\times X)$ we have
+\[
+[V]_{T}=\sum_{i}f_{i}\,[Y(u_{i})\times Y(v_{i})]_{T},
+\qquad f_{i}\in\Lambda,
+\]
+where each $f_{i}$ is a polynomial with nonnegative integer coefficients.
+\end{Corollary}
+
+\subsection{Key pushforward formula}
+
+From Lemma \ref{cor:GrahamOnXX} we obtain the decomposition
+\[
+(ev_{3}^{T})^{*}[Y(w)]_{T}=\sum_{i}a_{i}\,[V_{i}]_{T},
+\qquad a_{i}\in\mathbb{N},
+\tag{6.5}
+\]
+where $a_{i}$ is the degree of the restricted map $F|_{V_{i}}:V_{i}\to F(V_{i})$.
+
+Applying the pushforward formula to $F$ and using the projection formula
+$f_{*}^{T}((f^{T})^{*}(a)\cdot b)=a\cdot f_{*}^{T}(b)$ (see \cite[(1)]{Mihalcea}),
+equation \eqref{eq:EQCLRDef} becomes
+\[
+c_{u,v}^{w,d}
+=\sum_{i}a_{i}\,
+(\pi_{X\times X})_{*}^{T}
+\bigl([X(u)\times X(v)]_{T}\cdot[F(V_{i})]_{T}\bigr).
+\tag{6.6}
+\tag{$*$}
+\end{equation}
+This is the \textbf{key pushforward formula}.
+
+\subsection{Proof of Theorem \ref{th:MihalceaPositivity}}
+
+\begin{Proof}[Sketch]
+Starting from \eqref{eq:EQCLRDef}, we apply the three steps of \S 6.2 in
+\cite{Mihalcea}:
+
+\textbf{Step 1.}  Use Lemma \ref lem:ev3inverse} to decompose the factor
+$(ev_{3}^{T})^{*}\widetilde{\sigma}(w)^{T}$ as in (6.5).
+
+\textbf{Step 2.}  Apply the projection formula and the push--forward formula
+to obtain the key pushforward formula ($*$).
+
+\textbf{Step 3.}  For each irreducible component $V_{i}$, consider its image
+$F(V_{i})\subset X\times X$.  By Corollary \ref cor:GrahamOnXX} we may write
+\[
+[F(V_{i})]_{T}=\sum_{j}f_{j}^{i}\,[Y(u_{j})\times Y(v_{j})]_{T},
+\qquad f_{j}^{i}\in\Lambda\ \text{nonnegative}.
+\]
+
+Substituting into ($*$) and using the projection formula once more, we obtain
+\[
+c_{u,v}^{w,d}
+=\sum_{i}\sum_{j}
+a_{i}\,f_{j}^{i}\,
+(\pi_{X\times X})_{*}^{T}
+\bigl([X(u)\times X(v)]_{T}\cdot[Y(u_{j})\times Y(v_{j})]_{T}\bigr).
+\]
+
+Finally, by the equivariant Poincar\'e pairing
+(see \cite[Lemma 2.3]{Mihalcea})
+\[
+(\pi_{X\times X})_{*}^{T}
+\bigl([X(u)\times X(v)]_{T}\cdot[Y(u_{j})\times Y(v_{j})]_{T}\bigr)
+=\delta_{u,u_{j}}\cdot\delta_{v,v_{j}},
+\]
+which is a nonnegative integer.
+
+Since all coefficients $a_{i}$ are nonnegative integers and all $f_{j}^{i}$
+are polynomials with nonnegative integer coefficients, the entire sum
+$c_{u,v}^{w,d}$ is a polynomial in $\Lambda$ with nonnegative integer coefficients.
+This is precisely the statement of Theorem \ref{th:MihalceaPositivity}.
+\qedhere
+\end{Proof}
+
+\subsection{Remark on $T'$--equivariant positivity}
+
+Mihalcea also proves a version for a larger torus $T'=(\mathbb{C}^{\times})^{m}$.
+Since $T=T'/\mathbb{C}^{\times}$, the ring $H_{T'}^{*}(pt)=\mathbb{Z}[T_{1},\ldots,T_{m}]$
+contains $H_{T}^{*}(pt)$ via the relations $T_{j}-T_{j+1}=x_{j}$.
+
+\begin{Corollary}[{\cite[Corollary 7.1]{Mihalcea}}; $T'$--equivariant positivity]
+\label cor:TdashPositivity}
+In $QH_{T'}^{*}(X)$ the equivariant quantum Littlewood--Richardson coefficients
+are polynomials in the differences $T_{1}-T_{2},\ldots,T_{m-1}-T_{m}$
+with nonnegative integer coefficients.
+\end{Corollary}
+
+This corollary bridges the present result with the triple positivity framework
+of \cite{GX2025}, where the positivity is expressed in the variables $t_{i}-y_{j}$.
+
+\endinput
