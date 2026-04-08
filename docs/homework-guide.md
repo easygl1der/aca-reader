@@ -157,6 +157,75 @@ Jacky-Lzx: /tmp/template.LaTeX.homework/
 
 ---
 
+## 六、Jacky-Lzx 模板（Cleese，适用于含代码作业）
+
+### 文档类
+
+```latex
+\documentclass[11pt]{article}
+\input{structure.tex}
+\input{code-style.tex}
+```
+
+### 核心环境
+
+| 环境 | 用途 |
+|------|------|
+| `question` | 题目（支持 `[分数]{标题}` 参数） |
+| `subquestion` / `subsubquestion` | 子问题 |
+| `answer` / `subanswer` / `subsubanswer` | 解答 |
+| `info` / `warn` | 信息/警告框 |
+| `reference` | 参考文献列表 |
+
+### Question 环境
+
+```latex
+\begin{question}[20\%]{Sample question}
+  题目内容...
+
+  \begin{answer}
+  解答内容...
+  \end{answer}
+\end{question}
+```
+
+### 子问题
+
+```latex
+\begin{question}{Subquestions}
+  \begin{subquestion}[10\%]{Sub question title}
+    \begin{subanswer}
+    解答...
+    \end{subanswer}
+  \end{subquestion}
+\end{question}
+```
+
+### Info / Warn 环境
+
+```latex
+\begin{info}
+  信息内容...
+\end{info}
+
+\begin{warn}
+  警告内容...
+\end{warn}
+```
+
+### Reference 环境
+
+```latex
+\begin{reference}
+\item 参考1
+\item 参考2
+\end{reference}
+```
+
+---
+
+---
+
 ### 预定义环境
 
 **定理类**（编号共享，按章节）：
