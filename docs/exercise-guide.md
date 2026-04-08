@@ -309,25 +309,62 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 ---
 
-### 4.4 标签来源优先级
+### 4.4 习题来源与标签处理
 
-| 来源 | 位置 | 如何处理 |
-|------|------|----------|
-| **tag 文件**（优先） | `PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex` | 直接使用文件中的 `\label{}` |
-| **transcript 文件** | `PDFs/<教材>/transcript/<书名>.md` | 根据教材编号手动创建标签 `exr:章-题号` |
+#### ⭐ 引用规则（核心，禁止违规）
 
-**tag 文件处理流程**：
+> **⚠️ 绝对禁止 `\tag{}`**：在笔记正文中，所有引用必须用 `\label{}` + `\cref{}/\eqref{}`，禁止使用 `\tag{}`。
+
+| 正确 ✅ | 错误 ❌ |
+|---------|---------|
+| `\label{eq:5-2-balance}` + `\eqref{eq:5-2-balance}` | `\tag{5.2}` |
+| `\label{fig:cycloid}` + `\cref{fig:cycloid}` | `\tag{Figure 3-1}` |
+
+**为什么禁止 `\tag{}`**：`\tag{}` 是浮动元素，不参与交叉引用跳转。读者点击引用时无法跳转到目标位置。
+
+#### 习题来源优先级
+
+| 优先级 | 来源 | 位置 | 如何处理 |
+|--------|------|------|----------|
+| **最高** | **arXiv tex 文件** | `PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex` | 下载 tex，直接使用其中的 `\label{}` |
+| 其次 | **tag 文件** | `PDFs/<教材>/.../chapters/chapterXX.tex` | 同上，直接使用 `\label{}` |
+| 最后 | **transcript markdown** | `PDFs/<教材>/transcript/<书名>.md` | 根据教材编号手动创建标签 `exr:章-题号` |
+
+**优先下载 arXiv tex**：
 ```
-1. 读取 PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex
-2. 搜索 \label{exr:...} 获取已有标签
-3. 直接使用对应标签
+1. 访问 arXiv 官网搜索对应论文
+2. 下载 source (tex) 包
+3. 提取 chapters/chapterXX.tex
+4. 使用其中的 \label{}
 ```
 
-**仅有 transcript 时**：
+#### 标签处理流程（\cref{} 不能为空！）
+
 ```
-1. 提取教材章节编号（如 "5-1", "3-7"）
-2. 创建标签 exr:章-题号
-3. 在笔记 LaTeX 中定义对应标签
+Step 1: 在教材（tex 或 transcript）中找到目标内容
+        ↓
+Step 2: 提取教材中的编号（如 "5.2"、"Example 4.1.3"）
+        ↓
+Step 3: 在笔记 LaTeX 中搜索是否有对应 label
+        ├─ 已有 label → 直接使用 \cref{xxx} 或 \eqref{xxx}
+        └─ 没有 label → 必须先添加内容 + label，再引用
+        ↓
+Step 4: 确保 \cref{}/eqref{} 引用有效（不能是空引用）
+```
+
+**\cref{} 为空是严重错误**：如果 `\ref{xxx}` 显示为 `??`，说明目标不存在。必须先创建目标，再引用。
+
+#### 正确示例（因果推断 chapter5）
+
+```latex
+% 教材中 (5.2) → 在笔记中找到 eq:5-2-balance
+
+\begin{Exercise}{\ref{exr:5-1} Covariate balance in the CRE}\label{exr:5-1}
+证明 \eqref{eq:5-2-balance}：在 CRE 下，
+\[
+\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0.
+\]
+\end{Exercise}
 ```
 
 ---
