@@ -2280,3 +2280,47 @@ $$0 \subset V_1 \subset V_2 \subset \cdots \subset V_r \subset \mathbb{C}^n$$
 这种"分层选择"的结构使得部分旗流形成为描述更复杂几何现象的自然语言。
 
 \textbf{总结}：研究部分旗流形的动机在于它们同时位于代数几何、表示论和拓扑学的交叉点。它们是理解更一般的旗流形的基础，同时在许多数学物理情境中自然出现。复杂性来自于丰富性——部分旗流形提供了足够一般的框架来统一许多特殊情形，同时保持足够的结构使得深入研究成为可能。
+
+\section{$c_{u,v}^{w,d}$ 的系数环 $\mathbb{Z}[x_i]$ 从何而来？为何 ch4 证明没有"提到"根？}\label{sec:cuwwd-ring-origin}
+\subsection{问题}
+为什么说 $c_{u,v}^{w,d} \in \mathbb{Z}[x_1, \ldots, x_r]$ 是非负系数多项式？ch4 的 Mihalcea Positivity 证明里面似乎并没有提到根系 $x_i$——这些根是怎么进来的？是证明中隐含的吗？
+
+\subsection{回答}
+\textbf{核心答案：$x_i$ 是等变量子上同调的基础系数环，不是证明的产物。}
+
+在 ch4 的证明中，你找不到"现在我们引入 $x_i$ 作为负单根"这样的叙述——因为 $x_i$ 根本不是证明出来的，而是建立等变量子上同调框架时就已经定义好的东西。
+
+\textbf{1. $x_i$ 的来源：$H_T^*(pt) = \Lambda$}
+
+极大环面 $T \cong (\mathbb{C}^\times)^r$ 作用在旗流形 $X = G/P$ 上。等变量子上同调 $H_T^*(X)$ 的系数环不是 $\mathbb{Z}$，而是
+$$\Lambda = H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_r]$$
+其中每个 $x_i$ 对应 $T$ 的一个无穷小生成元，本质上就是负单根 $-\alpha_i$。
+
+这意味着：
+\begin{itemize}
+\item 经典上同调 $H^*(X)$：系数环是 $\mathbb{Z}$，所以 $c_{u,v}^w \in \mathbb{Z}$
+\item 等变上同调 $H_T^*(X)$：系数环是 $\Lambda$，所以 $c_{u,v}^w \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$
+\item 量子上同调 $QH_T^*(X)$：同样是 $\Lambda$ 中的元素，只是多了 $q^d$ 记录曲线次数
+\end{itemize}
+
+\textbf{2. 为什么 ch4 证明没有"提到"根？}
+
+Mihalcea Positivity 的证明（在 ch4 中）并不是在"引入" $x_i$，而是在使用已经定义好的环结构 $\Lambda$。证明的核心是：
+\begin{enumerate}
+\item 建立在什么几何空间上操作（$X \times_T ET$ 的配置）
+\item 利用哪个几何事实（Localization 定理）
+\item 如何保证非负性（Schubert 胞腔的几何正性）
+\end{enumerate}
+
+环 $\Lambda$ 的存在如同在说"我们将在 $\mathbb{Z}[x_1,\ldots,x_r]$ 上做运算"——这是前提条件，不是证明的一部分。
+
+\textbf{3. 正性证明实际在证明什么？}
+
+ch4 证明的是：**在这些多项式中，$x_i$ 的系数都是非负整数**。也就是说，虽然 $c_{u,v}^{w,d}(\mathbf{x})$ 是一个关于 $x_1,\ldots,x_r$ 的多项式，但它的所有系数都是 $\mathbb{Z}_{\geq 0}$，而不是负数或分数。
+
+\textbf{4. 几何直觉}
+
+当忘掉 torus 作用（令所有 $x_i = 0$）时，$c_{u,v}^{w,d}(\mathbf{x})|_{x_i=0}$ 退化为普通量子上同调的结构常数 $c_{u,v}^{w,d} \in \mathbb{Z}$。这说明 $x_i$ 编码的是"在 torus 作用下的修正信息"，而这种修正在经典极限下自然消失。
+
+\textbf{类比}：这就像在说"在量子力学中，物理量是算符"——这不是某个具体定理证明的结论，而是理论框架本身的结构约定。
+
