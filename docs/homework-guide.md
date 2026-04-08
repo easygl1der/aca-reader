@@ -404,7 +404,7 @@ Step 4: 按格式规范写入 homework
 
 ---
 
-## 八、环境支持
+## 十、环境支持
 
 ### QA Specialist 支持
 
