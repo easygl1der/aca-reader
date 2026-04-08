@@ -279,7 +279,7 @@ Jacky-Lzx: /tmp/template.LaTeX.homework/
 
 ---
 
-## 五、引用处理（核心规范）
+## 七、引用处理（核心规范）
 
 ### 核心规则
 
