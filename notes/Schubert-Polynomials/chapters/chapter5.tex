@@ -17,6 +17,59 @@ where the coefficients $c_{u,v}^{w,d} \in \Lambda = \mathbb{Z}[x_1, \ldots, x_r]
 
 The natural next question: \textbf{Can we establish a similar positivity result for double Schubert polynomials in the quantum setting?}
 
+\section{等变量子上同调：定义与引理}
+
+为了建立量子双重 Schubert 多项式的 positivity 理论，我们首先需要严格定义等变量子上同调的结构。本节的符号遵循 \cref{chap:TriplePositivity}（Chapter 1）的约定。
+
+记 $G = \mathrm{GL}_n(\mathbb{C})$，$B$ 为标准 Borel 子群，$T$ 为极大环面。设 $P \supset B$ 为包含 $B$ 的抛物子群，$W = S_n$ 为 $G$ 的 Weyl 群，$W_P \subset W$ 为对应的 Weyl 子群。记 $W^P \subset W$ 为 $W/W_P$ 的最短长度代表元集合 \footnote{最短代表元的定义见 \cref{def:ShortestLengthRepresentatives}（Chapter 1）。}，即每个陪集 $wW_P$ 中唯一的长度最短元素。
+
+记 $\Lambda = H_T^*(\mathfrak{p}\mathfrak{t}) = \mathbb{Z}[x_1, \ldots, x_r]$，其中 $x_i$ 对应负单根 $-\alpha_i$（following Chapter 1's convention）。\footnote{等变量子上同调类的几何定义见 \cref{sec:EquivariantCohomologyClass}（Chapter 1）。}
+
+以下引理建立了等变量子上同调乘法结构的有限性，这是定义中的求和能够良定义的基础。
+
+\begin{Lemma}[有限性引理]
+\label{Lem:EQCFiniteSum}
+设 $u, v \in W^P$ 为最短代表元。则在等变量子上同调乘法
+\[
+\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w)
+\]
+中，对每个固定的多重次数 $d = (d_1, \ldots, d_r)$，只有有限多个 $w \in W^P$ 使得 $c_{u,v}^{w,d} \neq 0$。
+\end{Lemma}
+
+\begin{Proof}
+根据 Mihalcea \cite[Section 2]{Mihalcea}，等变量子 Littlewood-Richardson 系数 $c_{u,v}^{w,d}$ 由旗流形 $G/P$ 上的广义 Gromov-Witten 不变量定义：
+\[
+c_{u,v}^{w,d} = \langle [\mathcal{X}(u)], [\mathcal{X}(v)], [\mathcal{X}(w)] \rangle_{0,3,d}.
+\]
+这些不变量计数满足特定条件的稳定映射个数。由 Schubert 胞腔的维数公式可知，只有当
+\[
+\deg \mathcal{X}(u) + \deg \mathcal{X}(v) + \deg \mathcal{X}(w) = \dim_{\mathbb{C}}(G/P) + \sum_{i=1}^r d_i \cdot \deg(q_i)
+\]
+时，不变量才可能非零。由于 $\deg \mathcal{X}(w) = 2\ell(w)$（$\ell(w)$ 为 Weyl 群长度），而 $\ell(w)$ 对 $w \in W^P$ 有上界 $\ell(w_0^P)$（最长元素的长度），故满足此等式的 $w$ 只有有限多个。\qedhere
+\end{Proof}
+
+\begin{Definition}[\textbf{等变量子上同调}]
+\label{def:EquivariantQuantumCohomology}
+\textbf{等变量子上同调}（equivariant quantum cohomology）$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数，其 $\Lambda[q]$-基底为 $\{\sigma(w) \mid w \in W^P\}$。乘法 $\circ$ 定义为：
+\begin{equation}
+\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w),\footnote{问：$\sigma(u) \circ \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w)$ 这个公式中，这两个求和分别是对什么求和的？见附录 \cref{sec:qa-eqc-summations}。}
+\label{eq:EQCDefinition}
+\end{equation}
+其中 $c_{u,v}^{w,d}$ 称为\textbf{等变量子 Littlewood-Richardson 系数}（equivariant quantum LR coefficient），是 $\Lambda = \mathbb{Z}[x_1, \ldots, x_r]$ 中的非负系数多项式。\footnote{问：在 \cref{def:EquivariantQuantumCohomology} 中提到：$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数。什么是分次 $\Lambda[q]$-代数？其中的 $q$ 变量代表什么？见附录 \cref{sec:graded-Lambda-q-algebra}。}
+\end{Definition}
+
+\textbf{关键性质}（following Kim \cite{Kim2000}）：$c_{u,v}^{w,d} \in \Lambda = \mathbb{Z}[x_1, \ldots, x_r]$ 是齐次多项式，次数为
+\[
+\deg c_{u,v}^{w,d} = c(u) + c(v) - c(w) - \sum_{i=1}^r d_i \cdot \deg(q_i),
+\]
+其中 $c(w) = \ell(w)$ 是 $w$ 的 Coxeter 长度。\footnote{问：次数公式中的求和指标 $i$ 的范围是什么？见附录 \cref{sec:qa-degree-summation-range}。}
+
+\textbf{与经典情形的关系}：等变量子上同调是以下两者的共同推广（见 \cite[Proposition 3.1]{Kim2000}）：
+\begin{itemize}
+\item 当 $d = 0$ 时，退化为等变上同调（equivariant cohomology）$H_T^*(X)$；
+\item 当所有 $x_i = 0$ 时，退化为普通量子上同调（quantum cohomology）$QH^*(X)$。
+\end{itemize}
+
 \section{The Quantum Double Schubert Positivity Conjecture}
 
 \begin{Remark}[Naming Clarification]
