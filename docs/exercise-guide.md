@@ -421,6 +421,29 @@ grep -n "\\\\label{fig:" notes/*/chapter*.tex
 | 笔记中已存在标签 | 直接使用 `\cref{}` 或 `\eqref{}` 替换硬编码编号 |
 | 笔记中不存在 | **在教材中找到该内容，将公式/图片/例题添加到笔记中，创建 `\label{}`，再引用** |
 
+**引用教材章节/例题时**：
+- 如果引用的内容是一个**完整章节/大段内容**，可以放在**附录**中，并在附录开头标注 `\cite{bookkey}` 引用对应教材
+- 如果引用的内容是**教材内部的例题/证明**，需要：
+  1. 从教材中找到对应内容
+  2. 将内容添加到笔记（可在附录中）
+  3. 创建 `\label{}`
+  4. 标注 `\cite{bookkey}` 说明来源教材
+
+**教材引用必须加 citation**：
+- 引用教材内容时，必须在引用处添加 `\cite{bookkey}`
+- bibtex 条目格式：`@book{bookkey, author={...}, title={...}, year={...}}`
+- 常见教材 bibtex 已在笔记的 `.bib` 文件中定义（如 `Ding2024`、`DoCarmo` 等）
+
+```latex
+% 示例：引用教材章节
+\section*{附录：教材章节引用}\label{sec:appendix-4.1.3}
+\subsection*{Example 4.1.3 的完整内容}\label{exa:4-1-3}
+这是 Example 4.1.3 的完整内容，摘自 \cite[Example 4.1.3]{bookkey}。
+
+% 在习题中引用
+For \cref{exa:4-1-3}, verify equations \eqref{eq:4-1-4}--\eqref{eq:4-1-8}.
+```
+
 > **⚠️ 绝对禁止删除引用**：如果引用目标不存在，**不是删除引用**，而是把内容添加进来！
 
 **Step 5: 替换硬编码**
