@@ -420,7 +420,7 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 ---
 
-## 十二、相关文件
+## 十、相关文件
 
 | 文件 | 用途 |
 |------|------|
