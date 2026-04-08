@@ -371,7 +371,7 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 ---
 
-## 九、教训索引
+## 七、教训索引
 
 | ID | 教训 | 核心要点 | 累计次数 |
 |----|------|---------|----------|
