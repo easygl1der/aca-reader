@@ -2710,3 +2710,54 @@ $$[X(u) \times X(v)]_T = (pr_1^T \circ i_u^T)^*[pt]_T \cup (pr_2^T \circ i_v^T)^
 \end{tabular}
 \end{center}
 
+\subsection{$\pi_*^T$ 是什么意思}\label{sec:qa-pi-star-T}
+\textbf{问}：$\pi_*^T$ 是什么意思？
+
+\textbf{答}：$\pi_*^T$ 是\textbf{等变推送前进}（equivariant pushforward）映射。
+
+具体解释：
+\begin{itemize}
+\item $\pi: \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$ 是投影映射
+\item $\pi_*$ 是上同调中的\textbf{Gysin 映射}（或 pushforward），它将 $\overline{\mathcal{M}}$ 上的类推到 $X \times X$ 上
+\item 上标 $T$ 表示这是\textbf{等变版本}——在 torus 作用下保持等变性
+\end{itemize}
+
+几何意义：$\pi_*^T$ 对模空间上的类做积分（pushforward），得到积空间上的类。
+
+\subsection{Mihalcea 转化步骤的详细推导是什么}\label{sec:qa-mihalcea-derivation-step}
+\textbf{问}：Mihalcea 转化步骤的详细推导是什么？
+$$c_{u, v}^{w, d}=\sum_i a_i\left(\pi_{X \times X}\right)_*^T\left([X(u) \times X(v)]_T \cdot\left[F\left(V_i\right)\right]_T\right)$$
+
+\textbf{答}：这步推导涉及\textbf{基环分解}（basis ring decomposition）：
+
+\begin{enumerate}
+\item \textbf{分解 $ev_3^{-1}(Y(w))$}：$ev_3^{-1}(Y(w))$ 有多个不可约分支 $V_i$
+\item \textbf{限制到每个分支}：$F(V_i)$ 是 $V_i$ 在 $F = (ev_1, ev_2)$ 下的像
+\item \textbf{Gysin 映射的次数}：$a_i$ 是映射 $F|_{V_i}: V_i \to F(V_i)$ 的次数（degree）
+\item \textbf{应用投影公式}：
+$$c_{u, v}^{w, d} = \pi_*^T(\text{ev}_1^*\sigma(u)^T \cdot \text{ev}_2^*\sigma(v)^T \cdot \text{ev}_3^*\widetilde{\sigma}(w)^T)$$
+通过将 $\text{ev}_3^*\widetilde{\sigma}(w)^T$ 分解到各分支 $V_i$ 上，利用线性性得到。
+\end{enumerate}
+
+\subsection{如何使用投影公式得到 $\delta_{u,u_j} \cdot \delta_{v,v_j}$}\label{sec:qa-projection-formula-delta}
+\textbf{问}：如何使用投影公式得到 $\delta_{u,u_j} \cdot \delta_{v,v_j}$？
+$$\left(\pi_{X \times X}\right)_*^T\left([X(u) \times X(v)]_T \cdot\left[Y\left(u_j\right) \times Y\left(v_j\right)\right]_T\right)=\delta_{u, u_j} \cdot \delta_{v, v_j}$$
+
+\textbf{答}：这步使用\textbf{投影公式的迭代应用}：
+
+\begin{enumerate}
+\item \textbf{投影公式}：对于映射 $f: A \to B$，有
+$$f_*^T(f^*(\alpha) \cdot \beta) = \alpha \cdot f_*^T(\beta)$$
+\item \textbf{在 $X \times X$ 上应用}：
+$$\pi_{X \times X}: X \times X \to X \times X$$ 是恒等映射（因为 $F(V_i) \subseteq X \times X$）
+\item \textbf{关键观察}：$[X(u) \times X(v)]_T$ 和 $[Y(u_j) \times Y(v_j)]_T$ 是\textbf{对偶基}
+\begin{itemize}
+\item 在等变上同调中，Schubert 类和对偶 Schubert 类满足：$$\langle [X(u)], [Y(v)] \rangle = \delta_{u,v}$$
+\end{itemize}
+\item \textbf{具体计算}：
+$$\pi_*^T([X(u) \times X(v)]_T \cdot [Y(u_j) \times Y(v_j)]_T) = \pi_*^T([X(u)]_T \cdot [Y(u_j)]_T \times [X(v)]_T \cdot [Y(v_j)]_T)$$
+$$= \delta_{u,u_j} \cdot \delta_{v,v_j}$$
+\end{enumerate}
+
+几何意义：在 $X \times X$ 上，两对对偶 Schubert 类的相交集出 Kronecker delta。
+
