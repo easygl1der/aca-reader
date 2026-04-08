@@ -1635,63 +1635,8 @@ $q$ 标记的是 $\mathbb{P}^1$ 的同调类。几何上：在 $\mathbb{P}^1$ �
 
 这就是为什么 $Gr(1,2)$ 是验证等变量子量子乘积结构的最理想起点。
 
-\section{Chapter 6 Proofread 发现的问题}\label{sec:qa-ch6-proofread}
 
-本次 proofread 发现了 Chapter 6 中的三处问题并已修复：
-
-\begin{enumerate}
-\item \textbf{行 130}：\texttt{\textbackslash ref\{\}} 应统一改为 \texttt{\textbackslash cref\{\}}
-  \begin{itemize}
-    \item 原文：``The key property is that by setting $c_1 = \cdots = c_n = 0$, we recover the non-equivariant quantum cohomology of Theorem \texttt{\textbackslash ref\{th:QuantumCohomologyFlag\}}.''
-    \item 修改后：``The key property is that by setting $c_1 = \cdots = c_n = 0$, we recover the non-equivariant quantum cohomology of \texttt{\textbackslash cref\{th:QuantumCohomologyFlag\}}.''
-  \end{itemize}
-
-\item \textbf{行 179}：两处 \texttt{\textbackslash ref\{\}} 都应改为 $\backslash$cref{}
-  \begin{itemize}
-    \item 原文：``A key achievement of \texttt{\textbackslash cite\{Kim1996\}} is deducing Theorem \texttt{\textbackslash ref\{th:QuantumCohomologyFlag\}} from Theorem \texttt{\textbackslash ref\{th:EquivariantQuantumCohomology\}} via two fundamental specializations:''
-    \item 修改后：``A key achievement of \texttt{\textbackslash cite\{Kim1996\}} is deducing \texttt{\textbackslash cref\{th:QuantumCohomologyFlag\}} from \texttt{\textbackslash cref\{th:EquivariantQuantumCohomology\}} via two fundamental specializations:''
-  \end{itemize}
-
-\item \textbf{行 315}：引用错误 — 需核实原始论文
-  \begin{itemize}
-    \item 原文：``Lu also proved Theorem 2 independently using `vertical quantum cohomology' introduced by Astashkevich-Sadov \verb|\cite{AstashkevichSadov1995}| Remark 2.''（错误）
-    \item 修改后：``Lu also proved Theorem 2 independently using `vertical quantum cohomology' introduced by Astashkevich-Sadov \verb|\cite{AstashkevichSadov1995}| (see \verb|\cite[Remark 2]{Kim1996}|).''
-    \item 原因：经核实 Kim (1996) 原文 Remark 2，``vertical quantum cohomology'' 是 Astashkevich-Sadov 在 [2] 中引入的，Lu 的工作见 [16]。因此正确的引用应该是 \texttt{\textbackslash cite\{AstashkevichSadov1995\}} 引入该概念，而非 \texttt{\textbackslash cite\{Kim1996\}}。
-  \end{itemize}
-\end{enumerate}
-
-\subsection{Chapter 6 Citation 引用修复}\label{sec:qa-ch6-citation-fix}
-
-本次修复了 Chapter 6 中的 citation 问题和环境定义问题：
-
-\begin{enumerate}
-\item \textbf{Gromov 引用年份核实}：
-  \begin{itemize}
-    \item 原文：``Gromov \texttt{\textbackslash cite\{Gromov1985\}}'' — 编译警告说 `Gromov1985' 未定义
-    \item 错误修改：盲目改为 `Gromov1995'（这是错的！）
-    \item 正确修复：经核实 Kim (1996) 原文参考文献 [11]，Gromov 的论文确实发表于 \textbf{1985} 年 (Inventiones Mathematicae 82, 307-347)
-    \item 根本原因：references.bib 中的条目 key 是 `Gromov1995' 但 year 字段是 1985，造成了混淆
-    \item 最终修复：将 references.bib 条目 key 改为 `Gromov1985'，并更新 chapter4.tex 和 chapter6.tex 中的引用
-  \end{itemize}
-
-\item \textbf{Kim1995 引用}：
-  \begin{itemize}
-    \item 原警告：`Kim1995' 在 references.bib 中不存在
-    \item 核实结果：Kim 1995 年的论文确实存在！``Quantum cohomology of partial flag manifolds and a residue formula for their intersection pairings'' (IMRN 1995, No.1, 1-16)
-    \item 修复：已在 references.bib 中添加 Kim1995 的完整条目
-  \end{itemize}
-
-\item \textbf{环境未定义}：
-  \begin{itemize}
-    \item 原文：\texttt{\textbackslash begin\{Definition-Theorem\}} — 该环境未在主文件中定义
-    \item 修改后：改为 \texttt{\textbackslash begin\{Theorem\}}
-    \item 原因：`Definition-Theorem` 环境不存在，应使用标准的 `Theorem` 环境
-  \end{itemize}
-\end{enumerate}
-
-\textbf{经验教训}：修改引用年份必须先核实原始文献，不能仅根据编译警告盲目修改！Gromov 的论文是 1985，不是 1995。
-
-\subsection{Weyl 群与 $W_P$ 子群的具体例子}\label{sec:qa-WeylGroupAndWP}
+\section{Weyl 群与 $W_P$ 子群的具体例子}\label{sec:qa-WeylGroupAndWP}
 
 \textbf{问}：请为 Weyl 群与 $W_P$ 子群（定义 4.5-4.6）举一些具体例子，帮助理解：$W = S_n$ 中当 $P$ 是不同类型的抛物子群时 $W_P$ 分别是什么？$\Delta_P$ 记录了什么信息？直观上这些子群如何"忘记"某些反射方向？
 
@@ -1764,45 +1709,7 @@ QH^*(G/B) \cong \mathbb{C}[p_1, \ldots, p_l, e^{q_1}, \ldots, e^{q_l}] / \langle
 \end{itemize}
 
 $*$ Insight：Kim 的定理揭示了看似不同的两个领域——代数几何中的曲线计数与数学物理中的 Toda 格子——在深层结构上是等价的。这种等价性是数学统一性的又一例证。
-\section{修复所有章节的 citation/cref 引用规范}\label{sec:fix-citation-cref}
-\subsection{问题}
-用户要求：\textbf{有 citation 就必须有 cref；正文里必须有引理/定理/公式的完整内容}。Subagent 检查发现 13 处问题，分布在 Chapter 1, 2, 4。
-\subsection{回答}
-\textbf{修复内容汇总}：
-
-\bigskip\textbf{Chapter 1（7 处）}：
-\begin{itemize}
-\item L1170, L1242：\verb|\cref{def:Lemma25}| 后添加 \verb|(\cite[Lemma 2.5]{GX2025})|
-\item L1176, L1204, L1251：\verb|\cref{def:Corollary24}| 后添加 \verb|(\cite[Corollary 2.4]{GX2025})|
-\item L1202：\verb|\cref{def:Corollary24}| 后添加 \verb|(\cite[Corollary 2.4]{GX2025})|
-\item L1256：\verb|\cref{def:Theorem12}| 后添加 \verb|(\cite[ Theorem 1.1]{GX2025})|
-\end{itemize}
-
-\bigskip\textbf{Chapter 2（3 处）}：
-\begin{itemize}
-\item L29：descents 定义处添加 \verb|（见 \cref{def:SDuv}）|
-\item L353：添加 \verb|（见 \cref{sec:appendix-ch2-proof}）|
-\item L409：添加 \verb|（见 \cref{sec:appendix-ch2-dominant}）|
-\end{itemize}
-
-\bigskip\textbf{Chapter 4（3 处）}：
-\begin{itemize}
-\item L287：\verb|\cite[Lemma 7.2]{FW}| 后添加 \verb|（见 \cref{prop:KleimanTransversality}）|
-\item L467：\verb|\cite[Definition 1.2]{Mihalcea}| 后添加 \verb|（亦见 \cref{def:GromovWittenClass}）|
-\item L613：改为 \verb|由 \cref{prop:ev3inverse}（\cite[Lemma 6.4]{Mihalcea}）|\\
-（注：\verb|def:GromovWittenClass| 定义在 chapter6.tex，但引用在 chapter4.tex）
-\end{itemize}
-
-\bigskip\textbf{发现的问题}：\verb|def:GromovWittenClass| 标签定义在 chapter6.tex，但引用在 chapter4.tex —— 标签系统是\textbf{跨章节}的。添加 \verb|\cref| 时必须先确认标签存在位置。
-
-\bigskip\textbf{验证结果}：
-\begin{itemize}
-\item 编译成功：PDF 136 pages, 1566061 bytes
-\item 无 natbib undefined citation 警告
-\item 存在少量 pre-existing LaTeX 错误（itemize environment, undefined references）与本次修复无关
-\end{itemize}
-
-\bigskip\textbf{底层逻辑}：citation + cref 的配对规范确保了\textbf{双向可追溯性}——从正文可以追溯到具体论文引用，从论文引用可以追溯到正文位置。这是学术笔记的\textbf{闭环管理}。
+ 
 \section{等变量子上同调中量子修正系数的几何意义}\label{sec:QuantumCorrectionCoefficients}
 \subsection{问题}
 在第四步（$d=1$ 情形）的计算中，笔记直接给出了：
@@ -2165,3 +2072,26 @@ $$c(u) + c(v) - c(w) - \sum d_i \cdot \deg(q_i)$$
 \end{enumerate}
 
 \textbf{次数条件的意义}：$c(u) + c(v) - c(w) - \sum_i d_i \cdot \deg(q_i)$ 必须是 $x_i$ 的非负次数，以确保 $c_{u,v}^{w,d}$ 是齐次多项式。当 $d = 0$ 时，此条件退化为 $c(u) + c(v) = c(w)$，即普通等变上同调的情形。
+
+\section{为什么 $w = s_1$ 在 $\sigma(s_1) \circ \sigma(s_1) = q \sigma(1)$ 中不可能出现}\label{sec:qa-w-s1-degree-mismatch}
+\subsection{问题}
+为什么在量子乘积公式 $\sigma(s_1) \circ \sigma(s_1) = q \sigma(1)$ 中，$w = s_1$ 不可能出现，而只能是 $w = 1$？
+\subsection{回答}
+在量子乘积展开中，次数约束方程为：
+$$|u| + |v| = |w| + 2d$$
+
+其中 $|w|$ 是 Schubert 类 $\sigma(w)$ 的上同调次数。
+
+对于 $\mathbb{P}^1$ 的情形：
+\begin{itemize}
+\item $|s_1| = 1$（超平面类是一次）
+\item $|1| = 0$（单位类是零次）
+\end{itemize}
+
+代入次数约束方程 $1 + 1 = |w| + 2d$：
+\begin{itemize}
+\item 如果 $w = s_1$（$|w| = 1$），则 $2 = 1 + 2d$，得 $d = 1/2$ — 这不是整数，所以不可能
+\item 如果 $w = 1$（$|w| = 0$），则 $2 = 0 + 2d$，得 $d = 1$ — 满足次数约束
+\end{itemize}
+
+\textbf{结论}：$w = s_1$ 不可能出现是因为它会导致曲线次数 $d$ 不为整数，而稳定映射的同调类必须是 $H_2(X, \mathbb{Z})$ 中的整类。
