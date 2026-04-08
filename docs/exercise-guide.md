@@ -332,7 +332,9 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 
 ---
 
-## 五、标签命名规范
+## 五、标签与引用规范
+
+### 标签类型命名
 
 | 类型 | 格式 | 示例 |
 |------|------|------|
@@ -341,68 +343,21 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 | 定义 | `def:{描述性名称}` | `def:potential-outcome` |
 | 定理 | `thm:{描述性名称}` | `thm:consistency-ols` |
 
-### 标签命名参考（Peng Ding 模板）
+### 公式引用规则
 
-| 习题 | 标签 |
-|------|------|
-| 5.1 | `exr:5-1` |
-| 5.2 | `exr:5-2` |
-| 3.7 | `exr:3-7` |
-
----
-
-## 六、公式引用规则
-
-### ❌ 错误做法
+**必须用 `\eqref{}`**，禁止硬编码编号：
 
 ```latex
-证明 (5.2) 给出的公式  % 硬编码编号
-```
+% ❌ 错误
+证明 (5.2) 给出的公式
 
-### ✅ 正确做法
-
-```latex
+% ✅ 正确
 证明 \eqref{eq:balance-discrete-CRE} 给出的公式
 ```
 
-**前提**：公式需要有 `\label{}`
-
-```latex
-\begin{equation}
-\label{eq:balance-discrete-CRE}
-...
-\end{equation}
-```
-
 ---
 
-## 七、习题来源优先级
-
-### 1. tag 文件（优先）
-
-- **位置**：`PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex`
-- **优点**：公式标签清晰，引用关系自动保留
-
-**发现流程**：
-```
-1. 读取 PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex
-2. 搜索 \label{eq:...} 获取所有公式标签
-3. 搜索 \ref{hw::...} 获取习题引用的公式
-4. 建立映射关系
-```
-
-### 2. transcript 文件
-
-- **位置**：`PDFs/<教材>/transcript/<书名>.md`
-- **缺点**：没有 label/ref，需要手动添加
-
-**识别模式**：
-- 标题模式：`# X.Y Homework Problems`、`## Homework Problems`、`# Exercises`
-- 内容模式：`\paragraph{标题}` 或 题号列表
-
----
-
-## 八、质量检查清单
+## 六、质量检查清单
 
 完成习题后，逐项检查：
 
