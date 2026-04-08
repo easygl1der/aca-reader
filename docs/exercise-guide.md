@@ -55,7 +55,7 @@ Step 2: 搜索 \begin{exercise} 或 \begin{Exercise}
         └─ 都没找到
             ↓
 Step 3: 检查 documentclass 和宏包定义
-        ├─ book 类 + 无特殊定义 → Exercise（大写）
+        ├─ book for the third part of the judgment template process, you can merge it into the second part. Yes, you can merge it into the second template. Because this guidelines is based on the textbooks I wrote before, including the differential geometry and causal inference materials. But in reality, the general approach may not be limited to these two textbooks, which can only serve as examples. So for general use, you still need to identify what exactly it is. Actually, your third and second parts can be combined.类 + 无特殊定义 → Exercise（大写）
         └─ article 类 + 无特殊定义 → Exercise（大写）
 ```
 
@@ -121,13 +121,103 @@ notes/其他/ → Exercise  % 不要这样假设！
 
 ## 四、格式规范
 
-### 4.1 do Carmo 模板（Book 模板）
+### 4.1 通用模板（通用教材）
+
+通用模板是默认格式，适用于**未在笔记 LaTeX 中定义特殊 exercise 环境的教材**。
+
+#### 通用格式模板
+
+```latex
+\begin{Exercise}{\ref{exr:X-Y} Exercise X-Y \cite{bookkey}}\label{exr:X-Y}
+习题内容。
+\end{Exercise}
+```
+
+#### 格式说明
+
+| 位置 | 内容 | 示例 |
+|------|------|------|
+| `exr:X-Y` | 标签 = 教材章-题号 | `exr:5-1` |
+| `Exercise X-Y` | 第二括号第一部分：教材编号 | `Exercise 5-1` |
+| `\cite{bookkey}` | 第二括号第二部分：bibtex 引用 | `\cite{Ding2024}` |
+
+#### 第二括号结构
+
+```
+{\ref{exr:5-1} Exercise 5-1 \cite{Ding2024}}
+ └─①─┘  └────②─────┘  └────③─────┘
+   ① 引用标签          ② 教材编号        ③ bibtex 引用
+```
+
+#### 标签命名
+
+- 格式：`exr:{章号}-{题号}`
+- 来源：跟随教材原书编号
+- 示例：`exr:5-1`, `exr:3-7`, `exr:2-15`
+
+#### 难题标记（可选）
+
+若教材中该题标记为星号（可选/难题），在编号后加 `*`：
+
+```latex
+\begin{Exercise}{\ref{exr:5-10*} Exercise 5-10* \cite{Ding2024}}\label{exr:5-10*}
+% 难题内容
+\end{Exercise}
+```
+
+#### 分部题目
+
+多问时使用 `enumerate` 环境：
+
+```latex
+\begin{Exercise}{\ref{exr:5-3} Exercise 5-3 \cite{Ding2024}}\label{exr:5-3}
+题目描述...
+
+\begin{enumerate}
+  \item 第一小问
+  \item 第二小问
+\end{enumerate}
+\end{Exercise}
+```
+
+#### 两种放置风格
+
+**风格 A：分节放置**（每节末放置该节习题）
+
+```latex
+\subsection*{5-1 节练习}
+
+\begin{Exercise}{\ref{exr:5-1} Exercise 5-1 \cite{Ding2024}}\label{exr:5-1}
+习题内容...
+\end{Exercise}
+```
+
+**风格 B：章末放置**（所有习题集中在章末）
+
+```latex
+\section{习题}\label{sec:chapter5-exercises}
+
+\begin{Exercise}{\ref{exr:5-1} Exercise 5-1 \cite{Ding2024}}\label{exr:5-1}
+习题内容...
+\end{Exercise}
+
+% 更多习题...
+
+\section*{5-2 节}
+% 后续章节内容...
+```
+
+---
+
+### 4.2 do Carmo 模板（微分几何）
+
+do Carmo 教材使用**小写** `exercise` 环境，格式略有不同。
 
 #### 格式模板
 
 ```latex
 \begin{exercise}{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}
-习题内容原文（英文）。
+习题内容（英文原文）。
 \end{exercise}
 ```
 
@@ -145,7 +235,7 @@ the circle with $\alpha(0) = (0, 1)$.
 \begin{exercise}{1-3, 2 — do Carmo, Exercise 1-3, 2}
 A circular disk of radius 1 in the plane $xy$ rolls without slipping
 along the $x$ axis. The figure described by a point of the circumference
-of the disk is called a cycloid (见 \cref{fig:cycloid}，教材 Figure 1-7)。
+of the disk is called a cycloid (见 \cref{fig:cycloid}，教材 Figure 1-7).
 \begin{enumerate}
 \item[a.] Obtain a parametrized curve $\alpha: \mathbb{R} \to \mathbb{R}^2$
 the trace of which is the cycloid, and determine its singular points.
@@ -164,6 +254,16 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 \end{exercise}
 ```
 
+#### 格式要点
+
+| 要点 | 说明 |
+|------|------|
+| 环境 | `exercise`（小写） |
+| 第二括号 | `{章节, 题号 — do Carmo, Exercise 章节, 题号}` |
+| 内容语言 | 英文原文（直接引用教材） |
+| 难题标记 | 题号后加 `*` |
+| 图片引用 | `\cref{fig:标签}` |
+
 #### 错误示例
 
 ❌ **错误：中文标题**
@@ -171,51 +271,17 @@ measures the distance from the plane to the origin $(0, 0, 0)$.
 \begin{exercise}{1-2, 1 — do Carmo, 习题1-2, 1}  % 不要用中文
 ```
 
-❌ **错误：缺少 do Carmo 引用**
+❌ **错误：缺少来源**
 ```latex
-\begin{exercise}{1-2, 1}  % 缺少来源
+\begin{exercise}{1-2, 1}  % 缺少 do Carmo 引用
 ```
 
-❌ **错误：footnote 格式**
+❌ **错误：用 footnote 代替**
 ```latex
 \begin{exercise}{1-2, 1}\footnote{do Carmo, Exercise 1-2, 1}  % 不要用 footnote
 ```
 
-#### 格式要点
-
-| 要点 | 说明 |
-|------|------|
-| 环境名称 | `exercise`（小写） |
-| 参数格式 | `{章节编号, 题号 — do Carmo, Exercise 章节编号, 题号}` |
-| 内容语言 | 英文原文（直接引用教材） |
-| 难题标记 | 题号后加 `*`，如 `{1-3, 8* — do Carmo, ...}` |
-| 分部题目 | 使用 `enumerate` 环境 |
-| 图片引用 | 使用 `\cref{fig:标签}` |
-
-#### 公式格式
-
-- **短公式**：行内公式 `$...$`
-- **长公式**：行间公式 `\[ ... \]`
-- **判断标准**：公式超过一行、或包含复杂分式/根号，应使用行间公式
-
-#### 分部题目格式
-
-```latex
-\begin{exercise}{1-3, 3 — do Carmo, Exercise 1-3, 3}
-Let $0A = 2a$ be the diameter of a circle $S^1$. Prove that:
-\begin{enumerate}
-\item[a.] The trace of $\alpha(t) = \left(\frac{2at^2}{1+t^2},
-\frac{2at^3}{1+t^2}\right)$, $t \in \mathbb{R}$, is the cissoid
-of Diocles (见 \cref{fig:cissoid}，教材 Figure 1-8).
-\item[b.] The origin $(0,0)$ is a singular point of the cissoid.
-\item[c.] As $t \to \infty$, $\alpha(t)$ approaches the line $x = 2a$ (asymptote).
-\end{enumerate}
-\end{exercise}
-```
-
 #### 分节练习标记
-
-每个习题 section 结束后，用以下格式标记：
 
 ```latex
 \subsection*{1-2 节练习}
@@ -223,98 +289,46 @@ of Diocles (见 \cref{fig:cissoid}，教材 Figure 1-8).
 
 ---
 
-### 4.2 Peng Ding 模板（因果推断）
+### 4.3 其他已知模板
 
-#### 格式模板
+对于已在笔记 LaTeX 中定义 exercise 环境的教材，格式跟随笔记定义。
 
-```latex
-\section{习题}\label{sec:chapter5-exercises}
-
-\begin{Exercise}{\ref{exr:5-1} 英文标题}\label{exr:5-1}
-习题内容（中英文均可，英文优先）。
-\end{Exercise}
-```
-
-#### 正确示例
+**Peng Ding 模板（因果推断）**：
 
 ```latex
 \begin{Exercise}{\ref{exr:5-1} Covariate balance in the CRE}\label{exr:5-1}
-证明 \eqref{eq:balance-discrete-CRE}：在 CRE 下，
-\[
-\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right} = 0.
-\]
+证明 \eqref{eq:balance-discrete-CRE}：...
 \end{Exercise}
 ```
 
-```latex
-\begin{Exercise}{\ref{exr:5-3} Consequence of constant individual causal effects}\label{exr:5-3}
-假设个体因果效应是常数 $\tau_i = \tau$（对所有 $i = 1, \ldots, n$）。考虑以下 $\tau$ 的加权估计量类：
-\[
-\hat\tau_w = \sum_{k=1}^K w_{[k]} \hat\tau_{[k]},
-\]
-其中权重 $w_{[k]}$ 对所有 $k$ 非负。
-
-\begin{enumerate}
-  \item 找出使 $\hat\tau_w$ 对 $\tau$ 无偏的 $w_{[k]}$ 条件。
-  \item 在所有无偏估计量中，找出使 $\hat\tau_w$ 方差最小的权重。
-\end{enumerate}
-\end{Exercise}
-```
-
-```latex
-\begin{Exercise}{\ref{exr:5-9} Data re-analyses}\label{exr:5-9}
-重新分析第 4 章使用的 LaLonde 数据。
-
-\begin{enumerate}
-  \item 将实验视为按种族分层的 SRE，重新分析数据。
-  \item 将实验视为按婚姻状况分层的 SRE，重新分析数据。
-  \item 将实验视为按高中文凭指标分层的 SRE，重新分析数据。
-\end{enumerate}
-与 CRE 下的结果进行比较。
-\end{Exercise}
-```
-
-#### 错误示例
-
-❌ **错误：缺少标签引用**
-```latex
-\begin{Exercise}{5.1 Covariate balance}\label{exr:5-1}  % 缺少 \ref{}
-```
-
-❌ **错误：标签格式错误**
-```latex
-\begin{Exercise}{\ref{ex:5.1} Covariate balance}\label{exr:5-1}  % 标签名不一致
-```
-
-❌ **错误：中文标题**
-```latex
-\begin{Exercise}{\ref{exr:5-1} CRE 中的协变量平衡}\label{exr:5-1}  % 不应用中文标题
-```
-
-#### 格式要点
-
-| 要点 | 说明 |
-|------|------|
-| 环境名称 | `Exercise`（大写，首字母大写） |
-| 参数格式 | `{\ref{标签} 英文标题}` |
-| 标签命名 | `exr:{章号}-{题号}` |
-| 习题标题 | 使用教材原文的英文标题 |
-| 公式引用 | **必须用 `\eqref{}`** |
-| 内容语言 | 理论题优先英文，计算/应用题可用中文 |
+格式要点：
+- 环境：`Exercise`（大写）
+- 第二括号：`{\ref{标签} 英文标题}`
+- 标签：`exr:{章号}-{题号}`
+- 公式引用：**必须用 `\eqref{}`**
 
 ---
 
-### 4.3 通用模板
+### 4.4 标签来源优先级
 
-```latex
-\section{习题}\label{sec:chapterX-exercises}
+| 来源 | 位置 | 如何处理 |
+|------|------|----------|
+| **tag 文件**（优先） | `PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex` | 直接使用文件中的 `\label{}` |
+| **transcript 文件** | `PDFs/<教材>/transcript/<书名>.md` | 根据教材编号手动创建标签 `exr:章-题号` |
 
-\begin{Exercise}{\ref{exr:X-1} 英文标题}\label{exr:X-1}
-习题内容。
-\end{Exercise}
+**tag 文件处理流程**：
+```
+1. 读取 PDFs/<教材>/arXiv-xxx/chapters/chapterXX.tex
+2. 搜索 \label{exr:...} 获取已有标签
+3. 直接使用对应标签
 ```
 
-格式同 Peng Ding 模板。
+**仅有 transcript 时**：
+```
+1. 提取教材章节编号（如 "5-1", "3-7"）
+2. 创建标签 exr:章-题号
+3. 在笔记 LaTeX 中定义对应标签
+```
 
 ---
 
