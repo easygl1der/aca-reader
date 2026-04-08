@@ -2131,3 +2131,51 @@ $$\left(C, x_1, x_2, x_3, f\right)$$
 \end{enumerate}
 
 稳定性条件的具体含义：若某个不可约分支 $E \cong \mathbb{P}^1$ 被 $f$ 收缩到 $X$ 中一个点 $(f(E)=$ pt），则 $E$ 必须至少含 3 个特殊点（特殊点 $=$ 标记点或与其他分支相交的节点）。这排除了``幽灵分支''（ghost component）——即没有足够结构来固定自身的无用分支。
+
+\section{幽灵分支与稳定性条件的直观解释}\label{sec:qa-ghost-component-stability}
+\subsection{问题}
+请详细解释稳定映射中``幽灵分支''（ghost component）的概念，以及稳定性条件的动机。
+\subsection{回答}
+\textbf{一、幽灵分支（Ghost Component）的概念}
+
+在稳定映射的紧化过程中，曲线 $C$ 可能包含一些被 $f$ 收缩到 $X$ 中一个点的不可约分支 $E \cong \mathbb{P}^1$。这样的分支在几何上没有贡献——它们不提供新的交点信息。
+
+\textbf{幽灵分支的例子}：假设一个树状的结点曲线，有一个 $\mathbb{P}^1$ 分支 $E$：
+\begin{itemize}
+\item $E$ 上只有 2 个特殊点（与主分支的交点和另一个标记点）
+\item $f|_E$ 是常值映射（把整个 $E$ 映到 $X$ 中一个点 $pt$）
+\end{itemize}
+
+这个 $E$ 就是幽灵分支——它对映射没有实质贡献，却会出现在模空间中，如果不加限制，会导致：
+\begin{enumerate}
+\item \textbf{无限自同构}：常值映射的 $\mathbb{P}^1$ 可以被无数个自同构（旋转）而不改变映射
+\item \textbf{序列不紧}：一列从 $E$ ``分裂''出来的映射可能退化到不可列序列
+\end{enumerate}
+
+\textbf{二、稳定性条件的动机}
+
+稳定性条件要求：若某个不可约分支 $E \cong \mathbb{P}^1$ 被 $f$ 收缩到 $X$ 中一个点，则 $E$ 必须至少含 \textbf{3 个特殊点}。
+
+特殊点包括：
+\begin{itemize}
+\item 标记点（marked points）
+\item 与其他分支相交的节点（nodes）
+\end{itemize}
+
+\textbf{为什么是 3 个？} 这是为了消除无限自同构：
+\begin{itemize}
+\item $\mathbb{P}^1$ 上的自同构群是 $\mathrm{PGL}(2,\mathbb{C})$，这是一个 3 参数群
+\item 给定 3 个一般位置的点，$\mathbb{P}^1$ 的自同构就被唯一确定（刚性问题）
+\item 因此：如果一个分支有 $\geq 3$ 个特殊点，其自同构群就被固定
+\end{itemize}
+
+\textbf{三、Kontsevich 紧化的核心洞察}
+
+Kontsevich 的天才之处在于：他认识到：
+\begin{itemize}
+\item 不稳定曲线（幽灵分支）导致的问题是\textbf{局部的}
+\item 可以在紧化过程中直接\textbf{删除}这些不稳定配置
+\item 剩下的稳定映射空间 $\overline{\mathcal{M}}_{0,3}(X,d)$ 是 proper 的，可以在上面做积分
+\end{itemize}
+
+这使得 Gromov-Witten 不变量的定义成为可能——我们需要一个紧的模空间来定义积分。
