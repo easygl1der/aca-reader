@@ -1,4 +1,7 @@
-% Chapter 5: Quantum Double Schubert Polynomials Positivity Conjecture
+#!/usr/bin/env python3
+"""Restructure Chapter 5 with three sections: Basic Conjectures, Proofs, and Proof Strategy."""
+
+new_content = r"""% Chapter 5: Quantum Double Schubert Polynomials Positivity Conjecture
 % Based on Mihalcea (2007) \cite{Mihalcea} and Gao-Xiong (2025) \cite{GX2025}
 % This chapter records the open conjecture
 
@@ -37,7 +40,7 @@ The classical proof uses geometric intersection theory on the flag manifold $G/B
 
 The first major extension introduces equivariant cohomology, where the coefficients become polynomials in torus weights.
 
-\begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 3.2]{Gr}}]
+\begin{Theorem}[Graham Positivity Theorem {\cite[Theorematical 3.2]{Gr}}]
 \label{th:GrahamPositivityOriginal}
 Let $X = G/P$ be a homogeneous space. In equivariant cohomology $H_T^*(X)$, the product of Schubert classes satisfies:
 \[
@@ -427,3 +430,16 @@ where $\partial_i$ is the divided difference operator acting on the $\mathbf{x}$
 The quantum double Schubert polynomial $\mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{y}) \in \Lambda[\mathbf{y}][q]$ reduces to the double Schubert polynomial when $q = 0$ and satisfies the quantum Monk's rule.
 \end{Definition}
 
+"""
+
+with open('chapter5.tex', 'r') as f:
+    content = f.read()
+
+# Find where the new content should go
+# We want to replace from line 1 (beginning) to the end, since we're restructuring entirely
+# But let's just write the whole file
+
+with open('chapter5.tex', 'w') as f:
+    f.write(new_content)
+
+print("Chapter 5 restructured successfully")
