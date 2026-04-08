@@ -507,5 +507,6 @@ grep -n "??\|undefined reference" notes/*/homework/*.tex
 | `docs/exercise-guide.md` | 习题格式指南 |
 | `PDFs/<主题>/transcript/` | 教材转录本 |
 | `PDFs/<主题>/**/*.tex` | 教材 tex 文件 |
-| `PDFs/2025-summer/westlake-university/homework/includes/` | LaTeX 模板参考 |
+| `/tmp/LaTeX-Homework-Template/` | AkexStar 模板 |
+| `/tmp/template.LaTeX.homework/` | Jacky-Lzx (Cleese) 模板 |
 | `notes/<主题>/homework/` | 本地 homework 备份 |

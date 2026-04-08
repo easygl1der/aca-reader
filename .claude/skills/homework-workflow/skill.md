@@ -47,11 +47,20 @@ for page in doc:
     print(page.get_text())
 ```
 
-### Step 4: 生成双格式作业
+### Step 4: 选择 LaTeX 模板
+
+| 模板 | 适用场景 | 位置 |
+|------|----------|------|
+| **AkexStar**（默认） | 纯数学/理论作业 | `/tmp/LaTeX-Homework-Template/` |
+| **Jacky-Lzx** | 涉及代码的作业 | `/tmp/template.LaTeX.homework/` |
+
+> **默认使用 AkexStar 模板**。如果作业包含代码，询问用户是否切换到 Jacky-Lzx 模板。
+
+### Step 5: 生成双格式作业
 
 **同时生成两种格式**：
 
-#### 4.1 Obsidian Markdown 格式
+#### 5.1 Obsidian Markdown 格式
 
 输出路径：`/My Drive/homework/<课程名>/hw<N>.md`
 
@@ -87,40 +96,63 @@ for page in doc:
 `\end proof}`
 ```
 
-#### 4.2 LaTeX 格式
-
-输出路径：`/homework/<学科>/homework-<N>.tex`
-
-**使用 amsart 文档类**，预定义环境：
-- `\newtheorem{exercise}[theorem]{Exercise}` — 作业题
-- `\newtheorem{problem}[theorem]{Problem}` — 题目
-- `\newtheorem*{solution}{Solution}` — 解答
-- `\newtheorem*{proof*}{Proof}` — 证明
-
-**格式规则**：
-- Exercise 标签：`exr:{章}-{题号}`
-- 标题后加 `\cite[来源]{bookkey}`
-- 解答使用 `\begin proof}` 或 `\begin solution}`
+#### 5.2 AkexStar 模板（默认）
 
 ```latex
-\begin{exercise}{5-1}\label{exr:5-1}
-\textbf{Section 5.1} — \emph{Covariate Balance} \cite[Section 5.1]{Ding2024}
+\documentclass{homework}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath, amsthm, amssymb, bm, color, framed, graphicx, mathrsfs}
 
-证明在 CRE 下，协变量平衡。
+\author{姓名}
+\class{课程名}
+\date{\today}
+\title{Homework-1}
 
-\begin{equation}
-\label{eq:5-2-balance}
-\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0.
-\end{equation}
-\ SOURCE: \cite[Section 5.2, Equation (5.2)]{Ding2024}
+\begin{document} \maketitile
 
-\begin{proof}
-证明内容...
-\end{proof}
-\end{exercise}
+\begin{shaded}
+\question 题目内容...
+\end{shaded}
+
+% 答案直接写在 shaded 环境外部
+
+\img<fig:1>[0.4]{Caption}{image.png}
+\tbl<tbl:1>{Caption}{
+  Header 1 & Header 2 \\
+  Row 1 & Row 2
+}
 ```
 
-### Step 5: 引用处理（核心规范）
+#### 5.3 Jacky-Lzx 模板（涉及代码时使用）
+
+```latex
+\documentclass[11pt]{article}
+\input{structure.tex}
+\input{code-style.tex}
+
+\newcommand{\assignmentQuestionName}{Question}
+\newcommand{\assignmentClass}{课程名}
+\newcommand{\assignmentTitle}{Homework 1}
+\newcommand{\assignmentAuthorName}{姓名}
+
+\begin{document}
+\maketitle
+
+\begin{question}[20\%]{题目标题}
+题目内容...
+
+\begin{answer}
+解答内容...
+\end{answer}
+\end{question}
+
+% 代码示例
+\begin{lstlisting}[language=Python, caption={...}, label=lst:1]
+# code here
+\end{lstlisting}
+```
+
+### Step 6: 引用处理（核心规范）
 
 > **⚠️ 极其重要**：
 > - 如果引用教材中的**公式/定理/图片**，必须把**完整内容**写到 homework 中
@@ -134,7 +166,7 @@ for page in doc:
 | 图片引用 `Figure X.Y` | 找到图片，复制或描述 + `\cite{bookkey}` |
 | 章节引用 `Section X.Y` | 如果太大，在附录简要说明 + `\cite{bookkey}` |
 
-### Step 6: Double Check
+### Step 7: Double Check
 
 > **⚠️ 必须核对**：生成的作业是否与老师布置的一致
 > - 逐题核对题号、内容、要求
@@ -180,3 +212,4 @@ notes/<主题>/homework/hw<N>.md
 - 变量表格使用 markdown table 格式
 - 数学公式使用 `$$...$$` 或 `$...$`
 - **引用教材内容必须完整写出 + 加 `\cite{}`**
+- **默认使用 AkexStar 模板，含代码时询问是否使用 Jacky-Lzx**
