@@ -51,8 +51,8 @@ for page in doc:
 
 | 模板 | 适用场景 | 位置 |
 |------|----------|------|
-| **AkexStar**（默认） | 纯数学/理论作业 | `/tmp/LaTeX-Homework-Template/` |
-| **Jacky-Lzx** | 涉及代码的作业 | `/tmp/template.LaTeX.homework/` |
+| **AkexStar**（默认） | 纯数学/理论作业 | `templates/LaTeX-Homework-Template/` |
+| **Jacky-Lzx** | 涉及代码的作业 | `templates/template.LaTeX.homework/` |
 
 > **默认使用 AkexStar 模板**。如果作业包含代码，询问用户是否切换到 Jacky-Lzx 模板。
 
