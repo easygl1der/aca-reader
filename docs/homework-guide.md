@@ -430,7 +430,7 @@ Step 4: 按格式规范写入 homework
 
 ---
 
-## 九、Unicode 禁止规则
+## 十一、Unicode 禁止规则
 
 > **⚠️ 绝对禁止 Unicode 下标**
 
