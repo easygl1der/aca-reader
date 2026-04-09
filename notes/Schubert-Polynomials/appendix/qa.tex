@@ -3771,3 +3771,123 @@ $$\sigma_u \cdot \sigma_v = \sum_w c_{u,v}^w \sigma_w$$
 
 双重正性（Graham, Mihalcea 等）是单重正性的等变提升——加入 torus 参数 $x_i$ 后，系数从 $c_{u,v}^w \in \mathbb{N}$ 提升为 $c_{u,v}^w(x) \in \mathbb{N}[x]$。遗忘 $x_i$（设置 $x_i = 0$）可退化回单重正性。
 
+\subsection{等变量量子上同调环 $QH_{U_n}^*(Fl_n)$ 的精确定义}\label{sec:qa-QH-Un-Fln}
+\subsection{问题}
+等变量量子上同调环 $QH_{U_n}^*(Fl_n)$ 的精确定义是什么？它的元素（基、乘法结构）是什么？
+\begin{enumerate}
+\item $QH_{U_n}^*(Fl_n)$ 作为环的具体构造——哪些是生成元？哪些是关系？
+\item Schubert 基底在其中的位置——$\sigma_w$ 在这个环里对应什么元素？
+\item 量子乘法（$\star$ product）的结构：为什么 $\widetilde{\mathfrak{S}}_u \star \widetilde{\mathfrak{S}}_v = \sum_w c_{u,v}^w(q) \widetilde{\mathfrak{S}}_w$ 中的系数 $c_{u,v}^w(q)$ 记录了曲线计数？
+\item 与经典等变量子上同调 $H_T^*(Fl_n)$ 的关系——退化为 $q = 0$ 时得到什么？
+\end{enumerate}
+
+\subsection{回答}
+
+\textbf{一、背景：从上同调到量子上同调}
+
+在经典代数几何中，旗流形 $Fl_n = GL_n/B$ 的上同调环 $H^*(Fl_n)$ 描述了 Schubert 胞腔的相交理论：
+$$\sigma_u \cdot \sigma_v = \sum_w c_{u,v}^w \sigma_w \quad (c_{u,v}^w \in \mathbb{N})$$
+其中 $c_{u,v}^w$ 是三个 Schubert 簇的交点个数。
+
+量子上同调（Quantum Cohomology）将"曲线"的概念引入相交理论：不再只计数点，而是计数通过给定点的代数曲线。这产生了新的乘法结构。
+
+\textbf{二、$QH_{U_n}^*(Fl_n)$ 的定义}
+
+等变量量子上同调环（Equivariant Quantum Cohomology Ring）定义为：
+$$QH_T^*(Fl_n) = H_T^*(Fl_n) \otimes_{\mathbb{Z}[x]} \mathbb{Z}[x, q_1, \ldots, q_n]$$
+其中：
+\begin{itemize}
+\item $H_T^*(Fl_n)$：等变量子上同调环（Schubert 类 $\sigma_w^T$ 是基）
+\item $\mathbb{Z}[x] = H_T^*(pt)$：torus 作用的基本环
+\item $q_1, \ldots, q_n$：量子参数（formal variables tracking curve degrees）
+\end{itemize}
+
+\textbf{严格定义}（见 \cite[Section 3]{Kim2000} 和 \cite[Section 2]{Mihalcea}）：
+
+作为分次环（graded ring），$QH_T^*(Fl_n)$ 的生成元是：
+\begin{itemize}
+\item Schubert 类 $\sigma_{s_i}^T$（对应基本置换 $s_i$，即超平面类）
+\item 量子参数 $q_1, \ldots, q_n$
+\end{itemize}
+
+关系由旗流形的 Schubert 结构决定（见下文）。
+
+\textbf{三、Schubert 基底在 $QH_T^*(Fl_n)$ 中的位置}
+
+在 $QH_T^*(Fl_n)$ 中，Schubert 类 $\{\sigma_w^T\}$ 仍然构成一组基元。更精确地说：
+
+$$QH_T^*(Fl_n) \cong H_T^*(Fl_n)[q_1, \ldots, q_n] / \mathcal{R}$$
+其中 $\mathcal{R}$ 是量子关系（quantum relations），而作为 $\mathbb{Z}[x, q]$-模，有基：
+$$\{\sigma_w^T \mid w \in S_n\} \cdot \{q^d \mid d \in \mathbb{N}^n\}$$
+即每个 Schubert 类乘以任意量子次数的单项式 $q_1^{d_1}\cdots q_n^{d_n}$ 给出基元。
+
+\textbf{四、量子乘法（$\star$ product）的结构}
+
+量子乘积 $\star$ 定义为：
+$$\sigma_u^T \star \sigma_v^T = \sum_{w, d} \langle \sigma_u^T, \sigma_v^T, \sigma_w^T \rangle_d \; q^d \; \sigma_{w_0w}^T$$
+
+其中：
+\begin{itemize}
+\item $d = (d_1, \ldots, d_n) \in \mathbb{N}^n$：曲线的多重次数（multi-degree）
+\item $q^d = q_1^{d_1}\cdots q_n^{d_n}$：量子变量
+\item $\langle \sigma_u^T, \sigma_v^T, \sigma_w^T \rangle_d = \int_{[\overline{\mathcal{M}}_{0,3}(Fl_n, d)]^{\text{vir}}} ev_1^*\sigma_u^T \cdot ev_2^*\sigma_v^T \cdot ev_3^*\sigma_w^T$：Gromov--Witten 不变量
+\item $\sigma_{w_0w}^T$：Poincaré 对偶
+\end{itemize}
+
+在 Schubert 多项式形式下（上式对应 Mihalcea 的量子 Schubert 演算形式），有：
+$$\widetilde{\mathfrak{S}}_u \star \widetilde{\mathfrak{S}}_v = \sum_{w, d} c_{u,v}^{w,d}(x) \; q^d \; \widetilde{\mathfrak{S}}_w$$
+其中 $c_{u,v}^{w,d}(x) \in \mathbb{N}[x]$ 是非负多项式。
+
+\textbf{为什么 $c_{u,v}^{w,d}(x)$ 记录了曲线计数？}
+
+几何解释：$c_{u,v}^{w,d}(x)$ 来自 Gromov-Witten 不变量
+$$\langle \sigma_u^T, \sigma_v^T, \sigma_w^T \rangle_d$$
+它计数的是满足以下条件的稳定映射 $f: \mathbb{P}^1 \to Fl_n$ 的个数：
+\begin{itemize}
+\item degree $[f] = d \in H_2(Fl_n, \mathbb{Z})$
+\item $f(x_1) \in X(u)$，$f(x_2) \in X(v)$，$f(x_3) \in X(w_0w)$
+\item 计数带有 torus 权重（产生 $x_i$ 的多项式因子）
+\end{itemize}
+因此，$q^d$ 追踪曲线的 degree，系数 $c_{u,v}^{w,d}(x)$ 是带有 torus 权重的曲线计数。
+
+\textbf{五、与经典等变量子上同调 $H_T^*(Fl_n)$ 的关系}
+
+设置所有量子参数为零：$q_1 = \cdots = q_n = 0$，得到：
+$$QH_T^*(Fl_n) \big|_{q=0} = H_T^*(Fl_n)$$
+此时量子乘积退化为普通杯积：
+$$\sigma_u^T \star \sigma_v^T \big|_{q=0} = \sigma_u^T \cdot \sigma_v^T$$
+
+更精确的退化关系：设 $x_i = 0$（遗忘 torus 作用），$q = 0$（遗忘量子修正），则：
+$$QH_T^*(Fl_n) \big|_{x=0, q=0} = H^*(Fl_n)$$
+对应普通 Schubert 正性。
+
+\textbf{六、$U_n$-等变量子情形的特殊性质}
+
+当研究 $U_n$-等变量子上同调 $QH_{U_n}^*(Fl_n)$ 时（$U_n \subset T$ 是权为 $1$ 的子torus），有以下特殊性质：
+
+\begin{itemize}
+\item 等变参数简化为 $x_1 = \cdots = x_n = x$（单一参数）
+\item 量子参数也相应简化
+\item Schubert 基底的结构保持，但系数环变为 $\mathbb{Z}[x, q]$
+\end{itemize}
+
+在笔记中的设定（来自 Mihalcea 等人的工作），$H_T^*(Fl_n)$ 中的 Schubert 类 $\sigma_w^T$ 在量子化后变为 $\widetilde{\mathfrak{S}}_w$，量子乘积的系数记录了 Gromov--Witten 不变量。
+
+\textbf{七、相关文献}
+
+\begin{itemize}
+\item \cite[Section 3]{Kim2000}：一般旗流形的等变量子上同调环结构
+\item \cite[Section 2]{Mihalcea}：等变量子 Schubert 演算（Equivariant Quantum Schubert Calculus）
+\item \cite[Chapter 10]{FultonQuntum1997}：量子上同调的标准参考文献
+\item \cite[Section 1]{Ciocan}：一般旗流形的量子乘积
+\end{itemize}
+
+\textbf{八、总结}
+
+$QH_T^*(Fl_n)$ 是等变量子上同调 $H_T^*(Fl_n)$ 的量子化：
+\begin{itemize}
+\item 作为 $\mathbb{Z}[x, q]$-模，基为 $\{\sigma_w^T \cdot q^d\}$
+\item 量子乘积 $\star$ 的系数 $c_{u,v}^{w,d}(x)$ 记录了 Gromov--Witten 不变量（曲线计数）
+\item 设置 $q = 0$ 退化为 $H_T^*(Fl_n)$；设置 $x = 0, q = 0$ 退化为 $H^*(Fl_n)$
+\item 这是从"点相交"到"曲线相交"的几何推广
+\end{itemize}
