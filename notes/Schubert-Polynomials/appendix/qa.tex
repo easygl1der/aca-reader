@@ -3571,3 +3571,85 @@ Borel 表示同构 $H_T^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n,y_1,\ldots,y_n] /
 \end{itemize}
 
 这种等价性使得我们可以根据需要选择最方便的层次进行计算或证明——几何直观帮助理解，拓扑语言保证严格性，代数方法便于实现。
+
+\section{Schubert 多项式与 Schubert 簇的关系}\label{sec:qa-SchubertPolynomialVsVariety}
+\subsection{问题}
+Schubert 多项式 $\mathfrak{S}_w(x;y)$ 和 Schubert 簇 $\Omega_w = \overline{B^-wB/B}$ 之间是什么关系？为什么它们共用同一个记号 $w$？三者（簇 $\to$ 类 $\to$ 多项式）的精确链条是什么？
+
+\subsection{回答}
+
+\textbf{一、三个对象的定义}
+
+\textbf{Schubert 簇（几何层）}：
+$$\Omega_w = \overline{B^-wB/B} \subset G/B$$
+是旗流形 $G/B$ 的闭胞腔，维度为 $\dim_{\mathbb{C}} \Omega_w = \ell(w_0) - \ell(w)$。它是 $B^-$-轨道 $B^-wB/B$ 的 Zariski 闭包，是旗流形的基本几何 building block。
+
+\textbf{Schubert 类（上同调层）}：
+$$\sigma_w = [\Omega_w]_T \in H_T^{2\ell(w_0-w)}(G/B)$$
+是 Schubert 簇的等变基本类，落在 $T$-等变上同调环中。Schubert 类构成 $H_T^*(G/B)$ 作为一个 $H_T^*(pt)$-模的基。
+
+\textbf{Schubert 多项式（代数层）}：
+$$\mathfrak{S}_w(x;y) \in \mathbb{Z}[x_1,\ldots,x_n,y_1,\ldots,y_n]$$
+是满足特定递推关系（divided difference operators）的多项式，在 $\mathbb{Z}[y]$ 上构成 $\mathbb{Z}[x,y]$ 的线性基。
+
+\textbf{二、精确链条}
+
+三者的关系通过以下链条严格建立：
+
+\begin{enumerate}
+\item \textbf{Schubert 簇 $\to$ Schubert 类}（几何 $\to$ 代数）：取闭包，取等变基本类
+$$\Omega_w \mapsto [\Omega_w]_T = \sigma_w$$
+
+\item \textbf{Schubert 类 $\to$ Schubert 多项式}（上同调 $\to$ 多项式）：通过 Borel 同构
+$$H_T^*(G/B) \cong \mathbb{Z}[x,y]/\mathcal{I}$$
+其中每个 Schubert 类 $\sigma_w$ 对应唯一的 Schubert 多项式 $\mathfrak{S}_w(x;y)$。
+
+\textbf{精确陈述}（\cite[ Theorem 10.6.4]{anderson2023}）：\textbf{We have $\sigma_w = \mathfrak{S}_w(x;y)$ in $H_T^* Fl(V)$.}
+
+\item \textbf{逆关系}：Schubert 多项式 $\mathfrak{S}_w(x;y)$ 通过赋值
+$$x_i \mapsto -c_1^T(\mathbb{S}_i/\mathbb{S}_{i-1}), \quad y_i \mapsto -c_1^T(E^{i-1}/E^i)$$
+映回 Schubert 类 $\sigma_w$。
+\end{enumerate}
+
+\textbf{三、为什么共用记号 $w$？}
+
+记号 $w$ 指 Weyl 群（或对称群 $S_n$）中的同一个元素。这不是巧合，而是因为：
+
+\begin{itemize}
+\item $B^-$-轨道 $B^-wB/B$ 的胞腔维数只依赖于 $w$
+\item Schubert 簇的拓扑类型由 $w$ 的 Bruhat 编码唯一决定
+\item Schubert 类的上同调信息（类中的次数）由 $\ell(w)$ 确定
+\item Schubert 多项式的次数为 $\ell(w)$，单项式次数由 $w$ 的反转集决定
+\end{itemize}
+
+$w$ 是所有三层对象共享的"身份证号码"。
+
+\textbf{四、链条的几何直观}
+
+Schubert 簇 $\Omega_w$ 是旗流形 $G/B$ 中维数为 $\ell(w_0)-\ell(w)$ 的闭胞腔。它在几何相交理论中出现：
+$$\sigma_u \cdot \sigma_v = \sum_w c_{u,v}^w \sigma_w$$
+其中 $c_{u,v}^w$ 恰好是 Schubert 簇交集的交点数（横截相交时的几何计数）。
+
+Schubert 多项式则是这个几何相交在 Borel 同构下的代数化：
+$$\mathfrak{S}_u \cdot \mathfrak{S}_v = \sum_w c_{u,v}^w \mathfrak{S}_w$$
+系数 $c_{u,v}^w$ 完全相同——因为同构保持乘法结构。
+
+\textbf{五、关键定理的分工}
+
+\begin{enumerate}
+\item \textbf{Borel 表示（Theorem 15.6.1）}：建立同构 $H_T^*(G/B) \cong \mathbb{Z}[x,y]/\mathcal{I}$，这是 Schubert 类映到多项式的理论依据
+\item \textbf{Theorem 10.6.4}：具体指定 $\sigma_w = \mathfrak{S}_w(x;y)$，在同构中给出基底的特殊代表元
+\item \textbf{Bruhat 分解}：$G/B = \bigsqcup_{w \in W} B^-wB/B$，给出 Schubert 簇的几何胞腔分解
+\end{enumerate}
+
+\textbf{六、总结}
+
+Schubert 多项式不是独立于 Schubert 簇的对象，而是 Schubert 簇的\textbf{代数化身}（algebraic incarnation）：
+
+\begin{itemize}
+\item \textbf{Schubert 簇}：几何的 building block（直观但难以计算）
+\item \textbf{Schubert 类}：上同调的抽象（严格但不具体）
+\item \textbf{Schubert 多项式}：多项式的代表（抽象但可计算）
+\end{itemize}
+
+三者共用 $w$ 作为身份证，共享相同的乘法结构常数 $c_{u,v}^w$，通过 Borel 同构和 Theorem 10.6.4 精确对应。
