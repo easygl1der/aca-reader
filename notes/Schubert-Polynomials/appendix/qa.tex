@@ -3311,3 +3311,97 @@ Lemma 2.5 的证明依赖于 Kleiman-Bertini 定理（\cite[Section 19.3]{anders
 在 Refined Graham Positivity 中，separated descents 条件确保了 $\tau$ 的选取使交集横截——这就是为什么该条件是 positivity 证明的核心技术前提。
 
 \textbf{注}：详见 \cite[Section 2.5, Corollary 2.4]{GX2025} 和 \cite[Section 19.3]{anderson2023}。
+
+\section{Theorem 10.6.4 的意义：Schubert 类等于 Schubert 多项式}\label{sec:qa-Theorem1064}
+\subsection{问题}
+在证明 Refined Graham Positivity 时，正文中直接引用了 \cite[Theororem 10.6.4]{anderson2023}，说"类 $[\overline{B^-\pi B/B}]_T$ 由双重 Schubert 多项式 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{t})$ 表示"。这个引用具体保证了什么？为什么 Schubert 类和 Schubert 多项式是等价的？请给出完整的定理陈述、变量对应关系，以及在 positivity 证明中的作用。
+
+\subsection{回答}
+
+\textbf{一、Theorem 10.6.4（Anderson--Fulton）的完整陈述}
+
+\textbf{定理}（\cite[ Theorem 10.6.4]{anderson2023}）：设 $Fl(V)$ 为旗流形，$T$ 为极大环面。则等变量子上同调环 $H_T^*(Fl(V))$ 由以下关系刻划：
+
+在旗流形 $Fl(V)$ 上，Schubert 类 $\sigma_w \in H_T^*(Fl(V))$ 满足：
+$$\sigma_w = \mathfrak{S}_w(\mathbf{x}; \mathbf{y})$$
+
+其中 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ 是双重 Schubert 多项式，变量对应为：
+$$x_i = -c_1^T(\mathbb{S}_i / \mathbb{S}_{i-1}), \qquad y_i = -c_1^T(E^{i-1} / E^i)$$
+
+这里：
+\begin{itemize}
+\item $\mathbb{S}_i$：万有旗丛（universal flag bundle）的第 $i$ 层子丛
+\item $E^i$：余维度 $i$ 的万有子丛
+\item $c_1^T$：等变第一 Chern 类
+\item $\mathbf{x} = (x_1, \ldots, x_n)$：对应 Borel 子群 $B$ 的负根变量
+\item $\mathbf{y} = (y_1, \ldots, y_n)$：对应相反 Borel 子群 $B^-$ 的负根变量
+\end{itemize}
+
+\textbf{二、变量对应的几何含义}
+
+在几何上，Schubert 多项式的变量 $x_i, y_j$ 对应了旗流形上特定线丛的等变第一 Chern 类：
+
+\begin{enumerate}
+\item $x_i = -c_1^T(\mathbb{S}_i / \mathbb{S}_{i-1})$：这是万有旗丛中第 $i$ 层与第 $i-1$ 层之商的等变第一 Chern 类。在旗流形上，$x_i$ 编码了"第 $i$ 个坐标轴方向"的 torus 权重。
+
+\item $y_i = -c_1^T(E^{i-1} / E^i)$：这是余维度 $i$ 的子丛的等变第一 Chern 类。注意 $y_i$ 与 $x_i$ 的区别：$y_i$ 来自"相反"的旗方向。
+
+\item 在 $H_T^*(pt) = \mathbb{Z}[x_1, \ldots, x_n, y_1, \ldots, y_n]$ 中，$x_i$ 和 $y_j$ 分别记录了 $B$ 和 $B^-$ 对应的权。
+\end{enumerate}
+
+\textbf{三、为什么它在 positivity 证明中起关键作用？}
+
+Theorem 10.6.4 是 Refined Graham Positivity 证明的\textbf{第一步}——它建立了从几何对象到代数对象的桥梁：
+
+\begin{enumerate}
+\item \textbf{几何起点}：Schubert 类 $\sigma_w \in H_T^*(Fl(V))$ 是 Schubert 闭链 $\overline{B^-wB/B}$ 的等变上同调类
+
+\item \textbf{代数代表元}：Theorem 10.6.4 告诉我们，$\sigma_w$ 在 Borel 表示同构下恰好对应双重 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x}; \mathbf{y})$
+
+\item \textbf{关键推论}：因此，当我们想要计算 $\sigma_u \cdot \sigma_v$ 的展开系数时，可以将问题转化为计算 $\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{y})$ 的展开系数
+\end{enumerate}
+
+这就是为什么在证明思路的第一步，正文说：
+\begin{quote}
+"由 \cite[Theororem 10.6.4]{anderson2023}，类 $[\overline{B^-\pi B/B}]_T$ 由双重 Schubert 多项式 $\mathfrak{S}_\pi(\mathbf{x}; \mathbf{t})$ 表示。"
+\end{quote}
+
+\textbf{四、与 Lemma 2.5、Corollary 2.4 的关系}
+
+Theorem 10.6.4、Lemma 2.5 和 Corollary 2.4 共同构成了 Refined Graham Positivity 证明的三大支柱：
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+\textbf{定理} & \textbf{保证的内容} & \textbf{证明中的作用} \\ \hline
+Theorem 10.6.4 & $\sigma_w = \mathfrak{S}_w(\mathbf{x}; \mathbf{y})$ & 几何 $\Rightarrow$ 代数的桥梁 \\ \hline
+Lemma 2.5 & $\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper + transverse & 交点是良定义的 \\ \hline
+Corollary 2.4 & $[Y]_T$ 是 Schubert 基底的非负线性组合 & 代数展开系数的非负性 \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{完整的证明逻辑链}：
+
+\begin{enumerate}
+\item 由 Theorem 10.6.4，将问题转化为计算 Schubert 多项式的乘积
+
+\item 由 Lemma 2.5，保证交集 $\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper + transverse，从而交点个数是良定义的非负整数
+
+\item 由 Corollary 2.4，将几何闭链 $[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}]_T$ 展开为 Schubert 基底的非负线性组合
+
+\item 由步骤 1 的反向应用（从几何到代数），得到展开系数 $c_{u,v}^w(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$
+\end{enumerate}
+
+\textbf{五、定理的更深刻含义}
+
+Theorem 10.6.4 不仅仅是一个"查表"式的对应，它揭示了：
+
+\begin{enumerate}
+\item \textbf{Borel 表示同构是自然的}：$H_T^*(Fl(V))$ 作为 $\mathbb{Z}[x_1,\ldots,x_n,y_1,\ldots,y_n]$-模，其 Schubert 基底恰好由 Schubert 多项式给出
+
+\item \textbf{几何与代数的统一}：Schubert 类（拓扑对象）和 Schubert 多项式（代数对象）在等变上同调中是完全等价的
+
+\item \textbf{局部化公式的推论}：Theorem 10.6.4 可以通过等变上同调的局部化定理证明——在每个 torus 固定点 $w \cdot B/B$ 处，$\sigma_w$ 的限制给出了一个明确的多项式因子
+\end{enumerate}
+
+\textbf{注}：详见 \cite[ Theorem 10.6.4, Chapter 16.5]{anderson2023}。
