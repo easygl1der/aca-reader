@@ -4108,11 +4108,65 @@ $$\sigma^T(w) \;\xrightarrow{\;\text{Borel 同构}\;}\; [\Omega_w]_{U_n} \;\xrig
 \item 量子上同调 $QH_{U_n}^*(Fl_n)$ 中的简写（如 chapter5.tex:321："$\widetilde{\mathfrak{S}}_w$ corresponds to the Schubert class $\sigma_w$"），此时隐含了量子参数 $q$ 的存在
 \end{itemize}
 区分方式是看上下文：出现在量子乘积 $\star$ 旁时表示量子类，出现在普通乘积 $\cdot$ 旁时表示普通类。
-\section{量子乘积与普通交的关系}\label{sec:qa-quantum-product-vs-intersection}
+\section{量子乘积在 Schubert 簇上的几何含义}\label{sec:qa-quantum-product-Schubert-variety}
 \subsection{问题}
-Schubert 类的量子乘积 $\sigma(u) \star \sigma(v)$ 和普通上同调中的相交 $\sigma(u) \cdot \sigma(v)$ 是一样的吗？
+量子等变量子上同调中，两个量子 Schubert 多项式（Schubert 类）$\sigma(u) \star \sigma(v)$ 在几何上对应什么？Schubert 簇的"乘法"是什么意思？
 \subsection{回答}
-不一样。但在经典情形（$d = 0$）下，量子乘积退化为普通交。
+\textbf{核心答案}：Schubert 簇本身没有乘法结构。量子乘积 $\sigma(u) \star \sigma(v)$ 在几何上对应稳定映射模空间 $\overline{\mathcal{M}}_{0,3}(Fl_n,d)$ 中的曲线计数，而非 Schubert 簇之间的直接乘积。
+
+\textbf{一、量子乘积的三层几何结构}
+
+量子乘积 $\sigma(u) \star \sigma(v) = \sum_{d,w} q^d c_{u,v}^{w,d} \sigma(w)$ 在几何上包含三层含义：
+
+\textbf{第一层：模空间中的预像相交。} 考虑三元评估映射
+$$\mathrm{ev}_i : \overline{\mathcal{M}}_{0,3}(Fl_n,d) \to Fl_n, \quad \mathrm{ev}_i([f,p_1,p_2,p_3]) = f(p_i).$$
+量子乘积对应以下相交类：
+$$\mathrm{ev}_1^{-1}(\Omega_u) \;\cap\; \mathrm{ev}_2^{-1}(\Omega_v^-) \;\cap\; \overline{\mathcal{M}}_{0,3}(Fl_n,d),$$
+其中 $\Omega_v^- = \overline{B^+ v B/B}$ 是相反方向的 Schubert 簇。注意：这里相交的是模空间 $\overline{\mathcal{M}}_{0,3}(Fl_n,d)$ 中的子簇（预像纤维），而不是 $Fl_n$ 中的 Schubert 簇本身——这与经典情形完全不同。
+
+\textbf{第二层：曲线像落在 Richardson 簇。} 系数 $c_{u,v}^{w,d}$ 是 Gromov-Witten 不变量
+$$c_{u,v}^{w,d} = \int_{[\overline{\mathcal{M}}_{0,3}(Fl_n,d)]^{\mathrm{vir}}} \mathrm{ev}_1^*[\Omega_u] \cup \mathrm{ev}_2^*[\Omega_v^-] \cup \mathrm{ev}_3^*[\Omega_w],$$
+它计数满足以下条件的稳定映射 $f: \mathbb{P}^1 \to Fl_n$（degree $= d$）：
+$$f(0) \in \Omega_u, \quad f(\infty) \in \Omega_v^-, \quad f(\mathbb{P}^1) \subset \Omega_u \cap \Omega_v^-.$$
+也就是说：曲线 $f(\mathbb{P}^1)$ 的**整条像**落在 Richardson 簇（Richardson variety）$\Omega_u \cap \Omega_v^-$ 中，而不仅仅是端点落在 Schubert 簇中。这是对经典相交（$x \in \Omega_u \cap \Omega_v$）的根本性推广——从"点相交"到"曲线包含"。
+
+\textbf{第三层：退化为经典情形。} 当 $d = 0$ 时，稳定映射退化为常值映射，模空间约化为 $Fl_n$：
+$$\overline{\mathcal{M}}_{0,3}(Fl_n, 0) \cong Fl_n \times \mathbb{P}^1 \times \mathbb{P}^1,$$
+此时 $\Omega_u \cap \Omega_v^-$ 就是普通 Schubert 簇的相交，Gromov-Witten 不变量退化为经典相交数 $c_{u,v}^w$，得到 $\sigma(u) \star \sigma(v) \big|_{q=0} = \sigma(u) \cdot \sigma(v)$。
+
+\textbf{二、Schubert 簇没有乘法结构}
+
+Schubert 簇 $\Omega_w \subset Fl_n$ 是子簇，不是环或代数，因此没有自然的乘法结构。我们能做的是：
+
+\begin{enumerate}
+\item \textbf{上同调环中的乘法}：在 $H^*(Fl_n)$ 或 $QH_{U_n}^*(Fl_n)$ 中，Schubert 类 $[\Omega_w]$ 或 $\sigma(w)$ 之间有乘法（$\cdot$ 或 $\star$）；
+\item \textbf{Schubert 簇之间的相交}：在经典情形，$\Omega_u$ 和 $\Omega_v$ 可以在 $Fl_n$ 中相交（维数允许时），这是 $c_{u,v}^w$ 的几何来源；
+\item \textbf{Schubert 簇的乘积簇}：$\Omega_u \times \Omega_v \subset Fl_n \times Fl_n$ 是对角作用下的商空间，但这不是 Schubert calculus 研究的对象。
+\end{enumerate}
+
+\textbf{三、量子版本的本质变化}
+
+量子乘积与经典乘积的本质区别如下表所示：
+
+\begin{center}
+\begin{tabular}{p{4.5cm} | p{5.5cm} | p{5.5cm}}
+ & \textbf{经典乘积} $\sigma(u) \cdot \sigma(v)$ & \textbf{量子乘积} $\sigma(u) \star \sigma(v)$ \\ \hline
+几何空间 & $Fl_n$ 中 $\Omega_u \cap \Omega_v$ & $\overline{\mathcal{M}}_{0,3}(Fl_n,d)$ 中 $\mathrm{ev}_1^{-1}(\Omega_u) \cap \mathrm{ev}_2^{-1}(\Omega_v^-)$ \\
+计数对象 & 公共点的个数 & 稳定映射（曲线）的个数 \\
+约束几何 & $x \in \Omega_u \cap \Omega_v$ & $f(\mathbb{P}^1) \subset \Omega_u \cap \Omega_v^-$ \\
+Schubert 簇的角色 & $\Omega_u$ 和 $\Omega_v$ 是交的主体 & $\Omega_u$ 和 $\Omega_v^-$ 是映射端点的约束，$\Omega_w$ 是像的约束 \\
+变量子参数 & 无 & $q^d$ 标记曲线类 $d$（有效曲线计数）
+\end{tabular}
+\end{center}
+
+\textbf{四、与 variety-polynomial 对应的联系}
+
+在 ch5 的 variety-polynomial correspondence 中，我们有
+$$\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xleftrightarrow{\;QH_{U_n}^*\text{ 同构}\;}\; [\Omega_w]_{U_n}.$$
+这个对应只告诉我们：环中的类 $\sigma(w)$ 对应几何类 $[\Omega_w]$。但它不意味着 Schubert 簇之间存在乘法——$\sigma(u) \star \sigma(v)$ 展开中的几何意义完全由 Gromov-Witten 理论给出，不存在"两个 Schubert 簇相乘得到另一个 Schubert 簇"的操作。
+
+\textbf{总结}：在量子等变量子上同调中，Schubert 类 $\sigma(u)$ 和 $\sigma(v)$ 的量子乘积 $\sigma(u) \star \sigma(v)$ 对应的是：所有连接 $\Omega_u$ 和 $\Omega_v^-$ 的亏格 0 稳定映射的计数，而非 Schubert 簇之间的直接乘法。Schubert 簇本身不携带乘法结构，Schubert 类的乘法始终发生在上同调环 $QH_{U_n}^*(Fl_n)$ 中。
+
 
 \textbf{一、经典上同调中的相交}
 
