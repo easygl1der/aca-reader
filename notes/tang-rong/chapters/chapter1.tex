@@ -1,0 +1,390 @@
+% Chapter 1: Robust Bayesian Inference on Riemannian Submanifold
+\chapter{黎曼子流形上的稳健贝叶斯推断}\label{ch:chapter1}
+
+% ----------------------------------------------------------
+\section{引言}\label{sec:ch1-intro}
+
+统计推断的根本挑战之一在于：当数据的高维特征空间 $\mathbb{R}^D$
+本质上由低维流形结构主导时，
+经典方法往往失效。环境维度 $D$ 巨大（图像、文本、点云数据），
+但有效自由度 $d \ll D$，数据点近乎均匀分布在某个未知低维黎曼流形 $\mathcal{M}$ 上。
+
+在贝叶斯框架下，这一几何约束引出了一个深刻问题：
+如何对取值于黎曼流形 $\mathcal{M}$ 的参数进行稳健的贝叶斯推断？
+特别地，当数据生成机制偏离标准假设时——例如，
+数据服从 Huber 污染模型（contamination model）——
+后验分布是否仍能提供可靠的不确定性量化？
+
+本论文（\citep{tang2023robust}）的核心贡献在于提出
+Bayesian RPETEL 框架，并建立了一套完整的三重稳健性理论。
+
+% ----------------------------------------------------------
+\subsection{Huber 污染模型}\label{sec:ch1-huber}
+
+设真实数据分布 $P$ 为纯净分布 $P_0$ 与污染分布 $Q$ 的混合：
+\begin{equation}\label{eq:ch1-huber-model}
+P = (1-\epsilon)\,P_0 + \epsilon\,Q,
+\qquad 0 \le \epsilon < \frac{1}{2},
+\end{equation}
+其中 $\epsilon$ 为污染率（contamination rate）。
+纯净分布 $P_0$ 关于勒贝格测度绝对连续，
+其密度函数记为 $p_0$；污染分布 $Q$ 任意。
+该模型刻画了"大部分数据来自正确模型，但存在少量对抗性或异常噪声"这一实际情形。
+
+在传统欧氏空间设定下，Huber 损失与污染模型催生了
+鲁棒似然（robust likelihood）和鲁棒估计的理论。
+本文将此框架推广至黎曼流形 $\mathcal{M}$ 设定，
+引入了流形约束下的欧氏风险最小化（Projected Euclidean Risk Minimization，
+简称 PERM）以及其贝叶斯版本 RPETEL。
+
+% ----------------------------------------------------------
+\subsection{三重稳健性目标}\label{sec:ch1-triple-robust}
+
+本文所追求的稳健性包含三个层面：
+
+\begin{enumerate}
+    \item \textbf{似然稳健性（likelihood robustness）}：
+          即使似然函数未正确指定，后验分布仍能提供
+          自动校准的不确定性量化。
+    \item \textbf{风险稳健性（risk robustness）}：
+          即使欧氏风险最小化器（Euclidean risk minimizer）
+          不在流形 $\mathcal{M}$ 上，后验中心仍能接近
+          流形上的风险最小化器。
+    \item \textbf{先验稳健性（prior robustness）}：
+          在正确设定（correct specification）下，
+          后验分布与标准贝叶斯后验渐近等价，
+          不因引入稳健机制而损失效率。
+\end{enumerate}
+
+这三重稳健性目标之间存在内在张力——
+提高似然稳健性通常会牺牲效率，
+而宽松的先验稳健性条件又可能削弱风险稳健性。
+本文的核心结果表明，在一定正则性条件下，
+Bayesian RPETEL 框架可以同时实现这三个目标。
+
+% ----------------------------------------------------------
+\section{RPETEL 框架}\label{sec:ch1-rpetel}
+
+% ----------------------------------------------------------
+\subsection{从 PERM 到 RPETEL}\label{sec:ch1-perm}
+
+设损失函数 $\ell_x:\mathcal{M}\to\mathbb{R}_+$，风险函数定义为
+\begin{equation}\label{eq:ch1-risk}
+R(\theta) = \mathbb{E}_P[\ell_X(\theta)]
+          = \int \ell_x(\theta)\,\mathrm{d}P(x).
+\end{equation}
+在欧氏空间中，风险最小化器（ERM）为
+$\theta^\dagger = \arg\min_{\theta\in\mathbb{R}^D} R(\theta)$。
+然而，当参数自然地取值于流形 $\mathcal{M}$ 时，
+将 $\theta^\dagger$ 投影到 $\mathcal{M}$ 上是自然的想法。
+
+\textbf{PERM}（Projected Euclidean Risk Minimization）的定义为：
+\begin{equation}\label{eq:ch1-perm}
+\theta^\ddagger = \arg\min_{\theta\in\mathcal{M}}\,R(\theta),
+\qquad
+\text{即 } \theta^\ddagger = \Pi_{\mathcal{M}}(\theta^\dagger),
+\end{equation}
+其中 $\Pi_{\mathcal{M}}(\cdot)$ 为到流形 $\mathcal{M}$ 的最近点投影。
+
+\textbf{RPETEL}（Bayesian Robust Projected Euclidean Risk Minimization）
+则将 PERM 嵌入贝叶斯框架：
+设先验分布 $\Pi$ 在 $\mathcal{M}$ 上定义，
+定义伪似然（pseudo-likelihood）如下：
+对于观测数据 $x_1,\ldots,x_n$，定义加权负对数似然
+\begin{equation}\label{eq:ch1-pseudolikelihood}
+L_n(\theta) = \frac{1}{n}\sum_{i=1}^n \ell_{x_i}(\theta),
+\qquad \theta\in\mathcal{M}.
+\end{equation}
+后验分布定义为
+\begin{equation}\label{eq:ch1-posterior}
+\Pi_n(\mathrm{d}\theta)
+= \frac{\exp\!\big(-n L_n(\theta)\big)\,\Pi(\mathrm{d}\theta)}
+       {\int_{\mathcal{M}}\exp\!\big(-n L_n(\theta')\big)\,\Pi(\mathrm{d}\theta')}.
+\end{equation}
+
+关键观察：在平方损失 $\ell_x(\theta)=\|x-\theta\|_2^2$ 下，
+风险函数 $R(\theta)$ 的形式关于 $\theta$ 是二次的，
+这使得后续的局部坐标分析和切空间投影变得 tractable。
+
+% ----------------------------------------------------------
+\subsection{平方损失下的风险函数}\label{sec:ch1-risk-square}
+
+设损失函数 $\ell_x(\theta) = \|x-\theta\|_2^2$。
+记 $m := \mathbb{E}_P[X] \in \mathbb{R}^D$ 为数据的均值向量，
+则风险函数简化为
+\begin{equation}\label{eq:ch1-risk-quadratic}
+R(\theta) = \mathbb{E}_P[\|X-\theta\|_2^2]
+          = \mathrm{tr}(\Sigma) + \|\theta-m\|_2^2,
+\end{equation}
+其中 $\Sigma = \mathrm{Cov}_P(X)$ 为协方差矩阵。
+该分解揭示了一个核心事实：
+$\theta^\dagger = m$，而 $\theta^\ddagger = \Pi_{\mathcal{M}}(m)$——
+流形上的风险最小化器是均值向量在流形上的投影。
+
+在后验分布 \cref{eq:ch1-posterior} 中，
+指数项 $-n L_n(\theta)$ 对应于样本均值的指数型族，
+这与欧氏空间中的经典结果形成类比。
+
+% ----------------------------------------------------------
+\section{黎曼流形 BvM 定理}\label{sec:ch1-bvm}
+
+贝叶斯渐近理论的核心问题是：
+当样本量 $n\to\infty$ 时，后验分布如何收缩到真实参数？
+经典的 Bernstein-von Mises（ BvM）定理表明，
+在正则条件下，后验分布渐近正态且集中于真参数附近，
+中心为 $\sqrt{n}(\theta-\theta_0)$ 的渐近协方差由 Fisher 信息决定。
+
+本文将这一经典结果推广到黎曼子流形 setting，
+建立了流形上的 BvM 定理——这是本文最重要的理论贡献。
+
+% ----------------------------------------------------------
+\subsection{切空间投影与局部坐标}\label{sec:ch1-tangent}
+
+设 $\mathcal{M}$ 为 $\mathbb{R}^D$ 中紧致光滑 $d$ 维黎曼子流形，
+嵌入维度为 $D$。对任意点 $\theta\in\mathcal{M}$，
+记其切空间（tangent space）为 $T_\theta\mathcal{M}\subset\mathbb{R}^D$，
+维数为 $d$；记到切空间的正交投影算子为
+$\Pi_\theta: \mathbb{R}^D \to T_\theta\mathcal{M}$。
+
+给定后验分布 $\Pi_n$，定义其在切空间 $T_\theta\mathcal{M}$ 上的投影为
+\begin{equation}\label{eq:ch1-posterior-projection}
+\Pi_n^\theta(B) = \Pi_n\!\big(\{\theta'\in\mathcal{M}:
+\Pi_\theta(\theta'-\theta)\in B\}\big),
+\qquad B\subset T_\theta\mathcal{M}.
+\end{equation}
+
+局部坐标的构造依赖指数映射（exponential map）
+$\exp_\theta: T_\theta\mathcal{M}\to\mathcal{M}$：
+对任意切向量 $v\in T_\theta\mathcal{M}$，
+$\exp_\theta(v)$ 为从 $\theta$ 出发沿测地线以速度 $\|v\|$ 行进得到的点。
+在 $\theta$ 的小邻域内，指数映射为微分同胚，
+因此可将 $\mathcal{M}$ 上的局部问题拉回到切空间 $T_\theta\mathcal{M}$ 上分析。
+
+% ----------------------------------------------------------
+\subsection{渐近正态性}\label{sec:ch1-asymptotic}
+
+设真实参数为 $\theta_0\in\mathcal{M}$，
+数据生成分布为 $P_{\theta_0}$（正确设定）。
+以下定理给出了流形上 BvM 定理的精确表述。
+
+\begin{Theorem}[黎曼流形 BvM 定理]\label[theorem]{thm:ch1-bvm}
+假设以下正则性条件成立：
+\begin{enumerate}
+    \item[(A1)] 流形 $\mathcal{M}$ 为 $C^3$ 光滑紧致黎曼子流形；
+    \item[(A2)] 损失函数 $\ell_x(\cdot)$ 在 $\mathcal{M}$ 上满足
+          二次增长条件（quadratic growth condition）；
+    \item[(A3)] 先验分布 $\Pi$ 在 $\theta_0$ 的邻域内具有正的光滑密度；
+    \item[(A4)] $n\to\infty$ 时收缩条件 $\epsilon_n\to 0$ 成立，
+          其中 $\epsilon_n$ 为某种熵量度。
+\end{enumerate}
+记 $\Pi_n^{\theta_0}$ 为后验分布在切空间 $T_{\theta_0}\mathcal{M}$ 上的投影
+（\cref{eq:ch1-posterior-projection}）。
+则
+\begin{equation}\label{eq:ch1-bvm-limit}
+\Pi_n^{\theta_0}
+\;\Longrightarrow\;
+N\!\big(0,\;n^{-1}\,G(\theta_0)^{-1}\big)
+\quad\text{（在分布意义下），}
+\end{equation}
+其中 $G(\theta_0)$ 为黎曼度量（metric）在 $\theta_0$ 处的 Fisher 信息矩阵
+在局部坐标下的表示。
+\end{Theorem}
+
+\cref{eq:ch1-bvm-limit} 的含义是：
+将后验分布投影到 $\theta_0$ 处的切空间后，
+该投影渐近等价于均值在 $\theta_0$、协方差为
+$n^{-1}G(\theta_0)^{-1}$ 的正态分布。
+这与欧氏空间 BvM 定理的形式完全类比，
+唯一的差异在于协方差由黎曼 Fisher 信息矩阵 $G(\theta_0)$ 决定，
+而非欧氏 Fisher 信息。
+
+\textbf{证明思路}\footnote{详细证明见 \citep[Section 3]{tang2023robust}。
+核心步骤分为三步：
+（1）在局部坐标下将流形上的问题转化为切空间 $\mathbb{R}^d$ 上的问题；
+（2）运用欧氏 BvM 定理的标准技术（van der Vaart \& Wellner 方法）证明切空间上的渐近正态性；
+（3）通过指数映射 $\exp_{\theta_0}$ 的近似性质（在小邻域内接近线性映射）
+将切空间结果拉回流形。其中步骤（1）需要用到流形的局部平坦化性质
+和投影算子 $\Pi_\theta$ 的光滑性。}：
+
+% ----------------------------------------------------------
+\subsection{收敛速率}\label{sec:ch1-rate}
+
+由 \cref{eq:ch1-bvm-limit}，后验分布在切空间投影上的集中速率由
+$n^{-1/2}$ 主导。进一步的分析表明，
+在额外正则性假设下，后验收缩速率（posterior contraction rate）为
+\begin{equation}\label{eq:ch1-contraction-rate}
+\pi_n = \sqrt{\frac{d}{n}}\;\vee\;n^{-\frac{\beta}{2}},
+\end{equation}
+其中 $\beta$ 与流形光滑度和损失函数的局部行为有关。
+注意这一速率仅依赖于流形内在维度 $d$，而非环境维度 $D$——
+这正是流形结构带来统计效率提升的体现。
+
+\begin{Remark}\label[remark]{rem:ch1-rate-d}
+收敛速率中 $d$ 的出现是本质的：在 $d$ 维切空间中，
+Fisher 信息矩阵 $G(\theta_0)$ 的特征值个数为 $d$，
+后验协方差的尺度自然地与 $d$ 成正比。
+然而，与纯维数灾难不同，$d$ 是数据的有效自由度——
+它是固定的（不随 $n$ 增长），因此不会导致速率的多项式衰退。
+\end{Remark}
+
+% ----------------------------------------------------------
+\section{RRWM 算法}\label{sec:ch1-rrwm}
+
+贝叶斯推断的计算核心在于从后验分布 $\Pi_n$ 中采样。
+在流形约束下，标准 MCMC 算法（如随机游走 Metropolis、
+Metropolis-Hastings）的直接应用面临几何障碍——
+如何保证 proposal 分布产生的候选点严格位于流形上？
+
+本文提出的 RRWM（Riemannian Random Walk Metropolis）算法
+通过在切空间 $T_{\theta}\mathcal{M}$ 中构造 proposal 并利用指数映射
+将其推回流形，成功解决了这一问题。
+
+% ----------------------------------------------------------
+\subsection{算法构造}\label{sec:ch1-rrwm-algo}
+
+设当前状态为 $\theta\in\mathcal{M}$。
+RRWM 的 proposal 分布定义在切空间 $T_{\theta}\mathcal{M}$ 上：
+\begin{equation}\label{eq:ch1-rrwm-proposal}
+v \;\sim\; N\!\big(0,\;\sigma^2\, G(\theta)^{-1}\big),
+\qquad
+\theta' = \exp_\theta(v),
+\end{equation}
+其中 $G(\theta)$ 为 $\theta$ 处的黎曼度量矩阵，
+$\sigma>0$ 为步长参数。$G(\theta)^{-1}$ 作为协方差矩阵的逆
+保证了 proposal 分布在黎曼几何意义下是"各向同性"的——
+这被称为黎曼-高斯（ Riemannian-Gaussian）分布。
+
+接受概率（acceptance probability）由 Metropolis 准则给出：
+\begin{equation}\label{eq:ch1-rrwm-accept}
+a(\theta,\theta')
+= \min\!\left\{1,\;
+\frac{\exp\!\big(-n L_n(\theta')\big)\,
+      \pi_{\mathcal{M}}(\theta')\,q(\theta',\theta)}
+     {\exp\!\big(-n L_n(\theta)\big)\,
+      \pi_{\mathcal{M}}(\theta)\,q(\theta,\theta')}\right\},
+\end{equation}
+其中 $q(\theta,\theta')$ 为从 $\theta$ 到 $\theta'$ 的 proposal 密度
+（相对于流形上的适当测度），
+$\pi_{\mathcal{M}}$ 为流形体积元（volume element）。
+关键的是，指数映射 $\exp_\theta$ 的 Jacobian 行列式
+出现在 proposal 密度的计算中，
+它补偿了流形弯曲带来的体积变化。
+
+% ----------------------------------------------------------
+\subsection{混合时间分析}\label{sec:ch1-mixing}
+
+RRWM 算法的核心理论保证是：
+其混合时间（mixing time）仅依赖流形内在维度 $d$，
+而非环境维度 $D$。
+
+\begin{Theorem}[RRWM 混合时间]\label[theorem]{thm:ch1-mixing}
+在 \cref{sec:ch1-bvm} 的正则性条件下，
+设 $\epsilon>0$，$n$ 固定。
+RRWM 算法的 $\epsilon$-混合时间（$\epsilon$-mixing time）满足
+\begin{equation}\label{eq:ch1-mixing-time}
+t_{\mathrm{mix}}(\epsilon)
+\;\asymp\;
+d\;\cdot\;\log\!\big(d/\epsilon\big),
+\end{equation}
+其中隐含常数仅依赖流形几何（截面曲率、injectivity radius）
+和目标分布的局部行为。
+\end{Theorem}
+
+\cref{eq:ch1-mixing-time} 的意义在于：
+$D$ 完全不出现在混合时间的维度依赖中。
+这与欧氏空间随机游走 Metropolis 的已知结果形成鲜明对比——
+在后者的经典分析中，混合时间通常具有 $O(D)$ 的维度依赖。
+这一改进来源于黎曼几何结构：
+曲率约束和流形的紧性使得链在"局部"行为上不受 $D$ 的影响。
+
+\textbf{证明思路}\footnote{详见 \citep[Section 5]{tang2023robust}。
+核心思想是将流形上的链投影到一系列局部坐标卡（coordinate charts）上，
+在每个局部卡内运用欧氏 Metropolis 算法的混合时间界，
+然后利用流形的有限覆盖性质拼接各局部分析。
+关键引理是：切空间投影的方差在 $d$ 维而非 $D$ 维尺度上增长。}：
+
+% ----------------------------------------------------------
+\section{极小极大最优性}\label{sec:ch1-minimax}
+
+本节讨论 Bayesian RPETEL 后验的收缩速率是否达到了统计最优。
+这一问题的回答需要建立上界（由 \cref{sec:ch1-rate} 的分析给出）
+与相应的下界（下确界）之间的匹配。
+
+% ----------------------------------------------------------
+\subsection{收缩速率上界}\label{sec:ch1-upperbound}
+
+由 \cref{eq:ch1-contraction-rate}，Bayesian RPETEL 后验的收缩速率上界为
+$\pi_n \asymp \sqrt{d/n}$（在典型正则性假设下）。
+这一速率与经典的 Le Cam's lemma 所给出的二元检验下界一致，
+表明在 $L_2$ 风险意义下，$\sqrt{d/n}$ 是几乎所有估计量的最优收敛速率。
+
+% ----------------------------------------------------------
+\subsection{极小极大下界}\label{sec:ch1-lowerbound}
+
+\begin{Theorem}[极小极大下界]\label[theorem]{thm:ch1-minimax-lower}
+设 $\mathcal{M}$ 为 $d$ 维紧致光滑黎曼子流形，
+族 $\mathcal{P}$ 由 $n$ 个 i.i.d. 样本的分布构成，
+满足一定的光滑性假设。
+则任意估计量 $\hat{\theta}_n$ 的极小极大风险满足
+\begin{equation}\label{eq:ch1-minimax-lower}
+\inf_{\hat{\theta}_n}\;
+\sup_{P\in\mathcal{P}}\;
+\mathbb{E}_P\big[\|\hat{\theta}_n-\theta^\ddagger\|_2\big]
+\;\gtrsim\;
+\sqrt{\frac{d}{n}}.
+\end{equation}
+\end{Theorem}
+
+\cref{eq:ch1-minimax-lower} 给出了 $\sqrt{d/n}$ 的下界。
+结合上界 $\pi_n \asymp \sqrt{d/n}$，我们得到：
+
+\begin{Corollary}[极小极大最优性]\label[corollary]{cor:ch1-optimal}
+在 \cref{sec:ch1-bvm} 的正则性条件下，
+Bayesian RPETEL 后验的收缩速率达到了极小极大最优
+（至多常数因子和对数因子）。
+\end{Corollary}
+
+\begin{Remark}\label[remark]{rem:ch1-lowerbound-tech}
+\cref{eq:ch1-minimax-lower} 的证明综合运用了
+Le Cam's method、tensor product construction
+和黎曼几何中的 volume comparison 技术。
+关键是构造一族难以区分的替代分布（alternative distributions），
+其参数在流形上以适当距离分隔。
+黎曼流形的体积增长性质（volume growth rate $\asymp s^d$）
+在此处发挥了关键作用——它决定了在给定分辨率下
+能够构造多少个相互"可区分"的备择假设。
+\end{Remark}
+
+% ----------------------------------------------------------
+\section{本章小结}\label{sec:ch1-summary}
+
+本章系统介绍了 \citep{tang2023robust} 的核心内容。
+Bayesian RPETEL 框架将稳健统计的思想与黎曼几何的结构结合，
+通过三重稳健性目标——似然稳健性、风险稳健性和先验稳健性——
+为流形约束下的贝叶斯推断提供了统一理论。
+
+\begin{enumerate}
+    \item \textbf{RPETEL 框架}（\cref{sec:ch1-rpetel}）：
+          通过伪似然构造（\cref{eq:ch1-pseudolikelihood}）和
+          后验定义（\cref{eq:ch1-posterior}），
+          将 PERM 嵌入贝叶斯框架，
+          在平方损失下简化为对样本均值的指数型后验。
+    \item \textbf{黎曼 BvM 定理}（\cref{sec:ch1-bvm}）：
+          \cref{eq:ch1-bvm-limit} 建立了后验分布在切空间投影上的
+          渐近正态性，是连接贝叶斯渐近理论与流形几何的核心工具。
+    \item \textbf{RRWM 算法}（\cref{sec:ch1-rrwm}）：
+          \cref{eq:ch1-rrwm-proposal}--\cref{eq:ch1-rrwm-accept}
+          实现了流形上的 Metropolis 采样，
+          \cref{eq:ch1-mixing-time} 证明其混合时间仅依赖 $d$ 而非 $D$。
+    \item \textbf{极小极大最优性}（\cref{sec:ch1-minimax}）：
+          \cref{cor:ch1-optimal} 表明 RPETEL 后验收缩速率
+          达到极小极大最优 $\sqrt{d/n}$。
+\end{enumerate}
+
+\begin{Remark}\label[remark]{rem:ch1-connections}
+本章内容与系列中其他论文存在深刻联系：
+\citep{tang2022minimax} 的极小极大理论为最优性判断提供了参照系；
+\citep{tang2024mala} 则利用本章建立的流形 BvM 定理，
+将 MALA 在欧氏空间的最优混合性质桥接到黎曼流形 setting，
+从而将后验推断的计算效率提升到了最优的 $O(d^{1/3})$ 维度依赖。
+\end{Remark}
