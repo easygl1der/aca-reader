@@ -1324,3 +1324,68 @@ sec:appendix-{topic}-{name}
 - 关键公式（特别是有编号需要的）必须用 equation/align 环境
 - 算法步骤如果需要正式化，使用 algorithm 环境
 
+---
+
+## L720: Tang & Rong 流形统计学习综述写作经验
+
+**日期**: 2026-04-09
+**经历次数**: 1 次 (累计)
+
+**任务**: 为 Tang & Yang 8篇系列论文（2019-2025）写结构化综述笔记，
+输出 `notes/information-geometry/tang-rong/tang-rong-review.tex`。
+
+**发现**: 该目录已有一个旧的 tang-rong-review.tex，内容不准确（混淆了
+RMALA 与 MALA 混合时间理论、缺少 MLDMAE 和 Regression 论文等）。
+发现后重写了整个文件。
+
+**正确做法**:
+1. 写综述笔记前，先读取 `review.md` 转录文件（每篇论文目录都有）
+2. 全面覆盖所有已读论文，不遗漏任何一篇
+3. 对于重复主题的论文（如 Annals 2022 和 Regression 2025），
+   明确说明后者对前者的推广关系
+4. 独立检查文件内容的准确性
+
+**防止措施**:
+- 写综述笔记时，先 `ls review.md` 确认覆盖了所有论文
+- 重写前先读取旧文件检查内容完整性
+- 特别检查论文年份和 venue 标注的准确性
+
+---
+
+## L721: 综述文件编译技巧（standalone vs include）
+
+**日期**: 2026-04-09
+**经历次数**: 1 次 (累计)
+
+**问题**: 章节文件（如 `tang-rong-review.tex`）只有 `\chapter{}`
+没有 `\documentclass{}`，无法直接编译。
+
+**正确做法（wrapper 方式）**:
+```bash
+# 在 compile.sh 中创建临时 wrapper 文件
+cat > "$WRAPPER" << 'EOF'
+\def\STANDALONE{}
+\input{tang-rong-review.tex}
+EOF
+xelatex '\input{'"$WRAPPER"'}'
+rm -f "$WRAPPER"
+```
+在 .tex 文件头部使用 `\ifdefined\STANDALONE` 条件包裹 preamble：
+```latex
+\ifdefined\STANDALONE
+\documentclass[12pt]{amsbook}
+\usepackage{...}
+\begin{document}
+\fi
+\chapter{...}
+...content...
+\ifdefined\STANDALONE
+\end{document}
+\fi
+```
+
+**防止措施**:
+- 写章节文件时就规划好 preamble（standalone 方式）
+- 或者保持无 preamble，直接 include 到主文件编译
+
+**最后更新**: 2026-04-09
