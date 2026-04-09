@@ -353,6 +353,23 @@ Bayesian RPETEL 后验与使用同一流形先验的标准贝叶斯后验
           为目标密度的未归一化版本。
           接受概率的计算中出现了 retraction 导数的伪行列式，
           用于补偿流形弯曲带来的体积变化。
+
+\begin{Remark}\label[remark]{rem:ch1-jacobian-explicit}
+\textbf{Jacobian 修正因子的显式说明}：
+proposal 密度的比值 $q(\theta^{k-1},y)/q(y,\theta^{k-1})$
+（\cref{eq:ch1-rrwm-accept} 中隐含于 $\exp(-v^\top\cdots)$ 的比值）
+须包含从切空间到流形的体积变化修正。
+设 $y=\phi_{\theta^{k-1}}(v)$，则
+$q(\theta^{k-1},y)\,\mathrm{d}\theta^{k-1}
+= \phi_{\theta^{k-1}\#}\big(\mathcal{N}(0,2\widetilde{h}\,\widetilde{I})\big)(\mathrm{d}y)$
+中的拉回密度包含 retraction 导数行列式
+$\det\!\big(D\phi_{\theta^{k-1}}(0)\big)$ 的倒数。
+原文 \citep[Algorithm 1]{tang2023robust} 中通过比较 backward proposal
+（从切空间到流形）与 forward proposal（从流形到切空间）的密度，
+将 Jacobian 修正显式化为 retraction 导数的伪行列式比值，
+这就是 \cref{eq:ch1-rrwm-accept} 中 $v$ 与 $v'$ 方向所对应的
+不同协方差矩阵的来源。
+\end{Remark}
 \end{enumerate}
 
 \begin{Remark}\label[remark]{rem:ch1-retraction-choice}
