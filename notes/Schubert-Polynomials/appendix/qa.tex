@@ -3405,3 +3405,72 @@ Theorem 10.6.4 不仅仅是一个"查表"式的对应，它揭示了：
 \end{enumerate}
 
 \textbf{注}：详见 \cite[ Theorem 10.6.4, Chapter 16.5]{anderson2023}。
+
+\section{Graham Positivity 与 Refined Graham Positivity 的等价性}\label{sec:qa-GrahamVsRefinedConnection}
+\subsection{问题}
+Graham 2001 的 Theorem 3.2 和 Gao-Xiong 的 Theorem 2.3 之间的关系是什么？特别是，为什么当 $w = w_0$ 时，Refined Graham 退化为原始 Graham？为什么在 separated descents 条件下两者等价？
+
+\subsection{回答}
+
+\textbf{一、Graham 2001 Theorem 3.2（原始 Graham Positivity）}
+
+\textbf{定理陈述}（\cite{Gr}）：设 $X$ 是光滑簇，带 torus $T$ 作用。设 $Y$ 是 $X$ 的余维数为 $d$ 的 $T$-不变子簇。则
+$$[Y]_T = \sum_{w \in W} P_w(Y,\mathcal{L})\,\sigma_w$$
+其中 $P_w(Y,\mathcal{L}) \in \mathbb{Z}[x_1,\ldots,x_r]$ 是具有非负系数的多项式。
+
+\textbf{应用到 $G/B$}：任意 $T$-不变子簇（Schubert variety）的等变基本类可以展开为 Schubert 类 $\sigma_w$ 的线性组合，系数是非负系数多项式 $P_w \in \mathbb{N}[x_i]$。
+
+\textbf{二、Gao-Xiong Theorem 2.3（Refined Graham Positivity）}
+
+\textbf{定理陈述}（\cite[ Theorem 2.3]{GX2025}）：设 $B^-$ 作用在光滑簇 $X$ 上，设 $Y$ 是 $X$ 中的 $B^-(w)$-不变有效闭链。则
+$$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
+其中 $I(w)$ 是 $w$ 的反转集。
+
+\textbf{三、退化机制（$w = w_0$ 时两者等价）}
+
+当 $w = w_0$（最长元）时：
+\begin{itemize}
+\item $B^-(w_0) = T$（因为 $N^-(w_0) = N^-$，所以 $B^-(w_0) = T \cdot N^- = B^-$）
+\item $I(w_0) = \Delta^+$（最长元的反转集恰好是全部正根）
+\end{itemize}
+
+代入 Theorem 2.3，得到：
+$$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in \Delta^+} \cdot [Z_i]_T = \sum_w P_w \sigma_w \quad (P_w \in \mathbb{N}[x_i])$$
+这正是 Graham Theorem 3.2。因此，Refined Graham 是 Graham 的\textbf{严格推广}，而非新结果。
+
+\textbf{四、等价性成立的时机}
+
+Refined Graham 给出比 Graham 更精细信息的条件：
+\begin{enumerate}
+\item $Y$ 是 $B^-(w)$-不变的（比 $T$-不变更强）
+\item 根被限制在 $I(w)$ 而非 $\Delta^+$（比 $\mathbb{N}[x_i]$ 更细）
+\end{enumerate}
+
+在 Triple Schubert Positivity 证明中，取 $w = \tau$（特殊排列，满足 separated descents），则：
+\begin{itemize}
+\item $B^-(\tau)$-不变闭链 $\tau Y_u \cap Y_v$ 的反转集 $I(\tau) = \{t_i - y_j \mid i \leq n < j\}$
+\item 因此系数环精确为 $\mathbb{N}[t_i - y_j]$
+\end{itemize}
+
+如果退化为 Graham（取 $w = w_0$），则：
+\begin{itemize}
+\item $B^-(w_0) = T$，$I(w_0) = \Delta^+$（所有正根）
+\item 系数环变成 $\mathbb{N}[x_i]$，失去 $y$ 变量的信息
+\end{itemize}
+
+\textbf{五、核心洞察}
+
+原始 Graham Positivity 告诉我们在 $G/B$ 上 $T$-不变闭链可以向 Schubert 基底展开，系数非负。
+
+Refined Graham Positivity 在此基础上引入参数 $w$，允许我们：
+\begin{enumerate}
+\item 用"局部"不变性（$B^-(w)$）替代"全局"不变性（$T$）
+\item 用"局部"根集（$I(w)$）替代"全局"根集（$\Delta^+$）
+\item 在 separated descents 情形，$w = \tau$ 给出精确的根限制
+\end{enumerate}
+
+两者都保证 positivity（非负系数），但 Refined 版本给出了\textbf{更精细的结构}——这就是为什么 Gao-Xiong 称其为"refined"而非"new"。
+
+\textbf{六、几何直观}
+
+$T$-不变要求子簇在所有 torus 方向上对称；$B^-(w)$-不变只要求在某个方向 $w$ 上对称（更弱）。但 $B^-(w)$-不变闭链在 $G/B$ 上恰好是那些反转集被 $w$ 控制的 Schubert 类闭链，这使得系数多项式的根被精确限制。Refined Graham 的意义在于：\textbf{揭示了 positivity 的真正驱动力不是"全局对称性"，而是特定的反转集结构}。
