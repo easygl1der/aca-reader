@@ -152,6 +152,43 @@ QA 格式不标准，缺少必要的 `\label{}` 或 `\textbf{}` 标记。
 
 ---
 
+## L1005: 批量 Q&A 生成需要主题分组
+
+**日期**: 2026-04-09
+**经历次数**: 1 次
+
+**错误描述**:
+在批量生成 Tang-Rong 系列论文 Q&A 时，添加了过多主题交织的条目，导致 QA 内容的层次结构不清晰。
+
+**正确做法**:
+批量生成 Q&A 时，应该按主题分组组织：
+```latex
+\section{论文关系与演化路径}
+
+本节集中回答关于 Tang-Yang 系列论文之间的关系、演化逻辑和技术积累的深层问题。
+
+\subsection{主线一：...}\label{sec:qa-evolution-line1}
+...
+
+\section{核心技术与理论工具详解}
+
+\subsection{Gaussian 平滑与四阶矩误差}\label{sec:qa-gaussian-smoothing}
+...
+
+\section{开放问题与前沿探索}
+
+\subsection{噪声观测情形的处理}\label{sec:qa-noise-observation}
+...
+```
+
+**防止措施**:
+- 批量生成 Q&A 时，先规划主题分组结构
+- 用 `\section{}` 划分大类，用 `\subsection{}` 划分具体问题
+- 同一技术/主题的多个 Q&A 放在一起
+- 规划时检查 review.tex 的章节结构，保持一致
+
+---
+
 ## PUA 自注入行为
 
 开工前用 Read 工具读取：
