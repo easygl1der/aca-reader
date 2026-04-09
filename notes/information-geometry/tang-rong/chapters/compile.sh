@@ -18,7 +18,14 @@ cat > "$WRAPPER" << 'EOF'
 \def\STANDALONE{}
 \begin{document}
 \bibliography{../tang-rong}
+\makeatletter
+\def\noteinfo#1{\begin{noteinfo}\itshape #1\end{noteinfo}}
+\makeatother
 \input{chapter0.tex}
+\makeatletter
+\renewenvironment{noteinfo}{\begin{tcolorbox}[colback=yellow!15,colframe=orange!50,boxrule=0.3pt,left=8pt,right=8pt,top=6pt,bottom=6pt]}{\end{tcolorbox}}
+\makeatother
+\end{document}
 EOF
 
 echo "Compiling $FILE.tex (3 passes, standalone)..."
