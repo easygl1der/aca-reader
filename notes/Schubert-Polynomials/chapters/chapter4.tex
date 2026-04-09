@@ -312,153 +312,82 @@ Mihalcea（定理三） & 量子 $QH_T^*(G/P)$ & $c_{u,v}^{w,d}(\mathbf{x}) \in 
 \section{证明思路：归约到 Graham 定理}
 \label{sec:ProofOutlineCh4}
 
-Mihalcea 的证明思路巧妙而简洁。核心思想是：将 Equivariant Quantum Littlewood-Richardson 系数的计算归约到已在 Graham 定理中解决的问题。
+本节展示 Mihalcea 如何将 Equivariant Quantum Littlewood-Richardson 系数的正性证明归约到已经解决的 Graham 情形。\textbf{你来做！}
 
-\textbf{论文的核心——§6 证明结构}（\cite[§6, 第8-11页]{Mihalcea}）：Mihalcea 的论文 \S 6（第8-11页）包含了 positivity 定理的完整证明。整个证明的灵魂是\textbf{归约思想}：将 Equivariant Quantum Littlewood-Richardson 系数计算归约到已知的 Graham positivity。
+我们首先陈述所有需要用到的陈述，然后请读者自己完成归约链条。
 
-证明分为两部分：
+\subsection{核心猜想（待证）}
+\label{sec:CoreConjectureCh4}
 
-\textbf{（1）§6.1 准备工作——两个核心要素}：
-\begin{itemize}
-\item 在 $X \times X$ 上定义半直积 $B' = T \cdot (U^- \times U^-)$ 的作用
-\item 通过投影公式，将 $\overline{\mathcal{M}}_{0,3}(X,d)$ 上的曲线计数问题归约到 $X \times X$
-\end{itemize}
+Mihalcea 的核心结果是：等变量子 Littlewood-Richardson 系数 $c_{u,v}^{w,d}$ 是非负多项式。
 
-\textbf{（2）§6.2 定理证明——三层逻辑链}：
+\begin{Theorem}[等变量子上同调 Positivity {\cite[ Theorem 1]{Mihalcea}}]
+\label{th:EQCPositivity}
+设 $u, v, w \in W^P$ 且 $d$ 为多重次数。则等变量子 Littlewood-Richardson 系数 $c_{u,v}^{w,d}$ 是关于负根 $x_1, \ldots, x_r$ 的非负整数系数多项式。
+\end{Theorem}
 
-\begin{itemize}
-\item \textbf{Lemma 6.4}（\cref{prop:ev3inverse}，\cite[Lemma 6.4]{Mihalcea}）：$ev_3^{-1}(Y(w))$ 的不可约分支
-\item \textbf{Corollary 6.2}（\cref{cor:GrahamOnXX}，\cite[Corollary 6.2]{Mihalcea}）：$X \times X$ 上的 Graham Positivity
-\item \textbf{Lemma 6.3}（\cref{prop:KleimanTransversality}，\cite[Lemma 6.3]{Mihalcea}）：Kleiman transversality：$F: Z \to X \times X$ 是 $G$-等变映射，则 $F^{-1}(X(u) \times Y(v))$ 是 reduced、locally irreducible，余维数为 $c(u) + l(v)$
-\end{itemize}
+这个定理在几何上对应：稳定映射模空间 $\overline{\mathcal{M}}_{0,3}(X,d)$ 中曲线计数的正性。
 
-\textbf{证明的关键步骤}：先用 \cref{prop:ev3inverse} 将 $ev_3^{-1}(Y(w))$ 分解为不可约分支 $V_i$，再用 \cref{prop:KleimanTransversality}（Kleiman transversality）处理每个 $V_i$ 通过 $F = (ev_1, ev_3)$ 在 $X \times X$ 上的像，最后由 \cref{cor:GrahamOnXX}（Graham Positivity）保证每个 $[F(V_i)]_T$ 都是非负组合。投影公式则将这些结果``推送''回 $\overline{\mathcal{M}}_{0,3}(X,d)$ 上的 Equivariant Quantum Littlewood-Richardson 系数。
+\subsection{等变量子上同调的定义}
+\label{sec:EQCDefinitionCh4}
 
-\textbf{Lemma 6.3 的正式陈述}（\cite[Lemma 7.2]{FW}，见 \cref{prop:KleimanTransversality}）：设 $Z$ 是不可约 $G$-簇，$F: Z \to X \times X$ 是 $G$-等变映射（$G$ 在 $X \times X$ 上对角作用）。则对任意 $u, v \in W^P$，$F^{-1}(X(u) \times Y(v))$ 是 reduced、locally irreducible 的，其余维数为 $c(u) + l(v)$。
+证明需要用到以下定义。
 
-整个证明的灵魂是 \textbf{归约思想}：通过投影公式，将 $\overline{\mathcal{M}}_{0,3}(X,d)$\footnote{问：$\overline{\mathcal{M}}_{0,3}(X,d)$ 是什么？每个符号的含义是什么？为什么要有紧化？什么是评估映射 $ev_i$？能举一个 $\mathrm{Gr}(2,4)$ 的具体例子吗？见附录 \cref{sec:MOD-space}。} 上的曲线计数问题归约到 $X \times X$ 上的已知正性。\footnote{等变量子上同调 positivity 定理的完整证明见附录 \cref{sec:appendix-eqc-proof}。}
-
-\subsection{为什么可以归约？}
-
-在证明之前，让我们理解这个策略的直觉。Equivariant Quantum Littlewood-Richardson 系数涉及稳定映射模空间 $\overline{\mathcal{M}}_{0,3}(X,d)$——它参数化了满足特定条件的稳定映射 $f: \mathbb{P}^1 \to X$\footnote{问：在量子上同调的定义中，出现稳定映射 $f: \mathbb{P}^1 \to X$，这里的 $X$ 是什么？$\mathbb{P}^1$ 又是什么？见附录 \cref{sec:P1-to-X}。}。
-
-但 Mihalcea 的关键洞察是：\textbf{通过投影公式，复杂的上同调表达式可以``推送''到 $X \times X$ 上，而 Graham positivity 已经告诉我们答案。}
-
-这个策略类似于我们在微积分中处理复杂积分时使用的变量替换——将一个难以处理的问题转化到我们已经理解的框架中。
-
-这一归约策略与 \cref{chap:TriplePositivity} 中 Gao-Xiong 证明三重 Schubert positivity 的思路有本质联系——两者都使用了\textbf{投影公式}（projection formula）将复杂的几何对象分解为已知的组成部分 \cite[Section 3]{GX2025}。
-
-\subsection{核心工具：投影公式与推送公式}
-
-在深入证明之前，我们需要了解两个关键的代数几何工具。
-
-\subsubsection{投影公式（Projection Formula）}
-
-设 $f: X_1 \to X_2$ 为 $T$-等变映射。对于
-$a \in H_T^*(X_2)$、$b \in H_T^*(X_1)$，有：
+\begin{Definition}[\textbf{等变量子上同调} {\cite[Definition 2.1]{Mihalcea}}]
+\label{def:EquivariantQuantumCohomologyCh4}
+$QH_T^*(X)$ 是一个分次 $\Lambda[q]$-代数，$\Lambda = H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_r]$，$\Lambda[q]$-基底为 $\{\sigma(w) \mid w \in W^P\}$。乘法 $\star$ 定义为
 \begin{equation}
-f_*^T\left((f^T)^*(a) \cdot b\right) = a \cdot f_*^T(b).
-\label{eq:ProjectionFormulaCh4}
+\sigma(u) \star \sigma(v) = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma(w),
+\label{eq:EQCDefinitionCh4}
 \end{equation}
+其中 $c_{u,v}^{w,d} \in \Lambda$ 称为\textbf{等变量子 Littlewood-Richardson 系数}。
+\end{Definition}
 
-\textbf{直观理解}：想象你有两个房间 $X_1$ 和 $X_2$，中间有一扇门（映射 $f$）。现在你站在 $X_2$ 里有一张纸条 $a$，在 $X_1$ 里有一张组合纸条 $b$。如果你想把 $X_1$ 里所有东西都搬到 $X_2$，那么纸条 $b$ 上那些``来自 $X_2$ 的部分``（即 $(f^T)^*(a)$）会在搬运过程中保持不变，只需要对 $b$ 的其余部分做推送。这个公式就是说：\textbf{来自目标空间的类 $a$ 在推送过程中可以``穿过``整个运算，单独留在外面}。
+\textbf{几何意义}：等变量子上同调中的系数 $c_{u,v}^{w,d}$ 计数了 $\overline{\mathcal{M}}_{0,3}(X,d)$ 中满足特定 Schubert 约束的稳定映射的个数。$q^d$ 记录曲线的多重次数。
 
-\textbf{为什么这很有用？}：在量子上同调的证明中，我们需要计算
-$$c_{u,v}^{w,d} = \pi_*^T\left((ev_1^T)^* \sigma(u)^T \cdot (ev_2^T)^* \sigma(v)^T \cdot (ev_3^T)^* \widetilde{\sigma}(w)^T\right).$$
-这里 $\sigma(u)^T$ 和 $\sigma(v)^T$ 是来自旗流形 $X$ 的类，而 $ev_1, ev_2$ 是从模空间 $\overline{\mathcal{M}}$ 到 $X$ 的映射。通过投影公式，我们可以把来自 $X$ 的因子``提取``出来，只对复杂的模空间部分做推送——这就是从 $\overline{\mathcal{M}}$ 转移到 $X \times X$ 的关键。
+现在，请读者回忆 Mihalcea 的论文 \cite[Section 6]{Mihalcea} 中的三个关键引理——它们是整个证明链条的前置条件。
 
-\textbf{生活中的类比}：想象你在整理行李。你有一个大箱子 $X_1$（模空间 $\overline{\mathcal{M}}$），要把它所有东西都转移到小箱子 $X_2$（积空间 $X \times X$）。你知道有些东西（$a$）本来就是从 $X_2$ 带来的，所以它们在转移后还是一样。而那些真正属于 $X_1$ 的东西（$b$）则需要被``压缩``或``重新打包``。投影公式就是描述这个打包规则的数学语言。
+\subsection{第一步：几何归约（论文 \S 6 的三个关键引理）}
+\label{sec:KeyLemmasCh4Proof}
 
-投影公式在 \cref{chap:TriplePositivity} 的证明中也扮演了核心角色——它建立了从几何相交到上同调类的桥梁 \cite[Lemma 2.5]{AndersonFulton}。
+\textbf{目标}：将系数 $c_{u,v}^{w,d}$ 从 $\overline{\mathcal{M}}_{0,3}(X,d)$ 上的曲线计数问题，归约到 $X \times X$ 上的 Graham positivity。
 
-\subsubsection{推送公式（Push-Forward Formula）}
+\textbf{Lemma 6.3（Kleiman Transversality）}{\cite[Lemma 7.2]{FW}}：
+\label{prop:KleimanTransversalityCh4}
+设 $Z$ 是不可约 $G$-簇，$F: Z \to X \times X$ 是 $G$-等变映射。则对任意 $u, v \in W^P$，$F^{-1}(X(u) \times Y(v))$ 是 reduced、locally irreducible 的，其余维数为 $c(u) + \ell(v)$。
 
-对于纤维积图（fiber product diagram），有：
-\begin{equation}
-f_*([V]) = \sum_i m_i a_i [f(V_i)],
-\label{eq:PushForwardCh4}
-\end{equation}
-其中 $V_i$ 是原像的不可约分支（irreducible component），$m_i$ 是对应的次数。
+\textbf{Lemma 6.4（$ev_3^{-1}(Y(w))$ 的分支）}{\cite[Lemma 6.4]{Mihalcea}}：
+\label{prop:ev3inverseCh4}
+$ev_3^{-1}(Y(w))$ 的每个不可约分支 $V_i$ 都是 $B'$-稳定子簇，其中 $B' = T \cdot (U^- \times U^-)$。
 
-这个公式允许我们将一个复杂子簇的推送分解为其各个不可约分支的推送的线性组合。
-
-\subsection{第一步：在 $X \times X$ 上工作}
-
-考虑积空间 $X \times X$，带有半直积 $B' = T \cdot (U^- \times U^-)$ 的作用：
-$$t \cdot (u_1, u_2)(\bar{g}_1, \bar{g}_2) = (tu_1\bar{g}_1, tu_2\bar{g}_2).$$
-
-选择这个特定的 torus 作用是精心设计的——它让我们能够利用 $X \times X$ 上的特殊几何性质。
-
-\textbf{关键引理}（\cite[Corollary 6.2]{Mihalcea}）：
-
-\begin{Lemma}[Graham Positivity on $X \times X$]
-\label{lem:GrahamOnProductXtimesX}
-设 $V \subset X \times X$ 为 $T$-稳定子簇（$T$-stable subvariety）。则在 $H_T^*(X \times X)$ 中，
+\textbf{Corollary 6.2（$X \times X$ 上的 Graham Positivity）}{\cite[Corollary 6.2]{Mihalcea}}：
+\label{cor:GrahamOnXXCh4}
+设 $V \subset X \times X$ 为 $T$-稳定子簇。则在 $H_T^*(X \times X)$ 中，
 $$[V]_T = \sum_i f_i [Y(u_i) \times Y(v_i)]_T,$$
-其中每个 $f_i \in \Lambda = \mathbb{Z}[x_1, \ldots, x_r]$ 是非负系数多项式。
-\end{Lemma}
+其中 $f_i \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ 是非负系数多项式。
 
-这意味着任何 $T$-稳定子簇在上同调中都可以写成 $Y(u) \times Y(v)$ 型的类的非负线性组合。这是 Graham 定理在乘积空间上的自然应用。
+\subsection{你来完成归约链！}
+\label{sec:ProofChallengeCh4}
 
-\subsection{第二步：使用 Projection Formula}
+有了上述三个引理，请读者完成以下归约链条，将 \cref{th:EQCPositivity} 的证明补全。
 
-设 $\overline{\mathcal{M}} = \overline{\mathcal{M}}_{0,3}(X,d)$ 为稳定映射的模空间（stable map moduli space），$ev_i : \overline{\mathcal{M}} \to X$ 为评估映射（evaluation map）。\footnote{问：请详细解释 $\overline{\mathcal{M}}_{0,3}(X, d)$ 的定义。见附录 \cref{sec:qa-moduli-space-definition}。}\footnote{问：请详细解释稳定映射中``幽灵分支''（ghost component）的概念，以及稳定性条件的动机。见附录 \cref{sec:qa-ghost-component-stability}。}
-
-\leavevmode\newline\textbf{Equivariant Quantum Littlewood-Richardson} 系数定义为：
+\textbf{给定}：等变量子 Littlewood-Richardson 系数定义为
 $$c_{u,v}^{w,d} = \pi_*^T\left((ev_1^T)^* \sigma(u)^T \cdot (ev_2^T)^* \sigma(v)^T \cdot (ev_3^T)^* \widetilde{\sigma}(w)^T\right).$$
 
-考虑映射 $F = (ev_1, ev_2)$，
-以及映射 $\overline{\mathcal{M}} \to X \times X$，
-它将模空间投影到前两标记点的积空间上。
+\textbf{第一步}：对映射 $F = (ev_1, ev_2): \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$，使用投影公式，将上式改写为
+$$c_{u,v}^{w,d} = \sum_i a_i (\pi_{X \times X})_*^T\left([X(u) \times X(v)]_T \cdot [F(V_i)]_T\right),$$
+其中 $V_i$ 是 $ev_3^{-1}(Y(w))$ 的不可约分支，$a_i \in \mathbb{N}$ 是映射次数。
 
-利用投影与推送公式，Mihalcea 将表达式转化为：
-$$c_{u,v}^{w,d} = \sum_i a_i (\pi_{X \times X})_*^T\left([X(u) \times X(v)]_T \cdot [F(V_i)]_T\right).\footnote{问：笔记中 Mihalcea 证明的符号（半直积 $B'$、投影公式中的 $F(V_i)$ 等）与原文是否一致？见附录 \cref{sec:qa-mihalcea-notation}。}$$
-其中 $V_i$ 是 $ev_3^{-1}(Y(w))$ 的不可约分支（irreducible component），由 \cite[Lemma 6.4]{Mihalcea} 给出。
+\textbf{第二步（请补全）}：对每个 $F(V_i)$，由 \cref{cor:GrahamOnXXCh4} 写出 $[F(V_i)]_T$ 的表达式。
 
-\textbf{这一步的关键}：我们成功地将问题从 $\overline{\mathcal{M}}$ 转移到了 $X \times X$。
+\textbf{第三步（请补全）}：代入第二步的结果，再次使用投影公式（或直接计算），将整个表达式化为只含非负整数和 Kronecker $\delta$ 的形式。结论：$c_{u,v}^{w,d} \in \mathbb{N}[x_1,\ldots,x_r]$。
 
-\subsection{第三步：应用 Graham 定理}
+\textbf{关键洞察}：量子上同调中的曲线计数问题可以通过投影公式归约为 $X \times X$ 上的经典 Graham positivity 问题。这与 \cref{chap:TriplePositivity} 中 Gao-Xiong 证明三重 Schubert positivity 的思路有本质联系——两者都使用了投影公式作为核心工具。
 
-对每个 $F(V_i)$，由 Lemma \cref{lem:GrahamOnProductXtimesX}，我们可以写
-$$[F(V_i)]_T = \sum_j f_j^i [Y(u_j) \times Y(v_j)]_T.$$
-
-代入并再次使用投影公式，得到
-$$(\pi_{X \times X})_*^T\left([X(u) \times X(v)]_T \cdot [Y(u_j) \times Y(v_j)]_T\right) = \delta_{u,u_j} \cdot \delta_{v,v_j},$$
-其中 $\delta$ 为 Kronecker $\delta$。
-
-\textbf{结论}：整个表达式是关于 $x_i$ 的非负整数线性组合，因为每一步都只涉及：
-\begin{itemize}
-\item 非负整数 $a_i$（映射次数）；
-\item 非负多项式 $f_j^i$（来自 Graham positivity）；
-\item Kronecker $\delta$（非负整数）。
-\end{itemize}
-因此 $c_{u,v}^{w,d} \in \mathbb{Z}[x_1, \ldots, x_r]$ 是非负系数多项式，这正是 \cref{th:EQCPositivity} 所要证明的。
-
-\subsection{证明的整体结构}
-\label{sec:proof-structure-ch4}
-
-\textbf{注}：本节的归约策略的完整证明详见第 9 节附录（\cref{sec:appendix-eqc-proof}），其中包含每一步的详细推导。\footnote{问：Section 5 中的归约策略每一步具体是如何推导的？见附录 \cref{sec:appendix-eqc-proof}。}
-
-让我们用流程图总结整个归约过程：
-
-\begin{center}
-\begin{tikzpicture}[node distance=2cm, auto]
-\node (EQLR) {$c_{u,v}^{w,d}$};
-\node (M) [below of=EQLR] {$\overline{\mathcal{M}}_{0,3}(X,d)$};
-\node (F) [below of=M] {$F=(ev_1,ev_2)$};
-\node (XX) [below of=F] {$X\times X$};
-\node (Graham) [below of=XX,yshift=-0.5cm] {$\sum_j f_j^i\,[Y(u_j)\!\times\!Y(v_j)]_T$};
-
-\draw[->] (EQLR) -- (M) node[midway,right] {$\pi_*^T$};
-\draw[->] (M) -- (F) node[midway,right] {$F_*^T$};
-\draw[->] (F) -- (XX);
-\draw[->] (XX) -- (Graham) node[midway,right] {Graham};
-\end{tikzpicture}
-\end{center}
-
-\textbf{关键洞察}：量子上同调（quantum cohomology）中的曲线计数问题可以通过投影公式归约为 $X \times X$ 上的经典问题。这与 \cref{chap:TriplePositivity} 中三重 Schubert positivity 的证明策略形成了呼应——两者都使用了投影公式作为核心工具，将复杂几何对象分解为已知的 Schubert 基底的组合。
+\textbf{完整证明}见附录 \cref{sec:appendix-eqc-proof}。
 
 \section{与三重 Schubert Positivity 的联系}
+
 \label{sec:ConnectionToTripleCh4}
 
 在 \cref{chap:TriplePositivity} 中，我们遇到了 Refined Graham Positivity——Gao-Xiong 证明了三重变量 $(\mathbf{x}; \mathbf{y}; \mathbf{t})$ 下的展开系数 $c^w_{u,v}(\mathbf{y}, \mathbf{t})$ 是关于 $t_i - y_j$ 的非负多项式（\cref{def:RefinedGraham}）。Mihalcea 的结果与此有着深刻的联系。
