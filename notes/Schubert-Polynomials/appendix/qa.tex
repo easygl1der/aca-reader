@@ -4264,3 +4264,34 @@ $$c_{u,v}^{w,d} = \int \mathrm{ev}_1^* \sigma(u)^T \cdot \mathrm{ev}_2^* \sigma(
 \textbf{总结}：$X(u)$ 是旗流形中的子簇（几何），$\sigma(u)$ 是这个子簇在上同调环中的类（代数）。Mihalcea 的证明巧妙地利用了这个对应——将模空间中的相交问题转化为等变上同调中的类运算，最后用 Graham 在 $X \times X$ 上的结果完成。
 
 \textbf{关键洞察}：等变量子上同调的统一性正体现在这里——同一个形式 $\sum_w f_w \sigma(w)$，通过选择 $f_w$ 的不同多项式部分，既能表示经典几何（$q=0$），又能表示量子几何（带 $q$），同时 torus 参数 $x_i$ 始终记录了等变权重信息。这使得 $QH_T^*(X)$ 成为连接经典与量子、等变与非等变的``万能代数''。
+
+\section{评估映射 $ev_i^T$: 从模空间到旗流形}
+\subsection{问题}
+在 Mihalcea 的公式中，$ev_i^T$ 是什么？它把什么映射到什么？
+\subsection{回答}
+\textbf{评估映射（evaluation map）的几何意义：提取稳定映射在某标记点的值。}
+
+\textbf{非等变版本}：设
+$$\overline{\mathcal{M}}_{0,3}(X,d) = \{\text{稳定映射 } f: \mathbb{P}^1 \to X, \text{ 带三个标记点 } p_1, p_2, p_3 \in \mathbb{P}^1\}$$
+则评估映射定义为：
+$$ev_i: \overline{\mathcal{M}}_{0,3}(X,d) \to X, \qquad ev_i(f) = f(p_i).$$
+即：给定一个稳定映射，取它在第 $i$ 个标记点处的像。
+
+\begin{tabular}{c|c}
+映射 & 含义 \\ \hline
+$ev_1(f)$ & $f$ 在 $p_1$ 处的值 \\
+$ev_2(f)$ & $f$ 在 $p_2$ 处的值 \\
+$ev_3(f)$ & $f$ 在 $p_3$ 处的值
+\end{tabular}
+
+\textbf{等变版本}：$T$-等变提升后：
+$$ev_i^T: \overline{\mathcal{M}}_{0,3}(X,d) \to X \times_T ET,$$
+是 $ev_i$ 和 classifying map $B_T: \overline{\mathcal{M}} \to BT$ 的乘积。
+
+\textbf{在 Gromov-Witten 不变量中的作用（ch4, Eq. 6.1）}：
+\begin{align*}
+(ev_1^T)^* \sigma(u)^T &= \text{类 } ``f(p_1) \in X(u)''\\
+(ev_2^T)^* \sigma(v)^T &= \text{类 } ``f(p_2) \in X(v)''\\
+(ev_3^T)^* \widetilde{\sigma}(w)^T &= \text{类 } ``f(p_3) \in Y(w)''.
+\end{align*}
+三者的 cup product 在模空间上相交，计数满足所有约束的稳定映射个数——这正是 Gromov-Witten 不变量 $c_{u,v}^{w,d}$。
