@@ -3133,6 +3133,85 @@ $$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
 
 \textbf{注}：详见 \cite[Chapter 1]{macdonald1991} 和 \cite[Chapter 10]{FultonQuntum1997}。
 
+\section{为什么 Refined Graham Positivity 和 Graham Positivity 等价（或退化）？}\label{sec:qa-RefinedEqualsGraham}
+\subsection{问题}
+在第一章中，Refined Graham Positivity（Theorem 2.3, GX2025）和原始 Graham Positivity（\cite{Gr}）之间的关系是什么？为什么笔记说"当 $u, v$ 都是 Grassmannian 排列时，本定理退化为原始 Graham Positivity"？这两个定理的适用范围、条件和结论有什么异同？
+
+\subsection{回答}
+
+\textbf{一、两个定理的精确陈述比较}
+
+\textbf{原始 Graham Positivity（\cite{Gr}, Theorem 3.2）}：
+设 $u, v \in S_n$ 分别是 $k_1$-Grassmannian 和 $k_2$-Grassmannian 排列，则
+$$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$$
+其中要求 $k_1 \leq k_2$（两组坐标方向分离）。
+
+\textbf{Refined Graham Positivity（\cite{GX2025}, Theorem 2.3）}：
+设 $u, v \in S_\infty$ 满足 separated descents 条件 $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$，则
+$$[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
+对一般排列成立（不要求 Grassmannian）。
+
+\textbf{二、"退化"（degeneration）的含义}
+
+当笔记说 Refined 定理"退化"为原始 Graham 定理时，指的是：
+
+\begin{enumerate}
+\item \textbf{条件放宽}：Refined 版本用 separated descents 条件替代了 Grassmannian 条件适用范围更广。
+
+\item \textbf{结论一致}：当 $u, v$ 都满足 separated descents（即 $k_1 \leq k_2$ 的 Grassmannian）时，两个定理给出完全相同的系数形式
+$$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$$
+此时 Refined 定理的 Corollary 2.4 分解中的反转集满足
+$$I(\tau) = \{y_j - t_i \mid 1 \leq i,j \leq n\}$$
+从而 $-\alpha = t_i - y_j$，与原始 Graham 定理的系数环一致。
+\end{enumerate}
+
+\textbf{三、关键对应关系：separated descents = Grassmannian + $k_1 \leq k_2$}
+
+这不是一个平凡的等价，而是一个深刻的组合-几何对应：
+
+\begin{enumerate}
+\item \textbf{原始 Graham 的几何条件}：两组 Schubert 胞腔方向分离（$k_1$-方向和 $k_2$-方向）——这在几何上对应了 separated 条件
+
+\item \textbf{Refined Graham 的组合条件}：separated descents $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$ 编码了完全相同的几何信息
+
+\item \textbf{GX2025 的关键洞察}：separated descents 条件可以完全替代 Grassmannian 条件，使得正性结果对所有排列成立
+\end{enumerate}
+
+\textbf{四、具体的退化步骤}
+
+假设 $u, v$ 是满足 $k_1 \leq k_2$ 的 Grassmannian 排列。则：
+
+\begin{enumerate}
+\item \textbf{几何上}：$u$ 对应的 Schubert 簇和 $v$ 对应的 Schubert 簇在旗流形中"方向分离"——它们的交角正好对应 separated descents。
+
+\item \textbf{组合上}：$\max\operatorname{Des}(u) = k_1 \leq k_2 = \min\operatorname{Des}(v)$，即 separated descents 条件自动满足。
+
+\item \textbf{系数上}：Refined 定理中的 $I(\tau) = \{y_j - t_i\}$ 与原始 Graham 定理的 $\{t_i - y_j\}$ 只差一个全局符号，但由于我们只关心系数的非负性（$x - y$ 和 $y - x$ 的非负多项式环相同），两者完全等价。
+\end{enumerate}
+
+\textbf{五、"退化"的精确含义}
+
+这里的"退化"（degeneration/degenerate）指的是：当 Refined 定理的特殊情形（$u, v$ Grassmannian）满足原始 Graham 定理的条件时，Refined 定理的公式
+$$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T$$
+在 $I(\tau) = \{y_j - t_i\}$ 的具体选择下，恰好给出原始 Graham 定理的形式
+$$c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$$
+
+这类似于：二次方程的求根公式是三次方程的退化情形（当某个参数取特定值时）。
+
+\textbf{六、等价的更深层原因}
+
+两个定理的等价性根植于以下几何事实：
+
+\begin{itemize}
+\item Graham 的原始证明用横截相交和 Schubert 基底分解，但技术工具（Lemma 2.5 的横截性保证）只依赖于 separated descents 条件
+\item GX2025 认识到：横截相交性在 Grassmannian 情形自动成立，而这个自动成立的机制就是 separated descents 条件
+\item 因此 separated descents 条件是横截相交性的"本质条件"，而 Grassmannian 条件是它的"充分条件"
+\end{itemize}
+
+这就是为什么 Refined 版本比原始版本更优美——它揭示了真正起作用的是 separated descents，而非 Grassmannian 本身的组合结构。
+
+\textbf{注}：详见 \cite{Gr}（原始 Graham Positivity）和 \cite[Section 2]{GX2025}（Refined 版本）。另见附录 \cref{sec:RefinedVsOriginalGraham}（两者关系的详细比较表）。
+
 \section{Lemma 2.5 如何保证交集类可展开为 Schubert 基底的线性组合}\label{sec:qa-Lemma25-expand}
 \subsection{问题}
 在证明 Refined Graham Positivity 时，为什么可以将交集类
