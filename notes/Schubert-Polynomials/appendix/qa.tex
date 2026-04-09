@@ -3967,3 +3967,79 @@ $$H_{U_n}^*(Fl_n) \;\cong\; \mathbb{Z}[x,y]/\mathcal{I},$$
 \textbf{五、与之前记号的对比}
 
 在下文中遇到 $H_T^*$ 或 $QH_T^*$ 时，应理解为 $T$ 是 $GL_n(\mathbb{C})$ 的 torus，等变参数独立为 $x_1, \ldots, x_n$；而 $H_{U_n}^*$ 或 $QH_{U_n}^*$ 则是酉群框架下的简化版本，等变参数合一为 $x$。两者在 Weyl 不变子环层次上是同构的。
+
+\subsection{量子乘积 $\sigma(u) \star \sigma(v)$ 的几何定义}\label{sec:qa-QuantumStarProductGeometry}
+
+\textbf{简短回答}：量子乘积 $\sigma(u) \star \sigma(v)$ 的几何定义来自 Gromov--Witten 理论。它通过稳定映射的模空间 $\overline{\mathcal{M}}_{0,3}(Fl_n, d)$ 上的相交理论实现，而非像经典 Schubert 演算那样直接在旗流形本身中相交 Schubert 簇。系数"计数曲线"而非"计数点"的本质原因在于：量子乘积记录的不是同一次超平面截面中三个簇的公共点数，而是给定 degree 下稳定映射（将 $\mathbb{P}^1$ 映入 $Fl_n$）的个数。
+
+\textbf{一、经典 Schubert 乘积的几何定义（回顾）}
+
+在经典上同调 $H^*(Fl_n)$ 中，两个 Schubert 类 $\sigma(u), \sigma(v)$ 的乘积
+$$\sigma(u) \cdot \sigma(v) \;=\; \sum_w c_{u,v}^w \, \sigma_w$$
+通过 Schubert 簇的相交来定义。其几何含义是：取旗流形 $Fl_n$ 中相应 Schubert 簇 $\Omega_u, \Omega_v \subset Fl_n$，考虑它们在一个充分一般位置中的相交
+$$\dim \Omega_u + \dim \Omega_v \;=\; \dim Fl_n + \dim \Omega_w,$$
+相交点即为交集 $\Omega_u \cap \Omega_v$ 中的点，再投影到相应的 $\Omega_w$ 中。系数 $c_{u,v}^w$ 计数的是该交集上的几何点个数（相交重数）。
+
+\textbf{二、量子乘积的几何定义（Gromov--Witten 不变量）}
+
+在等变量量子上同调 $QH_{U_n}^*(Fl_n)$ 中，乘积被替换为
+$$\sigma(u) \star \sigma(v) \;=\; \sum_{w, d} c_{u,v}^{w,d} \, q^d \, \sigma_w,$$
+其中 $d = (d_1, \ldots, d_{n-1})$ 是 quantum degree（有效 effective degree 的概念），$q^d$ 是量子参数的单项式。
+
+\textbf{几何构造（3 步）}：
+
+\textbf{第 1 步：稳定映射模空间}。对每个 degree $d$，考虑稳定映射的模空间
+$$\overline{\mathcal{M}}_{0,3}(Fl_n, d),$$
+其中每个元素是满足以下条件的映射：
+$$f : C \to Fl_n,$$
+其中 $C \cong \mathbb{P}^1$（一条有理曲线），有 3 个标记点 $p_1, p_2, p_3 \in C$，满足 $f_*[C] = d$（即像曲线的homology类为 $d$）。稳定性的要求是：除去有限个自同构。这保证了模空间是紧的（Deligne--Mumford 紧化）。
+
+\textbf{第 2 步：评估映射与相交}。有自然的三元评估映射
+$$\mathrm{ev}_i : \overline{\mathcal{M}}_{0,3}(Fl_n, d) \to Fl_n, \quad \mathrm{ev}_i([f, p_1, p_2, p_3]) = f(p_i).$$
+量子乘积的几何定义为以下相交类的推拉：
+$$\sigma(u) \star \sigma(v) \;:=\; \sum_d \frac{1}{m_d} \, (\mathrm{ev}_1^{-1}(\Omega_u) \;\cap\; \mathrm{ev}_2^{-1}(\Omega_v) \;\cap\; \overline{\mathcal{M}}_{0,3}(Fl_n, d))_*,$$
+其中 $\overline{\mathcal{M}}_{0,3}(Fl_n, d)_*$ 表示相对于第 3 个标记点 push-forward 到 $Fl_n$ 的基础类（通常取 $p_3$ 处的类），$m_d$ 是某个对称化因子（与 $d$ 有关的 automorphism 修正）。
+
+\textbf{第 3 步：投射到 Schubert 基底}。将上述相交类在 Schubert 基底下展开，系数即为 Gromov--Witten 不变量：
+$$c_{u,v}^{w,d} \;=\; \langle [\Omega_u], [\Omega_v], [\Omega_w] \rangle_{0,3,d} \;=\; \int_{[\overline{\mathcal{M}}_{0,3}(Fl_n, d)]^{\mathrm{vir}}} \mathrm{ev}_1^*([\Omega_u]) \cup \mathrm{ev}_2^*([\Omega_v]) \cup \mathrm{ev}_3^*([\Omega_w]).$$
+
+\textbf{三、为什么量子乘积计数曲线而非点？}
+
+这一点的关键在于维数分析：
+
+在经典情形，要求 $\Omega_u \cap \Omega_v \cap \cdots \cap \Omega_w \neq \varnothing$ 中的公共点，其维数条件为：
+$$\dim \Omega_u + \dim \Omega_v + \cdots + \dim \Omega_w \;=\; \dim Fl_n.$$
+这限制了只能有有限个簇同时相交于一个点（点计数）。
+
+在量子情形，每个稳定映射 $f: \mathbb{P}^1 \to Fl_n$ 的像是一条曲线（即使只有有限个点相交的需求，只要该曲线恰好经过给定的 Schubert 簇条件即可）。具体来说：
+$$\mathrm{ev}_1^{-1}(\Omega_u) \;\cap\; \mathrm{ev}_2^{-1}(\Omega_v)$$
+要求第一条曲线经过 $\Omega_u$，第二条（来自同一条曲线的不同标记点）经过 $\Omega_v$，这两条约束的维数恰好是两个 Schubert 簇的维数之和，其交集维数等于
+$$\dim \overline{\mathcal{M}}_{0,3}(Fl_n, d) - \dim Fl_n + (\dim \Omega_u + \dim \Omega_v),$$
+如果恰好等于 $0$（充分一般位置），则该交集为有限个点——而这些点正是"给定 degree $d$ 下，连接 $\Omega_u$ 和 $\Omega_v$ 的稳定映射"的个数。
+
+\textbf{四、本质区别：曲线相交 vs 点相交}
+
+\begin{center}
+\begin{tabular}{p{6cm} | p{6cm}}
+\textbf{经典乘积} $\sigma(u) \cdot \sigma(v)$ & \textbf{量子乘积} $\sigma(u) \star \sigma(v)$ \\
+\hline
+几何空间：$Fl_n$ 本身 & 几何空间：$\overline{\mathcal{M}}_{0,3}(Fl_n, d)$（稳定映射的模空间）\\
+相交对象： Schubert 簇 $\Omega_u, \Omega_v, \Omega_w \subset Fl_n$ & 相交对象：$\mathrm{ev}_i^{-1}(\Omega_u), \mathrm{ev}_j^{-1}(\Omega_v)$（预像纤维）\\
+计数内容：簇的公共点数（点计数） & 计数内容：稳定映射的个数（曲线计数）\\
+约束方程：要求 $x \in \Omega_u \cap \Omega_v \cap \cdots$ & 约束方程：要求映射 $f$ 满足 $f(p_1) \in \Omega_u, f(p_2) \in \Omega_v$ \\
+代数结构：$H^*(Fl_n) \otimes H^*(Fl_n) \to H^*(Fl_n)$ & 代数结构：$QH^*(Fl_n) \otimes QH^*(Fl_n) \to QH^*(Fl_n)$（带量子参数 $q$）\\
+\end{tabular}
+\end{center}
+
+\textbf{几何直觉}：经典 Schubert 乘积问的是"两张 Schubert 曲面在旗流形中在哪里相交？"；量子乘积问的是"有多少条曲线将两张 Schubert 曲面连接起来？"前者是静态的，后者是动态的（考虑了一族曲线）。
+
+\textbf{五、设置 $q = 0$ 的退化}
+
+当所有量子参数 $q_1 = \cdots = q_{n-1} = 0$ 时，稳定映射模空间退化为
+$$\overline{\mathcal{M}}_{0,3}(Fl_n, 0) \;\cong\; Fl_n \times \mathbb{P}^1 \times \mathbb{P}^1,$$
+（degree $= 0$ 时，映射是常值映射，$C \cong \mathbb{P}^1$ 无几何影响）。此时 Gromov--Witten 不变量退化为经典相交数：
+$$c_{u,v}^{w,0} \;=\; \int_{Fl_n} [\Omega_u] \cup [\Omega_v] \cup [\Omega_w],$$
+恰好等于经典上同调的相交系数。这给出了量子乘积到经典乘积的退化：
+$$\sigma(u) \star \sigma(v) \;\big|_{q=0} \;=\; \sigma(u) \cdot \sigma(v).$$
+
+\textbf{参考文献}：详见 \cite[Section 4]{FultonQuntum1997}；\cite[Section 1]{KontsevichManin1994}（Gromov--Witten 理论基础）；\cite[Section 2]{Buch2003}（量子 Schubert 演算的几何实现）。
