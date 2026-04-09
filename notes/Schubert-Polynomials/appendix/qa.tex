@@ -4043,3 +4043,68 @@ $$c_{u,v}^{w,0} \;=\; \int_{Fl_n} [\Omega_u] \cup [\Omega_v] \cup [\Omega_w],$$
 $$\sigma(u) \star \sigma(v) \;\big|_{q=0} \;=\; \sigma(u) \cdot \sigma(v).$$
 
 \textbf{参考文献}：详见 \cite[Section 4]{FultonQuntum1997}；\cite[Section 1]{KontsevichManin1994}（Gromov--Witten 理论基础）；\cite[Section 2]{Buch2003}（量子 Schubert 演算的几何实现）。
+
+\subsection{量子等变量子上同调中 Schubert 类的记号}\label{sec:qa-QuantumSchubertClassNotation}
+
+\textbf{简短回答}：在笔记中，量子等变量子上同调 $QH_{U_n}^*(Fl_n)$ 中的 Schubert 类仍记为 $\sigma^T(w)$（与经典等变情形共用同一记号），而几何实现中对应的类记为 $[\Omega_w]_{U_n}$。两者的关系是：$[\Omega_w]_{U_n}$ 是 Schubert 簇 $\Omega_w$ 的几何类在 $QH_{U_n}^*(Fl_n)$ 中的代表元，而 $\sigma^T(w)$ 是该类的代数记号（在 Borel 同构下对应量子多项式 $\widetilde{\mathfrak{S}}_w$）。
+
+\textbf{一、记号系统总览}
+
+笔记中遵循一套从经典到量子逐渐扩展的记号约定：
+
+\begin{center}
+\begin{tabular}{p{3.5cm} | p{5cm} | p{5cm}}
+\textbf{层次} & \textbf{几何类记号} & \textbf{代数类记号} \\
+\hline
+普通上同调 $H^*(Fl_n)$ & $[\Omega_w]$ & $\sigma_w$ \\
+等变上同调 $H_T^*(Fl_n)$ & $[\Omega_w]_T$ & $\sigma^T(w)$ \\
+等变量子上同调 $QH_{U_n}^*(Fl_n)$ & $[\Omega_w]_{U_n}$ & $\sigma^T(w)$（或简写 $\sigma_w$）\\
+\end{tabular}
+\end{center}
+
+\textbf{二、$[\Omega_w]_T$ 的含义}
+
+在等变量子上同调 $H_T^*(Fl_n)$ 中，$[\Omega_w]_T$ 表示 Schubert 簇 $\Omega_w = \overline{B^-wB/B}$ 的等变基本类（equivariant fundamental class）。它的构造通过同伦商空间实现：
+
+定义 $ET \to BT$ 为万有丛，$X_T = X \times_T ET$ 为同伦商，则
+$$[\Omega_w]_T \;=\; \pi_*[\Omega_w \times_T ET] \;\in\; H_T^*(Fl_n),$$
+其中 $\pi: (Fl_n)_T \to BT$ 是投影。直观地说，$[\Omega_w]_T$ 是将基本类 $[\Omega_w]$ "提升"到等变上同调中，加入了 torus 作用的权重信息。
+
+在 Borel 同构
+$$H_T^*(Fl_n) \;\cong\; \mathbb{Z}[x,y]/\mathcal{I}$$
+下，$[\Omega_w]_T$ 对应双重 Schubert 多项式 $\mathfrak{S}_w(x,y)$。
+
+\textbf{三、$[\Omega_w]_{U_n}$ 的含义}
+
+在量子等变量子上同调 $QH_{U_n}^*(Fl_n)$ 中，记号的下标从 $T$ 变为 $U_n$，这表示等变性从 $GL_n(\mathbb{C})$ 的 torus $T$ 切换到 $U(n)$ 的极大 torus $T_{U_n} = (S^1)^n$（酉群框架，见附录 \cref{sec:qa-U_n-QH}）。
+
+几何上，$[\Omega_w]_{U_n}$ 与 $[\Omega_w]_T$ 是同一个类，只是所在的底环不同：
+$$[\Omega_w]_{U_n} \;\in\; QH_{U_n}^*(Fl_n) \;\cong\; \mathbb{Z}[x,y,q]/\widetilde{J}.$$
+两者的关系是：
+$$[\Omega_w]_{U_n} \;\big|_{q=0} \;=\; [\Omega_w]_T,$$
+即取 $q=0$ 时退化为经典等变类。
+
+\textbf{四、$\sigma^T(w)$ 与 $[\Omega_w]_{U_n}$ 的区别}
+
+$\sigma^T(w)$ 是代数记号，表示 $QH_{U_n}^*(Fl_n)$ 环中 Schubert 基底向量；$[\Omega_w]_{U_n}$ 是几何记号，表示 Schubert 簇 $\Omega_w$ 的等变量子上同调类。两者是同一个类的不同记号：
+
+$$\sigma^T(w) \;\xleftrightarrow{\;\text{Borel 同构}\;}\; [\Omega_w]_{U_n} \;\xleftrightarrow{\;\text{多项式代表}\;}\; \widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}).$$
+
+在笔记的具体使用中（见 chapter5.tex）：
+\begin{itemize}
+\item $\sigma^T(u) \star \sigma^T(v) = \sum_{d,w} q^d \, c_{u,v}^{w,d} \, \sigma^T(w)$ — 这是代数层面的量子乘积展开
+\item $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xrightarrow{\;QH_{U_n}^*\text{ 同构}\;}\; [\Omega_w]_{U_n}$ — 这是几何实现层面的同构
+\end{itemize}
+
+\textbf{五、为什么在量子情形仍用 $\sigma^T(w)$？}
+
+这是因为在量子上同调环中，Schubert 类 $\{\sigma^T(w)\}_{w \in W}$ 仍然构成 $QH_{U_n}^*(Fl_n)$ 的自由 $\mathbb{Z}[x,q]$-基底。记号中保留 $T$ 上标，是为了与经典等变量子上同调保持一致，便于对比和退化。引入量子参数 $q$ 和乘积 $\star$ 已经足以区分量子与经典情形，无需另换新记号。
+
+\textbf{六、记号 $\sigma_w$（无上标）的使用场景}
+
+在笔记中，$\sigma_w$（无上标）用于：
+\begin{itemize}
+\item 普通上同调 $H^*(Fl_n)$：如 chapter1.tex 中的 $\sigma_u \cdot \sigma_v$
+\item 量子上同调 $QH_{U_n}^*(Fl_n)$ 中的简写（如 chapter5.tex:321："$\widetilde{\mathfrak{S}}_w$ corresponds to the Schubert class $\sigma_w$"），此时隐含了量子参数 $q$ 的存在
+\end{itemize}
+区分方式是看上下文：出现在量子乘积 $\star$ 旁时表示量子类，出现在普通乘积 $\cdot$ 旁时表示普通类。
