@@ -31,6 +31,8 @@ for i in 1 2 3; do
         '\input{'"$WRAPPER"'}' > /dev/null 2>&1
 done
 
+# Rename output to chapter0.pdf
+[ -f "$FILE-compile.pdf" ] && mv "$FILE-compile.pdf" "$FILE.pdf"
 rm -f "$WRAPPER"
 echo "Done! Output: $FILE.pdf"
 open -a Skim "$FILE.pdf"
