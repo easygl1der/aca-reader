@@ -3132,3 +3132,103 @@ $$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
 这解释了为什么等变系数比普通上同调更丰富——它们记录了更多关于 torus 作用的几何信息。
 
 \textbf{注}：详见 \cite[Chapter 1]{macdonald1991} 和 \cite[Chapter 10]{FultonQuntum1997}。
+
+\section{Lemma 2.5 如何保证交集类可展开为 Schubert 基底的线性组合}\label{sec:qa-Lemma25-expand}
+\subsection{问题}
+在证明 Refined Graham Positivity 时，为什么可以将交集类
+$$[\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}]_T$$
+重写为关于 Schubert 基底的线性组合
+$$\sum_{w \in S_n} c^w_{u,v}(\mathbf{y}, \mathbf{t})[\overline{B^-wB/B}]_T$$
+Lemma 2.5 具体保证了什么性质，使得这种展开成为可能？请给出拓扑或几何直观解释和形式化代数推导。
+
+\subsection{回答}
+
+\textbf{一、Lemma 2.5（横截相交引理）的核心断言}
+
+Lemma 2.5（\cite[ Lemma 2.5]{GX2025}）在 separated descents 条件下断言：
+$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \text{ 是 proper（正常）且 transverse（横截）的。}$$
+
+这两个性质各司其职：
+
+\begin{enumerate}
+\item \textbf{Proper（正常）}：交集的维数等于预期维数：
+$$\dim\left(\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}\right) = \dim X - \ell(u) - \ell(v)$$
+这保证了交集是紧的（finite），从而交点个数有限。
+
+\item \textbf{Transverse（横截）}：在一般点（generic point）上，两个子簇横截相交。这意味着：
+\begin{itemize}
+\item 每个交点都是非歧义的（没有切空间的接触）
+\item 交点是孤立的（isolated）——每个交点都是一个单独的"点"
+\item Kleiman 横向性定理保证一般位置的选取可使交集横截
+\end{itemize}
+\end{enumerate}
+
+\textbf{二、横截相交为何给出"良定义的交点计数"？}
+
+非横截相交的问题：
+\begin{itemize}
+\item 两条切线相同的曲线：交点个数不确定（可能是 1 个，也可能是"无穷多个"相切点）
+\item 包含关系 $A \subset B$：所有点都"相交"，无法计数
+\end{itemize}
+
+横截相交的性质：
+\begin{itemize}
+\item 每个交点是孤立的维数 0 点
+\item 在代数闭域上，孤立的交点集合是有限集
+\item 因此交点个数是良定义的非负整数
+\end{itemize}
+
+这就是 Positivity 的最直接来源——横截相交将几何相交转化为离散的点计数。
+
+\textbf{三、从几何相交到上同调类：关键桥梁}
+
+几何对象（交集子簇）$\xrightarrow{\text{等变上同调}}$ 代数对象（闭链类）$\xrightarrow{\text{Corollary 2.4}}$ Schubert 基底展开
+
+具体步骤：
+
+\begin{enumerate}
+\item \textbf{步骤 1：几何相交}（由 Lemma 2.5 保证）
+$$\tau \overline{B^-uB/B} \cap \overline{B^-vB/B} \subset X$$
+是一个 proper、transverse 的闭子簇。
+
+\item \textbf{步骤 2：等变闭链类}（由等变上同调的定义）
+对闭子簇 $Z \subset X$，其等变上同调类定义为：
+$$[Z]_T \in H_T^{2\operatorname{codim}(Z)}(X)$$
+
+\item \textbf{步骤 3：$N^-(\tau)$-不变闭链}（由旗坐标保证）
+子簇 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 在 $N^-(\tau) = N^- \cap \tau N^- \tau^{-1}$ 下不变（因为两个子簇各自在该群下不变）。
+
+\item \textbf{步骤 4：Schubert 基底展开}（由 Corollary 2.4 保证）
+\end{enumerate}
+
+\textbf{Corollary 2.4（\cite[ Corollary 2.4]{GX2025}）}：
+$$[Y]_T = \sum_{w \in W} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [\overline{B^-wB/B}]_T$$
+即：任意 $B^-$-不变的有效闭链必是 Schubert 闭链的非负线性组合。
+
+\textbf{四、完整推导链}
+
+应用 Corollary 2.4 到 $Y = \tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$（它是 $N^-(\tau)$-不变的，从而是 $B^-$-不变的），得到：
+$$[\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}]_T = \sum_w c_{u,v}^w(\mathbf{y},\mathbf{t})[\overline{B^-wB/B}]_T$$
+
+其中 $c_{u,v}^w(\mathbf{y},\mathbf{t}) \in \mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$ 是非负整数系数的多项式（根被限制在反转集 $I(\tau)$）。
+
+\textbf{五、逐项解释}
+
+Lemma 2.5 和 Corollary 2.4 各司其职：
+
+\begin{itemize}
+\item Lemma 2.5 $\Rightarrow$ 保证交集是一个 \textbf{有效的几何子簇}（proper + transverse）
+\item Corollary 2.4 $\Rightarrow$ 保证这个子簇的等变闭链类是 Schubert 基底的 \textbf{非负线性组合}
+\end{itemize}
+
+两者结合：几何相交（良定义的点计数）$\Longrightarrow$ 上同调类（Schubert 基底展开）$\Longrightarrow$ 非负系数。
+
+\textbf{六、Kleiman-Bertini 定理的几何直观}
+
+Lemma 2.5 的证明依赖于 Kleiman-Bertini 定理（\cite[Section 19.3]{anderson2023}）。该定理指出：
+
+若 $X$ 是光滑簇，$G$ 是可迁作用群，$Z_1, Z_2 \subset X$ 是正则嵌入子簇，则对一般 $g \in G$，交集 $gZ_1 \cap Z_2$ 要么为空，要么是光滑的且具有预期维数。
+
+在 Refined Graham Positivity 中，separated descents 条件确保了 $\tau$ 的选取使交集横截——这就是为什么该条件是 positivity 证明的核心技术前提。
+
+\textbf{注}：详见 \cite[Section 2.5, Corollary 2.4]{GX2025} 和 \cite[Section 19.3]{anderson2023}。
