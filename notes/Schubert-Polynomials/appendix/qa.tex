@@ -2917,3 +2917,107 @@ $$\langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d} = \int_{[\
 In the equivariant setting, this becomes the pushforward formula you cited.
 
 \textbf{References}: \cite{FultonQuntum1997}, \cite{Kim2000}.
+
+\section{Schubert variety 的定义与几何意义}\label{sec:qa-schubert-variety}
+\subsection{问题}
+在 statement ``Geometric meaning: $c_{u,v}^w$ counts point intersections of three Schubert varieties --- the most direct source of positivity'' 中：
+\begin{enumerate}
+\item 什么是 Schubert variety？
+\item 为什么这里要提到 Schubert variety？
+\item Schubert 多项式与 Schubert variety 的关系是什么？
+\end{enumerate}
+请给出数学推导和理论基础的详细解释。
+
+\subsection{回答}
+
+\textbf{一、Schubert variety 的定义}
+
+设 $G$ 为约化复 Lie 群，$B$ 为一个 Borel 子群，$T$ 为极大环面，$W = N_G(T)/T$ 为 Weyl 群。旗流形 $X = G/B$ 是一个光滑的齐性空间。
+
+对于 Weyl 群中任意元素 $w \in W$，定义 \textbf{Schubert 胞腔}（Schubert cell）：
+$$X_w^\circ = BwB/B \subset X$$
+这是一个维数为 $\ell(w)$（$w$ 的长度）的复维开胞腔。
+
+\textbf{Schubert variety}（Schubert 子簇）是 Schubert 胞腔的闭包：
+$$X(w) = \overline{BwB/B} \subset X$$
+它是 $X$ 的紧闭子簇，在旗流形的胞腔分解中扮演基本角色。
+
+\textbf{二、为什么 $c_{u,v}^w$ 计数 Schubert variety 的交点数？}
+
+在普通上同调 $H^*(X)$ 中，Schubert 类 $\sigma(w) \in H^{2\ell(w)}(X)$ 是 Schubert variety $X(w)$ 的 Poincaré 对偶类：
+
+$$[X(w)] = \text{PD}(\sigma(w)) \in H_{2\ell(w)}(X)$$
+
+上同调环的结构常数定义为：
+$$\sigma(u) \cup \sigma(v) = \sum_w c_{u,v}^w \, \sigma(w)$$
+
+从几何上看，上同调杯积对应于子簇的相交。具体地：
+
+\begin{enumerate}
+\item $\sigma(u)$ 的 Poincaré 对偶是 $[X(u)]$
+\item $\sigma(v)$ 的 Poincaré 对偶是 $[X(v)]$
+\item 在横截相交的条件下，$[X(u)] \cap [X(v)]$ 的基本类对应 $\sum_w c_{u,v}^w \, \sigma(w)$
+\item 其中 $c_{u,v}^w$ 是 $X(u) \cap X(v)$ 与 $X(w)$ 的相交数
+\end{enumerate}
+
+更精确地，$c_{u,v}^w$ 计数以下三个 Schubert variety 的完全交点个数：
+$$X(u) \cap X(v) \cap X^\circ(w_0 w)$$
+其中 $X^\circ(w_0 w)$ 是相对 Schubert 胞腔，$w_0$ 是最长元素。
+
+\textbf{三、为什么这是 positivity 的最直接来源？}
+
+交点个数是自然数，不可能为负。这直接解释了 $c_{u,v}^w \in \mathbb{N}$：
+
+$$c_{u,v}^w = \#\left\{ \text{点 } p \in X \mid p \in X(u) \cap X(v) \cap X(w_0w) \right\}$$
+
+\textbf{四、Schubert 多项式与 Schubert variety 的关系}
+
+Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$ 是 Schubert 类 $\sigma(w) \in H^*(X)$ 的多项式代表元。具体关系如下：
+
+\begin{enumerate}
+\item \textbf{几何实现}：每个 Schubert 类 $\sigma(w)$ 对应一个 Schubert variety $X(w)$。上同调类 $[X(w)]$ 的代表元可以取为 $\mathfrak{S}_w(\mathbf{x})$。
+
+\item \textbf{上同调环同构}：存在自然同构
+$$H^*(G/B) \cong \mathbb{Z}[x_1, \ldots, x_n] / \mathfrak{a}$$
+在这个同构下，Schubert 类 $\sigma(w)$ 对应 Schubert 多项式 $\mathfrak{S}_w(\mathbf{x})$。
+
+\item \textbf{几何定义}：Schubert 多项式可通过以下递推关系定义（Demazure, 1974）：
+$$\mathfrak{S}_{w_0}(\mathbf{x}) = \prod_{i=1}^{n-1} x_i^{n-i}$$
+对于一般 $w$，使用除差算子：
+$$\partial_i(\mathfrak{S}_w) = \mathfrak{S}_{ws_i} \quad \text{当 } \ell(ws_i) < \ell(w)$$
+其中 $\partial_i = \frac{1 - s_i}{x_i - x_{i+1}}$ 是基本除差算子。
+
+\item \textbf{几何直观}：从旗流形的旗坐标角度看，Schubert variety $X(w)$ 可以描述为旗空间中满足某些顺序条件的点集。$\mathfrak{S}_w(\mathbf{x})$ 编码了这些胞腔的相交信息。
+\end{enumerate}
+
+\textbf{五、具体例子：$Fl_3(\mathbb{C})$ 中的 Schubert variety}
+
+设 $X = Fl_3(\mathbb{C}) = GL_3/B$，其中 $B$ 是上三角 Borel。$S_3$ 的元素为：
+
+\begin{enumerate}
+\item $w = 123$（恒等置换）：$X(123) = \{ \text{标准旗}\}$，维数 0
+\item $w = 213$：$X(213)$ 是满足第一列条件的所有旗，维数 1
+\item $w = 231$：$X(231)$ 是满足第二列条件的所有旗，维数 1
+\item $w = 312$：$X(312)$ 是满足第三列条件的所有旗，维数 1
+\item $w = 321$（最长置换）：$X(321) = Fl_3(\mathbb{C})$，维数 3
+\end{enumerate}
+
+计算乘积 $\sigma(213) \cup \sigma(231)$：
+$$\mathfrak{S}_{213} \cdot \mathfrak{S}_{231} = x_1 \cdot x_1 x_2 = x_1^2 x_2 = \mathfrak{S}_{321}$$
+因此 $c_{213,231}^{321} = 1$，这表示 $X(213) \cap X(231) \cap X(123)$ 恰好有一个交点。
+
+\textbf{六、从 Schubert variety 到等变上同调的推广}
+
+在等变上同调 $H_T^*(G/B)$ 中，Schubert variety 的类被提升为等变类 $\sigma^T(w)$。此时：
+
+$$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
+
+其中 $c_{u,v}^w(\mathbf{x})$ 是 $x_i$ 的多项式。几何上，这些多项式系数来自：
+\begin{itemize}
+\item Torus 固定点的贡献（每个固定点产生一个 $x_i$ 的因子）
+\item 交点处的权（来自等变上同调的局部化）
+\end{itemize}
+
+这解释了为什么等变系数比普通上同调更丰富——它们记录了更多关于 torus 作用的几何信息。
+
+\textbf{注}：详见 \cite[Chapter 1]{macdonald1991} 和 \cite[Chapter 10]{FultonQuntum1997}。
