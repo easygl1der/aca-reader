@@ -60,7 +60,118 @@
 \begin{document}
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 
-\maketitle
+% === Fancy Title Page ===
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay, x=1cm, y=1cm]
+    % Full dark background
+    \fill[myDColor] (current page.south west) rectangle (current page.north east);
+
+    % Top-left hexagonal cluster (purple)
+    \foreach \i in {0.5,1.5,...,22}{%
+        \node[
+            myLColor!85,
+            regular polygon,
+            regular polygon sides=6,
+            rounded corners,
+            minimum size=\i cm,
+            ultra thick,
+            draw,
+        ] at ($(current page.north west)+(2.5,0)$) {};
+    }
+    % Top-right hexagonal cluster (dark)
+    \foreach \i in {0.5,1.5,...,22}{%
+        \node[
+            myDColor!60,
+            regular polygon,
+            regular polygon sides=6,
+            rounded corners,
+            minimum size=\i cm,
+            ultra thick,
+            draw,
+        ] at ($(current page.north east)+(0,-10)$) {};
+    }
+    % Bottom-right hexagonal cluster (purple)
+    \foreach \i in {21,...,6}{%
+        \node[
+            myLColor!85,
+            regular polygon,
+            regular polygon sides=6,
+            rounded corners,
+            minimum size=\i cm,
+            ultra thick,
+            draw,
+        ] at ($(current page.south east)+(-0.2,0.1)$) {};
+    }
+    % Bottom-left hexagonal cluster (dark)
+    \foreach \i in {2.5,...,22}{%
+        \node[
+            myDColor!60,
+            regular polygon,
+            regular polygon sides=6,
+            rounded corners,
+            minimum size=\i cm,
+            ultra thick,
+            draw,
+        ] at ($(current page.west)+(2.5,-5)$) {};
+    }
+    % Year hexagon (bottom-left center)
+    \node[
+        regular polygon,
+        regular polygon sides=6,
+        rounded corners,
+        minimum size=2.5 cm,
+        ultra thick,
+        inner sep=0,
+        fill=myLColor!85,
+        text=myLColor!5,
+    ] at ($(current page.west)+(2.5,-5)$) {\LARGE\bfseries\the\year};
+
+    % Main title block
+    \node[
+        myLColor!5,
+        rounded corners,
+        minimum height=3cm,
+        minimum width=0.6\paperwidth,
+        right,
+    ] (title) at ($(current page.north east)+(-1,-10)$){%
+        {\fontsize{28}{34}\selectfont\bfseries Schubert Polynomials\\[-4pt]
+         \fontsize{22}{28}\selectfont\bfseries Study Notes}
+    };
+    % Subtitle
+    \node[
+        myLColor!10,
+        rounded corners,
+        minimum height=1.8cm,
+        minimum width=0.6\paperwidth,
+        right,
+    ] at ($(current page.north east)+(-1,-11.5)$){%
+        {\Large\textit{Positivity, Quantum Cohomology \& Geometry}}
+    };
+    % Author block
+    \node[
+        myLColor!5,
+        rounded corners,
+        minimum height=1.6cm,
+        minimum width=0.6\paperwidth,
+        right,
+    ] at ($(current page.north east)+(-1,-13.2)$){%
+        {\Large\textsc{Yue Yihua}}
+    };
+    % Institution
+    \node[text=myLColor!5] (inst) at ($(title.north)+(-3.5,0.6)$) {%
+        \large Sun Yat-sen University%
+    };
+    % Decorative line
+    \draw[myLColor!40, ultra thick] ($(current page.south west)+(1,2)$) -- ($(current page.south east)+(-1,2)$);
+    % Topic label
+    \node[text=myLColor!60] at ($(current page.south west)+(1,1.2)$) {%
+        \footnotesize\itshape Algebraic Geometry $\cdot$ Schubert Calculus $\cdot$ Equivariant Cohomology%
+    };
+\end{tikzpicture}
+\end{titlepage}
+% === End Fancy Title Page ===
+
 \tableofcontents
 
 \input{chapters/chapter0}
