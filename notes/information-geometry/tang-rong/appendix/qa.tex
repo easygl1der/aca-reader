@@ -296,3 +296,364 @@ $$g_{ij}(\theta) = \mathbb{E}\left[\frac{\partial \log p(x|\theta)}{\partial \th
 \end{enumerate}
 
 其中因果推断与几何的结合是最前沿的方向之一，可能带来因果推断的新突破。
+
+\section{论文关系与演化路径}
+
+本节集中回答关于 Tang-Yang 系列论文之间的关系、演化逻辑和技术积累的深层问题。
+
+\subsection{主线一：从极小极大理论到深度模型验证的演化逻辑}\label{sec:qa-evolution-line1}
+
+\textbf{问}：Tang (2022, Annals) 的极小极大理论如何指导后续深度生成模型的设计？这两者之间的逻辑关系是什么？
+
+\textbf{答}：Tang (2022) 的极小极大理论建立了分布估计的统计极限：
+\[
+\text{Rate} = n^{-1/2} \;\vee\; n^{-\frac{\alpha+\gamma}{2\alpha+d}} \;\vee\; n^{-\frac{\beta\gamma}{d}}.
+\]
+
+这个结果对后续工作的指导意义在于：
+\begin{enumerate}
+    \item \textbf{确定了目标}：任何生成模型的收敛速率都不能超过上述下界
+    \item \textbf{揭示了关键量}：环境维度 $D$ 完全不出现在指数中——这解释了为何 GAN、VAE 在高维数据上有效
+    \item \textbf{识别了瓶颈}：第三项 $n^{-\beta\gamma/d}$ 来自流形估计，是不可避免的结构复杂度代价
+\end{enumerate}
+
+Tang (2023a) 的 MLDMAE 方法正是基于这一理论洞见设计的：多编码器/解码器结构是克服流形复杂拓扑的必要条件，而非工程技巧。
+
+演化路径：
+\[
+\text{Tang (2022) 极小极大下界}
+\;\xrightarrow{\;\text{技术转化}\;}\;
+\text{Tang (2023a) MLDMAE}
+\;\xrightarrow{\;\text{框架推广}\;}\;
+\text{Tang (2025a) 分布回归}
+\]
+
+三者共享的核心是：\textbf{单位分解技术 + IPM 框架 + 自适应架构选择。}
+
+\subsection{主线二：VAE $\rightarrow$ 扩散模型的理论演进}\label{sec:qa-evolution-line2}
+
+\textbf{问}：从 Tang (2021, COLT) 的 VAE 到 Tang (2024a, AISTATS) 的扩散模型自适应理论，这条演进路径的核心洞见是什么？
+
+\textbf{答}：这条演进路径揭示了"自适应"概念的深化过程：
+
+\textbf{Tang (2021, COLT)}：证明了 VAE 的 excess risk 界限，展示了潜变量模型如何隐式学习流形结构。核心是 excess risk bound 中的 $O(\sqrt{d/n})$ 项——内在维度 $d$ 决定了收敛速度。
+
+\textbf{Tang (2024a, AISTATS)}：将这一洞见推广到扩散模型，并给出精确的速率：
+\[
+\frac{1}{\sqrt{n}} \;\vee\; n^{-\frac{\alpha+1}{2\alpha+d}}.
+\]
+
+\textbf{核心发现差异}：
+\begin{itemize}
+    \item VAE：依赖于显式的编码器/解码器结构，自适应通过潜变量实现
+    \item 扩散模型：自适应通过正向扩散的"几何填充"实现——$t>0$ 时密度关于 Lebesgue 测度绝对连续，自然填补了流形管状邻域
+\end{itemize}
+
+\textbf{关键的技术桥梁}：Girsanov 定理建立了分数估计误差与分布估计误差的联系，使得扩散模型的 SDE 分析可以纳入统计学习框架。
+
+演化路径：
+\[
+\text{VAE 自适应 (COLT 2021)}
+\;\xrightarrow{\;\text{扩展到一般流形}\;}\;
+\text{扩散模型自适应 (AISTATS 2024)}
+\;\xrightarrow{\;\text{推广到条件设定}\;}\;
+\text{条件扩散模型最优性 (arXiv 2025)}
+\]
+
+\subsection{主线三：稳健贝叶斯 $\rightarrow$ MCMC 的内在联系}\label{sec:qa-evolution-line3}
+
+\textbf{问}：Tang (2023b, JRSS B) 的流形贝叶斯稳健推断与 Tang (2024b, ICML) 的 MALA 混合时间分析之间的内在逻辑是什么？
+
+\textbf{答}：这条主线通过 BvM 定理建立了连接：
+
+\textbf{Tang (2023b, JRSS B)}：建立了黎曼流形上的 Bernstein-von Mises 定理，证明后验分布在切空间投影上渐近正态：
+\[
+\sqrt{n}(\hat{\theta}_n - \theta^*) \;\Rightarrow\; N(0, I(\theta^*)^{-1}).
+\]
+
+\textbf{Tang (2024b, ICML)}：利用渐近高斯性，将 MALA 的分析从理想的乘积分布推广到一大类实际后验分布。
+
+\textbf{内在联系}：BvM 定理的本质是"渐近高斯性"。一旦建立了后验渐近高斯，就可以在高斯目标分布上分析 MALA 的最优性质（$O(d^{1/3})$ 混合时间），然后通过局部线性化桥接到一般后验。
+
+演化路径：
+\[
+\text{流形 BvM + RRWM (JRSS B 2023)}
+\;\xrightarrow{\;\text{利用渐近高斯性}\;}\;
+\text{MALA 最优混合时间 (ICML 2024)}
+\]
+
+\textbf{方法论启示}：渐近理论不仅是数学上的优雅，更具有直接的计算意义。
+
+\subsection{为什么需要单位分解技术}\label{sec:qa-partition-of-unity-why}
+
+\textbf{问}：单位分解（Partition of Unity）技术在这系列论文中扮演什么角色？为什么单编码器模型无法处理某些流形？
+
+\textbf{答}：单位分解是 Tang 系列处理无全局参数化流形的核心技术。
+
+\textbf{几何动机}：许多常见流形（球面 $S^{d-1}$、环面 $T^d$、断开的流形）不存在单一的全局坐标卡覆盖整个流形。这使得基于全局参数化的方法（如标准 VAE）从根本上受限。
+
+\textbf{单位分解的作用}：
+\begin{enumerate}
+    \item 构造局部坐标卡覆盖 $\{U_\lambda\}$ 和对应的光滑坐标函数 $\{\varphi_\lambda\}$
+    \item 构造光滑拼接函数 $\{\gamma_\lambda\}$ 满足 $\sum_\lambda \gamma_\lambda(x) = 1$，$\text{supp}(\gamma_\lambda) \subseteq U_\lambda$
+    \item 在每个局部区域 $U_\lambda$ 中独立构造估计器 $\hat{p}_\lambda$
+    \item 全局估计器为加权混合：$\hat{p}(x) = \sum_\lambda \gamma_\lambda(x) \hat{p}_\lambda(x)$
+\end{enumerate}
+
+\textbf{为什么单编码器 VAE 不够}：单编码器假设存在全局可逆映射 $f: \mathcal{M} \to \mathbb{R}^d$。这对球面、环面等紧流形不成立——它们无法全局参数化。
+
+这正是 Tang (2023a) 提出 MLDMAE 的动机：多编码器/解码器结构能够分别处理流形的不同局部区域。
+
+\subsection{IPM 如何统一多种距离度量}\label{sec:qa-ipm-unification}
+
+\textbf{问}：对抗损失（IPM）如何统一 $\ell_1$、$\ell_2$、Wasserstein 等多种度量？为什么这是有用的？
+
+\textbf{答}：IPM（Integral Probability Metrics）定义为：
+\[
+d_{\mathcal{F}}(\mu,\nu) = \sup_{f \in \mathcal{F}} \left|\int f \, \mathrm{d}\mu - \int f \, \mathrm{d}\nu\right|.
+\]
+
+不同的判别器类 $\mathcal{F}$ 对应不同的度量：
+\begin{enumerate}
+    \item $\mathcal{F} = \{\mathbb{I}(x \in A) : A \subseteq \mathbb{R}^D\}$ $\Rightarrow$ 全变差距离（TV）
+    \item $\mathcal{F} = \text{Lipschitz-1 函数}$ $\Rightarrow$ Wasserstein-1 距离
+    \item $\mathcal{F} = \gamma$-Hölder 类 $\Rightarrow$ Sobolev 度量
+    \item $\mathcal{F} =$ 单位球 RKHS $\Rightarrow$ MMD（最大均值差异）
+\end{enumerate}
+
+当 $\gamma = 1$ 时，$d_\gamma$ 等价于 Wasserstein-1 距离；当 $\gamma \to 0^+$ 时，$d_\gamma$ 趋近全变差距离。
+
+\textbf{统一框架的价值}：
+\begin{itemize}
+    \item 单一理论框架覆盖多种应用场景
+    \item 通过选择不同的 $\gamma$ 参数，可以灵活地在鲁棒性（TV）和几何敏感性（Wasserstein）之间权衡
+    \item Tang (2025a) 利用这一统一框架，同时处理分布回归中的多种误差度量
+\end{itemize}
+
+\textbf{Tang (2023c) 的关键引理}：建立了负 Besov 范数与对抗损失之间的等价关系（引理 1），从而使得基于小波的技术可以直接应用于对抗损失框架。
+
+\subsection{黎曼流形上的 BvM 定理}\label{sec:qa-riemannian-bvm}
+
+\textbf{问}：黎曼流形上的 Bernstein-von Mises (BvM) 定理与欧氏空间版本有何本质区别？它在 Tang 系列中的作用是什么？
+
+\textbf{答}：经典欧氏 BvM 定理指出：渐近正确设定下，后验分布渐近正态。
+\[
+\sqrt{n}(\theta - \hat{\theta}_n) \;\Rightarrow\; N(0, I(\theta)^{-1}).
+\]
+
+\textbf{推广到黎曼流形的核心挑战}：
+
+1. \textbf{参数化问题}：黎曼流形没有全局坐标系，需要在切空间 $T_\theta \mathcal{M}$ 中定义局部坐标
+2. \textbf{测度问题}：概率测度在流形上是内蕴定义的，需要用黎曼体积形式
+3. \textbf{投影问题}：后验分布在切空间上的投影是否仍然渐近正态？
+
+\textbf{Tang et al. (2023b) 的解决方案}：
+\begin{enumerate}
+    \item 将后验分布 $\pi_n(\cdot|x^n)$ 投影到切空间 $T_{\theta^*}\mathcal{M}$
+    \item 利用指数映射 $\text{Exp}_{\theta^*}$ 和对数映射 $\text{Log}_{\theta^*}$ 在流形与切空间之间转换
+    \item 在切空间中应用欧氏 BvM 定理，然后通过 Jacobi 场分析控制投影误差
+\end{enumerate}
+
+\textbf{核心结论}：
+\[
+\sqrt{n} \cdot \text{Log}_{\theta^*}(\theta) \;\Rightarrow\; N(0, I(\theta^*)^{-1}) \quad \text{在 } T_{\theta^*}\mathcal{M} \text{ 中}.
+\]
+
+\textbf{在系列中的作用}：BvM 定理是将贝叶斯稳健推断（MCMC 采样）与极小极大理论联系起来的桥梁。渐近高斯性意味着在样本量足够大时，可以用高斯分布近似后验，从而将复杂的流形后验采样问题转化为已被充分研究的高斯 MCMC 问题。
+
+\subsection{Conductance 与 MCMC 混合时间分析}\label{sec:qa-conductance-mcmc}
+
+\textbf{问}：$s$-conductance profile 技术是什么？它如何改进了经典的 conductance 分析？与 Tang (2023b) 中的 RRWM 分析有何关系？
+
+\textbf{答}：MCMC 的混合时间分析旨在回答"链需要运行多久才能收敛"。经典工具是 conductance（导率）。
+
+\textbf{经典 conductance}：
+\[
+\Phi = \min_{S: 0 < \pi(S) \leq 1/2} \frac{Q(S, S^c)}{\pi(S)},
+\]
+其中 $Q(S, S^c)$ 是从 $S$ 到 $S^c$ 的概率流。 conductance 提供了混合时间的上界。
+
+\textbf{Conductance profile}（Chen et al. 2020）：在子集 $S$ 上定义局部 conductance $\Phi(S)$，可以处理非均匀分布。
+
+\textbf{$s$-conductance profile}（Tang 2024b）：引入了更精细的分层分析技术：
+\begin{enumerate}
+    \item 将状态空间按概率质量分为不同的"层"（level）
+    \item 在每一层上分别估计 conductance
+    \item 通过跨层分析得到更紧的混合时间界
+\end{enumerate}
+
+关键改进：在无需对目标分布施加光滑或强对数凹性假设的条件下，证明了 MALA 达到最优 $O(d^{1/3})$ 维度依赖（经 burn-in 后）。
+
+\textbf{与 Tang (2023b) 的关系}：
+\begin{itemize}
+    \item Tang (2023b) 利用 conductance profile 分析了 RRWM 的混合时间，证明了混合时间仅依赖内在维度 $d$ 而非环境维度 $D$
+    \item Tang (2024b) 将同一工具推广到 MALA，并给出了匹配的下界
+\end{itemize}
+
+\textbf{共同的核心技术}：局部化分析（将全局混合问题分解为局部子问题的组合）+ Poincaré 不等式。
+
+\section{核心技术与理论工具详解}
+
+\subsection{Gaussian 平滑与四阶矩误差}\label{sec:qa-gaussian-smoothing}
+
+\textbf{问}：Tang (2024a) 中使用的 Gaussian 平滑技巧是什么？为什么四阶矩误差条件比 $L_\infty$ 或矩母函数条件更弱、更实用？
+
+\textbf{答}：Gaussian 平滑是处理流形支撑分布（奇异分布）的关键技术。
+
+\textbf{核心问题}：若数据支撑于低维流形 $\mathcal{M}$ 上，则其概率密度 $p^*$ 关于 $\mathbb{R}^D$ 的 Lebesgue 测度奇异（退化），传统密度估计理论不适用。
+
+\textbf{Gaussian 平滑解决方案}：
+\[
+p_\sigma(x) = \int_{\mathcal{M}} \phi_\sigma(x-y) \, \mathrm{d}P^*(y),
+\]
+其中 $\phi_\sigma$ 是方差为 $\sigma^2$ 的高斯密度。通过高斯卷积，$p_\sigma$ 对所有 $t > 0$ 关于 Lebesgue 测度绝对连续。
+
+\textbf{四阶矩误差条件}：Tang (2024a) 的关键创新是证明只需分数估计的四阶矩误差：
+\[
+\mathbb{E}\|\nabla \log p_t(x) - s_\theta(x, t)\|_2^4 \leq \varepsilon^4.
+\]
+
+\textbf{为什么更弱}：
+\begin{itemize}
+    \item $L_\infty$ 误差要求在所有点上均匀好——这对深度网络过于严格
+    \item 矩母函数误差要求指数型衰减——这在尾部可能不成立
+    \item 四阶矩误差只关心"平均"误差——在实际应用中更容易实现
+\end{itemize}
+
+\textbf{实际意义}：这意味着即使分数估计器在某些点表现很差，只要平均表现足够好，分布估计仍然可以达到最优速率。
+
+\subsection{时间分段神经网络架构}\label{sec:qa-timepiece-network}
+
+\textbf{问}：时间分段神经网络架构（Time-Piecewise Architecture）是如何设计的？为什么需要随时间变化的架构？
+
+\textbf{答}：分数函数 $\nabla_x \log p_t(x)$ 随扩散时间 $t$ 剧烈变化：
+
+\begin{itemize}
+    \item $t \to 0^+$（低噪声）：数据密度变化剧烈，$\nabla \log p_t$ 指向流形切空间
+    \item $t \to T$（高噪声）：密度趋于标准高斯，$\nabla \log p_t$ 接近线性
+\end{itemize}
+
+\textbf{固定架构的问题}：用单一架构同时逼近 $t$ 小和大时的函数是低效的：
+\begin{itemize}
+    \item $t$ 小时需要高容量网络捕捉快速变化的结构
+    \item $t$ 大时需要小容量网络（函数接近线性）
+\end{itemize}
+
+\textbf{时间分段架构}：Tang (2024a) 构造了随 $t$ 分段变化的架构族 $\{\mathcal{S}_j\}$：
+\begin{enumerate}
+    \item 将时间区间 $[0, T]$ 分为 $J$ 段：$[0, T_1], [T_1, T_2], \ldots, [T_{J-1}, T]$
+    \item 在第 $j$ 段使用网络 $\mathcal{S}_j$，其宽度/深度随段增大而减小
+    \item 相邻段之间使用过渡层保证光滑性
+\end{enumerate}
+
+\textbf{理论保证}：这种架构可以达到时分段的极小极大最优速率：
+\[
+\frac{1}{\sqrt{n}} \;\vee\; n^{-\frac{\alpha+1}{2\alpha+d}}.
+\]
+
+\textbf{与 Diffusion Transformer 的联系}：《Scalable Diffusion with Structured Tokens》等现代工作实际上采用了类似的时间感知架构设计，只是没有显式的理论保证。
+
+\section{开放问题与前沿探索}
+
+\subsection{噪声观测情形的处理}\label{sec:qa-noise-observation}
+
+\textbf{问}：Tang (2022) 假设无噪声的设定过于理想化。在噪声观测情形下，分布估计的收敛速率如何？能否恢复多项式速率？
+
+\textbf{答}：噪声观测情形的数学模型为：
+\[
+Y_i = X_i + \varepsilon_i, \quad X_i \sim P^*, \quad \varepsilon_i \sim N(0, \sigma^2 I_D).
+\]
+
+这是逆问题（deconvolution）的经典 setting。已知结果：
+\begin{enumerate}
+    \item \textbf{经典去卷积}：在欧氏空间中高斯去卷积的速率随 $\sigma \to 0$ 仅达到对数阶（病态问题）
+    \item \textbf{流形结构是否能帮助？}：如果真实分布 $P^*$ 支撑于低维流形，噪声填充的"扰动管"能否更快收敛？
+\end{enumerate}
+
+\textbf{Tang 系列的初步结果}：在轻度噪声（$\sigma \asymp n^{-1/2}$）假设下，扩散模型的分布估计仍然可以达到 $n^{-1/2}$ 速率。关键在于：高斯噪声实际上帮助了扩散过程——它加速了流形管状邻域的填充。
+
+\textbf{开放研究方向}：
+\begin{itemize}
+    \item 强噪声情形（$\sigma$ 固定）的流形分布估计
+    \item 非高斯噪声（污染、异常值）情形的稳健估计
+    \item 自适应去噪：如何在不知道噪声水平时自动选择合适的平滑参数
+\end{itemize}
+
+这是一个活跃的研究领域，结合了逆问题、稳健统计和流形学习的思想。
+
+\subsection{计算效率与统计最优性的权衡}\label{sec:qa-computation-statistics-tradeoff}
+
+\textbf{问}：Tang 系列的极小极大理论给出了统计最优率，但对应的最优算法（如基于 Lepski 自适应的方法）可能面临计算挑战。如何在计算效率和统计最优性之间找到平衡？
+
+\textbf{答}：这涉及到"computational-statistical gap"（计算-统计差距）的核心问题。
+
+\textbf{Tang 系列的理论保证 vs. 计算实现}：
+
+1. \textbf{Lepski 自适应}：提供了无需知道光滑度参数 $\alpha$ 的自适应估计，但计算复杂度为 $O(n^2)$（需要尝试所有可能的阈值组合）
+
+2. \textbf{神经网络逼近}：理论上可以达到最优率，但训练深度网络本身就是计算密集的
+
+3. \textbf{单位分解 + 局部拟合}：将全局问题分解为局部问题，降低了计算复杂度，但局部窗口大小的选择仍需调参
+
+\textbf{实践中的权衡策略}：
+\begin{itemize}
+    \item \textbf{工程启发式}：使用固定的光滑度估计（如常用的 $\alpha=2$），牺牲极小极小最优性换取可计算性
+    \item \textbf{预训练+微调}：利用在大规模数据上预训练的扩散模型作为初始化，然后在目标任务上微调
+    \item \textbf{近似算法分析}：发展近似算法的统计保证——给定有限的计算预算，最优可达到的统计率是什么
+\end{itemize}
+
+\textbf{核心开放问题}：是否存在计算上高效且统计上最优的流形分布估计算法？这可能依赖于 $\text{P} \neq \text{NP}$ 等计算复杂性问题。
+
+\subsection{流形维数的自适应估计}\label{sec:qa-dimension-adaptivity}
+
+\textbf{问}：整个系列假设内在维度 $d$ 已知，但实际应用中 $d$ 通常未知。如何构造对 $d$ 自适应的估计器？
+
+\textbf{答}：内在维度 $d$ 的估计是流形学习中 fundamental 的问题。Tang 系列尚未系统处理这一挑战。
+
+\textbf{现有方法}：
+\begin{enumerate}
+    \item \textbf{基于 $k$-NN 距离缩放}：设 $r_k$ 为第 $k$ 个近邻距离，则 $r_k \asymp k^{1/d}$。通过对 $\log r_k$ vs. $\log k$ 拟合斜率可以估计 $1/d$
+    \item \textbf{基于本征维度分析}：利用 PCA 或局部 PCA 的方差解释率确定有效维度
+    \item \textbf{基于图拉普拉斯谱}：图拉普拉斯算子的特征值衰减行为可以揭示流形维度
+\end{enumerate}
+
+\textbf{自适应估计的挑战}：
+\begin{itemize}
+    \item 上述方法通常假设已知样本量趋于无穷的渐近设定
+    \item 在有限样本下，不同估计方法可能给出不一致的维度估计
+    \item 多尺度结构：数据可能在不同尺度上具有不同维度（如分形结构）
+\end{itemize}
+
+\textbf{Tang 框架下的开放问题}：能否建立"维数自适应"的极小极大理论？即在不假设 $d$ 已知的情况下，估计器能否自动达到对应于真实 $d$ 的最优速率？
+
+这是一个 open problem，可能需要发展新的自适应理论工具。
+
+\subsection{扩散模型与变分推断的统一}\label{sec:qa-diffusion-variational}
+
+\textbf{问}：扩散模型（显式密度建模）与 VAE/变分推断（隐式密度建模）能否在 Tang 的几何框架下统一理解？两者各有何优劣？
+
+\textbf{答}：从信息几何角度，两者确实可以统一：
+
+\begin{enumerate}
+    \item \textbf{VAE}：显式构造潜变量流形 $z \mapsto p_\theta(x|z)$，通过优化 ELBO 逼近真实分布
+    \item \textbf{扩散模型}：通过分数函数隐式学习分布的几何结构（流形切空间方向）
+\end{enumerate}
+
+两者共享的核心几何思想：
+\begin{itemize}
+    \item 都试图捕捉数据的低维流形结构
+    \item 都使用 KL 散度（或其推广）作为目标
+    \item 都在流形-欧氏空间交界处操作
+\end{itemize}
+
+\textbf{关键差异}：
+\begin{itemize}
+    \item \textbf{密度形式}：VAE 给出显式似然 $p_\theta(x) = \int p(z) p_\theta(x|z) dz$；扩散模型给出隐式分数
+    \item \textbf{采样效率}：VAE 可以单步采样（解码）；扩散模型需要多步迭代（通常 50-1000 步）
+    \item \textbf{理论保证}：Tang 框架为两者都提供了极小极大理论基础
+\end{itemize}
+
+\textbf{统一视角}：两种方法都在寻找数据流形上的"最优坐标系统"。VAE 通过学习编码器/解码器显式构造坐标系；扩散模型通过分数函数隐式学习切空间基。
+
+这为设计混合方法（如 diffusion-based VAE）提供了理论指导。
+
