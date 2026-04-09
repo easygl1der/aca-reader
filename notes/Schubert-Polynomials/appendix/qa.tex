@@ -3474,3 +3474,100 @@ Refined Graham Positivity 在此基础上引入参数 $w$，允许我们：
 \textbf{六、几何直观}
 
 $T$-不变要求子簇在所有 torus 方向上对称；$B^-(w)$-不变只要求在某个方向 $w$ 上对称（更弱）。但 $B^-(w)$-不变闭链在 $G/B$ 上恰好是那些反转集被 $w$ 控制的 Schubert 类闭链，这使得系数多项式的根被精确限制。Refined Graham 的意义在于：\textbf{揭示了 positivity 的真正驱动力不是"全局对称性"，而是特定的反转集结构}。
+
+\section{多版本等价性：多项式 $\leftrightarrow$ 上同调类 $\leftrightarrow$ 几何闭链}\label{sec:qa-MultiVersionEquivalence}
+\subsection{问题}
+Graham Positivity 有三个等价版本：
+\begin{enumerate}
+\item \textbf{多项式版}：Schubert 多项式 $\{\mathfrak{S}_w(x;y)\}$ 在 $\mathbb{Z}[y]$ 上构成 $\mathbb{Z}[x,y]$ 的线性基，任意两个 Schubert 多项式的积可唯一展开为 Schubert 多项式的线性组合，系数非负。
+\item \textbf{上同调类版}：$T$-不变闭链的等变上同调类 $[\tau Y_u \cap Y_v]_T$ 可展开为 Schubert 类 $\sigma_w$ 的线性组合，系数是 $x_i$ 的非负多项式。
+\item \textbf{几何闭链版}：几何交集 $\tau \overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper + transverse 的，其闭链类在 Schubert 基底下有非负展开。
+\end{enumerate}
+为什么这三个版本是等价的？证明的关键桥梁是什么？
+
+\subsection{回答}
+
+\textbf{一、核心桥梁：Borel 表示（Theorem 15.6.1）}
+
+Anderson-Fulton 论文 Theorem 15.6.1（\cite[ Theorem 15.6.1]{anderson2023}）建立了旗流形的 Borel 表示：
+
+$$H_T^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n,y_1,\ldots,y_n] / \mathcal{I}$$
+
+在这个同构下：
+\begin{itemize}
+\item Schubert 类 $\sigma_w \in H_T^*(G/B)$ 对应 Schubert 多项式 $\mathfrak{S}_w(x;y)$
+\item 等变闭链类 $[\overline{B^-wB/B}]_T$ 对应 $\mathfrak{S}_w(x;y)$
+\end{itemize}
+
+这就是\textbf{多项式版 $\Longleftrightarrow$ 上同调类版}的桥梁。
+
+\textbf{二、几何闭链版 $\Longleftrightarrow$ 上同调类版：闭链类映射}
+
+在代数几何中，每个几何子簇 $Z \subset X$ 对应一个闭链类 $[Z] \in A_*(X)$（Chow 群）。在光滑簇上，闭链类可以被提升为上同调类：
+
+$$[Z] \in A_{\dim X - \operatorname{codim} Z}(X) \cong H^{2\operatorname{codim} Z}(X)$$
+
+在等变上同调中，这对应：
+$$[\overline{B^-wB/B}]_T \in H_T^*(G/B)$$
+
+因此，几何闭链版和上同调类版的桥梁是平凡的——几何闭链类就是上同调类的几何来源。
+
+\textbf{三、完整的等价性链条}
+
+\[
+\begin{CD}
+\text{几何闭链版} @>{\text{闭链类映射}}>> \text{上同调类版} \\
+@V{\text{Lemma 2.5: proper + transverse}}V{}V @V{\text{Borel 表示同构}}V{}V \\
+\text{几何交点数} @. \text{Schubert 多项式} \\
+@. @V{\mathbb{Z}[y]\text{-基}}V{}V \\
+@. \text{展开系数 } c_{u,v}^w \in \mathbb{N}
+\end{CD}
+\]
+
+等价性链条如下：
+\begin{enumerate}
+\item \textbf{几何闭链版 $\Rightarrow$ 上同调类版}：几何闭链 $\tau Y_u \cap Y_v$ 通过闭链类映射 $[-]_T$ 成为上同调类 $[\tau Y_u \cap Y_v]_T$
+
+\item \textbf{上同调类版 $\Rightarrow$ 多项式版}：Borel 表示同构将 $[\tau Y_u \cap Y_v]_T$ 对应为 $\mathfrak{S}_u(x;y) \cdot \mathfrak{S}_v(x;y)$
+
+\item \textbf{多项式版 $\Rightarrow$ 系数非负}：Schubert 多项式的基环性质保证展开系数 $c_{u,v}^w \in \mathbb{N}$
+
+\item \textbf{几何闭链 $\Rightarrow$ 交点非负}：proper + transverse 的横截相交保证交点是良定义的非负整数
+\end{enumerate}
+
+\textbf{四、各版本的特点与优势}
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+\textbf{版本} & \textbf{层次} & \textbf{优势} \\ \hline
+几何闭链版 & 最底层（几何直观） & 最容易理解：就是数点 \\ \hline
+上同调类版 & 中层（拓扑语言） & 技术上精确，适合形式推导 \\ \hline
+多项式版 & 最高层（代数计算） & 便于具体计算和组合实现 \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{五、Borel 表示的具体构造}
+
+Borel 表示同构 $H_T^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n,y_1,\ldots,y_n] / \mathcal{I}$ 的构造如下：
+
+\begin{enumerate}
+\item $H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_n]$ 是 torus 的特征标环
+
+\item 由 Leray-Hirsch 定理（或 Atiyah-Bott 固定点公式），$H_T^*(G/B)$ 作为 $H_T^*(pt)$-模是自由的，基为 Schubert 类 $\sigma_w$
+
+\item Schubert 多项式 $\mathfrak{S}_w(x;y)$ 恰好是 $\sigma_w$ 在 Borel 表示环中的代表元
+\end{enumerate}
+
+因此，Schubert 多项式 $\{\mathfrak{S}_w(x;y)\}$ 构成 $\mathbb{Z}[x,y]$ 的线性基（模掉理想 $\mathcal{I}$），这正是\textbf{多项式版 Graham Positivity}的内容。
+
+\textbf{六、为什么等价性重要？}
+
+三个版本的等价性揭示了 Graham Positivity 的多层次本质：
+\begin{itemize}
+\item 在\textbf{几何层面}，positivity 来自于横截相交的良定义点计数
+\item 在\textbf{拓扑层面}，positivity 来自于上同调环的结构常数非负
+\item 在\textbf{代数层面}，positivity 来自于 Schubert 基底的组合性质
+\end{itemize}
+
+这种等价性使得我们可以根据需要选择最方便的层次进行计算或证明——几何直观帮助理解，拓扑语言保证严格性，代数方法便于实现。
