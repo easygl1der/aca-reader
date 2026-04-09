@@ -1,14 +1,30 @@
 #!/bin/bash
 # Compile Tang & Yang review notes (standalone mode via wrapper)
+# Wrapper provides full document environment so main file can always compile
 
 FILE="tang-rong-review"
-WRAPPER="tang-rong-review-compile.tex"
+WRAPPER="${FILE}-compile.tex"
 
-# Create wrapper that defines \STANDALONE before inputting the real file
-cat > "$WRAPPER" << 'EOF'
+cat > "$WRAPPER" << 'OUTER_EOF'
+\documentclass[12pt]{amsbook}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xeCJK}
+\setCJKmainfont{Source Han Serif SC VF}[BoldFont={Source Han Serif SC VF:Bold},AutoFakeBold=true]
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\geometry{margin=1in}
+\begin{document}
 \def\STANDALONE{}
+\bibliography{tang-rong}
 \input{tang-rong-review.tex}
-EOF
+\end{document}
+OUTER_EOF
 
 echo "Compiling $FILE.tex (3 passes, standalone)..."
 
