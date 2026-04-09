@@ -231,3 +231,219 @@ The detailed derivation is in Ch1 \S\ref{sec:ProofMain} (\cref{chap:TriplePositi
 The detailed statement and proof are in \cite[Section 10.6, Theorem 10.6.4]{anderson2023}.
 
 \subsection{Ch4 Proof Techniques: Mihalcea Equivariant Quantum Cohomology}
+
+\label{sec:Ch4ProofTechniques}
+
+Ch4 proved positivity in the quantum setting (\cref{th:MihalceaPositivity}), relying on the following key lemmas.
+
+\subsubsection{Lemma \cref{prop:Lemma61F} (Construction of the Map $F$)}
+\label{sec:Lemma61FDetail} (Construction of the Map $F$)}
+
+\textbf{Statement} (\cite[ Lemma 6.1]{Mihalcea}): Define $F = (ev_1, ev_2) : \overline{\mathcal{M}}_{0,3}(X, d) \to X \times X$, which is a $T$w-equivariant and proper map.\footnote{Notation: $X(u) = \overline{B^+uB/B}$ and $Y(v) = \overline{B^-vB/B}$ denote the (opposite) Schubert varieties in the flag manifold $G/B$, i.e. closures of the $B^+$- and $B^-$-orbits of the point $u \cdot B/B$. Their codimensions are $l(u)$ and $l(v)$ respectively. See \cite[Section 10.1]{FultonQuntum1997}.} 
+
+\textbf{Proof strategy:} $ev_1, ev_2$ are the evaluation maps at the first and second marked points, respectively. Their combination $(ev_1, ev_2)$ projects the moduli space of stable maps $\overline{\mathcal{M}}_{0,3}(X,d)$ to $X \times X$. $T$-equivariance comes from the natural torus action on stable maps.\ 
+
+\textbf{Role in the positivity proof:} This is the key step that transfers the problem from the moduli space $\overline{\mathcal{M}}$ to $X \times X$ --- through this map we can exploit the known positivity on $X \times X$.\ 
+
+\subsubsection{Lemma \cref{prop:ev3inverse} (Irreducible Components of $ev_3^{-1}(Y(w))$)}
+\label{sec:ev3inverseDetail} (Irreducible Components of $ev_3^{-1}(Y(w))$)}
+
+\textbf{Statement} (\cite[ Lemma 6.4]{Mihalcea}): $ev_3^{-1}(Y(w))$ is $T$-stable and reduced, and its irreducible components have codimension $l(w)$.\ 
+
+\textbf{Proof strategy:} $Y(w)$ is the Schubert variety closure in the flag manifold. The evaluation condition $ev_3(p_3) \in Y(w)$ for stable maps produces a specific subvariety in the moduli space. The key is understanding the geometry of this subvariety --- it consists of a disjoint union of irreducible components.\ 
+
+\textbf{Role in the positivity proof:} This lemma decomposes the complicated geometric object in the moduli space into several "manageable" irreducible components. Each component is treated separately, then combined via the push-forward formula.\ 
+
+\subsubsection{Lemma \cref{prop:KleimanTransversality} (Kleiman Transversality)}
+\label{sec:KleimanDetail} (Kleiman Transversality)}
+
+\textbf{Statement} (\cite[ Lemma 6.3]{Mihalcea}): Let $Z$ be an irreducible $G$-variety and $F: Z \to X \times X$ a $G$-equivariant map. Then $F^{-1}(X(u) \times Y(v))$ is reduced and locally irreducible, with codimension $c(u) + l(v)$.\ 
+
+\textbf{Proof strategy:} This is a version of the Kleiman--Bertini theorem --- generic position arguments for $G$-equivariant maps guarantee transversality of the preimage. The dimension formula follows from additivity of dimensions (fiber dimension $+$ base space dimension).\ 
+
+\textbf{Role in the positivity proof:} Ensures that before applying the projection formula, all relevant geometric objects are well-defined --- no singularities, no degenerations. This is a prerequisite for the transition from geometry to algebra.\ 
+
+\subsubsection{Corollary \cref{cor:GrahamOnXX} (Graham Positivity on $X \times X$)}
+\label{sec:GrahamOnXXDetail} (Graham Positivity on $X \times X$)}
+
+\textbf{Statement} (\cite[ Corollary 6.2]{Mihalcea}): Let $V \subset X \times X$ be a $T$-stable subvariety. Then
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T$$
+where $f_i \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ are polynomials with nonnegative coefficients.
+
+\textbf{Proof strategy:} This is a direct application of Graham's theorem to the product space $X \times X$ --- because Schubert cells on $X \times X$ are of the form $Y(u) \times Y(v)$, and Graham's theorem tells us that any $T$-stable cycle can be written as a nonnegative linear combination of Schubert cells.\ 
+
+\textbf{Role in the positivity proof:} This is the end point of the entire reduction strategy --- it tells us that all operations on $X \times X$ produce only linear combinations with nonnegative polynomial coefficients.\ 
+
+\subsubsection{Reduction Flow Chart}
+\label{sec:ReductionFlowChart}
+
+The overall logical chain of Mihalcea's proof is as follows (see \cref{eq:ReductionFlowChart}):\footnote{The derivation below follows \cite[Section 6]{Mihalcea} and is reproduced in full detail in Ch4 \S\cref{sec:appendix-eqc-proof} (\cref{chap:EquivariantQuantumPositivity}).}
+
+\begin{align}
+\label{eq:ReductionFlowChart}
+c_{u,v}^{w,d} &= \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T) \tag{Step 1: definition} \\
+&= (\pi_{X \times X})_*^T F_*^T\left((F^T)^*\!\big[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T\big] \cdot (ev_3^T)^*\widetilde{\sigma}(w)^T\right) \tag{Step 1$'$\,: rewrite} \\[4pt]
+&\xrightarrow{\;\text{Projection formula}\;} (\pi_{X \times X})_*^T\!\Big(\big[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T\big] \cdot F_*^T\big((ev_3^T)^*\widetilde{\sigma}(w)^T\big)\Big) \tag{Step 2: apply $F_*^T$} \\[4pt]
+&\xrightarrow{\;\text{Lemma }\cref{prop:ev3inverse}\;} \sum_i a_i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T \cdot [F(V_i)]_T\Big) \tag{Step 3: irreducible components} \\[4pt]
+&\xrightarrow{\;\text{Cor }\cref{cor:GrahamOnXX}\;} \sum_i a_i \sum_j f_j^i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T \cdot [Y(u_j)\times Y(v_j)]_T\Big) \tag{Step 4: apply Graham on $X\times X$} \\[4pt]
+&= \sum_i a_i \sum_j f_j^i \; \delta_{u,u_j} \cdot \delta_{v,v_j}. \tag{Step 5: equivariant Poincar\'e pairing}
+\end{align}
+
+Here $a_i \in \mathbb{N}$ (map degrees) and $f_j^i \in \mathbb{N}[x_i]$ (nonnegative polynomials), finally yielding $c_{u,v}^{w,d} \in \mathbb{N}[x_i]$. The equivalence between the original definition $c_{u,v}^{w,d} = \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T)$ and Step $1'$ follows from the identity $ev_1^*\sigma(u)^T \cdot ev_2^*\sigma(v)^T = (F^T)^*[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T]$, where $F = (ev_1, ev_2): \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$ (see Ch4 \S\cref{sec:appendix-eqc-proof} (\cref{chap:EquivariantQuantumPositivity}, equation (1)), or equivalently the appendix: \S\cref{sec:qa-product-class-pullback}). Step 5 uses the equivariant Poincar\'e pairing $\langle\sigma^T(u),\widetilde{\sigma}^T(v)\rangle_T = \delta_{u,v}$ from \cite[Proposition 3.1]{Mihalcea}.
+
+\section{Quantum Double Schubert Positivity and Its Relations}
+\label{sec:QuantumDoublePositivityAndRelations}
+
+This section gives the precise statement of the quantum double positivity conjecture (\cref{conj:QuantumDoubleSchubertPositivity}), clarifies its degeneration relations with all previously proved positivity theorems, and discusses the current open problems.
+
+\subsection{Degeneration Relations: How the Conjecture Contains Known Results}
+\label{sec:DegenerationRelations}
+
+The core value of \cref{conj:QuantumDoubleSchubertPositivity} is that it simultaneously generalizes two major known positivity results.
+
+\subsubsection{$q = 0$: Degeneration to Double Graham Positivity}
+
+When $q = 0$ (i.e., ignoring the quantum correction), \cref{conj:QuantumDoubleSchubertPositivity} degenerates to double Graham positivity:
+
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{z}) = \sum_w c_{u,v}^w(\mathbf{y}, \mathbf{z}) \, \mathfrak{S}_w(\mathbf{x}; \mathbf{z})$$
+
+where $c_{u,v}^w(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j]$.
+
+This is exactly the case proved by Gao and Xiong's triple Schubert positivity (\cref{th:TripleSchubertPositivity}).
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$: Degeneration to Mihalcea Positivity}
+
+When $\mathbf{y} = \mathbf{z} = 0$, the two-variable set degenerates to a single variable set, and \cref{conj:QuantumDoubleSchubertPositivity} becomes
+
+$$\sigma^T(u) \star \sigma^T(v) = \sum_{d,w} q^d \, c_{u,v}^{w,d} \, \sigma^T(w)$$
+
+where $c_{u,v}^{w,d} \in \mathbb{N}[x_i]$.
+
+This is exactly Mihalcea's equivariant quantum cohomology positivity (\cref{th:MihalceaPositivity}).
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$ and $d = 0$: Degeneration to Graham Positivity}
+
+Continuing the degeneration, take $d = 0$ (no quantum correction) to obtain
+
+$$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
+
+where $c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_i]$ --- namely Graham positivity (\cref{th:GrahamPositivityOriginal}).
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$, $d = 0$ and $x_i = 0$: Degeneration to Classical Positivity}
+
+Finally, taking $x_i = 0$ (forgetting the torus action) gives
+
+$$\mathfrak{S}_u(\mathbf{x}) \cdot \mathfrak{S}_v(\mathbf{x}) = \sum_w c_{u,v}^w \, \mathfrak{S}_w(\mathbf{x})$$
+
+where $c_{u,v}^w \in \mathbb{N}$ --- namely classical Schubert positivity (\cref{th:ClassicalPositivity}).
+
+\begin{center}
+\small
+\begin{tabular}{c|c}
+\hline
+\textbf{Degeneration Condition} & \textbf{Degenerates to} \\ \hline
+$q = 0$ & Double Graham Positivity (\cref{th:TripleSchubertPositivity}, Gao--Xiong)\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$ & Mihalcea Positivity (\cref{th:MihalceaPositivity})\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$, $d = 0$ & Graham Positivity (\cref{th:GrahamPositivityOriginal})\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$, $d = 0$, $x_i = 0$ & Classical Schubert Positivity (\cref{th:ClassicalPositivity})\\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{Remark:} In \cref{conj:QuantumDoubleSchubertPositivity}, taking $\mathbf{y} = \mathbf{t} = 0$ instead of $\mathbf{y} = \mathbf{z} = 0$ yields the form of Mihalcea positivity. The two degeneration paths are mathematically equivalent.
+
+\subsection{Relationship with the Kirillov Conjecture}
+\label{sec:RelationKirillovConjecture}
+
+The Kirillov conjecture (\cref{cor:Kirillov}) asserts that when the skew divided difference operator $\partial_{w/v}$ acts on Schubert polynomials, the coefficients are nonnegative.
+
+Taking $\mathbf{y} = \mathbf{t} = 0$ and $d = 0$ in \cref{conj:QuantumDoubleSchubertPositivity} gives Mihalcea positivity; taking the further limit $\mathbf{y} = \mathbf{t} = 0$ and $x_i = 0$ degenerates to the classical case --- this is exactly the situation described by the Kirillov conjecture.
+
+Thus \cref{conj:QuantumDoubleSchubertPositivity} implies the Kirillov conjecture through the following chain (see \cref{eq:DegenerationChain}):
+\begin{equation}
+\label{eq:DegenerationChain}
+\text{Quantum double positivity} \xrightarrow{q=0} \text{Double Graham positivity} \xrightarrow{\mathbf{y}=\mathbf{t}=0} \text{Kirillov conjecture}.
+\end{equation}
+
+\subsection{Open Problems}
+\label{sec:OpenProblems}
+
+Although we have established the positivity conjecture hierarchy (Classical $\to$ Graham $\to$ Mihalcea $\to$ Double Graham), the quantum double positivity conjecture (\cref{conj:QuantumDoubleSchubertPositivity}) remains open. Its main challenges are:
+
+\textbf{Open Problem 1: Establishing the geometric framework.} In proving Mihalcea positivity, the projection formula reduces the curve-counting problem to Graham positivity on $X \times X$. In the double-variable framework, what are the corresponding geometric objects? Can the flag manifold geometry on $X \times X$ support the double-variable structure equally well?
+
+\textbf{Open Problem 2: A quantum version of the separated descents condition.} In the proof of double Graham positivity (\cref{th:TripleSchubertPositivity}), the separated descents condition ($\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$) is the key hypothesis guaranteeing transverse intersection. In the quantum double setting, does a similar weakened condition exist? Or must stronger restrictions on $u, v$ be imposed?
+
+\textbf{Open Problem 3: Interaction between quantum parameters $q_k$ and variables $y_i - z_j$.} In Mihalcea's proof, the quantum correction $q^d$ and the equivariant polynomials $c_{u,v}^{w,d}(\mathbf{x})$ are separated. But in the double framework, the interaction between quantum parameters $q_k$ and $y_i - z_j$ may introduce new complexity --- the two may mix to produce novel monomial structures, thereby altering the positivity analysis.
+
+\textbf{Open Problem 4: The case of general flag varieties $G/P$.} The above discussion mainly addresses the flag manifold $Fl_n = GL_n/B$. For a general partial flag variety $G/P$, does quantum double positivity still hold? This involves more complex algebraic geometric structures.
+
+\textbf{Possible breakthrough direction:} A natural strategy is to attempt to extend Mihalcea's reduction method to the double framework. Concretely, we need to find:
+\begin{enumerate}
+\item[$*$] a proper map $F: \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$;
+\item[$*$] a double version of Graham positivity on $X \times X$ (which may require leveraging the equivariant cohomology geometry from \cite{AndersonFulton});
+\item[$*$] a projection formula that reduces the coefficients of double equivariant quantum cohomology to the above double Graham positivity.
+\end{enumerate}
+This strategy is in the same spirit as the proof approaches in Ch1 and Ch4, but concrete implementation remains to be explored.
+
+\subsection{A Sketch Proof Strategy for the Quantum Double Positivity Conjecture}
+\label{sec:SketchProofStrategy}
+
+We now outline a concrete strategy to prove \cref{conj:QuantumDoubleSchubertPositivity} by adapting Mihalcea's reduction method. The key observation is that the conjecture can be rewritten in a form directly analogous to Mihalcea's positivity theorem, making the reduction approach applicable.
+
+\medskip
+\noindent\textbf{Step 1: Rewriting the conjecture.} Write the quantum double Schubert polynomials as formal power series:
+$$\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v^{(q)}(\mathbf{x}; \mathbf{z}) = \sum_{d} \sum_w q^d \, c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \, \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{z}).$$
+The coefficient of $q^d \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{z})$ in the product is $c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j]$.\footnote{Here $\mathbb{N}[y_i - z_j]$ denotes polynomials in the differences $y_i - z_j$ with nonnegative integer coefficients.} Thus \cref{conj:QuantumDoubleSchubertPositivity} is equivalent to:
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j] \quad \text{for all } u,v,w \text{ and all } d.$$
+
+\medskip
+\noindent\textbf{Step 2: Connecting to double equivariant quantum cohomology.} The coefficient $c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z})$ is a (double) equivariant Gromov--Witten invariant. By the geometric definition of the quantum double product, it can be expressed as a push-forward in equivariant cohomology:
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) = \pi_*^T\left((ev_1^T)^*\sigma(u) \cdot (ev_2^T)^*\sigma(v) \cdot (ev_3^T)^*\widetilde{\sigma}(w) \cap [\overline{\mathcal{M}}_{0,3}(X,d)]\right),$$
+where $ev_i^T$ are $T$-equivariant evaluation maps and $\pi_*^T$ is the $T$-equivariant push-forward to a point.
+
+\medskip
+\noindent\textbf{Step 3: Comparing the two key corollaries.} The reduction strategy relies on replacing Mihalcea's endpoint (Corollary \cref{cor:GrahamOnXX}) with the corresponding statement from the Gao--Xiong framework. We compare these two corollaries:
+
+\medskip
+\begin{Corollary}[Cycle Decomposition (\cref{def:Corollary24}, Ch1) {\cite[ Corollary 2.4]{GX2025}}]
+\label{cor:CycleDecompositionCh5}
+Let $X = G/B$ be the flag manifold. With the above setup, any $B^-$-invariant effective cycle $[Y]_T$ on $X$ decomposes as
+$$[Y]_T = \sum_{w \in W} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [\overline{B^-wB/B}]_T,$$
+where $I(w) = \{\alpha > 0 \mid w\alpha > 0\}$ denotes the inversion set of $w$.
+\end{Corollary}
+
+\begin{Corollary}[Graham on $X \times X$ (\cref{cor:GrahamOnXX}, Ch4) {\cite[ Corollary 6.2]{Mihalcea}}]
+\label{cor:GrahamOnXXCh5}
+Let $V \subset X \times X$ be a $T$-stable subvariety. Then in $H_T^*(X \times X)$,
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T,$$
+where $f_i \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ are polynomials with nonnegative coefficients.
+\end{Corollary}
+
+\medskip
+\noindent\textbf{Key structural similarity.} Both corollaries share the same underlying principle: any $T$-stable (or $B^-$-invariant) effective cycle decomposes into Schubert basis elements with nonnegative polynomial coefficients. The difference lies in the ambient space ($X$ vs.\ $X \times X$) and the polynomial ring ($\mathbb{N}[-\alpha]$ vs.\ $\mathbb{N}[x_i]$).
+
+\medskip
+\noindent\textbf{Step 4: The road map.} To adapt Mihalcea's proof, one replaces \cref{cor:GrahamOnXXCh5} by a double-variable version on $X \times X$. The guess is that the same conclusion should hold with $f_i \in \mathbb{N}[y_i - z_j]$ instead of $\mathbb{Z}[x_i]$:
+\begin{Conjecture}[Double Graham Positivity on $X \times X$]
+\label{conj:DoubleGrahamOnXX}
+Let $V \subset X \times X$ be a $T$-stable subvariety. Then
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T,$$
+where $f_i \in \mathbb{N}[y_i - z_j]$ are polynomials with nonnegative integer coefficients in the differences $y_i - z_j$.
+\end{Conjecture}
+If \cref{conj:DoubleGrahamOnXX} holds, then the reduction chain in \cref{eq:ReductionFlowChart} can be followed verbatim (with $\mathbb{N}[y_i - z_j]$ replacing $\mathbb{N}[x_i]$ at every step), yielding
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j].$$
+
+Thus the entire problem reduces to proving \cref{conj:DoubleGrahamOnXX}, which is a geometric positivity statement on $X \times X$ in the double-variable setting. The geometric objects involved ($Y(u_i) \times Y(v_i)$ with their $T$-equivariant classes) are natural candidates, and the separated descents condition from Ch1 (\cref{th:TripleSchubertPositivity}) may play a role analogous to Kleiman transversality.
+
+\medskip
+\noindent\textbf{Why this strategy is plausible.} The chain of reasoning mirrors both Ch1 and Ch4:
+\begin{align*}
+\text{Quantum double positivity} &
+\xrightarrow{\text{geometric definition}} \text{moduli space calculation} \\
+&\xrightarrow{\text{projection formula}} \text{product space } X \times X \\
+&\xrightarrow{\cref{conj:DoubleGrahamOnXX}} \text{double Schubert basis} \\
+&\xrightarrow{\text{coefficient comparison}} \mathbb{N}[y_i - z_j]\text{-positivity}.
+\end{align*}
+The only missing piece is \cref{conj:DoubleGrahamOnXX}, which represents the geometric heart of the problem.
+
+\endinput
