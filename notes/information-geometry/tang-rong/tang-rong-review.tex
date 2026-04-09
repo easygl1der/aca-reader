@@ -1,0 +1,517 @@
+\chapter{Tang \& Yang 流形统计学习系列综述}\label{ch:tang-rong-review}
+
+本章节综述 Rong Tang 与合作者 Yang Yun 的系列工作，
+涵盖 2019--2025 年间发表在 Annals of Statistics、JRSS B、
+AISTATS、ICML 等顶级期刊与会议上的代表性论文，
+涉及极小极大理论、稳健贝叶斯、扩散模型、两样本检验，MCMC 等多个方向。
+
+\section{研究脉络总览}\label{sec:tang-overview}
+
+\subsection{问题的提出}\label{sec:tang-problem}
+
+现代高维数据（图像、文本）尽管环境维度 $D$ 巨大，但其有效信息维度
+$d \ll D$，数据通常位于某个低维流形上。传统非参数统计受维度灾难困扰——
+极小极大速率以 $D$ 为指数，而 GAN、VAE、扩散模型等深度生成模型
+在实践中却表现出色。这一矛盾促使一个根本性问题：
+
+\begin{enumerate}
+    \item \textbf{当数据位于未知低维流形上时，分布估计的统计极限是什么？}
+    \item \textbf{深度生成模型能否隐式自适应流形结构，避免维度灾难？}
+    \item \textbf{如何在流形约束下进行有效的贝叶斯推断和 MCMC 采样？}
+\end{enumerate}
+
+Tang-Yang 系列围绕这三个问题，在统计学习理论与方法之间建立了
+有机联系：从极小极大理论出发，理解扩散模型的自适应性质，
+并在此基础上建立稳健贝叶斯推断和高效采样算法。
+
+\noteinfo{
+本综述覆盖 Tang \& Yang 2019--2025 年间的 8 篇代表性工作，
+涵盖极小极大理论、稳健贝叶斯、扩散模型、两样本检验、MCMC
+理论等多个方向。按研究主题分为三条主线：
+（1）极小极大理论到深度模型验证；
+（2）VAE 到扩散模型的自适应理论；
+（3）稳健贝叶斯到高效 MCMC。}
+
+\section{核心技术与理论基础}\label{sec:tang-techniques}
+
+在进入各篇论文的具体内容之前，有必要梳理贯穿整个系列的核心技术工具。
+
+\subsection{黎曼子流形与单位分解}\label{sec:tang-manifold}
+
+整个系列建立在黎曼几何的若干关键概念之上。
+
+\textbf{黎曼子流形}：设 $\mathcal{M}^*$ 为 $\mathbb{R}^D$ 中嵌入的
+$d$ 维 $\beta$-光滑子流形（$\beta \geq 1$）。数据分布 $P^*$ 关于
+$\mathcal{M}^*$ 的体积测度 $\mathrm{vol}_{\mathcal{M}^*}$ 绝对连续，
+其密度函数 $p^*$ 满足 $\alpha$-光滑性（$\alpha \in [0,\beta-1]$）。
+关键性质：$p^*$ 不关于 $\mathbb{R}^D$ 的 Lebesgue 测度绝对连续——
+这使得传统密度估计理论（以 Lebesgue 测度为参照）不直接适用。
+
+\textbf{单位分解（Partition of Unity）}：Tang 系列的独特技术贡献。
+对于许多常见流形（球面、环面、断开的流形），不存在单一的坐标卡
+覆盖整个流形。局部坐标卡 $(U_\lambda, \varphi_\lambda)$ 的光滑拼接通过
+单位分解函数 $\{\gamma_\lambda\}$ 实现。这一技术在 Tang (2022)
+和 Tang (2023a) 的估计器构造中起了关键作用，是处理无全局参数化
+流形的核心工具。
+
+\textbf{Reach 与流形正则性}：流形的正则性通过 reach 参数刻画——
+$\mathrm{reach}(\mathcal{M}) = \inf\{r > 0 : \mathcal{M}$ 在
+$r$-管状邻域中唯一$\}$。这一参数在切空间投影和距离函数分析中不可或缺。
+
+\subsection{对抗损失（IPM）}\label{sec:tang-ipm}
+
+传统散度（KL 散度、Hellinger 距离）对互相奇异的分布无法有效比较。
+Tang 系列大量使用 \textbf{对抗损失}（即积分概率度量 IPM）：
+\[
+d_{\mathcal{F}}(\mu,\nu) = \sup_{f \in \mathcal{F}} \Big|
+\int_{\mathbb{R}^D} f(x) \, \mathrm{d}\mu - \int_{\mathbb{R}^D} f(x) \, \mathrm{d}\nu\Big|.
+\]
+不同的判别器类 $\mathcal{F}$ 对应不同的度量：
+$\gamma$-Hölder 类对应 Sobolev 度量；1-Lipschitz 类对应 Wasserstein-1 距离；
+单位球 RKHS 对应 MMD。$\gamma$ 参数在流形支撑恢复与密度估计之间
+引入了可调节的权衡（trade-off）。
+
+当 $\gamma = 1$ 时，$d_\gamma$ 等价于 Wasserstein-1 距离；
+当 $\gamma \to 0^+$ 时，$d_\gamma$ 趋近全变差距离。
+这一统一的框架使得 Tang (2025a) 可以同时处理分布回归中的多种误差度量。
+
+\subsection{极小极大速率框架}\label{sec:tang-minimax}
+
+Tang 系列建立了流形上分布估计的完整极小极大理论。
+核心结论可概括为：
+\[
+\text{极小极大速率} = n^{-1/2} \;\vee\;
+n^{-\frac{\alpha+\gamma}{2\alpha+d}} \;\vee\;
+n^{-\frac{\beta\gamma}{d}}.
+\]
+三项分别来自：参数估计精度（$n^{-1/2}$）、
+密度估计（在 $d$ 维流形上的非参数速率）、
+流形本身的估计（$\beta$-光滑 $d$ 维流形的 Hausdorff 估计速率）。
+
+\textbf{该速率的关键性质是：环境维度 $D$ 完全不出现在指数中。}
+这正是低维流形结构帮助克服维度灾难的量化体现。
+
+实现上界的主要技术包括：
+小波展开（局部多项式逼近）、神经网络逼近理论、
+局部拟合生成模型混合、Lepski 自适应方法。
+证明中运用了经验过程理论（chaining、peeling、localization 技术）、
+Girsanov 定理、Poincaré 不等式和流形覆盖论证。
+
+\subsection{扩散模型理论工具}\label{sec:tang-diffusion-tools}
+
+\textbf{Gaussian 平滑技巧}：对于奇异分布（流形支撑分布），Langevin 扩散
+通过高斯平滑 $p_{\sigma}(x) = \int p_{\mathrm{data}}(y) \phi_\sigma(x-y) \, \mathrm{d}y$
+实现密度的可微化。关键发现：只需分数函数的四阶矩误差（而非 $L_\infty$
+误差或矩母函数误差）即可控制分布估计误差。
+
+\textbf{时间分段神经网络架构}：正向-反向扩散中的分数函数
+$\nabla \log p_t(x)$ 随时间 $t$ 剧烈变化——
+近 $t=0$ 时密度变化剧烈；远 $t=T$ 时趋于正态分布。
+Tang (2024a) 构造了一类随时间分段变化的神经网络架构
+$\mathcal{S}_{\mathrm{NN}}$，其规模随 $t$ 增大而减小，
+从而在所有时间区间内保持有效逼近。
+
+\textbf{Girsanov 定理的桥梁作用}：Girsanov 定理建立了分数估计误差
+与分布估计误差之间的联系，是沟通 SDE 理论与统计学习的核心工具。
+
+\section{论文系列详解}\label{sec:tang-papers}
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2022) --- 未知子流形上的极小极大分布估计}
+\label{sec:tang-annals2022}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Minimax Rate of Distribution Estimation on Unknown Submanifold under
+Adversarial Losses.'' \textit{Annals of Statistics}, 2022.
+
+\textbf{问题背景}：传统非参数密度估计受维度灾难困扰——
+速率以环境维度 $D$ 为指数；而 GAN、VAE 等生成模型在实践中
+表现出色。这促使一个根本性问题：在未知流形上，分布估计的统计极限是什么？
+
+\textbf{核心贡献}：首次建立了未知子流形上分布估计在对抗损失下的
+完整极小极大理论。判别器光滑度为 $\gamma$ 时，极小极大速率为
+\[
+n^{-1/2} \;\vee\;
+n^{-\frac{\alpha+\gamma}{2\alpha+d}} \;\vee\;
+n^{-\frac{\beta\gamma}{d}},
+\]
+其中 $\alpha$ 为密度光滑阶，$\beta$ 为流形光滑阶，$d$ 为内在维度。
+\textbf{环境维度 $D$ 完全不出现在指数中。}
+
+\textbf{技术路线}：利用单位分解（partition of unity）技术构造了
+基于局部拟合生成模型混合体的估计器，能够覆盖没有全局参数化的流形——
+这是现有生成模型方法（单编码器 VAE）的根本性局限。
+估计器集成了小波截断、Taylor 展开校正和 Lepski 自适应方法。
+下界证明通过 Fano 不等式和 Varshamov-Gilbert 引理构造复杂的
+二元假设检验问题。
+
+\textbf{与系列的关系}：Tang (2022) 是整个系列的理论基石，
+为 Tang (2023a, 2024a) 中具体生成模型的分析提供了理论参照系。
+\textbf{局限}：估计器构造涉及过多技术细节，实际可操作性有限；
+仅考虑无噪声设定。
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2023a) --- 低维结构混合生成模型}
+\label{sec:tang-icml2023}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Estimating Distributions with Low-dimensional Structures Using Mixtures
+of Generative Models.'' \textit{ICML}, 2023.
+
+\textbf{问题背景}：传统自编码器方法（VAE、GAN）隐含假设数据流形具有
+全局参数化——这对球面、环面、断开流形等常见几何对象不成立。
+
+\textbf{核心贡献}：提出了\textbf{混合潜在分布匹配自编码器（MLDMAE）}方法，
+利用 $K$ 个局部编码器-解码器对分别学习流形局部区域的参数化。
+权重函数 $\rho_k$ 实现光滑拼接，通过单位分解技术将局部估计粘合为
+全局分布估计。
+
+在 1-Wasserstein 距离下，当目标分布是 $\alpha$-光滑且支撑于
+$\beta$-光滑 $d$ 维流形时，估计误差为
+\[
+O\!\Big(n^{-\frac{\alpha\wedge(\beta-1)+1}{2(\alpha\wedge(\beta-1))+d}}
+\;\vee\; \frac{\log n}{\sqrt{n}}\Big),
+\]
+在 $\alpha \le \beta-1$ 时达到极小极大最优（至多对数因子）。
+\textbf{核心发现：多编码器/解码器结构在流形分布估计中是必要的。}
+
+\textbf{与 Tang (2022) 的关系}：Tang (2022) 提供了极小极小理论，
+本篇则将理论转化为具体可计算的深度学习方法，
+验证了单位分解技术在实际深度学习中的可实现性。
+
+% ----------------------------------------------------------
+\subsection{Tang et al. (2023b) --- 黎曼子流形上的稳健贝叶斯推断}
+\label{sec:tang-jrssb2023}
+
+\textbf{文献信息}：Rong Tang, Anirban Bhattacharya, Debdeep Pati,
+and Yun Yang. ``Robust Bayesian Inference on Riemannian Submanifold,''
+\textit{JRSS B}, 2023.
+
+\textbf{问题背景}：医学图像、机器人学、计算机视觉等应用中，参数自然地
+取值于黎曼流形（对称正定矩阵流形、Stiefel 流形等）。
+传统贝叶斯方法忽略流形结构；已有的流形贝叶斯方法在模型误设定下
+无法提供可靠的 Uncertainty Quantification。
+
+\textbf{核心贡献}：提出了 \textbf{Bayesian RPETEL} 框架——
+无需正确指定似然函数的模型自由贝叶斯推断框架，展现三重稳健性：
+\begin{enumerate}
+    \item 无需正确指定似然函数即可提供自动校准的不确定性量化
+    \item 即使欧氏空间风险最小化器不在流形上，后验中心仍能接近
+          流形上的风险最小化器
+    \item 在正确设定下与标准贝叶斯后验渐近等价而不损失效率
+\end{enumerate}
+
+\textbf{理论贡献：黎曼流形上的 Bernstein-von Mises (BvM) 定理}。
+证明了后验分布在切空间上的投影渐近正态，刻画了流形支撑后验分布的
+渐近形态。通过将后验投影到切空间并利用局部坐标变换，
+成功将欧氏空间中的分析工具推广到流形 setting。
+
+\textbf{计算贡献：黎曼随机游走 Metropolis (RRWM) 算法}。
+证明了混合时间仅依赖流形内在维度 $d$ 而非环境维度 $D$。
+理论分析基于 conductance profile 方法。
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2023c) --- 对抗损失下的两样本检验}
+\label{sec:tang-aistats2023}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Minimax Nonparametric Two-Sample Test under Adversarial Losses,''
+\textit{AISTATS}, 2023.
+
+\textbf{问题背景}：两样本假设检验旨在检测两个概率密度函数是否存在
+显著差异。传统 MMD（最大均值差异）检验在高维面临维度灾难，
+且计算复杂度为 $O(n^2)$。
+
+\textbf{核心贡献}：建立了统一的两样本检验框架，基于负 Besov 范数的
+样本版本（通过截断小波展开构造），然后进行标准化处理。
+核心创新是建立了负 Besov 范数与对抗损失之间的等价关系（引理 1），
+从而能够同时适用于 $\ell_1$、$\ell_2$ 距离和 Wasserstein 距离等多种度量。
+
+给出了检测边界下界（定理 1）和上界（定理 2），
+证明所提方法可达该边界（至多差对数项）。
+复杂度 $O(n\log n + n^{2d/(4\alpha+d)})$ 远优于 MMD 的 $O(n^2)$。
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2024a) --- 扩散模型自适应流形结构}
+\label{sec:tang-aistats2024}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Adaptivity of Diffusion Models to Manifold Structures,''
+\textit{AISTATS}, 2024.
+
+\textbf{问题背景}：扩散模型在图像、文本生成中取得了 SOTA 性能，
+但现有理论不足以解释其在高维环境空间中隐式自适应低维流形的原因。
+
+\textbf{核心贡献}：系统性地证明了\textbf{两类扩散模型（Langevin 扩散
+和正向-反向扩散）的分布估计收敛速率仅依赖于数据的本征维度 $d$
+而非环境维度 $D$}。
+
+\textbf{Langevin 扩散分支}：通过 Gaussian 平滑构造分布估计器，
+收敛速率为 $\tilde{O}(\sigma)$，其中 $\sigma$ 的选取仅依赖样本量 $n$
+和本征维度 $d$。关键改进：只需分数估计的四阶矩误差即可控制分布
+估计误差，较现有工作的 $L_\infty$ 或矩母函数假设更弱。
+
+\textbf{正向-反向扩散分支}（主要贡献）：通过时分段常数的神经网络
+架构逼近时变分数函数，在 1-Wasserstein 距离下达极小极大最优速率
+\[
+\frac{1}{\sqrt{n}} \;\vee\; n^{-\frac{\alpha+1}{2\alpha+d}}.
+\]
+
+\textbf{与 Tang (2022) 的关系}：Tang (2022) 提供了一般极小极大框架，
+本篇则具体证明了扩散模型能够达到该速率，为扩散模型的有效性
+提供了严格的理论解释。
+
+% ----------------------------------------------------------
+\subsection{Tang (2024b) --- Metropolis-Adjusted Langevin 算法的混合时间}
+\label{sec:tang-icml2024}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Metropolis-Adjusted Langevin Algorithm: Optimal Dimension Dependency
+and Beyond.'' \textit{ICML}, 2024.
+
+\textbf{问题背景}：MALA 是贝叶斯推断中常用的 MCMC 方法，
+但其在后验分布可能非光滑、非对数凹情况下的混合时间分析长期缺失。
+已有最优 $O(d^{1/3})$ 维度依赖仅在极度规则的乘积分布下得到。
+
+\textbf{核心贡献}：引入 \textbf{$s$-conductance profile} 新技术，
+在无需对目标分布施加光滑或强对数凹性假设的条件下，
+证明了 MALA 达到最优 $O(d^{1/3})$ 维度依赖（经 burn-in 后），
+且条件数依赖为线性。同时给出了匹配的下界。
+
+\textbf{$s$-conductance profile 的技术价值}：这是介于经典 conductance
+与 Chen et al. (2020) 的 conductance profile 之间的精细分析技术，
+能够在非凸集假设下改进 warm-start 参数依赖（从 $\log M_0$ 到 $\log\log M_0$）。
+
+\textbf{与 Tang (2023b) 的内在联系}：Tang (2023b) 建立了流形上的
+BvM 定理（后验渐近正态）；本篇则利用 BvM，将 MALA 的最优维度依赖
+从极度受限的乘积分布推广到一大类实际感兴趣的后验分布。
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2025a) --- 分布回归的极小极大最优速率}
+\label{sec:tang-arxiv2025a}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Minimax Optimal Rates for Regression on Manifolds and Distributions,''
+arXiv, 2025.
+
+\textbf{问题背景}：分布回归旨在估计给定协变量 $X$ 条件下响应变量 $Y$
+的条件分布 $\mu_{Y|X}^*$。在现代高维数据背景下，$X$ 与 $Y$ 均可能
+位于高维环境空间中的低维流形结构上。
+
+\textbf{核心贡献}：在三类层次递进的设定下系统建立了极小极大下界，
+并提出融合对抗学习（IPM 度量）与同步最小二乘的混合估计量，
+证明了其收敛速率与下界匹配：
+
+\begin{enumerate}
+    \item \textbf{Regime 1（经典密度回归）}：条件分布关于 Lebesgue
+          测度存在密度。速率为
+          \[
+          n^{-\frac{\alpha_X}{2\alpha_X+d_X}} +
+          n^{-\frac{\alpha_Y+\gamma}{2\alpha_Y+D_Y+\frac{\alpha_Y}{\alpha_X}\cdot d_X}}.
+          \]
+    \item \textbf{Regime 2（协变量独立响应空间）}: 响应支撑
+          $\mathcal{M}_{Y|X}$ 不依赖 $X$，为未知光滑子流形，
+          出现额外的流形估计项 $n^{-\gamma\beta_Y/d_Y}$。
+    \item \textbf{Regime 3（协变量依赖响应空间）}: 响应支撑
+          $\mathcal{M}_{Y|x}$ 随 $x$ 光滑变化，退化为流形回归，
+          第三项变为 $n^{-\gamma/(\frac{d_Y}{\beta_Y}+\frac{d_X}{\beta_X})}$。
+\end{enumerate}
+
+$\gamma$-Hölder IPM $d_\gamma$ 统一了全变差距离（$\gamma=0$）
+和 1-Wasserstein 距离（$\gamma=1$）。
+
+% ----------------------------------------------------------
+\subsection{Tang \& Yang (2025b) --- 条件扩散模型的极小极大最优性}
+\label{sec:tang-arxiv2025b}
+
+\textbf{文献信息}：Rong Tang and Yun Yang.
+``Conditional Diffusion Models are Minimax-Optimal and Manifold-Adaptive,''
+arXiv, 2025.
+
+\textbf{问题背景}：Tang (2024a) 证明了无条件扩散模型能够自适应流形结构。
+一个自然的问题是：条件扩散模型在条件分布估计中是否同样达到极小极大最优？
+
+\textbf{核心贡献}：在样本量有限情况下对条件分布估计器的收敛速率进行了
+非渐近误差分析。在两种场景下均达到极小极大最优收敛速率：
+\begin{enumerate}
+    \item \textbf{经典密度回归设定}（协变量与响应均为欧氏空间紧集）
+          基于全变差度量，推广了已有文献结果（现有文献仅覆盖
+          $\alpha_X \in [0,1]$ 情形）。
+    \item \textbf{高维回归设定}（协变量 $X$ 与响应 $Y$ 均具有低维流形结构）
+          基于 Wasserstein 度量，估计误差仅依赖内在维度 $(d_X, d_Y)$
+          而非环境维度 $(D_X, D_Y)$。
+\end{enumerate}
+
+证明使用经验过程理论中的局部化与剥离技术（localization and peeling
+techniques）推导高概率界；利用 Girsanov 定理建立分数估计误差与
+分布估计误差之间的联系。
+
+\textbf{与 Tang (2024a, 2025a) 的关系}：Tang (2024a) 无条件情形
+→ Tang (2025a) 分布回归理论框架 → 本篇将条件扩散模型接入该框架。
+
+\section{研究主题的演化}\label{sec:tang-evolution}
+
+纵观 Tang-Yang 系列八年（2019--2025）的发展，可以清晰地识别出
+三条交织演进的主线。
+
+\subsection{主线一：从极小极大理论到深度模型验证}\label{sec:tang-line1}
+
+\[
+\text{Tang (2022) 极小极大理论}
+\;\xrightarrow{\;\text{具体化}\;}\;
+\text{Tang (2023a) MLDMAE 方法}
+\;\xrightarrow{\;\text{推广}\;}\;
+\text{Tang (2025a) 分布回归框架}
+\]
+
+这条主线的核心洞见是：\textbf{极小极大理论不仅是数学结果，
+更是理解深度生成模型有效性的工具——它告诉我们在什么条件下、
+什么方法是理论上最优的，从而解释了实践中哪些方法有效。}
+
+\subsection{主线二：从 VAE 到扩散模型的自适应理论}\label{sec:tang-line2}
+
+\[
+\text{VAE 自适应流形 (Tang 2021)}
+\;\xrightarrow{\;\text{扩展到流形}\;}\;
+\text{Tang (2024a) 扩散模型自适应流形}
+\;\xrightarrow{\;\text{推广到条件设定}\;}\;
+\text{Tang (2025b) 条件扩散模型最优性}
+\]
+
+这条主线的核心洞见是：\textbf{扩散模型虽在原始高维空间运行，
+却能隐式自适应低维结构。} Tang (2024a) 的深层解释是：
+正向扩散天然地通过高斯噪声填充了流形的管状邻域，使密度函数在任意
+时刻 $t>0$ 关于 Lebesgue 测度绝对连续，从而回避了奇异分布的困难。
+
+\subsection{主线三：从稳健贝叶斯到高效 MCMC}\label{sec:tang-line3}
+
+\[
+\text{Tang (2023b) 流形 BvM + RRWM}
+\;\xrightarrow{\;\text{利用 BvM 性质}\;}\;
+\text{Tang (2024b) MALA 最优混合时间}
+\]
+
+这条主线的核心洞见是：\textbf{BvM 定理不只是渐近理论——
+它具有直接的计算意义。} 渐近高斯性意味着在样本量足够大时，
+贝叶斯后验可以用高斯分布近似；而 MALA 在高斯目标分布上的
+最优性质（$d^{1/3}$ 混合时间）可以桥接地推广到一大类后验分布。
+
+\section{论文关系与核心技术索引}\label{sec:tang-synthesis}
+
+\subsection{发表时间线}\label{sec:tang-timeline}
+
+\begin{enumerate}
+    \item \textbf{2021} --- Tang \& Yang, COLT（VAE 流形自适应）
+    \item \textbf{2022} --- Tang \& Yang, Annals of Statistics
+          （流形分布估计极小极大框架）
+    \item \textbf{2023a} --- Tang \& Yang, ICML（MLDMAE）
+    \item \textbf{2023b} --- Tang et al., JRSS B
+          （流形稳健贝叶斯 + BvM）
+    \item \textbf{2023c} --- Tang \& Yang, AISTATS（两样本检验）
+    \item \textbf{2024a} --- Tang \& Yang, AISTATS（扩散模型自适应流形）
+    \item \textbf{2024b} --- Tang \& Yang, ICML（MALA 最优混合时间）
+    \item \textbf{2025a} --- Tang \& Yang, arXiv（分布回归极小极大速率）
+    \item \textbf{2025b} --- Tang \& Yang, arXiv（条件扩散模型最优性）
+\end{enumerate}
+
+\subsection{核心技术索引}\label{sec:tang-tech-index}
+
+\begin{enumerate}
+    \item \textbf{单位分解（Partition of Unity）}：
+          Tang (2022, 2023a) 利用此技术处理无全局参数化流形——
+          是估计器构造的核心工具。
+
+    \item \textbf{$\gamma$-Hölder IPM}：
+          Tang (2022, 2023c, 2025a) 将不同光滑度的判别器类
+          统一在同一个框架下，实现多种距离度量的同时最优。
+
+    \item \textbf{Gaussian 平滑 + 四阶矩误差}：
+          Tang (2024a) 将 Langevin 扩散的分析从 $L_\infty$ 弱化到
+          四阶矩，建立了更弱但更实用的误差条件。
+
+    \item \textbf{时间分段神经网络架构}：
+          Tang (2024a, 2025b) 构造了随时间演化的神经网络架构，
+          有效平衡了近时间端（$t$ 小）与远时间端（$t$ 大）的逼近精度。
+
+    \item \textbf{$s$-conductance profile}：
+          Tang (2024b) 提出的马尔可夫链分析新技术，
+          提供了介于经典 conductance 与 conductance profile 之间的
+          精细分析工具。
+
+    \item \textbf{黎曼流形 Bernstein-von Mises 定理}：
+          Tang et al. (2023b) 将经典 BvM 推广到黎曼子流形 setting，
+          为流形贝叶斯推断提供了严格的理论基础。
+
+    \item \textbf{Girsanov 定理桥梁}：
+          Tang (2024a, 2025b) 通过 Girsanov 定理建立分数估计误差
+          与分布估计误差之间的联系，是连接 SDE 理论与统计学习的核心工具。
+\end{enumerate}
+
+\section{开放问题与未来方向}\label{sec:tang-open}
+
+基于 Tang-Yang 系列的工作，以下问题值得进一步探索：
+
+\begin{enumerate}
+    \item \textbf{流形维数的自适应估计}：
+          整个系列均假设内在维度 $d$ 已知，但实际应用中 $d$ 通常未知。
+          如何构造对 $d$ 自适应的估计器，同时保持极小极大最优性？
+
+    \item \textbf{噪声观测情形}：
+          Tang (2022) 的无噪声设定过于理想化。
+          噪声情形下收敛速率急剧下降（仅对数级），本质上是病态问题。
+          是否有方法在适度噪声假设下恢复多项式速率？
+
+    \item \textbf{光滑性自适应}：
+          Tang (2023c) 的两样本检验中，最优截断水平 $J$ 依赖于
+          未知光滑度参数 $\alpha$，如何构造对 $\alpha$ 自适应的检验？
+
+    \item \textbf{计算复杂度与统计最优性的统一}：
+          渐近最优的神经网络架构可能面临严重的计算挑战。
+          如何在计算效率与统计最优性之间找到平衡？
+
+    \item \textbf{深度模型实践与理论的更紧密连接}：
+          理论估计器与实际训练的神经网络（ResNet、U-Net 等）
+          之间的差距如何缩小？预训练模型能否改善理论速率？
+\end{enumerate}
+
+\noteinfo{
+\textbf{该系列的整体启示}：低维流形几何结构是理解现代高维数据统计推断的
+关键钥匙。Tang-Yang 系列通过极小极大理论、稳健贝叶斯和扩散模型三个维度，
+系统地揭示了"几何结构如何帮助克服维度灾难"这一核心问题。
+这三类工具相互补充——极小极大理论告诉我们"理论上能达到多好的结果"，
+稳健贝叶斯告诉我们"如何在模型不确定时量化不确定性"，
+扩散模型则告诉我们"实践中如何高效地实现这一最优性"。}
+
+\section{参考文献}\label{sec:tang-refs}
+
+\begin{enumerate}
+    \item Tang, R. and Yang, Y. (2021). Excess risk bounds for
+          distribution estimation with VAE. \textit{COLT}, 2021.
+
+    \item Tang, R. and Yang, Y. (2022). Minimax rate of distribution
+          estimation on unknown submanifold under adversarial losses.
+          \textit{Annals of Statistics}, 2022.
+
+    \item Tang, R., Bhattacharya, A., Pati, D., and Yang, Y. (2023a).
+          Estimating distributions with low-dimensional structures
+          using mixtures of generative models. \textit{ICML}, 2023.
+
+    \item Tang, R. and Yang, Y. (2023b). Robust Bayesian inference on
+          Riemannian submanifold. \textit{JRSS B}, 2023.
+
+    \item Tang, R. and Yang, Y. (2023c). Minimax nonparametric
+          two-sample test under adversarial losses. \textit{AISTATS}, 2023.
+
+    \item Tang, R. and Yang, Y. (2024a). Adaptivity of diffusion
+          models to manifold structures. \textit{AISTATS}, 2024.
+
+    \item Tang, R. and Yang, Y. (2024b). Metropolis-adjusted Langevin
+          algorithm: Optimal dimension dependency and beyond.
+          \textit{ICML}, 2024.
+
+    \item Tang, R. and Yang, Y. (2025a). Minimax optimal rates for
+          regression on manifolds and distributions. \textit{arXiv}, 2025.
+
+    \item Tang, R. and Yang, Y. (2025b). Conditional diffusion models
+          are minimax-optimal and manifold-adaptive. \textit{arXiv}, 2025.
+\end{enumerate}
