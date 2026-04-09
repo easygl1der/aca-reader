@@ -60,109 +60,83 @@
 \begin{titlepage}
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture, overlay, x=1cm, y=1cm]
-    % Full dark background
-    \fill[myDColor] (current page.south west) rectangle (current page.north east);
+    % Light background
+    \fill[white] (current page.south west) rectangle (current page.north east);
 
-    % Top-left hexagonal cluster (purple)
-    \foreach \i in {0.5,1.5,...,22}{%
+    % Right side: large subtle hexagon cluster (decorative)
+    \foreach \i in {2,4,...,20}{%
         \node[
-            myLColor!85,
+            myLColor!12,
             regular polygon,
             regular polygon sides=6,
             rounded corners,
             minimum size=\i cm,
-            ultra thick,
+            very thick,
             draw,
-        ] at ($(current page.north west)+(2.5,0)$) {};
+        ] at ($(current page.north east)+(-0.5,-0.5)$) {};
     }
-    % Top-right hexagonal cluster (dark)
-    \foreach \i in {0.5,1.5,...,22}{%
-        \node[
-            myDColor!60,
-            regular polygon,
-            regular polygon sides=6,
-            rounded corners,
-            minimum size=\i cm,
-            ultra thick,
-            draw,
-        ] at ($(current page.north east)+(0,-10)$) {};
-    }
-    % Bottom-right hexagonal cluster (purple)
-    \foreach \i in {21,...,6}{%
-        \node[
-            myLColor!85,
-            regular polygon,
-            regular polygon sides=6,
-            rounded corners,
-            minimum size=\i cm,
-            ultra thick,
-            draw,
-        ] at ($(current page.south east)+(-0.2,0.1)$) {};
-    }
-    % Bottom-left hexagonal cluster (dark)
-    \foreach \i in {2.5,...,22}{%
-        \node[
-            myDColor!60,
-            regular polygon,
-            regular polygon sides=6,
-            rounded corners,
-            minimum size=\i cm,
-            ultra thick,
-            draw,
-        ] at ($(current page.west)+(2.5,-5)$) {};
-    }
-    % Year hexagon (bottom-left center)
+    % Accent hexagon (small, top-right)
     \node[
+        myLColor,
         regular polygon,
         regular polygon sides=6,
         rounded corners,
-        minimum size=2.5 cm,
+        minimum size=3cm,
         ultra thick,
-        inner sep=0,
-        fill=myLColor!85,
-        text=myLColor!5,
-    ] at ($(current page.west)+(2.5,-5)$) {\LARGE\bfseries\the\year};
+        fill=myLColor,
+        text=white,
+    ] at ($(current page.north east)+(-3,3)$) {%
+        \fontsize{40}{48}\selectfont\bfseries\the\year%
+    };
+    % Bottom-left: small accent hexagons
+    \foreach \i/\j in {3/1,5/1,4/2,6/2,5/3,7/3}{%
+        \node[
+            myLColor!\j0,
+            regular polygon,
+            regular polygon sides=6,
+            rounded corners,
+            minimum size=\i cm,
+            thick,
+            draw,
+        ] at ($(current page.south west)+(\i+0.5,\i*0.4-1)$) {};
+    }
 
-    % Main title block
-    \node[
-        myLColor!5,
-        rounded corners,
-        minimum height=3cm,
-        minimum width=0.6\paperwidth,
-        right,
-    ] (title) at ($(current page.north east)+(-1,-10)$){%
-        {\fontsize{28}{34}\selectfont\bfseries Schubert Polynomials\\[-4pt]
-         \fontsize{22}{28}\selectfont\bfseries Study Notes}
+    % Left vertical accent bar
+    \draw[myLColor, very thick] ($(current page.north west)+(0.6,0)$) -- ($(current page.south west)+(0.6,-22)$);
+    \draw[myLColor!40, thick] ($(current page.north west)+(0.9,0)$) -- ($(current page.south west)+(0.9,-22)$);
+
+    % Main title
+    \node[right, text=myDColor!80, anchor=north west] (T) at ($(current page.north west)+(1.5,-4)$){%
+        \parbox{0.75\paperwidth}{%
+            \fontsize{42}{50}\selectfont\bfseries Schubert\\[-2pt]
+            \fontsize{42}{50}\selectfont\bfseries Polynomials\\[-2pt]
+            \fontsize{30}{38}\selectfont\bfseries Study Notes%
+        }%
     };
+    % Divider line
+    \draw[myLColor, ultra thick] ($(T.south west)+(0,0.5)$) -- ($(T.south east)+(0,0.5)$);
+
     % Subtitle
-    \node[
-        myLColor!10,
-        rounded corners,
-        minimum height=1.8cm,
-        minimum width=0.6\paperwidth,
-        right,
-    ] at ($(current page.north east)+(-1,-11.5)$){%
-        {\Large\textit{Positivity, Quantum Cohomology \& Geometry}}
+    \node[right, text=myDColor, anchor=north west] at ($(T.south left)+(0,-1.8)$){%
+        \parbox{0.75\paperwidth}{%
+            \Large\textit{Positivity, Quantum Cohomology \& Geometry}%
+        }%
     };
-    % Author block
-    \node[
-        myLColor!5,
-        rounded corners,
-        minimum height=1.6cm,
-        minimum width=0.6\paperwidth,
-        right,
-    ] at ($(current page.north east)+(-1,-13.2)$){%
-        {\Large\textsc{Yue Yihua}}
+
+    % Author
+    \node[right, text=myDColor!70, anchor=north west] at ($(T.south left)+(0,-5)$){%
+        \parbox{0.75\paperwidth}{%
+            \large\textsc{Yue Yihua}\\[4pt]
+            \normalsize Sun Yat-sen University%
+        }%
     };
-    % Institution
-    \node[text=myLColor!5] (inst) at ($(title.north)+(-3.5,0.6)$) {%
-        \large Sun Yat-sen University%
-    };
-    % Decorative line
-    \draw[myLColor!40, ultra thick] ($(current page.south west)+(1,2)$) -- ($(current page.south east)+(-1,2)$);
-    % Topic label
-    \node[text=myLColor!60] at ($(current page.south west)+(1,1.2)$) {%
-        \footnotesize\itshape Algebraic Geometry $\cdot$ Schubert Calculus $\cdot$ Equivariant Cohomology%
+
+    % Bottom decorative line
+    \draw[myLColor!30, very thick] ($(current page.south west)+(1.5,2.5)$) -- ($(current page.south east)+(-3,2.5)$);
+
+    % Topic tags
+    \node[right, text=myLColor!70, anchor=north west] at ($(current page.south west)+(1.5,1.5)$){%
+        \footnotesize Algebraic Geometry $\cdot$ Schubert Calculus $\cdot$ Equivariant Cohomology%
     };
 \end{tikzpicture}
 \end{titlepage}
