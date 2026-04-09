@@ -1,429 +1,320 @@
-% Chapter 5: Quantum Double Schubert Polynomials Positivity Conjecture
-% Based on Mihalcea (2007) \cite{Mihalcea} and Gao-Xiong (2025) \cite{GX2025}
-% This chapter records the open conjecture
+% Chapter 5: Quantum Double Schubert Positivity Conjecture
+% 本章讨论正性猜想层级与量子双重 Schubert 多项式正性猜想
 
-\chapter{Quantum Double Schubert Polynomials Positivity Conjecture}
+\chapter{Quantum Double Schubert Positivity Conjecture}
 \label{chap:QuantumDoublePositivityConjecture}
 
-\section{The Hierarchy of Positivity Conjectures}
-\label{sec:HierarchyOfPositivity}
+\section{正性猜想层级概述}
+\label{sec:PositivityConjectureHierarchy}
 
-The study of positivity phenomena in Schubert calculus forms a hierarchy of increasingly general conjectures. Each level extends the previous one by introducing new variables or structures. In this section, we present the three foundational positivity results and their relationships.
+在前几章中，我们逐步建立了 Schubert calculus 中的正性现象体系。每一步推广都引入了新的变量或结构，同时保持了正性这一核心性质。本章旨在梳理这一猜想层级的全貌，阐明各猜想之间的关系，并介绍当前仍未解决的开放问题——量子双重 Schubert 多项式正性猜想。
 
-\subsection{The Classical Schubert Positivity Theorem}
-\label{sec:ClassicalSchubertPositivity}
+\subsection{从经典到量子的正性演进}
 
-The most fundamental positivity result concerns ordinary Schubert polynomials in cohomology.
+Schubert calculus 中的正性现象经历了以下演进路径：
 
-\begin{Theorem}[Classical Schubert Positivity]
-\label{th:ClassicalSchubertPositivity}
-For $u, v, w \in S_n$, the product of Schubert polynomials expands as:
-\[
-\mathfrak{S}_u(\mathbf{x}) \cdot \mathfrak{S}_v(\mathbf{x}) = \sum_{w \in S_n} c_{u,v}^w \mathfrak{S}_w(\mathbf{x})
-\]
-where the structure constants $c_{u,v}^w \in \mathbb{N}$ are nonnegative integers.
-\end{Theorem}
+\begin{enumerate}
+\item[(i)] \textbf{经典 Schubert 正性}（Classical Schubert Positivity）：上同调中，Schubert 类乘积的结构常数是非负整数；
+\item[(ii)] \textbf{Graham 正性}（Graham Positivity）：等变上同调中，结构常数升级为关于负根 $x_i$ 的非负整数系数多项式；
+\item[(iii)] \textbf{Mihalcea 正性}（Equivariant Quantum Positivity）：等变量子上同调中，加入量子修正 $q$，结构常数仍为非负多项式；
+\item[(iv)] \textbf{双重 Schubert 正性}（Double Schubert Positivity）：引入第二组变量 $\mathbf{y}, \mathbf{t}$，研究双变量集下的正性；
+\item[(v)] \textbf{量子双重正性猜想}（Quantum Double Positivity Conjecture）：同时引入双变量与量子修正——这是当前的核心开放问题。
+\end{enumerate}
 
-\begin{Proof}
-The classical proof uses geometric intersection theory on the flag manifold $G/B$. The coefficient $c_{u,v}^w$ counts the number of points in the triple intersection $X_u \cap X_v \cap g X_w$ for generic $g \in G$, which is a finite set of points by dimension reasons. Since counting points yields nonnegative integers, $c_{u,v}^w \in \mathbb{N}$. See \cite[Section 2]{Chevalley1994} for the original argument.
-\end{Proof}
+每一层次的正性都包含前一层作为特殊情形（取适当的退化参数）。这种``正性稳定性''并非显然，而是反映了 Schubert calculus 深层几何结构的体现。
 
-\begin{Remark}[Geometric Meaning]
-\Cref{th:ClassicalSchubertPositivity} reflects the fundamental positivity of intersection numbers in algebraic geometry. Each coefficient $c_{u,v}^w$ is a counts of points, hence a nonnegative integer. This positivity is the foundation upon which all subsequent generalizations are built.
-\end{Remark}
+\subsection{正性猜想层级表}
 
-\subsection{Graham Positivity: The Equivariant Extension}
-\label{sec:GrahamPositivity}
+下表对比了从经典到量子双重各层次的正性猜想：
 
-The first major extension introduces equivariant cohomology, where the coefficients become polynomials in torus weights.
-
-\begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 3.2]{Gr}}]
-\label{th:GrahamPositivityOriginal}
-Let $X = G/P$ be a homogeneous space. In equivariant cohomology $H_T^*(X)$, the product of Schubert classes satisfies:
-\[
-\sigma(u)^T \cdot \sigma(v)^T = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma(w)^T
-\]
-where each $c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_1, \ldots, x_r]$ is a polynomial with nonnegative coefficients in the negative roots $-\alpha_i$.
-\end{Theorem}
-
-\begin{Proof}
-The proof appears in \cite[Section 3.2]{Gr}. Graham established that the equivariant structure constants can be expressed as polynomials in $-\alpha_i$ with nonnegative integer coefficients. The key insight is that the moment map geometry of $G/P$ yields a positivity structure even in the equivariant setting.
-\end{Proof}
-
-\begin{Remark}[Comparison with Classical Case]
-In \cref{th:ClassicalSchubertPositivity}, coefficients are mere nonnegative integers. In \cref{th:GrahamPositivityOriginal}, coefficients are upgraded to nonnegative \emph{polynomials} in the torus weights $x_i$. The polynomial coefficients reflect the contribution from different torus fixed points in the equivariant picture.
-\end{Remark}
-
-\subsection{Equivariant Quantum Positivity: Mihalcea's Theorem}
-\label{sec:EquivariantQuantumPositivity}
-
-The quantum extension replaces ordinary intersection with curve counting via Gromov-Witten invariants.
-
-\begin{Theorem}[Equivariant Quantum Positivity {\cite[ Theorem 1]{Mihalcea}}]
-\label{th:EquivariantQuantumPositivity}
-For $u, v, w \in W^P$ and $d$ a curve degree, the equivariant quantum product satisfies:
-\[
-\sigma(u)^T \star \sigma(v)^T = \sum_{d} \sum_{w} q^d c_{u,v}^{w,d}(\mathbf{x}) \, \sigma(w)^T
-\]
-where $c_{u,v}^{w,d}(\mathbf{x}) \in \mathbb{N}[x_1, \ldots, x_r]$ has nonnegative polynomial coefficients.
-\end{Theorem}
-
-The proof uses the following geometric lemma, which we state here for reference:
-
-\begin{Lemma}[Finiteness Lemma]
-\label{Lem:EQCFiniteSum}
-For each fixed multidegree $d$, only finitely many $w \in W^P$ satisfy $c_{u,v}^{w,d} \neq 0$.
-\end{Lemma}
-
-\begin{Proof}
-The finiteness follows from the dimension formula for Gromov-Witten invariants. The invariant $\langle \sigma(u), \sigma(v), \sigma(w) \rangle_{0,3,d}$ can be nonzero only when the formal dimension matches the actual dimension of the moduli space. Since Weyl group length bounds the dimension of Schubert cells, only finitely many $w$ can appear. See \cite[Section 2]{Mihalcea}.
-\end{Proof}
-
-\begin{Remark}[Relationship with Previous Results]
-\Cref{th:EquivariantQuantumPositivity} simultaneously generalizes:
-\begin{itemize}
-\item \textbf{Classical case ($d = 0$)}: Reduces to \cref{th:GrahamPositivityOriginal} when the quantum parameter $q = 0$;
-\item \textbf{Ordinary quantum cohomology ($x_i = 0$)}: Reduces to ordinary quantum cohomology when all equivariant variables vanish.
-\end{itemize}
-\end{Remark}
-
-\subsection{Double Schubert Positivity: The Two-Parameter Setting}
-\label{sec:DoubleSchubertPositivity}
-
-The double setting introduces a second set of variables tracking relative displacements.
-
-\begin{Theorem}[Classical Double Schubert Positivity {\cite[ Theorem 1.1]{GX2025}}]
-\label{th:ClassicalDoubleSchubertPositivityIntro}
-For $u, v, w \in S_\infty$, the product of double Schubert polynomials satisfies:
-\[
-\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{z}) = \sum_{w} c_{u,v}^w(\mathbf{y}; \mathbf{z}) \, \mathfrak{S}_w(\mathbf{x}; \mathbf{z})
-\]
-where $c_{u,v}^w(\mathbf{y}; \mathbf{z}) \in \mathbb{N}[y_i - z_j]$ are nonnegative polynomials in the differences $y_i - z_j$.
-\end{Theorem}
-
-The key innovation in \cite{GX2025} is the introduction of a special involution:
-
-\begin{Lemma}[Special Involution {\cite[Lemma 2.1]{GX2025}}]
-\label{Lem:SpecialInvolutionIntro}
-Let $\tau \in S_{2n}$ be defined by $\tau(i) = n + i$ and $\tau(n + i) = i$ for $1 \leq i \leq n$. This involution relates the two parameter sets $\mathbf{y}$ and $\mathbf{z}$.
-\end{Lemma}
-
-The proof of \cref{th:ClassicalDoubleSchubertPositivityIntro} proceeds via the following steps:
-
-\begin{Lemma}[Normal Transversality {\cite[Lemma 2.5]{GX2025}}]
-\label{Lem:NormalTransversalityIntro}
-The intersection $\tau \cdot X_u \cap X_v$ is normally transversal at every point.
-\end{Lemma}
-
-\begin{Corollary}[Compatibly $N^-(\tau)$-Split]
-\label{Cor:CompatiblyNSplitIntro}
-Since $\tau X_u \cap X_v$ is normally transversal, it is compatibly $N^-(\tau)$-split in the sense of \cite[Section 19.3]{AndersonFulton}.
-\end{Corollary}
-
-The root set of the special involution determines the polynomial variables:
-
-\begin{Lemma}[Root Set of Special Involution]
-\label{Lem:RootSetInvolutionIntro}
-For $\tau$ as in \cref{Lem:SpecialInvolutionIntro}, the inversion set is:
-\[
-I(\tau) = \{\, y_j - z_i \mid 1 \leq i, j \leq n \,\}.
-\]
-\end{Lemma}
-
-Applying Graham positivity (see \cref{th:GrahamPositivityRefinedSec2}) yields the result.
-
-\subsection{The Main Conjecture: Quantum Double Schubert Positivity}
-\label{sec:QuantumDoubleSchubertPositivityConjecture}
-
-We now present the central conjecture of this chapter, which unifies all previous positivity phenomena.
-
-\begin{Conjecture}[Quantum Double Schubert Positivity]
-\label{conj:QuantumDoublePositivity}
-For $u, v, w \in S_\infty$, the product of quantum double Schubert polynomials expands as:
-\[
-\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v^{(q)}(\mathbf{x}; \mathbf{z}) = \sum_{w} c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q) \, \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{y})
-\]
-where the coefficients satisfy:
-\[
-c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q) \in \mathbb{N}[y_i - z_j, q_k].
-\]
-\end{Conjecture}
-
-\begin{Remark}[Naming Clarification]
-The phrase ``Quantum Double'' refers to two distinct features:
-\begin{itemize}
-\item \textbf{Double}: Each factor $\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y})$ is a \emph{double} Schubert polynomial in variables $(\mathbf{x}; \mathbf{y})$;
-\item \textbf{Quantum}: The multiplication involves quantum corrections $q_k$ from curve counting.
-\end{itemize}
-The word ``Triple'' in related literature \cite{GX2025} refers to the three Schubert polynomials appearing in the product formula.
-\end{Remark}
-
-\subsection{Comparison of the Four Positivity Results}
-\label{sec:ComparisonOfPositivity}
-
-\Cref{tab:PositivityComparison} summarizes the relationships among the four positivity results:
-
-\begin{table}[htbp]
-\caption{Comparison of Four Positivity Results}
-\label{tab:PositivityComparison}
 \begin{center}
-\begin{tabular}{lcccc}
+\begin{tabular}{c|c|c|c}
 \hline
-Result & Variables & Polynomial Ring & Status \\
-\hline
-\Cref{th:ClassicalSchubertPositivity} & $\mathbf{x}$ & $\mathbb{N}$ & Proved \\
-\Cref{th:GrahamPositivityOriginal} & $\mathbf{x}$ & $\mathbb{N}[x_i]$ & Proved \\
-\Cref{th:EquivariantQuantumPositivity} & $\mathbf{x}, q$ & $\mathbb{N}[x_i][q]$ & Proved \\
-\Cref{th:ClassicalDoubleSchubertPositivityIntro} & $\mathbf{y}, \mathbf{z}$ & $\mathbb{N}[y_i - z_j]$ & Proved \\
-\Cref{conj:QuantumDoublePositivity} & $\mathbf{y}, \mathbf{z}, q$ & $\mathbb{N}[y_i - z_j, q_k]$ & Open \\
-\hline
+\textbf{正性层次} & \textbf{多项式变量} & \textbf{多项式环} & \textbf{状态} \\ \hline
+经典 Schubert 正性 & $\mathbf{x}$ & $\mathbb{N}$（非负整数） & 已证 \\ \hline
+Graham 正性 & $\mathbf{x}$ & $\mathbb{N}[x_i]$（非负多项式） & 已证 \\ \hline
+Mihalcea 正性 & $\mathbf{x}, q$ & $\mathbb{N}[x_i][q]$ & 已证 \\ \hline
+双重 Graham 正性 & $\mathbf{y}, \mathbf{t}$ & $\mathbb{N}[t_i - y_j]$ & 已证（\cite{GX2025}）\\ \hline
+量子双重正性猜想 & $\mathbf{y}, \mathbf{z}, q$ & $\mathbb{N}[y_i - z_j, q_k]$ & \textbf{开放} \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
 
-The conjecture represents the natural unification of:
+\subsection{各层猜想的核心陈述}
+
+本小节逐一给出每层正性猜想的准确陈述。
+
+\subsubsection{经典 Schubert 正性}
+
+在普通上同调 $H^*(G/B)$ 中，Schubert 类乘积的结构常数是交点个数，自然非负。
+
+\begin{Theorem}[Classical Schubert Positivity]
+\label{th:ClassicalPositivity}
+对于 $u, v, w \in S_n$，Schubert 多项式满足
+$$\mathfrak{S}_u(\mathbf{x}) \cdot \mathfrak{S}_v(\mathbf{x}) = \sum_{w \in S_n} c_{u,v}^w \, \mathfrak{S}_w(\mathbf{x})$$
+其中结构常数 $c_{u,v}^w \in \mathbb{N}$ 是非负整数，等于旗流形中三个 Schubert 簇的交点个数。
+\end{Theorem}
+
+几何意义：$c_{u,v}^w$ 计数的是点相交（point intersection）的个数——最直接的正性来源。
+
+\subsubsection{Graham 正性}
+
+在等变上同调 $H_T^*(G/B)$ 中，引入 torus 作用参数 $x_i$（对应负根 $-\alpha_i$），结构常数升级为多项式。
+
+\begin{Theorem}[Graham Positivity Theorem {\cite[ Theorem 3.2]{Gr}}]
+\label{th:GrahamPositivity}
+设 $X = G/B$ 为旗流形，则
+$$\sigma^T(u) \cdot \sigma^T(v) = \sum_{w \in W} c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
+其中 $c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_1,\ldots,x_r]$ 是关于负根 $-\alpha_i$ 的非负整数系数多项式。
+\end{Theorem}
+
+\textbf{为何 $x_i$ 出现？}$x_i$ 来自 torus $T$ 的作用参数。在等变上同调中，Schubert 类不再是子簇的直接类，而是提升到同伦商空间 $X \times_T ET$ 上的类。这种提升使得交点数变成了上同调类，而 torus 不动点的结构产生了 $x_i$ 多项式因子。
+
+\textbf{几何直觉}：Graham 证明的关键在于：即使在更抽象的等变设置中，Schubert 闭链的相交仍然具有正性结构。这种正性来源于 moment map 几何——具体可由 Gelfand-Tsetlin 模式的几何实现（见 \cite[Section 3]{Gr}）。
+
+\subsubsection{Mihalcea 正性（等变量子上同调）}
+
+在等变量子上同调 $QH_T^*(G/B)$ 中，同时引入量子修正 $q$ 和等变参数 $x_i$。
+
+\begin{Theorem}[Mihalcea Positivity {\cite[ Theorem 1]{Mihalcea}}]
+\label{th:MihalceaPositivity}
+对于 $u, v, w \in W$ 和曲线次数 $d$，等变量子乘积满足
+$$\sigma^T(u) \star \sigma^T(v) = \sum_{d} \sum_{w \in W} q^d \, c_{u,v}^{w,d}(\mathbf{x}) \, \sigma^T(w)$$
+其中 $c_{u,v}^{w,d}(\mathbf{x}) \in \mathbb{N}[x_1,\ldots,x_r]$ 是非负整数系数多项式。
+\end{Theorem}
+
+\textbf{几何直觉}：Mihalcea 的核心洞察是：通过投影公式（projection formula），量子上同调中的曲线计数问题可以归约到 $X \times X$ 上的 Graham positivity。这一归约策略将在 \S\ref{sec:TechniquesOverview} 中详细讨论。
+
+\textbf{与 Graham 正性的关系}：当 $d = 0$（无量子修正）时，Mihalcea 正性退化为 Graham 正性：
+$$c_{u,v}^{w,0}(\mathbf{x}) = c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_i].$$
+
+\subsubsection{双重 Graham 正性（Samuel 猜想）}
+
+在双重 Schubert 多项式 $\mathfrak{S}_u(\mathbf{x}; \mathbf{y})$ 的框架下，Gao-Xiong 证明了更一般情形下的正性。
+
+\begin{Theorem}[Triple Schubert Positivity / Samuel 猜想 {\cite[ Theorem 1.1]{GX2025}}]
+\label{th:TripleSchubertPositivity}
+设 $u, v \in S_\infty$ 满足 separated descents 条件（即 $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$），则
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{t}) = \sum_w c^w_{u,v}(\mathbf{y}, \mathbf{t}) \, \mathfrak{S}_w(\mathbf{x}; \mathbf{t})$$
+其中 $c^w_{u,v}(\mathbf{y}, \mathbf{t}) \in \mathbb{N}[t_i - y_j]$ 是关于 $t_i - y_j$ 的非负整数系数多项式。
+\end{Theorem}
+
+\textbf{与 Graham 正性的关系}：当 $u, v$ 都是 Grassmannian 排列时，separated descents 条件自动满足，此时 \cref{th:TripleSchubertPositivity} 退化为 Graham 正性。
+
+\textbf{与 Kirillov 猜想的关系}：当 $\mathbf{y} = \mathbf{t} = 0$ 时，系数退化为非负整数，此时对应的是 Kirillov 猜想（\cref{cor:Kirillov}）——skew 除差算子 $\partial_{w/v}$ 作用于 Schubert 多项式时，系数非负。
+
+\textbf{与 Mihalcea 正性的关系}：Mihalcea 研究的是等变量子量子上同调中的正性（涉及量子修正 $q$），而 Gao-Xiong 研究的是双重变量下的正性（不涉及量子修正）。两者是独立的推广方向。
+
+\subsubsection{量子双重正性猜想（开放问题）}
+
+同时引入双变量 $(\mathbf{y}; \mathbf{z})$ 和量子修正 $q$，得到最一般的正性猜想。
+
+\begin{Conjecture}[Quantum Double Schubert Positivity]
+\label{conj:QuantumDoubleSchubertPositivity}
+对于 $u, v, w \in S_\infty$，量子双重 Schubert 多项式满足
+$$\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v^{(q)}(\mathbf{x}; \mathbf{z}) = \sum_w c_{u,v}^{w,(q)}(\mathbf{y}, \mathbf{z}; q) \, \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{z})$$
+其中系数满足
+$$c_{u,v}^{w,(q)}(\mathbf{y}, \mathbf{z}; q) \in \mathbb{N}[y_i - z_j, q_k].$$
+即展开系数是关于差值 $y_i - z_j$ 和量子变量 $q_k$ 的非负整数系数多项式。
+\end{Conjecture}
+
+\textbf{关于命名}：这里 ``Quantum Double'' 包含两层含义：
 \begin{itemize}
-\item \textbf{Classical Double Schubert positivity} ($q = 0$ in \cref{conj:QuantumDoublePositivity}): Proved in \cite{GX2025};
-\item \textbf{Equivariant Quantum positivity} ($\mathbf{y} = \mathbf{z} = 0$): Proved in \cite{Mihalcea}.
+\item \textbf{Double}：每个因子 $\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y})$ 是双变量 Schubert 多项式，引入 $\mathbf{y}$ 记录相对位移；
+\item \textbf{Quantum}：乘法涉及来自曲线计数的量子修正 $q_k$。
 \end{itemize}
 
-\section{Proofs of the Three Basic Conjectures}
-\label{sec:ProofsOfThreeBasic}
+\textbf{当前状态}：\cref{conj:QuantumDoubleSchubertPositivity} 目前是开放问题，尚无完整证明。它统一了双重 Graham 正性（\cref{th:TripleSchubertPositivity}）和 Mihalcea 正性（\cref{th:MihalceaPositivity}）两大已知结果。
 
-This section presents detailed proofs (or proof sketches) for the three foundational positivity results that form the foundation of the theory.
+\section{证明技术概述}
+\label{sec:TechniquesOverview}
 
-\subsection{Proof of Classical Schubert Positivity}
-\label{sec:ProofClassicalSchubert}
+本节概述各正性定理证明中用到的关键技术。在 Ch1 和 Ch4 中已有详细展开，这里仅回顾关键引理的思想与直觉。
 
-\begin{Proof}[Proof of \cref{th:ClassicalSchubertPositivity}]
-The geometric approach proceeds as follows. Let $G = \mathrm{GL}_n(\mathbb{C})$ act on the flag manifold $G/B$. For Schubert varieties $X_u, X_v, X_w \subset G/B$, consider the triple intersection for generic group translate $g \in G$:
-\[
-X_u \cap X_v \cap g X_w.
-\]
+\subsection{Ch1 中的证明技术：Kirillov 正性与三重 Schubert Positivity}
 
-By dimension counting, this intersection is proper (hence finite) when:
-\[
-\deg X_u + \deg X_v + \deg X_w = \dim(G/B).
-\]
+Ch1 证明了双重变量下的正性（\cref{th:TripleSchubertPositivity}），其证明依赖以下关键引理。
 
-Each intersection point contributes 1 to the count, so the coefficient $c_{u,v}^w$ equals the number of points in this intersection, which must be a nonnegative integer.
+\subsubsection{Lemma \ref{def:Lemma22}（正规子群引理）}
 
-The algebraic definition of Schubert polynomials \cite[Section 2.2]{Manivel} ensures that the combinatorial expansion matches the geometric count. \qedhere
-\end{Proof}
+\textbf{陈述}（\cite[ Lemma 2.2]{GX2025}）：若 $ws_i > w$，则 $N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。
 
-See \cite[Chapter 2]{Manivel} for a detailed development.
+\textbf{证明思路}：通过李代数层面的分析——$\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想。利用 Humphreys \cite[Theorems 13.1, 13.3]{humphreys1975}，从李代数层的理想关系推出对应的代数群层正规子群关系。这一引理是整个归纳构造的基石——它允许从短长度排列逐步构造长分解。
 
-\subsection{Proof of Graham Positivity}
-\label{sec:ProofGrahamPositivity}
+\textbf{在正性证明中的作用}：建立了 $B^-$-轨道之间的理想关系，为后续闭链分解（\cref{def:Corollary24}）提供了结构基础。
 
-The proof of Graham positivity requires several geometric ingredients.
+\subsubsection{Lemma \ref{def:Lemma25}（横截相交引理）}
 
-\begin{Lemma}[Moment Map Image {\cite[Lemma 3.1]{Gr}}]
-\label{Lem:MomentMapImage}
-The moment map $\mu: G/B \to \mathfrak{t}^*$ sends each Schubert cell to a convex polytope (the Gelfand-Tsetlin pattern).
-\end{Lemma}
+\textbf{陈述}（\cite[ Lemma 2.5]{GX2025}）：在 separated descents 条件下，$\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}$ 是 proper（正常）和 transverse（横截）的。
 
-\begin{Lemma}[Biration Lemma]
-\label{Lem:Biration}
-For $w \in W$, the rational map $T \cdot N^- \cdot w B/B$ has image equal to the corresponding Bruhat cell.
-\end{Lemma}
+\textbf{证明思路}：利用直积构造 $w \times \pi \in S_{2n}$，将问题归约为旗流形上的 Kleiman-Bertini 定理（见 \cite[Section 19.3]{AndersonFulton}）。separated descents 条件保证了横截性在一般点成立。
 
-The proof of \cref{th:GrahamPositivityOriginal} proceeds by degeneration:
+\textbf{在正性证明中的作用}：这是正性来源的关键——横截性保证了相交是``良定义''的：没有相切、退化或不确定的点个数。横截交集的点个数是良定的非负整数，从而产生了非负展开系数。
 
-\begin{Proposition}[Degeneration to Normal Cone]
-\label{Prop:DegenerationNormalCone}
-The intersection product $\sigma(u)^T \cdot \sigma(v)^T$ degenerates to a sum over torus fixed points, with coefficients given by counts of points in appropriate intersections.
-\end{Proposition}
+\textbf{为什么横截性如此重要？}非横截相交的交点数可以是无穷大（两条相切曲线）或不确定的。横截性条件将几何相交变成了拓扑学中的横截相交，从而确保了非负性。
 
-Applying this degeneration yields:
+\subsubsection{Corollary \ref{def:Corollary24}（闭链分解推论）}
 
-\begin{Corollary}[Polynomial Coefficients]
-\label{Cor:PolynomialCoefficients}
-The structure constants $c_{u,v}^w(\mathbf{x})$ are polynomials in the torus weights with nonnegative coefficients.
-\end{Corollary}
+\textbf{陈述}（\cite[ Corollary 2.4]{GX2025}）：在旗流形 $G/B$ 上，任意 $B^-$-不变的有效闭链必是 Schubert 类 $[\overline{B^-wB/B}]_T$ 的非负线性组合。
 
-See \cite[Section 3]{Gr} for the complete argument.
+\textbf{证明思路}：由于旗流形只有有限多个 $B^-$-轨道，任意 $B^-$-不变的有效闭链必是各 Schubert 闭链的线性组合。非负性来自几何直觉——闭链的每个分支都对应某个 Schubert 胞腔的闭包。
 
-\subsection{Proof of Equivariant Quantum Positivity}
-\label{sec:ProofEquivariantQuantum}
+\textbf{在正性证明中的作用}：这是连接几何闭链与代数展开系数的桥梁——它告诉我们：几何闭链 = Schubert 类的非负线性组合，因此展开系数非负。
 
-The proof of Mihalcea's theorem uses a clever reduction to Graham positivity.
+\subsubsection{三者关系总结}
 
-\begin{Proposition}[Quantum-to-Classical Reduction]
-\label{Prop:QuantumToClassicalReduction}
-The equivariant quantum Littlewood-Richardson coefficient $c_{u,v}^{w,d}$ can be expressed via a limit:
-\[
-c_{u,v}^{w,d} = \lim_{\mathbf{x} \to 0} \widetilde{c}_{u,v}^{w,d}(\mathbf{x})
-\]
-where $\widetilde{c}_{u,v}^{w,d}$ is a coefficient in the product on $X \times X$.
-\end{Proposition}
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+\textbf{引理} & \textbf{核心内容} & \textbf{正性来源} \\ \hline
+Lemma \ref{def:Lemma22} & $N^-(ws_i) \trianglelefteq N^-(w)$ & 归纳构造基础 \\ \hline
+Lemma \ref{def:Lemma25} & 横截相交 & 交点数良定义 \\ \hline
+Corollary \ref{def:Corollary24} & 闭链分解为 Schubert 基底 & 展开系数非负 \\ \hline
+\end{tabular}
+\end{center}
 
-The key geometric construction:
+\textbf{整体思路}：几何相交（Lemma \ref{def:Lemma25} 保证良定义）$\xrightarrow{\text{等变上同调}}$ 闭链类 $\xrightarrow{\text{Corollary \ref{def:Corollary24}}}$ Schubert 类非负线性组合 $\xrightarrow{\text{比对系数}}$ 正性结论。
 
-\begin{Lemma}[Evasion Map Construction {\cite[Lemma 3.1]{Mihalcea}}]
-\label{Lem:EvasionMapConstruction}
-There exists an evasion map $ev: \overline{M}_{0,3}(X, d) \to X \times X$ that records the images of the three marked points.
-\end{Lemma}
+推导细节见 Ch1 \S\ref{sec:ProofMain}（\cref{chap:TriplePositivity}）。
 
-Using this, we compute:
+\subsection{Ch4 中的证明技术：Mihalcea 等变量子上同调}
 
-\begin{Proposition}[Equivariant Projection Formula]
-\label{Prop:EquivariantProjectionFormula}
-The equivariant quantum product satisfies:
-\[
-c_{u,v}^{w,d} = \pi_*^T\left((ev_1^T)^* \sigma(u)^T \cdot (ev_2^T)^* \sigma(v)^T \cdot (ev_3^T)^* \widetilde{\sigma}(w)^T\right).
-\]
-\end{Proposition}
+Ch4 证明了量子情形下的正性（\cref{th:MihalceaPositivity}），其证明依赖以下关键引理。
 
-Since the right-hand side involves ordinary equivariant intersection on $X \times X$, we can apply Graham positivity to obtain:
+\subsubsection{Lemma \ref{prop:Lemma61F}（映射 $F$ 的构造）}
 
-\begin{Corollary}[Nonnegative Polynomial Coefficients]
-\label{Cor:EQCPolynomialCoefficients}
-Each $c_{u,v}^{w,d}(\mathbf{x}) \in \mathbb{N}[x_1, \ldots, x_r]$ has nonnegative polynomial coefficients.
-\end{Corollary}
+\textbf{陈述}（\cite[ Lemma 6.1]{Mihalcea}）：定义 $F = (ev_1, ev_2) : \overline{\mathcal{M}}_{3}(X, d) \to X \times X$，这是 $T$-等变且适当的（proper）映射。
 
-This completes the proof of \cref{th:EquivariantQuantumPositivity}. See \cite[Section 4]{Mihalcea} for details.
+\textbf{证明思路}：$ev_1, ev_2$ 分别是第一、第二标记点的评估映射。它们的联合 $(ev_1, ev_2)$ 将稳定映射模空间 $\overline{\mathcal{M}}_{0,3}(X,d)$ 投影到 $X \times X$。$T$-等变性来自 torus 作用在稳定映射上的自然方式。
 
-\section{The Proof Strategy for the Main Conjecture}
-\label{sec:ProofStrategyMainConjecture}
+\textbf{在正性证明中的作用}：这是将问题从模空间 $\overline{\mathcal{M}}$ 转移到 $X \times X$ 的关键步骤——通过这个映射，我们可以利用 $X \times X$ 上的已知正性。
 
-This section outlines the basic ideas and strategies that could potentially prove \cref{conj:QuantumDoublePositivity}.
+\subsubsection{Lemma \ref{prop:ev3inverse}（$ev_3^{-1}(Y(w))$ 的不可约分支）}
 
-\subsection{The Geometric Framework}
-\label{sec:GeometricFramework}
+\textbf{陈述}（\cite[ Lemma 6.4]{Mihalcea}）：$ev_3^{-1}(Y(w))$ 是 $T$-稳定、reduced 的，其不可约分支的余维数为 $l(w)$。
 
-The conjecture concerns the product:
-\[
-\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v^{(q)}(\mathbf{x}; \mathbf{z})
-\]
-in the setting of quantum double Schubert polynomials. The geometric interpretation involves:
+\textbf{证明思路}：$Y(w)$ 是旗流形中的 Schubert 胞腔闭包。稳定映射的评估条件 $ev_3(p_3) \in Y(w)$ 在模空间中产生了特定的子簇。关键在于理解这个子簇的几何——它由不可约分支的不交并构成。
 
-\begin{itemize}
-\item \textbf{Base space}: The flag manifold $G/B$ parametrized by $\mathbf{x}$;
-\item \textbf{First displacement}: $\mathbf{y}$ records displacement from $X_u$;
-\item \textbf{Second displacement}: $\mathbf{z}$ records displacement from $X_v$;
-\item \textbf{Quantum corrections}: $q_k$ arise from counting rational curves in $G/B$.
-\end{itemize}
+\textbf{在正性证明中的作用}：这个引理将模空间中的复杂几何对象分解为若干``可管理的''不可约分支。每个分支单独处理后，再通过 push-forward formula 合并。
 
-The coefficient $c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q)$ should count curves meeting three Schubert varieties with specified relative displacements.
+\subsubsection{Lemma \ref{prop:KleimanTransversality}（Kleiman 横截性）}
 
-\subsection{Key Ingredients from Previous Proofs}
-\label{sec:KeyIngredients}
+\textbf{陈述}（\cite[ Lemma 6.3]{Mihalcea}）：设 $Z$ 是不可约 $G$-簇，$F: Z \to X \times X$ 是 $G$-等变映射，则 $F^{-1}(X(u) \times Y(v))$ 是 reduced、locally irreducible 的，其余维数为 $c(u) + l(v)$。
 
-Successful approaches to similar conjectures have relied on:
+\textbf{证明思路}：这是 Kleiman-Bertini 定理的版本——$G$-等变映射的一般位置论证保证了原像的横截性。维数公式来自维数可加性（纤维维数 + 底空间维数）。
 
+\textbf{在正性证明中的作用}：保证了在应用投影公式之前，所有相关几何对象都是良定义的——没有奇点、没有退化。这是从几何到代数过渡的前提条件。
+
+\subsubsection{Corollary \ref{cor:GrahamOnXX}（$X \times X$ 上的 Graham Positivity）}
+
+\textbf{陈述}（\cite[ Corollary 6.2]{Mihalcea}）：设 $V \subset X \times X$ 为 $T$-稳定子簇，则
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T$$
+其中 $f_i \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ 是非负系数多项式。
+
+\textbf{证明思路}：这是 Graham 定理在乘积空间 $X \times X$ 上的直接应用——因为 $X \times X$ 上的 Schubert 胞腔是 $Y(u) \times Y(v)$ 型的，而 Graham 定理告诉我们任何 $T$-稳定闭链都可以写成 Schubert 胞腔的非负线性组合。
+
+\textbf{在正性证明中的作用}：这是整个归约策略的终点——它告诉我们，在 $X \times X$ 上的所有操作都只会产生非负多项式系数的线性组合。
+
+\subsubsection{归约流程图}
+
+Mihalcea 证明的整体逻辑链条如下：
+
+\begin{align*}
+c_{u,v}^{w,d} &= \pi_*^T\left((ev_1^T)^*\sigma(u)^T \cdot (ev_2^T)^*\sigma(v)^T \cdot (ev_3^T)^*\widetilde{\sigma}(w)^T\right) \\
+&\xrightarrow{\text{投影公式}} [X(u) \times X(v)]_T \cdot F_*^T\left((ev_3^T)^*\widetilde{\sigma}(w)^T\right) \\
+&\xrightarrow{\text{Lemma \ref{prop:ev3inverse}}} \sum_i a_i \, [X(u) \times X(v)]_T \cdot [F(V_i)]_T \\
+&\xrightarrow{\text{Corollary \ref{cor:GrahamOnXX}}} \sum_i a_i \sum_j f_j^i \, [Y(u_j) \times Y(v_j)]_T \\
+&\xrightarrow{\text{投影公式}} \sum_i a_i \sum_j f_j^i \cdot \delta_{u,u_j} \cdot \delta_{v,v_j}
+\end{align*}
+
+其中 $a_i \in \mathbb{N}$（映射次数），$f_j^i \in \mathbb{N}[x_i]$（非负多项式），最终得到 $c_{u,v}^{w,d} \in \mathbb{N}[x_i]$。
+
+详细推导见 Ch4 \S\ref{sec:appendix-eqc-proof}（\cref{chap:EquivariantQuantumPositivity}）。
+
+\section{量子双重 Schubert 正性与猜想间的关系}
+\label{sec:QuantumDoublePositivityAndRelations}
+
+本节给出量子双重正性猜想（\cref{conj:QuantumDoubleSchubertPositivity}）的准确陈述，阐明其与前述所有已证正性定理的退化关系，并讨论当前的开放问题。
+
+\subsection{退化关系：猜想如何包含已知结果}
+
+\cref{conj:QuantumDoubleSchubertPositivity} 的核心价值在于它同时推广了两大已知正性结果。
+
+\subsubsection{$q = 0$：退化到双重 Graham 正性}
+
+当 $q = 0$（即忽略量子修正）时，\cref{conj:QuantumDoubleSchubertPositivity} 退化为双重 Graham 正性：
+
+$$\mathfrak{S}_u(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x}; \mathbf{z}) = \sum_w c_{u,v}^w(\mathbf{y}, \mathbf{z}) \, \mathfrak{S}_w(\mathbf{x}; \mathbf{z})$$
+
+其中 $c_{u,v}^w(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j]$。
+
+这正是 Gao-Xiong 的三重 Schubert Positivity（\cref{th:TripleSchubertPositivity}）所证明的情形。
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$：退化到 Mihalcea 正性}
+
+当 $\mathbf{y} = \mathbf{z} = 0$ 时，双变量集退化为单变量集，\cref{conj:QuantumDoubleSchubertPositivity} 变为
+
+$$\sigma^T(u) \star \sigma^T(v) = \sum_{d,w} q^d \, c_{u,v}^{w,d} \, \sigma^T(w)$$
+
+其中 $c_{u,v}^{w,d} \in \mathbb{N}[x_i]$。
+
+这正是 Mihalcea 的等变量子上同调正性（\cref{th:MihalceaPositivity}）。
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$ 且 $d = 0$：退化到 Graham 正性}
+
+继续退化，取 $d = 0$（无量子修正），得到
+
+$$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w)$$
+
+其中 $c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_i]$——即 Graham 正性（\cref{th:GrahamPositivity}）。
+
+\subsubsection{$\mathbf{y} = \mathbf{z} = 0$, $d = 0$ 且 $x_i = 0$：退化到经典正性}
+
+最后，取 $x_i = 0$（忘掉 torus 作用），得到
+
+$$\mathfrak{S}_u(\mathbf{x}) \cdot \mathfrak{S}_v(\mathbf{x}) = \sum_w c_{u,v}^w \, \mathfrak{S}_w(\mathbf{x})$$
+
+其中 $c_{u,v}^w \in \mathbb{N}$——即经典 Schubert 正性（\cref{th:ClassicalPositivity}）。
+
+\begin{center}
+\begin{tabular}{c|c}
+\hline
+\textbf{退化条件} & \textbf{退化为} \\ \hline
+$q = 0$ & 双重 Graham 正性（\cref{th:TripleSchubertPositivity}，Gao-Xiong）\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$ & Mihalcea 正性（\cref{th:MihalceaPositivity}）\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$, $d = 0$ & Graham 正性（\cref{th:GrahamPositivity}）\\ \hline
+$\mathbf{y} = \mathbf{z} = 0$, $d = 0$, $x_i = 0$ & 经典 Schubert 正性（\cref{th:ClassicalPositivity}）\\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{注}：在 \cref{conj:QuantumDoubleSchubertPositivity} 中，取 $\mathbf{y} = \mathbf{t} = 0$ 而非 $\mathbf{y} = \mathbf{z} = 0$，则得到 Mihalcea 正性的形式。两种退化路径在数学上等价。
+
+\subsection{与 Kirillov 猜想的关系}
+
+Kirillov 猜想（\cref{cor:Kirillov}）断言：skew 除差算子 $\partial_{w/v}$ 作用于 Schubert 多项式时，系数非负。
+
+在 \cref{conj:QuantumDoubleSchubertPositivity} 中取 $\mathbf{y} = \mathbf{t} = 0$ 和 $d = 0$，得到 Mihalcea 正性；再取 $\mathbf{y} = \mathbf{t} = 0$ 和 $x_i = 0$ 的极限，即退化为经典情形——这正是 Kirillov 猜想所描述的情形。
+
+因此，\cref{conj:QuantumDoubleSchubertPositivity} 通过以下链条蕴含了 Kirillov 猜想：
+$$\text{量子双重正性} \xrightarrow{q=0} \text{双重 Graham 正性} \xrightarrow{\mathbf{y}=\mathbf{t}=0} \text{Kirillov 猜想}.$$
+
+\subsection{开放问题}
+
+尽管我们已经建立了正性猜想层级（Classical $\to$ Graham $\to$ Mihalcea $\to$ Double Graham），量子双重正性猜想（\cref{conj:QuantumDoubleSchubertPositivity}）仍然是开放的。其主要挑战在于：
+
+\textbf{开放问题 1：几何框架的建立。} 证明 Mihalcea 正性时，通过投影公式将曲线计数问题归约到 $X \times X$ 上的 Graham positivity。在双重变量框架下，相应的几何对象是什么？$X \times X$ 上的旗流形几何能否同样地支持双变量结构？
+
+\textbf{开放问题 2：分离 descent 条件的量子版本。} 在双重 Graham 正性（\cref{th:TripleSchubertPositivity}）的证明中，separated descents 条件（$\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$）是关键假设，它保证了横截相交。在量子双重情形下，是否存在类似的弱化条件？或者必须对 $u, v$ 施加更强的限制？
+
+\textbf{开放问题 3：量子参数 $q_k$ 与变量 $y_i - z_j$ 的交互。} 在 Mihalcea 的证明中，量子修正项 $q^d$ 和等变多项式 $c_{u,v}^{w,d}(\mathbf{x})$ 是分离的。但在双重框架下，量子参数 $q_k$ 与 $y_i - z_j$ 的交互可能会产生新的复杂性——两者可能混合产生新的单项式结构，从而改变正性分析。
+
+\textbf{开放问题 4：一般旗流形 $G/P$ 的情形。} 上述讨论主要针对旗流形 $Fl_n = GL_n/B$。对于一般的部分旗流形 $G/P$，量子双重正性是否仍然成立？这涉及更复杂的代数几何结构。
+
+\textbf{可能的突破方向}：一种自然的策略是尝试将 Mihalcea 的归约方法推广到双重框架。具体而言，我们需要找到：
 \begin{enumerate}
-\item \textbf{Normal transversality}: Ensuring geometric intersections behave well;
-\item \textbf{Graham positivity}: The fundamental positivity result for equivariant cohomology;
-\item \textbf{Quantum-to-classical reduction}: Reducing quantum problems to classical ones via limits or degenerations;
-\item \textbf{Equivariant projection formula}: Computing Gromov-Witten invariants via projection to smaller spaces.
+\item[$*$] 一个适当的映射 $F: \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$；
+\item[$*$] 在 $X \times X$ 上建立双重版本的 Graham positivity（这可能需要利用 \cite{AndersonFulton} 中的等变上同调几何）；
+\item[$*$] 一个 projection formula，将双重变量子量子上同调的系数归约为上述双重 Graham positivity。
 \end{enumerate}
+这一策略与 Ch1 和 Ch4 的证明思路一脉相承，但具体实现尚待探索。
 
-For the quantum double case, we need to combine these ingredients in a new way.
-
-\subsection{Proposed Strategy: Step by Step}
-\label{sec:ProposedStrategy}
-
-The proof of \cref{conj:QuantumDoublePositivity} would proceed through the following steps:
-
-\begin{Step}[Set-up and Geometric Meaning]
-Define the relevant moduli space of stable maps to $G/B$ with three marked points. The coefficient $c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q)$ should equal:
-\[
-\langle \sigma(u), \sigma(v), \widetilde{\sigma}(w) \rangle_{0,3,d}^{\mathbf{y}, \mathbf{z}}
-\]
-a Gromov-Witten invariant with equivariant parameters recording displacements.
-\end{Step}
-
-\begin{Step}[Reduction to Double Classical Case]
-Show that the quantum double coefficient reduces to the classical double coefficient in the limit $q \to 0$:
-\[
-\lim_{q \to 0} c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q) = c_{u,v}^w(\mathbf{y}; \mathbf{z}) \in \mathbb{N}[y_i - z_j].
-\]
-This would establish the $q = 0$ case.
-\end{Step}
-
-\begin{Step}[Positivity in Quantum Parameters]
-Prove that the dependence on $q_k$ is also nonnegative. This requires understanding the quantum correction geometry—the virtual fundamental class of the moduli space of curves.
-\end{Step}
-
-\begin{Step}[Combine via Multivariable Positivity]
-The final result would combine the positivity in $(y_i - z_j)$ and in $q_k$ to give:
-\[
-c_{u,v}^{w,(q)}(\mathbf{y}; \mathbf{z}; q) \in \mathbb{N}[y_i - z_j, q_k].
-\]
-\end{Step}
-
-\begin{Remark}[Current Status]
-The conjecture remains open. The difficulty lies in simultaneously tracking:
-\begin{itemize}
-\item The double variable structure ($y_i - z_j$ differences);
-\item The quantum corrections ($q_k$ from curve counting);
-\item Maintaining positivity throughout.
-\end{itemize}
-Progress on this conjecture would represent a major advance in algebraic geometry and representation theory.
-\end{Remark}
-
-\section{Relationship with Kirillov's Conjecture}
-\label{sec:RelationshipKirillov}
-
-A striking application of the double Schubert positivity is the resolution of Kirillov's conjecture on skew divided difference operators.
-
-\begin{Corollary}[Kirillov's Conjecture, {\cite[Corollary 1.2]{GX2025}}]
-\label{cor:KirillovConjecture}
-For $u, v, w \in S_n$, the skew divided difference operator $\partial_{w/v}$ applied to $\mathfrak{S}_u(\mathbf{x})$ yields:
-\[
-\partial_{w/v} \mathfrak{S}_u(\mathbf{x}) \in \mathbb{N}[\mathbf{x}].
-\]
-\end{Corollary}
-
-\begin{Proof}
-The key identity from \cite[Section 2]{GX2025} states:
-\[
-\partial_{w/v} \mathfrak{S}_u(\mathbf{x}; \mathbf{y}) = c_{u,v}^w(\mathbf{y}, \mathbf{x}).
-\]
-Setting $\mathbf{y} = \mathbf{0}$ in \cref{th:ClassicalDoubleSchubertPositivityIntro} gives the result. \qedhere
-\end{Proof}
-
-\section{Current State and Open Problems}
-\label{sec:CurrentState}
-
-The study of positivity phenomena in Schubert calculus has achieved several milestones:
-
-\begin{enumerate}
-\item \textbf{Classical positivity}: Proved in the 19th century via intersection theory;
-\item \textbf{Graham positivity}: Proved in 2001 \cite{Gr};
-\item \textbf{Equivariant quantum positivity}: Proved in 2007 \cite{Mihalcea};
-\item \textbf{Classical double positivity}: Proved in 2025 \cite{GX2025};
-\item \textbf{Quantum double positivity}: Remains open (\cref{conj:QuantumDoublePositivity}).
-\end{enumerate}
-
-Proving the quantum double Schubert positivity conjecture would unify all these results and open new directions in algebraic geometry and representation theory.
-
-\section{Key Definitions}
-\label{sec:KeyDefinitionsCh5}
-
-For reference, we collect the key definitions from this chapter.
-
-\begin{Definition}[\textbf{Equivariant Quantum Cohomology}]
-\label{def:EquivariantQuantumCohomologyCh5}
-$QH_T^*(X)$ is a graded $\Lambda[q]$-algebra with $\Lambda[q]$-basis $\{\sigma_w^{(q)} \mid w \in W^P\}$. The product $\star$ is defined by:
-\[
-\sigma_u^{(q)} \star \sigma_v^{(q)} = \sum_{d} \sum_{w \in W^P} q^d c_{u,v}^{w,d} \sigma_w^{(q)},
-\]
-where $c_{u,v}^{w,d} \in \Lambda = \mathbb{Z}[x_1, \ldots, x_r]$.
-\end{Definition}
-
-\begin{Definition}[\textbf{Double Schubert Polynomial}]
-\label{def:DoubleSchubertPolynomialCh5}
-The double Schubert polynomial $\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) \in \mathbb{Z}[\mathbf{x}; \mathbf{y}]$ is defined via the divided difference operators:
-\[
-\mathfrak{S}_{w_0}(\mathbf{x}; \mathbf{y}) = \prod_{i+j \leq n} (x_i - y_j), \quad \mathfrak{S}_{ws_i} = \partial_i \mathfrak{S}_w,
-\]
-where $\partial_i$ is the divided difference operator acting on the $\mathbf{x}$-variables.
-\end{Definition}
-
-\begin{Definition}[\textbf{Quantum Double Schubert Polynomial}]
-\label{def:QuantumDoubleSchubertPolynomial}
-The quantum double Schubert polynomial $\mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{y}) \in \Lambda[\mathbf{y}][q]$ reduces to the double Schubert polynomial when $q = 0$ and satisfies the quantum Monk's rule.
-\end{Definition}
-
+\endinput
