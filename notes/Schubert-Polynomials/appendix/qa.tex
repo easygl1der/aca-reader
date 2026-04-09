@@ -3674,3 +3674,100 @@ Schubert 多项式不是独立于 Schubert 簇的对象，而是 Schubert 簇的
 \end{itemize}
 
 三者共用 $w$ 作为身份证，共享相同的乘法结构常数 $c_{u,v}^w$，通过 Borel 同构和 Theorem 10.6.4 精确对应。
+
+\subsection{单重 Schubert 多项式的正性定理}\label{sec:qa-SingleVariablePositivity}
+\subsection{问题}
+在等变量子上同调 $H_T^*(G/B)$ 的框架下，有没有与单重（single-variable）Schubert 多项式相关的正性定理？也就是说，当只使用 $x$ 变量（或只使用 $y$ 变量）时，是否有类似于 Graham 定理的结论？具体：
+\begin{enumerate}
+\item 在单重情形下，Schubert variety 的等变类 $[\Omega_w]_T$ 能否展开为 $\mathfrak{S}_w(x)$（或 $\mathfrak{S}_w(y)$）的非负组合？系数环是什么？
+\item 这种单重正性与双重版本的关系是什么——是否是双重正性取 $y = 0$ 的退化？
+\item 相关文献或定理的出处？
+\end{enumerate}
+
+\subsection{回答}
+
+\textbf{一、简短回答}
+
+单重（single-variable）正性定理就是\textbf{经典 Schubert 正性定理（Classical Schubert Positivity）}——它是双重 Graham Positivity 的基础，而非其退化形式。关键澄清：$[\Omega_w]_T$（等变 Schubert 类）本身在 $H_T^*(G/B)$ 中\textbf{不是一个需要展开的系数}，而是一个基元；在单重情形下，正性定理描述的是\textbf{Schubert 类的上同调杯积} $\sigma_u \cdot \sigma_v$ 的展开系数非负。
+
+\textbf{二、单重正性定理的精确陈述}
+
+\textbf{Classical Schubert Positivity（经典 Schubert 正性）}：
+
+在普通上同调 $H^*(G/B)$ 中，Schubert 类 $\{\sigma_w\}$ 构成 $\mathbb{Z}$-基。杯积给出：
+$$\sigma_u \cdot \sigma_v = \sum_{w \in W} c_{u,v}^w \, \sigma_w$$
+
+其中 $c_{u,v}^w \in \mathbb{N}$ 是非负整数（Littlewood--Richardson 系数）。
+
+在 Borel 表示同构 $H^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a}$ 下，$\sigma_w$ 对应单重 Schubert 多项式 $\mathfrak{S}_w(x)$，因此等价地有：
+$$\mathfrak{S}_u(x) \cdot \mathfrak{S}_v(x) = \sum_w c_{u,v}^w \, \mathfrak{S}_w(x)$$
+
+其中 $c_{u,v}^w \in \mathbb{N}$。
+
+\textbf{三、为什么 $[\Omega_w]_T$ 本身不需要"展开"为 $\mathfrak{S}_u(x)$ 的组合？}
+
+这里有一个重要的层次区分：
+
+\begin{enumerate}
+\item \textbf{在普通上同调 $H^*(G/B)$ 中}：Schubert 类 $\{\sigma_w\}$ 已经是基，无需展开。$c_{u,v}^w \in \mathbb{N}$ 来自几何交点的计数。
+
+\item \textbf{在等变上同调 $H_T^*(G/B)$ 中}：$H_T^*(G/B)$ 是自由 $H_T^*(pt)$-模，基为 $\{x_1^{a_1}\cdots x_n^{a_n} \cdot \sigma_w\}$。因此 $\sigma_w^T$ 不是"最基层"的基元——它是 $H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_n]$ 的元素在 $H_T^*(G/B)$ 中的提升。
+
+\item \textbf{$\sigma_w^T$ 不是 $\mathfrak{S}_u(x)$ 的线性组合}：$\sigma_w^T$ 和 $\mathfrak{S}_u(x)$ 属于不同的环。$\sigma_w^T \in H_T^*(G/B)$，而 $\mathfrak{S}_u(x) \in H^*(G/B) \cong \mathbb{Z}[x]/\mathfrak{a}$（在 $x_i = 0$ 的遗忘映射下，$\sigma_w^T \mapsto \sigma_w \mapsto \mathfrak{S}_u(x)$）。
+
+\item \textbf{Billey 公式（局部化视角）}：局部化给出
+$$\sigma_w^T|_p = \sum_{\substack{v \in W \\ w \leq v \leq p}} \prod_{\alpha \in R^+(p) \setminus R^+(v)} \alpha(x)$$
+这是 $x$ 的单项式之和，系数为非负整数，但它是 $\sigma_w^T$ 在固定点 $p$ 处的限制值，而非 $\sigma_w^T$ 在 Schubert 基底上的展开。
+\end{enumerate}
+
+\textbf{四、单重正性与双重正性的关系}
+
+两者不是简单的退化关系，而是不同层次上的正性：
+
+\begin{enumerate}
+\item \textbf{经典单重正性}（在 $H^*(G/B)$ 中）：描述 $\sigma_u \cdot \sigma_v$ 的展开，系数 $c_{u,v}^w \in \mathbb{N}$
+
+\item \textbf{Graham 双重正性}（在 $H_T^*(G/B)$ 中）：描述 $\sigma_u^T \cdot \sigma_v^T$ 的展开，系数 $c_{u,v}^w(x) \in \mathbb{N}[x]$
+
+\item \textbf{双重 $\Rightarrow$ 单重的遗忘映射}：设置 $x_i = 0$（遗忘 torus 作用）：
+$$c_{u,v}^w(x)|_{x_i=0} = c_{u,v}^w \in \mathbb{N}$$
+即双重正性在遗忘映射下退化到单重正性。
+
+\item \textbf{双重 $\Rightarrow$ 单重的变量退化}：设置 $y = 0$（来自双重 Schubert 多项式）：
+$$\mathfrak{S}_w(x; 0) = \mathfrak{S}_w(x)$$
+$$c_{u,v}^w(y, t)|_{y=0} = c_{u,v}^w(t) \in \mathbb{N}[t]$$
+双重系数退化为单变量的非负多项式。
+\end{enumerate}
+
+\textbf{重要区分}：
+\begin{itemize}
+\item $y = 0$ 的退化对应的是双重 Schubert 多项式 $\mathfrak{S}_w(x; y) \to \mathfrak{S}_w(x)$
+\item $x_i = 0$ 的遗忘对应的是等变上同调 $\sigma_w^T \to \sigma_w$（再对应到 $\mathfrak{S}_w(x)$）
+\end{itemize}
+
+两者都把双重正性退化为某种单重形式，但退化的"方向"不同。
+
+\textbf{五、单重正性的几何来源}
+
+单重正性（经典 Schubert Positivity）的几何来源是普通 Schubert 簇的横截相交：
+
+$$\sigma_u \cdot \sigma_v = \sum_w c_{u,v}^w \sigma_w$$
+其中 $c_{u,v}^w = \#\left(X(u) \cap X(v) \cap X(w_0 w)\right)$ 是三个 Schubert 簇的交点个数。
+
+这与双重正性的几何来源（Lemma 2.5 保证的横截相交）完全一致——区别在于不需要 torus 参数 $x_i$ 的介入，因为我们已经遗忘到了普通上同调。
+
+\textbf{六、相关文献}
+
+单重正性的标准参考文献：
+\begin{itemize}
+\item \cite[Chapter 1]{macdonald1991}：Schubert 多项式的基本性质，包括单重正性
+\item \cite[Chapter 10]{FultonQuntum1997}：Schubert 演算中的经典正性结果
+\item \cite[Chapter 3]{Gr}：Graham 关于等变上同调中正性的开创性工作（含从单重到双重的推广）
+\end{itemize}
+
+\textbf{七、总结}
+
+单重 Schubert 正性就是经典 Schubert Positivity（在普通上同调 $H^*(G/B)$ 中），其正性来源于 Schubert 簇的几何横截相交。在 Borel 同构下，Schubert 类 $\sigma_w$ 对应单重 Schubert 多项式 $\mathfrak{S}_w(x)$，杯积展开系数 $c_{u,v}^w \in \mathbb{N}$ 是非负整数。
+
+双重正性（Graham, Mihalcea 等）是单重正性的等变提升——加入 torus 参数 $x_i$ 后，系数从 $c_{u,v}^w \in \mathbb{N}$ 提升为 $c_{u,v}^w(x) \in \mathbb{N}[x]$。遗忘 $x_i$（设置 $x_i = 0$）可退化回单重正性。
+
