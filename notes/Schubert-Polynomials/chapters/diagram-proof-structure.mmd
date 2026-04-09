@@ -1,0 +1,93 @@
+flowchart TB
+    %% =============================================
+    %% CHAPTER 1: Double Schubert Positivity
+    %% =============================================
+
+    subgraph Ch1["**Chapter 1: Double Schubert Positivity (GX2025)**"]
+        direction TB
+
+        SD["**Separated Descents**\n`max Des(u) ≤ min Des(v)`"]
+
+        L22["**Lemma 2.2** (Normal Subgroup)\n$N^-(ws_i) \trianglelefteq N^-(w)$\n`def:Lemma22`"]
+
+        L25["**Lemma 2.5** (Transverse Intersection)\n$\\tau\\overline{B^-uB/B} \\cap \\overline{B^-vB/B}$\nis proper + transverse\n`def:Lemma25`"]
+
+        C24["**Corollary 2.4** (Cycle Decomposition)\n$[Y]_T = \\sum_w \\mathbb{N}[-\\alpha]_{\\alpha\\in I(w)} \\cdot [\\overline{B^-wB/B}]_T$\n`def:Corollary24`"]
+
+        RG["**Theorem 2.3** (Refined Graham Positivity)\n$B^-$-invariant cycle\n→ nonnegative combination of Schubert classes\n`def:RefinedGraham`"]
+
+        GP["**Theorem 3.2** (Graham Positivity)\nSpecial case: $u,v$ are Grassmannian\n$c_{u,v}^w(\\mathbf{x}) \\in \\mathbb{N}[x_i]$\n`def:GrahamPositivity`"]
+
+        TP["**Theorem 1.1** (Triple Schubert Positivity)\nSamuel Conjecture\n$c_{u,v}^w(\\mathbf{y},\\mathbf{t}) \\in \\mathbb{N}[t_i-y_j]$\n[th:TripleSchubertPositivity]"]
+
+        KC["**Corollary 1.2** (Kirillov Conjecture)\nSkew divided difference\n$\\partial_{w/v}$ on Schubert polynomials\n[conj:Samuel]"]
+
+        SD --> L22
+        SD --> L25
+        L22 --> C24
+        L25 --> C24
+        C24 --> RG
+        RG --> GP
+        RG --> TP
+        TP --> KC
+    end
+
+    %% =============================================
+    %% CHAPTER 4: Equivariant Quantum Cohomology
+    %% =============================================
+
+    subgraph Ch4["**Chapter 4: Equivariant Quantum Cohomology (Mihalcea)**"]
+        direction TB
+
+        L61["**Lemma 6.1** (Map $F = (ev_1, ev_2)$)\n$F: \\overline{\\mathcal{M}}_3(X,d) \\to X \\times X$\nis $T$-equivariant + proper\n`prop:Lemma61F`"]
+
+        L64["**Lemma 6.4** ($ev_3^{-1}(Y(w))$ branches)\nEach irreducible component\nis $T$-stable, reduced\n`prop:ev3inverse`"]
+
+        L63["**Lemma 6.3** (Kleiman Transversality)\n$F^{-1}(X(u) \\times Y(v))$\nis reduced + locally irreducible\n`prop:KleimanTransversality`"]
+
+        L23P["**Lemma 2.3** (Equiv. Poincaré Pairing)\n$\\langle\\sigma(u)^T, \\sigma(v)^T\\rangle_T = \\delta_{u,v}$\n`prop:Lemma23Poincare`"]
+
+        C62["**Corollary 6.2** (Graham on $X\\times X$)\n$[V]_T = \\sum_i f_i [Y(u_i) \\times Y(v_i)]_T$\n$f_i \\in \\mathbb{N}[x_i]$\n`cor:GrahamOnXX`"]
+
+        EQC["**Theorem 1** (EQC / Mihalcea Positivity)\n$c_{u,v}^{w,d} \\in \\mathbb{N}[x_i]$\nQuantum product:\n$\\sigma(u)^T \\star \\sigma(v)^T$\n`th:EQCPositivity`"]
+    end
+
+    L61 --> L63
+    L63 --> C62
+    L64 --> C62
+    L61 --> EQC
+    L63 --> EQC
+    L64 --> EQC
+    L23P --> EQC
+    C62 --> EQC
+
+    %% =============================================
+    %% CROSS-CHAPTER CONNECTIONS
+    %% =============================================
+
+    subgraph Connection["**Cross-Chapter Connection**"]
+        direction LR
+        note1["**Mihalcea's insight:**\nQuantum curve counting on $X$\n= Graham positivity on $X \\times X$\n(Corollary 6.2 is the key bridge)"]
+    end
+
+    Ch1 --> Connection
+    Connection --> Ch4
+
+    style Ch1 fill:#e8f4f8,stroke:#2171b5
+    style Ch4 fill:#fff3e0,stroke:#e6550d
+    style Connection fill:#f0f0f0,stroke:#666666
+    style SD fill:#f7fbff,stroke:#2171b5
+    style L22 fill:#deebf7,stroke:#2171b5
+    style L25 fill:#deebf7,stroke:#2171b5
+    style C24 fill:#c6dbef,stroke:#2171b5
+    style RG fill:#9ecae1,stroke:#2171b5
+    style GP fill:#6baed6,stroke:#2171b5
+    style TP fill:#4292c6,stroke:#2171b5
+    style KC fill:#2171b5,color:#ffffff
+    style L61 fill:#feedde,stroke:#e6550d
+    style L64 fill:#feedde,stroke:#e6550d
+    style L63 fill:#feedde,stroke:#e6550d
+    style L23P fill:#feedde,stroke:#e6550d
+    style C62 fill:#fd8d3c,stroke:#e6550d
+    style EQC fill:#e6550d,color:#ffffff
+    style note1 fill:#f0f0f0,stroke:#666666
