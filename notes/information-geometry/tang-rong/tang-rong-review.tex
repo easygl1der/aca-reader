@@ -1,5 +1,4 @@
-\expandafter\def\csname STANDALONE\endcsname{1}
-\ifdefined\STANDALONE
+% Preamble: always loaded
 \documentclass[12pt]{amsbook}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{xeCJK}
@@ -18,8 +17,11 @@
 \newtheorem{Corollary}{推论}[chapter]
 \newtheorem{Proposition}{命题}[chapter]
 \newtheorem{Example}{例}[chapter]
-\newtheorem*{Remark}{注}[chapter]
+\newtheorem{Remark}{注}[chapter]
 \newtheorem{Exercise}{练习}[chapter]
+
+\theoremstyle{plain}
+\newtheorem*{Remark}{注}
 
 \newcommand{\noteinfo}[1]{%
   \begin{Remark}
@@ -31,8 +33,15 @@
 \author{Review Notes}
 \date{\today}
 
-\begin{document}
-\maketitle
+% Document environment: only when NOT standalone (i.e., when included via wrapper)
+% When \STANDALONE is defined (wrapper mode), the wrapper provides
+% \begin{document} so we skip it here; when undefined (standalone mode),
+% we open the environment here.
+\ifdefined\STANDALONE
+  % wrapper mode: skip document env, chapter will be handled by wrapper
+\else
+  \begin{document}
+  \maketitle
 \fi
 
 \chapter{Tang \& Yang 流形统计学习系列综述}\label{ch:tang-rong-review}
