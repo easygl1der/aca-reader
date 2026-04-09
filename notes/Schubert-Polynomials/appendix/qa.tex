@@ -2918,6 +2918,111 @@ In the equivariant setting, this becomes the pushforward formula you cited.
 
 \textbf{References}: \cite{FultonQuntum1997}, \cite{Kim2000}.
 
+\section{$\sigma^T(u)$ 与 $\mathfrak{S}_u(\mathbf{x})$ 的精确关系}\label{sec:qa-sigma-vs-Schubert-polynomial}
+\subsection{问题}
+$\sigma^T(u)$（等变 Schubert 类）和 $\mathfrak{S}_u(\mathbf{x})$（Schubert 多项式）这两个对象出现在同一个公式中，但看起来完全不同。它们之间精确的数学关系是什么？是同一个对象吗？$\sigma^T(u)$ 是否在某种意义下限制到 $\mathfrak{S}_u$？是否存在特殊化映射（例如 $x_i \to 0$ 或 $x_i \to$ 某个值）？请从类映射 / 特殊化理论的角度给出详细的数学解释。
+
+\subsection{回答}
+
+\textbf{一、两个对象的几何来源}
+
+首先明确两个对象的来源：
+
+\begin{enumerate}
+\item \textbf{$\sigma^T(u) \in H_T^*(G/B)$（等变 Schubert 类）}：这是几何对象——Schubert variety $X(u) = \overline{B^+uB/B}$ 的等变量子上同调类。等变上同调 $H_T^*(G/B)$ 是 $T$-作用的同伦商的上同调：
+$$H_T^*(G/B) = H^*\left((G/B) \times_T ET\right)$$
+其中 $ET$ 是分类空间，$ET \simeq S^\infty$。
+
+\item \textbf{$\mathfrak{S}_u(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_n]$（Schubert 多项式）}：这是代数对象——对称多项式环中的一个多项式。它是 $H^*(G/B)$（普通上同调）中 Schubert 类的多项式代表元。
+\end{enumerate}
+
+\textbf{二、关键特殊化映射}
+
+两个对象通过以下特殊化链相联系：
+
+\[
+H_T^*(G/B) \xrightarrow{\;\text{forgetful}\;} H^*(G/B) \xrightarrow{\;\iota^*\;} \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a}
+\]
+
+其中：
+
+\begin{itemize}
+\item \textbf{遗忘映射（forgetful map）} $\phi: H_T^*(G/B) \to H^*(G/B)$ 由 $ET \to \mathrm{pt}$ 诱导，即把所有 $x_i$ 设为 0：
+$$\phi(\sigma^T(u)) = \sigma(u)|_{x_1=\cdots=x_r=0} \in H^*(G/B)$$
+
+\item \textbf{代表元映射（class map）} $\iota^*: H^*(G/B) \hookrightarrow \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a}$ 是 Borel 表示同构（ Borel presentation），把 Schubert 类映射到 Schubert 多项式：
+$$\iota^*(\sigma(u)) = \mathfrak{S}_u(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a}$$
+\end{itemize}
+
+\textbf{三、精确的类映射关系}
+
+组合上述映射，得到完整的关系图：
+
+\[
+\begin{CD}
+\sigma^T(u) \in H_T^*(G/B) @>{\phi}>> \sigma(u) \in H^*(G/B) @>{\iota^*}>> \mathfrak{S}_u(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a} \\
+@. @. @AA{\text{inclusion}}A \\
+@. @. \mathfrak{S}_u(\mathbf{x}) \in \mathbb{Z}[x_1,\ldots,x_n]
+\end{CD}
+\]
+
+具体而言：
+
+\begin{enumerate}
+\item \textbf{限制到 $x_i=0$}：当把所有 $x_i$ 设为 0 时，
+$$\sigma^T(u)|_{x_i=0} = \sigma(u) \in H^*(G/B)$$
+这退化为普通 Schubert 类。
+
+\item \textbf{在 Borel 表示环中的代表元}：普通 Schubert 类 $\sigma(u)$ 在以下同构中对应 Schubert 多项式：
+$$H^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n]/\mathfrak{a}$$
+即 $\iota^*(\sigma(u)) = \mathfrak{S}_u(\mathbf{x})$。
+
+\item \textbf{综合关系式}：
+$$\phi(\sigma^T(u)) = \sigma(u) \quad \text{且} \quad \iota^*(\sigma(u)) = \mathfrak{S}_u(\mathbf{x}) \quad \text{模掉理想 } \mathfrak{a}$$
+\end{enumerate}
+
+\textbf{四、等变与普通情形的公式比较}
+
+\begin{enumerate}
+\item \textbf{等变情形（Graham Positivity）}：
+$$\sigma^T(u) \cdot \sigma^T(v) = \sum_w c_{u,v}^w(\mathbf{x}) \, \sigma^T(w), \quad c_{u,v}^w(\mathbf{x}) \in \mathbb{N}[x_1,\ldots,x_r]$$
+
+\item \textbf{普通情形（Classical Schubert Positivity）}：
+$$\mathfrak{S}_u(\mathbf{x}) \cdot \mathfrak{S}_v(\mathbf{x}) = \sum_w c_{u,v}^w \, \mathfrak{S}_w(\mathbf{x}), \quad c_{u,v}^w \in \mathbb{N}$$
+
+\item \textbf{联系}：将等变公式中的 $x_i$ 设为 0，得到普通公式：
+$$c_{u,v}^w(\mathbf{x})|_{x_i=0} = c_{u,v}^w$$
+\end{enumerate}
+
+\textbf{五、为什么需要特殊化？}
+
+在 $H_T^*(G/B)$ 中，Schubert 类 $\sigma^T(u)$ 是上同调元素，其环结构来自等变上同调的杯积。而在 $\mathbb{Z}[x_1,\ldots,x_n]$ 中，Schubert 多项式 $\mathfrak{S}_u(\mathbf{x})$ 是具体的多项式代表元，可以通过除差算子显式计算。
+
+特殊化 $x_i \to 0$ 对应几何上的"遗忘 torus 作用"——当我们忽略 torus 作用时，等变上同调退化为普通上同调，此时 Schubert 多项式给出 Schubert 类的多项式代表。
+
+\textbf{六、局部化视角下的精确关系}
+
+等变上同调的重要工具是局部化定理（localization theorem）。对每个 torus 固定点 $p_w \in (G/B)^T$，限制映射：
+$$\sigma^T(u)|_{p_w} \in H_T^*(p_w) = \mathbb{Z}[x_1,\ldots,x_r]$$
+给出一个多项式。类似地，Schubert 多项式 $\mathfrak{S}_u(\mathbf{x})$ 在某个点的值也给出了类似的权信息。
+
+在局部化公式中，$\sigma^T(u)$ 的局部化与 $\mathfrak{S}_u$ 的值通过以下关系联系：
+$$\sigma^T(u)|_{p_w} = \frac{\mathfrak{S}_u(\mathbf{x})}{\prod_{\alpha \in \Phi^+(w)} \alpha(\mathbf{x})} \cdot \prod_{\alpha \in \Phi^+} (-\alpha(\mathbf{x}))$$
+其中 $\Phi^+(w)$ 是 $w$ 的反转集，$\Phi^+$ 是正根集合。这说明 $\sigma^T(u)$ 和 $\mathfrak{S}_u$ 实际上是同一个几何对象在不同坐标系统下的表示。
+
+\textbf{七、具体例子：$Gr(2,4)$}
+
+设 $X = Gr(2,4) = GL_4/B$，其等变量子上同调 $H_T^*(X)$ 中：
+
+\begin{enumerate}
+\item $\sigma^T(21)$：2 维 Grassmannian 的超平面类在等变上同调中的代表元
+\item $\mathfrak{S}_{21}(x_1,x_2) = x_1$：这是普通上同调中该类的多项式代表元
+
+关系：$\sigma^T(21)|_{x_i=0}$ 是 $H^*(X)$ 中的超平面类，而 $\mathfrak{S}_{21}$ 是该类的多项式代表元。
+\end{enumerate}
+
+\textbf{总结}：$\sigma^T(u)$ 和 $\mathfrak{S}_u(\mathbf{x})$ 不是同一个对象，但通过遗忘映射和 Borel 表示同构紧密联系。$\sigma^T(u)$ 是几何上自然定义的等变上同调类，$\mathfrak{S}_u(\mathbf{x})$ 是其在 Borel 表示环中的具体多项式代表元。遗忘 $x_i$ 映射到普通上同调，再取代表元得到 Schubert 多项式。详见 \cite[Chapter 1]{macdonald1991} 和 \cite[Chapter 10]{FultonQuntum1997}。
+
 \section{Schubert variety 的定义与几何意义}\label{sec:qa-schubert-variety}
 \subsection{问题}
 在 statement ``Geometric meaning: $c_{u,v}^w$ counts point intersections of three Schubert varieties --- the most direct source of positivity'' 中：
