@@ -343,4 +343,65 @@ Although we have established the positivity conjecture hierarchy (Classical $\to
 \end{enumerate}
 This strategy is in the same spirit as the proof approaches in Ch1 and Ch4, but concrete implementation remains to be explored.
 
+\subsection{A Sketch Proof Strategy for the Quantum Double Positivity Conjecture}
+\label{sec:SketchProofStrategy}
+
+We now outline a concrete strategy to prove \cref{conj:QuantumDoubleSchubertPositivity} by adapting Mihalcea's reduction method. The key observation is that the conjecture can be rewritten in a form directly analogous to Mihalcea's positivity theorem, making the reduction approach applicable.
+
+\medskip
+\noindent\textbf{Step 1: Rewriting the conjecture.} Write the quantum double Schubert polynomials as formal power series:
+$$\mathfrak{S}_u^{(q)}(\mathbf{x}; \mathbf{y}) \cdot \mathfrak{S}_v^{(q)}(\mathbf{x}; \mathbf{z}) = \sum_{d} \sum_w q^d \, c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \, \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{z}).$$
+The coefficient of $q^d \mathfrak{S}_w^{(q)}(\mathbf{x}; \mathbf{z})$ in the product is $c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j]$.\footnote{Here $\mathbb{N}[y_i - z_j]$ denotes polynomials in the differences $y_i - z_j$ with nonnegative integer coefficients.} Thus \cref{conj:QuantumDoubleSchubertPositivity} is equivalent to:
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j] \quad \text{for all } u,v,w \text{ and all } d.$$
+
+\medskip
+\noindent\textbf{Step 2: Connecting to double equivariant quantum cohomology.} The coefficient $c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z})$ is a (double) equivariant Gromov--Witten invariant. By the geometric definition of the quantum double product, it can be expressed as a push-forward in equivariant cohomology:
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) = \pi_*^T\left((ev_1^T)^*\sigma(u) \cdot (ev_2^T)^*\sigma(v) \cdot (ev_3^T)^*\widetilde{\sigma}(w) \cap [\overline{\mathcal{M}}_{0,3}(X,d)]\right),$$
+where $ev_i^T$ are $T$-equivariant evaluation maps and $\pi_*^T$ is the $T$-equivariant push-forward to a point.
+
+\medskip
+\noindent\textbf{Step 3: Comparing the two key corollaries.} The reduction strategy relies on replacing Mihalcea's endpoint (Corollary \ref{cor:GrahamOnXX}) with the corresponding statement from the Gao--Xiong framework. We compare these two corollaries:
+
+\medskip
+\begin{Corollary}[Corollary \ref{def:Corollary24} in Ch1 --- Cycle Decomposition {\cite[ Corollary 2.4]{GX2025}}]
+\label{cor:CycleDecompositionCh5}
+Let $X = G/B$ be the flag manifold. With the above setup, any $B^-$-invariant effective cycle $[Y]_T$ on $X$ decomposes as
+$$[Y]_T = \sum_{w \in W} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [\overline{B^-wB/B}]_T,$$
+where $I(w) = \{\alpha > 0 \mid w\alpha > 0\}$ denotes the inversion set of $w$.
+\end{Corollary}
+
+\begin{Corollary}[Corollary \ref{cor:GrahamOnXX} in Ch4 --- Graham Positivity on $X \times X$ {\cite[ Corollary 6.2]{Mihalcea}}]
+\label{cor:GrahamOnXXCh5}
+Let $V \subset X \times X$ be a $T$-stable subvariety. Then in $H_T^*(X \times X)$,
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T,$$
+where $f_i \in \Lambda = \mathbb{Z}[x_1,\ldots,x_r]$ are polynomials with nonnegative coefficients.
+\end{Corollary}
+
+\medskip
+\noindent\textbf{Key structural similarity.} Both corollaries share the same underlying principle: any $T$-stable (or $B^-$-invariant) effective cycle decomposes into Schubert basis elements with nonnegative polynomial coefficients. The difference lies in the ambient space ($X$ vs.\ $X \times X$) and the polynomial ring ($\mathbb{N}[-\alpha]$ vs.\ $\mathbb{N}[x_i]$).
+
+\medskip
+\noindent\textbf{Step 4: The road map.} To adapt Mihalcea's proof, one replaces \cref{cor:GrahamOnXXCh5} by a double-variable version on $X \times X$. The guess is that the same conclusion should hold with $f_i \in \mathbb{N}[y_i - z_j]$ instead of $\mathbb{Z}[x_i]$:
+\begin{Conjecture}[Double Graham Positivity on $X \times X$]
+\label{conj:DoubleGrahamOnXX}
+Let $V \subset X \times X$ be a $T$-stable subvariety. Then
+$$[V]_T = \sum_i f_i \, [Y(u_i) \times Y(v_i)]_T,$$
+where $f_i \in \mathbb{N}[y_i - z_j]$ are polynomials with nonnegative integer coefficients in the differences $y_i - z_j$.
+\end{Conjecture}
+If \cref{conj:DoubleGrahamOnXX} holds, then the reduction chain in \cref{eq:ReductionFlowChart} can be followed verbatim (with $\mathbb{N}[y_i - z_j]$ replacing $\mathbb{N}[x_i]$ at every step), yielding
+$$c_{u,v}^{w,(d)}(\mathbf{y}, \mathbf{z}) \in \mathbb{N}[y_i - z_j].$$
+
+Thus the entire problem reduces to proving \cref{conj:DoubleGrahamOnXX}, which is a geometric positivity statement on $X \times X$ in the double-variable setting. The geometric objects involved ($Y(u_i) \times Y(v_i)$ with their $T$-equivariant classes) are natural candidates, and the separated descents condition from Ch1 (\cref{th:TripleSchubertPositivity}) may play a role analogous to Kleiman transversality.
+
+\medskip
+\noindent\textbf{Why this strategy is plausible.} The chain of reasoning mirrors both Ch1 and Ch4:
+\begin{align*}
+\text{Quantum double positivity} &
+\xrightarrow{\text{geometric definition}} \text{moduli space calculation} \\
+&\xrightarrow{\text{projection formula}} \text{product space } X \times X \\
+&\xrightarrow{\cref{conj:DoubleGrahamOnXX}} \text{double Schubert basis} \\
+&\xrightarrow{\text{coefficient comparison}} \mathbb{N}[y_i - z_j]\text{-positivity}.
+\end{align*}
+The only missing piece is \cref{conj:DoubleGrahamOnXX}, which represents the geometric heart of the problem.
+
 \endinput
