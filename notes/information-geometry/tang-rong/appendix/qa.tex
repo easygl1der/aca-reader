@@ -180,3 +180,119 @@ Tang (2024) 的理论贡献是证明了：当步长 $\epsilon \to 0$ 时，接�
 \end{enumerate}
 
 更深层的联系：Score 函数 $\nabla_x \log p(x)$ 本质上是 Fisher score 的推广形式，因此扩散模型学习的正是概率分布的几何结构。
+
+\subsection{Riemann-Huber 损失函数}\label{sec:qa-riemann-huber-loss}
+
+\textbf{问}：Riemann-Huber 损失函数是什么？它如何推广了欧氏空间的 Huber 损失？
+
+\textbf{答}：Riemann-Huber 损失是 Tang (2023) 在流形上定义的稳健损失函数，形式为：
+$$\rho_R(x, y) = \begin{cases} \frac{1}{2} d_R^2(x, y) & \text{if } d_R(x, y) \leq \delta \\ \delta \cdot d_R(x, y) - \frac{\delta^2}{2} & \text{if } d_R(x, y) > \delta \end{cases}$$
+
+其中 $d_R(\cdot, \cdot)$ 是黎曼距离，$\delta$ 是调优参数。
+
+\textbf{与欧氏 Huber 损失的关系}：当流形退化为欧氏空间时，$d_R$ 变为欧氏距离，Riemann-Huber 损失退化为经典 Huber 损失。几何版本的创新在于用黎曼距离替代欧氏距离，使得：
+\begin{itemize}
+    \item 在正常区域（$d_R \leq \delta$）使用二次损失，保持有效性
+    \item 在异常区域（$d_R > \delta$）使用线性损失，控制异常值影响
+    \item 整个损失函数在流形上内蕴定义，不依赖坐标选择
+\end{itemize}
+
+基于此损失的估计量兼具崩溃点（breakdown point）和有效性。
+
+\subsection{流形结构如何被识别}\label{sec:qa-manifold-structure-identification}
+
+\textbf{问}：Tang (2022) 的工作如何从数据中估计流形的维数和曲率？识别流形结构的实际方法是什么？
+
+\textbf{答}：识别流形结构的核心方法是通过构造 $k$-NN 图（$k$-近邻图）并分析其几何性质：
+
+\begin{enumerate}
+    \item \textbf{维数估计}：分析 $k$-NN 距离的缩放行为。设第 $k$ 个近邻距离为 $r_k$，则 $r_k \asymp k^{1/d}$，通过对不同 $k$ 拟合这一关系可以估计 $d$
+    \item \textbf{曲率估计}：通过局部 PCA 或局部切空间对齐，估计切空间的弯曲程度，进而得到曲率上界 $\kappa$ 的估计
+    \item \textbf{拓扑估计}：利用图的连通性和 Betti 数等拓扑不变量刻画全局结构
+\end{enumerate}
+
+几何直觉：$k$-NN 图在流形上是"粗粒度"的离散近似，其几何统计量反映了底层流形的维数和曲率。
+
+\subsection{Fisher 信息与黎曼度量的等价性}\label{sec:qa-fisher-riemann-metric}
+
+\textbf{问}：为什么 Fisher 信息矩阵可以视为概率分布空间上的黎曼度量？
+
+\textbf{答}：Fisher 信息矩阵定义为：
+$$g_{ij}(\theta) = \mathbb{E}\left[\frac{\partial \log p(x|\theta)}{\partial \theta_i} \cdot \frac{\partial \log p(x|\theta)}{\partial \theta_j}\right]$$
+
+它满足黎曼度量的两条关键性质：
+
+\begin{itemize}
+    \item \textbf{正定性}：对任意非零切向量 $v$，有 $v^T g(\theta) v > 0$
+    \item \textbf{对称性}：$g_{ij} = g_{ji}$
+\end{itemize}
+
+更深刻的是，Fisher 信息度量具有信息几何的"自然"意义：在参数扰动下，两个分布之间的 KL 散度的二阶近似由 Fisher 信息给出。这使得 Fisher 信息成为概率分布空间上唯一的"自然"黎曼度量——它不依赖于参数化方式。
+
+\subsection{统计推断为何是几何投影}\label{sec:qa-statistical-inference-projection}
+
+\textbf{问}：从信息几何的角度，为什么说各种统计推断问题本质上都是几何投影？
+
+\textbf{答}：信息几何将概率分布空间视为黎曼流形，各种推断任务对应不同类型的投影：
+
+\begin{enumerate}
+    \item \textbf{最大似然估计}：将经验分布 $\hat{P}_n$ 投影到模型流形 $\mathcal{M}$ 上最近点。投影方向由 score 函数 $\nabla_\theta \log p(x|\theta)$ 决定
+    \item \textbf{贝叶斯推断}：在后验流形与先验流形之间寻找几何平均——后验分布是数据点沿 score 方向的"几何移动"
+    \item \textbf{变分推断}：将真实后验流形投影到近似后验流形族上，目标是极小化 KL 散度（流形上的散度几何）
+\end{enumerate}
+
+几何直觉：投影是流形上最短路径（测地线）的对偶概念。信息几何提供了统一语言，使得看似不同的推断方法都可以理解为"在流形上找最近点"。
+
+\subsection{RMALA 的 Proposal 动态}\label{sec:qa-rmala-proposal-dynamics}
+
+\textbf{问}：RMALA 的 proposal 分布 $x' = x - \frac{\epsilon^2}{2} G(x)^{-1} \nabla \log \pi(x) + \epsilon G(x)^{-1/2} \xi$ 中，各项的几何意义是什么？
+
+\textbf{答}：这一 dynamics 是 Riemann Manifold Langevin Dynamics，其各项有明确的几何含义：
+
+\begin{itemize}
+    \item \textbf{$\nabla \log \pi(x)$（梯度项）}：指向后验密度上升最快的方向——在黎曼流形上，这是切空间中的自然梯度
+    \item \textbf{$G(x)^{-1}$（度量逆）}：将自然梯度转换到普通欧氏梯度坐标。由于 Fisher 信息矩阵 $G(x)$ 定义了黎曼度量，需要用其逆来定义恰当的梯度
+    \item \textbf{$G(x)^{-1/2} \xi$（随机项）}：在黎曼度量意义下的各向同性噪声。它保证 proposal 分布在黎曼体积形式下是均匀的
+    \item \textbf{$\epsilon$（步长）}：控制 proposal 的尺度。当 $\epsilon \to 0$ 时，接受率趋向 $\min\{1, \exp(-\text{KL})\}$
+\end{itemize}
+
+与欧氏 LMC 的区别在于：欧氏版本使用固定的单位协方差噪声，而 RMALA 的协方差 $G(x)^{-1}$ 自适应于当前点的局部几何。
+
+\subsection{与 Amari 信息几何框架的关系}\label{sec:qa-amari-framework}
+
+\textbf{问}：Tang \& Rong 的工作与 Amari 的经典信息几何框架有何联系和区别？
+
+\textbf{答}：Tang \& Rong 的工作在 Amari 框架的基础上有重要扩展：
+
+\textbf{继承的核心理论}：
+\begin{itemize}
+    \item Fisher 信息 = Riemannian 度量（Amari 的基本发现）
+    \item 对偶联络（指数联络与混合联络）
+    \item 勾股定理在平坦流形上的应用
+    \item $\alpha$-联络族
+\end{itemize}
+
+\textbf{关键发展}：
+\begin{enumerate}
+    \item \textbf{从平坦流形扩展到一般弯曲流形}：Amari 的经典理论主要处理对偶平坦的指数族，而 Tang 将理论推广到任意光滑流形，建立了曲率与统计效率的精确关系
+    \item \textbf{曲率-效率定理}：这是 Amari 框架中缺失的核心连接——曲率如何影响估计的 minimax 率
+    \item \textbf{现代机器学习应用}：将几何方法应用于 VAE、扩散模型等深度生成模型
+\end{enumerate}
+
+\textbf{关系}：Amari 框架提供了理论语言和基本工具，Tang \& Rong 则用这个语言建立了更精确的统计效率理论。
+
+\subsection{开放问题与未来研究方向}\label{sec:qa-open-problems}
+
+\textbf{问}：Tang \& Rong 的系列工作之后，流形推断领域有哪些重要开放问题值得关注？
+
+\textbf{答}：基于 Tang (2022-2024) 的开创性贡献，以下方向值得进一步探索：
+
+\begin{enumerate}
+    \item \textbf{高维流形推断}：当流形维数 $d$ 随样本量 $n$ 增长时（如 $d \asymp n^\alpha$），minimax 率如何刻画？这需要全新的分析技术
+    \item \textbf{非光滑流形}：现有理论假设流形光滑（$C^\infty$），但实际数据可能存在边缘、尖点等奇异几何结构。如何建立非光滑流形上的统计理论？
+    \item \textbf{计算-统计权衡}：现有理论给出了最优率，但对应的最优算法是否可计算？如何在保持理论性质的同时设计有效算法？
+    \item \textbf{神经网络表示空间}：深度学习模型（如 transformers、diffusion models）学习到的表示空间是否构成有意义的黎曼流形？如何用几何工具分析这些空间？
+    \item \textbf{因果推断与几何}：因果结构的识别是否可以借助流形方法？因果流形与统计流形有何本质区别？
+\end{enumerate}
+
+其中因果推断与几何的结合是最前沿的方向之一，可能带来因果推断的新突破。
