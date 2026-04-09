@@ -4108,6 +4108,64 @@ $$\sigma^T(w) \;\xrightarrow{\;\text{Borel 同构}\;}\; [\Omega_w]_{U_n} \;\xrig
 \item 量子上同调 $QH_{U_n}^*(Fl_n)$ 中的简写（如 chapter5.tex:321："$\widetilde{\mathfrak{S}}_w$ corresponds to the Schubert class $\sigma_w$"），此时隐含了量子参数 $q$ 的存在
 \end{itemize}
 区分方式是看上下文：出现在量子乘积 $\star$ 旁时表示量子类，出现在普通乘积 $\cdot$ 旁时表示普通类。
+\section{量子乘积与普通交的关系}\label{sec:qa-quantum-product-vs-intersection}
+\subsection{问题}
+Schubert 类的量子乘积 $\sigma(u) \star \sigma(v)$ 和普通上同调中的相交 $\sigma(u) \cdot \sigma(v)$ 是一样的吗？
+\subsection{回答}
+不一样。但在经典情形（$d = 0$）下，量子乘积退化为普通交。
+
+\textbf{一、经典上同调中的相交}
+
+在普通上同调 $H^*(X)$ 中，两个 Schubert 类的乘积
+$$\sigma(u) \cdot \sigma(v) = \sum_w c_{u,v}^w \sigma(w)$$
+对应 Schubert 簇的几何相交：
+$$\sigma(u) \cdot \sigma(v) \;=\; [\Omega_u \cap \Omega_v] \;\in\; H^*(X).$$
+当 $\Omega_u$ 和 $\Omega_v$ 横截相交（transverse intersection）时，系数 $c_{u,v}^w$ 计数的是 $\Omega_u \cap \Omega_v$ 中落在 $\Omega_w$ 中的连通分支个数——这是纯粹的几何计数。
+
+\textbf{二、量子上同调中的量子乘积}
+
+在量子上同调 $QH^*(X)$ 中，量子乘积
+$$\sigma(u) \star \sigma(v) = \sum_{d,w} q^d c_{u,v}^{w,d} \sigma(w)$$
+的几何含义是 Gromov-Witten 不变量——计数的是满足特定条件的亏格 0 稳定映射（stable maps）$f: \mathbb{P}^1 \to X$，使得
+$$f(0) \in \Omega_u, \quad f(\infty) \in \Omega_v$$
+这里的"交"不再是在 $X$ 中直接相交，而是通过曲线将 $\Omega_u$ 和 $\Omega_v$ 连接起来。
+
+\textbf{三、两者的关系}
+
+关键公式：
+$$\sigma(u) \star \sigma(v) \;\big|_{q=0} \;=\; \sigma(u) \cdot \sigma(v).$$
+即取 $q = 0$ 时，量子乘积退化为普通乘积。这是因为当 $d = 0$ 时，稳定映射退化为常值映射（constant map），曲线缩成一点，此时计数的就是 $\Omega_u \cap \Omega_v$ 的普通相交。
+
+\textbf{四、量子修正项的几何意义}
+
+当 $d > 0$ 时，量子修正项 $q^d c_{u,v}^{w,d} \sigma(w)$ 计数的是：
+\begin{itemize}
+\item 亏格 0 曲线类 $d$（$q^d$ 标记曲线类）；
+\item 连接 $\Omega_u$ 和 $\Omega_v$ 的稳定映射；
+\item 映射像落在 $\Omega_w$ 中的情况。
+\end{itemize}
+这种"曲线连接"的计数在普通相交理论中完全不存在——它是一种全新的几何现象。
+
+\textbf{五、直观类比}
+
+在 $\mathbb{P}^1$ 中：
+\begin{itemize}
+\item $\sigma(s_1) \cdot \sigma(s_1) = 0$（$\mathbb{P}^1$ 中两点无交，因为 $[\text{点}]^2 = 0$）；
+\item $\sigma(s_1) \star \sigma(s_1) = q \cdot \sigma(1)$（通过 $\mathbb{P}^1$ 自身连接两点，计一条曲线）。
+\end{itemize}
+这个例子清晰地展示了：量子修正是对普通相交的一种**代数几何补充**，它计入通过曲线连接两点的贡献。
+
+\textbf{六、结论}
+
+量子乘积不是普通的交，而是交概念的代数几何推广：
+\begin{enumerate}
+\item $d = 0$ 时：量子乘积 = 普通交（退化为经典情形）；
+\item $d > 0$ 时：量子乘积计入稳定映射的曲线计数（全新贡献）；
+\item 两者通过 $q$ 变量统一在同一代数框架下。
+\end{enumerate}
+这也是为什么等变量子上同调（equivariant quantum cohomology）是如此优雅的结构——它同时推广了经典交和量子曲线计数。
+
+区分方式是看上下文：出现在量子乘积 $\star$ 旁时表示量子类，出现在普通乘积 $\cdot$ 旁时表示普通类。
 \section{$QH_T^*(X)$ 中元素的几何形式}\label{sec:qa-eqc-element-geometry}
 \subsection{问题}
 在 ch4 中，等变量子上同调 $QH_T^*(X)$ 的元素形式为
