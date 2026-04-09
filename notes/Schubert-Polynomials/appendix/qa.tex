@@ -4239,4 +4239,28 @@ $$QH_T^*(X) \;\cong\; H^*(X \times_T ET).$$
 \item $f_w \in \mathbb{Z}$（$x_i = 0$ 且 $q = 0$）：此时 $\alpha$ 退化为 $H^*(X)$ 的元素，几何上是 $X$ 的普通上同调类。
 \end{enumerate}
 
+\section{$\sigma(u)$ 和 $X(u)$ 在 Mihalcea 中的关系}
+\subsection{问题}
+在 Mihalcea 的论文中，$\sigma(u)$ 和 $X(u)$ 是什么关系？它们是同一个东西的不同表示吗？
+\subsection{回答}
+\textbf{不是同一个东西——它们是几何-代数对应的两端。}
+
+在 Mihalcea 的框架中，$X(u)$ 和 $\sigma(u)$ 是不同范畴的对象，但通过**等变 Poincaré 对偶**紧密联系：
+
+\begin{enumerate}
+\item \textbf{$X(u) = \overline{B^+ u B / B}$} — 这是一个几何对象（Schubert 簇），是旗流形 $G/B$ 的复子簇，余维数为 $\ell(u)$，由 $B^+$ 轨道生成。
+
+\item \textbf{$\sigma(u) = [X(u)]_T$} — 这是一个代数对象（等变上同调类），属于 $H_T^*(G/B)$，是 $X(u)$ 的等变基本类。等变上同调中的 Poincaré 对偶将子簇提升为上同调类：
+$$\sigma(u)^T = (i_u^T)^*[pt]_T,$$
+其中 $i_u: X(u) \hookrightarrow G/B$，$[pt]_T \in H_T^*(pt)$。
+
+\item \textbf{关键等式（ch4, Eq. 6.4）}：在 Gromov-Witten 不变量的定义中，Schubert 类 $\sigma(u)^T$ 作为被拉回的类出现：
+$$c_{u,v}^{w,d} = \int \mathrm{ev}_1^* \sigma(u)^T \cdot \mathrm{ev}_2^* \sigma(v)^T \cdot \mathrm{ev}_3^* \widetilde{\sigma}(w)^T.$$
+这里 $\mathrm{ev}_1^{-1}(X(u))$ 是模空间中满足稳定映射在 $X(u)$ 中的子簇，而 $\sigma(u)^T$ 是它的等变类——类的层面操作，而非几何子簇的直接相交。
+\end{enumerate}
+
+\textbf{对偶类 $\widetilde{\sigma}(w)^T$}：与 $X(u)$ 对偶的是 $Y(w) = \overline{B^- w B / B}$（相反 Schubert 簇），其等变类为 $\widetilde{\sigma}(w)^T$。它们满足等变配对（ch4, Lemma 2.3）：$\langle \sigma(u)^T, \widetilde{\sigma}(v)^T \rangle_T = \delta_{u,v}$。
+
+\textbf{总结}：$X(u)$ 是旗流形中的子簇（几何），$\sigma(u)$ 是这个子簇在上同调环中的类（代数）。Mihalcea 的证明巧妙地利用了这个对应——将模空间中的相交问题转化为等变上同调中的类运算，最后用 Graham 在 $X \times X$ 上的结果完成。
+
 \textbf{关键洞察}：等变量子上同调的统一性正体现在这里——同一个形式 $\sum_w f_w \sigma(w)$，通过选择 $f_w$ 的不同多项式部分，既能表示经典几何（$q=0$），又能表示量子几何（带 $q$），同时 torus 参数 $x_i$ 始终记录了等变权重信息。这使得 $QH_T^*(X)$ 成为连接经典与量子、等变与非等变的``万能代数''。
