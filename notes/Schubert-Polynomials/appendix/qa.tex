@@ -4322,6 +4322,40 @@ $$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T,$$
 
 \textbf{总结}：两者由 Graham 定理 3.2 统一，共享权重 $\{\beta_j\} = \{-\alpha\}$。Prop 6.1 是 $X \times X$ 上的直接应用（$B'$-不变），Thm 2.3 若移植到这里会得到更强的版本（$B^-(w_1)\times B^-(w_2)$-不变 + 限制根集），但 Mihalcea 的证明不需要这个加强形式。
 
+\section{等变量子上同调类的定义：Borel 构造}
+\subsection{问题}
+等变量子上同调类（如 $[V]_T$ 和 $\sigma(u)^T$）是如何定义的？$[V]_T$ 中的下标 $T$ 代表什么？
+\subsection{回答}
+\textbf{核心思想}：将 $T$-作用"吸收"到一个额外的空间中，使作用变得自由，从而在商空间上做普通上同调。
+
+\textbf{Borel 构造（Borel Construction）}：设 $T \cong (\mathbb{C}^\times)^r$ 是 torus，$X$ 是带有 $T$-作用的拓扑空间。
+
+\textbf{第一步}：取 $T$ 的分类空间 $ET$，即一个可缩空间，$T$ 在其上自由作用（如 $S^\infty$ 或 $\mathbb{C}^\infty \setminus \{0\}$）。$ET$ 的存在性由拓扑学保证——$BT = ET/T$ 是分类空间。
+
+\textbf{第二步}：构造同伦商空间（homotopy quotient）：
+$$X_T := X \times_T ET := (X \times ET) / T,$$
+其中 $T$ 在 $X \times ET$ 上以对角方式作用：$t \cdot (x, e) = (t^{-1} \cdot x, t \cdot e)$。
+
+\textbf{第三步}：定义等变量子上同调：
+$$H_T^*(X) := H^*(X_T) = H^*(X \times_T ET).$$
+
+\textbf{几何直观}：
+
+\begin{tabular}{c|c|c}
+普通上同调 & 等变量子上同调 & 含义差异 \\ \hline
+$X$ 上的类 & $X_T$ 上的类 & 类从 $X$ 提升到 $X_T$ \\
+忘掉 $T$ 作用 & 记录 $T$ 权重 & $H_T^*(X)$ 是多项式环 $\mathbb{Z}[x_1,\ldots,x_r]$-模 \\
+局部性质 & 全局性质 & $[V]_T$ 在每点额外记录 torus 权重信息
+\end{tabular}
+
+\textbf{等变基本类 $[V]_T$}：若 $V \subset X$ 是 $T$-不变的子簇（$\dim V = k$），则 $[V]_T \in H_T^{2k}(X)$ 定义为 $V \times_T ET \subset X \times_T ET$ 的 Poincaré 对偶类。这是 $[V]$ 在等变 setting 中的提升。
+
+\textbf{具体例子}（ch4 中的定义）：设 $X = G/P$ 是齐次空间，$T$ 是最大环面。则在 Borel 同构下：
+$$H_T^*(G/P) \cong \mathbb{Z}[x_1,\ldots,x_r] \otimes_{H_T^*(pt)} H^*(G/P).$$
+Schubert 类 $\sigma(u)^T = [X(u)]_T$ 是 Schubert 簇 $X(u) = \overline{B^+uB/B}$ 的等变 Poincaré 对偶类。忘掉 $T$ 参数（令 $x_i = 0$）后，$\sigma(u)^T$ 退化为普通 Schubert 类 $\sigma(u)$。
+
+\textbf{关键性质}：等变量子上同调 $H_T^*(X)$ 是多项式环 $H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_r]$ 上的分次代数。这使得我们可以在系数中引入关于 $x_i$ 的多项式——这正是 Graham positivity 和 Mihalcea positivity 的核心：展开系数不再是整数，而是非负多项式。
+
 \section{Theorem 2.3 的完整解读：逐符号定义与归纳证明}
 \subsection{逐符号精确定义}
 \textbf{1. $B^-$-作用}：$B^- = T \cdot N^-$ 是相反 Borel 子群（下三角矩阵），$T$ 是对角 torus，$N^-$ 是幂幺根基（严格下三角矩阵）。
