@@ -4578,20 +4578,60 @@ $$y(w) = [\Omega_w]^T,$$
 \label{eq:Step1-SchubertPolynomial}
 \end{equation}
 
-\textbf{第二步：$W$-作用的半线性（Anderson-Fulton Eq.\ 16.8）}。Section 16.5 定义了左作用 $\tau_w: gB \mapsto \dot{w}^{-1}gB$，它满足半线性：
-$$\tau_w(f \cdot x) = w(f) \cdot \tau_w(x).$$
-这意味着 $\tau_w$ 作用在 Schubert 类上时，会把 $y$-参数替换为 $w \cdot y = w(t)$。
+\textbf{步骤 2：左作用的半线性（Anderson-Fulton Eq.16.8，transcript 第 10074 行）}。
 
-具体来说，在 Gao-Xiong 的设定中 $t_{n+i} = y_i$（对 $i=1,\ldots,n$），而特殊的 $\tau \in S_{2n}$ 满足 $\tau(i) = n+i$，$\tau(n+i) = i$——它把两组变量对换。因此：
-$$\tau t = (t_{n+1},\ldots,t_{2n},\, t_1,\ldots,t_n) = (y_1,\ldots,y_n,\, t_1,\ldots,t_n).$$
+Section 16.5 定义了左作用 $\tau_w: gB \mapsto \dot{w}^{-1}gB$，原文写出：
+$$\tau_w(f \cdot x) = w(f) \cdot \tau_w(x), \tag{16.8}$$
+其中 $f \in \Lambda = H_T^*(\mathfrak{pt}) = \operatorname{Sym}^* M$，$W$ 通过其在权格 $M$ 上的自然作用作用在 $\Lambda$ 上。
 
-将 $\tau t$ 代入 $\mathfrak{S}_u(x; \cdot)$，$y$-槽恰好收到 $(y_1,\ldots,y_n)$，故：
-$$\mathfrak{S}_u(x; \tau t) = \mathfrak{S}_u(x; y).$$
+关键观察：式 (16.8) 表明 $\tau_w$ 不是 $H_T^*(\mathfrak{pt})$-线性的（除非 $w = \mathrm{id}$）——它把系数 $f$ 替换为 $w(f)$。由于 $y_i = -c_1^T(E^{i-1}/E^i)$ 的权为 $-\chi_i$，而 $\tau_w$ 与 $T$-作用的交换性（transcript 第 10071 行）给出
+$$\tau_w(y_i) = w(y_i).$$
+在 $F(W,Q)$ 的延拓中（transcript 第 10081-10084 行），对 $\psi \in F(W,Q)$，
+$$(\tau_w\psi)(v) = w\bigl(\psi(w^{-1}v)\bigr).$$
+当 $\psi$ 是由多项式 $\mathfrak{S}_u(x;y)$ 在固定点 $v$ 处取值给出的函数时，可得
+$$\tau_w(\mathfrak{S}_u(x;y)) = \mathfrak{S}_u(x; w \cdot y).$$
 
-\textbf{这不是代数恒等式，而是变量换名}：$\tau$ 的作用是把 $y$-槽换到正确位置，Gao-Xiong 的换名约定 $y_i = t_{n+i}$ 让这步变得透明。整个链条是：几何类 $\to$ 多项式代表元 $\to$ W-作用换参数 $\to$ 换名恒等。
+\vskip 0.3em
+\textbf{步骤 3：$y$-变量的分差算子（transcript 第 10132 行 Eq.16.10）}。
 
+左作用的分差算子（transcript 第 10100 行）：
+$$\widetilde{\mathrm{D}}_{\alpha}(x) = \frac{\tau_{\alpha}(x) - x}{\alpha}$$
+满足：
+$$\widetilde{\mathrm{D}}_{\alpha}(y(w)) = \begin{cases} y(s_{\alpha}w) & \text{if } \ell(s_{\alpha}w) < \ell(w) \\ 0 & \text{otherwise.} \end{cases} \tag{16.10}$$
+
+Example 16.5.3（transcript 第 10137 行）将此与 $y$-变量的分差算子 $\partial_k^y$ 联系起来：\emph{``$-\widetilde{\mathrm{D}}_{\alpha}$ corresponds to the `y-variable' divided difference operator $\partial_k^y$.''} 这确认了 $\tau_w$ 在 $y$-参数上诱导了 Weyl 群作用——即 $y \mapsto w \cdot y$。
+
+\vskip 0.3em
+\textbf{步骤 4：代入特殊的 $\tau$}。
+
+将 $\tau$ 作用在 $y_i = t_{n+i}$ 上：
+$$\tau(y_i) = \tau(t_{n+i}) = t_i,$$
+$$\tau(t_i) = t_{n+i} = y_i.$$
+
+因此
+$$\tau \cdot (t_1,\ldots,t_n, y_1,\ldots,y_n) = (y_1,\ldots,y_n, t_1,\ldots,t_n),$$
+即
+\begin{equation}
+\tau t = (y_1,\ldots,y_n, t_1,\ldots,t_n).
+\label{eq:tau-t-permutation}
+\end{equation}
+
+由步骤 2 的结论 $\tau_w(\mathfrak{S}_u(x;y)) = \mathfrak{S}_u(x; w \cdot y)$，取 $w = \tau$，得：
+$$\tau(\mathfrak{S}_u(x; t_1,\ldots,t_n, y_1,\ldots,y_n)) = \mathfrak{S}_u(x; \tau \cdot t) = \mathfrak{S}_u(x; y_1,\ldots,y_n, t_1,\ldots,t_n).$$
+
+在 Gao-Xiong 的记号约定下，$\mathfrak{S}_u(x; y)$ 中的 $y$ 仅指前 $n$ 个 $y$-参数。因此
+$$\mathfrak{S}_u(x; y_1,\ldots,y_n, t_1,\ldots,t_n) = \mathfrak{S}_u(x; y).$$
+
+\vskip 0.3em
+\textbf{步骤 5：几何类与多项式的完整链条}。
+
+$[\tau \overline{B^-uB/B}]_T$ 中的 $\tau$ 是几何作用（左乘），而 $\mathfrak{S}_u(x; \tau t)$ 中的 $\tau$ 是对 $t$-变量的置换——Borel 同构将两者统一：
+$$[\overline{B^-uB/B}]_T \xrightarrow{\;\text{Borel}\;} \mathfrak{S}_u(x;y) \xrightarrow{\;\tau\text{ 半线性作用}\;} \mathfrak{S}_u(x;\tau t) = \mathfrak{S}_u(x;y).$$
+
+\vskip 0.3em
 ★ Insight ─────────────────────────────────────
-为什么 Section 16.5 要强调 $\tau_w$ 不是 $H_T^*(\mathfrak{pt})$-线性的？因为如果 $\tau_w$ 是线性的，那么 $\tau_w(t_i) = t_i$，$y$-参数就不变了。半线性保证了对 $t_i$ 的作用是 $w(t_i)$，从而能改变 $y$-参数——这正是 Gao-Xiong 的关键。
-─────────────────────────────────────────────────
+\textbf{为什么不是代数恒等式？} 整个推导依赖三个独立的约定：(1) $y_i = t_{n+i}$ 是 Gao-Xiong 的换名；(2) $\tau(i) = n+i$ 是特定的 Weyl 元素；(3) Thm 10.6.4 的多项式表示是几何事实。\textbf{半线性 (16.8) 是枢纽}——它把几何作用 $\tau$ 和参数置换 $y \mapsto \tau \cdot y$ 连接起来。
+────────────────────────────────────────────────-
+
 
 
