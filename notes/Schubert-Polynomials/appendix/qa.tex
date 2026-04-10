@@ -4396,3 +4396,89 @@ $$[Y]_T = [Z_1]_T + (-w\alpha_i) \cdot [Z_2]_T,$$
 
 \textbf{总结}：Thm 2.3 的 $X \times X$ 版本不会直接加强 Mihalcea 的主定理，因为证明中缺少关键的 $B^-(w)$-不变条件。但它可能为更精细的 open conjecture（根集与系数的对应关系、Pieri 规则等）提供理论工具，值得作为一个独立的结果记录下来。
 
+\section{用 GX Thm 2.3 重写 Mihalcea 证明：完整定理体系与修正流程图}
+\subsection{定理体系一览（正确引用）}
+
+Mihalcea 的证明涉及一个嵌套的定理层级，从最特殊到最一般排列如下：
+
+\textbf{第一层（最具体）—— 应用于 $X \times X$ 的 Graham 定理}：
+
+\begin{enumerate}
+\item \textbf{Prop 6.1（Mihalcea, 应用于 $X \times X$）}（\cite[Corollary 6.2]{Mihalcea}）：设 $X \times X$ 上 $B' = T \cdot (U^- \times U^-)$ 作用，$\beta_1,\ldots,\beta_d$ 是 $T$ 在 $\mathrm{Lie}(U^- \times U^-)$ 上的权重（负根）。若 $V$ 是 $T$-稳定的子簇，则
+$$[V]_T = \sum_i f_i [D_i]_T, \quad f_i \in \mathbb{N}[\beta_1,\ldots,\beta_d].$$
+这是 Graham Thm 3.2 在 $Y = X \times X$ 时的特例。
+
+\item \textbf{Cor 6.2 / Cor Graham on $X \times X$}（笔记中 \cref{cor:GrahamOnXX}）：与 Prop 6.1 完全相同的内容，但在笔记中以 Corollary 形式独立陈述。
+\end{enumerate}
+
+\textbf{第二层（中间）—— GX 对单因子 $X$ 的 refined 版本}：
+
+\begin{enumerate}
+\resume{enumerate}
+\item \textbf{Thm 2.3（GX, Refined Graham）}（\cite[Thm 2.3]{GX2025}）：设 $B^-$ 作用于非奇异 $X$，$Y$ 是 $B^-(w)$-不变的有效闭链。则
+$$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T,$$
+其中 $Z_i$ 是 $B^-$-不变的。相比 Thm 3.2 的改进：根集限制到 $I(w)$ 而非全部负根。
+\end{enumerate}
+
+\textbf{第三层（最一般）—— Graham 原始定理}：
+
+\begin{enumerate}
+\resume{enumerate}
+\item \textbf{Thm 3.2（Graham, 最一般形式）}（\cite[Thm 3.2]{Gr} / \cite[Thm 19.4.5]{AF}）：设 $B = TN$ 是连通可解群，$T$ 是极大环面，$\alpha_1,\ldots,\alpha_d$ 是 $T$ 在 $\mathfrak{n} = \mathrm{Lie}N$ 上的权重。设 $X$ 有 $B$-作用，$Y$ 是 $T$-稳定的子簇。则
+$$[Y]_T = \sum_i f_i [D_i]_T, \quad f_i \in \mathbb{N}[\alpha_1,\ldots,\alpha_d].$$
+此处系数是所有正根的多项式，无根集限制。
+
+\item \textbf{Prop 19.4.4（Anderson-Fulton, 引理工具）}（\cite[Prop. 19.4.4]{AF}）：设 $B$ 作用在 $X$ 上，$B' \subset B$ 是闭子群，$\chi$ 是 $T$ 在 $\mathfrak{b}/\mathfrak{b}'$ 上的特征标。若 $Y$ 是 $B'$-不变的 $k$ 维有效闭链，则存在 $B$-不变的 $Z_1$（$k$ 维）和 $Z_2$（$k+1$ 维），使得
+$$[Y]^T = [Z_1]^T + \chi \cdot [Z_2]^T \quad \text{（在 } H_T^{2n-2k}X\text{ 中）}.$$
+这是 Thm 3.2 和 Thm 2.3 归纳证明的核心代数工具。
+\end{enumerate}
+
+\subsection{定理间的蕴含关系图}
+$$\xymatrix{
+\text{Prop 19.4.4（AF 引理）} \ar[d]^{\text{归纳链}} & \\
+\text{Thm 3.2（Graham, 最一般）} \ar[d]^{\text{取 } Y=X\times X,\ B'=T\cdot(U^-\times U^-)} \ar@/^2pc/[u]^{\text{归纳基础}} & \\
+\text{Prop 6.1（Mihalcea on } X\times X\text{, Cor Graham）} & \\
+\text{Thm 2.3（GX, Refined）} \ar[d]^{\text{取 } X\times X} \ar@/^2pc/[u]_{\text{正规子群条件}} &
+\text{Thm 2.3 on } X\times X\text{（更强形式）} \ar@{-->}[lu]_{\text{若 }F(V_i)\text{ 为 }B^-(w_1)\times B^-(w_2)\text{-不变}} \\
+\text{GX } X\times X\text{ 版本} &
+}$$
+
+\textbf{关键蕴含}：
+\begin{itemize}
+\item Prop 19.4.4 $\Rightarrow$ Thm 3.2（Graham）：通过归纳链，每个根 $\alpha_i$ 由一次 Prop 19.4.4 的应用产生。
+\item Thm 3.2 $\Rightarrow$ Prop 6.1：取 $B = B'$, $Y = X \times X$，$T$-稳定子簇 $V$ 就是所需对象。
+\item Thm 2.3 $\Rightarrow$ GX $X \times X$ 版本：把 $X$ 替换为 $X \times X$，$B^-$ 替换为 $B' = T\cdot(U^-\times U^-)$，此时 $W(X\times X) = W \times W$，取 $w = (w_1,w_2)$，得根集 $I(w_1,w_2) = I(w_1) \cup I(w_2)$。
+\end{itemize}
+
+\subsection{GX Thm 2.3 的 $X \times X$ 版本（精确陈述）}
+将 $X \times X$ 视为带有对角 $B'$-作用的簇，Weyl 群为 $W \times W$。对 $w = (w_1,w_2) \in W \times W$，定义
+$$B'^{(w)} := T \cdot (N^-(w_1) \times N^-(w_2)).$$
+则：
+\begin{Theorem}[GX Thm 2.3 on $X \times X$（精确形式）]
+设 $V \subset X \times X$ 是 $B'^{(w)}$-不变的有效闭链。则在 $H_T^*(X \times X)$ 中，
+$$[V]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w_1,w_2)} \cdot [D_i]_T,$$
+其中 $D_i$ 是 $B'$-不变的有效闭链，$I(w_1,w_2) = I(w_1) \cup I(w_2)$。
+\end{Theorem}
+\textbf{与 Prop 6.1 的区别}：Prop 6.1 要求 $V$ 是 $T$-稳定的，系数在 $\mathbb{N}[\beta] = \mathbb{N}[-\alpha]$ 中（所有负根）；本版本要求 $V$ 是 $B'^{(w)}$-不变的，系数在 $\mathbb{N}[-\alpha]_{\alpha \in I(w_1,w_2)}$ 中（限制到 $I(w_1) \cup I(w_2)$）。后者是\textbf{更强的}结果。
+
+\textbf{注}：在 Mihalcea 的证明中，$F(V_i)$ 仅由 Lemma 6.4 保证是 $B'$-稳定的，无法推出更强的 $B'^{(w)}$-不变性。因此无法直接用 GX Thm 2.3 版本替换 Prop 6.1。但对于 open conjecture（根集与系数的对应关系），这个加强形式可能有用。
+
+\subsection{修正后的完整证明流程图}
+将步骤 4 中的 Cor \cref{cor:GrahamOnXX} 替换为 GX Thm 2.3 的 $X \times X$ 版本（\textbf{记为 GX Prop $X\times X$}），流程图变为：
+
+{\small
+\begin{align}
+c_{u,v}^{w,d} &= \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T) \tag{Step 1: 定义} \\
+&= (\pi_{X \times X})_*^T F_*^T\left((F^T)^*\!\big[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T\big] \cdot (ev_3^T)^*\widetilde{\sigma}(w)^T\right) \tag{Step 1$'$\,: 重写} \\
+&\xrightarrow{\;\text{投影公式}\;} (\pi_{X \times X})_*^T\!\Big(\big[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T\big] \cdot F_*^T\big((ev_3^T)^*\widetilde{\sigma}(w)^T\big)\Big) \tag{Step 2: 应用 $F_*^T$} \\
+&\xrightarrow{\;\text{Lemma }\cref{prop:ev3inverse}\;} \sum_i a_i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T \cdot [F(V_i)]_T\Big) \tag{Step 3: 分解为不可约分支} \\
+&\xrightarrow{\;\text{GX Thm 2.3 on }X\times X\;} \sum_i a_i \sum_j f_j^i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma(v)^T \cdot [Y(u_j)\times Y(v_j)]_T\Big) \tag{Step 4: 应用 GX Thm 2.3 on $X\times X$} \\
+&= \sum_i a_i \sum_j f_j^i \; \delta_{u,u_j} \cdot \delta_{v,v_j}. \tag{Step 5: 等变 Poincaré 配对}
+\end{align}}
+
+\textbf{为什么 GX Thm 2.3 on $X \times X$ 可以直接替换 Cor Graham？} 因为两者给出相同形式的分解：
+$$[F(V_i)]_T = \sum_j f_j^i [Y(u_j)\times Y(v_j)]_T,$$
+区别仅在于 $f_j^i$ 来自不同的根集。两者最终都导致非负多项式系数，因此步骤 5 的 Poincaré 配对结果完全一致，\textbf{主定理得证}。
+
+\textbf{这一替换的理论意义}：它揭示了 Mihalcea 的证明本质上是 Graham-Thm-3.2 思想的一个应用，但 GX Thm 2.3 的 $X \times X$ 版本在 open conjecture 中可能更强大——它暗示 $c_{u,v}^{w,d}$ 中非零项的出现可能与特定的根子集 $I(w_1)\cup I(w_2)$ 有对应关系。
+
