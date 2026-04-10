@@ -4322,7 +4322,61 @@ $$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T,$$
 
 \textbf{总结}：两者由 Graham 定理 3.2 统一，共享权重 $\{\beta_j\} = \{-\alpha\}$。Prop 6.1 是 $X \times X$ 上的直接应用（$B'$-不变），Thm 2.3 若移植到这里会得到更强的版本（$B^-(w_1)\times B^-(w_2)$-不变 + 限制根集），但 Mihalcea 的证明不需要这个加强形式。
 
+\section{Theorem 2.3 的完整解读：逐符号定义与归纳证明}
+\subsection{逐符号精确定义}
+\textbf{1. $B^-$-作用}：$B^- = T \cdot N^-$ 是相反 Borel 子群（下三角矩阵），$T$ 是对角 torus，$N^-$ 是幂幺根基（严格下三角矩阵）。
+
+\textbf{2. $B^-(w) = T \cdot N^-(w)$（关键子群）}：
+$$N^-(w) := N^- \cap w N^- w^{-1}$$
+几何上，这是 $N^-$ 中既保持 $w$ 又被 $w$ 保持的元素构成的子簇，与 Schubert 胞腔 $B^-wB/B$ 同构，维数为 $|I(w)|$。当 $w$ 增大时，$B^-(w)$ 变小：
+$$\cdots \subset B^-(w_1) \subset B^-(w_2) \subset \cdots \subset B^-.$$
+
+\textbf{3. $I(w) = \{\alpha > 0 \mid w\alpha > 0\}$（反转集）}：这是 $w$ 把哪些正根变成了负根。$|I(w)| = \ell(w)$。几何上，$I(w)$ 正好是 $\mathrm{Lie}(N^-(w))$ 中根的集合——$N^-(w)$ 的李代数由这些根对应的根空间生成。
+
+\textbf{4. $[Y]_T$（等变基本类）}：$[Y]^T \in H_T^{2k}(X) = H^{2k}(X \times_T ET)$，其中 $k = \dim Y$。这是 Borel 构造下的 Poincaré 对偶类。
+
+\textbf{5. $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$（非负根多项式）}：由负根 $-\alpha$（其中 $\alpha \in I(w)$）生成的多项式环中的非负整数线性组合。注意：这里写的是 $\mathbb{N}[\text{变量}]$，表示以 $-\alpha$ 为变量的单项式，而非 $\mathbb{N}$ 乘以某个因子。
+
+\subsection{Lemma 2.2 的作用}
+$$ws_i > w \implies N^-(ws_i) \trianglelefteq N^-(w).$$
+\textbf{为什么需要正规性？} 由 Humphreys，若 $ws_i > w$，则 $J(ws_i) = J(w) \cup \{w\alpha_i\}$，其中 $J(w) = \Phi^+ \setminus I(w)$ 是不动根集。验证 $[\mathfrak{n}^-(ws_i), \mathfrak{n}^-(w)] \subset \mathfrak{n}^-(ws_i)$（对每个根分类讨论），得 $\mathfrak{n}^-(ws_i)$ 是 $\mathfrak{n}^-(w)$ 的理想，进而 $N^-(ws_i)$ 是 $N^-(w)$ 的正规子群。\textbf{正规性是 Prop 19.4.4 所需的}——它保证商群 $N^-(w)/N^-(ws_i)$ 存在且一维，从而特征标 $\chi = -w\alpha_i$ 有定义。
+
+\subsection{Proposition 19.4.4（Anderson-Fulton, Prop 19.4.4）的完整内容}
+\textbf{命题}（\cite[Prop. 19.4.4]{AF}）：设 $B$ 是可解群，$B' \subset B$ 是闭子群，$\chi$ 是 $T$ 在 $\mathfrak{b}/\mathfrak{b}'$ 上的特征标。若 $Y \subseteq X$ 是 $B'$-不变的有效 $k$-闭链，则存在标准构造的 $B$-不变有效闭链 $Z_1$（$k$ 维）和 $Z_2$（$k+1$ 维），使得
+$$[Y]^T = [Z_1]^T + \chi \cdot [Z_2]^T \quad \text{（在 } H_T^{2n-2k}X\text{ 中）}.$$
+
+\textbf{证明核心步骤}：
+\begin{enumerate}
+\item 若 $Y$ 已是 $B$-不变的，取 $Z_1 = Y, Z_2 = 0$。
+\item 否则，取 $W = \overline{B \cdot Y}$（轨道闭包，维数 $k+1$）。
+\item 构造纤维丛 $V = B \times^{B'} Y \cong B/B' \times Y \cong \mathbb{A}^1 \times Y$。
+\item 紧致化 $\overline{V} \subset \mathbb{P}^1 \times X$，利用 $\mathbb{P}^1$ 上 $B$ 的作用及基本关系 $[\infty \times X]^T = [0 \times X]^T + \chi$（由 Lemma 19.4.2-19.4.3 的函数方程 $\varphi(b_1b_2) = \varphi(b_1) + \chi(b_1)\varphi(b_2)$ 推出）。
+\item 与 $\overline{V}$ 相交并推送前推，得到等式。
+\end{enumerate}
+
+\textbf{引理 19.4.2-19.4.3} 给出了关键函数方程：定义 $\varphi: B \to \mathbb{C}$ 为 $\varphi(ut) = \theta(u)$，其中 $\theta: U \to \mathbb{G}_a$ 是同构，则 $\varphi(b_1b_2) = \varphi(b_1) + \chi(b_1)\varphi(b_2)$，从而 $B$ 在 $\mathbb{P}^1$ 上的作用满足 $b \cdot z = \theta(u) + \chi(t)z$，这正是建立基本关系的代数基础。
+
+\subsection{Theorem 2.3 的归纳证明详解}
+\textbf{基例}（$\ell(w) = 0$）：$B^-(\mathrm{id}) = B^-$，$Y$ 已是 $B^-$-不变的，$I(\mathrm{id}) = \varnothing$，无须展开。
+
+\textbf{归纳步}（从 $w$ 到 $ws_i$，其中 $ws_i > w$）：
+
+\textbf{第一步：应用 Prop 19.4.4}。取：
+\begin{itemize}
+\item $B = B^-(w)$（较大的群）
+\item $B' = B^-(ws_i)$（$B^-(w)$ 的正规子群，由 Lemma 2.2）
+\item $\chi = -w\alpha_i$（$T$ 在 $\mathfrak{b}^-(w)/\mathfrak{b}^-(ws_i)$ 上的一维特征标）
+\end{itemize}
+由于 $Y$ 是 $B'$-不变的，Prop 19.4.4 给出：
+$$[Y]_T = [Z_1]_T + (-w\alpha_i) \cdot [Z_2]_T,$$
+其中 $Z_1, Z_2$ 是 $B^-(w)$-不变的。
+
+\textbf{第二步：根集更新}。由于 $I(ws_i) = I(w) \cup \{w\alpha_i\}$，而新加入的项带有权重 $-w\alpha_i$（其负根为 $-( -w\alpha_i) = w\alpha_i$），正好将 $w\alpha_i$ 加入负根集合。将 $[Z_1]_T$ 和 $[Z_2]_T$ 用归纳假设展开，两者的系数都是 $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$，加上新项 $(-w\alpha_i)$ 的贡献，最终得到 $\mathbb{N}[-\alpha]_{\alpha \in I(ws_i)}$ 中的系数。
+
+\textbf{核心直观}：每次 $w \to ws_i$ 前进一个简单反射，Prop 19.4.4 精确地"解开"一个根，产生一个因子 $-w\alpha_i$。归纳完成后，所有出现的负根正好构成 $I(w)$。
+
 \section{将 Thm 2.3 应用到 $X \times X$ 能否帮助证明 open conjecture？}
+
 \subsection{问题}
 如果把 Gao-Xiong 的 Thm 2.3 应用到 $X \times X$，得到一个比 Prop 6.1 更强的版本（要求 $B^-(w_1)\times B^-(w_2)$-不变，根集限制到 $I(w_1)\cup I(w_2)$），这对 Mihalcea 框架中的 open conjecture 是否有帮助？
 \subsection{回答}
