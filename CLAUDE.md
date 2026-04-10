@@ -22,6 +22,12 @@
   - 自动查找当前目录的 PDF 并跳转到对应位置
   - 示例: `~/.claude/hooks/skim-jump.sh 890 "/path/chapter1.tex"`
 
+### 读 PDF 的正确方式（绝对规则！）
+- **"读 PDF" = 读 transcript/.tex，不是扫描 PDF**：当用户说"读某 PDF"或我需要引用某 paper 内容时，**永远先查对应的 transcript 目录**（`PDFs/<topic>/transcript/<论文名>.md`）或 `chapters/` 目录下的 .tex 文件
+- **不要直接用 Read 工具扫描 PDF**：用 MinerU 预先转录的 markdown 才是主要读取方式
+- **PDF 只用于**：用户要我打开查看特定页/图、需要视觉确认、或 transcript 不存在时才读 PDF（用 `pages` 参数限制范围）
+- **MinerU transcript 目录规范**：`PDFs/<topic>/transcript/<不含日期的论文名>/`
+
 ### Playwright 浏览器缓存保护（绝对红线！）
 - ❌ **禁止清除 Playwright 浏览器缓存**
 - ❌ 禁止 `rm -rf ~/Library/Caches/ms-playwright/`

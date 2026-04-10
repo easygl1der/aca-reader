@@ -1,0 +1,363 @@
+# Stationary Phase Integrals, Quantum Toda Lattices,
+
+# Flag Manifolds and the Mirror Conjecture
+
+Alexander Givental ∗
+
+UC Berkeley
+
+July 8, 1996, Revised December 1, 1996
+
+0. Introduction. Consider the differential operator
+
+$$
+H = \frac {\hbar^ {2}}{2} \sum_ {i = 0} ^ {n} \frac {\partial^ {2}}{\partial t _ {i} ^ {2}} - \sum_ {i = 1} ^ {n} e ^ {t _ {i} - t _ {i - 1}}.
+$$
+
+This operator is a quantization of the Hamiltonian of the Toda lattice on $n + 1$ identical particles with configuration coordinates $t _ { 0 } , . . . , t _ { n }$ and with the exponential interaction potential $\exp ( t _ { i } - t _ { i - 1 } )$ of neighbors. The Toda lattice is known to be integrable on both classical and quantum levels: there exist commuting differential polynomials $D _ { m } ( \hbar \partial / \partial t , \exp t , \hbar ) , m = 0 , . . . , n$ , which play the role of quantum conservation laws (i.e. $[ H , D _ { 0 } ] = . . . = [ H , D _ { n } ] = 0 \nonumber$ ) and whose symbols $D _ { m } ( p , \exp t , 0 )$ form a complete set of Poisson-commuting first integrals of the classical Toda lattice. In this paper we study solutions $S ( t )$ of the differential system $D _ { 0 } S = . . . = D _ { n } S = 0 $ whose characteristic Lagrangian variety $L$ is the most degenerate invariant Lagrangian variety of the Toda lattice. According to [12, 13] this Lagrangian variety is the spectrum of the quantum cohomology algebra of the manifold of complete flags $0 \subset \mathbb { C } ^ { 1 } \subset \ldots \subset \mathbb { C } ^ { n + 1 }$ . We represent solutions $S$ by stationary phase integrals in $n ( n { + } 1 ) / 2$ complex variables and point out the role these solutions play in the quantum cohomology theory. As we explain in the last section, our results prove the mirror conjecture [9] in the case of the flag manifolds.
+
+# 1. The Toda $\mathcal { D }$ -module.
+
+Denote $\cal { D } _ { 0 } , . . . , \cal { D } _ { n }$ coefficients of the polynomial
+
+$$
+\begin{array}{l} \lambda^ {n + 1} + D _ {0} \lambda^ {n} + \dots + D _ {n} = \\ = \det  \left[ \begin{array}{c c c c c} \lambda + p _ {0} & q _ {1} & 0 & 0 & \ldots \\ - 1 & \lambda + p _ {1} & q _ {2} & 0 & \ldots \\ 0 & - 1 & \lambda + p _ {3} & q _ {3} & \ldots \\ & . & . & . \\ 0 & \ldots & 0 & - 1 & \lambda + p _ {n} \end{array} \right], \\ \end{array}
+$$
+
+$\begin{array} { r } { D _ { 0 } = \sum p _ { i } , D _ { 1 } = \sum _ { i > j } p _ { i } p _ { j } + \sum q _ { i } , \dots } \end{array}$ . The polynomials $D _ { m } ( p , q )$ of $p _ { 0 } , . . . , p _ { n }$ and 1 $q _ { 1 } = \exp ( t _ { 1 } - t _ { 0 } ) , . . . , q _ { n } = \exp ( t _ { n } - t _ { n - 1 } )$ form a complete set of Poissoncommuting first integrals of the Toda lattice (see for instance [12] ). Their quantizations
+
+$$
+D _ {m} (\hbar \partial / \partial t _ {0}, \dots , \hbar \partial / \partial t _ {n}, \exp (t _ {1} - t _ {0}), \dots , \exp (t _ {n} - t _ {n - 1})), m = 0, \dots , n,
+$$
+
+are defined unambiguously since any monomial in $D _ { m }$ containing $q _ { i }$ contains neither $p _ { i }$ nor $p _ { i - 1 }$ .
+
+# Theorem 1. $[ H , D _ { 0 } ] = . . . = [ H , D _ { n } ] = 0$
+
+Proof. The commutator $[ H , \Delta ]$ of the Hamiltonian operator $H$ with the above determinant $\Delta = \lambda ^ { n + 1 } + D _ { 0 } \lambda ^ { n } + \ldots$ vanishes modulo $\hbar ^ { 2 }$ since symbols of $D _ { m }$ Poisson-commute with the symbol $\sum p _ { i } ^ { 2 } / 2 - \sum q _ { i }$ of $H$ . Also $[ H , \Delta ]$ does not contain any terms of order higher than $\hbar ^ { 2 }$ since for any 3 distinct $i , j , k$ we have $\partial ^ { 3 } q _ { l } / \partial t _ { i } \partial t _ { j } \partial t _ { k } = 0$ . Computing symbols of the terms proportional to $\hbar ^ { 2 }$ we find that the contribution of $\Delta q _ { i }$ is equal to $- q _ { i } \partial ^ { 2 } \Delta ( p , q ) / \partial p _ { i } \partial p _ { i - 1 }$ , and the contribution of $\hbar ^ { 2 } \partial ^ { 2 } \Delta / 2 \partial t _ { i } ^ { 2 }$ is $q _ { i } \partial ^ { 2 } \Delta / 2 \partial p _ { i } \partial p _ { i - 1 } + q _ { i + 1 } \partial ^ { 2 } \Delta / 2 \partial p _ { i } \partial p _ { i + 1 }$ . After summation over $i$ all these contributions cancel out. 
+
+We will study solutions of the PDE system
+
+$$
+D _ {0} S = \dots = D _ {n} S = 0 (\text {a n d h e n c e} H S = 0),
+$$
+
+i.e. the solution sheaf of the left module ${ \mathcal { D } } / { \mathcal { D } } ( D _ { 0 } , . . . , D _ { n } )$ over the algebra $\mathcal { D }$ of differential operators $D ( \hbar \partial / \partial t , \exp t , \hbar )$ with Fourier-polynomial coefficients. We introduce the symbol $D ( p , \exp t , 0 )$ of the differential polynomial
+
+$D$ and call the Lagrangian variety $L \subset T ^ { * } ( \mathbb { C } - 0 ) ^ { n + 1 }$ given by the equations $D _ { 0 } ( p , q ) = \ldots = D _ { n } ( p , q ) = 0 $ the characteristic Lagrangian variety of this $\mathcal { D }$ -module. According to [17] the Lagrangian variety $L$ is nonsingular. The operator $D _ { m }$ is weighted-homogeneous of degree $m + 1$ with respect to the grading $\deg \hbar = 1 , \deg q _ { i } = 2 , \deg t _ { i } = 0$ $\deg t _ { i } = 0$ and therefore $L$ is also weightedhomogeneous with weights $\deg p _ { i } = 1$ , $\deg q _ { i } = 2$ . For generic $t$ the fibers $L \cap T _ { \exp { t } } ^ { * }$ of the projection $L \to ( \mathbb { C } - 0 ) ^ { n + 1 }$ consist of $( n + 1 ) !$ distinct simple points. This follows from Sard’s lemma, and also can be deduced by induction from the continued fraction formula for the determinant $\Delta$ which coincides with the numerator of the following rational function of $\lambda$ :
+
+$$
+\lambda + p _ {0} + \frac {q _ {1}}{\lambda + p _ {1} + \frac {\cdots}{\cdots + \frac {q _ {n}}{\lambda + p _ {n}}}}.
+$$
+
+2. The stationary phase integrals. Consider the following “2 - dimensional Toda lattice” with $( n + 1 ) ( n + 2 ) / 2$ vertices and $n ( n + 1 )$ edges:
+
+$$
+\begin{array}{c c c c c c c c c}\bullet&&&&&&\\u _ {1} \downarrow&v _ {1}&&&&&\\\bullet&\rightarrow&\bullet&&&&\\\downarrow&&u _ {2} \downarrow&v _ {2}&&&\\\bullet&\rightarrow&\bullet&\rightarrow&\bullet&&\\\downarrow&&\downarrow&&u _ {3} \downarrow&&\\&&\dots&&\\\downarrow&&\downarrow&\dots&&u _ {n} \downarrow&v _ {n}\\\bullet&\rightarrow&\bullet&\dots&\rightarrow&\bullet&\rightarrow&\bullet\end{array}
+$$
+
+For each edge $\alpha$ of the lattice we introduce a factor $Q _ { \alpha }$ and introduce another, excessive notation $u _ { i }$ (respectively $v _ { i }$ ) for the factors $Q _ { \alpha }$ corresponding to the vertical (respectively horizontal) edges next to the diagonal boundary of the lattice as shown on the diagram. We denote $Y$ the affine algebraic variety in the $n ( n { + } 1 )$ -dimensional complex space with coordinates $Q _ { \alpha }$ given by the $n ( n { - } 1 ) / 2$ equations $Q _ { \alpha } Q _ { \beta } = Q _ { \gamma } Q _ { \delta }$ making the diagram “commutative”:
+
+one equation for each $1 \times 1$ cell
+
+$$
+\begin{array}{c c c c c}&Q _ {\alpha}&\\\bullet&\rightarrow&\bullet\\Q _ {\gamma}&\downarrow&\downarrow&Q _ {\beta}\\&\bullet&\rightarrow&\bullet\\&Q _ {\delta}&&\end{array}.
+$$
+
+We put $q _ { 1 } = u _ { 1 } v _ { 1 } , . . . , q _ { n } = u _ { n } v _ { n }$ and denote $Y _ { q }$ the $n ( n { + } 1 )$ -dimensional fibers of the map from $Y$ to $\mathbb { C } ^ { n }$ defined by these formulas.
+
+If $q _ { i } \neq 0$ for all $i = 1 , . . . , n$ , the relations between $Q _ { \alpha }$ allow to express them via the set $\{ T _ { \nu } , \nu = ( i , j ) , 0 \leq j \leq i \leq n \}$ of vertex variables:
+
+$$
+Q _ {\alpha} = \exp (T _ {\nu_ {+} (\alpha)} - T _ {\nu_ {-} (\alpha)}),
+$$
+
+where $\nu _ { - } ( \alpha )$ and $\nu _ { + } ( \alpha )$ are respectively the indices of the source and target vertices of the edge $\alpha$ . In particular, $q _ { i } = \exp ( t _ { i } - t _ { i - 1 } )$ where $t _ { 0 } = T _ { 0 0 } , t _ { 1 } =$ $T _ { 1 1 } , \dots$ , and the fiber $Y _ { q }$ is isomorphic to the $n ( n + 1 ) / 2$ -dimensional complex torus with coordinates $\{ \exp T _ { i j }$ , $0 \leq j < i \leq n \}$ .
+
+On $Y _ { q }$ with $q \in ( \mathbb { C } - 0 ) ^ { n }$ we introduce the holomorphic volume form
+
+$$
+\omega_ {q} = \bigwedge_ {i = 1} ^ {n} \bigwedge_ {j = 0} ^ {i - 1} d T _ {i j},
+$$
+
+the holomorphic function $\mathcal { F } _ { q }$ obtained by restriction to $Y _ { q }$ of “the total Toda potential energy”
+
+$$
+\mathcal {F} = \sum_ {\text {e d g e s} \alpha} Q _ {\alpha}
+$$
+
+and the stationary phase integral
+
+$$
+S _ {\Gamma} (t) = \int_ {\Gamma \subset Y _ {q}} e ^ {\mathcal {F} _ {q} / \hbar} \omega_ {q}.
+$$
+
+In this definition, $\Gamma$ represents a (possibly non-compact) cycle in $Y _ { q }$ of middle dimension such that the integral converges. For $\hbar > 0$ and generic $q$ one can construct such a cycle by picking a non-degenerate critical point of $\mathcal { F } _ { q }$ and taking the union of descending gradient trajectories of the function $\operatorname { R e } \mathcal { F } _ { q }$ with respect to a suitable Riemannian metric on $Y _ { q }$ on the role of $\Gamma$ . The stationary phase integral depends only on the homology class of the cycle in
+
+the appropriate homology group $\mathcal { H } _ { q }$ which can be described as the inverse limit as $M \to \infty$ of the relative homology groups
+
+$$
+H ^ {\dim_ {\mathbb {C}} Y _ {q}} (Y _ {q}, \{\mathrm {R e} \mathcal {F} _ {q} \leq - M \}).
+$$
+
+The rank of the group $\mathcal { H } _ { q }$ is equal to the number of critical points of $\mathcal { F } _ { q }$ for generic $q$ since all critical points of the real part of a holomorphic Morse function have the same Morse index. The Gauss-Manin parallel transport of cycles identifies the groups $\mathcal { H } _ { q }$ for close $q$ but may give rise to a nontrivial global monodromy. The notation $S _ { \Gamma } ( t )$ emphasizes the multiple-valued character of the stationary phase integrals which therefore depend on the coordinates $\log q _ { i } = t _ { i } - t _ { i - 1 }$ on the universal covering of the parameter space. The dependence of the integral on $\hbar$ is suppressed in this notation.
+
+Theorem 2. The stationary phase integrals $S _ { \Gamma } ( t )$ satisfy the differential equations $D _ { 0 } S = D _ { 1 } S = . . . = D _ { n } S = 0$ .
+
+Proof. Application of the differential operator $\Delta = \lambda ^ { n + 1 } + D _ { 0 } \lambda ^ { n } + \dots$ t o the stationary phase integral produces the amplitude factor $e ^ { - \mathcal { F } / \hbar } \Delta e ^ { \mathcal { F } / \hbar } =$ $\operatorname* { d e t } ( \lambda + A )$ where
+
+$$
+A = \left[ \begin{array}{c c c c c} - u _ {1} & u _ {1} v _ {1} & 0 & \ldots & \\ - 1 & v _ {1} - u _ {2} & u _ {2} v _ {2} & 0 & \ldots \\ 0 & - 1 & v _ {2} - u _ {3} & u _ {3} v _ {3} & \ldots \\ & . & . & . & \\ & \ldots & 0 & - 1 & v _ {n} \end{array} \right] .
+$$
+
+We should show that this amplitude is congruent to $\lambda ^ { n + 1 }$ modulo linear combinations of Lie derivatives along vector fields $Q ^ { m } \partial / \partial T _ { \nu }$ tangent to $Y _ { q }$ , i.e. linear combinations of $\hbar \partial Q ^ { m } / \partial T _ { i j } + Q ^ { m } \partial \mathcal F / \partial T _ { i j }$ with $j < i$ . Notice that $\partial F / \partial T _ { \nu }$ is the sum of $Q _ { \alpha }$ over the $( \leq 2$ ) edges $\alpha$ ingoing the vertex $\nu$ minus such a sum over the outgoing edges.
+
+We begin induction on $n$ by noticing that for $n = 1$ the amplitude is equal to $\lambda ^ { 2 } - \lambda \partial \mathcal { F } / \partial T _ { 2 1 }$ and apply the induction hypothesis to the triangular lattice with the principle diagonal $i = j$ cut off.
+
+Consider the differential operator $\Delta ^ { \prime }$ defined as the determinant of the 3-diagonal $n \times n$ -matrix with $\lambda { + } \hbar \partial / \partial T _ { i , i - 1 }$ , $i = 1 , . . . , n$ , on the principal diagonal, $^ { - 1 }$ ’s under the diagonal and $v _ { i } u _ { i + 1 } , \ i = 1 , . . . , n - 1$ , above the diagonal. Denote ${ \mathcal { F } } ^ { \prime }$ the sum of all $Q _ { \alpha }$ except $u _ { i }$ ’s and $v _ { i }$ ’s . By the induction hypothesis (and “commutativity” $Q _ { \alpha } Q _ { \beta } = Q _ { \gamma } Q _ { \delta }$ of the squares next to the diagonal
+
+$i = j$ ) we may assume that the amplitude factor $\exp ( - \mathcal { F } ^ { \prime } / \hbar ) \Delta ^ { \prime } \exp ( \mathcal { F } ^ { \prime } / \hbar )$ is congruent to $\lambda ^ { n }$ modulo Lie derivatives along $Q ^ { m } \partial / \partial T _ { i j }$ with $| i - j | > 1$ .
+
+The vector field $Q ^ { m } \partial / \partial T _ { i , i - 1 }$ , with no edges adjacent to the vertex $\nu =$ $( i , i - 1 )$ present in the monomial $Q ^ { m }$ , produces the amplitude $Q ^ { m } { \partial \mathcal { F } } / { \partial T _ { i , i - 1 } }$ . Since the vertices $( i , i - 1 )$ do not have common edges, addition of such amplitudes allows to transform the amplitude factor $\exp ( - \mathcal { F } _ { q } ^ { \prime } / \hbar ) \Delta ^ { \prime } \exp ( \mathcal { F } _ { q } ^ { \prime } / \hbar )$ purely algebraicly as if $\partial \mathcal { F } / \partial T _ { i , i - 1 } = 0$ . Using such transformations we can replace $\partial \mathcal { F } ^ { \prime } / \partial T _ { i , i - 1 }$ by $v _ { i } \mathrm { ~ - ~ } u _ { i }$ , and the induction hypothesis can be reformulated as the congruence to $\lambda ^ { n + 1 }$ of the $( n + 1 )$ -determinant $\operatorname* { d e t } ( \lambda + B )$ where
+
+$$
+B = \left[ \begin{array}{c c c c c c} v _ {1} - u _ {1} & v _ {1} u _ {2} & 0 & \dots & & 0 \\ - 1 & v _ {2} - u _ {2} & v _ {2} u _ {3} & 0 & \dots & 0 \\ 0 & - 1 & v _ {3} - u _ {3} & v _ {3} u _ {4} & \dots & 0 \\ & . & . & . & & 0 \\ & \dots & 0 & - 1 & v _ {n} - u _ {n} & 0 \\ & & \dots & 0 & - 1 & 0 \end{array} \right].
+$$
+
+The matrices $A$ and $B$ admit the factorizations $A = U V , \ B = V U$ into the product of the following triangular matrices:
+
+$$
+U = \left[ \begin{array}{c c c c c c} u _ {1} & 0 & \ldots & & & \\ 1 & u _ {2} & 0 & \ldots & & \\ 0 & 1 & u _ {3} & 0 & \ldots & \\ & . & . & . & & \\ & \ldots & 0 & 1 & u _ {n} & 0 \\ & & & 0 & 1 & 0 \end{array} \right], V = \left[ \begin{array}{c c c c c c} - 1 & v _ {1} & 0 & \ldots & & \\ 0 & - 1 & v _ {2} & 0 & \ldots & \\ 0 & 0 & - 1 & v _ {3} & 0 & \ldots \\ & . & . & . & & \\ & & \ldots & 0 & - 1 & v _ {n} \\ & & \ldots & & 0 & - 1 \end{array} \right] .
+$$
+
+Thus $A$ is similar to $B$ and has the same characteristic polynomial. 
+
+The family $\mathcal { F } _ { q }$ generates the following Lagrangian variety parametrized by critical points of the functions (and responsible for stationary phase approximations to the integrals $S _ { \Gamma } ( t )$ ):
+
+$$
+\{(p, q) | \exists y \in Y _ {q}: d _ {y} \mathcal {F} _ {q} = 0, p = \partial \mathcal {F} _ {q} (y) / \partial t \}.
+$$
+
+The identity $\operatorname* { d e t } ( \lambda + A ) = \operatorname* { d e t } ( \lambda + B )$ also proves by induction the following
+
+Corollary 1. The Lagrangian variety generated by the family $\mathcal { F } _ { q }$ coincides with the invariant Lagrangian variety $L = \{ ( p , q ) | D _ { 0 } ( p , q ) = . . . =$ $D _ { n } ( p , q ) = 0 \}$ of the Toda lattice.
+
+Notice that the equations $\partial \mathcal { F } / \partial T _ { \nu } ~ = ~ 0$ of the critical points and the notations $p _ { i } = { \partial \mathcal { F } } / { \partial t _ { i } }$ can be interpreted, in the spirit of the elementary theory of linear electric circuits, as homological boundary conditions for the 1- chain $\sum Q _ { \alpha } [ \alpha ]$ on the oriented graph. One can therefore describe the critical points by the relations $Q _ { \alpha } = J _ { \phi _ { + } ( \alpha ) } - J _ { \phi _ { - } ( \alpha ) }$ introducing the 2-chain $\sum J _ { \phi } [ \phi ]$ , a linear combination of the $n ( n + 1 ) / 2$ clockwise oriented $1 \times 1$ -cells of the lattice (the edge $\pm \alpha$ occurs in the boundary of the cells $\pm \phi _ { \pm } ( \alpha )$ , the index $\phi = ( i , j )$ runs $1 \leq j \leq i \leq n$ ). Additionally, $p _ { 0 } = - J _ { 1 1 } , p _ { 1 } = J _ { 1 1 } - J _ { 2 2 } , p _ { 2 } =$ $J _ { 2 2 } - J _ { 3 3 } , . . . , p _ { n } = J _ { n n }$ . Now cancellations of all $J _ { i j }$ with $i > j$ in the total sum $\sum { Q _ { \alpha } }$ prove
+
+Corollary 2. The generating function $\mathcal { F } _ { q } ( y _ { c r i t } )$ on the Lagrangian variety $L$ equals $\begin{array} { r } { \sum _ { i = 1 } ^ { n } 2 J _ { i , i } = - n p _ { 0 } + ( 2 - n ) p _ { 1 } + ( 4 - n ) p _ { 2 } + . . . + n p _ { n } . } \end{array}$ .
+
+Remark. Corollary 2 can be also deduced (see [12]) from the weighted homogeneity of $L$ .
+
+3. Quantum cohomology of flag manifolds. The cohomology algebra $H ^ { \ast } ( F )$ of the flag manifold $F = \{ 0 \subset \mathbb { C } ^ { 1 } \subset \mathbb { C } ^ { 2 } \subset \ldots \subset \mathbb { C } ^ { n + 1 } \}$ is multiplicatively generated by the 1-st Chern classes $p _ { i }$ of the tautological line bundles with fibers $\mathbb { C } ^ { i + 1 } / \mathbb { C } ^ { i }$ . A complete set of relations between the generators can be written in the form $( \lambda + p _ { 0 } ) ( \lambda + p _ { 1 } ) . . . ( \lambda + p _ { n } ) = \lambda ^ { n + 1 }$ equating the total Chern class of the sum of the tautological line bundles to that of the trivial bundle with the fiber $\mathbb { C } ^ { n + 1 }$ .
+
+On the Poincare-dual language of intersection indices $\langle \cdot , \cdot \rangle$ the structural constants $\langle a b , c \rangle$ of the cohomology algebra count (with signs) isolated common intersection points of the three cycles $a , b , c$ in general position.
+
+The quantum cohomology algebra of the flag manifold is defined as a deformation of the algebra $H ^ { * } ( F )$ with structural constants $\langle a \circ b , c \rangle$ counting isolated holomorphic spheres $( \mathbb { C } P ^ { 1 } , 0 , 1 , \infty ) \to ( F , a , b , c )$ passing by the three marked points through the three cycles. A precise definition can be based on Gromov’s compactness theorem and Kontsevich’s concept [14] of stable holomorphic maps.
+
+Let $\Sigma$ denote a compact connected complex curve with at most double singular points. It is rational (i.e. $H ^ { 1 } ( \Sigma , { \mathcal { O } } ) = 0 $ ) if and only if all irreducible components of $\Sigma$ are spheres and the incidence graph of these components is a connected tree. Denote ${ \boldsymbol x } = ( x _ { 1 } , . . . , x _ { k } )$ an ordered set of pairwise distinct non-singular marked points on $\Sigma$ . Two holomorphic maps $( \Sigma , x ) \to F$ $( \Sigma , x )  F , ( \Sigma ^ { \prime } , x ^ { \prime } )  F$ are called equivalent if they are identified by a
+
+holomorphic isomorphism $( \Sigma , x )  ( \Sigma ^ { \prime } , x ^ { \prime } )$ . A holomorphic map $( \Sigma , x ) \to F$ is called stable if it does not admit non-trivial infinitesimal automorphisms. For rational $\Sigma$ stability means that each irreducible component mapped to a point in $F ^ { \prime }$ carries at least 3 marked or singular points.
+
+The degree $d$ of the map $\Sigma  F$ is defined as the total 2-nd homology class of $F$ it represents. According to [14, 3], equivalence classes of stable degree- $d$ holomorphic map of rational curves with $k$ marked points to the flag manifold $F$ form a compact complex non-singular orbifold which we denote $F _ { k , d }$ . If non-empty, it has the dimension $\mathrm { d i m } { \cal F } + \langle - K _ { F } , d \rangle + k - 3$ where $- K _ { F }$ is an anti-canonical divisor of $F$ .
+
+Evaluation of maps $( \Sigma , x ) \to F$ at $x _ { i }$ defines the evaluation maps $e _ { i }$ : $F _ { k , d } \to F , ~ i = 1 , . . . , k$ .
+
+Examples. 1) The moduli space $F _ { 3 , 0 }$ consists of classes of constant maps $( \mathbb { C } P ^ { 1 } , 0 , 1 , \infty ) \to F$ and thus is isomorphic to $F$ . The moduli spaces $F _ { k , 0 }$ with $k \ < \ 3$ are not defined since constant rational maps with less than 3 marked points are unstable.
+
+2) Forgetting the space $\mathbb { C } ^ { i }$ in a flag defines the projection $F  F _ { i }$ to the partial flag manifold $F _ { i }$ with fibers isomorphic to $\mathbb { C } P ^ { 1 }$ . Denote $a _ { i } \in H _ { 2 } ( F )$ the homology class of the fiber. In fact any compact holomorphic curve in $F$ of the degree $a _ { i }$ is one of the fibers. This identifies the moduli space $F _ { 0 , a _ { i } }$ with the base $F _ { i }$ .   
+3) The evaluation map $e _ { 1 } : F _ { 1 , a _ { i } } \to F$ is an isomorphism.   
+4) The Borel-Weil representation theory for $S L _ { n + 1 } ( \mathbb { C } )$ identifies the root lattice of type $A _ { n }$ with the Picard lattice $H ^ { 2 } ( F )$ of the flag manifold. In $H _ { 2 } ( F )$ the classes $a _ { 1 } , . . . , a _ { n }$ form the basis of simple coroots dual to the basis $J _ { 1 } , . . . , J _ { n } \in H ^ { 2 } ( F )$ of fundamental weights $J _ { i } = - p _ { 0 } + . . . - p _ { i }$ , i.e. Chern classes of the tautological bundles $\Lambda ^ { i } ( \mathbb { C } ^ { i } ) ^ { * }$ . The simplicial cone spanned in $H ^ { 2 } ( F , \mathbb { R } )$ by the fundamental weights is the K¨ahler cone of the flag manifold. This implies that the degree $d$ of any compact holomorphic curve in $F$ is a sum $d _ { 1 } a _ { 1 } + . . . + d _ { n } a _ { n }$ with all $d _ { i } \geq 0$ . The sum $\begin{array} { r } { \sum _ { i > j } p _ { i } - p _ { j } = 2 ( J _ { 1 } + . . . + J _ { n } ) } \end{array}$ of positive roots represents the anti-canonical class of the flag manifold. Thus $\dim  F _ { 3 , d } = \dim F + 2 ( d _ { 1 } + \ldots + d _ { n } )$ .
+
+Let us introduce the grading in the algebra $\mathbb { C } [ \Lambda ] = \mathbb { C } [ q _ { 1 } , . . . , q _ { n } ]$ of the semigroup $\begin{array} { r } { \Lambda = \left\{ d = \sum d _ { i } a _ { i } \in H _ { 2 } ( F ) | d _ { i } \geq 0 \right\} } \end{array}$ by putting $\deg q ^ { d } = 4 ( d _ { 1 } + \ldots + d _ { n } )$ . We extend $\mathbb { C } [ \Lambda ]$ -bilinearly the Poincare pairing $\langle A , B \rangle = \textstyle \int _ { F } A \wedge B$ in the De Rham cohomology of $F$ to the graded $\mathbb { C } [ \Lambda ]$ -module $H ^ { * } ( F , \mathbb { C } [ \Lambda ] )$ . Structural
+
+constants of the $\mathbb { C } [ \Lambda ]$ -bilinear quantum multiplication $\cup$ on $H ^ { * } ( F , \mathbb { C } [ L ] )$ are defined by
+
+$$
+\forall A, B, C \in H ^ {*} (F) \langle A \circ B, C \rangle = \sum_ {d \in \Lambda} q ^ {d} \int_ {F _ {3, d}} e _ {1} ^ {*} (A) \wedge e _ {2} ^ {*} (B) \wedge e _ {3} ^ {*} (C).
+$$
+
+One can show (see e. g. [3, 8]) that on $H ^ { * } ( F , \mathbb { C } [ \Lambda ] )$ the quantum multiplication defines the structure of a commutative associative graded Frobenius algebra with unity $1 \in H ^ { * } ( F )$ (i.e. $\langle A \circ 1 , C \rangle = \langle A , C \rangle$ ). Modulo $( q _ { 1 } , . . . , q _ { n } )$ this structure coincides with the cup-product on $H ^ { \ast } ( F )$ . Recent developments in symplectic topology and theory of stable maps allow to extend the construction of the quantum cohomology algebra to arbitrary compact symplectic manifolds.
+
+The spectrum of a quantum cohomology algebra can be naturally identified with certain Lagrangian variety — the characteristic Lagrangian variety of the quantum cohomology $\mathcal { D }$ -module.
+
+For $k > 0$ denote $c$ the 1-st Chern class of the tautological line bundle over the moduli space $F _ { k , d }$ with the fiber at the point $[ ( \Sigma , x ) \to F ]$ equal to the cotangent line $\begin{array} { r } { p t = \sum _ { i = 0 } ^ { n } p _ { i } t _ { i } = \sum ( J _ { i } - J _ { i + 1 } ) t _ { i } } \end{array}$ $T _ { x _ { 1 } } ^ { * } \Sigma$ to the curve at the first marked point. Denote the general 2-nd cohomology class of $F$ and $\begin{array} { r } { d t = \sum _ { i = 1 } ^ { n } d _ { i } ( t _ { i } - t _ { i - 1 } ) } \end{array}$ − the value of this cohomology class on the homology class $d = \sum d _ { i } a _ { i }$ . For each $A \in H ^ { * } ( F )$ the vector-function $s _ { A } ( t )$ of $t$ with values in $H ^ { * } ( F , \mathbb { C } )$ is defined by
+
+$$
+\forall B \in H ^ {*} (F) \langle s _ {A} (t), B \rangle = \langle e ^ {p t / \hbar} A, B \rangle + \sum_ {d \in \Lambda - 0} e ^ {d t} \int_ {F _ {2, d}} \frac {e _ {1} ^ {*} (e ^ {p t / \hbar} A)}{\hbar - c} \wedge e _ {2} ^ {*} (B).
+$$
+
+By the definition, $s _ { A }$ is a formal power series of $q _ { i } = \exp ( t _ { i } - t _ { i - 1 } )$ with vector-coefficients which are polynomial in $\log { q _ { i } }$ and $\hbar ^ { - 1 }$ .
+
+The vector series $s _ { A }$ satisfy the following linear differential equations with periodical coefficients (see e. g. [4, 5, 8]):
+
+$$
+\hbar \frac {\partial}{\partial t _ {i}} s _ {A} = p _ {i} \circ s _ {A}, i = 0, \dots , n,
+$$
+
+where $p _ { i } \mathrm { o }$ are operators of quantum multiplication by $p _ { i }$ . In particular, the equations are compatible for any value of $\hbar$ (i.e. $p _ { i } \circ p _ { j } = p _ { j } \circ p _ { i }$ and $\partial ( p _ { i } \circ ) / \partial t _ { j } = \partial ( p _ { j } \circ ) / \partial t _ { i } )$ , and the linear space of all solutions to this system
+
+coincides with the space of all vector-functions $s _ { A }$ (of dimension $\operatorname { r k } H ^ { * } ( F )$ over, say, $\mathbb { C } ( ( \hbar ^ { - 1 } ) )$ ).
+
+By definition, the quantum cohomology $\mathcal { D }$ -module is generated by the scalar functions $S _ { A } ( t ) : = \langle s _ { A } ( t ) , 1 \rangle$ , i.e. coincides with $\mathcal { D } / I$ where $I = \{ D \in$ $\mathcal { D } | D S _ { A } = 0 \forall A \in H ^ { * } ( F ) \}$ . It is easy to show (see for instance [8]) that if a homogeneous differential polynomial $D ( \hbar \partial / \partial t , \exp t , \hbar )$ annihilates all the functions $S _ { A }$ then the relation $D ( p , q , 0 ) = 0$ holds in the quantum cohomology algebra.
+
+Examples. 5) By the very definition $\textstyle \sum _ { i } \partial S _ { A } / \partial t _ { i } = 0$ since $\sum p _ { i } = 0$ in $H ^ { \ast } ( F )$ .
+
+6) The relation $p _ { 0 } ^ { 2 } + \ldots + p _ { n } ^ { 2 } = 0$ holds in the cohomology algebra $H ^ { \ast } ( F )$ of the flag manifold. We claim that in the quantum cohomology algebra $p _ { 0 } ^ { \circ 2 } + \ldots + p _ { n } ^ { \circ 2 } = 2 q _ { 1 } + \ldots + 2 q _ { n }$ . Indeed, for the degree reasons $J _ { i } \circ J _ { j }$ must be equal to $J _ { i } J _ { j }$ plus a linear combination $\sum { \lambda _ { m } q _ { m } }$ . The coefficient $\lambda _ { m }$ is equal to the number of holomorphic maps $\mathbb { C } P ^ { 1 } \to F$ passing by $0 , 1$ and $\infty$ trough the generic divisors $J _ { i } , J _ { j }$ and a given generic point in $F ^ { \prime }$ . From Examples 2 and 4 we find therefore that $J _ { i } \circ J _ { j } = J _ { i } J _ { j } + \delta _ { i j } q _ { i }$ and thus $\sum p _ { i } ^ { \circ 2 } / 2 = \sum J _ { i } ^ { \circ 2 } - \sum J _ { i } \circ J _ { i - 1 } = \sum q _ { i }$ .
+
+Theorem 3 ([13]). The Hamiltonian operator $H = ( \sum \hbar ^ { 2 } \partial ^ { 2 } / \partial t _ { i } ^ { 2 } ) / 2 -$ $\sum \exp ( t _ { i } - t _ { i - 1 } )$ of the quantum Toda lattice annihilates the functions $S _ { A } , A \in$ $H ^ { \ast } ( F )$ .
+
+Proof. Application of the operator $H$ to $S _ { A }$ yields
+
+$$
+\langle H (p \circ , q) s _ {A}, 1 \rangle + \hbar \sum_ {i} \langle \frac {\partial (p _ {i} \circ)}{\partial t _ {i}} s _ {A}, 1 \rangle .
+$$
+
+The first term vanishes due to Example 6. Since $\langle p _ { i } \circ B , 1 \rangle = \langle B , p _ { i } \circ 1 \rangle =$ $\langle B , p _ { i } \rangle$ is constant for any $B \in H ^ { * } ( F )$ , we have $\langle ( \partial p _ { i } \circ / \partial t _ { i } ) s _ { A } , 1 \rangle = \langle s _ { A } , ( \partial p _ { i } \circ$ $/ \partial t _ { i } ) 1 \rangle = 0$ . 
+
+Corollary. $S _ { A } = \langle e ^ { p t / \hbar } s , A \rangle$ where the coefficients $\boldsymbol { s } ^ { ( d ) } \in H ^ { * } ( F , \mathbb { C } ( \hbar ) )$ o f the vector-function $\begin{array} { r } { s = \sum _ { d \in \Lambda } s ^ { ( d ) } q ^ { d } } \end{array}$ can be found recursively from
+
+$$
+s ^ {(0)} = 1, \hbar [ \hbar (d, d) + \sum_ {i = 1} ^ {n} d _ {i} J _ {i} ] s ^ {(d)} = \sum_ {i: d _ {i} > 0} s ^ {(d - a _ {i})}.
+$$
+
+In particular, the formal series s converges everywhere.
+
+Remark. Analogous computations for the flag manifold $G / B$ of a semisimple complex Lie group $G$ of rank $n$ give rise to the Hamiltonian $H =$ $\sum ( a _ { i } , a _ { j } ) J _ { i } J _ { j } / 2 - \sum ( a _ { i } , a _ { i } ) q _ { i } / 2$ of the Toda lattice corresponding to the system of simple coroots $a _ { 1 } , . . . , a _ { n }$ Langlands - dual to the root system of $G$ . The proof of the theorem below is a specialization to the case $G = S L _ { n + 1 } ( \mathbb { C } )$ of the general results by B.Kim describing quantum cohomology $\mathcal { D }$ -modules of flag manifolds $G / B$ in terms of quantized Toda lattices.
+
+Theorem 4. $D _ { 0 } S _ { A } = D _ { 1 } S _ { A } = . . . = D _ { n } S _ { A } = 0$ for all $A \in H ^ { * } ( F )$ .
+
+Proof (see [13]). Since $H D _ { m } S _ { A } = D _ { m } H S _ { A } = 0$ , the formal power series $\begin{array} { r } { S = \sum S ^ { ( d ) } q ^ { d } : = D _ { m } S _ { A } } \end{array}$ with coefficients polynomial in $\log { q }$ (and $\hbar ^ { - 1 }$ ) satisfies the hypotheses of the following
+
+Kim’s Lemma. If $S ^ { ( 0 ) } = 0$ and $H S = 0$ then $S = 0$ .
+
+Proof (see [13]) uses only ellipticity of the operator $H$ and polynomiality of its coefficients. Consider a non-zero term $S ^ { ( d ) } q ^ { d }$ of minimal degree and pick in it a non-zero monomial term $c o n s t \cdot ( \log q ) ^ { m } q ^ { d }$ of maximal degree $| m |$ . Then this term occurs in $H S$ with the coefficient $( d , d ) \cdot c o n s t$ which is also non-zero for $d \neq 0$ since the symmetric form $( ~ , ~ )$ is positively definite. 
+
+Corollaries. (1) The quantum cohomology algebra of the flag manifold $F ^ { \prime }$ is canonically isomorphic to
+
+$$
+\mathbb {C} [ p _ {0}, \dots , p _ {n}, q _ {1}, \dots , q _ {n} ] / (D _ {0} (p, q), \dots , D _ {n} (p, q)).
+$$
+
+(2) The total multiplicity of critical points of the functions $\mathcal { F } _ { q }$ in the generating family of the characteristic Lagrangian variety $L$ is equal to $\operatorname { r k } H ^ { * } ( F ) =$ $( n + 1 )$ !   
+(3) r $\cdot \mathrm { k } \mathcal { H } _ { q } = \mathrm { r k } H ^ { * } ( F )$ if all $q _ { i } \neq 0$   
+(4) The monodromy representation $\mathbb { Z } ^ { n + 1 } = \pi _ { 1 } ( \mathbb { C } - 0 ) ^ { n + 1 } \to A u t ( \mathcal { H } _ { q } )$ of the Gauss-Manin connection on $\mathcal { H } _ { q }$ is unipotent and equivalent to the action of $\mathbb { Z } ^ { n + 1 }$ on $H ^ { * } ( F , \mathbb { C } )$ generated by the multiplication operators $A \mapsto$ $\exp ( 2 \pi i p _ { k } )$ $\exp ( 2 \pi i p _ { k } ) , \ k = 0 , . . . , n$ .   
+(5) For each $A \in H ^ { * } ( F )$ the function $S _ { A }$ has the stationary phase representation $\int _ { \Gamma \subset Y _ { q } } \exp ( F _ { q } / \hbar ) \omega _ { q }$ with suitable $\Gamma = \Gamma ( A ) \in \mathcal { H } _ { q } \otimes \mathbb { C } ( ( h ^ { - 1 } ) )$ .   
+(6) Vice versa, the stationary phase integrals $S _ { \Gamma }$ admit the series expansions $\langle e ^ { p t / \hbar } s , A ( \Gamma ) \rangle$ .
+
+Remark. As it is shown in [12], the Poincare pairing $\langle ~ , ~ \rangle$ on the quantum cohomology algebra $\mathbb { C } [ p , q ] / ( D _ { 0 } ( p , q ) , . . . , D _ { n } ( p , q ) )$ can be described by the
+
+residue formula
+
+$$
+\langle A, B \rangle (q) = \frac {1}{(2 \pi i) ^ {n + 1}} \oint \frac {A (p , q) B (p , q) d p _ {0} \wedge \ldots \wedge d p _ {n}}{D _ {0} (p , q) . . . D _ {n} (p , q)} .
+$$
+
+Comparison of the stationary phase approximations for the integrals $S _ { \Gamma }$ with the formal asymptotics
+
+$$
+S _ {A} (t) \sim \hbar^ {\dim F / 2} \sum_ {p \in L \cap T _ {\exp t} ^ {*}} C _ {p} (A) \frac {e ^ {\sum 2 J _ {i} (p) / \hbar}}{\det^ {1 / 2} (\partial D _ {i} / \partial p _ {j}) | _ {(p , \exp t)}}
+$$
+
+for solutions of the quantum cohomology differential equations shows that the Jacobian $\operatorname* { d e t } ( { \partial D _ { i } } / { \partial p _ { j } } )$ computed at generic points $( p , q ) \in L$ coincides, up to a constant factor, with the Hessian $\operatorname* { d e t } ( \partial ^ { 2 } \mathcal { F } _ { q } ( T ) / \partial T _ { \nu } \partial T _ { \mu } )$ of the function $\mathcal { F } _ { q }$ computed at the non-degenerate critical points corresponding to $( p , q )$ . It would be interesting to find a direct proof of this identity between the two determinants of sizes $n + 1$ and $n ( n + 1 ) / 2$ respectively.
+
+4. The mirror conjecture. By the mirror conjecture one usually means the profound equivalence (see e. g. [20, 15, 18]), discovered several years ago on the basis of string theory, between complex and symplectic geometry in Calabi – Yau manifolds (i.e. compact K¨ahler manifolds which admit nonvanishing holomorphic volume forms). In particular, the conjecture predicts that the quantum cohomology $\mathcal { D }$ -module corresponding to a Calabi – Yau manifold $X$ describes variations of periods of the holomorphic volume form on another Calabi – Yau manifold $Y$ , which has the same dimension as $X$ and whose Hodge diamond is mirror-symmetric to that of $X$ .
+
+In 1993 we suggested a generalization of the above correspondence beyond the class of Calabi – Yau manifolds. 2 Namely, we conjectured (see [9]) that the quantum cohomology $\mathcal { D }$ -module of a compact symplectic $2 N$ -dimensional manifold $X$ is equivalent to the $\mathcal { D }$ -module generated by stationary phase integrals $\int _ { \Gamma \in Y _ { q } } \exp ( \mathcal { F } _ { q } / \hbar ) \omega _ { q }$ , where $( Y _ { q } , \mathcal { F } _ { q } , \omega _ { q } )$ is a suitable algebraic family of (possibly non-compact) $N$ -dimensional complex manifolds $Y _ { q }$ , holomorphic functions $\mathcal { F } _ { q } : Y _ { q } \to \mathbb { C }$ and non-vanishing holomorphic $N$ -forms on $Y _ { q }$ .
+
+The following arguments spoke in favor of such a generalization.
+
+1) In terms of the characteristic Lagrangian variety $L \subset T ^ { * } ( H _ { 2 } ( X ) ^ { \vee } )$ of the quantum cohomology $\mathcal { D }$ -module the Poincare pairing $\langle ~ , ~ \rangle$ on the quantum cohomology algebra $\mathbb { C } [ L ]$ of the compact symplectic manifold $X$ is given by the formula
+
+$$
+\langle A, B \rangle (q) = \sum_ {p \in T _ {q} ^ {*} \cap L} \frac {A (p) B (p)}{\Delta (p)}
+$$
+
+(where $\Delta$ is the restriction to the diagonal in $L \times L$ of the function representing Poincare-dual class of the diagonal in $X \times X$ ). This formula resembles the residue pairing
+
+$$
+\frac {1}{(2 \pi i) ^ {N}} \oint a (y) b (y) \frac {d y _ {1} \wedge \ldots \wedge d y _ {N}}{\frac {\partial \mathcal {F} _ {q}}{\partial y _ {1}} \ldots \frac {\partial \mathcal {F} _ {q}}{\partial y _ {N}}} = \sum_ {y _ {*}: d _ {y} \mathcal {F} _ {q} (y _ {*}) = 0} \frac {a (y _ {*}) b (y _ {*})}{\det (\partial^ {2} \mathcal {F} _ {q} / \partial y _ {i} \partial y _ {j}) | _ {y _ {*}}}
+$$
+
+in singularity theory, and in some examples, including complex projective spaces and Grassmannians, can be indeed replaced by some residue formula.
+
+2) Solutions $s _ { A }$ to the differential equations $\hbar q _ { i } \partial s _ { A } / \partial q _ { i } = p _ { i } \circ s _ { A }$ arising from the multiplication $\bigcirc$ in the quantum cohomology algebra of $X$ admit asymptotical approximations
+
+$$
+\langle s _ {A}, B \rangle \sim \hbar^ {N / 2} \sum_ {p \in T _ {q} ^ {*} \cap L} C _ {p} (A) e ^ {- K _ {X} (p) / \hbar} [ \frac {B (p)}{\sqrt {\Delta} (p)} + \mathcal {O} (\hbar) ]
+$$
+
+resembling the stationary phase approximations
+
+$$
+\int_ {\Gamma \subset Y _ {q}} e ^ {\mathcal {F} _ {q} (y) / \hbar} b (y) d ^ {N} y \sim \hbar^ {N / 2} \frac {e ^ {\mathcal {F} _ {q} (y _ {*}) / \hbar} b (y _ {*})}{\det ^ {1 / 2} (\partial^ {2} \mathcal {F} _ {q} / \partial y _ {i} \partial y _ {j}) | _ {y _ {*}}}.
+$$
+
+3) A by-product of our proof [11] for toric symplectic manifolds of Arnold’s symplectic fixed point conjecture [1] was the following multiplicative structure in the Floer homology (it is at least morally equivalent to the quantum multiplication). A compact toric symplectic manifold $X$ with Picard number $n$ can be obtained as a symplectic reduction $X = \mathbb { C } ^ { N } / / T ^ { n }$ of the linear space by the subtorus $T ^ { n } \subset T ^ { N }$ of the maximal torus on a generic level of the momentum map $\mathbb { C } ^ { N } \to \mathrm { L i e } ^ { * } T ^ { N } \to \mathrm { L i e } ^ { * } T ^ { n }$ . Denote $( m _ { i j } ) _ { i = 1 } ^ { n } \underset { j = 1 } { N }$ the matrix of the
+
+projection Lie $^ { * } T ^ { N } \to \mathrm { L i e } ^ { * } T ^ { n }$ . In the quantum cohomology algebra of $X$ the classes $Q _ { 1 } , . . . , . Q _ { N }$ of coordinate hyperplane divisors satisfy the multiplicative relations $Q _ { 1 } ^ { m _ { i 1 } } . . . Q _ { N } ^ { m _ { i N } } = q _ { i } , i = 1 , . . . , n$ , and on the other hand — can be expressed via some basis in $H ^ { 2 } ( X )$ as $Q _ { j } = p _ { 1 } m _ { 1 j } + . . . + p _ { n } m _ { n j } , j = 1 , . . . , N$ . It is easy to see that the latter set of additive relations specifies the critical set of the function $\mathcal { F } = Q _ { 1 } + \ldots + Q _ { N }$ restricted to the $( N - n )$ -dimensional complex torus $Y _ { q }$ defined by the multiplicative relations. We arrive to the mirror family $( Y _ { q } , \mathcal { F } _ { q } , \omega _ { q } )$ of the toric manifold $X$ by introducing the holomorphic volume form $\omega _ { q } = d \log Q _ { 1 } \wedge . . . \wedge d \log Q _ { N } ~ / ~ d \log q _ { 1 } \wedge . . . \wedge d \log q _ { n }$ on the torus $Y _ { q }$ .
+
+4) In the case of $X = \mathbb { C } P ^ { N - 1 } = \mathbb { C } ^ { N } / / T ^ { 1 }$ corresponding stationary phase integrals
+
+$$
+\int_ {\Gamma \subset \{Q _ {1} \dots Q _ {N} = q \}} e ^ {(Q _ {1} + \dots + Q _ {N}) / \hbar} \frac {d Q _ {1} \wedge \dots \wedge d Q _ {N}}{d q}
+$$
+
+satisfy the same differential equation $( \hbar q d / d q ) ^ { N } S = q S$ as the series
+
+$$
+s = e ^ {(p \log q) / \hbar} \sum_ {d = 0} ^ {\infty} \frac {q ^ {d}}{(p + \hbar) ^ {N} (p + 2 \hbar) ^ {N} . . . (p + d \hbar) ^ {N}} \bmod p ^ {N}
+$$
+
+generating the quantum cohomology $\mathcal { D }$ -module of the complex projective space (see [10]). This confirms the mirror conjecture for $\mathbb { C } P ^ { N - 1 }$ .
+
+5) The above mirror family $( Y _ { q } , \mathcal { F } _ { q } , \omega _ { q } )$ of a toric symplectic manifold $X$ agrees with Batyrev’s mirrors of Calabi – Yau anti-canonical hypersurfaces $X ^ { \prime } \subset X$ . According to [2] one can construct Calabi – Yau mirror manifolds $Y ^ { \prime }$ as anti-canonical divisors in the toric manifold obtained by dualization of the momentum polyhedron for $X$ . In fact periods of holomorphic volume forms on Batyrev’s mirrors can be expressed in terms of our mirrors $( Y _ { q } , \mathcal { F } _ { q } , \omega _ { q } )$ as the formal Laplace transform
+
+$$
+\int_ {\gamma \subset Y _ {q} \cap \mathcal {F} _ {q} ^ {- 1} (1)} \frac {\omega_ {q}}{d \mathcal {F} _ {q}}
+$$
+
+of the stationary phase integrals. 3
+
+In [8] we proved the mirror conjecture for Fano ( $K _ { X } < 0$ ) and Calabi – Yau ( $K _ { X } = 0$ ) projective complete intersections. Namely, the solutions $S _ { A }$ of the quantum cohomology differential equation for $X$ given in $\mathbb { C } P ^ { N - 1 }$ by $r$ equations of degrees $l _ { 1 } + \ldots + l _ { r } \leq N$ are described by the following integrals $\int _ { \Gamma \subset Y _ { q } } \exp ( \mathcal { F } _ { q } / \hbar )$ $\omega _ { q }$ : partition the variables $Q _ { 1 } , . . . , Q _ { N }$ into $r + 1$ groups of lengths $l _ { 0 } + l _ { 1 } + \ldots + l _ { r } = N$ and denote $G _ { 0 } , . . . , G _ { r }$ the total sums $\sum { Q _ { \alpha } }$ in each group (for example, $G _ { 0 } = Q _ { 1 } + \ldots + Q _ { l _ { 0 } }$ , etc.). Then
+
+$$
+Y _ {q} = \left\{\left(Q _ {1}, \dots , Q _ {N}\right) \mid Q _ {1} \dots Q _ {N} = q, G _ {1} (Q) = \dots = G _ {r} (Q) = 1 \right\},
+$$
+
+$$
+\mathcal {F} _ {q} = G _ {0} | _ {Y _ {q}}, \omega_ {q} = \frac {d \log Q _ {1} \wedge \ldots \wedge d \log Q _ {N}}{d \log q \wedge d G _ {1} \wedge \ldots \wedge d G _ {r}}.
+$$
+
+These formulas include the traditional Calabi – Yau mirror phenomenon as a degenerate particular case with $l _ { 0 } = 0$ and $G _ { 0 } = 0$ .
+
+The very idea that the mirror phenomenon exists beyond the class of Calabi – Yau manifolds has not attracted much attention of specialists. One of the causes is that the results mentioned in this section do not go further than toric complete intersections. It was the actual purpose of the project [12] on flag manifolds started in 1993 by the author and B. Kim to improve this situation and enlarge the supply of examples confirming the conjecture. Although the discovered relation with Toda lattices has been analyzed in the literature on quantum cohomology of flag manifolds (see e. g. [17, 7, 13]), their mirrors have escaped us so far.
+
+In the recent paper [6] T. Eguchi, K. Hori and C.-S. Xiong, independently on our lecture [9], have arrived to a similar idea of extending the mirror conjecture to Fano manifolds. They illustrate the idea with the examples of complex projective spaces, several rational surfaces, Grassmannians $G _ { 4 , 2 }$ and $G _ { 5 , 2 }$ and extrapolate formulas from the latter examples to general Grassmannians. These formulas served us as the starting point for the present paper; suitably modified, they give rise to a construction of mirrors for the flag manifolds. Indeed, the construction of $( Y _ { q } , \mathcal { F } _ { q } , \omega _ { q } )$ in Section 2 provides a stationary phase integral representation for the solutions $S _ { A }$ of the differential equations defined by the quantum cohomology algebra of the flag manifold.
+
+I would like to thank M. Kontsevich who brought the paper [6] to my attention and B. Kim for communicating his results [13] based on quantum Toda lattices. I am also thankful to B. Kostant who explained to me that
+
+generalizations of the present paper to arbitrary semi-simple Lie algebras should intertwine mirror manifolds with Whittaker modules [16].
+
+# References
+
+[1] V.I. Arnold. Sur un propri´et´e topologique des applications canoniques de la mecanique classique. C. R. Acad. Sci. Paris 261 (1965), 3719 – 3722.   
+[2] V.V. Batyrev. Dual polyhedra and mirror symmetry for Calabi – Yau hypersurfaces in toric manifolds. Preprint, alg-geom/9310003.   
+[3] K. Behrend, Yu. Manin. Stacks of stable maps and Gromov – Witten invariants. Preprint, 1995.   
+[4] R. Dijkgraaf, E. Verlinde, H. Verlinde. Notes on topological string theory and $2 D$ quantum gravity. Proc. of the Trieste Spring School, 1990, M. Green et al., eds., World Sci., Singapore, 1991.   
+[5] B. Dubrovin. Geometry of 2D topological field theories. In: Springer Lecture Notes in Math., 1620 (1996), 120 – 348.   
+[6] T. Eguchi, K. Hori, C.-S. Xiong. Gravitational quantum cohomology. Preprint, 1996.   
+[7] S. Fomin, S. Gelfand, A. Postnikov. Quantum Schubert polynomials. Preprint, 1996.   
+[8] A. Givental. Equivariant Gromov – Witten invariants. Intern. Math. Res. Notices, 1996, No. 13, 1 – 63.   
+[9] A. Givental. Homological geometry and mirror symmetry. In: Proceedings of the International Congress of Mathematicians, Z¨urich, 1994, Birkh¨auser, 1995, v. 1, pp. 472 – 480.   
+[10] A. Givental. Homological geometry I: projective hypersurfaces. Selecta Math., New Series, 1 (1995), No. 2, 325 – 345.   
+[11] A. Givental. A simplectic fixed point theorem for toric manifolds. In: The Floer memorial volume. H. Hofer, C. H. Taubes, A. Weinstein, E. Zehnder (eds.), Progress in Math. 133, Birkh¨auser, 1995, pp. 445 – 481.
+
+[12] A. Givental, B. Kim. Quantum cohomology of flag manifolds and Toda lattices. Commun. Math. Phys. 168 (1995), 609 – 641.   
+[13] B. Kim. Quantum cohomology of flag manifolds G/B and Toda lattices. Preprint, alg-geom/9607001.   
+[14] M. Kontsevich. Enumeration of rational curves via toric actions. In: The moduli space of curves, R. Dijkgraaf, C. Faber, van der Geer (eds.), Progress in Math. 129, Birkh¨auser, 1995, pp. 335 – 368.   
+[15] M. Kontsevich. Homological algebra of mirror symmetry. In: Proceedings of the International Congress of Mathematicians, Z¨urich, 1994, Birkh¨auser, 1995, v. 1, pp. 120 – 139.   
+[16] B. Kostant. On Whittaker vectors and representation theory. Invent. Math. 48 (1978), 101-184.   
+[17] B. Kostant. Flag manifold quantum cohomology, the Toda lattice, and the representation with the highest weight $\rho$ . Selecta Math. New Series 2 (1996), 43 – 91.   
+[18] D. Morrison. Mirror symmetry and moduli spaces. In: Proceedings of the International Congress of Mathematicians, Z¨urich, 1994, Birkh¨auser, 1995, v. 2, pp. 1304 – 1314.   
+[19] E. Witten. Phases of $N \ = \ 2$ theories in two dimensions. Preprint, IASSNS-HEP-93/3.   
+[20] S.-T. Yau (ed.). Essays on mirror manifolds. International Press, Hong Kong, 1992.

@@ -1,0 +1,909 @@
+# EQUIVARIANT QUANTUM SCHUBERT CALCULUS
+
+LEONARDO CONSTANTIN MIHALCEA
+
+Abstract. We study the $T -$ equivariant quantum cohomology of the Grassmannian. We prove the vanishing of a certain class of equivariant quantum Littlewood-Richardson coefficients, which implies an equivariant quantum Pieri rule. As in the equivariant case, this implies an algorithm to compute the equivariant quantum Littlewood-Richardson coefficients.
+
+# 1. Introduction
+
+A deformation of the integral cohomology of $X = G r ( p , m )$ , the Grassmannian of $p -$ planes in $\mathbb { C } ^ { m }$ , has been recently constructed. It is the (small) quantum cohomology of $X$ , which is a graded algebra over $\mathbb { Z } [ q ]$ , where the (complex) degree of $q$ is $m$ . It has a $\mathbb { Z } [ q ] -$ basis consisting of Schubert classes $\{ \sigma _ { \lambda } \}$ indexed by partitions $\lambda = ( \lambda _ { 1 } , . . . , \lambda _ { p } )$ included in the $p \times ( m - p )$ rectangle (i.e. $m - p \geqslant \lambda _ { 1 } \geqslant \lambda _ { 2 } \geqslant \ldots \geqslant$ $\lambda _ { p } \geqslant 0$ ). The multiplication is governed by the quantum Littlewood-Richardson coefficients, a special case of the 3-point Gromov-Witten invariants, which encode enumerative properties of the variety $X$ ([W, KM, FP, Be, C, BCF, FGP, Bu1, Po]).
+
+The purpose of this paper is to study a $T -$ equivariant version of the quantum cohomology, where $T \simeq ( \mathbb { C } ^ { \star } ) ^ { m }$ is the torus of diagonal $m \times m$ invertible matrices acting on $X$ . This was introduced by Givental and Kim ([GK]) to study the (ordinary) quantum cohomology algebra. It is named the equivariant quantum cohomology and it is a deformation of both quantum and $T -$ equivariant cohomology of $X$ . It has a structure of a graded $\Lambda [ q ]$ algebra, where $\Lambda$ denotes the $T -$ equivariant cohomology of a point, which is identified with the polynomial ring $\mathbb { Z } [ T _ { 1 } , . . . , T _ { m } ]$ (for a geometric description of $T _ { i }$ see §2.2 below). Additively, it has a $\Lambda [ q ]$ -basis $\left\{ \sigma _ { \lambda } \right\}$ indexed by partitions $\lambda$ included in the $p \times ( m - p )$ rectangle. The multiplication, denoted $\circ$ , is determined by the equivariant quantum Littlewood-Richardson coefficients (EQLR ) cν,dλµ , a special case of the 3-point equivariant Gromov-Witten $c _ { \lambda \mu } ^ { \nu , d }$ invariants, introduced in [GK] (for more general varieties). Explicitly:
+
+$$
+\sigma_ {\lambda} \circ \sigma_ {\mu} = \sum_ {d \geqslant 0} \sum_ {\nu} c _ {\lambda , \mu} ^ {\nu , d} q ^ {d} \cdot \sigma_ {\nu}
+$$
+
+By definition, the EQLR coefficient $c _ { \lambda , \mu } ^ { \nu , d }$ is a homogeneous polynomial in $\Lambda$ of degree $| \lambda | + | \mu | - | \nu | - m d$ , where $| \lambda | = \lambda _ { 1 } + . . . + \lambda _ { p }$ denotes the weight of the partition $\lambda$ . If $c _ { \lambda , \mu } ^ { \nu , d }$ has polynomial degree 0, it is equal to the quantum LR coefficient $c _ { \lambda \mu } ^ { \nu , d }$ , while if d = 0 the EQLR coefficient is equal to the equivariant LR coefficient cνλµ $d = 0$ $c _ { \lambda \mu } ^ { \nu }$ ([Kim1]). There are explicit formulae for the equivariant ([KT, MS], Prop. 2.1 below) and quantum Littlewood-Richardson coefficients ([BCF, BKT]). Therefore
+
+we are mainly interested in “mixed” EQLR coefficients, i.e. those with positive polynomial degree for which $d > 0$ .
+
+Our goal is to give an equivariant quantum Pieri rule for the equivariant quantum cohomology of $X$ and an effective algorithm to compute the EQLR coefficients. The key to that is to employ Buch’s notions of span and kernel of a stable map to $X$ ([Bu1]) as well as classical Schubert calculus to obtain vanishing properties for some of these coefficients.
+
+Conventions: 1. Unless otherwise specified, all the partitions used in this paper are included in the $p \times ( m - p )$ rectangle.
+
+$c _ { \lambda , \mu } ^ { \nu , d }$ is $d$
+
+Notations: Write $\alpha  \beta$ if $\beta$ is included in $\alpha$ and the Young diagram of $\alpha$ has one more box than the diagram of $\beta$ . Denote by $\alpha ^ { - }$ (resp. $\alpha ^ { + }$ ) the partition obtained from $\alpha$ by removing (resp. by adding) $m - 1$ boxes from (resp. to) its border rim (recall that the border rim of a Young diagram is the set of boxes that intersect the diagram’s SE border). The partition $\alpha ^ { + }$ can also be defined by the equivalent property $( \alpha ^ { + } ) ^ { - } = \alpha$ . If $\alpha = ( \alpha _ { 1 } , . . . , \alpha _ { p } )$ , note that $\alpha ^ { - }$ exists only if $\alpha _ { 1 } = m - p$ and $\alpha _ { p } > 0$ , and that $\alpha ^ { + }$ is included in the $p \times ( m - p )$ rectangle only if $\alpha _ { 1 } < m$ and $\alpha _ { p } = 0$ .
+
+Write $\alpha ^ { \vee }$ for the partition dual to $\alpha$ , i.e. the partition whose Young diagram is the rotation with 180 degrees of the complement of the Young diagram of $\alpha$ , in the given rectangle. $\alpha ^ { \prime }$ will denote the partition conjugate to $\alpha$ , i.e. the partition in the $( m - p ) \times p$ rectangle whose Young diagram is the transpose of the Young diagram of $\alpha$ .
+
+The zero partition (i.e. the partition with all parts of length zero) is denoted by (0). Note that $\sigma _ { ( 0 ) }$ is the unit in the cohomology of the Grassmannian. The partition $( 1 , 0 , . . . , 0 )$ is denoted by $\boxed { \begin{array} { r l } \end{array} }$ .
+
+1.1. Statement of the results. The main result of this paper is an equivariant quantum Pieri1 rule for the Grassmannians. The rule must be a deformation of the corresponding equivariant and quantum rules ([Be, KT], (see Sections 2.2 and 2.3 for details) and it is the simplest possible under these circumstances. There are no “mixed” terms:
+
+Theorem (Equivariant Quantum Pieri rule) The equivariant quantum multiplication for the Grassmannian $G r ( p . m )$ satisfies the following formula:
+
+$$
+\sigma_ {\lambda} \circ \sigma_ {\square} = \sum_ {\mu \rightarrow \lambda} \sigma_ {\mu} + c _ {\lambda , \square} ^ {\lambda} \sigma_ {\lambda} + q \sigma_ {\lambda -}
+$$
+
+where $c _ { \lambda , \bigtriangledown } ^ { \lambda }$ is the equivariant LR coefficient, known by Prop. 2.1 below. The last term is omitted if $\lambda ^ { - }$ does not exist.
+
+Remark: Corollary 7 in [KiMa] gives another formula which is referred therein as the “equivariant quantum Pieri rule”. It deals with a Pieri multiplication in the
+
+presentation of the $U _ { m }$ -equivariant quantum cohomology algebra of the complete flag manifold $F l ( m )$ obtained in [GK]. Since the (equivariant) quantum cohomology is not functorial, this formula does not imply one for the Grassmannian.
+
+The theorem follows from a key vanishing condition of the EQLR coefficients:
+
+Main Lemma Let $\lambda , \mu , \nu$ be three partitions included in $p \times ( m - p )$ rectangle and let $d$ be a positive integer. Suppose that $\vert \lambda \vert + d ^ { 2 } > \vert \nu \vert + m d$ . Then $c _ { \lambda , \mu } ^ { \nu , d } = 0$ .
+
+In particular, $c _ { \lambda , \mu } ^ { \nu , d } = 0$ if $| \lambda | + | \mu | > | \nu | + m d$ , and $\mu$ is included in the $d \times d$ square. This applies to the mixed EQLR coefficients $c _ { \lambda , \bigsqcup } ^ { \nu , d }$ , implying the EQ Pieri rule.
+
+An algebraic consequence of the equivariant quantum Pieri rule and of an associativity equation of tsatisfied by the EQLR uivariant quantum ccients. It expresses $c _ { \lambda , \mu } ^ { \nu , d }$ mology is a recursive fo as a combination of mulaQLR coefficients with degree $d - 1$ , and EQLR coefficients with the same degree $d$ , but with polynomial degree one larger. The formula is a generalization of a recursive formula for the equivariant LR coefficients (see [MS, O, KT], or Prop. 2.1 below).
+
+Corollary The EQLR coefficients satisfy the following formula:
+
+$$
+(c _ {\nu , \square} ^ {\nu} - c _ {\lambda , \square} ^ {\lambda}) \cdot c _ {\lambda , \mu} ^ {\nu , d} = \sum_ {\delta \rightarrow \lambda} c _ {\delta , \mu} ^ {\nu , d} - \sum_ {\nu \rightarrow \zeta} c _ {\lambda , \mu} ^ {\zeta , d} + c _ {\lambda^ {-}, \mu} ^ {\nu , d - 1} - c _ {\lambda , \mu} ^ {\nu^ {+}, d - 1}
+$$
+
+for any partitions $\lambda , \mu , \nu$ and any nonnegative integer $d$ , where $c _ { \alpha , \boxed { \alpha } } ^ { \alpha }$ is the equivariant LR coefficient given in Prop. 2.1. The third (resp. the fourth) term in the right side is omitted if $\lambda ^ { - }$ (resp. $\nu ^ { + }$ ) does not exist in the $p \times ( m - p )$ rectangle. Both these terms are omitted if $d = 0$ .
+
+This formula is the main ingredient in the proof of an algorithm, which shows that the EQLR coefficients are determined by their usual commutativity equation, by those appearing in the multiplication with the unit $\sigma _ { ( 0 ) }$ , by the Pieri coefficients, and by the formula from the previous Corollary (for the precise statement, see Thm. 2 in §7 below).
+
+Acknowledgements: I would like to thank to my advisor, Prof. W. Fulton, for pointing me to this research area and for his patient guidance, which greatly improved the presentation of this paper. This is part of my thesis.
+
+# 2. Preliminaries
+
+In this section we recall some basic facts about the classical, equivariant and quantum cohomology of the Grassmannian, which are needed later in the paper.
+
+2.1. Classical cohomology of the Grassmannian. Let $G r ( p , m )$ be the Grassmannian of $p -$ planes in $\mathbb { C } ^ { m }$ . Fix a complete flag $F _ { \bullet } = 0 \subset F _ { 1 } \subset . . . \subset F _ { m } = \mathbb { C } ^ { m }$ . Let $\lambda$ be a partition included in the $p \times ( m - p )$ rectangle and $\Omega _ { \lambda } ( F _ { \bullet } )$ be the Schubert variety determined by $F _ { \bullet }$ and $\lambda = ( \lambda _ { 1 } , . . . , \lambda _ { p } )$ i.e.
+
+$$
+\Omega_ {\lambda} \left(F _ {\bullet}\right) = \left\{V \in G r (p, m): \dim \left(V \cap F _ {m - p + i - \lambda_ {i}}\right) \geqslant i \right\}
+$$
+
+Denote by $\sigma _ { \lambda }$ the cohomology class in $H ^ { 2 | \lambda | } ( G r ( p , m ) )$ determined by $\Omega _ { \lambda } ( F _ { \bullet } )$ . It is well-known that the classes $\sigma _ { \lambda }$ do not depend on the choice of the flag $F _ { \bullet }$ , and that they form a $\mathbb { Z } -$ basis for the integral cohomology of $G r ( p , m )$ (see [F1] Part III for an exposition about the subject). The multiplication in the cohomology ring is determined by the Littlewood-Richardson (LR) coefficients $c _ { \lambda , \mu } ^ { \nu }$ , which are positive integers, counting the number of points in the intersection of the Schubert varieties $\Omega _ { \lambda } ( F _ { \bullet } )$ , $\Omega _ { \mu } ( G _ { \bullet } )$ and $\Omega _ { \nu } \vee \left( H _ { \bullet } \right)$ , where $F _ { \bullet }$ , $G _ { \bullet }$ and $H _ { \bullet }$ are three general flags and $\nu ^ { \vee }$ is the dual partition of $\nu$ . The coefficients are 0 if $| \lambda | + | \mu | \neq | \nu |$ . Geometrically,
+
+$$
+c _ {\lambda , \mu} ^ {\nu} = \pi_ {\star} \left(\sigma_ {\lambda} \cup \sigma_ {\mu} \cup \sigma_ {\nu^ {\vee}}\right)
+$$
+
+where $\pi _ { \star } : H ^ { i } ( G r ( p , m ) )  H ^ { i - 2 p ( m - p ) } ( p t )$ is the Gysin map associated to the structure morphism $\pi : G r ( p , m ) \longrightarrow p t$ (see Appendix for details). Positive combinatorial formulae for these coefficients, found in the literature as Littlewood-Richardson rules, are known (see e.g. [F1] Part I or [S] and references therein).
+
+2.2. Equivariant cohomology. Let $T$ be the $m -$ dimensional complex torus $( \mathbb { C } ^ { \star } ) ^ { m }$ and $X$ an algebraic variety with a $T -$ action. Let $p : E T \longrightarrow B T$ be the universal $T -$ bundle. There is an induced $T -$ action on the product $E T \times X$ given by $t \cdot ( e , x ) = ( t ^ { - 1 } e , t x )$ . This determines a quotient space $X _ { T } = E T \times _ { T } X$ , the homotopic quotient of $X$ . It is an $X -$ bundle over $B T$ . The $T -$ equivariant cohomology of $X$ , denoted by $H _ { T } ^ { \star } ( X )$ , is by definition the ordinary (integral) cohomology of $X _ { T }$ . The $X -$ bundle projection $\pi : X _ { T } \longrightarrow B T$ gives $H _ { T } ^ { \star } ( X )$ a structure of $\Lambda -$ algebra, where $\Lambda$ denotes $H _ { T } ^ { \star } ( p t ) = H ^ { \star } ( B T )$ (for details see [AB, GKM, Br1, Br2]).
+
+The topological spaces $E T$ and $B T$ are infinite dimensional, so in particular they are not algebraic varieties. Nevertheless, one can consider the direct system of finite-dimensional $T -$ bundles $p : E T _ { n } \longrightarrow B T _ { n }$ given by
+
+$$
+\prod_ {i = 1} ^ {m} \left(\mathbb {C} ^ {n} \setminus \{0 \}\right) \longrightarrow \prod_ {i = 1} ^ {m} \mathbb {P} ^ {n - 1}
+$$
+
+The ordering on the bundles is given by inclusion (for the construction above or similar ones see e.g. [Br2], [H], Ch.4 §11, or Ch. 7, [EG] §3.1). Let $X _ { T , n } \ : =$ $E T _ { n } \times _ { T } X$ be the induced finite dimensional approximations of $X _ { T }$ . Then one can show that $H _ { T } ^ { i } ( X )$ is equal to $H ^ { i } ( X _ { T , n } )$ for $n$ large ([Br2]).
+
+In particular, the equivariant cohomology of a point is $H _ { T } ^ { i } ( p t ) = H ^ { i } ( B T _ { n } ) =$ $\begin{array} { r } { H ^ { i } ( \prod _ { i = 1 } ^ { m } { \mathbb P } ^ { n - 1 } ) } \end{array}$ for $n$ large. By letting $n$ to go to infinity, we get that
+
+$$
+\Lambda = H _ {T} ^ {\star} (p t) = \mathbb {Z} [ T _ {1},..., T _ {m} ]
+$$
+
+where $T _ { i }$ has complex degree 1, and is equal to the first Chern class c1(OPn−1(1)) $c _ { 1 } ( \mathcal { O } _ { \mathbb { P } _ { ( i ) } ^ { n - 1 } } ( 1 ) )$ of the line bundle $\mathcal { O } ( 1 )$ on $\mathbb { P } _ { ( i ) } ^ { n - 1 }$ , the $i -$ th component of the product $\textstyle \prod _ { i = 1 } ^ { m } { \mathbb { P } } ^ { n - 1 }$ Pn−1 (for a more intrinsic definition of $H _ { T } ^ { \star } ( p t )$ , see e.g. [Br1, Gr]).
+
+Equivariant cohomology has functorial properties similar to those of ordinary cohomology. If $f : X \longrightarrow Y$ is a $T -$ equivariant map of topological spaces, it induces an pull-back map in cohomology $f ^ { \star } : H _ { T } ^ { \star } ( Y ) \longrightarrow H _ { T } ^ { \star } ( X )$ . In certain situations, for such a $T -$ equivariant map, there is also a Gysin map in cohomology
+
+$$
+f _ {\star} ^ {T}: H _ {T} ^ {i} (X) \longrightarrow H _ {T} ^ {i - 2 d} (Y)
+$$
+
+where $d = \mathrm { d i m } ( X ) - \mathrm { d i m } ( Y )$ . For the purpose of this paper, we only consider the situation when $X$ and $Y$ are projective algebraic varieties and $Y$ is smooth.2 The definition and some of the properties of the Gysin maps can be found in the Appendix. A more detailed treatment is given in my thesis ([Mi]).
+
+A particular case of such an equivariant Gysin map, which will play an imporat follows, is th induced by the integration alongequivariant map $\pi _ { \star } ^ { \prime } : H _ { T } ^ { i } ( X ) \longrightarrow$ $H _ { T } ^ { i - 2 \dim ( X ) } ( p t )$ $T -$ $\pi : X \longrightarrow p t$ $\Lambda -$ pairing
+
+$$
+\langle \cdot , \cdot \rangle_ {T}: H _ {T} ^ {\star} (X) \otimes_ {\Lambda} H _ {T} ^ {\star} (X) \longrightarrow \Lambda
+$$
+
+defined by
+
+$$
+\langle a, b \rangle_ {T} = \pi_ {\star} ^ {T} (a \cup b)
+$$
+
+More about this pairing will be given in Prop. 2.2.
+
+2.2.1. Equivariant Schubert calculus. Let $X$ be the Grassmannian $G r ( p , m )$ . It inherits a diagonal $T -$ action by restriction from its $G l ( m ) -$ action. Given the finitedimensional approximation $E T _ { n }$ chosen above, one can show that the $X -$ bundle $\pi : X _ { T , n } \longrightarrow B T _ { n }$ is the Grassmann bundle
+
+$$
+\mathbb {G} (p, \mathcal {O} _ {(1)} (- 1) \oplus \dots \oplus \mathcal {O} _ {(m)} (- 1)) \longrightarrow \mathbb {P} _ {(1)} ^ {n - 1} \times \dots \times \mathbb {P} _ {(m)} ^ {n - 1}
+$$
+
+where $\mathbb { G } ( p , E )$ is the Grassmann bundle of rank $p$ subbundles of the vector bundle $E$ (see e.g. [EG], Section 3.3, for the case $T = \mathbb { C } ^ { \star }$ , $p = 1$ ). In particular, note that $X _ { T , n }$ is a smooth projective variety for any positive integer $n$ .
+
+Denote by $\Omega _ { \lambda }$ the Schubert variety of $X$ determined by the standard flag
+
+$$
+F _ {\bullet}: 0 \subset \langle e _ {1} \rangle \subset \langle e _ {1}, e _ {2} \rangle \subset \dots \subset \langle e _ {1}, \dots , e _ {m} \rangle = \mathbb {C} ^ {m}
+$$
+
+and by $\widetilde { \Omega } _ { \lambda }$ the Schubert variety determined by the opposite flag
+
+$$
+F _ {\bullet} ^ {o p p}: 0 \subset \langle e _ {m} \rangle \subset \langle e _ {m}, e _ {m - 1} \rangle \subset \dots \subset \langle e _ {m}, \dots , e _ {1} \rangle = \mathbb {C} ^ {m}
+$$
+
+These are $T -$ stable varieties, so they determine varieties $\Omega _ { \lambda } \times _ { T } E T _ { n }$ in $X _ { T , n }$ cohomology classes denotedvarieties are compatible as denoted by $\Omega _ { \lambda , n }$ , and $\widetilde \Omega _ { \lambda } \times _ { T } E T _ { n }$ by v $\sigma _ { \lambda , n } ^ { T ^ { \prime } }$ , denoted by respectively by , they determin $\widetilde { \Omega } _ { \lambda , n }$ $\widetilde { \sigma } _ { \lambda , n } ^ { T }$ . These varieties determine in iva $H ^ { 2 | \lambda | } ( X _ { T , n } )$ . Since theseology classes denoted by $\sigma _ { \lambda } ^ { T }$ and $\widetilde { \sigma } _ { \lambda } ^ { I ^ { \prime } }$ in $H _ { T } ^ { 2 | \lambda | } ( X )$ $n$ . Note that cohomology classes determined by the Schubert varieties depend on the flag used to define them.
+
+$B T _ { n }$ Since the classes , the Leray-Hirsch theorem implies that the classes $\sigma _ { \lambda }$ form a $\mathbb { Z } -$ basis for the cohomology of the fibers of $\sigma _ { \lambda , n } ^ { T ^ { \prime } }$ form a $H ^ { \star } ( B T _ { n } )$ $X _ { T , n } \longrightarrow$ -basis for $H ^ { \star } ( X _ { T , n } )$ (see [H], Ch. 16). It follows that $\{ \sigma _ { \lambda } ^ { T } \}$ form a $\Lambda -$ basis of $H _ { T } ^ { \star } ( X )$ .
+
+The structure constants of the equivariant cohomology with respect to this basis, denoted by $c _ { \lambda , \mu } ^ { \nu }$ , are called the equivariant Littlewood-Richardson coefficients. They agree with the classical ones when $| \lambda | + | \mu | = | \nu |$ and they are defined by the following formulae in $H _ { T } ^ { \star } ( X )$ :
+
+$$
+\boldsymbol {\sigma} _ {\lambda} ^ {T} \cdot \boldsymbol {\sigma} _ {\mu} ^ {T} = \sum_ {\nu} c _ {\lambda , \mu} ^ {\nu} \boldsymbol {\sigma} _ {\nu} ^ {T}
+$$
+
+From definition it follows that $c _ { \lambda , \mu } ^ { \nu } = c _ { \mu , \lambda } ^ { \nu }$ and that this is a homogeneous polynomial of (complex) degree $| \lambda | + | \mu | - | \nu |$ in $\Lambda = \mathbb { Z } [ T _ { 1 } , . . . , T _ { m } ]$ .3
+
+One way to effectively compute these coefficients is a recurrence formula, which appears in [MS, O, KT]. To state it, more notations are needed.
+
+Each partition $\lambda$ in the $p \times ( m - p )$ rectangle is traced out by a path starting from the NE corner of the $p \times ( m - p )$ rectangle and ending on the SW corner of the rectangle. Define the sets $I ( \lambda )$ and $J ( \lambda )$ encoding the positions of the vertical and horizontal steps of this path:
+
+$$
+I (\lambda) = \{i: \text {t h e} i - \text {t h s t e p o f t h e p a t h o f} \lambda \text {i s v e r t i c a l} \}
+$$
+
+$$
+J (\lambda) = \{j: \text {t h e} j - \text {t h s t e p o f t h e p a t h o f} \lambda \text {i s h o r i z o n t a l} \}
+$$
+
+For example, for $p = 2 , m = 4$ and $\lambda = ( 1 , 1 )$ , the set $I ( \lambda )$ is $\{ 2 , 3 \}$ while $J ( \lambda )$ is $\{ 1 , 4 \}$ . Recall that $\boxed { \begin{array} { r l } \end{array} }$ denotes the partition $( 1 , 0 , . . . , 0 )$ .
+
+Proposition 2.1 ([MS, O, KT]). The equivariant $L R$ coefficients $c _ { \lambda , \mu } ^ { \nu }$ are determined (algorithmically) by the following formulae:
+
+$\begin{array} { r } { c _ { \lambda , \bigtriangledown } ^ { \lambda } = \sum _ { i \in I ( \lambda ) } T _ { i } - \sum _ { j = m - p + 1 } ^ { m } T _ { j } } \end{array}$   
+(b) $\begin{array} { r } { c _ { \lambda , \lambda } ^ { \lambda } = \prod _ { i \in I ( \lambda ) , j \in J ( \lambda ) , i < j } ( T _ { i } - T _ { j } ) } \end{array}$   
+(c) $\begin{array} { r } { ( c _ { \lambda , \bigtriangledown } ^ { \lambda } - c _ { \mu , \bigtriangledown } ^ { \mu } ) \cdot c _ { \lambda , \mu } ^ { \lambda } = \sum _ { \delta \to \mu } c _ { \lambda , \delta } ^ { \lambda } } \end{array}$ for any $\lambda , \mu$ such that $\lambda \neq \mu$   
+(d) $\begin{array} { r } { ( c _ { \nu , \bigtriangledown } ^ { \nu } - c _ { \lambda , \bigtriangledown } ^ { \lambda } ) \cdot c _ { \lambda , \mu } ^ { \nu } = \sum _ { \delta  \lambda } c _ { \delta , \mu } ^ { \nu } - \sum _ { \nu  \zeta } c _ { \lambda , \mu } ^ { \zeta } } \end{array}$ for any $\lambda , \mu , \nu$ such that $\lambda \neq \nu$ . Except for parts (a) and (b), the proposition follows immediately from the equivariant Pieri rule:
+
+$$
+\sigma_ {\lambda} ^ {T} \cdot \sigma_ {\square} ^ {T} = \sum_ {\delta \rightarrow \lambda} \sigma_ {\delta} ^ {T} + c _ {\lambda , \square} ^ {\lambda} \sigma_ {\lambda} ^ {T}
+$$
+
+There is also a geometric definition of $c _ { \lambda , \mu } ^ { \nu }$ . It is the direct generalization of the geometric formula for the LR coefficients presented in §2.1. As in the classical case, it follows from a Duality theorem, stated with respect to the equivariant Poincar´e pairing defined in the previous section:
+
+Proposition 2.2 (equivariant Duality Theorem). The following formula holds in $H _ { T } ^ { 0 } ( p t )$ :
+
+$$
+\langle \sigma_ {\lambda} ^ {T}, \widetilde {\sigma} _ {\mu} ^ {T} \rangle_ {T} = \pi_ {\star} ^ {T} \left(\sigma_ {\lambda} ^ {T} \cup \widetilde {\sigma} _ {\mu} ^ {T}\right) = \delta_ {\lambda^ {\vee} \mu}
+$$
+
+where $\delta _ { \lambda ^ { \vee } \mu }$ is the Kronecker symbol, equal to 1 if $\lambda ^ { \vee }$ is equal to $\mu$ and 0 otherwise.
+
+Proof. This is found in the proof of Lemma 4.2, [Gr] for the variety of complete flags. The result for Grassmannians follows by pulling back using the ( $T -$ invariant) projection $p r : F l ( m ) \longrightarrow G r ( p , m )$ which induces an injective homomorphism
+
+$$
+p r _ {T} ^ {\star}: H _ {T} ^ {\star} (G r (p, m)) \longrightarrow H _ {T} ^ {\star} (F l (m))
+$$
+
+in the equivariant cohomology. For a direct proof see [Mi].
+
+The proposition implies that
+
+$$
+c _ {\lambda , \mu} ^ {\nu} = \pi_ {\star} ^ {T} \left(\sigma_ {\lambda} ^ {T} \cup \sigma_ {\mu} ^ {T} \cup \widetilde {\sigma} _ {\nu^ {\vee}} ^ {T}\right)
+$$
+
+This is the form that will generalize to the definition of the equivariant quantum LR coefficients.
+
+2.3. Quantum cohomology. The (small) quantum cohomology of $X$ is a graded, commutative $\mathbb { Z } [ q ] -$ algebra with unit, where the complex degree of $q$ is equal to $m$ . It has a $\mathbb { Z } [ q ] -$ basis $\left\{ \sigma _ { \lambda } \right\}$ indexed by partitions $\lambda$ included in the $p \times ( m - p )$ rectangle. By definition $O _ { \lambda }$ has complex degree equal to $| \lambda |$ . The multiplication, denoted by $\star$ , is defined by:
+
+$$
+\sigma_ {\lambda} \star \sigma_ {\mu} = \sum_ {d \geqslant 0} \sum_ {\nu} c _ {\lambda , \mu} ^ {\nu , d} q ^ {d} \cdot \sigma_ {\nu}
+$$
+
+The sum is over ν such that |λ| + |µ| = |ν| + md. The coefficients cν,dλ,µ $\nu$ $| \lambda | + | \mu | = | \nu | + m d$ $c _ { \lambda , \mu } ^ { \nu , d }$ are called quantum Littlewood-Richardson coefficients, and they are a special case of the (3- point, genus 0) Gromov-Witten invariants. They are equal to the number of rational curves of degree $d$ passing through Schubert varieties $\Omega _ { \lambda } ( F _ { \bullet } ) , \Omega _ { \mu } ( G _ { \bullet } )$ and $\Omega _ { \nu ^ { \vee } } ( H _ { \bullet } )$ , for general flags $F _ { \bullet } , G _ { \bullet }$ and $H _ { \bullet }$ . It is a deep result that this gives an associative operation. The degree 0 quantum LR-coefficients are equal to the ordinary LRcoefficients $c _ { \lambda , \mu } ^ { \nu }$ . In other words, the quantum cohomology is a deformation of the ordinary cohomology of X.
+
+Denote the quantum cohomology of $X$ by $Q H ^ { \star } ( X )$ . Further study of this algebra was done by [W, Be, BCF, Bu1, Y, BKT, FW, Po]. Recall a particular case of the “quantum Pieri rule” first proved in [Be]:
+
+$$
+\sigma_ {\lambda} \star \sigma_ {\square} = \sum_ {\mu \rightarrow \lambda} \sigma_ {\mu} + q \sigma_ {\lambda^ {-}}
+$$
+
+(the last term is omitted if $\lambda ^ { - }$ does not exist). This formula will be generalized to the equivariant setting in the next section.
+
+We recall next the formal definition of the quantum LR-coefficients. Let ${ \overline { { \mathcal { M } } } } _ { 0 , 3 } ( X , d )$ be the Kontsevich moduli space of degree $d$ stable maps from (arithmetic) genus 0 rational curves to $X$ with 3 marked points ([KM, FP]). Represent the closed points of this space by $( C , p _ { 1 } , p _ { 2 } , p _ { 3 } ; f )$ . There are evaluation maps
+
+$$
+e v _ {i}: \overline {{\mathcal {M}}} _ {0, 3} (G r (p, m), d) \longrightarrow G r (p, m)
+$$
+
+which send a stable map $( C , p _ { 1 } , p _ { 2 } , p _ { 3 } ; f )$ to $f ( p _ { i } )$ and the forgetful map
+
+$$
+\pi : \overline {{\mathcal {M}}} _ {0, 3} (G r (p, m), d) \longrightarrow \overline {{\mathcal {M}}} _ {0, 3} \simeq p t
+$$
+
+$c _ { \lambda , \mu } ^ { \nu , d }$
+
+$$
+\pi_ {\star} \left(e v _ {1} ^ {\star} \left(\sigma_ {\lambda}\right) \cup e v _ {2} ^ {\star} \left(\sigma_ {\mu}\right) \cup e v _ {3} ^ {\star} \left(\sigma_ {\nu^ {\vee}}\right)\right)
+$$
+
+where $\sigma _ { \alpha }$ is the Schubert class defined in §2.1. and $u _ { \star }$ is the Gysin morphism (§2.1).
+
+Proof. See e.g. Lemma 14 in [FP].
+
+If $d = 0$ one gets $\overline { { { \mathscr { M } } } } _ { 0 , 3 } ( G r ( p , m ) , d ) \simeq G r ( p , m )$ , so the definition above becomes the geometric definition of the classical LR-coefficients. We will see that this definition of quantum LR coefficients generalizes to the definition of the equivariant quantum LR coefficients.
+
+# 3. Equivariant quantum Schubert calculus
+
+3.1. Equivariant quantum cohomology. The definition of the equivariant quantum cohomology of a variety $X$ with a G-action was given in [GK]. Computations and properties of this object can be found in [GK, AS, Kim1, Kim2, Kim3].
+
+We restrict ourselves to the case when $X = G r ( p , m )$ and $G = T \simeq ( \mathbb { C } ^ { \star } ) ^ { m }$
+
+as in the previous sections. Moreover, we work with small equivariant quantum cohomology obtained by considering a certain restriction of the (big) equivariant quantum product.
+
+We state some of the properties of $T -$ equivariant quantum cohomology of $X$ as found in [Kim1, Kim2]. Recall that $\Lambda = H _ { T } ^ { \star } ( p t ) = \mathbb { Z } [ T _ { 1 } , . . . , T _ { m } ]$ .
+
+(1) The equivariant quantum cohomology of $X$ is a graded associative, commutative $\Lambda [ q ]$ -algebra with unit.   
+(2) It has an additive $\Lambda [ q ] -$ basis $\left\{ \sigma _ { \lambda } \right\}$ indexed by partitions $\lambda$ in the $p \times ( m - p )$ rectangle.   
+(3) The ring multiplication, denoted $\cup$ , is given by:
+
+$$
+\sigma_ {\lambda} \circ \sigma_ {\mu} = \sum_ {d \geqslant 0} \sum_ {\nu} c _ {\lambda , \mu} ^ {\nu , d} q ^ {d} \cdot \sigma_ {\nu}
+$$
+
+where $c _ { \lambda , \mu } ^ { \nu , d }$ are the equivariant quantum Littlewood-Richardson coefficients (EQLR).
+
+The EQLR coefficients are a generalization of both the (non-equivariant, pure) quantum and the equivariant LR coefficients and have the following properties:
+
+$c _ { \lambda , \mu } ^ { \nu , d }$ $\Lambda$ $| \lambda | + | \mu | - | \nu | - m d$   
+$d = 0$ $c _ { \lambda , \mu } ^ { \nu , d }$ $c _ { \lambda , \mu } ^ { \nu }$   
+(iii) If $| \lambda | + | \mu | = | \nu | + m d$ (i.e. if $c _ { \lambda , \mu } ^ { \nu , d }$ cλ,µ has polynomial degree 0), cλ,µ $c _ { \lambda , \mu } ^ { \nu , d }$ is the quantum LR-coefficient.
+
+Note that (ii) and (iii) imply that the equivariant quantum cohomology algebra is a graded deformation of both equivariant and quantum cohomology of $X$ .
+
+Kim’s definition of the EQLR coefficients, adapted to our context, will be given in the next section. Property (1) is proved in Prop. 3.1 of the next section, and properties (ii) and (iii) are respectively Claim 1 and Claim 2 within the proof of this proposition (found in the Appendix). Property (i) will hold by the definition of the EQLR coefficients. Also by definition (see e.g. [Kim1] §4, (iv)) the equivariant quantum cohomology is isomorphic, as a $\Lambda [ q ] -$ module, with the free module $H _ { T } ^ { \star } ( X ) \otimes \mathbb { Z } [ q ]$ . Property (2) is equivalent to this fact.
+
+3.2. Equivariant Littlewood-Richardson coefficients. The goal of this section is to present the definition of the EQLR coefficients. The main references are [Kim1, Kim2].
+
+Recall that $\sigma _ { \lambda } ^ { T ^ { \prime } }$ (resp. $\widetilde { \sigma } _ { \lambda } ^ { I ^ { \prime } }$ ) denote the equivariant cohomology Schubert classe defined with respect to the standard (resp. the opposite) flag. Recall also the following diagram from Section 2.3:
+
+$$
+\begin{array}{l} \overline {{\mathcal {M}}} _ {0. 3} (X, d) \xrightarrow {e v _ {i}} X \\ \pi \Bigg{\downarrow} \\ \overline {{\mathcal {M}}} _ {0. 3} \simeq p t \\ \end{array}
+$$
+
+where $e v _ { i }$ is the evaluation at the $i -$ th point, $1 \leqslant i \leqslant 3$ . The $T -$ action on $X$ induces a $T -$ action on ${ \overline { { \mathcal { M } } } } _ { 0 , 3 } ( X , d )$ by:
+
+$$
+t \cdot \left(C, p _ {1}, p _ {2}, p _ {3}; f\right) := \left(C, p _ {1}, p _ {2}, p _ {3}; \bar {f}\right)
+$$
+
+where ${ \ddot { f } } ( x ) : = t \cdot f ( x )$ , for $x$ in $C$ and $t$ in $T$ . All the maps involved in the above diagram are $T -$ equivariant, therefore they determine a diagram
+
+$$
+\begin{array}{l} \overline {{\mathcal {M}}} _ {0, 3} (X, d) _ {T} := E T \times_ {T} \overline {{\mathcal {M}}} _ {0, 3} (X, d) \xrightarrow {e v _ {i} ^ {T}} X _ {T} \\ \pi^ {T} \Bigg {\downarrow} \\ E T \times_ {T} \overline {{\mathcal {M}}} _ {0, 3} \simeq B T \\ \end{array}
+$$
+
+The EQLR coefficients generalize both their equivariant and quantum versions. Given the the definitions of the latter ones in Sections 2.2 and 2.3 , there is only one sensible choice:
+
+$$
+c _ {\lambda , \mu} ^ {\nu , d} = \pi_ {\star} ^ {T} \big ((e v _ {1} ^ {T}) ^ {\star} (\sigma_ {\lambda} ^ {T}) \cup (e v _ {2} ^ {T}) ^ {\star} (\sigma_ {\mu} ^ {T}) \cup (e v _ {3} ^ {T}) ^ {\star} (\widetilde {\sigma} _ {\nu^ {\vee}} ^ {T}) \big)
+$$
+
+where $\pi _ { \star } ^ { T }$ is the equivariant Gysin morphism.
+
+Following Kim, we define the equivariant quantum cohomology. Let $( A , \circ )$ be the graded $\Lambda [ q ]$ -module having a $\Lambda [ q ]$ -basis $\left\{ \sigma _ { \lambda } \right\}$ indexed by partitions $\lambda$ included in the $p \times ( m - p )$ rectangle. The degrees are the usual ones (see §2 above). Define a multiplication, denoted $\circ$ , among the basis elements of $A$ as follows:
+
+$$
+\sigma_ {\lambda} \circ \sigma_ {\mu} = \sum_ {d \geqslant 0} \sum_ {\nu} c _ {\lambda , \mu} ^ {\nu , d} q ^ {d} \cdot \sigma_ {\nu}
+$$
+
+Proposition 3.1 ([Kim2],[Kim1]). $( A , \circ )$ is a commutative, associative Λ[q]- algebra with unit. There are canonical isomorphisms
+
+(1) $A / \langle \Lambda ^ { + } \cdot A \rangle \simeq Q H ^ { \star } ( X )$ as $\mathbb { Z } [ q ]$ -algebras   
+(2) $A / \langle q \cdot A \rangle \simeq H _ { T } ^ { \star } ( X )$ as Λ-algebras.
+
+sending a basis element $\sigma _ { \lambda }$ to the corresponding $\sigma _ { \lambda }$ in $Q H ^ { \star } ( X )$ , respectively to $\sigma _ { \lambda } ^ { T }$ in $H _ { T } ^ { \star } ( X )$ . $\Lambda ^ { + }$ denotes the ideal of elements in Λ of (strictly) positive degree.
+
+Proof. The proof is given in the Appendix.
+
+Notation: The algebra $A$ from Prop. 3.1 is the $T -$ equivariant quantum cohomology algebra of $X$ and it is denoted by $Q H _ { T } ^ { * } ( X )$ .
+
+Remark: There is another description of $Q H _ { T } ^ { * } ( X )$ , involving a presentation with generators and relations. This presentation was first computed in [GK] for Grassmannians and complete flag manifolds, then in [AS, Kim1] for partial flag manifolds. These presentations were used to derive presentations for the corresponding nonequivariant quantum cohomology algebras. Also, equivariant quantum cohomology has been successfully used to study Mirror Symmetry phenomena (see [G]).
+
+# 4. Proof of the Main Lemma
+
+In this section we prove the Main Lemma and an additional vanishing result for the EQLR coefficients. For that, we need to introduce some results due to A. Buch (see [Bu1, BKT]). Let $f : ( C , p _ { 1 } , p _ { 2 } , p _ { 3 } ) \longrightarrow X$ be a stable map of degree $d$ , where the curve $C$ is isomorphic to a tree of $\mathbb { P } ^ { 1 }$ ’s. The kernel of $f$ , denoted $k e r ( f )$ , is the largest subspace that is contained in all $f ( x )$ for $x \in C$ . Similarly, define the span of $f$ , denoted $s p a n ( f )$ , to be the smallest subspace that contains all $f ( x )$ for $x \in C$ .
+
+Remark: The above definitions of the kernel and the span are a slight generalization of the definitions in [Bu1] since we allow the curve $C$ to be reducible.
+
+The following two results can be found in [Bu1] when $C \simeq \mathbb { P } ^ { 1 }$ .
+
+Proposition 4.1. The kernel of $f$ has dimension at least $p - d$ and the span of $f$ has dimension at most $p + d$ .
+
+Proof. The curve $\textstyle C = \bigcup _ { i = 1 } ^ { s } C _ { i }$ is a tree of rational curves $C _ { i } \simeq \mathbb { P } ^ { 1 }$ , and $f$ restricted to each $C _ { i }$ has some degree $d _ { i }$ such that $\textstyle \sum _ { i = 1 } ^ { s } d _ { i } = d$ . We use induction on the number $s$ of components of $C$ . If s=1, the assertion is Lemma 1 in [Bu1]. Suppose $s > 1$ . Assume that $C = C ^ { ( 1 ) } \bigcup C ^ { ( 2 ) }$ , where $C ^ { ( 1 ) }$ and $C ^ { ( 2 ) }$ are trees of rational curves in $C$ intersecting in some point $x \in C$ . Let $\boldsymbol { d } ^ { ( i ) }$ be the degree of $f$ restricted to $C ^ { ( i ) }$ . Let $W ^ { ( i ) }$ , $K ^ { ( i ) }$ be the span respectively the kernel of $f$ restricted to $C ^ { ( i ) }$ . The induction hypothesis implies that $\dim ( W ^ { ( i ) } ) \ \leqslant \ p + d ^ { ( i ) }$ , and $\mathrm { d i m } ( K ^ { ( i ) } ) \ \geqslant$ $\boldsymbol { p } - d ^ { ( i ) }$ . But $C ^ { ( 1 ) }$ and $C ^ { ( 2 ) }$ intersect in a unique point $x$ , and $f ( x )$ is a space of dimension $p$ . Thus both $W ^ { ( 1 ) }$ and $W ^ { ( 2 ) }$ contain the space $f ( x )$ . It follows that dim(spanf ) = dimhW (1) + W (2)i 6 p + d(1) + d(2) = p + d.
+
+For the kernels, note that both $K ^ { ( 1 ) }$ and $K ^ { ( 2 ) }$ are contained in $f ( x )$ , with codimensions at most $d ^ { ( 1 ) }$ respectively $d ^ { ( 2 ) }$ . Then the codimension of their intersection is at most $d ^ { ( 1 ) } + d ^ { ( 2 ) } = d$ , which shows that $\mathrm { d i m } ( k e r f ) = \mathrm { d i m } ( K ^ { ( 1 ) } \cap K ^ { ( 2 ) } ) \geq$ $p - d$ . 
+
+Denote by $\overline { { \lambda } } ( d )$ the partition obtained from $\lambda$ by removing its first $d$ rows and by $\hat { \lambda } ( d )$ the partition obtained from $\lambda$ by removing the leftmost $d$ columns. To be precise, if $\lambda = ( \lambda _ { 1 } , . . . , \lambda _ { p } )$ then $\overline { { \lambda } } ( d ) = ( \lambda _ { d + 1 } , . . . , \lambda _ { p } )$ while the $i -$ th part $( \hat { \lambda } ( d ) ) _ { i }$ of $\hat { \lambda } ( d )$ is equal to $\operatorname* { m a x } ( \lambda _ { i } - d , 0 )$ . Recall that $\sigma _ { ( 0 ) } = 1$ .
+
+Proposition 4.2. Let $f : ( C , p _ { 1 } , p _ { 2 } , p _ { 3 } ) \longrightarrow X$ be a stable map of degree $d$ , let $K$ be a $( p - d )$ -dimensional subspace of the kernel of $f$ and let $W$ be a $( p + d )$ - dimensional subspace containing the span of $f$ . For any complete flag $F _ { \bullet } : 0 \subset$ $F _ { 1 } \subset . . . \subset F _ { m } = \mathbb { C } ^ { m }$ , if the image of $f$ intersects $\Omega _ { \lambda } ( F _ { \bullet } )$ then $K$ belongs to the Schubert variety $\Omega _ { \overline { { \lambda } } ( d ) } ( F _ { \bullet } )$ in $G r ( p - d , m )$ and $W$ belongs to the Schubert variety $\Omega _ { \hat { \lambda } ( d ) } ( F _ { \bullet } )$ in $G r ( p + d , m )$ .
+
+Proof. The Proposition is Lemma 2 in [Bu1] for $C \simeq \mathbb { P } ^ { 1 }$ , but the proof for general $C$ is the same. 
+
+Lemma 4.3. Let $\lambda , \mu , \nu$ be three partitions in the $p \times ( m - p )$ rectangle such that one of the following holds:
+
+(1) $d < p$ and $\sigma _ { \overline { { \lambda } } ( d ) } \cdot \sigma _ { \overline { { \nu ^ { \vee } } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p - d , m ) )$   
+(2) $d < m - p$ and $\sigma _ { \hat { \lambda } ( d ) } \cdot \sigma _ { \widehat { \nu ^ { \vee } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p + d , m ) )$
+
+The n $c _ { \lambda , \mu } ^ { \nu , d } = 0$
+
+To prove the Lemma we need the following fact:
+
+Fact 1. Let $F : X ^ { \prime } \longrightarrow Y$ be a $T -$ equivariant morphism of two algebraic varieties, with $Y$ smooth. Let $V$ be a $T -$ invariant subvariety of $Y$ of codimension $c$ and let $[ V ] _ { T } \in H _ { T } ^ { 2 c } ( Y )$ be the equivariant cohomology class of $V$ . Then the equivariant cohomology pull-back $F _ { T } ^ { \star } ( [ V ] _ { T } )$ is equal to 0 if $F ^ { - 1 } ( V )$ is empty.
+
+This follows from the observation that $F _ { T } ^ { \star } ( [ V ] _ { T } )$ is supported on $F ^ { - 1 } ( V ) _ { T }$ . Details can be found in [Mi].
+
+Proof of Lemma 4.3. The idea of proof to show that if $c _ { \lambda , \mu } ^ { \nu , d }$ is different from 0 then the intersection
+
+$$
+e v _ {1} ^ {- 1} \left(\Omega_ {\lambda}\right) \cap e v _ {2} ^ {- 1} \left(\Omega_ {\mu}\right) \cap e v _ {3} ^ {- 1} \left(\widetilde {\Omega} _ {\nu \vee}\right)
+$$
+
+in ${ \overline { { \mathcal { M } } } } _ { 0 , 3 } ( X , d )$ is nonempty. Then use Prop. 4.2 to get a contradiction.
+
+Assume that $c _ { \lambda , \mu } ^ { \nu , d }$ is not 0. By the definition of the equivariant Gysin morphism, the EQLR coefficient is equal to
+
+$$
+c _ {\lambda , \mu} ^ {\nu , d} = \pi_ {\star} ^ {T} \left(\left(e v _ {1} ^ {T}\right) ^ {\star} \left(\sigma_ {\lambda} ^ {T}\right) \cup \left(e v _ {2} ^ {T}\right) ^ {\star} \left(\sigma_ {\mu} ^ {T}\right) \cup \left(e v _ {3} ^ {T}\right) ^ {\star} \left(\widetilde {\sigma} _ {\nu \vee} ^ {T}\right)\right)
+$$
+
+Apply Fact 1 with $X ^ { \prime } = \overline { { \mathcal { M } } } _ { 0 , 3 } ( X , d )$ , $Y = X \times X \times X$ , $V = \Omega _ { \lambda } \times \Omega _ { \mu } \times \widetilde \Omega _ { \nu } ^ { T } \times$ and $F = ( e v _ { 1 } , e v _ { 2 } , e v _ { 3 } )$ , where $T$ acts diagonally on $Y$ . Note that $V$ is $T -$ invariant and that the pull-back of its equivariant cohomology class in $H _ { T } ^ { \star } ( Y )$ satisfies
+
+$$
+F _ {T} ^ {\star} ([ V ] _ {T}) = \left(e v _ {1} ^ {T}\right) ^ {\star} \left(\sigma_ {\lambda} ^ {T}\right) \cup \left(e v _ {2} ^ {T}\right) ^ {\star} \left(\sigma_ {\mu} ^ {T}\right) \cup \left(e v _ {3} ^ {T}\right) ^ {\star} \left(\widetilde {\sigma} _ {\nu^ {\vee}} ^ {T}\right)
+$$
+
+(this follows from the finite dimensional approximation approach, discussed in §2.2 above). Thus the inverse image $F ^ { - 1 } ( V )$ , which is equal to the intersection
+
+$$
+e v _ {1} ^ {- 1} \left(\Omega_ {\lambda}\right) \cap e v _ {2} ^ {- 1} \left(\Omega_ {\mu}\right) \cap e v _ {3} ^ {- 1} \left(\widetilde {\Omega} _ {\nu} ^ {\vee}\right)
+$$
+
+must be nonempty in ${ \overline { { \mathcal { M } } } } _ { 0 , 3 } ( X , d )$ . This amounts to the existence of a stable map
+
+$$
+f: (C, p _ {1}, p _ {2}, p _ {3}) \longrightarrow X
+$$
+
+whose image intersects $\Omega _ { \lambda } , \Omega _ { \mu }$ and $\widetilde { \Omega } _ { \nu ^ { \vee } }$ .
+
+Suppose $p < d$ . Choose $K _ { f }$ to be a $( p - d ) -$ dimensional subspace of the kernel of $f$ (such a $K _ { f }$ exists by Proposition 4.1). Proposition 4.2 implies that $K _ { f }$ belongs to $\Omega _ { \overline { { \lambda } } ( d ) } \cap \Omega _ { \overline { { \mu } } ( d ) } \cap \bar { \Omega } _ { \overline { { \nu ^ { \vee } } } ( d ) }$ . In particular the intersection $\Omega _ { \overline { { \lambda } } ( d ) } \cap \widetilde { \Omega } _ { \overline { { \nu ^ { \vee } } } ( d ) }$ is nonempty. But it is a general fact that two Schubert varieties defined with respect to opposite flags are in general position (see e.g. [F1], pag. 149) . It follows that the cohomology product $\sigma _ { \overline { { \lambda } } ( d ) } \cdot \sigma _ { \overline { { \nu ^ { \vee } } } ( d ) }$ must be nonzero in $H ^ { \star } ( G r ( p - d , m ) )$ , contradicting the hypothesis (1).
+
+The case when $d < m { - p }$ is treated in a similar fashion, using a $( p + d ) -$ dimensional space $W _ { f }$ including the span of $f$ . 
+
+The key result of this paper is a sufficiently general condition that implies one of the hypothesis of Lemma 4.3, therefore giving a sufficient condition for the vanishing of the EQLR coefficients. This condition is spelled out in the Main Lemma. We divide its proof into two other lemmas, which we prove first, corresponding to the hypotheses (1) and (2) of Lemma 4.3.
+
+Lemma 4.4. Let $\lambda , \mu , \nu$ be three partitions included in the $p \times ( m - p )$ rectangle and let $d$ be a positive integer. Suppose that $d < p$ and that $\left| \lambda \right| + d ^ { 2 } > \left| \nu \right| + m d$ . Then $\sigma _ { \overline { { \lambda } } ( d ) } \cdot \sigma _ { \overline { { \nu ^ { \vee } } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p - d , m ) )$ .
+
+Proof. To prove the Lemma, it is enough to verify the following inequality:
+
+$$
+\left| \bar {\lambda} (d) \right| + \left| \overline {{\nu^ {\vee}}} (d) \right| > (p - d) (m - p + d) = \dim (G r (p - d, m))
+$$
+
+Let $\lambda = ( \lambda _ { 1 } , . . . , \lambda _ { p } )$ and $\nu ^ { \vee } = ( \rho _ { 1 } , . . . , \rho _ { p } )$ . Then $\overline { { \lambda } } ( d ) = ( \lambda _ { d + 1 } , . . . , \lambda _ { p } )$ and $\overline { { \nu ^ { \vee } } } ( d ) =$ $( \rho _ { d + 1 } , . . . , \rho _ { p } )$ . The fact that $\vert \lambda \vert + d ^ { 2 } > \vert \nu \vert + m d$ implies that $d ^ { 2 } + | \lambda | + | \nu ^ { \vee } | >$ $p ( m - p ) + m d$ . Then
+
+$$
+\sum_ {i = 1} ^ {d} \lambda_ {i} + \sum_ {i = d + 1} ^ {p} \lambda_ {i} + \sum_ {j = 1} ^ {d} \rho_ {j} + \sum_ {j = d + 1} ^ {p} \rho_ {j} > p (m - p) + m d - d ^ {2}
+$$
+
+hence
+
+$$
+\sum_ {i = d + 1} ^ {p} \left(\lambda_ {i} + \rho_ {i}\right) > p (m - p) + m d - d ^ {2} - \sum_ {i = 1} ^ {d} \lambda_ {i} - \sum_ {j = 1} ^ {d} \rho_ {j}
+$$
+
+But
+
+$$
+\sum_ {i = 1} ^ {d} \lambda_ {i} + \sum_ {j = 1} ^ {d} \rho_ {j} \leq 2 d (m - p)
+$$
+
+hence
+
+$$
+\sum_ {i = d + 1} ^ {p} \left(\lambda_ {i} + \rho_ {i}\right) > p (m - p) + m d - d ^ {2} - 2 d (m - p) = (p - d) (m - p + d)
+$$
+
+which finishes the proof of the Lemma.
+
+![](images/28d133d8ce3f9106595f17037303433cd96d53aa0f6f0149adffb8c3092d2284.jpg)
+
+Lemma 4.5. Let $\lambda , \mu , \nu$ be three partitions included in $p \times ( m - p )$ rectangle and let $d > 0$ be an integer. Suppose that $d < m - p$ and that $\left| \lambda \right| + d ^ { 2 } > \left| \nu \right| + m d$ . Then σλˆ(d) · σν∨(d) = 0 in H⋆(Gr(p + d, m)). $\sigma _ { \hat { \lambda } ( d ) } \cdot \sigma _ { \nu ^ { \vee } ( d ) } = 0$ $H ^ { \star } ( G r ( p + d , m ) )$
+
+Proof. Consider the conjugation isomorphism $\psi : G r ( m - p , m ) \longrightarrow G r ( p , m )$ . $\psi$ induces an isomorphism $\psi ^ { \star } : H ^ { \star } ( G r ( p , m ) \longrightarrow H ^ { \star } ( G r ( m - p , m ) )$ and it is wellknown that $\psi ^ { \star }$ sends the class $\sigma _ { \lambda } \in H ^ { \star } ( G r ( p , m ) )$ to the class $\sigma _ { \lambda ^ { \prime } } \in H ^ { \star } ( G r ( m -$ $p , m )$ ), where $\lambda ^ { \prime }$ is the partition conjugate to $\lambda$ .
+
+Note that the hypotheses of the Lemma 4.4 are satisfied when using partitions $\lambda ^ { \prime } , \mu ^ { \prime } , \nu ^ { \prime }$ in the $( m - p ) \times p$ rectangle. Therefore $\sigma _ { \overline { { \lambda ^ { \prime } } } ( d ) } \cdot \sigma _ { \overline { { ( \nu ^ { \prime } ) ^ { \vee } } } ( d ) } = 0$ in $H ^ { \star } ( G r ( m -$ $p - d , m )$ ). Using again the conjugation isomorphism for the Grassmannians $G r ( m -$ $p - d , m )$ and $G r ( p + d , m )$ gives that
+
+$$
+\sigma_ {\overline {{\lambda^ {\prime}}} (d) ^ {\prime}} \cdot \sigma_ {\overline {{(\nu^ {\prime}) ^ {\vee}}} (d) ^ {\prime}} = 0
+$$
+
+in $H ^ { \star } ( G r ( p + d , m ) )$ . Note that $( \nu ^ { \prime } ) ^ { \vee } = ( \nu ^ { \vee } ) ^ { \prime }$ . To finish the proof it is enough to prove the following combinatorial fact:
+
+Fact : Let $a , b , d$ be positive integers such that $d \digamma < \ b$ and let $\lambda$ be a partition included in the $a \times b$ rectangle. Then $( \overline { { { \lambda ^ { \prime } } } } ( d ) ) ^ { \prime } = \hat { \lambda } ( d )$ in the $( a + d ) \times ( b - d )$ rectangle.
+
+Proof: Let $\lambda ^ { \prime } = ( t _ { 1 } , . . . , t _ { b } )$ . Then $( \widehat { \lambda } ( d ) ) ^ { \prime } = ( t _ { d + 1 } , . . . , t _ { b } ) = \overline { { { \lambda } ^ { \prime } } } ( d )$ , which implies that ${ \hat { \lambda } ( d ) = ( ( { \hat { \lambda } ( d ) } ) ^ { \prime } ) ^ { \prime } = ( { \overline { { \lambda ^ { \prime } } } ( d ) } ) ^ { \prime } }$ . 
+
+Concluding, the two previous lemmas add up to:
+
+Main Lemma. Let $\lambda , \mu , \nu$ be three partitions included in $p \times ( m - p )$ rectangle and let $d > 0$ be an integer. Suppose that $\vert \lambda \vert + d ^ { 2 } > \vert \nu \vert + m d$ . Then $c _ { \lambda , \mu } ^ { \nu , d } = 0$ .
+
+Proof of the Main Lemma: First note that $d \neq p$ . Indeed, $\vert \lambda \vert + d ^ { 2 } > \vert \nu \vert + m d$ and $\lambda \subset ( m - p ) ^ { p }$ implies that $p ( m - p ) + d ^ { 2 } > | \nu | + m d$ . $p = d$ would imply $d ^ { 2 } - d ^ { 2 } > | \nu |$ which is impossible. It remains to study the cases when $d < p$ and $d > p$ .
+
+If $d < p$ , apply Lemma 4.4 to get that $\sigma _ { \overline { { \lambda } } ( d ) } \cdot \sigma _ { \overline { { \nu ^ { \vee } } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p - d , m ) )$ . Then Lemma 4.3, statement (1), implies that cν,dλ,µ $c _ { \lambda , \mu } ^ { \nu , d } = 0$ v,d .
+
+If $d > p$ , we claim that $d < m - p$ . Indeed, since $| \nu ^ { \vee } | = p ( m - p ) - | \nu |$ , we can rewrite the inequality $| \lambda | + | \mu | \geqslant | \nu | + m d$ a s
+
+$$
+| \lambda | + | \mu | + | \nu^ {\vee} | \geqslant p (m - p) + m d
+$$
+
+But $| \lambda | \leqslant p ( m - p ) < d ( m - p )$ , hence
+
+$$
+d (m - p) + | \mu | + | \nu^ {\vee} | > | \lambda | + | \mu | + | \nu^ {\vee} | \geqslant p (m - p) + m d.
+$$
+
+Then
+
+$$
+\left| \mu \right| + \left| \nu^ {\vee} \right| > p (m - p) + p d.
+$$
+
+Since $| \mu | , | \nu ^ { \vee } | \leqslant p ( m - p )$ , one has that $p d < p ( m - p )$ , which implies $d < m - p$ , as needed. Hence we can apply Lemma 4.5 to get that $\sigma _ { \hat { \lambda } ( d ) } \cdot \sigma _ { \widehat { \nu ^ { \vee } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p +$ $d , m )$ ). Finally, Lemma 4.3, statement (2) gives that cλ,µ $c _ { \lambda , \mu } ^ { \nu , d } = 0$ . 
+
+An immediate application of the Main Lemma is the next Corollary, which shows the vanishing of the mixed EQLR Pieri coefficients.
+
+d be a positive integer. Then Corollary 4.6. Let $\lambda , \nu$ be two partitions included in $c _ { \lambda , \bigstar } ^ { \nu , d } = 0$ , unless $d = 1$ and $p \times ( m - p )$ $\nu = \lambda ^ { - }$ . rectangle and let
+
+Proof. If the polynomial degree of $c _ { \lambda , \bigsqcup } ^ { \nu , d }$ is equal to 0, the assertion follows from the quantum Pieri rule (§2.3). If the polynomial degree of $c _ { \lambda , \bigsqcup } ^ { \nu , d }$ is positive, since the partition $\boxed { \begin{array} { r l } \end{array} }$ is included in the $d \times d$ square, note that
+
+$$
+\left| \lambda \right| + d ^ {2} \geqslant \left| \lambda \right| + \left| \square \right| > \left| \nu \right| + m d
+$$
+
+so the conclusion follows from the Main Lemma.
+
+Remark: There is another proof of this result, which doesn’t use the Main Lemma, and which generalizes to any homogeneous space $G / P$ . However, this proof is weaker, in the sense that it does not imply the vanishing result from the Main Lemma. That is why we have chosen the proof above.
+
+Next we prove another vanishing result, to be used later (§7).
+
+Proposition 4.7. Let $\lambda$ be a partition included in the $p \times ( m - p )$ rectangle. Then cλ,(m−p)p = 0 for d < min{p, m − p}. (0),d $c _ { \lambda , ( m - p ) ^ { p } } ^ { ( 0 ) , d } = 0$ $d < m i n \{ p , m - p \}$
+
+Proof. By Lemma 4.3, the result follows if $\sigma _ { \overline { { ( m - p ) ^ { p } } } ( d ) } \cdot \sigma _ { \overline { { ( m - p ) ^ { p } } } ( d ) } = 0$ in $H ^ { \star } ( G r ( p -$ $d , m )$ ). For that, it is enough to note that
+
+$$
+| \overline {{(m - p) ^ {p}}} (d) | + | \overline {{(m - p) ^ {p}}} (d) | = 2 (m - p) (p - d) > (p - d) (m - p + d) = \dim (G r (p - d, m))
+$$
+
+where the last inequality follows from the assumption $d < m - p$ .
+
+# 5. Equivariant quantum Pieri rule
+
+We prove the equivariant quantum Pieri rule, then a recursive formula for the EQLR coefficients. These will be the main ingredients of an algorithm to compute the EQLR coefficients (cf. §7). Recall that the equivariant quantum cohomology of $X$ is denoted by $Q H _ { T } ^ { * } ( X )$ and that the equivariant coefficient $c _ { \lambda , \bigtriangledown } ^ { \lambda }$ is given by
+
+$$
+c _ {\lambda , \square} ^ {\lambda} = \sum_ {i \in I (\lambda)} T _ {i} - \sum_ {j = m - p + 1} ^ {m} T _ {j}
+$$
+
+where $I ( \lambda )$ encodes the positions of the vertical steps in the partition $\lambda$ (Prop. 2.1).
+
+Theorem 1 (equivariant quantum Pieri rule). The following formula holds in $Q H _ { T } ^ { * } ( G r ( p , m ) )$ :
+
+$$
+\sigma_ {\lambda} \circ \sigma_ {\square} = \sum_ {\mu \rightarrow \lambda} \sigma_ {\mu} + c _ {\lambda , \square} ^ {\lambda} \sigma_ {\lambda} + q \sigma_ {\lambda^ {-}}
+$$
+
+where the last term is omitted if $\lambda ^ { - }$ does not exist.
+
+Proof. The equivariant quantum Pieri rule is a deformation of both equivariant and quantum Pieri rules. In particular, it must contain at least the terms on the right side. It remained to prove that there are not any other terms. The only possibilities are terms of the form $c _ { \lambda , \bigstar } ^ { \nu , d } \sigma _ { \nu }$ where $d > 0$ and the polynomial degree of $c _ { \lambda , \bigsqcup } ^ { \nu , d }$ is positive. But Corollary 4.6 shows that in this case $c _ { \lambda , \bigstar } ^ { \nu , d } = 0$ , as claimed. 
+
+The equivariant quantum Pieri rule, commutativity and an associativity relation implies a quantum generacoefficients (cf. Prop. 2.1 zation of an equation satisfied by the equivariantr [MS, O, KT]). It relates the EQLR coefficient $c _ { \lambda , \mu } ^ { \nu , d }$ $d$ larger.
+
+Proposition 5.1. The EQLR coefficients satisfy the following equation:
+
+$$
+(2) \quad (\sum_ {i \in I (\nu)} T _ {i} - \sum_ {j \in I (\lambda)} T _ {j}) \cdot c _ {\lambda , \mu} ^ {\nu , d} = \sum_ {\delta \rightarrow \lambda} c _ {\delta , \mu} ^ {\nu , d} - \sum_ {\nu \rightarrow \zeta} c _ {\lambda , \mu} ^ {\zeta , d} + c _ {\lambda^ {-}, \mu} ^ {\nu , d - 1} - c _ {\lambda , \mu} ^ {\nu^ {+}, d - 1}
+$$
+
+for any partitions $\lambda , \mu , \nu$ and any nonnegative integer d. As usual, the third (resp. the fourth) term in the right side is omitted if $\lambda ^ { - }$ (resp. $\nu ^ { + }$ ) does not exist in the $p \times ( m - p )$ rectangle. Both these terms are omitted if $d = 0$ .
+
+Proof. We use the EQ Pieri rule and the associativity relation $\sigma _ { \perp } \circ ( \sigma _ { \lambda } \circ \sigma _ { \mu } ) =$ $\left( \sigma _ { \bigtriangledown } \circ \sigma _ { \lambda } \right) \circ \sigma _ { \mu }$ . Recall that $\sigma _ { \lambda } \circ \sigma _ { \square } = \sigma _ { \square } \circ \sigma _ { \lambda }$ for any partition $\lambda$ . The result will follow from the identification of the coefficient of $q ^ { d } \sigma _ { \nu }$ in both sides of the relation. Indeed, we have
+
+$$
+\begin{array}{l} \sigma_ {\square} \circ (\sigma_ {\lambda} \circ \sigma_ {\mu}) = \sigma_ {\square} \circ (\sum_ {d, \rho} q ^ {d} c _ {\lambda , \mu} ^ {\rho , d} \sigma_ {\rho}) \\ = \sum_ {d, \rho} q ^ {d} c _ {\lambda , \mu} ^ {\rho , d} \left(\sum_ {\theta \rightarrow \rho} \sigma_ {\theta} + q \sigma_ {\rho^ {-}} + c _ {\square , \rho} ^ {\rho} \sigma_ {\rho}\right) \\ \end{array}
+$$
+
+and
+
+$$
+\begin{array}{l} \left(\sigma_ {\square} \circ \sigma_ {\lambda}\right) \circ \sigma_ {\mu} = \left(\sum_ {\delta \rightarrow \lambda} \sigma_ {\delta} + q \sigma_ {\lambda^ {-}} + c _ {\square , \lambda} ^ {\lambda} \sigma_ {\lambda}\right) \circ \sigma_ {\mu} \\ = \sum_ {\delta \rightarrow \lambda} \left(\sum_ {\alpha , d _ {1}} q ^ {d _ {1}} c _ {\delta , \mu} ^ {\alpha , d _ {1}} \sigma_ {\alpha}\right) + q \left(\sum_ {\beta , d _ {2}} q ^ {d _ {2}} c _ {\lambda^ {-}, \mu} ^ {\beta , d _ {2}} \sigma_ {\beta}\right) \\ + c _ {\square , \lambda} ^ {\lambda} \left(\sum_ {d _ {3}, \gamma} q ^ {d _ {3}} c _ {\lambda , \mu} ^ {\gamma , d _ {3}} \sigma_ {\gamma}\right) \\ \end{array}
+$$
+
+Collecting the coefficient of $q ^ { d } \sigma _ { \nu }$ from both sides gives
+
+$$
+\sum_ {\nu \rightarrow \zeta} c _ {\lambda , \mu} ^ {\zeta , d} + c _ {\lambda , \mu} ^ {\nu^ {+}, d - 1} + c _ {\square , \nu} ^ {\nu} c _ {\lambda , \mu} ^ {\nu , d} = \sum_ {\delta \rightarrow \lambda} c _ {\delta , \mu} ^ {\nu , d} + c _ {\lambda^ {-}, \mu} ^ {\nu , d - 1} + c _ {\square , \lambda} ^ {\lambda} c _ {\lambda , \mu} ^ {\nu , d}
+$$
+
+Note that the difference $c _ { \bigsqcup , \nu } ^ { \nu } - c _ { \bigsqcup , \lambda } ^ { \lambda }$ is equal to
+
+$$
+c _ {\square , \nu} ^ {\nu} - c _ {\square , \lambda} ^ {\lambda} = \sum_ {i \in I (\nu)} T _ {i} - \sum_ {j \in I (\lambda)} T _ {j}.
+$$
+
+Then formula (2) follows by rearranging the terms of expression (3).
+
+![](images/345b6f4283f5b7c32d959761b1f4e9e7d8c4f5160e39f723efa71b651599139f.jpg)
+
+# 6. Two formulae
+
+In this section we prove two formulae for some special classes of EQLR coefficients, used in the algorithm computing these coefficients (see §7). All the results from now on will be algorithmic, and the EQLR coefficients are no longer considered in the fractionwith negative “polynomial d $\Lambda$ a priori, we may have a. The latter quantity wh it from the “degree” coefficient e referred t. Unless ot $c _ { \lambda , \mu } ^ { \nu , d }$ $| \lambda | + | \mu | - | \nu | - m d$ $d$ $c _ { \lambda , \mu } ^ { \nu , d }$ wise stated, the only assumption about these coefficients is that they satisfy the following equation, obtained by rewriting the equation (2) above as:
+
+$$
+c _ {\lambda , \mu} ^ {\nu , d} = \frac {\sum_ {\delta \rightarrow \lambda} c _ {\delta , \mu} ^ {\nu , d}}{F _ {\nu , \lambda}} - \frac {\sum_ {\nu \rightarrow \zeta} c _ {\lambda , \mu} ^ {\zeta , d}}{F _ {\nu , \lambda}} + \frac {c _ {\lambda^ {-} , \mu} ^ {\nu , d - 1} - c _ {\lambda , \mu} ^ {\nu^ {+} , d - 1}}{F _ {\nu , \lambda}} \tag {4}
+$$
+
+for $\nu$ different from $\lambda$ . $F _ { \nu , \lambda }$ denotes the polynomial
+
+$$
+F _ {\nu , \lambda} = \sum_ {i \in I (\nu)} T _ {i} - \sum_ {j \in I (\lambda)} T _ {j}.
+$$
+
+Recall that we omit the coefficient $c _ { \lambda ^ { - } , \mu } ^ { \nu , d - 1 }$ cλ−,µ (resp. Cx,μ cν+,d−1λ,µ ) in the third term of the $c _ { \lambda , \mu } ^ { \nu ^ { + } , d - 1 }$ right side of (4) if $\lambda ^ { - }$ (resp. $\nu ^ { + }$ ) does not exist. The entire third term is omitted if d = 0. The propositions below show that the EQLR coefficient cν,dλ,µ $d = 0$ $c _ { \lambda , \mu } ^ { \nu , d }$ (for some special $\lambda , \mu , \nu )$ is determined by EQLR coefficients of degree $d - 1$ , and possibly some coefficients of degree $d$ . Their proof is by induction on $| \lambda | - | \nu |$ .
+
+Proposition 6.1. Let $\lambda , \mu , \nu$ be partitions such that $\lambda$ is not included in $\nu$ and let $d$ be a nonnegative integer. Then
+
+$$
+\quad \left. \right. c _ {\lambda , \mu} ^ {\nu , d} = E _ {\lambda , \mu , \nu} (d)
+$$
+
+where $E _ { \lambda , \mu , \nu } ( d )$ is a linear homogeneous expression in EQLR coefficients of degree $d - 1$ with coefficients in $R ( \Lambda )$ , the fraction field of $\Lambda ( = \mathbb { Z } [ T _ { 1 } , . . . , T _ { m } ] )$ . If $d = 0$ then $c _ { \lambda , \mu } ^ { \nu , 0 } = E _ { \lambda , \mu , \nu } ( 0 ) = 0$ .
+
+For the next proposition, let $\alpha$ and $\lambda$ be two partitions such that $\alpha$ is included in $\lambda$ . Define a rational function $R _ { \lambda , \alpha }$ in $R ( \Lambda )$ as follows:
+
+$$
+R _ {\lambda , \alpha} = \left\{ \begin{array}{l l} \sum \prod_ {i = 0} ^ {l - 1} \frac {1}{F _ {\lambda , \alpha (i)}} & \mathrm {i f} \lambda \neq \alpha \\ 1 & \mathrm {i f} \alpha = \lambda \end{array} \right.
+$$
+
+In the case $\lambda \neq \alpha$ , $\it l$ denotes the nonnegative integer $| \lambda | - | \alpha |$ , and the sum is over all chains of partitions
+
+$$
+\lambda = \alpha^ {(l)} \rightarrow \alpha^ {(l - 1)} \rightarrow \dots \rightarrow \alpha^ {(1)} \rightarrow \alpha^ {(0)} = \alpha .
+$$
+
+Proposition 6.2. The EQLR coefficient $c _ { \alpha , \lambda } ^ { \lambda , d }$ satisfies the following formula:
+
+$$
+c _ {\alpha , \lambda} ^ {\lambda , d} = R _ {\lambda , \alpha} c _ {\lambda , \lambda} ^ {\lambda , d} + E _ {\lambda , \alpha} ^ {\prime} (d) \tag {6}
+$$
+
+where $E _ { \lambda , \alpha } ^ { \prime } ( d )$ is an $R ( \Lambda ) -$ linear homogeneous expression in EQLR coefficients of degree $d - 1$ . If $d = 0$ then $E _ { \lambda , \alpha } ^ { \prime } ( 0 ) = 0$ . Moreover, for any such $\lambda$ and $\alpha$ , $R _ { \lambda , \alpha }$ is different from 0.
+
+The proof of these propositions requires some notations. Let $( \lambda , \nu )$ and $( \delta , \zeta )$ be two pairs of partitions included in the $p \times ( m - p )$ rectangle. Define
+
+$$
+(\lambda , \nu) <   _ {1} (\delta , \zeta)
+$$
+
+if $\delta  \lambda$ and $\nu = \zeta$ and
+
+$$
+(\lambda , \nu) <   _ {2} (\delta , \zeta)
+$$
+
+if $\delta = \lambda$ and $\nu  \zeta$ . With these notations, the first two terms of the right side of equation (4), when this is applied to $c _ { \lambda , \mu } ^ { \nu , d }$ , contain coefficients of the form $c _ { \delta , \mu } ^ { \zeta , d }$ with either $( \lambda , \nu ) < _ { 1 } ( \delta , \zeta )$ or $( \lambda , \nu ) < _ { 2 } ( \delta , \zeta )$ . Note also that if (λ, ν) <i (δ, ζ) ( $i = 1 , 2$ ) then the difference $| \delta | - | \zeta |$ is one larger than the difference $| \lambda | - | \nu |$ .
+
+Proof of Proposition 6.1. Use descending induction on the difference $| \lambda | - | \nu | \leqslant$ $p ( m - p )$ . If $| \lambda | - | \nu | = p ( m - p )$ , then $\lambda = ( m - p ) ^ { p }$ (the partition having $p$ parts of length $m - p$ ) and $\nu = ( 0 )$ . The first two terms of the equation (4) vanish when it is applied to cν,dλ,µ $c _ { \lambda , \mu } ^ { \nu , d } = c _ { ( m - p ) ^ { p } , \mu } ^ { ( 0 ) , d }$ , so $c _ { \lambda , \mu } ^ { \nu , d }$ is equal to $E _ { ( m - p ) ^ { p } , \mu , ( 0 ) } ( d )$ where
+
+$$
+E _ {(m - p) ^ {p}, \mu , (0)} (d) = \frac {1}{F _ {(0) , (m - p) ^ {p}}} (c _ {(m - p - 1) ^ {p - 1}, \mu} ^ {(0), d - 1} - c _ {(m - p) ^ {p}, \mu} ^ {(m - p, 1 ^ {p - 1}), d - 1}).
+$$
+
+Here $\left( m - p , 1 ^ { p - 1 } \right)$ is the partition having the first part equal to $m - p$ and the next $p - 1$ parts equal to 1. The base of the induction is proved.
+
+t $| \lambda | - | \nu | < p ( m - p )$ such that $\lambda$ is not included in $\nu$ . Applying (4) to ν,d $c _ { \lambda , \mu } ^ { \nu , d }$ yields coefficients of degree $d - 1$ and coefficients $c _ { \delta , \mu } ^ { \zeta , d }$ cδ,µ with $( \lambda , \nu ) \ < _ { i } \ ( \delta , \zeta )$ ( $i =$ $1 , 2 )$ . It is enough to show that each such coefficient $c _ { \delta , \mu } ^ { \zeta , d }$ is equal to a $R ( \Lambda ) -$ linear homogeneous expression $E _ { \delta , \mu , \zeta } ( d )$ in coefficients of degree $d - 1$ . Note that $\lambda \subset \delta$ and $\zeta \subset \nu$ , and, since $\lambda$ is not included in $\nu$ , it follows that $\delta$ is not included in $\zeta$ . Since $| \delta | - | \zeta | = | \lambda | - | \nu | + 1$ , the induction hypothesis, applied to cδ,µ, $c _ { \delta , \mu } ^ { \zeta , d }$ concludes the proof if $d > 0$ . The same proof works for $d = 0$ , yielding now cλ,µ $c _ { \lambda , \mu } ^ { \nu , 0 } = 0$ , since in this case the last term of (4) is ignored. 
+
+Proof of Prop. 6.2. Note that $\alpha$ is included in $\lambda$ implies that $| \lambda | - | \alpha | \geqslant 0$ . We induct on $| \lambda | - | \alpha |$ . If $| \lambda | - | \alpha | = 0$ then $\alpha = \lambda$ , and there is nothing to prove (in this case $E _ { \lambda , \alpha } ^ { \prime } ( d ) = 0 \mathrm { ~ }$ ). Let $| \lambda | - | \alpha | > 0$ . In particular $\lambda$ is not equal to $\alpha$ , so one can apply equation (4) to $c _ { \alpha , \lambda } ^ { \lambda , d }$ . The first two terms of the RHS of (4) contain coefficients $c _ { \delta , \lambda } ^ { \zeta , d }$ with $( \alpha , \lambda ) < _ { 1 } ( \delta , \zeta )$ (first term) respectively $( \alpha , \lambda ) < _ { 2 } ( \delta , \zeta )$ (second term).
+
+Consider first a coefficient $c _ { \delta , \lambda } ^ { \zeta , d }$ from the second term. Then $\delta = \alpha$ and $\lambda  \zeta$ In particular $\lambda$ is not included in $\zeta$ , thus, by formula (5)
+
+$$
+c _ {\alpha , \lambda} ^ {\zeta , d} = E _ {\alpha , \lambda , \zeta} (d). \tag {7}
+$$
+
+Consider now a coefficient $c _ { \delta , \lambda } ^ { \zeta , d }$ from the first term. Then $\lambda = \zeta$ and $\delta  \alpha$ . If $\delta$ is not included in $\lambda$ , then
+
+$$
+\quad \quad c _ {\delta , \lambda} ^ {\zeta , d} = c _ {\delta , \lambda} ^ {\lambda , d} = E _ {\delta , \lambda , \lambda} (d) \tag {8}
+$$
+
+again by formula (5). If $\delta$ is included in $\lambda$ , by induction hypothesis
+
+$$
+c _ {\delta , \lambda} ^ {\zeta , d} = c _ {\delta , \lambda} ^ {\lambda , d} = R _ {\lambda , \delta} c _ {\lambda , \lambda} ^ {\lambda , d} + E _ {\lambda , \delta} ^ {\prime} (d) \tag {9}
+$$
+
+Combining (4),(7),(8),(9) and noting that
+
+$$
+R _ {\lambda , \alpha} = \frac {1}{F _ {\lambda , \alpha}} \sum R _ {\lambda , \delta}
+$$
+
+(the sum is over all $\delta$ such that $\delta  \alpha$ and $\delta$ included in $\lambda$ ) yields
+
+$$
+\begin{array}{l} c _ {\alpha , \lambda} ^ {\lambda , d} = \frac {1}{F _ {\lambda , \alpha}} \left(\sum \left(R _ {\lambda , \delta} c _ {\lambda , \lambda} ^ {\lambda , d} + E _ {\lambda , \delta} ^ {\prime} (d)\right) + \sum E _ {\delta , \lambda , \lambda} (d)\right) + \\ \frac {1}{F _ {\lambda , \alpha}} \left(\sum_ {\lambda \rightarrow \zeta} E _ {\alpha , \lambda , \zeta} (d)\right) + \frac {c _ {\lambda^ {-} , \mu} ^ {\nu , d - 1} - c _ {\lambda , \mu} ^ {\nu^ {+} , d - 1}}{F _ {\nu , \lambda}} = \\ = R _ {\lambda , \alpha} c _ {\lambda , \lambda} ^ {\lambda , d} + E _ {\lambda , \alpha} ^ {\prime} (d). \\ \end{array}
+$$
+
+The first (resp. the second) sum is over all $\delta$ such that $\delta  \alpha$ and included (resp. not included) in $\lambda$ , while $E _ { \lambda , \alpha } ^ { \prime } ( d )$ is obtained by collecting all the terms involving coefficients of degree $d - 1$ . If $d = 0$ the same proof shows that $E _ { \lambda , \alpha } ^ { \prime } ( 0 ) = 0$ .
+
+To finish the proof it remained to show that $R _ { \lambda , \alpha }$ is not equal to zero. Since the partition $\alpha ^ { ( j ) }$ is included in $\lambda$ $( j = 0 , . . . , | \lambda | - | \alpha | )$ , $F _ { \lambda , \alpha ^ { ( j ) } }$ is a linear homogeneous polynomial in variables $T _ { 1 } { - } T _ { 2 } { , } { \ldots } , T _ { m { - } 1 } { - } T _ { m }$ with positive coefficients. This shows that there cannot be cancellations in the sum defining $R _ { \lambda , \alpha } ( T )$ . 
+
+# 7. An algorithm to compute the EQLR coefficients
+
+Granting the fact that the equivariant quantum multiplication is a commutative operation coefficients $c _ { \lambda , \mu } ^ { \nu , d }$ unit, the next theorem shows,can be recovered from the Pieri y an algorithm, that all EQLRes and the recursive formula (4). The proof is by double induction, on the degree $d$ , then on the polynomial degree. The idea is to sh(4) implies that $c _ { \lambda , \mu } ^ { \nu , d }$ by descending induction on polynomial deg is determined by coefficients of the form $c _ { \alpha , \beta } ^ { \gamma , d - 1 }$ at equation, known by induction on $d$ , and by coefficients $c _ { \chi , \chi } ^ { \chi , d }$ which are known again by induction on $d$ (see formula (6)).
+
+Theorem 2. The EQLR coefficients are determined (algorithmically) by the following formulae:
+
+$c _ { ( 0 ) , ( 0 ) } ^ { ( 0 ) , d } = 0$ unless $d = 0$ , when it is equal to 1.   
+(ii) (commutativity) $c _ { \lambda , \mu } ^ { \nu , d } = c _ { \mu , \lambda } ^ { \nu , d }$ for all partitions $\lambda , \mu$ and $\nu$   
+(iii)(EQ Pieri) The coefficients $c _ { \bigsqcup , \lambda } ^ { \nu , d }$ from equation (1), for all partitions $\lambda , \nu$   
+(iv) Equation (4), for all partitions $\lambda , \mu , \nu$ such that $\lambda$ is different from $\nu$ .
+
+Before proving the theorem, we would like to emphasize the following corollary, which is a weaker, but useful, version of the opening paragraph of this section:
+
+Corollary 7.1. Let $( A , \diamond )$ be a graded, commutative, associative Λ[q]−algebra with unit such that:
+
+1. A has an additive Λ[q]−basis {tλ} (graded as usual).   
+2. The equivariant quantum Pieri holds, i.e.
+
+$$
+t _ {\lambda} \diamond t _ {\square} = \sum_ {\mu \rightarrow \lambda} t _ {\mu} + c _ {\lambda , \square} ^ {\lambda} t _ {\lambda} + q t _ {\lambda -}
+$$
+
+where the last term is omitted if $\lambda ^ { - }$ does not exist.
+
+Then A is canonically isomorphic to $Q H _ { T } ^ { * } ( G r ( p , m ) )$ , a $s \ \Lambda [ q ] - a l g e b r a s .$ .
+
+Proof of the Corollary. The structure constants of $A$ clearly satisfy (i)-(iii); (iv) follows from the associativity of $A$ and the EQ Pieri rule (cf. Prop. 5.1). 
+
+the degree of the EQLR coefficient Proof of Theorem 2. The algorithm has three steps, with the main induction on $c _ { \lambda , \mu } ^ { \nu , d }$ . The base case ( $d = 0$ ) is treated in Step 1: $d$ , Step 1: Compute the coefficient cλ,µ $c _ { \lambda , \mu } ^ { \nu , 0 }$ for all partitions $\lambda , \mu , \nu$ .
+
+In fact we prove that the hypotheses of the theorem imply that $c _ { \lambda , \mu } ^ { \nu , 0 }$ is equal to the equivariant coefficient $c _ { \lambda , \mu } ^ { \nu }$ . The latter can then be computed using Prop. 2.1, by induction on $| \nu | - | \lambda |$ (see also [KT] §3, Cor. 1). To prove the equality of the two coefficients it is enough to show that the coefficients cν,0λ,µ $c _ { \lambda , \mu } ^ { \nu , 0 }$ v,0 satisfy the following formulae (see Prop. 2.1):
+
+(a’) $\begin{array} { r } { c _ { \lambda , \bigtriangledown } ^ { \lambda , 0 } = \sum _ { i \in I ( \lambda ) } T _ { i } - \sum _ { j = m - p + 1 } ^ { m } T _ { j } } \end{array}$   
+(b’) $\begin{array} { r } { c _ { \lambda , \lambda } ^ { \lambda , 0 } = \prod _ { i \in I ( \lambda ) , j \in J ( \lambda ) , i < j } ( T _ { i } - T _ { j } ) } \end{array}$ , where $J ( \lambda )$ encodes the position of the horizontal steps in $\lambda$ .   
+$\begin{array} { r } { ( c _ { \lambda , \bigtriangledown } ^ { \lambda } - c _ { \mu , \bigtriangledown } ^ { \mu } ) \cdot c _ { \lambda , \mu } ^ { \lambda , 0 } = \sum _ { \delta \to \mu } c _ { \lambda , \delta } ^ { \lambda , 0 } } \end{array}$ $\lambda , \mu$ $\lambda \neq \mu$   
+(d’) $\begin{array} { r } { ( c _ { \nu , \bigtriangledown } ^ { \nu } - c _ { \lambda , \bigtriangledown } ^ { \lambda } ) \cdot c _ { \lambda , \mu } ^ { \nu , 0 } = \sum _ { \delta \to \lambda } c _ { \delta , \mu } ^ { \nu , 0 } - \sum _ { \nu \to \zeta } c _ { \lambda , \mu } ^ { \zeta , 0 } } \end{array}$ for any $\lambda , \mu , \nu$ such that $\lambda \neq \nu$
+
+Proof. Formula (a’) follows from the equivariant quantum Pieri (EQ Pieri) rule (iii); equation (d’) follows from (iv) since the last term of equation (4) is omitted in this case. Equation (c’) follows from (d’) (using commutativity (ii)) once we show that cν,0λ,µ $c _ { \lambda , \mu } ^ { \nu , 0 }$ vanishes if $\lambda$ is not included in $\nu$ . This holds by Prop. 6.1.
+
+It remains to prove formula (b’). If $\lambda$ is equal to (0) or $\boxed { \begin{array} { r l } \end{array} }$ , this follows respectively from (i) and (ii). For a bigger $\lambda$ , equation (6) in Prop. 6.2 implies that
+
+$$
+c _ {\lambda , \lambda} ^ {\lambda , 0} = \frac {1}{R _ {\lambda , \alpha}} c _ {\alpha , \lambda} ^ {\lambda , 0}
+$$
+
+for any partition $\alpha$ included in $\lambda$ . Note that the same equation holds for the equivariant LR coefficients $c _ { \lambda , \mu } ^ { \nu }$ (use induction on the difference $| \lambda | - | \alpha | \geqslant 0$ and equation (c) in Prop. 2.1 - same proof as for Prop. 6.2 above). Then
+
+$$
+c _ {\lambda , \lambda} ^ {\lambda , 0} = \frac {1}{R _ {\lambda , \square}} c _ {\lambda , \square} ^ {\lambda , 0} = \frac {1}{R _ {\lambda , \square}} c _ {\lambda , \square} ^ {\lambda} = c _ {\lambda , \lambda} ^ {\lambda}
+$$
+
+which concludes the proof.
+
+Let now $d > 0$ , and assume, by induction on $d$ , that all EQLR coefficients of degree $d - 1$ are known.
+
+Step 2: Compute $c _ { \lambda , \lambda } ^ { \lambda , d }$ for each partition $\lambda$
+
+If $\lambda$ is (0) or $\boxed { \begin{array} { r l } \end{array} }$ this is given respectively in (i) and (ii). Then let $\lambda$ be of weight at least 2. The EQLR coefficient $c _ { \bigstar , \lambda } ^ { \lambda , d } = c _ { \lambda , \bigstar } ^ { \lambda , d }$ cλ, vanishes by (iii). Then equation (6) implies that
+
+$$
+c _ {\lambda , \lambda} ^ {\lambda , d} = - \frac {E _ {\lambda , \square} ^ {\prime} (d)}{R _ {\lambda , \square}}
+$$
+
+and $E _ { \lambda , \bigsqcup } ^ { \prime } ( d )$ is known by induction on $d$ .
+
+$c _ { \lambda , \mu } ^ { \nu , d }$
+
+Within the main induction on $d$ , we use descending induction on $| \lambda | + | \mu | - | \nu | -$ md, the polynomial degree of $c _ { \lambda , \mu } ^ { \nu , d }$ . This degree is at most $2 p ( m - p ) - m d$ , in which case $\lambda$ and $\mu$ are both equal to $( m - p ) ^ { p }$ and $\nu = ( 0 )$ . The coefficient $c _ { ( m - p ) ^ { p } , ( m - p ) ^ { p } } ^ { ( 0 ) , d }$ is known by induction on $d$ (by Prop. 6.1, since $\lambda$ is not included in $\nu$ ). The base of the induction is proved.
+
+Assume now that the polynomial degree of cλ,µ $c _ { \lambda , \mu } ^ { \nu , d }$ is less than $2 p ( m - p ) - m d$ . If $\lambda = \mu = \nu$ apply Step 2. If not, since cλ,µ $c _ { \lambda , \mu } ^ { \nu , d }$ is equal to $c _ { \mu , \lambda } ^ { \nu , d }$ cµ,λ, we can assume that $\lambda$ is different from $\nu$ . Using (iv), write $c _ { \lambda , \mu } ^ { \nu , d }$ as a combination of EQLR coefficients of polynomial degree one larger (first and second term in the right side) and coefficients of degree $d - 1$ (third term), the latter ones known by induction on $d$ . The polynomial degree induction, applied to the coefficients appearing in the first two terms of the right side of (4) finishes the algorithm. 
+
+For a more efficient algorithm one may include the following vanishing properties of the EQLR coefficients:
+
+(i) $c _ { \lambda , \mu } ^ { \nu , d } = 0$ if it has negative polynomial degree, i.e. if $| \lambda | + | \mu | - | \nu | - m d < 0$   
+(ii) $c _ { \lambda , \mu } ^ { \nu , d } = 0$ if $\vert \lambda \vert + d ^ { 2 } > \vert \nu \vert + m d$ or $\vert \mu \vert + d ^ { 2 } > \vert \nu \vert + m d$ (Main Lemma).   
+$c _ { \lambda , ( m - p ) ^ { p } } ^ { ( 0 ) , d } = 0$ $d < m i n \{ p , m - p \}$
+
+There is also a method to reduce the number of computations needed in Step 2 of the algorithm. This method can be applied to compute the coefficients $c _ { \lambda , \lambda } ^ { \lambda , d }$ with nonnegative polynomial degree (equivalently, with $| \lambda | \geqslant m d$ ), provided one knows certain coefficients of polynomial degree 0 (hence, in geometric interpretation, some (pure) quantum coefficients). Indeed, given a partition $\lambda$ of weight at least $m d$ , choose a partition $\alpha = \alpha ( \lambda )$ included in $\lambda$ , of weight $| \alpha | = m d$ . Note that $c _ { \alpha , \lambda } ^ { \lambda , d }$ has polynomial degree 0. Then one can solve for $c _ { \lambda , \lambda } ^ { \lambda , d }$ in the equation (6) from Prop. 6.2, using now $c _ { \alpha , \lambda } ^ { \lambda , d }$ on the left side.4 The author has implemented this algorithm in Maple 7.
+
+Using again double induction on the degree $d$ and on the polynomial degree implies that a coefficient cν,dλ,µ $c _ { \lambda , \mu } ^ { \nu , d }$ obtained by the algorithm is in fact a homogeneous rational function in the variables $T _ { 1 } { - } T _ { 2 } { , } { \ldots } , T _ { m { - } 1 } { - } T _ { m }$ of degree $| \lambda | + | \mu | - | \nu | - m d$ . This follows from the fact that the function $R _ { \lambda , \alpha }$ , for any pair $\alpha \subset \lambda$ (cf. Prop. 6.2), and the coefficients in the hypothesis of the algorithm satisfy this property, and that all the terms in equation (4) have the same polynomial degree. Unfortunately, it is
+
+not apparent from the algorithm that cν,dλ,µ is a polynomial. Nevertheless, this can $c _ { \lambda , \mu } ^ { \nu , d }$ be deduced from its “geometric realization”. We have just proved:
+
+Corollary 7.2. The EQLR coefficients $c _ { \lambda , \mu } ^ { \nu , d }$ cλ,µ are homogeneous polynomials in variables .5 5 $T _ { 1 } - T _ { 2 } , . . . , T _ { m - 1 } - T _ { m }$
+
+# 8. Examples/Final remarks
+
+In this section we give several values of the EQLR coefficients $c _ { \lambda , \lambda } ^ { \lambda , d }$ for Grassmannians $G r ( p , m )$ , with $p , m$ small, then the multiplication table for $Q H _ { T } ^ { \star } ( G r ( 2 , 4 ) )$ . The section ends with some remarks about related work in progress.
+
+# 8.1. The coefficients cλ,dλ,λ $c _ { \lambda , \lambda } ^ { \lambda , d }$ for small Grassmannians.
+
+<table><tr><td>p</td><td>m</td><td>λ</td><td>d</td><td>cλ,d
+cλ,λ</td></tr><tr><td>2</td><td>4</td><td>(2,2)</td><td>1</td><td>0</td></tr><tr><td>2</td><td>5</td><td>(3,2)</td><td>1</td><td>1</td></tr><tr><td>2</td><td>5</td><td>(3,3)</td><td>1</td><td>0</td></tr><tr><td>2</td><td>6</td><td>(3,3)</td><td>1</td><td>1</td></tr><tr><td>2</td><td>6</td><td>(4,2)</td><td>1</td><td>1</td></tr><tr><td>2</td><td>6</td><td>(4,3)</td><td>1</td><td>T1+T2-T3-T4</td></tr><tr><td>2</td><td>6</td><td>(4,4)</td><td>1</td><td>3,6 (3,3,2) 1 (T3+T4-T5-T6)</td></tr><tr><td>2</td><td>6</td><td>(4,3)</td><td>1</td><td>3,6 (3,3,2) 1 (T1+T2-T5-T6)2</td></tr><tr><td>2</td><td>6</td><td>(4,4)</td><td>1</td><td>3,6 (3,3,3) 1</td></tr></table>
+
+# 8.2. Multiplication table for $Q H _ { T } ^ { \star } ( G r ( 2 , 4 ) )$ .
+
+$$
+\begin{array}{l} \sigma_ {(1)} \circ \sigma_ {(1)} = \sigma_ {(2)} + \sigma_ {(1, 1)} + (T _ {2} - T _ {3}) \sigma_ {(1)} \\ \sigma_ {(1)} \circ \sigma_ {(2)} = \sigma_ {(2, 1)} + (T _ {1} - T _ {3}) \sigma_ {(2)} \\ \sigma_ {(1)} \circ \sigma_ {(1, 1)} = \sigma_ {(2, 1)} + (T _ {2} - T _ {4}) \sigma_ {(1, 1)} \\ \sigma_ {(1)} \circ \sigma_ {(2, 1)} = \sigma_ {(2, 2)} + (T _ {1} - T _ {4}) \sigma_ {(2, 1)} + q \\ \sigma_ {(1)} \circ \sigma_ {(2, 2)} = \left(T _ {1} + T _ {2} - T _ {3} - T _ {4}\right) \sigma_ {(2, 2)} + q \sigma_ {(1)} \\ \sigma_ {(2)} \circ \sigma_ {(2)} = \sigma_ {(2, 2)} + (T _ {1} - T _ {2}) \sigma_ {(2, 1)} + (T _ {1} - T _ {2}) (T _ {1} - T _ {3}) \sigma_ {(2)} \\ \sigma_ {(2)} \circ \sigma_ {(1, 1)} = (T _ {1} - T _ {4}) \sigma_ {(2, 1)} + q \\ \sigma_ {(2)} \circ \sigma_ {(2, 1)} = (T _ {1} - T _ {4}) \sigma_ {(2, 2)} + (T _ {1} - T _ {2}) (T _ {1} - T _ {4}) \sigma_ {(2, 1)} + q \sigma_ {(1)} + (T _ {1} - T _ {2}) q \\ \sigma_ {(2)} \circ \sigma_ {(2, 2)} = \left(T _ {1} - T _ {4}\right) \left(T _ {1} - T _ {3}\right) \sigma_ {(2, 2)} + q \sigma_ {(1, 1)} + \left(T _ {1} - T _ {3}\right) q \sigma_ {(1)} \\ \sigma_ {(1, 1)} \circ \sigma_ {(1, 1)} = \sigma_ {(2, 2)} + (T _ {3} - T _ {4}) \sigma_ {(2, 1)} + (T _ {2} - T _ {4}) (T _ {3} - T _ {4}) \sigma_ {(1, 1)} \\ \sigma_ {(1, 1)} \circ \sigma_ {(2, 1)} = (T _ {1} - T _ {4}) \sigma_ {(2, 2)} + (T _ {1} - T _ {4}) (T _ {3} - T _ {4}) \sigma_ {(2, 1)} + q \sigma_ {(1)} + (T _ {3} - T _ {4}) q \\ \sigma_ {(1, 1)} \circ \sigma_ {(2, 2)} = (T _ {1} - T _ {4}) (T _ {2} - T _ {4}) \sigma_ {(2, 2)} + q \sigma_ {(2)} + (T _ {2} - T _ {4}) q \sigma_ {(1)} \\ \sigma_ {(2, 1)} \circ \sigma_ {(2, 1)} = (T _ {1} - T _ {4}) ^ {2} \sigma_ {(2, 2)} + (T _ {1} - T _ {2}) (T _ {1} - T _ {4}) (T _ {3} - T _ {4}) \sigma_ {(2, 1)} + q \sigma_ {(2)} + q \sigma_ {(1, 1)} + \\ (T _ {1} - T _ {4}) q \sigma_ {(1)} + (T _ {1} - T _ {2}) (T _ {3} - T _ {4}) q \\ \sigma_ {(2, 1)} \circ \sigma_ {(2, 2)} = (T _ {1} - T _ {4}) (T _ {1} - T _ {3}) (T _ {2} - T _ {4}) \sigma_ {(2, 2)} + q \sigma_ {(2, 1)} + (T _ {1} - T _ {3}) q \sigma_ {(2)} + \\ (T _ {2} - T _ {4}) q \sigma_ {(1, 1)} + (T _ {1} - T _ {3}) (T _ {2} - T _ {4}) q \sigma_ {(1)} \\ \sigma_ {(2, 2)} \circ \sigma_ {(2, 2)} = (T _ {1} - T _ {4}) (T _ {1} - T _ {3}) (T _ {2} - T _ {4}) (T _ {2} - T _ {3}) \sigma_ {(2, 2)} + (T _ {1} + T _ {2} - T _ {3} - T _ {4}) q \sigma_ {(2, 1)} + \\ \left(T _ {1} - T _ {3}\right) \left(T _ {2} - T _ {3}\right) q \sigma_ {(2)} + \left(T _ {2} - T _ {3}\right) \left(T _ {2} - T _ {4}\right) q \sigma_ {(1, 1)} + \\ (T _ {1} - T _ {3}) (T _ {2} - T _ {3}) (T _ {2} - T _ {4}) q \sigma_ {(1)} + q ^ {2} \\ \end{array}
+$$
+
+8.3. Final remarks: 1. Presentation and equivariant quantum Giambelli. A presentation for the equivariant quantum cohomology of partial flag manifolds was obtained in [Kim1], Thm. I. One would like to find polynomial representatives corresponding to the equivariant quantum Schubert classes $\sigma _ { \lambda }$ (i.e. an equivariant quantum Giambelli formula). In a paper in preparation ([Mi1], we obtain another
+
+presentation for the equivariant quantum cohomology of the Grassmannians, and we find such an equivariant quantum Giambelli formula.
+
+2. Positivity. In a paper in preparation ([Mi2]), we prove that the EQLR coefficients for any homogeneous space $G / P$ enjoy the same positivity property as the equivariant coefficients (see [Gr] for the latter). This implies that the EQLR coefficients from this paper are homogeneous polynomials in variables $T _ { 1 } { - } T _ { 2 } { , } { \ldots } , T _ { m - 1 } { - }$ $T _ { m }$ with nonnegative coefficients.   
+3. Generalization to other homogeneous spaces. The fact that EQ Pieri/Monk rule doesn’t contain any mixed terms generalizes to all homogeneous spaces $G / P$ (see remark after Cor. 4.6). The proof of this result will be given elsewhere.
+
+# 9. Appendix
+
+The Appendix contains the definition and some properties of the equivariant Gysin maps used in §2.2. It also includes a proof of Proposition 3.1.
+
+9.1. Equivariant Gysin morphisms. Let $f : X \longrightarrow Y$ be a morphism of projective varieties, with $Y$ smooth. Let $d = \mathrm { d i m } ( X ) - \mathrm { d i m } ( Y )$ (complex dimensions). Define a Gysin map $f _ { \star } : H ^ { i } ( X ) \longrightarrow H ^ { i - 2 d } ( Y )$ by the composite
+
+$$
+H ^ {i} (X) \xrightarrow {\cap [ X ]} H _ {2 \dim (X) - i} (X) \xrightarrow {f _ {\star}} H _ {2 \dim (X) - i} (Y) \simeq H ^ {i - 2 d} (Y)
+$$
+
+where $[ X ]$ is the fundamental class of $X$ in the singular homology group $H _ { 2 \dim X } ( X )$ , and the middle $f _ { \star }$ is the singular homology push-forward (if $X$ or $Y$ were not compact, one should use Borel-Moore homology). The last isomorphism is given by Poincar´e duality. We need the following property of the Gysin map:
+
+Lemma 9.1. Consider the following fiber square of projective varieties:
+
+$$
+\begin{array}{l} X ^ {\prime} \xrightarrow {i} X \\ f ^ {\prime} \Bigg \downarrow \qquad \qquad f \Bigg \downarrow \\ Y ^ {\prime} \xrightarrow {j} Y \\ \end{array}
+$$
+
+where $Y , Y ^ { \prime }$ are smooth and $i , j$ are regular embeddings of the same (complex) codimension $c$ . Then $f _ { \star } ^ { \prime } i ^ { \star } = j ^ { \star } f _ { \star }$ as maps $H ^ { i } ( X )  H ^ { i - 2 d } ( Y ^ { \prime } )$ .
+
+Proof. The proof is given in my thesis [Mi] (one could also see [FM]).
+
+Assume the map $f : X \to Y$ (with $Y$ smooth) is $T -$ equivariant. Then it determines a Gysin map of the cohomology of the finite-dimensional approximations $f _ { \star , n } : H ^ { i } ( X _ { T , n } ) \longrightarrow H ^ { i - 2 d } ( Y _ { T , n } )$ . Define the equivariant Gysin map $f _ { \star } ^ { T }$ : $H _ { T } ^ { \star } ( X ) \longrightarrow H _ { T } ^ { i - 2 d } ( Y )$ as the unique map that makes the following diagram commute:
+
+$$
+\begin{array}{l} H ^ {i} (X _ {T, n}) \xleftarrow {r e s} H _ {T} ^ {i} (X) \\ f _ {\star , n} \Bigg \downarrow \quad f _ {\star} ^ {T} \Bigg \downarrow \\ H ^ {i - 2 d} (Y _ {T, n}) \xleftarrow {r e s} H _ {T} ^ {i - 2 d} (Y) \\ \end{array}
+$$
+
+for any integer $n$ . The horizontal maps res are the cohomology pull-backs induced by the inclusions $X _ { T , n }  X _ { T }$ (resp. $Y _ { T , n }  Y _ { T }$ ). The uniqueness of $f _ { \star } ^ { T }$ follows from the fact that the equivariant cohomology can be computed by passing to the limit on the ordinary cohomology of the finite dimensional approximations (see §2.2).
+
+The fact that such a definition is independent of the choice of the approximation $f _ { n } : X _ { T , n } \longrightarrow Y _ { T , n }$ follows by applying Lemma 9.1 to the fiber square
+
+$$
+\begin{array}{l} X _ {T, n _ {1}} \xrightarrow {i} X _ {T, n _ {2}} \\ f _ {n _ {1}} \Bigg \downarrow \qquad \qquad f _ {n _ {2}} \Bigg \downarrow \\ Y _ {T, n _ {1}} \xrightarrow {j} Y _ {T, n _ {2}} \\ \end{array}
+$$
+
+for integers $n _ { 1 } < n _ { 2 }$
+
+Another property of the equivariant Gysin map is its compatibility with the restriction to the fiber:
+
+$$
+H ^ {i} (X) \xleftarrow {r e s} H _ {T} ^ {i} (X)
+$$
+
+(10) ${ \boldsymbol { f } } _ { \star } \left\downarrow \qquad \begin{array} { r l } { \qquad } & { { } f _ { \star } ^ { T } \sinh \qquad } \end{array} \right.$
+
+$$
+H ^ {i - 2 d} (Y) \xleftarrow {r e s} H _ {T} ^ {i - 2 d} (Y)
+$$
+
+This follows by applying again Lemma 9.1 to the fiber square
+
+$$
+\begin{array}{l} X \xrightarrow {i} X _ {T, n} \\ f \Bigg {\downarrow} \qquad \qquad f _ {n} \Bigg {\downarrow} \\ Y \xrightarrow {j} Y _ {T, n} \\ \end{array}
+$$
+
+Proof of Prop. 3.1. Part (a) of the proposition is proved in [Kim2], §3.3 , using a slightly different definition of the EQLR coefficients.6 For the sake of completeness we recall Kim’s definition, and we prove it is equivalent to ours.
+
+Gromov-Witten invariant, denoted Let $a _ { 1 } , a _ { 2 } , a _ { 3 }$ be three equivariant cohomology classes in $I _ { 3 , d } ^ { X _ { T } } ( a _ { 1 } , a _ { 2 } , a _ { 3 } )$ (Kim’s notation), is defined by $H _ { T } ^ { \star } ( X )$ . The equivariant
+
+$$
+I _ {3, d} ^ {X _ {T}} (a _ {1}, a _ {2}, a _ {3}) = \pi_ {\star} ^ {T} \left(\left(e v _ {1} ^ {T}\right) ^ {\star} (a _ {1}) \cup \left(e v _ {2} ^ {T}\right) ^ {\star} (a _ {2}) \cup \left(e v _ {3} ^ {T}\right) ^ {\star} (a _ {3})\right)
+$$
+
+where $\pi _ { \star } ^ { T }$ is the equivariant Gysin morphism (§2.2). Let $< \cdot , \cdot >$ be the $q -$ linear extension of the equivariant Poincar´e pairing defined in section 2.2. Then, according to [Kim2], §3.3 , the equivariant quantum multiplication is the unique multiplication (denoted $\diamond$ ) such that
+
+$$
+<   a _ {1} \diamond a _ {2}, a _ {3} > = \sum_ {d} q ^ {d} I _ {3, d} ^ {X _ {T}} \left(a _ {1}, a _ {2}, a _ {3}\right)
+$$
+
+By taking $a _ { 1 } : = \sigma _ { \lambda } ^ { T }$ , $a _ { 2 } : = \sigma _ { \mu } ^ { T }$ , Kim’s definition implies that the coefficient of $\sigma _ { \nu } ^ { T }$ in $\sigma _ { \lambda } ^ { T } \diamond \sigma _ { \mu } ^ { T }$ is equal to
+
+$$
+\sum_ {d} q ^ {d} I _ {3, d} ^ {X _ {T}} (\sigma_ {\lambda} ^ {T}, \sigma_ {\mu} ^ {T}, (\sigma_ {\nu} ^ {T}) ^ {\vee})
+$$
+
+where $( \sigma _ { \nu } ^ { T } ) ^ { \vee }$ is the dual of $\sigma _ { \nu } ^ { T }$ with respect to the equivariant Poincar´e pairing. But equivariant duality (Proposition 2.2), implies that $( \sigma _ { \nu } ^ { T } ) ^ { \vee } = \widetilde { \sigma } _ { \nu ^ { \vee } } ^ { T }$ , which shows that the multiplications $\diamond$ and $\circ$ coincide.
+
+Part (b) is a consequence of the fact that the EQLR coefficients specialize to both equivariant and quantum ones. For the convenience of the reader, we sketch a proof of this fact.
+
+Claim 1. The EQLR coefficient $c _ { \lambda , \mu } ^ { \nu , 0 }$ is equal to the equivariant LR coefficient $c _ { \lambda , \mu } ^ { \nu }$
+
+Proof. If $d = 0$ , $\overline { { \mathcal { M } } } _ { 0 , 3 } ( X , 0 ) _ { T } = X _ { T }$ , so the definition of the EQLR becomes the definition of the equivariant LR coefficients from the end of Section 2.2. 
+
+Claim 2. If |λ| + |µ| = |ν| + md, the EQLR coefficient cν,dλ,µ $| \lambda | + | \mu | = | \nu | + m d$ $c _ { \lambda , \mu } ^ { \nu , d }$ is equal to the quantum LR-coefficient.
+
+Proof. Denote by $D = p ( m - p ) + m d$ the dimension of ${ \overline { { \mathcal { M } } } } _ { 0 , 3 } ( X , d )$ . The hypothesis implies that $| \lambda | + | \mu | + | \nu ^ { \vee } | = D$ . We use the compatibility between the ordinary and equivariant Gysin maps (see diagram (10):
+
+$$
+\begin{array}{l} H ^ {2 D} (\overline {{\mathcal {M}}} _ {0, 3} (X, d)) \xleftarrow {r e s} H _ {T} ^ {2 D} (\overline {{\mathcal {M}}} _ {0, 3} (X, d)) \\ \pi_ {\star} \Bigg \downarrow \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \\ H ^ {0} (p t) \quad \xleftarrow {r e s} H _ {T} ^ {0} (p t) \\ \end{array}
+$$
+
+The top restriction map sends the classes $e v _ { i } ^ { { I } ^ { \prime } \star } ( \sigma _ { \lambda } ^ { { I } ^ { \prime } } )$ and $e v _ { i } ^ { { I } ^ { \prime } \star } ( \widetilde { \sigma } _ { \lambda } ^ { { I } ^ { \prime } } )$ to $e v _ { i } ^ { \star } ( \sigma _ { \lambda } )$ , ( $i =$ $1 , 2 , 3$ ) and the bottom restriction map is an isomorphism. The claim now follows from Prop. 2.3. 
+
+Remark: Another proof of Claim 2, using the “restriction” property of the equivariant quantum cohomology, can be found in [Kim1] Prop. 1, §5 (see also §4.4).
+
+# References
+
+[AB] Atyiah, M., F., Bott, R., The moment map and equivariant cohomology, Topology 23 (1984) no. 1, 1- 28   
+[AS] Astashkhevich, A., Sadov, V., Quantum cohomology of partial flag manifolds $F _ { n _ { 1 } , \ldots , n _ { k } }$ Commun. Math. Phys. 170 (1995), 503-528   
+[Be] Bertram, A., Quantum Schubert calculus, Adv. Math, 128 (1997), no. 2, 289-305   
+[BCF] Bertram, A., Ciocan-Fontanine, I., Fulton, W., Quantum multiplication of Schur polynomials, Journal of Algebra 219 (1999), no.2, 728-746   
+[Br1] Brion, M., Equivariant cohomology and Equivariant Intersection Theory NATO Adv. Sci. Inst. Ser. C Math. Phys. Sci., 514, Representation theories and algebraic geometry (Montreal, PQ, 1997), 1–37, Kluwer Acad. Publ., Dordrecht, 1998.   
+[Br2] Brion, M., Poincar´e Duality and Equivariant (Co)homology, Michigan Math. J. - Special volume in honor of William Fulton 48 2000, 77-92   
+[Bu1] Buch, A. S., Quantum cohomology of Grassmannians, to appear in Compositio Math., arXiv: math.AG/0106268   
+[BKT] Buch, A. S., Kresch A., Tamvakis H., Gromov-Witten invariants on Grassmannians, to appear on J. Amer. Math. Soc., arXiv: math.AG/0306388   
+[C] Ciocan-Fontanine, I., Quantum cohomology of flag varieties, Internat. Math. Res. Notices (1995), 263-277   
+[EG] Edidin, D., Graham, W., Equivariant intersection Theory (with an appendix by Angelo Vistoli: The Chow ring of $\mathcal { M } _ { 2 }$ ), Invent. Math.131, (1998) 595-634   
+[FGP] Fomin, S., Gelfand, S., Postnikov, A., Quantum Schubert Polynomials, J. Amer. Math. Soc. 10 (1997), 565-596   
+[F1] Fulton, W., Young Tableaux, Cambridge University Press, Cambridge, 1997   
+[F2] Fulton, W., Intersection Theory, Springer Verlag 2nd edition (1998)   
+[FP] Fulton, W., Pandharipande, R., Notes On Stable Maps And Quantum Cohomology, Proc. Sympos. Pure Math. 62, Part 2, Amer. Math. Soc., Providence, RI, 1997.
+
+[FM] Fulton, W., MacPherson, R., Categorical framework for the study of singular spaces, Memoirs of AMS, 1981 vol. 31 no. 243   
+[FW] Fulton, W., Woodward, C., On the quantum product of Schubert classes, to appear in J. of Alg. Geom., arXiv: math.AG/0112183   
+[G] Givental, A., Equivariant Gromov-Witten invariants, IMRN (1996) 613-663   
+[GK] Givental, A., Kim, B., Quantum cohomology of flag manifolds and Toda lattices, Comm. Math. Phys. 168 (1995), 609-641   
+[GKM] Goreski, M., Kottwitz, R., MacPherson, R., Equivariant cohomology, Koszul duality, and the localization theorem, Invent. Math. 131 (1998), no. 1, 25-83   
+[Gr] Graham, W., Positivity in equivariant Schubert calculus, Duke Math. J. 109 (2001), no. 3, 599-614   
+[H] Husemoller, D., Fibre Bundles, Springer-Verlag (1975) 2nd edition   
+[Kim1] Kim, B., Quantum Cohomology of partial flag manifolds and a residue formula for their intersection pairings, IMRN 1995, no.1, 1-15   
+[Kim2] Kim, B.,On equivariant quantum cohomology, IMRN 17 (1996), 841-851   
+[Kim3] Kim, B., Quantum cohomology of flag manifolds G/B and quantum Toda lattices, Annals of Math. 149 (1999), 129-148   
+[KiMa] Kirillov, A. N., Maeno, T., Quantum double Schubert polynomials, quantum Schubert polynomials and Vafa-Intriligator formula, Discrete Math. 217 (2000) no. 1-3, 191-223   
+[KM] Kontsevich,M., Manin, Y., Gromov-Witten classes, quantum cohomology and enumerative geometry, Comm. Math. Phys. 164 (1994), 525-562   
+[KT] Knutson, A., Tao, T., Puzzles and equivariant cohomology of Grassmannians, Duke Math. J. 119 (2003) issue 2, 221-260   
+[Mi] Mihalcea, L.C., Ph.D. Thesis, University of Michigan   
+[Mi1] Mihalcea, L. C., Polynomial representatives for the Schubert classes in the equivariant (quantum) cohomology of the Grassmannian in preparation   
+[Mi2] Mihalcea, L. C., Positivity in equivariant quantum Schubert calculus in preparation   
+[MS] Molev, A. I., Sagan B., A Littlewood-Richardson rule for factorial Schur functions, Trans. Amer. Math. Soc. 351 (1999), no. 11, 4429-4443   
+[O] Okounkov A., Quantum immanants and higher Capelli identities, Transformations Groups 1 (1996), 99-126   
+[Po] Postnikov, A., Affine approach to quantum Schubert calculus, preprint arXiv: math.CO/0205165   
+[QC] Quantum Cohomology at the Mittag-Leffler Institute, edited by Paolo Aluffi, 1996   
+[R] Robinson, S., A Pieri-type formula for the equivariant cohomology of the flag manifold, Journal of Algebra 249 , 38-58 (2002).   
+[S] Stembridge, J.R., A concise proof of the Littlewood-Richardson rule, Electron. J. Comb. 9 2002   
+[Y] Yong, A., Degree bounds in Schubert calculus, Proceedings of the AMS, Vol. 131, Number 9, 2649-2655 (2003).   
+[W] Witten, E., The Verlinde algebra and the cohomology of the Grassmannian, Geometry, Topology and Physics, Internat. Press, Cambridge, MA, 1995, 357-422
