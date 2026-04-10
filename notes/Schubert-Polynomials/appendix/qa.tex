@@ -4322,40 +4322,6 @@ $$[Y]_T \in \sum_i \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T,$$
 
 \textbf{总结}：两者由 Graham 定理 3.2 统一，共享权重 $\{\beta_j\} = \{-\alpha\}$。Prop 6.1 是 $X \times X$ 上的直接应用（$B'$-不变），Thm 2.3 若移植到这里会得到更强的版本（$B^-(w_1)\times B^-(w_2)$-不变 + 限制根集），但 Mihalcea 的证明不需要这个加强形式。
 
-\section{等变量子上同调类的定义：Borel 构造}
-\subsection{问题}
-等变量子上同调类（如 $[V]_T$ 和 $\sigma(u)^T$）是如何定义的？$[V]_T$ 中的下标 $T$ 代表什么？
-\subsection{回答}
-\textbf{核心思想}：将 $T$-作用"吸收"到一个额外的空间中，使作用变得自由，从而在商空间上做普通上同调。
-
-\textbf{Borel 构造（Borel Construction）}：设 $T \cong (\mathbb{C}^\times)^r$ 是 torus，$X$ 是带有 $T$-作用的拓扑空间。
-
-\textbf{第一步}：取 $T$ 的分类空间 $ET$，即一个可缩空间，$T$ 在其上自由作用（如 $S^\infty$ 或 $\mathbb{C}^\infty \setminus \{0\}$）。$ET$ 的存在性由拓扑学保证——$BT = ET/T$ 是分类空间。
-
-\textbf{第二步}：构造同伦商空间（homotopy quotient）：
-$$X_T := X \times_T ET := (X \times ET) / T,$$
-其中 $T$ 在 $X \times ET$ 上以对角方式作用：$t \cdot (x, e) = (t^{-1} \cdot x, t \cdot e)$。
-
-\textbf{第三步}：定义等变量子上同调：
-$$H_T^*(X) := H^*(X_T) = H^*(X \times_T ET).$$
-
-\textbf{几何直观}：
-
-\begin{tabular}{c|c|c}
-普通上同调 & 等变量子上同调 & 含义差异 \\ \hline
-$X$ 上的类 & $X_T$ 上的类 & 类从 $X$ 提升到 $X_T$ \\
-忘掉 $T$ 作用 & 记录 $T$ 权重 & $H_T^*(X)$ 是多项式环 $\mathbb{Z}[x_1,\ldots,x_r]$-模 \\
-局部性质 & 全局性质 & $[V]_T$ 在每点额外记录 torus 权重信息
-\end{tabular}
-
-\textbf{等变基本类 $[V]_T$}：若 $V \subset X$ 是 $T$-不变的子簇（$\dim V = k$），则 $[V]_T \in H_T^{2k}(X)$ 定义为 $V \times_T ET \subset X \times_T ET$ 的 Poincaré 对偶类。这是 $[V]$ 在等变 setting 中的提升。
-
-\textbf{具体例子}（ch4 中的定义）：设 $X = G/P$ 是齐次空间，$T$ 是最大环面。则在 Borel 同构下：
-$$H_T^*(G/P) \cong \mathbb{Z}[x_1,\ldots,x_r] \otimes_{H_T^*(pt)} H^*(G/P).$$
-Schubert 类 $\sigma(u)^T = [X(u)]_T$ 是 Schubert 簇 $X(u) = \overline{B^+uB/B}$ 的等变 Poincaré 对偶类。忘掉 $T$ 参数（令 $x_i = 0$）后，$\sigma(u)^T$ 退化为普通 Schubert 类 $\sigma(u)$。
-
-\textbf{关键性质}：等变量子上同调 $H_T^*(X)$ 是多项式环 $H_T^*(pt) = \mathbb{Z}[x_1,\ldots,x_r]$ 上的分次代数。这使得我们可以在系数中引入关于 $x_i$ 的多项式——这正是 Graham positivity 和 Mihalcea positivity 的核心：展开系数不再是整数，而是非负多项式。
-
 \section{Theorem 2.3 的完整解读：逐符号定义与归纳证明}
 \subsection{逐符号精确定义}
 \textbf{1. $B^-$-作用}：$B^- = T \cdot N^-$ 是相反 Borel 子群（下三角矩阵），$T$ 是对角 torus，$N^-$ 是幂幺根基（严格下三角矩阵）。
@@ -4515,4 +4481,41 @@ $$[F(V_i)]_T = \sum_j f_j^i [Y(u_j)\times Y(v_j)]_T,$$
 区别仅在于 $f_j^i$ 来自不同的根集。两者最终都导致非负多项式系数，因此步骤 5 的 Poincaré 配对结果完全一致，\textbf{主定理得证}。
 
 \textbf{这一替换的理论意义}：它揭示了 Mihalcea 的证明本质上是 Graham-Thm-3.2 思想的一个应用，但 GX Thm 2.3 的 $X \times X$ 版本在 open conjecture 中可能更强大——它暗示 $c_{u,v}^{w,d}$ 中非零项的出现可能与特定的根子集 $I(w_1)\cup I(w_2)$ 有对应关系。
+
+\section{$QH_T^*(X)$ 上同调类的定义：四层结构}
+\subsection{问题}
+量子上同调 $QH_T^*(X)$ 中的上同调类是如何定义的？与普通上同调、等变上同调有什么关系？
+\subsection{回答}
+$QH_T^*(X)$ 中的类通过**三层递进**定义：
+
+\textbf{第一层：普通上同调 $H^*(X)$。} Schubert 类定义为 Schubert 簇的 Poincaré 对偶：
+$$\sigma(w) = [\Omega_w] \in H^{2\ell(w)}(X, \mathbb{Z}),$$
+其中 $\Omega_w = \overline{B^+wB/B}$。这是最经典的上同调类。
+
+\textbf{第二层：等变上同调 $H_T^*(X)$。} 类被提升到同伦商空间 $X \times_T ET$ 上：
+$$\sigma(w)^T = [\Omega_w]_{X \times_T ET} \in H_T^{2\ell(w)}(X).$$
+忘掉 torus 作用（令 $x_i = 0$）后，$\sigma(w)^T$ 退化为 $\sigma(w)$。
+
+\textbf{第三层：量子上同调 $QH^*(X)$。} 同一组 Schubert 类 $\{\sigma(w)\}$ 被用作 $\mathbb{Z}[q]$-模的基底，但乘法被 Gromov-Witten 不变量修正：
+$$\sigma(u) \star \sigma(v) = \sum_{d,w} q^d \, c_{u,v}^{w,d} \, \sigma(w).$$
+这里 $\{\sigma(w)\}$ 与 $H^*(X)$ 中的完全相同——\textbf{类没有变}，变的是乘法结构。
+
+\textbf{第四层：等变量子上同调 $QH_T^*(X)$（定义）。} 三者的统一：
+$$QH_T^*(X) = H_T^*(X) \otimes_{\mathbb{Z}[x]} \mathbb{Z}[x,q].$$
+ch4, Def 2.1 给出的定义：
+
+\begin{tabular}{c|c}
+对象 & 定义 \\ \hline
+基底 & $\{\sigma(w)\}$，与 $H_T^*(X)$ 共用 \\
+系数环 & $\Lambda[q] = \mathbb{Z}[x_1,\ldots,x_r][q_1,\ldots,q_m]$ \\
+乘法 & $\sigma(u) \star \sigma(v) = \sum_{d,w} q^d c_{u,v}^{w,d} \sigma(w)$ \\
+结构常数 & $c_{u,v}^{w,d} \in \Lambda$（$x_i$ 的多项式） \\
+\end{tabular}
+
+\textbf{关键洞察：类不变，变的是系数环和乘法。} 在 $QH_T^*(X)$ 中，$\sigma(w)$ 是与 $H_T^*(X)$ 中完全相同的 Schubert 类。变化的只有：(1) 系数环从 $\mathbb{Z}$ 扩张到 $\Lambda[q]$；(2) 乘法从点相交（$H_T^*$ 中的 cup product）变为曲线计数（由 Gromov-Witten 不变量决定）。
+
+\textbf{三种退化（ch4, Prop 2.2）}：
+$$QH_T^*(X) \xrightarrow{q=0} H_T^*(X) \xrightarrow{x_i=0} H^*(X)$$
+$$QH_T^*(X) \xrightarrow{x_i=0} QH^*(X) \xrightarrow{q=0} H^*(X)$$
+
 
