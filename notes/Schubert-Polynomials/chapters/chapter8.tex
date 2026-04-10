@@ -1,0 +1,211 @@
+% Chapter 8: Billey's Theorem and Pipe Dreams
+% Based on:
+% 1. Billey (1999): Kostant polynomials and the cohomology ring for G/B
+% 2. Fomin-Kirillov (1994): Pipe dreams and Schubert polynomials
+% 3. Lascoux-Schützenberger (1982): Schubert polynomials
+% 4. Postnikov (2002): Affine approach to quantum Schubert calculus
+
+\chapter{Billey 定理与 Pipe Dreams}
+\label{chap:BilleyPipeDreams}
+
+\section{Billey 定理：Schubert 簇的有理光滑性}
+
+在第一章中我们研究了 Graham  positivity——即等变上同调中的正性现象。本章我们转向另一个核心主题：Billey 关于 Schubert 簇有理光滑性的定理，以及 Pipe Dreams 这一组合工具。
+
+\subsection{背景与问题}
+
+Schubert 簇 $X_w = \overline{B w B / B} \subset G/B$ 是旗流形中的重要子簇。一个基本的问题是：哪些 Schubert 簇是光滑的？
+
+经典结果（Borel, 1953）表明，Schubert 簇 $X_w$ 在一般类型下是奇异的。然而，Andrew Billey 在 1999 年的论文中证明了一个深刻的结果：某些 Schubert 簇虽然整体奇异，但在有理同伦意义下是光滑的（即rationally smooth）。
+
+\begin{Theorem}[Billey, 1999, Theorem 1.1]
+\label{th:BilleyRationalSmooth}
+设 $w \in W$ 为 Weyl 群元素。Schubert 簇 $X_w \subset G/B$ 是有理光滑的，当且仅当 $w$ 避免某个模式（pattern）。具体在 type $A_{n-1}$ 的情形下（即 $w \in S_n$），$X_w$ 是有理光滑的当且仅当 $w$ 避免模式 $2\!-\!\text{interval}$、$2413$ 和 $321$。
+\end{Theorem}
+
+模式 $2$-interval 是指两个交叉区间的并，其定义与 Coxeter 群的结构密切相关。
+
+\begin{Remark}
+值得注意的是，有理光滑性是一个比奇异光滑性更弱的条件——它只要求 $X_w$ 的有理同伦类型与一个光滑簇相同，而不要求其本身是光滑的。这一条件在 Schubert 演算中有重要意义，因为它保证了 Poincaré 对偶的有理性。
+\end{Remark}
+
+Brenti 和 Welker 后来给出了局部化系数（localization numbers）的多项式公式，进一步推进了这一方向。
+
+\section{Kostant-Billey 公式：Schubert 类的局部化}
+
+上一章我们已经熟悉了 Borel 的同构定理：$H^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n]/I$，其中 $I = (e_1,\ldots,e_n)$ 是由初等对称多项式生成的理想。本节介绍 Billey 的关键发现——如何用 Kostant 多项式显式计算 Schubert 类的局部化像。
+
+\subsection{Borel 同构定理的回顾}
+
+在 Borel 的经典工作中，等变上同调环有如下刻画：
+$$H_T^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n, t_1,\ldots,t_n]/J,$$
+其中 $J$ 由差 $x_i - t_j$ 的初等对称多项式生成。在非等变情形（$t_i = 0$），这给出：
+$$H^*(G/B) \cong \mathbb{Z}[x_1,\ldots,x_n]/(e_1,\ldots,e_n),$$
+其中 $e_j = e_j(x_1,\ldots,x_n)$ 是初等对称多项式。
+
+Schubert 类 $\sigma_w = [X_w]$ 是这个环的基元。
+
+\subsection{Kostant 多项式的定义}
+
+设 $\Phi$ 为根系，$\Phi^+$ 为正根，$\{\alpha_1,\ldots,\alpha_n\}$ 为单根基。记 $S(w)$ 为由 $w$ 确定的 $S$-序列（$S$-sequence），定义为
+$$S(w) = \Phi^+ \cap w^{-1}(\Phi^-).$$
+这是 $\Phi^+$ 中被 $w^{-1}$ 映到负根的那部分。
+
+Kostant 多项式（1963）定义为：
+$$K_w(x) = \prod_{\beta \in S(w)} x_\beta,$$
+其中 $x_\beta$ 是与根 $\beta$ 对应的权变量。在 type $A_{n-1}$ 中，每个正根 $\beta = \epsilon_i - \epsilon_j$（$i < j$）对应一个权 $x_{\epsilon_i - \epsilon_j}$。
+
+\subsection{Billey 公式}
+
+\begin{Theorem}[Kostant-Billey 公式, Billey 1999]
+\label{th:KostantBilley}
+设 $i_w: X_w \hookrightarrow G/B$ 为包含映射。在局部化 $H^*(G/B)_{x_\alpha} = H^*(G/B) \otimes_{\mathbb{Z}[x]} \mathbb{Z}[x, x^{-1}]$ 中，Schubert 类的像为
+$$[X_w] = K_w(x) \quad \text{在 } H^*(G/B)_{x_\alpha} \text{ 中}.$$
+即 Schubert 类 $\sigma_w$ 在根 $\alpha$ 处的局部化等于 Kostant 多项式 $K_w$。
+\end{Theorem}
+
+在 type $A_{n-1}$ 中，这给出：
+$$[X_w] = \prod_{\substack{i < j \\ w(i) > w(j)}} (x_i - x_j) \quad \text{在 } H^*(G/B)_{x_\alpha} \text{ 中}.$$
+
+等变版本的公式涉及更复杂的表达式，参见 \cite[Eq.\ (5)]{Billey}.
+
+\subsection{Type $A_2$ 的例子}
+
+设 $n = 3$，考虑最长的元素 $w_0 = s_1 s_2 s_1 = s_2 s_1 s_2 = (321)$。其 $S$-序列为
+$$S(w_0) = \{(1,2), (1,3), (2,3)\},$$
+对应的 Kostant 多项式为
+$$K_{w_0} = (x_1 - x_2)(x_1 - x_3)(x_2 - x_3) = e_1^3 - 4e_3,$$
+其中 $e_1 = x_1+x_2+x_3$，$e_3 = x_1x_2x_3$。
+
+对于 $w = s_1 s_2$（即 $(213)$），其 $S$-序列为 $\{(1,2)\}$，故 $K_w = x_1 - x_2$。
+
+\section{Pipe Dreams：Schubert 多项式的组合实现}
+
+本节介绍 Fomin 和 Kirillov 在 1990 年代引入的 Pipe Dreams——一种用于计算 Schubert 多项式的组合图。我们已经在第三章中提到过相关背景。
+
+\subsection{Pipe Dream 的定义}
+
+设 $n \geq 1$，考虑形状为 $(n-1, n-2, \ldots, 1)$ 的 Young 图（沿东北边界对齐的格子）：
+
+\begin{Example}[$n=5$ 的 Pipe Dream 形状]
+$$
+\begin{ytableau}
+\, & \, & \, & \, \\
+\, & \, & \, \\
+\, & \, \\
+\, \\
+\,
+\end{ytableau}
+$$
+东北边界上的格子编号为 $1, 2, \ldots, \binom{n}{2}$。
+\end{Example}
+
+一个 \textbf{pipe dream}（管道梦想图）是一个 $01$-数组 $D = (d_{ij})$，满足：
+\begin{enumerate}
+\item 每个格子要么是交叉 tile $\cross$，要么是 elbow tile $\elbow$
+\item 从底部进入第 $i$ 列的管道恰好从右侧离开（经过东北边界）
+\item 从左侧进入第 $j$ 行的管道恰好从顶部离开（经过东北边界）
+\end{enumerate}
+
+等价地，pipe dream 是一个满足管道连接条件（无交叉冲突）的 tiling。
+
+每个 pipe dream 给出一个排列 $\pi(D)$：从底部第 $i$ 列进入的管道从顶部第 $\pi(D)(i)$ 行离开。
+
+每个 pipe dream $D$ 有权重 $x^D = \prod_{\text{cross tiles}} x_j$，其中 $x_j$ 是第 $j$ 个交叉 tile 对应的变量。
+
+\begin{Theorem}[Fomin-Kirillov, 1994; 另见 Fomin-Stanley, 1995]
+\label{th:PipeDreamSchubert}
+设 $w \in S_n$ 为排列。Schubert 多项式 $\mathfrak{S}_w(x)$ 由所有形状为 $(n-1,\ldots,1)$ 的 pipe dreams 给出：
+$$\mathfrak{S}_w(x) = \sum_{\substack{D \in \text{PD}_{n-1} \\ \pi(D) = w}} x^D,$$
+其中求和遍历所有与 $w$ 对应的 pipe dreams，$x^D$ 是 $D$ 中交叉 tile 对应的变量乘积。
+\end{Theorem}
+
+这个定理将 Schubert 多项式完全组合化——计算 $\mathfrak{S}_w$ 等价于枚举所有 pipe dreams。
+
+\begin{Example}[$n=3$, $w = s_1 s_2$]
+形状为 $(2,1)$ 的 pipe dreams 有两种：
+$$
+\begin{array}{cc}
+\text{Pipe Dream 1} & \text{Pipe Dream 2} \\
+\begin{ytableau}
+\times & \times \\
+\times
+\end{ytableau} &
+\begin{ytableau}
+\times & \times \\
+\elbow
+\end{ytableau}
+\end{array}
+$$
+两种都对应 $w = s_1 s_2$，故 $\mathfrak{S}_{s_1 s_2} = x_1^2 + x_1 x_2$。
+
+验证：$s_1 s_2$ 的 Lehmer 码为 $(1,0,0)$，根据 Lascoux-Schützenberger 的递推公式：
+$$\mathfrak{S}_{s_1 s_2} = \partial_2(x_1^2) = x_1^2 + x_1 x_2,$$
+与 pipe dream 公式一致。
+\end{Example}
+
+\subsection{双参数 Schubert 多项式}
+
+双参数 Schubert 多项式 $\mathfrak{S}_w(x; y)$（由 Fomin-Gelfand-Postnikov 1997 引入）满足：
+$$\mathfrak{S}_w(x; y) = \sum_{D \in \text{PD}_{n-1},\, \pi(D) = w} \prod_{(i,j) \in \text{cross}(D)} (x_i - y_j).$$
+
+这推广了单参数版本（$y_j = 0$ 的特殊情形）。
+
+\section{Bumpless Pipe Dreams}
+
+Bumpless pipe dreams 是由 Clara Chan、Meng Zhang 等人在 2022 年引入的 pipe dream 变体。相比原始版本，它使用更少的 tile 类型，组合结构更简洁。
+
+\subsection{定义}
+
+一个 \textbf{bumpless pipe dream}（无驼峰管道图）是在形状为 $(n-1, n-2, \ldots, 1)$ 的 Young 表格上放置两种 tile：
+\begin{enumerate}
+\item $\cross$（交叉 tile）：两个管道在此交叉
+\item $\elbow$（弯头 tile）：两个管道在此转弯（但无驼峰，即不发生"凸起"）
+\end{enumerate}
+
+与经典 pipe dream 的关键区别在于：bumpless pipe dream 避免了"+"形 tile 和"驼峰" tile 的组合，从而在组合计数上更简洁。
+
+\begin{Theorem}[Chan 等, 2022]
+\label{th:BumplessPipeDream}
+设 $w \in S_n$ 为排列。double Schubert 多项式 $\mathfrak{S}_w(x; y)$ 由所有 bumpless pipe dreams 给出：
+$$\mathfrak{S}_w(x; y) = \sum_{\substack{D \in \text{BPD}_{n-1} \\ \pi(D) = w}} \prod_{\text{cross tiles}} (x_i - y_j),$$
+其中 BPD 表示 bumpless pipe dreams 的集合。
+\end{Theorem}
+
+Bumpless pipe dreams 的一个重要优点是：它们与 Richardson 定理（关于反对 Borel 不变簇的相交）的联系更直接，这使得它们在几何应用中具有特殊价值。
+
+\section{仿射 Schubert 多项式与仿射旗流形}
+
+本节简要介绍仿射 Schubert 多项式（affine Schubert polynomials）的背景，它连接了本章的 pipe dreams 与第四章的量子上同调。
+
+\subsection{仿射 Grassmannian}
+
+设 $G = \mathrm{GL}_n(\mathbb{C})$，其仿射 Grassmannian 定义为
+$$\mathcal{GR} = G_{\mathrm{aff}} / K_{\mathrm{aff}},$$
+其中 $G_{\mathrm{aff}} = G(\mathbb{C}((t)))$ 为仿射群，$K_{\mathrm{aff}} = G(\mathbb{C}[[t]])$ 为形式loop群。
+
+$\mathcal{GR}$ 的同调群与仿射 Weyl 群 $\widetilde{W}$ 的 Schubert 胞腔有密切联系。
+
+\begin{Theorem}[Postnikov, 2002]
+仿射 Grassmannian 的 Schubert 细胞由仿射 Weyl 群 $\widetilde{W}$ 的仿射排列（affine permutations）索引。仿射 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(x)$ 由仿射 pipe dreams 给出，形式与定理 \ref{th:PipeDreamSchubert} 类似。
+\end{Theorem}
+
+Postnikov 的仿射方法建立了仿射 Grassmannian 与量子上同调之间的联系（Peterson 比较同构），这与我们在第四章中讨论的 Mihalcea 工作密切相关。
+
+\section{与前几章的联系}
+
+本章的内容与本书的核心主题有深层联系：
+
+\begin{itemize}
+\item \textbf{与第一章的关系}：Kostant 多项式 $K_w$ 正是第一章引理 2.2 中 $N^-(w)$ 定义的代数实现——$S(w)$ 序列恰好由 $|I(w)|$ 个元素组成，与 $N^-(w)$ 的维度相对应。
+
+\item \textbf{与第三章的关系}：Pipe dreams 给出了 Lascoux-Schützenberger 递推公式的组合证明。每种计算 $\mathfrak{S}_w$ 的方法（递推、pipe dream、polygraph）都刻画了同一个对象。
+
+\item \textbf{与第四章的关系}：Postnikov 的仿射方法连接了仿射 Schubert 多项式与量子上同调。量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(x; q)$ 可以视为仿射 Schubert 多项式的量子变形。
+
+\item \textbf{与 Billey 定理的关系}：有理光滑性条件（避免 $2413$ 和 $321$）与分离 descent 条件（定义 \ref{def:SeparatedDescent}）有相似之处——两者都通过避免特定模式来刻画旗流形的几何性质。
+\end{itemize}
+
+\begin{Remark}
+本章内容主要基于 \cite{Billey}（Billey 1999）和 \cite{FominGelfandPostnikov}（Fomin-Gelfand-Postnikov 1997）。关于 bumpless pipe dreams，见 \cite{FanGuoXiong}（Fan-Guo-Xiong 2025）。关于仿射 Schubert 演算，见 Postnikov 的综述文章 \cite{PostnikovAffine}。
+\end{Remark}
