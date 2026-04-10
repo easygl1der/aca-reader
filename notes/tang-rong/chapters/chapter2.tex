@@ -50,6 +50,17 @@ $n^{-1/2}$ 到 $n^{-1}$ 之间的收敛速率~\citep{Hyndman1995,Li2022}。
 $\gamma$ 越大，测试函数越光滑，越能忽略局部起伏（如支撑不完全对齐）；
 $\gamma$ 越小，$d_\gamma$ 对密度局部变化越敏感。
 
+\begin{Remark}\label{rem:ipm-manifold-adapt}
+    当 $Y$ 支撑于低维流形 $\mathcal{M}_Y \subset \mathbb{R}^{D_Y}$ 上时，
+    IPM $d_\gamma$ 的定义表面上仍使用全空间 $\mathbb{R}^{D_Y}$ 上的测试函数类
+    $\mathcal{H}_1^\gamma(\mathbb{R}^{D_Y})$，
+    但光滑性条件 $\gamma \geq 1$ 保证测试函数在远离 $\mathcal{M}_Y$ 的区域
+    自然衰减或变化平缓——
+    从而 IPM 的值主要由 $\mathcal{M}_Y$ 的 $d_Y$ 维邻域内的概率质量差异决定，
+    环境维度 $D_Y$ 不出现在收敛速率中。
+    这正是 $d_\gamma$ 能自然适应流形结构的核心机制。
+\end{Remark}
+
 % ----------------------------------------------------------
 \section{数学框架}\label{sec:ch2-framework}
 
@@ -793,20 +804,20 @@ $\frac{\partial}{\partial t}p_t(x, y) = \Delta_{\mathcal{M}} p_t(x, y)$
           构造对所有光滑度同时自适应的估计量是重要挑战。
     \item \textbf{噪声观测情形}：
           本文考虑无噪声观测（$X_i, Y_i$ 精确采样）；
-          测量噪声或标签噪声下的极小极速率是什么？
+          测量噪声或标签噪声下的极小极大速率是什么？
     \item \textbf{流形回归与分布回归的统一理论}：
           Regime 3a（纯流形回归）和 Regime 3b（带密度）
           是否可以统一在一个更简洁的框架下？
     \item \textbf{深度生成模型与 IPM 的结合}：
           当前理论主要围绕 Wasserstein 距离和全变差距离；
           对 MMD、Stein 差异等更一般的 IPM，
-          深度生成模型能否达到相应的极小极速率？
+          深度生成模型能否达到相应的极小极大速率？
 \end{enumerate}
 
 % ----------------------------------------------------------
 \section{小结}\label{sec:ch2-summary}
 
-本章系统介绍了~\citep{tang2025regression} 关于分布回归极小极速率的理论。
+本章系统介绍了~\citep{tang2025regression} 关于分布回归极小极大速率的理论。
 
 \textbf{核心贡献}：
 
@@ -815,7 +826,7 @@ $\frac{\partial}{\partial t}p_t(x, y) = \Delta_{\mathcal{M}} p_t(x, y)$
           使得同一套理论可分析多种概率度量下的估计问题。
     \item \textbf{三类 Regime}：根据 $\mathcal{M}_{Y|x}$ 与 $x$ 的关系，
           建立了从经典密度回归到协变量依赖流形回归的层次化理论，
-          各 Regime 的极小极速率清晰刻画。
+          各 Regime 的极小极大速率清晰刻画。
     \item \textbf{几何参数决定复杂度}：
           收敛速率由 $d_X, d_Y, \beta_X, \beta_Y, \alpha_X, \alpha_Y, \gamma$
           等参数的特定组合决定，
