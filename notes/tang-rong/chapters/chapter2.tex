@@ -132,7 +132,7 @@ $\gamma$ 越小，$d_\gamma$ 对密度局部变化越敏感。
 
 \subsection{极小极大速率}\label{sec:ch2-regime1-rate}
 
-\begin{Theorem}[Regime 1 的极小极大速率~\citep{tang2025regression}]\label[theorem]{thm:regime1}
+\begin{Theorem}[Regime 1 的极小极大速率~\citep{tang2025regression}]\label{def:thm-regime1}
     对任意 $\gamma \geq 0$，存在常数 $L_0$，
     使得当 $L, n \geq L_0$ 时，
     \begin{equation}\label{eq:regime1-minimax}
@@ -233,7 +233,7 @@ $\beta_Y \geq \alpha_Y + 1$ 保证 $\alpha_Y$ 光滑性与局部坐标卡的选�
 
 \subsection{极小极大速率}\label{sec:ch2-regime2-rate}
 
-\begin{Theorem}[Regime 2 的极小极大速率~\citep{tang2025regression}]\label[theorem]{thm:regime2}
+\begin{Theorem}[Regime 2 的极小极大速率~\citep{tang2025regression}]\label{def:thm-regime2}
     对任意 $\gamma > 0$ 和 $\beta_Y \geq 2 \vee (\alpha_Y + 1)$，
     存在常数 $L_0$，使得当 $L, \tau, \tau_1, n \geq L_0$ 时，
     \begin{equation}\label{eq:regime2-minimax}
@@ -326,7 +326,7 @@ Regime 2 的速率多了第三项 $n^{-\gamma\beta_Y/d_Y}$，
 为建立 Regime 3b 的下界，先研究纯流形回归问题——
 仅估计 $\{\mathcal{M}_{Y|x}\}$ 而不计密度。
 
-\begin{Theorem}[流形回归的极小极大速率]\label[theorem]{thm:manifold-regression}
+\begin{Theorem}[流形回归的极小极大速率]\label{def:thm-manifold-regression}
     假设 $\beta_Y \geq 2$ 和 $\beta_Y \geq \beta_X$，
     则存在常数 $L_0$，使得当 $L, \tau, \tau_1, n \geq L_0$ 时，
     \begin{equation}\label{eq:manifold-regression-rate}
@@ -364,8 +364,36 @@ $h_2 \asymp (\log n/n)^{\frac{\beta_Y}{d_Y\beta_X+d_X\beta_Y}}$，
 \subsection{Regime 3b：协变量依赖流形上的分布回归}\label{sec:ch2-regime3b}
 
 现在回到完整的分布回归问题，但此时 $\mathcal{M}_{Y|x}$ 依赖 $x$。
+此处采用更强的联合光滑性条件 $\mathcal{H}^{\alpha_Y,\alpha_X}$
+（\cref{def:marginal-smooth}），以保证 $\alpha_Y$ 的定义在局部坐标卡变换下不变。
 
-\begin{Theorem}[Regime 3b 的极小极大速率]\label[theorem]{thm:regime3b}
+\begin{Definition}[Regime 3b：协变量依赖流形响应空间]\label{def:regime3b}
+    给定维度 $D_Y, d_Y, D_X, d_X \in \mathbb{N}_+$、
+    光滑度 $\beta_Y, \beta_X, \alpha_Y, \alpha_X > 0$、
+    函数 $g: \mathbb{R}_+ \to \mathbb{R}_+$ 和常数 $\tau, \tau_1, L > 0$，
+    定义分布族
+    \[
+        \mathcal{P}_3^* = \mathcal{P}_3^*(D_Y, D_X, d_Y, d_X,
+            \beta_Y, \beta_X, \alpha_Y, \alpha_X, \tau, \tau_1, g, L)
+    \]
+    为满足以下条件的 $\mu^* = \mu^*_X\mu^*_{Y|X}$ 构成的集合：
+    \begin{enumerate}
+        \item $\mathcal{M}_X \in \mathcal{M}_X(D_X, d_X, L)$；
+        \item 对任意 $x \in \mathcal{M}_X$，$\mu^*_{Y|x}$ 支撑于
+              $d_Y$ 维 $\beta_Y$-光滑子流形 $\mathcal{M}_{Y|x}$，
+              且族 $\{\mathcal{M}_{Y|x} : x \in \mathcal{M}_X\}$ 为
+              $(\beta_Y, \beta_X)$-光滑的
+              （\cref{def:covdep-manifold}）；
+        \item 对任意 $x \in \mathcal{M}_X$，$\mu^*_{Y|x}$ 有密度函数
+              $u^*(\cdot|x)$ 相对于 $\mathcal{M}_{Y|x}$ 的体积测度，
+              且 $u^* \in \mathcal{H}_L^{\alpha_Y, \alpha_X}
+                 (\mathcal{M}_{Y|x}, \mathcal{M}_X)$
+              （联合光滑性）；
+        \item 下界条件与 Regime 2 相同。
+    \end{enumerate}
+\end{Definition}
+
+\begin{Theorem}[Regime 3b 的极小极大速率~\citep{tang2025regression}]\label{def:thm-regime3b}
     对任意 $\gamma > 0$，
     若 $\beta_Y \geq 2 \vee (\alpha_Y + 1) \vee \beta_X$、
     $\beta_X \geq \alpha_X + \frac{\alpha_X}{\alpha_Y}$ 且 $\alpha_Y \geq \alpha_X$，
@@ -462,7 +490,7 @@ $\mathbb{E}_{\mu^*_{Y|x}}[\psi(Y)]$——
     \log_2\!\left(\frac{n}{\log n}\right).
 \end{equation}
 
-\begin{Theorem}[Regime 1 估计量的收敛速率]\label[theorem]{thm:estimator-regime1}
+\begin{Theorem}[Regime 1 估计量的收敛速率]\label{def:thm-estimator-regime1}
     在 $\mathcal{P}_1^*$ 假设下，
     对任意 $\gamma \geq 0$，
     \cref{eq:density-estimator} 定义的条件密度估计量满足
@@ -523,7 +551,7 @@ $\mathbb{E}_{\mu^*_{Y|x}}[\psi(Y)]$——
 联合估计利用了流形结构固有的稀疏性——
 只有部分小波函数在 $\mathcal{M}_{Y|x}$ 上有非零条件均值。
 
-\begin{Lemma}[联合 vs 独立估计的最优性]\label[lemma]{lem:joint-vs-separate}
+\begin{Lemma}[联合 vs 独立估计的最优性]\label{def:lem-joint-vs-separate}
     在 Regime 2 中，令 $\widehat{u}_j(x)$ 为独立估计得到的
     各尺度条件密度，
     $\widehat{u}_j^\dagger(x)$ 为联合估计得到的条件密度。
@@ -569,7 +597,7 @@ $\mathbb{E}_{\mu^*_{Y|x}}[\psi(Y)]$——
 
 \textbf{Fano 不等式}\footnote{详见 \citep{tang2025regression} 引理 7（Generalized Fano）。}：
 
-\begin{Lemma}[广义 Fano 不等式]\label[lemma]{lem:fano}
+\begin{Lemma}[广义 Fano 不等式]\label{def:lem-fano}
     设 $\mathcal{P} = \{P_0, P_1, \ldots, P_M\}$ 为 $M+1$ 个概率分布，
     任意两个分布 $P_j, P_k$ 之间的 Hellinger 距离满足
     $H(P_j, P_k) \leq \epsilon$，且 $P_0$ 为参考分布。
@@ -587,7 +615,7 @@ $\mathbb{E}_{\mu^*_{Y|x}}[\psi(Y)]$——
 
 \textbf{Varshamov-Gilbert 引理}（用于构造难以区分的假设序列）：
 
-\begin{Lemma}[Varshamov-Gilbert 引理]\label[lemma]{lem:vg}
+\begin{Lemma}[Varshamov-Gilbert 引理]\label{def:lem-vg}
     设 $\mathcal{M}$ 为紧致 $d$ 维黎曼子流形，
     半径为 $s$ 的球的最大 packing 基数为 $N \asymp (C/s)^d$。
     存在 $\{0,1\}^m$ 上的 Hamming 子集 $\mathcal{V}$
@@ -645,7 +673,7 @@ $\frac{\partial}{\partial t}p_t(x, y) = \Delta_{\mathcal{M}} p_t(x, y)$
 关于 Lebesgue 测度绝对连续的分布，
 从而允许使用标准的密度估计技术。
 
-\begin{Lemma}[热核平滑的逼近误差]\label[lemma]{lem:heat-kernel-smoothing}
+\begin{Lemma}[热核平滑的逼近误差]\label{def:lem-heat-kernel}
     设 $\mu^*$ 支撑于 $\beta$-光滑子流形 $\mathcal{M}$ 上，
     $d_Y$ 维，截面曲率有界。
     对任意 $\gamma \in [0, \beta]$ 和光滑测试函数 $f \in \mathcal{H}_1^\gamma$，
