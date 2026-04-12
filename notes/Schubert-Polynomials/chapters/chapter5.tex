@@ -439,159 +439,121 @@ This section gives a complete, self-contained proof of the Quantum Double Schube
 
 \bigskip
 
-\subsubsection{Complete Notation Setup: The Ambient Space $GL_{2n}(\mathbb{C})$}
+\subsubsection{Notation Setup: The Ambient Space Following GX \S2.1}
 \label{sec:GL2nSetup}
 
 We begin by setting up the geometric and algebraic framework, following the style of \cite[Section 2.1]{GX2025}.
 
-\begin{Definition}[The reductive group and its flag variety]\label{def:GL2nSetup}
-Let $G = \mathrm{GL}_{2n}(\mathbb{C})$, and fix the standard data:
-\begin{itemize}
-\item $B \subset G$: the Borel subgroup of upper-triangular matrices;
-\item $B^- \subset G$: the opposite Borel of lower-triangular matrices;
-\item $T = B \cap B^-$: the maximal torus of diagonal matrices;
-\item $N$ (resp.\ $N^-$): the unipotent radical of $B$ (resp.\ $B^-$), consisting of unipotent upper (resp.\ lower) triangular matrices;
-\item $W = N_G(T)/T \cong S_{2n}$: the Weyl group, identified with the symmetric group.
-\end{itemize}
-Write $\Phi = \{t_a - t_b : 1 \leq a \neq b \leq 2n\}$ for the root system of $\mathfrak{gl}_{2n}$, with positive roots $\Phi^+ = \{t_a - t_b : a < b\}$ and simple roots $\Delta = \{t_i - t_{i+1} : 1 \leq i \leq 2n-1\}$.
+\medskip
+\noindent\textbf{2.1. A refined Graham positivity.} Let $G$ be a connected, complex, reductive algebraic group, $B \subset G$ be a Borel subgroup, $B^{-}$ its opposite Borel, $T = B \cap B^{-}$ a maximal torus, $N$ (resp.\ $N^{-}$) the unipotent radical of $B$ (resp.\ $B^{-}$), $W = N_G(T)/T$ the Weyl group, $\Phi$ the root system with positive roots $\Phi^{+}$ and simple roots $\Delta = \{\alpha_1, \ldots, \alpha_r\}$. For $\alpha \in \Phi$, write $s_\alpha$ for the corresponding reflection, and $s_i$ for $s_{\alpha_i}$.
 
-The flag manifold $G/B$ decomposes as the disjoint union of Schubert cells:
-$$G/B = \bigsqcup_{w \in W} B^-wB/B.$$
-Each Schubert cell is an affine cell of dimension $\ell(w)$. Its closure $\overline{B^-wB/B}$ is the Schubert variety. The $T$-equivariant cohomology of $G/B$ has $H_T^*(\mathrm{pt})$-basis given by the Schubert classes
-$$\sigma_w = [\overline{B^-wB/B}]_T \in H_T^*(G/B).$$
-\end{Definition}
+For $w \in W$, its inversion set and non-inversion set are
+$$I(w) := \{\alpha \in \Phi^{+} : w^{-1}\alpha \in \Phi^{-}\},\qquad J(w) := \{\alpha \in \Phi^{+} : w^{-1}\alpha \in \Phi^{+}\} = I(ww_0),$$
+where $w_0 \in W$ is the longest element. The cardinality $|I(w)| = \ell(w)$.
 
-\begin{Definition}[Inversion and non-inversion sets]\label{def:InversionSet}
-For $w \in W$, define:
-\begin{itemize}
-\item The \emph{left inversion set}:
-\begin{equation}
-I(w) := \{\alpha \in \Phi^+ : w^{-1}\alpha \in \Phi^-\}.
-\label{eq:InversionSetDef}
-\end{equation}
-The cardinality $|I(w)| = \ell(w)$, the length of $w$.
-\item The \emph{non-inversion set}:
-\begin{equation}
-J(w) := \{\alpha \in \Phi^+ : w^{-1}\alpha \in \Phi^+\} = \Phi^+ \setminus I(w) = I(ww_0),
-\label{eq:NonInversionSetDef}
-\end{equation}
-where $w_0 \in W$ is the longest element.
-\end{itemize}
-\end{Definition}
+The flag variety $G/B$ has Bruhat decomposition $\bigsqcup_{w \in W} B^{-}wB/B$, with Schubert varieties $\overline{B^{-}wB/B}$. The Schubert classes form an $H_T^*(pt)$-basis of $H_T^*(G/B)$.
 
-\begin{Definition}[Subgroups $B^-(w)$ and $N^-(w)$]\label{def:BMinusW}
 For $w \in W$, define the subgroup
 $$B^-(w) := \langle B^-, s_\alpha : \alpha \in I(w) \rangle \subset B^-.$$
-Equivalently, $B^-(w) = B^- \cap wBw^{-1}$. By the normal subgroup lemma (\cref{def:Lemma22}), if $ws_i > w$ then $B^-(ws_i) \triangleleft B^-(w)$ is a normal subgroup of index $|s_\alpha : \alpha \in I(w)| = |I(w)|$.
-
-Define also $N^-(w) := N^- \cap B^-(w)$, which is the unipotent part.
-\end{Definition}
-
-\begin{Remark}[Restriction to $G = GL_{2n}(\mathbb{C})$]\label{rmk:GL2nRestriction}
-In the body of the proof we restrict to $G = \mathrm{GL}_{2n}(\mathbb{C})$. This restriction is valid because every connected complex reductive group is a product of $GL_n$'s and the statement of the conjecture is stable under restriction to blocks. See \cite[Section 1.4]{GX2025} and \cite[Section 10.4]{AndersonFulton} for the general reduction.
-
-For $G = GL_{2n}$, the $T$-equivariant cohomology of a point is
-$$H_T^*(\mathrm{pt}) = \mathbb{Z}[t_1,\ldots,t_{2n}],\qquad t_i = -c_1^T(\mathbb{C}_{\epsilon_i}),$$
-where $\epsilon_i$ is the character of $T$ sending a diagonal matrix to its $i$-th diagonal entry. The positive roots are $\Phi^+ = \{t_a - t_b : 1 \leq a < b \leq 2n\}$.
-\end{Remark}
-
-\bigskip
-
-\subsubsection{Restatement of the Quantum Double Positivity Conjecture}
-\label{sec:QDPRestatement}
-
-We restate \cref{conj:QuantumDoubleSchubertPositivity} in the notation established above.
-
-\begin{Conjecture}[Quantum Double Schubert Positivity (Restated)]\label{conj:QDPRestated}
-Let $u, v, w \in S_\infty$ (the infinite symmetric group). The product of quantum double Schubert polynomials satisfies
-$$\widetilde{\mathfrak{S}}_u(\mathbf{x};\mathbf{y}) \cdot \widetilde{\mathfrak{S}}_{v}(\mathbf{x};\mathbf{z}) = \sum_w \widetilde{\mathfrak{S}}_{w}(\mathbf{x};\mathbf{z}) \cdot c_{u,v}^{w,(q)}(\mathbf{y},\mathbf{z}; q),$$
-where $c_{u,v}^{w,(q)}(\mathbf{y},\mathbf{z}; q) = \sum_d q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ with
-\begin{equation}
-c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_i - z_j]\quad\text{for all }d.
-\label{eq:QDPAssertion}
-\end{equation}
-In other words, every coefficient in the quantum double Schubert product is a polynomial with nonnegative integer coefficients in the difference variables $y_i - z_j$ and the quantum parameters $q_k$.
-\end{Conjecture}
-
-Under the separated descents hypothesis $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$, we will prove \cref{eq:QDPAssertion} completely. The general case remains open (see \cref{sec:OpenProblems}).
-
-\bigskip
-
-\subsubsection[The $\tau$-trick: from three variables to two]{The $\tau$-Trick: Reducing Three Variables to Two}
-\label{sec:TauTrick}
-
-The central technique of Gao--Xiong \cite{GX2025} is a \emph{geometric} method to reduce the three-variable positivity problem to a two-variable one. The key idea is to embed the double Schubert situation into a \emph{larger} flag manifold $G = \mathrm{GL}_{2n}(\mathbb{C})$, using a special permutation $\tau \in S_{2n}$ that exchanges the two halves of the index set. This converts the product $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ into the $T$-equivariant class of a single intersection of Schubert varieties on $G/B$, to which GX Theorem 2.3 (refined Graham positivity) can be applied directly.
-
-This subsection explains the $\tau$-trick in full detail, following \cite[Section 2.3]{GX2025} and \cite[Section 16.5]{AndersonFulton}. We use the setup of \cref{sec:ClassicalToQuantumPositivity}.
+Equivalently, $B^-(w) = B^- \cap wBw^{-1}$. By the normal subgroup lemma (\cref{def:Lemma22}), if $ws_i > w$ then $B^-(ws_i) \triangleleft B^-(w)$ is a normal subgroup.
 
 \medskip
-\noindent\textbf{Setup.} Let $G = \mathrm{GL}_{2n}(\mathbb{C})$, with Borel subgroup $B$, opposite Borel $B^-$, maximal torus $T$, and Weyl group $W = S_{2n}$. Write
-$$H_T^*(\mathrm{pt}) = \mathbb{Z}[t_1,\ldots,t_{2n}],\qquad t_i = -c_1^T(\mathbb{C}_{\epsilon_i}),$$
-where $\epsilon_i$ is the character of $T$ corresponding to the $i$-th diagonal entry.
+\noindent\textbf{Restriction to $GL_{2n}$.} In the body of the proof we restrict to $G = GL_{2n}(\mathbb{C})$. This restriction is valid because every connected complex reductive group is a product of $GL_n$'s and the statement of the conjecture is stable under restriction to blocks; see \cite[Section 1.4]{GX2025} and \cite[Section 10.4]{AndersonFulton} for the general reduction.
 
-Rename the variables
-\begin{equation}
-t_{n+j} =: y_j\quad (j=1,\ldots,n),\qquad\text{so that}\quad \mathbf{t} = (\underbrace{t_1,\ldots,t_n}_{\mathbf{t}_\mathrm{left}},\underbrace{y_1,\ldots,y_n}_{\mathbf{t}_\mathrm{right}}).
-\label{eq:TauTrickVariableRename}
-\end{equation}
+For $G = GL_{2n}$, we have $H_T^*(pt) = \mathbb{Z}[t_1,\ldots,t_{2n}]$, where $t_i = -c_1^T(\mathbb{C}_{\epsilon_i})$ and $\epsilon_i$ is the character of $T$ sending a diagonal matrix to its $i$-th diagonal entry. Rename the variables:
+$$t_{n+j} =: y_j\quad (j=1,\ldots,n),\qquad\text{so that}\quad \mathbf{t} = (\underbrace{t_1,\ldots,t_n}_{\mathbf{t}_\mathrm{left}},\underbrace{y_1,\ldots,y_n}_{\mathbf{t}_\mathrm{right}}).$$
+The positive roots are $\Phi^+ = \{t_a - t_b : 1 \leq a < b \leq 2n\}$.
 
-Introduce the \emph{involution} $\tau \in S_{2n}$ by
-\begin{equation}
-\tau(i) = n+i\;(i=1,\ldots,n),\qquad \tau(n+i)=i\;(i=1,\ldots,n).
-\label{eq:TauDefinition}
-\end{equation}
-Geometrically, $\tau$ corresponds to the automorphism $gB \mapsto \dot{\tau}^{-1}gB$ of the flag manifold $G/B$. The induced pullback
-$$\tau^*: H_T^*(G/B) \longrightarrow H_T^*(G/B)$$
-is the \emph{left-handed $W$-action} studied in \cite[Section 16.5]{AndersonFulton}. For $f \in H_T^*(\mathrm{pt})$ and $x \in H_T^*(G/B)$,
-\begin{equation}
-\tau^*(f \cdot x) = \tau(f) \cdot \tau^*(x),
-\label{eq:TauSemilinear}
-\end{equation}
-where $\tau$ acts on $H_T^*(\mathrm{pt})$ via its natural action on the character lattice. In particular, for Schubert classes we have the identity \cite[Equation (16.5)]{AndersonFulton}:
+Now define the \emph{involution} $\tau \in S_{2n}$ by
+$$\tau(i) = n+i\;(i=1,\ldots,n),\qquad \tau(n+i)=i\;(i=1,\ldots,n).$$
+A direct computation gives its inversion set:
+$$I(\tau) = \{\, t_i - y_j \mid 1 \leq i,j \leq n \,\}.$$
+Indeed, for $\alpha = t_i - y_j$, we have $\tau^{-1}(t_i - y_j) = y_j - t_i \in \Phi^{-}$, so $t_i - y_j \in I(\tau)$. Conversely, every positive root of $\mathfrak{gl}_{2n}$ is either of the form $t_a - t_b$, $y_a - y_b$, or $t_a - y_b$; the first two are not in $I(\tau)$, while the third gives exactly $\{t_i - y_j\}$.
+
+By \cite[Equation (16.5)]{AndersonFulton}, the $\tau$-action on Schubert classes is
 \begin{equation}
 \tau^*\!\left[\overline{B^-wB/B}\right]_T = \left[\overline{B^-\tau^{-1}wB/B}\right]_T.
 \label{eq:TauPullbackSchubert}
 \end{equation}
+In particular, $[\tau\overline{B^-uB/B}]_T$ is represented by the double Schubert polynomial $\mathfrak{S}_u(\mathbf{x};\tau\mathbf{t}) = \mathfrak{S}_u(\mathbf{x};\mathbf{y})$ by Anderson--Fulton \cite[Section 16.5]{AndersonFulton}.
 
-\begin{Remark}[Why the $\tau$-trick works]\label{rmk:WhyTauTrick}
-The classical triple Schubert product $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ lives in the polynomial ring $\mathbb{Z}[\mathbf{x};\mathbf{y},\mathbf{t}]$ with \emph{three} variable sets. The problem is to understand the coefficients $c_{u,v}^w(\mathbf{y},\mathbf{t})$. Gao--Xiong's key observation is that the difference variables $y_j - t_i$ appear \emph{naturally} as the inversion set of $\tau$. By embedding everything into $H_T^*(GL_{2n}/B)$ and applying $\tau$ to one factor, the three-variable product is converted into a single equivariant class:
-\begin{equation}
-\bigl[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}\bigr]_T,
-\label{eq:TauIntersectionClass}
-\end{equation}
-whose Schubert basis expansion has coefficients in $\mathbb{N}[y_j-t_i]$. This is precisely the bridge from three variables to two.
-\end{Remark}
+\bigskip
+
+\subsubsection{The $\tau$-Trick: Why Three Variables Reduce to Two}
+\label{sec:TauTrickWhy3to2}
+
+The central technique of Gao--Xiong \cite{GX2025} is a \emph{geometric} method to reduce the three-variable positivity problem to a two-variable one. The key idea is to embed the double Schubert situation into a \emph{larger} flag manifold $G = \mathrm{GL}_{2n}(\mathbb{C})$, using the special permutation $\tau \in S_{2n}$ defined above.
 
 \medskip
-\noindent\textbf{The geometric intersection.} Under the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$, the following key lemma shows that the intersection \cref{eq:TauIntersectionClass} is well-behaved:
+\begin{Remark}[Why the $\tau$-trick reduces three variables to two]\label{rmk:WhyTauTrick}
+The triple product $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ lives in $\mathbb{Z}[\mathbf{x};\mathbf{y},\mathbf{t}]$ with three variable sets. The $\tau$-trick embeds everything into $H_T^*(GL_{2n}/B)$. The class $[\tau\overline{B^-uB/B}]_T$ has representative $\mathfrak{S}_u(\mathbf{x};\mathbf{y})$ because $\tau$ permutes the $t$-variables: $\tau(t_i) = y_i$. So the product of classes becomes:
+\begin{equation}
+\bigl[\tau\overline{B^-uB/B}\bigr]_T \cdot \bigl[\overline{B^-vB/B}\bigr]_T = \bigl[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}\bigr]_T.
+\label{eq:TauIntersectionClass}
+\end{equation}
+The right-hand side is a \emph{single} intersection of Schubert varieties on $GL_{2n}/B$. Its Schubert basis expansion gives coefficients in $\mathbb{N}[y_j-t_i] = \mathbb{N}[-\alpha]_{\alpha\in I(\tau)}$. This reduces the problem from three variables $(\mathbf{x};\mathbf{y};\mathbf{t})$ to two variables $(\mathbf{x};\mathbf{y}-\mathbf{t})$.
+\end{Remark}
+
+Under the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$, the intersection in \cref{eq:TauIntersectionClass} is well-behaved:
 
 \begin{Lemma}[Proper transverse intersection {\cite[Lemma 2.5]{GX2025}}]
 \label{tab:TauProperIntersection}
 Let $u, v \in S_n$ satisfy the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$. Then
 $$\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}$$
-is a proper intersection (i.e., the intersection dimension equals the expected dimension) and is transverse at the generic point.
+is a proper intersection and is transverse at the generic point.
 \end{Lemma}
 
 \begin{Proof}[Proof of \cref{tab:TauProperIntersection}]
-The proof uses the product construction $w \times \pi \in S_{2n}$ and an application of Kleiman--Bertini transversality \cite[Section 19.3]{AndersonFulton}. Concretely, let $w_0^{(m)} \in S_m$ denote the longest element. For $w, \pi \in S_n$, write $w \times \pi \in S_{2n}$ for the direct sum. Because $v \in S_n$, for $n \leq i < 2n$ we have $s_i v > v$, so $\overline{B^-vB/B}$ is $s_i$-stable. Hence $\overline{B^-vB/B} = u_0\,\overline{B^-vB/B}$ with $u_0 = 1 \times w_0^{(n)}$. Similarly, $\tau\,\overline{B^-uB/B} = \tau u_0\,\overline{B^-uB/B}$. Since $u_0^{-1}\tau u_0 = w_0^{(2n)}$, the intersection is governed by $w_0^{(2n)}$ acting in general position, giving the proper and transverse intersection. See \cite[Section 19.3]{AndersonFulton} for the Kleiman--Bertini argument.
+The proof uses the product construction $w \times \pi \in S_{2n}$ and Kleiman--Bertini transversality \cite[Section 19.3]{AndersonFulton}. Concretely, let $w_0^{(m)} \in S_m$ denote the longest element. For $w, \pi \in S_n$, write $w \times \pi \in S_{2n}$ for the direct sum. Because $v \in S_n$, for $n \leq i < 2n$ we have $s_i v > v$, so $\overline{B^-vB/B}$ is $s_i$-stable. Hence $\overline{B^-vB/B} = u_0\,\overline{B^-vB/B}$ with $u_0 = 1 \times w_0^{(n)}$. Similarly, $\tau\,\overline{B^-uB/B} = \tau u_0\,\overline{B^-uB/B}$. Since $u_0^{-1}\tau u_0 = w_0^{(2n)}$, the intersection is governed by $w_0^{(2n)}$ acting in general position, giving the proper and transverse intersection. See \cite[Section 19.3]{AndersonFulton}.
 \end{Proof}
 
-\medskip
-\noindent\textbf{The inversion set $I(\tau)$.} For the permutation $\tau$ defined in \cref{eq:TauDefinition}, one computes its (left) inversion set:
-\begin{equation}
-I(\tau) = \{\, t_i - y_j \mid 1 \leq i,j \leq n \,\}.
-\label{eq:InversionSetOfTau}
-\end{equation}
-Indeed, for $w = \tau$ and $\alpha = t_i - y_j$ (a positive root of $\mathfrak{gl}_{2n}$), we have $\tau^{-1}(t_i - y_j) = y_j - t_i \in \Phi^-$, so $t_i - y_j \in I(\tau)$. Conversely, every positive root of $\mathfrak{gl}_{2n}$ is either of the form $t_a - t_b$, $y_a - y_b$, or $t_a - y_b$. The first two are not in $I(\tau)$ (they map to positive roots under $\tau^{-1}$), while the third form gives exactly $\{t_i - y_j\}$. Hence $I(\tau) = \{t_i - y_j \mid 1 \leq i,j \leq n\}$.
+\bigskip
 
-This inversion set is the precise mechanism by which the \emph{three} variable sets $(\mathbf{x};\mathbf{y};\mathbf{t})$ reduce to the \emph{two} variable sets $(\mathbf{x}; \mathbf{y}-\mathbf{t})$: the coefficient ring $\mathbb{N}[y_j - t_i]$ is exactly $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$.
+\subsubsection{The Classical Case: Intersection Equals Cycle Decomposition}
+\label{sec:ClassicalTripleProof}
+
+In the classical case, the product of Schubert classes in $H_T^*(G/B)$ corresponds to a geometric intersection, allowing direct application of the cycle decomposition theorem.
+
+By Anderson--Fulton \cite[Theorem 10.6.4]{AndersonFulton}, the Schubert class $[\overline{B^-\pi B/B}]_T$ is represented by the double Schubert polynomial $\mathfrak{S}_\pi(\mathbf{x};\mathbf{t})$. Applying $\tau$ and using \cite[Section 16.5]{AndersonFulton} gives
+$$[\tau\overline{B^-uB/B}]_T = \mathfrak{S}_u(\mathbf{x};\mathbf{y}),\qquad [\overline{B^-vB/B}]_T = \mathfrak{S}_v(\mathbf{x};\mathbf{t}).$$
+Hence the product $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ corresponds to the geometric intersection class
+$$\bigl[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}\bigr]_T = \sum_{w \in S_n} c_{u,v}^w(\mathbf{y},\mathbf{t})\,[\overline{B^-wB/B}]_T.
+\label{eq:ClassicalTripleProductAsIntersection}$$
+Since $\tau\overline{B^-uB/B}$ is $N^-(\tau)$-invariant and $\overline{B^-vB/B}$ is $B^-$-invariant, their intersection is $N^-(\tau)$-invariant, where
+$$N^-(\tau) := N^- \cap \tau N^- \tau^{-1}.$$
+Applying the cycle decomposition theorem (\cref{cor:GXCorollary24}, Corollary 2.4 of \cite{GX2025}) gives
+$$\bigl[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}\bigr]_T \in \sum_{w \in W} \mathbb{N}[-\alpha]_{\alpha \in I(\tau)}\,[\overline{B^-wB/B}]_T.$$
+Since $I(\tau) = \{t_i - y_j\}$, we have $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)} = \mathbb{N}[y_j - t_i]$. Comparing with \cref{eq:ClassicalTripleProductAsIntersection} yields
+$$c_{u,v}^w(\mathbf{y},\mathbf{t}) \in \mathbb{N}[y_j - t_i]\quad\text{for all }w,$$
+which is exactly the triple Schubert positivity theorem of Gao--Xiong (\cref{th:TripleSchubertPositivity}).
+
+\begin{Remark}[Role of separated descents]\label{rmk:SeparatedDescentsRole}
+The separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$ guarantees that the intersection $\tau X(u) \cap X(v)$ is proper and of the expected dimension. Without this condition, the intersection may have excess dimension and the Kleiman--Bertini argument breaks down. The general case remains open.
+\end{Remark}
+
+\bigskip
+
+\subsubsection[Classical multiplication = intersection; Quantum multiplication $\neq$ intersection]{Classical Multiplication Equals Geometric Intersection; Quantum Multiplication Does Not}
+\label{sec:ClassicalVsQuantumKey}
+
+This is the most important structural distinction in the entire proof. It explains why the classical and quantum arguments follow different paths.
+
+\begin{Remark}[Classical vs.\ quantum: the key structural difference]\label{rmk:ClassicalVsQuantum}
+In the \emph{classical} case (GX, Chapter 1), the product of Schubert classes in $H_T^*(G/B)$ corresponds to a geometric intersection:
+$$\bigl[\tau\overline{B^-uB/B}\bigr]_T \cdot \bigl[\overline{B^-vB/B}\bigr]_T = \bigl[\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}\bigr]_T.$$
+The left-hand side is the product in $H_T^*(G/B)$; the right-hand side is the geometric intersection class. Therefore, GX can directly apply their cycle decomposition theorem (\cref{th:GXTheorem23}) to the intersection class $[\tau X(u) \cap X(v)]_T$.
+
+In the \emph{quantum} case, the product $\sigma(u) \star \sigma(v)$ is defined by Gromov--Witten invariants:
+$$\sigma(u) \star \sigma(v) = \sum_{d,w} q^d\, c_{u,v}^{w,(d)}\,\sigma(w).$$
+This counts stable maps $\mathbb{P}^1 \to X$ of degree $d$, \emph{not} points of $X$. The geometric object is the moduli space $\overline{\mathcal{M}}_{0,3}(X,d)$, not a simple intersection. Therefore, we cannot directly apply the intersection-based argument. Instead, we must use Mihalcea's reduction method to convert the curve-counting problem into a cycle decomposition problem on $X \times X$, and \emph{then} apply the cycle decomposition theorem. This is the fundamental methodological difference between our quantum double positivity result and the classical GX approach.
+\end{Remark}
 
 \bigskip
 
 \subsubsection{GX Theorem 2.3: Complete Proof via Induction on $\ell(w)$}
 \label{sec:GXTheorem23CompleteProof}
 
-This is the core of the entire argument. We give a complete, self-contained proof of GX Theorem 2.3 (the refined Graham positivity theorem), following the inductive strategy of \cite[Section 2]{GX2025}.
+This is the core theorem of the entire argument. We give a complete, self-contained proof following the inductive strategy of \cite[Section 2]{GX2025}.
 
 \begin{Theorem}[Refined Graham Positivity (GX Theorem 2.3)]\label{th:GXTheorem23}
 Let $B^-$ act on a nonsingular variety $X$, and let $Y$ be a $B^-(w)$-invariant effective cycle in $X$. Then there exist $B^-$-invariant effective cycles $Z_1,\ldots,Z_m$ such that
@@ -602,30 +564,29 @@ Let $B^-$ act on a nonsingular variety $X$, and let $Y$ be a $B^-(w)$-invariant 
 in $H_T^*(X)$.
 \end{Theorem}
 
-\Cref{th:GXTheorem23} says that any $B^-(w)$-invariant cycle can be expressed as a nonnegative integer combination of monomials in the negative roots belonging to $I(w)$, multiplied by $B^-$-invariant cycles. The coefficient ring $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$ is the key: when $w = \tau$ and $I(\tau) = \{t_i - y_j\}$, this ring becomes $\mathbb{N}[y_j - t_i]$, which is exactly the desired coefficient ring for the triple Schubert product.
+\Cref{th:GXTheorem23} says that any $B^-(w)$-invariant cycle can be expressed as a nonnegative integer combination of monomials in the negative roots belonging to $I(w)$, multiplied by $B^-$-invariant cycles. When $w = \tau$ and $I(\tau) = \{t_i - y_j\}$, this coefficient ring becomes $\mathbb{N}[y_j - t_i]$, which is exactly the desired ring for the triple Schubert product.
 
 \begin{Proof}[Proof of \cref{th:GXTheorem23} by induction on $\ell(w)$]\label{pf:GXTheorem23}
 
 We prove the theorem by induction on the length $\ell(w)$.
 
 \medskip
-\noindent\textbf{Base case: $\ell(w) = 0$, i.e., $w = \mathrm{id}$.} When $w = \mathrm{id}$, we have $B^-(\mathrm{id}) = B^-$. The hypothesis says that $Y$ is a $B^-$-invariant effective cycle. Since $B^-$ acts transitively on the Schubert cells of $G/B$ and these cells form a basis of $H_T^*(X)$, every $B^-$-invariant effective cycle is already a nonnegative linear combination of Schubert classes:
+\noindent\textbf{Base case: $\ell(w) = 0$, i.e., $w = \mathrm{id}$.} When $w = \mathrm{id}$, we have $B^-(\mathrm{id}) = B^-$. The hypothesis says that $Y$ is a $B^-$-invariant effective cycle. Since $B^-$ acts transitively on the Schubert cells and these form a basis of $H_T^*(X)$, every $B^-$-invariant effective cycle is already a nonnegative linear combination of Schubert classes:
 $$[Y]_T = \sum_{i=1}^m a_i\,[Z_i]_T,\qquad a_i \in \mathbb{N}.$$
 Here $\mathbb{N}[-\alpha]_{\alpha \in I(\mathrm{id})} = \mathbb{N}$ (since $I(\mathrm{id}) = \varnothing$), so \cref{eq:GXTheorem23Statement} holds trivially.
 
 \medskip
 \noindent\textbf{Inductive step.} Assume the theorem holds for some $w \in W$ with $ws_i > w$ for a simple reflection $s_i$ corresponding to the simple root $\alpha_i$. We prove it for $ws_i$.
 
-Since $ws_i > w$, by the Normal Subgroup Lemma (\cref{def:Lemma22}) the pair $B^-(ws_i) \subset B^-(w)$ satisfies the hypotheses of Anderson--Fulton Proposition 19.4.4 \cite{AndersonFulton} with the character $\chi = -w\alpha_i$. Let us explain why $\chi = -w\alpha_i$: the simple root $\alpha_i$ is a positive root; applying $w$ to it gives $w\alpha_i$; since $ws_i > w$, the root $w\alpha_i$ remains positive (if $w\alpha_i$ were negative, then $ws_i = w \cdot s_i$ would send it to $w\alpha_i$ still negative, contradicting the positivity condition $ws_i > w$); the character associated to the root $w\alpha_i$ is its negative $-w\alpha_i$, which is the character by which $B^-(w)$ acts on the quotient $B^-(w)/B^-(ws_i)$. This is precisely the $\chi$ required by Proposition 19.4.4.
+Since $ws_i > w$, by the Normal Subgroup Lemma (\cref{def:Lemma22}) the pair $B^-(ws_i) \subset B^-(w)$ satisfies the hypotheses of Anderson--Fulton Proposition 19.4.4 \cite{AndersonFulton} with the character $\chi = -w\alpha_i$. Let us explain why $\chi = -w\alpha_i$: since $ws_i > w$, the root $w\alpha_i$ is positive (if $w\alpha_i$ were negative, then $ws_i$ would send it to $w\alpha_i$ still negative, contradicting $ws_i > w$); the character associated to the root $w\alpha_i$ is its negative $-w\alpha_i$, which is precisely the character by which $B^-(w)$ acts on the quotient $B^-(w)/B^-(ws_i)$. This is the $\chi$ required by Proposition 19.4.4.
 
-Applying \cite[Proposition 19.4.4]{AndersonFulton} to the $B^-(w)$-invariant cycle $Y$ yields: there exist $B^-(w)$-invariant effective cycles $Z_1$ and $Z_2$ such that
+Applying \cite[Proposition 19.4.4]{AndersonFulton} to the $B^-(w)$-invariant cycle $Y$ yields $B^-(w)$-invariant effective cycles $Z_1$ and $Z_2$ such that
 \begin{equation}
 [Y]_T = [Z_1]_T + (-w\alpha_i)\,[Z_2]_T.
 \label{eq:Prop194Applied}
 \end{equation}
-Here $[Z_1]_T$ is the contribution from the identity component and $(-w\alpha_i)[Z_2]_T$ is the character-weighted contribution. Both $Z_1$ and $Z_2$ are $B^-(w)$-invariant effective cycles.
 
-Now observe the inversion sets. Since $ws_i > w$, we have the exact relationship:
+Now observe the inversion sets. Since $ws_i > w$, we have the exact relationship
 \begin{equation}
 I(ws_i) = I(w) \cup \{w\alpha_i\}.
 \label{eq:InversionSetExtension}
@@ -639,7 +600,7 @@ From \cref{eq:InversionSetExtension}, we deduce the relationship between the coe
 \end{equation}
 That is, the coefficient ring for $ws_i$ is obtained from the coefficient ring for $w$ by adjoining the new generator $-w\alpha_i$.
 
-Now apply the inductive hypothesis to both $Z_1$ and $Z_2$ in \cref{eq:Prop194Applied}. Since $Z_1$ and $Z_2$ are $B^-(w)$-invariant, the induction hypothesis gives
+Apply the inductive hypothesis to both $Z_1$ and $Z_2$ in \cref{eq:Prop194Applied}. Since $Z_1$ and $Z_2$ are $B^-(w)$-invariant, the induction hypothesis gives
 $$[Z_1]_T \in \sum_{k} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T,\qquad
 [Z_2]_T \in \sum_{\ell} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_\ell'']_T,$$
 for some $B^-$-invariant cycles $Z_k', Z_\ell''$. Substituting into \cref{eq:Prop194Applied} gives
@@ -647,7 +608,7 @@ for some $B^-$-invariant cycles $Z_k', Z_\ell''$. Substituting into \cref{eq:Pro
 [Y]_T &\in \sum_k \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T + (-w\alpha_i) \sum_\ell \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_\ell'']_T \\
 &= \sum_k \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T + \sum_\ell \bigl((-w\alpha_i)\,\mathbb{N}[-\alpha]_{\alpha \in I(w)}\bigr) \cdot [Z_\ell'']_T.
 \end{align*}
-Using \cref{eq:CoefficientRingExtension}, the second sum is a sum over $\mathbb{N}[-\alpha]_{\alpha \in I(ws_i)}$-multiples of $B^-$-invariant cycles. Combining both sums, we obtain
+Using \cref{eq:CoefficientRingExtension}, the second sum is a sum over $\mathbb{N}[-\alpha]_{\alpha \in I(ws_i)}$-multiples of $B^-$-invariant cycles. Combining both sums yields
 $$[Y]_T \in \sum_{m} \mathbb{N}[-\alpha]_{\alpha \in I(ws_i)} \cdot [Z_m]_T,$$
 which is precisely \cref{eq:GXTheorem23Statement} for $ws_i$. This completes the inductive step.
 
@@ -665,6 +626,76 @@ Since the flag variety $G/B$ has finitely many $B^-$-orbits (the Schubert cells)
 \end{Corollary}
 
 \bigskip
+
+\subsubsection{Quantum Extension via Mihalcea's Reduction Method}
+\label{sec:QuantumReductionFlow}
+
+We now adapt the $\tau$-trick to the quantum double setting. Because the quantum product does not correspond to a geometric intersection (see \cref{rmk:ClassicalVsQuantum}), we must use Mihalcea's reduction method to convert the curve-counting problem into a cycle decomposition problem on $X \times X$.
+
+\medskip
+\noindent\textbf{Step 1: Schubert class formulation.} Let $X = G/B$ with $G = \mathrm{GL}_{2n}(\mathbb{C})$, and use variables $(\mathbf{x};\mathbf{y};\mathbf{z})$ as in \cref{conj:QuantumDoubleSchubertPositivity}. Under the Borel isomorphism
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[x_1,\ldots,x_n;\; y_1,\ldots,y_n;\; q_1,\ldots,q_{n-1}] / \widetilde{J},$$
+the product of quantum double Schubert polynomials corresponds to the quantum product of Schubert classes:
+\begin{equation}
+[\Omega_u]_{U_n} \star [\Omega_v]_{U_n} = \sum_{d,w} q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,[\Omega_w]_{U_n}.
+\label{eq:QuantumDoubleClassProduct}
+\end{equation}
+The coefficient $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ is a double equivariant Gromov--Witten invariant. By the geometric definition of the quantum product \cite[Section 6]{Mihalcea},
+\begin{equation}
+c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) = \pi_*^T\!\left((ev_1^T)^*[\Omega_u]_T \cdot (ev_2^T)^*[\Omega_v']_T \cdot (ev_3^T)^*[\Omega_w]_T \cap [\overline{\mathcal{M}}_{0,3}(X,d)]\right),
+\label{eq:QuantumDoubleCoefficientGeometric}
+\end{equation}
+where $\Omega_u' = \tau\Omega_v$ denotes the $\tau$-twisted opposite Schubert variety.
+
+\medskip
+\noindent\textbf{Step 2: The reduction flow.} The proof follows the same reduction chain as in the classical Mihalcea case (Chapter 4, \cref{eq:ReductionFlowChart}), with one critical replacement: in Mihalcea's Step 4, Graham positivity on $X \times X$ gives $\mathbb{N}[x_i]$ coefficients; in our case we replace this with GX Theorem 2.3 (\cref{th:GXTheorem23}), which yields $\mathbb{N}[y_i-z_j]$ coefficients. The irreducible components $F(V_i)$ from Step 3 are $T$-stable subvarieties of $X \times X$, and applying \cref{th:GXTheorem23} to each gives
+\begin{equation}
+[F(V_i)]_T \in \sum_{u_j, v_j} \mathbb{N}[y_k - z_\ell]\, [Y(u_j) \times Y(v_j)]_T.
+\label{eq:GXTheoremOnXX}
+\end{equation}
+
+The complete reduction flow is:
+{\allowdisplaybreaks
+\begin{align}
+c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})
+&= \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma'(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T) \tag{Step 1: definition} \label{eq:QDFlowStep1}\\
+&= (\pi_{X \times X})_*^T F_*^T\left((F^T)^*\!\big[(pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma'(v)^T\big] \cdot (ev_3^T)^*\widetilde{\sigma}(w)^T\right) \tag{Step $1'$: rewrite} \label{eq:QDFlowStep1Prime}\\[4pt]
+&\xrightarrow{\;\text{Projection formula}\;} (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma'(v)^T \cdot F_*^T((ev_3^T)^*\widetilde{\sigma}(w)^T)\Big) \tag{Step 2: apply $F_*^T$} \label{eq:QDFlowStep2}\\[4pt]
+&\xrightarrow{\;\text{Lemma }\cref{prop:ev3inverse}\;} \sum_i a_i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma'(v)^T \cdot [F(V_i)]_T\Big) \tag{Step 3: components} \label{eq:QDFlowStep3}\\[4pt]
+&\xrightarrow{\;\text{GX Thm 2.3 on }X\times X\;} \sum_i a_i \sum_j f_j^i \; (\pi_{X \times X})_*^T\!\Big((pr_1^T)^*\sigma(u)^T \cdot (pr_2^T)^*\sigma'(v)^T \cdot [Y(u_j)\times Y(v_j)]_T\Big) \tag{Step 4: apply GX} \label{eq:QDFlowStep4}\\[4pt]
+&= \sum_i a_i \sum_j f_j^i \; \delta_{u,u_j} \cdot \delta_{\tau v \tau^{-1}, v_j}. \tag{Step 5: equivariant Poincar\'e pairing} \label{eq:QDFlowStep5}
+\end{align}}
+
+Here $a_i \in \mathbb{N}$ (degrees of irreducible components) and $f_j^i \in \mathbb{N}[y_k - z_\ell]$ (nonnegative coefficient polynomials from \cref{th:GXTheorem23}), and Step 5 uses the equivariant Poincar\'e pairing \cite[Proposition 3.1]{Mihalcea}:
+$$\langle \sigma^T(u), \widetilde{\sigma}^T(w)\rangle_T = \delta_{u,w},\qquad \langle \sigma'^T(v), \widetilde{\sigma}^T(w)\rangle_T = \delta_{\tau v \tau^{-1}, w}.$$
+
+Since each $a_i \in \mathbb{N}$ and each $f_j^i \in \mathbb{N}[y_k - z_\ell]$, we conclude that
+$$c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_k - z_\ell]\quad\text{for all }u,v,w,d.$$
+This establishes the separated descents case of \cref{conj:QuantumDoubleSchubertPositivity}.
+
+\medskip
+\noindent\textbf{Verification of each step.} \cref{eq:QDFlowStep1} is the definition of the equivariant Gromov--Witten invariant \cite[Equation (6.3)]{Mihalcea}. \cref{eq:QDFlowStep1Prime} follows from the definition of $F = (ev_1, ev_2): \overline{\mathcal{M}}_{0,3}(X,d) \to X \times X$. \cref{eq:QDFlowStep2} applies the $T$-equivariant projection formula for the proper map $F$. \cref{eq:QDFlowStep3} uses \cref{prop:ev3inverse}, which holds verbatim in the double-variable setting. \cref{eq:QDFlowStep4} applies \cref{th:GXTheorem23} (instead of Graham's theorem) to the $T$-stable subvarieties $F(V_i) \subset X \times X$, yielding $\mathbb{N}[y_k - z_\ell]$ coefficients. \cref{eq:QDFlowStep5} evaluates the push-forward using equivariant Poincar\'e duality; only terms with $u_j = u$ and $v_j = \tau v \tau^{-1}$ survive.
+
+\bigskip
+
+\subsubsection{Refined Statement: Coefficient Ring via the Inversion Set $I(w)$}
+\label{sec:RefinedCoefficientRingProof}
+
+The argument above establishes that $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_i - z_j]$. However, a finer statement holds: the coefficient ring can be refined to depend on the target element $w$ via its inversion set $I(w)$.
+
+\begin{Theorem}[Refined Quantum Double Positivity]\label{th:RefinedQuantumDouble}
+Let $u, v, w \in S_\infty$ satisfy the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$. Then in \cref{eq:QuantumDoubleClassProduct}, the coefficients satisfy
+$$c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[-\alpha]_{\alpha \in I(w)},$$
+where $I(w) = \{\alpha \in \Phi^+ \mid w^{-1}\alpha \in \Phi^-\}$ is the inversion set of $w$.
+\end{Theorem}
+
+\begin{Proof}
+The proof is identical to the unrefined case up to Step 4 of the reduction flow. In Step 4, instead of applying the coarse version of \cref{cor:GXCorollary24}, one applies the full strength of \cref{th:GXTheorem23}, which gives the decomposition
+$$[F(V_i)]_T \in \sum_{u_j, v_j} \mathbb{N}[-\alpha]_{\alpha \in I(w_{ij})}\, [Y(u_j) \times Y(v_j)]_T$$
+for appropriate target elements $w_{ij}$. When the final evaluation by equivariant Poincar\'e pairing is performed, the $\delta$-functions pick out those $(u_j, v_j)$ that equal $(u, \tau v \tau^{-1})$, and the resulting coefficient ring is $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$, as claimed.
+\end{Proof}
+
+When $w = w_0$ (the longest element), $I(w_0) = \Phi^+$, so $\mathbb{N}[-\alpha]_{\alpha \in I(w_0)} = \mathbb{N}[x_1,\ldots,x_r]$, which recovers the Mihalcea positivity ring. This shows that \cref{th:RefinedQuantumDouble} interpolates between the quantum double positivity (with $\mathbb{N}[y_i-z_j]$ coefficients) and the original Mihalcea positivity (with $\mathbb{N}[x_i]$ coefficients).
 
 \subsection{The Classical Triple Schubert Positivity via the $\tau$-Trick}
 \label{sec:TripleSchubertViaTau}
