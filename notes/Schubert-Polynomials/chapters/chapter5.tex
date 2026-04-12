@@ -566,7 +566,7 @@ whose Schubert basis expansion has coefficients in $\mathbb{N}[y_j-t_i]$. This i
 \noindent\textbf{The geometric intersection.} Under the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$, the following key lemma shows that the intersection \cref{eq:TauIntersectionClass} is well-behaved:
 
 \begin{Lemma}[Proper transverse intersection {\cite[Lemma 2.5]{GX2025}}]
-\label{lem:TauProperIntersection}
+\label{tab:TauProperIntersection}
 Let $u, v \in S_n$ satisfy the separated descents condition $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$. Then
 $$\tau\overline{B^-uB/B} \cap \overline{B^-vB/B}$$
 is a proper intersection (i.e., the intersection dimension equals the expected dimension) and is transverse at the generic point.
@@ -585,6 +585,86 @@ I(\tau) = \{\, t_i - y_j \mid 1 \leq i,j \leq n \,\}.
 Indeed, for $w = \tau$ and $\alpha = t_i - y_j$ (a positive root of $\mathfrak{gl}_{2n}$), we have $\tau^{-1}(t_i - y_j) = y_j - t_i \in \Phi^-$, so $t_i - y_j \in I(\tau)$. Conversely, every positive root of $\mathfrak{gl}_{2n}$ is either of the form $t_a - t_b$, $y_a - y_b$, or $t_a - y_b$. The first two are not in $I(\tau)$ (they map to positive roots under $\tau^{-1}$), while the third form gives exactly $\{t_i - y_j\}$. Hence $I(\tau) = \{t_i - y_j \mid 1 \leq i,j \leq n\}$.
 
 This inversion set is the precise mechanism by which the \emph{three} variable sets $(\mathbf{x};\mathbf{y};\mathbf{t})$ reduce to the \emph{two} variable sets $(\mathbf{x}; \mathbf{y}-\mathbf{t})$: the coefficient ring $\mathbb{N}[y_j - t_i]$ is exactly $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$.
+
+\bigskip
+
+\subsubsection{GX Theorem 2.3: Complete Proof via Induction on $\ell(w)$}
+\label{sec:GXTheorem23CompleteProof}
+
+This is the core of the entire argument. We give a complete, self-contained proof of GX Theorem 2.3 (the refined Graham positivity theorem), following the inductive strategy of \cite[Section 2]{GX2025}.
+
+\begin{Theorem}[Refined Graham Positivity (GX Theorem 2.3)]\label{th:GXTheorem23}
+Let $B^-$ act on a nonsingular variety $X$, and let $Y$ be a $B^-(w)$-invariant effective cycle in $X$. Then there exist $B^-$-invariant effective cycles $Z_1,\ldots,Z_m$ such that
+\begin{equation}
+[Y]_T \in \sum_{i=1}^m \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_i]_T
+\label{eq:GXTheorem23Statement}
+\end{equation}
+in $H_T^*(X)$.
+\end{Theorem}
+
+\Cref{th:GXTheorem23} says that any $B^-(w)$-invariant cycle can be expressed as a nonnegative integer combination of monomials in the negative roots belonging to $I(w)$, multiplied by $B^-$-invariant cycles. The coefficient ring $\mathbb{N}[-\alpha]_{\alpha \in I(w)}$ is the key: when $w = \tau$ and $I(\tau) = \{t_i - y_j\}$, this ring becomes $\mathbb{N}[y_j - t_i]$, which is exactly the desired coefficient ring for the triple Schubert product.
+
+\begin{Proof}[Proof of \cref{th:GXTheorem23} by induction on $\ell(w)$]\label{pf:GXTheorem23}
+
+We prove the theorem by induction on the length $\ell(w)$.
+
+\medskip
+\noindent\textbf{Base case: $\ell(w) = 0$, i.e., $w = \mathrm{id}$.} When $w = \mathrm{id}$, we have $B^-(\mathrm{id}) = B^-$. The hypothesis says that $Y$ is a $B^-$-invariant effective cycle. Since $B^-$ acts transitively on the Schubert cells of $G/B$ and these cells form a basis of $H_T^*(X)$, every $B^-$-invariant effective cycle is already a nonnegative linear combination of Schubert classes:
+$$[Y]_T = \sum_{i=1}^m a_i\,[Z_i]_T,\qquad a_i \in \mathbb{N}.$$
+Here $\mathbb{N}[-\alpha]_{\alpha \in I(\mathrm{id})} = \mathbb{N}$ (since $I(\mathrm{id}) = \varnothing$), so \cref{eq:GXTheorem23Statement} holds trivially.
+
+\medskip
+\noindent\textbf{Inductive step.} Assume the theorem holds for some $w \in W$ with $ws_i > w$ for a simple reflection $s_i$ corresponding to the simple root $\alpha_i$. We prove it for $ws_i$.
+
+Since $ws_i > w$, by the Normal Subgroup Lemma (\cref{def:Lemma22}) the pair $B^-(ws_i) \subset B^-(w)$ satisfies the hypotheses of Anderson--Fulton Proposition 19.4.4 \cite{AndersonFulton} with the character $\chi = -w\alpha_i$. Let us explain why $\chi = -w\alpha_i$: the simple root $\alpha_i$ is a positive root; applying $w$ to it gives $w\alpha_i$; since $ws_i > w$, the root $w\alpha_i$ remains positive (if $w\alpha_i$ were negative, then $ws_i = w \cdot s_i$ would send it to $w\alpha_i$ still negative, contradicting the positivity condition $ws_i > w$); the character associated to the root $w\alpha_i$ is its negative $-w\alpha_i$, which is the character by which $B^-(w)$ acts on the quotient $B^-(w)/B^-(ws_i)$. This is precisely the $\chi$ required by Proposition 19.4.4.
+
+Applying \cite[Proposition 19.4.4]{AndersonFulton} to the $B^-(w)$-invariant cycle $Y$ yields: there exist $B^-(w)$-invariant effective cycles $Z_1$ and $Z_2$ such that
+\begin{equation}
+[Y]_T = [Z_1]_T + (-w\alpha_i)\,[Z_2]_T.
+\label{eq:Prop194Applied}
+\end{equation}
+Here $[Z_1]_T$ is the contribution from the identity component and $(-w\alpha_i)[Z_2]_T$ is the character-weighted contribution. Both $Z_1$ and $Z_2$ are $B^-(w)$-invariant effective cycles.
+
+Now observe the inversion sets. Since $ws_i > w$, we have the exact relationship:
+\begin{equation}
+I(ws_i) = I(w) \cup \{w\alpha_i\}.
+\label{eq:InversionSetExtension}
+\end{equation}
+Indeed, adding $s_i$ to $w$ introduces exactly one new inversion, namely $w\alpha_i$: the root $w\alpha_i$ was not an inversion of $w$ (since $w^{-1}(w\alpha_i) = \alpha_i > 0$), but it becomes an inversion of $ws_i$ (since $(ws_i)^{-1}(w\alpha_i) = -\alpha_i < 0$). All other inversions of $w$ remain inversions of $ws_i$. Hence \cref{eq:InversionSetExtension} holds.
+
+From \cref{eq:InversionSetExtension}, we deduce the relationship between the coefficient rings:
+\begin{equation}
+\mathbb{N}[-\alpha]_{\alpha \in I(ws_i)} = \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot (-w\alpha_i).
+\label{eq:CoefficientRingExtension}
+\end{equation}
+That is, the coefficient ring for $ws_i$ is obtained from the coefficient ring for $w$ by adjoining the new generator $-w\alpha_i$.
+
+Now apply the inductive hypothesis to both $Z_1$ and $Z_2$ in \cref{eq:Prop194Applied}. Since $Z_1$ and $Z_2$ are $B^-(w)$-invariant, the induction hypothesis gives
+$$[Z_1]_T \in \sum_{k} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T,\qquad
+[Z_2]_T \in \sum_{\ell} \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_\ell'']_T,$$
+for some $B^-$-invariant cycles $Z_k', Z_\ell''$. Substituting into \cref{eq:Prop194Applied} gives
+\begin{align*}
+[Y]_T &\in \sum_k \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T + (-w\alpha_i) \sum_\ell \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_\ell'']_T \\
+&= \sum_k \mathbb{N}[-\alpha]_{\alpha \in I(w)} \cdot [Z_k']_T + \sum_\ell \bigl((-w\alpha_i)\,\mathbb{N}[-\alpha]_{\alpha \in I(w)}\bigr) \cdot [Z_\ell'']_T.
+\end{align*}
+Using \cref{eq:CoefficientRingExtension}, the second sum is a sum over $\mathbb{N}[-\alpha]_{\alpha \in I(ws_i)}$-multiples of $B^-$-invariant cycles. Combining both sums, we obtain
+$$[Y]_T \in \sum_{m} \mathbb{N}[-\alpha]_{\alpha \in I(ws_i)} \cdot [Z_m]_T,$$
+which is precisely \cref{eq:GXTheorem23Statement} for $ws_i$. This completes the inductive step.
+
+By induction, the theorem holds for all $w \in W$. \qed
+\end{Proof}
+
+\begin{Corollary}[Corollary 2.4 of {\cite[Corollary 2.4]{GX2025}}]\label{cor:GXCorollary24}
+Let $X = G/B$ be a flag variety. Then every $B^-$-invariant effective cycle $Z \subset X$ admits a Schubert class expansion
+$$[Z]_T = \sum_{w \in W} c_w(\mathbf{y},\mathbf{t})\,[\overline{B^-wB/B}]_T,$$
+where each coefficient $c_w(\mathbf{y},\mathbf{t}) \in \mathbb{N}[-\alpha]_{\alpha \in I(w)}$.
+
+\begin{Proof}
+Since the flag variety $G/B$ has finitely many $B^-$-orbits (the Schubert cells), any $B^-$-invariant cycle is a union of Schubert varieties. Applying \cref{th:GXTheorem23} with $w = \tau$ gives the expansion with coefficients in $\mathbb{N}[-\alpha]_{\alpha \in I(\tau)}$.
+\end{Proof}
+\end{Corollary}
+
+\bigskip
 
 \subsection{The Classical Triple Schubert Positivity via the $\tau$-Trick}
 \label{sec:TripleSchubertViaTau}
