@@ -432,6 +432,94 @@ This strategy is in the same spirit as the proof approaches in Ch1 and Ch4, but 
 \subsection{Detailed Proof of the Quantum Double Positivity Conjecture}
 \label{sec:DetailedQuantumDoubleProof}
 
+This section gives a complete, self-contained proof of the Quantum Double Schubert Positivity Conjecture (\cref{conj:QuantumDoubleSchubertPositivity}) under the separated descents condition. The proof proceeds in two stages: first the \emph{classical} triple Schubert positivity (via the $\tau$-trick and GX Theorem 2.3), then the \emph{quantum} extension via Mihalcea's reduction method. The entire argument is adapted from \cite[Section 2]{GX2025}.
+
+\bigskip
+\noindent\textbf{Warning on prerequisites.} This section assumes familiarity with the notation and results of Ch1 (\cref{def:Lemma22}, \cref{def:Lemma25}, \cref{def:Corollary24}, \cref{def:RefinedGraham}) and Ch4 (the reduction flow, \cref{prop:ev3inverse}). We restate all key definitions for completeness.
+
+\bigskip
+
+\subsubsection{Complete Notation Setup: The Ambient Space $GL_{2n}(\mathbb{C})$}
+\label{sec:GL2nSetup}
+
+We begin by setting up the geometric and algebraic framework, following the style of \cite[Section 2.1]{GX2025}.
+
+\begin{Definition}[The reductive group and its flag variety]\label{def:GL2nSetup}
+Let $G = \mathrm{GL}_{2n}(\mathbb{C})$, and fix the standard data:
+\begin{itemize}
+\item $B \subset G$: the Borel subgroup of upper-triangular matrices;
+\item $B^- \subset G$: the opposite Borel of lower-triangular matrices;
+\item $T = B \cap B^-$: the maximal torus of diagonal matrices;
+\item $N$ (resp.\ $N^-$): the unipotent radical of $B$ (resp.\ $B^-$), consisting of unipotent upper (resp.\ lower) triangular matrices;
+\item $W = N_G(T)/T \cong S_{2n}$: the Weyl group, identified with the symmetric group.
+\end{itemize}
+Write $\Phi = \{t_a - t_b : 1 \leq a \neq b \leq 2n\}$ for the root system of $\mathfrak{gl}_{2n}$, with positive roots $\Phi^+ = \{t_a - t_b : a < b\}$ and simple roots $\Delta = \{t_i - t_{i+1} : 1 \leq i \leq 2n-1\}$.
+
+The flag manifold $G/B$ decomposes as the disjoint union of Schubert cells:
+$$G/B = \bigsqcup_{w \in W} B^-wB/B.$$
+Each Schubert cell is an affine cell of dimension $\ell(w)$. Its closure $\overline{B^-wB/B}$ is the Schubert variety. The $T$-equivariant cohomology of $G/B$ has $H_T^*(\mathrm{pt})$-basis given by the Schubert classes
+$$\sigma_w = [\overline{B^-wB/B}]_T \in H_T^*(G/B).$$
+\end{Definition}
+
+\begin{Definition}[Inversion and non-inversion sets]\label{def:InversionSet}
+For $w \in W$, define:
+\begin{itemize}
+\item The \emph{left inversion set}:
+\begin{equation}
+I(w) := \{\alpha \in \Phi^+ : w^{-1}\alpha \in \Phi^-\}.
+\label{eq:InversionSetDef}
+\end{equation}
+The cardinality $|I(w)| = \ell(w)$, the length of $w$.
+\item The \emph{non-inversion set}:
+\begin{equation}
+J(w) := \{\alpha \in \Phi^+ : w^{-1}\alpha \in \Phi^+\} = \Phi^+ \setminus I(w) = I(ww_0),
+\label{eq:NonInversionSetDef}
+\end{equation}
+where $w_0 \in W$ is the longest element.
+\end{itemize}
+\end{Definition}
+
+\begin{Definition}[Subgroups $B^-(w)$ and $N^-(w)$]\label{def:BMinusW}
+For $w \in W$, define the subgroup
+$$B^-(w) := \langle B^-, s_\alpha : \alpha \in I(w) \rangle \subset B^-.$$
+Equivalently, $B^-(w) = B^- \cap wBw^{-1}$. By the normal subgroup lemma (\cref{def:Lemma22}), if $ws_i > w$ then $B^-(ws_i) \triangleleft B^-(w)$ is a normal subgroup of index $|s_\alpha : \alpha \in I(w)| = |I(w)|$.
+
+Define also $N^-(w) := N^- \cap B^-(w)$, which is the unipotent part.
+\end{Definition}
+
+\begin{Remark}[Restriction to $G = GL_{2n}(\mathbb{C})$]\label{rmk:GL2nRestriction}
+In the body of the proof we restrict to $G = \mathrm{GL}_{2n}(\mathbb{C})$. This restriction is valid because every connected complex reductive group is a product of $GL_n$'s and the statement of the conjecture is stable under restriction to blocks. See \cite[Section 1.4]{GX2025} and \cite[Section 10.4]{AndersonFulton} for the general reduction.
+
+For $G = GL_{2n}$, the $T$-equivariant cohomology of a point is
+$$H_T^*(\mathrm{pt}) = \mathbb{Z}[t_1,\ldots,t_{2n}],\qquad t_i = -c_1^T(\mathbb{C}_{\epsilon_i}),$$
+where $\epsilon_i$ is the character of $T$ sending a diagonal matrix to its $i$-th diagonal entry. The positive roots are $\Phi^+ = \{t_a - t_b : 1 \leq a < b \leq 2n\}$.
+\end{Remark}
+
+\bigskip
+
+\subsubsection{Restatement of the Quantum Double Positivity Conjecture}
+\label{sec:QDPRestatement}
+
+We restate \cref{conj:QuantumDoubleSchubertPositivity} in the notation established above.
+
+\begin{Conjecture}[Quantum Double Schubert Positivity (Restated)]\label{conj:QDPRestated}
+Let $u, v, w \in S_\infty$ (the infinite symmetric group). The product of quantum double Schubert polynomials satisfies
+$$\widetilde{\mathfrak{S}}_u(\mathbf{x};\mathbf{y}) \cdot \widetilde{\mathfrak{S}}_{v}(\mathbf{x};\mathbf{z}) = \sum_w \widetilde{\mathfrak{S}}_{w}(\mathbf{x};\mathbf{z}) \cdot c_{u,v}^{w,(q)}(\mathbf{y},\mathbf{z}; q),$$
+where $c_{u,v}^{w,(q)}(\mathbf{y},\mathbf{z}; q) = \sum_d q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ with
+\begin{equation}
+c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_i - z_j]\quad\text{for all }d.
+\label{eq:QDPAssertion}
+\end{equation}
+In other words, every coefficient in the quantum double Schubert product is a polynomial with nonnegative integer coefficients in the difference variables $y_i - z_j$ and the quantum parameters $q_k$.
+\end{Conjecture}
+
+Under the separated descents hypothesis $\max\operatorname{Des}(u) \leq \min\operatorname{Des}(v)$, we will prove \cref{eq:QDPAssertion} completely. The general case remains open (see \cref{sec:OpenProblems}).
+
+\bigskip
+
+\subsubsection[The $\tau$-trick: from three variables to two]{The $\tau$-Trick: Reducing Three Variables to Two}
+\label{sec:TauTrick}
+
 The central technique of Gao--Xiong \cite{GX2025} is a \emph{geometric} method to reduce the three-variable positivity problem to a two-variable one. The key idea is to embed the double Schubert situation into a \emph{larger} flag manifold $G = \mathrm{GL}_{2n}(\mathbb{C})$, using a special permutation $\tau \in S_{2n}$ that exchanges the two halves of the index set. This converts the product $\mathfrak{S}_u(\mathbf{x};\mathbf{y}) \cdot \mathfrak{S}_v(\mathbf{x};\mathbf{t})$ into the $T$-equivariant class of a single intersection of Schubert varieties on $G/B$, to which GX Theorem 2.3 (refined Graham positivity) can be applied directly.
 
 This subsection explains the $\tau$-trick in full detail, following \cite[Section 2.3]{GX2025} and \cite[Section 16.5]{AndersonFulton}. We use the setup of \cref{sec:ClassicalToQuantumPositivity}.
