@@ -4,6 +4,9 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+% ---- Theorem-like environments (amsart does not define conjecture) ----
+\newtheorem{conjecture}{Conjecture}
+
 % ---- Bibliography ----
 \usepackage[numbers]{natbib}
 \bibliographystyle{plainnat}
@@ -17,7 +20,7 @@
 % ABSTRACT
 % ============================================================
 \begin{abstract}
-We prove the positivity conjecture for the product of quantum double Schubert polynomials with three sets of variables. Specifically, for any $u, v \in S_n$, the expansion coefficients
+We prove the positivity conjecture for the product of quantum double Schubert polynomials with three sets of variables. Specifically, for any $u, v\in S_n$, the expansion coefficients
 \[
 c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})
 \]
@@ -26,9 +29,10 @@ in
 \widetilde{\mathfrak{S}}_u(\mathbf{x};\mathbf{y})\cdot\widetilde{\mathfrak{S}}_v(\mathbf{x};\mathbf{z})
 = \sum_d \sum_w q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,
 \widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{z})
+\label{eq:MainFormula}
 \]
 are polynomials in $\mathbf{y}$ and $\mathbf{z}$ with nonnegative integer coefficients in the negative roots $y_i - z_j$.
-Our approach combines the equivariant quantum cohomology framework of Mihalcea (2007) with the triple Schubert calculus of Gao--Xiong (2025), extending the Graham positivity theorem to the quantum setting.
+Our approach combines the equivariant quantum cohomology framework of Mihalcea \cite{Mihalcea} with the triple Schubert calculus of Gao--Xiong \cite{GX2025}, extending the Graham positivity theorem \cite{Gr} to the quantum setting.
 \end{abstract}
 
 % ============================================================
@@ -41,17 +45,18 @@ The theory of Schubert polynomials, initiated by Lascoux and Sch\"utzenberger, p
 \[
 \mathfrak{S}_u(\mathbf{x})\cdot\mathfrak{S}_v(\mathbf{x})
 = \sum_w c_{u,v}^w\,\mathfrak{S}_w(\mathbf{x})
+\label{eq:ClassicalProduct}
 \]
 are nonnegative integers, reflecting the geometric fact that they count intersection points of Schubert varieties. Graham's seminal theorem \cite{Gr} established that in the equivariant setting these coefficients become polynomials in the negative roots $x_i$ with nonnegative integer coefficients.
 
 The quantum deformation of this story was developed by Kirillov and Maeno \cite{KM}, who introduced quantum double Schubert polynomials $\widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{y})$.
 In the quantum setting the product involves formal variables $q^\beta$ encoding curve-counting information:
-\[
+\begin{equation}
 \widetilde{\mathfrak{S}}_u(\mathbf{x};\mathbf{y})\cdot\widetilde{\mathfrak{S}}_v(\mathbf{x};\mathbf{z})
 = \sum_d \sum_w q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,
 \widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{z}).
-\tag{1}
-\]
+\label{eq:QuantumProduct}
+\end{equation}
 
 Mihalcea \cite{Mihalcea} proved that when $\mathbf{y}=\mathbf{z}$ (the double case), the coefficients $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{y})$ are polynomials in the negative roots $y_i-y_j$ with nonnegative integer coefficients, establishing the Peterson conjecture for equivariant quantum cohomology.
 
@@ -76,16 +81,17 @@ and $w_0 = (n,n-1,\ldots,1)$ denotes the longest element.
 The set of \textbf{descents} of $w$ is
 \[
 \operatorname{Des}(w) = \{\, i : w(i)>w(i+1) \,\}.
+\label{eq:DesSet}
 \]
 We say $(u,v)$ satisfies the \textbf{separated descents condition} if
-$\max\operatorname{Des}(u) \le \min\operatorname{Des}(v)$; see \cite[Definition 2.1]{Sa}.
+$\max\operatorname{Des}(u)\le \min\operatorname{Des}(v)$; see \cite[Definition 2.1]{Sa}.
 
 \subsection{Divided difference operators}
 For $i=1,\ldots,n-1$, the \textbf{divided difference operator} $\partial_i$ acts on polynomials
 in variables $x_1,\ldots,x_n$ by
 \[
 \partial_i f = \frac{f(\ldots,x_i,x_{i+1},\ldots)-f(\ldots,x_{i+1},x_i,\ldots)}{x_i-x_{i+1}}.
-\tag{2}
+\label{eq:DividedDifference}
 \]
 These operators satisfy $\partial_i^2=0$ and the braid relations, so for any $w\in S_n$
 the operator $\partial_w = \partial_{i_1}\cdots\partial_{i_k}$ is well-defined when
@@ -94,20 +100,20 @@ $(i_1,\ldots,i_k)$ is a reduced word for $w$.
 The \textbf{skew divided difference operator} for $v\le w$ in Bruhat order is
 \[
 \partial_{w/v} = \sum_{\substack{u\\v\le u\le w}}(-1)^{\ell(w)-\ell(u)}\partial_u.
-\tag{3}
+\label{eq:SkewDividedDifference}
 \]
 
 \subsection{Schubert polynomials}
 The (single) Schubert polynomials of Lascoux--Sch\"utzenberger are defined by
 \[
 \mathfrak{S}_w(\mathbf{x}) = \partial_{w^{-1}w_0}(x_1^{n-1}x_2^{n-2}\cdots x_n^0).
-\tag{4}
+\label{eq:SingleSchubert}
 \]
 The \textbf{double Schubert polynomials} introduce a second variable set:
 \[
 \mathfrak{S}_w(\mathbf{x};\mathbf{y})
 = \partial_{w^{-1}w_0}^{(\mathbf{x})}\prod_{i+j\le n}(x_i+y_j).
-\tag{5}
+\label{eq:DoubleSchubert}
 \]
 
 The \textbf{quantum double Schubert polynomials} $\widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{y})$
@@ -117,20 +123,20 @@ $\mathbf{q}=(q_1,\ldots,q_{n-1})$. The top polynomial is
 \[
 \widetilde{\mathfrak{S}}_{w_0}(\mathbf{x};\mathbf{y})
 = \prod_{i=1}^{n-1}\Delta_i(y_{n-i}\mid x_1,\ldots,x_i),
-\tag{6}
+\label{eq:TopPolynomial}
 \]
 where
 \[
 \Delta_k(t\mid x_1,\ldots,x_k)
 = \sum_{j=0}^k t^{k-j}e_j(x_1,\ldots,x_k\mid q_1,\ldots,q_{k-1}),
-\tag{7}
+\label{eq:QuantumDelta}
 \]
 and $e_j(\cdot\mid\mathbf{q})$ are the \textbf{quantum elementary symmetric functions}.
 For any $w\in S_n$,
 \[
 \widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{y})
 = \partial_{ww_0}^{(\mathbf{y})}\widetilde{\mathfrak{S}}_{w_0}(\mathbf{x};\mathbf{y}).
-\tag{8}
+\label{eq:QuantumSchubertRecursion}
 \]
 When $q=0$ we recover the classical double Schubert polynomial:
 $\widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{y})\big|_{q=0} = \mathfrak{S}_w(\mathbf{x};\mathbf{y})$.
@@ -140,10 +146,10 @@ The \textbf{quantum product} in $QH_T^*(Fl_n)$ is defined by the Gromov--Witten 
 (see \cite[Definition 1.1]{Mihalcea} and \cite{Kim2000}):
 \[
 \sigma(u)\star\sigma(v) = \sum_{d,w} q^d\,c_{u,v}^{w,d}\,\sigma(w),
-\tag{9}
+\label{eq:QuantumProductRing}
 \]
 where $c_{u,v}^{w,d}$ are the \textbf{equivariant quantum Littlewood--Richardson coefficients}.
-When $\mathbf{y}=\mathbf{z}$, equation \eqref{eq:MainFormula} coincides with the product
+When $\mathbf{y}=\mathbf{z}$, \eqref{eq:MainFormula} coincides with the product
 of Schubert classes in $QH_T^*(Fl_n)$.
 
 The coefficients in \eqref{eq:MainFormula} satisfy the following specializations:
@@ -177,7 +183,7 @@ c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,
 Here $d=(d_1,\ldots,d_{n-1})$ is a multidegree recording the curve class in
 $H_2(Fl_n,\mathbb{Z})\cong \mathbb{Z}^{n-1}$.
 
-\begin{Conjecture}[Quantum Triple Schubert Positivity]\label{conj:MainFormal}
+\begin{conjecture}[Quantum Triple Schubert Positivity]\label{conj:MainFormal}
 For all $u,v,w\in S_n$ and $d$, the coefficient
 $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ is a polynomial in the differences
 $\{y_i-z_j : 1\le i,j\le n\}$ with nonnegative integer coefficients.
@@ -186,7 +192,7 @@ Equivalently,
 c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})
 \in \mathbb{Z}_{\ge 0}[\,y_1-z_1,\; y_1-z_2,\;\ldots,\;y_n-z_n\,].
 \]
-\end{Conjecture}
+\end{conjecture}
 
 This generalizes two known results:
 \begin{itemize}
