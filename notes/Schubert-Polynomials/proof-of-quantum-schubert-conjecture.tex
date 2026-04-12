@@ -4,10 +4,13 @@
 \usepackage{cleveref}
 \usepackage{geometry}
 \geometry{margin=1in}
+\usepackage{booktabs}
 
+% ---- amsart provides: theorem, lemma, proposition, corollary, remark,
+%      definition natively. We add the missing ones below. ----
 \newtheorem{conjecture}{Conjecture}
 \newtheorem{Lemma}{Lemma}
-% Note: 'proof' is provided by amsthm (auto "Proof." + QED symbol).
+% Note: 'proof' environment is provided by amsthm (auto "Proof." + QED symbol).
 
 % ---- Bibliography ----
 \usepackage[numbers]{natbib}
@@ -17,7 +20,7 @@
 \author{Yue Yihua and Xiao Tongren}
 
 \begin{document}
-
+\maketitle
 % ============================================================
 % ABSTRACT
 % ============================================================
@@ -81,20 +84,20 @@ and $w_0 = (n,n-1,\ldots,1)$ denotes the longest element.
 
 The set of \textbf{descents} of $w$ is
 \[
-\operatorname{Des}(w) = \{\, i : w(i)>w(i+1) \,\}.
+\operatorname{Des}(w) = \{\, i : w(i)>w(i+1) \,\},
 \label{eq:DesSet}
 \]
-We say $(u,v)$ satisfies the \textbf{separated descents condition} if
+and we say $(u,v)$ satisfies the \textbf{separated descents condition} if
 $\max\operatorname{Des}(u)\le \min\operatorname{Des}(v)$; see \cite[Definition 2.1]{Sa}.
 
 \subsection{Divided difference operators}
 For $i=1,\ldots,n-1$, the \textbf{divided difference operator} $\partial_i$ acts on polynomials
 in variables $x_1,\ldots,x_n$ by
 \[
-\partial_i f = \frac{f(\ldots,x_i,x_{i+1},\ldots)-f(\ldots,x_{i+1},x_i,\ldots)}{x_i-x_{i+1}}.
+\partial_i f = \frac{f(\ldots,x_i,x_{i+1},\ldots)-f(\ldots,x_{i+1},x_i,\ldots)}{x_i-x_{i+1}},
 \label{eq:DividedDifference}
 \]
-These operators satisfy $\partial_i^2=0$ and the braid relations, so for any $w\in S_n$
+and these operators satisfy $\partial_i^2=0$ and the braid relations, so for any $w\in S_n$
 the operator $\partial_w = \partial_{i_1}\cdots\partial_{i_k}$ is well-defined when
 $(i_1,\ldots,i_k)$ is a reduced word for $w$.
 
@@ -150,10 +153,10 @@ The \textbf{quantum product} in $QH_T^*(Fl_n)$ is defined by the Gromov--Witten 
 \label{eq:QuantumProductRing}
 \]
 where $c_{u,v}^{w,d}$ are the \textbf{equivariant quantum Littlewood--Richardson coefficients}.
-When $\mathbf{y}=\mathbf{z}$, \eqref{eq:MainFormula} coincides with the product
+When $\mathbf{y}=\mathbf{z}$, \cref{eq:MainFormula} coincides with the product
 of Schubert classes in $QH_T^*(Fl_n)$.
 
-The coefficients in \eqref{eq:MainFormula} satisfy the following specializations:
+The coefficients in \cref{eq:MainFormula} satisfy the following specializations:
 \begin{itemize}
 \item When $d=0$, $c_{u,v}^{w,(0)}(\mathbf{y},\mathbf{z})$ equals the triple Schubert
 coefficient of \cite{GX2025}.
@@ -210,13 +213,13 @@ This generalizes two known results:
 The following lemmas establish the key technical ingredients needed for the proof of
 \cref{conj:MainFormal}. Their proofs will be completed in the final section.
 
-\begin lemma[Reduction to separated descents]\label{lma:SDReduction}
+\begin{Lemma}[Reduction to separated descents]\label{lma:SDReduction}
 If $(u,v)$ satisfies $\max\operatorname{Des}(u)\le\min\operatorname{Des}(v)$,
-then the product formula \eqref{eq:MainFormula} can be reduced to a comparison
+then the product formula \cref{eq:MainFormula} can be reduced to a comparison
 of coefficients in the single-variable case.
-\end lemma
+\end{Lemma}
 
-\begin proof
+\begin{proof}
 The separated descents condition guarantees that when expanding
 $\widetilde{\mathfrak{S}}_u(\mathbf{x};\mathbf{y})\cdot\widetilde{\mathfrak{S}}_v(\mathbf{x};\mathbf{z})$,
 the contributions from different Bruhat layers interact only through the
@@ -225,51 +228,51 @@ $\partial_{w/v} = \sum_{v\le u\le w}(-1)^{\ell(w)-\ell(u)}\partial_u$ and the
 stability property of quantum Schubert polynomials (see \cite[Proposition 5.3]{KM}),
 the product reduces to a sum over a single Bruhat interval $[v,w]$ in which
 the $\mathbf{y}$ and $\mathbf{z}$ variables separate cleanly.
-\end proof
+\end proof}
 
-\begin lemma[Stability under specializations]\label{lma:Specialization}
+\begin{Lemma}[Stability under specializations]\label{lma:Specialization}
 Setting $y_i\mapsto z_i$ for all $i$ sends $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$
 to Mihalcea's coefficient $c_{u,v}^{w,d}$ in $QH_T^*(Fl_n)$.
-\end lemma
+\end{Lemma}
 
-\begin proof
+\begin proof}
 When $y_i\mapsto z_i$, the two quantum double Schubert polynomials on the left side of
-\eqref{eq:MainFormula} become two copies of the same polynomial in $\mathbf{x};\mathbf{z}$.
+\cref{eq:MainFormula} become two copies of the same polynomial in $\mathbf{x};\mathbf{z}$.
 The resulting product coincides with the quantum product
 $\sigma(u)\star\sigma(v)$ in the equivariant quantum cohomology ring $QH_T^*(Fl_n)$
 as defined in \cite[Definition 1.1]{Mihalcea}. The uniqueness of the expansion in the
 Schubert basis then forces the specialization.
-\end proof
+\end proof}
 
-\begin lemma[Positivity of the specialization]\label{lma:MihalceaPositivity}
+\begin{Lemma}[Positivity of the specialization]\label{lma:MihalceaPositivity}
 For all $u,v,w\in S_n$ and $d$, Mihalcea's coefficient
 $c_{u,v}^{w,d}$ is a polynomial in the negative roots $z_i$ with
 nonnegative integer coefficients.
-\end lemma
+\end{Lemma}
 
-\begin proof
+\begin proof}
 This is the main theorem of \cite{Mihalcea}, which establishes the Peterson
 conjecture for equivariant quantum cohomology. The proof proceeds by relating
 $c_{u,v}^{w,d}$ to the equivariant Littlewood--Richardson coefficients via the
 quantum Chevalley isomorphism of \cite{Kim2000}, then applying Graham's theorem
 to the resulting coefficients.
-\end proof
+\end proof}
 
-\begin lemma[Difference operator positivity]\label{lma:DifferencePositivity}
+\begin{Lemma}[Difference operator positivity]\label{lma:DifferencePositivity}
 Let $P(\mathbf{y},\mathbf{z})$ be a polynomial with nonnegative integer coefficients
 in $\{y_i-z_j\}$. Then for any $i$, $\partial_i^{(\mathbf{y})}P(\mathbf{y},\mathbf{z})$
 and $\partial_i^{(\mathbf{z})}P(\mathbf{y},\mathbf{z})$ are also polynomials with
 nonnegative integer coefficients in $\{y_i-z_j\}$.
-\end lemma
+\end{Lemma}
 
-\begin proof
+\begin proof}
 Since $y_i-z_j = (y_i-t)-(z_j-t)$ for any auxiliary variable $t$, and
 $\partial_i^{(\mathbf{y})}(y_i-t)=-(z_i-t)$, the divided difference operator
 acts by cancelling equal monomials on the two sides of the division.
 Because $P$ has only nonnegative coefficients, all cancellations leave a
 nonnegative remainder. A detailed verification using the monomial basis
 $\{(y_i-z_j)^{a_{ij}}\}$ is given in \cite[Section 4]{GX2025}.
-\end proof
+\end proof}
 
 % ============================================================
 % PROOF STRATEGY (sketch)
@@ -280,9 +283,9 @@ $\{(y_i-z_j)^{a_{ij}}\}$ is given in \cite[Section 4]{GX2025}.
 The proof of \cref{conj:MainFormal} will proceed by induction on $\ell(w)$
 using the divided difference method of Mihalcea.
 The base case $w=w_0$ follows from the explicit formula for the top polynomial
-\eqref{eq:TopPolynomial}.
+\cref{eq:TopPolynomial}.
 For the induction step, we apply the divided difference operator
-$\partial_{ww_0}^{(\mathbf{x})}$ to both sides of \eqref{eq:MainFormula}.
+$\partial_{ww_0}^{(\mathbf{x})}$ to both sides of \cref{eq:MainFormula}.
 By the Leibniz rule and the defining property
 $\partial_{ww_0}\widetilde{\mathfrak{S}}_w = \widetilde{\mathfrak{S}}_{ws_i}$
 (when $\ell(w)<\ell(ww_0)$), we reduce the problem to verifying the
