@@ -4636,5 +4636,25 @@ $$[\overline{B^-uB/B}]_T \xrightarrow{\;\text{Borel}\;} \mathfrak{S}_u(x;y) \xri
 \textbf{为什么不是代数恒等式？} 整个推导依赖三个独立的约定：(1) $y_i = t_{n+i}$ 是 Gao-Xiong 的换名；(2) $\tau(i) = n+i$ 是特定的 Weyl 元素；(3) Thm 10.6.4 的多项式表示是几何事实。\textbf{半线性 (16.8) 是枢纽}——它把几何作用 $\tau$ 和参数置换 $y \mapsto \tau \cdot y$ 连接起来。
 ────────────────────────────────────────────────-
 
+\subsection{Weyl 群归纳法：为何 $\ell(ws_i) = \ell(w) + 1$ 足以证明所有元素}\label{sec:qa-weyl-induction}
+\textbf{问}：为什么我们可以只针对 "Assume the theorem holds for some $w \in W$ with $ws_i > w$ for a simple reflection $s_i$ corresponding to the simple root $\alpha_i$. We prove it for $ws_i$" 来证明？难道说所有的 $\ell(w)+1$ 长度的置换都可以由某个 $\ell(w)$ 长度的置换乘上 $s_i$ 得到？
+
+\textbf{答}：这个归纳法的核心依赖于 Coxeter 群的两个关键性质，理解了这两个性质，直觉就清晰了。
+
+\textbf{（1）Right descent 引理（Coxeter 群的基本性质）}：对任意非平凡 $w \in W$，\textbf{存在}某个单根反射 $s_i$ 使得 $\ell(ws_i) = \ell(w) - 1$。换句话说，每个非平凡 Weyl 群元素至少有一个右下降（right descent）——从右边乘以它，长度减少。这意味着：\textbf{每个长度 $>0$ 的元素 $w$ 都可以唯一地写成 $w = w' \cdot s_i$ 的形式，其中 $\ell(w') = \ell(w) - 1$}。
+
+\textbf{（2）归纳的方向（从短到长）}：归纳假设是"对所有长度严格小于 $\ell(w)$ 的元素，定理成立"。对 $w$ 应用右下降引理，设 $w = w' \cdot s_i$，其中 $\ell(w') = \ell(w) - 1 < \ell(w)$。由归纳假设，定理对 $w'$ 成立。现在把 $s_i$ 从 $w'$ 的右边移过去（用 $w = w's_i$），通过证明这一步的传递性，得到定理对 $w$ 成立。
+
+\textbf{（3）你的问题的答案}：是的，\textbf{所有 $\ell(w) = k+1$ 的元素都可以写成某个 $\ell(w') = k$ 的元素乘以某个 $s_i$}。这就是 Coxeter 群的\textbf{覆盖关系（covering relation）}：在 Bruhat order 中，每个非极小元恰好被多个更小的元覆盖。具体来说，如果 $\ell(w) = k+1$，则存在 $s_i$ 使得 $w = w' \cdot s_i$ 且 $\ell(w') = k$。反过来，从 $w'$ 到 $w = w's_i$，长度增加 1，这正是你看到的条件 $\ell(ws_i) = \ell(w) + 1$。
+
+\textbf{归纳的两层含义}：这里发生了两个方向的运动。(1)\textbf{从长到短（归约）}：把要证的 $w$ 写成 $w' \cdot s_i$（$\ell(w') < \ell(w)$），把问题归约到更短的 $w'$。(2)\textbf{从短到长（传递）}：假设 $w'$ 成立，然后把 $s_i$ 移过去得到 $w = w's_i$。两步合起来就是完整的归纳步。
+
+\textbf{关键引理（归纳的基础）}：这个归纳法之所以成立，是因为我们是在\textbf{有限群} $W$ 上操作——有限性保证了右下降引理（有限群里每个元素都有下降），从而保证了归纳可以走完所有层。
+
+★ Insight ─────────────────────────────────────
+\textbf{Coxeter 群的有序性}：Weyl 群配备的偏序是 Bruhat order：$u \leq v$ 当且仅当任意约化表示是 $v$ 约化表示的子序列。归纳法的本质是：若 $w < ws_i$，则 $w$ 在 Bruhat order 中更小，所以 $w$ 的信息可以用来得到 $ws_i$ 的信息。
+\textbf{Right descent 的存在性}：这个引理不平凡——它依赖于 $W$ 是有限的。对无限 Coxeter 群，右下降不一定存在，此时归纳法需要修正。
+\textbf{Covering relation}：所有 $\ell(w) = k+1$ 的元素被所有 $\ell(w') = k$ 的元素覆盖——这是有限 Coxeter 群的组合结构的核心。
+────────────────────────────────────────────────-
 
 
