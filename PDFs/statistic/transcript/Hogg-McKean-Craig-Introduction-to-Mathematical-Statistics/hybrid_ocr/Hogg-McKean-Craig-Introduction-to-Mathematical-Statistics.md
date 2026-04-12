@@ -1,6 +1,4 @@
-# Introduction to
-
-# Mathematical Statistics
+# Introduction toz# Mathematical Statistics
 
 Eighth Edition
 
@@ -308,7 +306,7 @@ This page intentionally left blank
 
 11.1 Bayesian Procedures 655
 
-11.1.1 Prior and Posterior Distributions 656   
+11.1.1 Prior and Posterior Distributions 656    make worker-start
 11.1.2 Bayesian Point Estimation 658   
 11.1.3 Bayesian Interval Estimation 662   
 11.1.4 Bayesian Testing Procedures 663   
