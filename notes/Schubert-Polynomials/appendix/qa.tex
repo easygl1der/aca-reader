@@ -4957,3 +4957,29 @@ $$QH_T^*(Fl_n) \;\cong\; QH_{U_n}^*(Fl_n) \;\otimes_{H^*(BU_n)}\; H^*(BT)$$
 \textbf{为何需要 $T$-等变版本？} 双 Schubert 正性猜想（\cref{conj:QuantumDoubleSchubertPositivity}）的目标是证明结构常数
 $$c_{u,v}^{w,d}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_i - z_j]$$
 具有正性，其中 $y_i - z_j$ 是 $T$-等变参数的差。这需要在 $T$-等变层面操作（而非 $U_n$-等变层面），因为 $c_i$ 是 $y_i-z_j$ 的初等对称多项式，无法分辨单个 $y_i-z_j$ 的正性。
+
+\subsection{$U_n$ 对应 $SL_n/B$ 而非 $GL_n/B$：旗流形的两种实现}\label{sec:qa-SLn-vs-GLn-FlagVariety}
+\textbf{问}：笔记第 315 行说 $Fl_n = SL_n/B$，第 656 行的 Borel 同构用的是 $QH_T^*(Fl_n)$。这里的 $U_n$ 和 $T$ 是否应该分别对应 $SL_n/B$ 和 $GL_n/B$？两者在 Borel 同构形式上有何不同？
+
+\textbf{答}：你的理解是正确的。旗流形 $Fl_n$ 在代数几何中有两种等价的实现，区别在于所选极大子群和 torus 的粒度：
+
+\textbf{一、实现 $SL_n/B$（第 315 行采用）}：取 $G = SL_n(\mathbb{C})$，$B$ 为其上三角 Borel 子群，$T_{SL} = \{ \mathrm{diag}(t_1,\ldots,t_n) : t_1\cdots t_n = 1 \}$ 为其极大环面（维数 $n-1$）。由于 $SL_n$ 的根格有额外约束 $\sum \epsilon_i = 0$，$T_{SL}$ 的等变参数满足
+$$y_1 + \cdots + y_n = 0.$$
+因此 $H^*_{T_{SL}}(pt) = \mathbb{Z}[y_1,\ldots,y_n] / (y_1+\cdots+y_n)$，只有 $n-1$ 个独立变量。在笔记中用 $U_n$ 记这个环面（$U_n = U(1)^n$ 是 $T_{SL}$ 的紧实形式），此时
+$$QH_{U_n}^*(Fl_n) \;\cong\; \mathbb{Z}[x_1,\ldots,x_n;\; y_1,\ldots,y_n;\; q_1,\ldots,q_{n-1}] / \widetilde{J},$$
+其中 $y_i$ 有 $n-1$ 个独立自由度（受迹零约束）。这是 Mihalcea 和 Kirillov--Maeno 量子 Schubert 多项式采用的 convention。
+
+\textbf{二、实现 $GL_n/B$（第 656 行采用）}：取 $G = GL_n(\mathbb{C})$，$B$ 为上三角 Borel，$T = (\mathbb{C}^*)^n$ 为对角极大环面（维数 $n$，无约束）。此时
+$$H^*_T(pt) = \mathbb{Z}[y_1,\ldots,y_n]$$
+有 $n$ 个独立参数。$T$-等变 Borel 同构给出
+$$QH_T^*(Fl_n) \;\cong\; \mathbb{Z}[y_1,\ldots,y_n;\; z_1,\ldots,z_n;\; q_1,\ldots,q_{n-1}] / \widetilde{\mathcal{I}}_T,$$
+其中两组独立变量 $(y_1,\ldots,y_n)$ 和 $(z_1,\ldots,z_n)$ 分别来自 Schubert 类参数和 Weyl 群位移。这是 Gao--Xiong 双变量 positivity 猜想的 framework。
+
+\textbf{三、两者是同一个簇但不同的等变结构}：作为代数簇，$SL_n/B \cong GL_n/B$（因为 $B \subset SL_n$，所以 $GL_n/B \cong SL_n/B$ 作为齐性空间）。但作为带 torus 作用的簇，它们不同——$T_{SL} \subset T$ 的余维数为 1，包含映射 $BT \to BT_{SL}$ 诱导 $H^*_{T_{SL}} \cong H^*_T / (c_1)$，即去掉第一 Chern 类的商。两者的量子上同调环相差一个额外的线性关系。
+
+\textbf{四、笔记中这是否构成矛盾？} 不是矛盾，但需要注意：第 315 行的 $Fl_n = SL_n/B$ 是从 Schubert 簇几何的角度说明旗流形的 Lie 理论来源。第 656 行的 $QH_T^*(Fl_n)$ 是在 $T$-equivariant setting（对应 $GL_{2n}$ 的对角 torus）中陈述 Borel 同构，用于双变量 positivity 证明。两者粒度不同——$U_n$ 给出"聚合"信息（Chern 类 $c_i$），$T$ 给出"分解"信息（逐权重 $y_i$）。
+
+\begin{insight}
+\textbf{统一视角}：所有版本都可以从 $T = (\mathbb{C}^*)^n$ 的 Borel 同构出发，然后通过限制映射到不同的子 torus 来获得具体的 presentations。$SL_n$ 的额外约束 $y_1+\cdots+y_n=0$ 正好对应包含 $T \to BT_{SL}$ 带来的关系 $\sum y_i = 0$。
+\textbf{实践中注意}：当引用"Flag variety $Fl_n$"时，必须弄清作者是在哪个实现下讨论。Kirillov--Maeno 和 Mihalcea 默认用 $SL_n/B$ + $U_n$ equivariance；Gao--Xiong 默认用 $GL_{2n}/B$ + $T$ equivariance。两者乘积环中的关系数目相差一个。
+\end{insight}
