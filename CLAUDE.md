@@ -1,166 +1,65 @@
 # CLAUDE.md
-
-> **⚠️ 每次开工必须先读本文件。** 本文件是索引，详细规范在 `.claude/rules/`（自动加载）和 `docs/`（完整参考）。
-
----
-
-## 项目概述
-
-- **项目类型**: 文献阅读与讲义生成工作流系统
-- **核心功能**: 阅读学术论文/教材，生成 LaTeX 讲义
-- **当前主题**: 因果推断 / Schubert 演算 / 微分几何 / 贝叶斯 / 信息几何
-
----
+> **⚠️ 每次开工必须先读本文件。** 本文件是索引，详细规范在 `.claude/rules/` 和 `docs/`。
 
 ## ⚠️ 必须遵守的规则（每次必读）
 
-### PDF 打开规则
-- **每次打开 PDF 必须用 Skim**: `open -a Skim <file>`
-- **Skim 跳转**: `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"`
-  - 示例: `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g 890 "/path/file.pdf" "/path/chapter1.tex"`
-- **便捷跳转 Hook**: `~/.claude/hooks/skim-jump.sh <line> [tex-file]`
-  - 自动查找当前目录的 PDF 并跳转到对应位置
-  - 示例: `~/.claude/hooks/skim-jump.sh 890 "/path/chapter1.tex"`
+**PDF 打开**：每次打开 PDF 必须用 Skim — `open -a Skim <file>`；跳转用 `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"` 或 hook `~/.claude/hooks/skim-jump.sh <line> [tex-file]`
 
-### 读 PDF 的正确方式（绝对规则！）
-- **"读 PDF" = 读 transcript/.tex，不是扫描 PDF**：当用户说"读某 PDF"或我需要引用某 paper 内容时，**永远先查对应的 transcript 目录**（`PDFs/<topic>/transcript/<论文名>.md`）或 `chapters/` 目录下的 .tex 文件
-- **不要直接用 Read 工具扫描 PDF**：用 MinerU 预先转录的 markdown 才是主要读取方式
-- **PDF 只用于**：用户要我打开查看特定页/图、需要视觉确认、或 transcript 不存在时才读 PDF（用 `pages` 参数限制范围）
-- **MinerU transcript 目录规范**：`PDFs/<topic>/transcript/<不含日期的论文名>/`
+**读 PDF 的正确方式（绝对规则！）**：永远先查 transcript 目录（`PDFs/<topic>/transcript/<论文名>/`）或 `chapters/` 下的 .tex 文件，**不要直接扫描 PDF**。PDF 只用于用户要我打开查看特定页/图、需要视觉确认、或 transcript 不存在时（用 `pages` 参数限制范围）。
 
-### Playwright 浏览器缓存保护（绝对红线！）
-- ❌ **禁止清除 Playwright 浏览器缓存**
-- ❌ 禁止 `rm -rf ~/Library/Caches/ms-playwright/`
-- ❌ 禁止任何删除或清理 Playwright Edge/Chrome profile 的操作
-- ✅ 原因：清除缓存会丢失 Google 账号登录状态，导致 Gemini 无法使用
-- ✅ 如需释放空间，使用 `pkill -f ms-playwright` 而非删除缓存
+**Playwright 缓存保护（绝对红线！）**：禁止清除 Playwright 浏览器缓存（`rm -rf ~/Library/Caches/ms-playwright/`），原因：会丢失 Google 账号登录状态导致 Gemini 无法使用。释放空间用 `pkill -f ms-playwright`。
 
-### LaTeX 格式红线
-- ❌ 禁止 Markdown 语法在 .tex 文件中: `**加粗**`, `*斜体*`, `- 列表`, `> [!note]`
-- ❌ 禁止 `\bm` — 向量用 `\mathbf`，矩阵用 `\boldsymbol`
-- ❌ 禁止 `\I` 自定义命令 — 必须用 `\mathbb{I}`
-- ❌ 禁止 unicode 下标 `n₁` → 必须用 `$n_1$`
-- ❌ 禁止用 `\tag{}` 或 `式 (★)` 引用公式 — 必须用 `\label{eq:名称}` + `\cref{eq:名称}`
-- ✅ 必须用纯 LaTeX: `\textbf{}`, `\textit{}`, `enumerate/itemize`
-- ✅ 详细规范见 `.claude/rules/latex-tex.rules`（自动应用于所有 .tex 文件）
+**LaTeX 格式红线**：
+- ❌ `\bm`（向量用 `\mathbf`，矩阵用 `\boldsymbol`）、`\I`（用 `\mathbb{I}`）、unicode 下标 `$n₁$` → `$n_1$`
+- ❌ Markdown 语法、`\tag{}` 引用公式
+- ✅ 必须 `\label{eq:名称}` + `\cref{eq:名称}`，详细规范见 `.claude/rules/latex-tex.rules`
 
-### Git 大文件禁止
-- ❌ 禁止 git 处理 >50MB 文件
-- ❌ 禁止 `git lfs` / `filter-repo` / force push
-- ✅ 详细规范见 `.claude/rules/git-workflow.rules`
+**Git 大文件禁止**：禁止 git 处理 >50MB 文件、`git lfs` / `filter-repo` / force push，规范见 `.claude/rules/git-workflow.rules`
 
-### 编译规范
-- 必须使用各目录的 `compile.sh`（xelatex, 3次）
-- 禁止直接用 `latexmk` / `xelatex`
+**编译规范**：必须用各目录的 `compile.sh`（xelatex, 3次），禁止直接用 `latexmk` / `xelatex`
 
-### QA 记录（强制！）
-每次用户提问后必须执行：
-1. 口语化回答
-2. **记录到 `appendix/qa.tex`**（强制！）
-3. 使用 `\subsection{标题}\label{sec:qa-xxx}`
-4. 正文用 `\footnote{问：...？见附录 \cref{sec:qa-xxx}}`
-5. 重新编译 PDF
-- ✅ 详细规范见 `.claude/rules/qa-workflow.rules`
+**QA 记录（强制！）**：每次用户提问后：1. 口语化回答 → 2. **记录到 `appendix/qa.tex`** → 3. `\subsection{标题}\label{sec:qa-xxx}` + `\footnote{问：...？见附录 \cref{sec:qa-xxx}}` → 4. 重新编译。详细规范见 `.claude/rules/qa-workflow.rules`
 
-### 引用补充规范（核心习惯！）⚠️
-当正文中引用了某个定理/定义/例子（如 `\cite{xxx}` 或直接引用某文献的 Theorem/Lemma），但**没有给出该定理/定义/例子的具体内容**时，必须执行：
-1. **查找源文件**：在 `PDFs/` 或 `PDFs/<topic>/transcript/` 目录下找到该文献的 PDF 或 markdown 转录文件
-2. **提取内容**：从源文件中找到该定理/定义/例子的完整陈述
-3. **添加到正文**：将内容以 footnote 或直接叙述的形式添加到引用位置
-4. **引用原文**：在补充内容后加上 `\footnote{详见 \cite[ Theorem X.Y]{key}}`
+**引用补充规范（核心习惯！）**：当正文中引用了定理/定义但没有给出具体内容时，必须：查找源文件 → 提取内容 → 以 footnote 形式补充 → 加 `\footnote{详见 \cite[ Theorem X.Y]{key}}`
 
-**示例**：
-```latex
-% 原文本（只有引用，没有内容）
-... 由 \cite[Lemma 2.3]{Mihalcea} 可知 ...
+**数学问题调研**：自动使用 `/gemini-browser-chat` 进行深入调研，同时调研笔记上下文。
 
-% 补充后
-... 由 \cite[Lemma 2.3]{Mihalcea}\footnote{Lemma 2.3 (Mihalcea): [引理的完整陈述]。详见 \cite[ Lemma 2.3]{Mihalcea}。} 可知 ...
-```
+**写作任务强制路由**：prompt 含"生成第X章笔记"/"写 chapters/"/"润色 .tex"/"写作任务"时，必须用 `/writing-team` Skill 启动 Agent Team（主笔 + 评审，至少 2 轮互发消息讨论）。禁止单 agent 直接输出。按 `.claude/writer-round-robin.json` 轮询选择 writer pair。
 
-**操作习惯**：这个习惯必须固化到所有 literature-experts 团队成员的 behavior 中。
-
-### 数学问题调研规则
-当用户询问**数学问题**，或需要**修复（修正）数学问题**，或进行 **proofreading** 时：
-1. 自动使用 `/gemini-browser-chat` 进行深入调研
-2. 同时调研笔记上下文（chapters/, appendix/qa.tex）
-3. 提供详细推导和解释
-
-### 章节写作一体化
-用户说"生成第X章笔记"时，同时执行：
-1. 生成知识点笔记 → `chapters/chapterX.tex`
-2. 提取并格式化习题 → 同一文件末尾
-3. 推导放附录 → 用 `\footnote{推导见附录 \cref{sec:appendix-chX}}`
-- 详见: `docs/exercise-workflow.md`, `docs/stein-writing-style.md`
-
-### 写作任务强制路由 ⚠️
-
-**触发条件**：当 prompt 包含以下关键词时：
-- "生成第X章笔记"
-- "写" + "chapters/"
-- "润色" + ".tex"
-- "写作任务"
-- "生成章节笔记"
-
-**强制规则**：
-1. 必须使用 `/writing-team` Skill 启动 Agent Team
-2. Team 成员必须包含主笔 writer + 评审 writer
-3. 成员之间必须互发消息讨论（至少 2 轮）
-4. 最终结论由 Team Lead 汇总
-
-**禁止**：
-- 主 agent 直接处理写作任务
-- 单 agent 不经讨论直接输出
-
-**Round-robin 轮询**：按 `.claude/writer-round-robin.json` 选择 writer pair
-
----
+**章节写作一体化**："生成第X章笔记"时 → 知识点笔记 `chapters/chapterX.tex` + 习题 + 推导 `\footnote{推导见附录}`，详见 `docs/exercise-workflow.md`, `docs/stein-writing-style.md`
 
 ## 📚 规范文档索引
 
-### `.claude/rules/` — 自动加载的规则（核心！）
+### `.claude/rules/` — 自动加载规则
 
 | 文件 | 作用域 | 内容 |
 |------|--------|------|
-| `latex-tex.rules` | 所有 .tex 文件 | LaTeX 语法、习题格式、数学符号、引用规范 |
-| `git-workflow.rules` | 全局 | Git 规范、大文件禁止、worktree 安全 |
+| `latex-tex.rules` | 所有 .tex | LaTeX 语法、数学符号、引用规范 |
+| `git-workflow.rules` | 全局 | Git 规范、大文件禁止 |
 | `qa-workflow.rules` | 全局 | QA 记录流程、脚注格式 |
-| `note-structure.rules` | notes/** | 目录结构、chapter0 格式、Obsidian callout |
-
-> **⚠️ 路径别名（工作目录 alias）**：`~/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter5.tex` 是当前活跃的章节文件。
+| `note-structure.rules` | notes/** | 目录结构、chapter0 格式 |
 
 ### `docs/` — 完整参考文档
 
 | 文件 | 内容 |
 |------|------|
-| `docs/stein-writing-style.md` | Stein 写作风格、推导→附录规则（详细） |
+| `docs/stein-writing-style.md` | Stein 写作风格 |
 | `docs/learning-philosophy.md` | 学习理念 |
-| `docs/team-lead-protocol.md` | Team Lead 协议、PUA 注入 |
+| `docs/team-lead-protocol.md` | Team Lead 协议 |
 | `docs/hooks-subagent.md` | Hooks 与 Subagent 自动化 |
 | `docs/progress.md` | 主题进度 |
-| `docs/knowledge-profile.md` | 用户知识画像系统 |
-| `docs/lessons/web-style-preferences.md` | 网页设计偏好记录 |
-| `.claude/skills/web-style-learner/SKILL.md` | 网页风格分析 skill |
-| `.claude/skills/skim-proofread/SKILL.md` | Skim 跳转校验工作流 |
-| `.claude/skills/lesson-capture/SKILL.md` | 经验教训主动记录协议 |
+| `docs/knowledge-profile.md` | 用户知识画像 |
+| `docs/lessons/` | 教训记录（每次纠正错误后更新） |
+| `.claude/skills/web-style-learner/SKILL.md` | 网页风格分析 |
+| `.claude/skills/skim-proofread/SKILL.md` | Skim 跳转校验 |
+| `.claude/skills/lesson-capture/SKILL.md` | 经验教训主动记录 |
 
----
+> **⚠️ 路径别名**：`~/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter5.tex` 是当前活跃章节。
 
 ## 🌐 网页风格学习系统
-
-当用户分享 URL + "分析这个网页风格"时触发：
-1. Playwright 截图 + 快照分析
-2. 提取色彩/字体/布局/动效/图标/组件
-3. 保存到 `webpage/style-references/<网站名>/`
-4. 更新 `docs/lessons/web-style-preferences.md`
-5. 与用户确认偏好
-
-详见: `.claude/skills/web-style-learner/SKILL.md`
-
----
+当用户分享 URL + "分析这个网页风格" → Playwright 截图+快照分析 → 保存到 `webpage/style-references/<网站名>/` → 更新 `docs/lessons/web-style-preferences.md`
 
 ## 📁 目录结构
-
 ```
 notes/<主题>/
 ├── <主题>-notes.tex      # 主入口
@@ -169,10 +68,7 @@ notes/<主题>/
 ├── chapters/chapter{0-N}.tex
 └── appendix/qa.tex      # QA 记录
 ```
-
 详细规范: `docs/structure.md`
-
----
 
 ## 📖 主题进度
 
@@ -180,36 +76,31 @@ notes/<主题>/
 |------|------|----------|------|
 | 因果推断 | Peng Ding | `notes/A-First-Course-in-Causal-Inference/` | 1-4章 ✅ |
 | 微分几何 | Do Carmo | `notes/differential-geometry/do-carmo-curves-surfaces/` | Ch1-7 ✅ |
-| Schubert | 论文集 | `notes/Schubert-Polynomials/` | Ch0-2 ✅ |
+| Schubert | 论文集 | `notes/Schubert-Polynomials/` | Ch0-8 ✅ |
 | 贝叶斯 | BDA (Gelman) | `notes/bayesian/` | 进行中 |
 | 信息几何 | Amari | `notes/information-geometry/` | 进行中 |
 
 详见: `docs/progress.md`
 
----
-
 ## 🔧 教训记忆系统
 
-每次用户纠正错误时 → 记录到 `docs/lessons/` 并更新本文件
+每次用户纠正错误 → 记录到 `docs/lessons/` 并更新本表
 
 | 日期 | 教训 |
 |------|------|
 | 2026-03-23 | 打开 PDF 默认用 Skim |
 | 2026-03-29 | subagent 生成 `\begin theorem}` 缺少 `{` |
 | 2026-03-29 | Agent 无响应 → 立即 respawn |
-| 2026-03-29 | CLAUDE.md 太长导致 AI 忘记规则 → 重构为索引模式 |
-| 2026-03-30 | 编译后必须检查 overfull hbox 警告，超长公式用 align 拆解 |
-| 2026-03-31 | Proofread 时：AI 报告的问题需用户视觉确认；Theorem 后的等式、Theorem 内的脚注不一定都是问题 |
-| 2026-03-31 | 统一用 `\cref` 而非 `\ref` 引用 label |
-| 2026-03-31 | equivariant quantum cohomology 翻译为"等变量子上同调"（不是"等变上同调"）；专有名词翻译见 `.claude/rules/translation.rules` |
+| 2026-03-29 | CLAUDE.md 太长 → 重构为索引模式 |
+| 2026-03-30 | 编译后必须检查 overfull hbox 警告 |
+| 2026-03-31 | Proofread 时 AI 报告的问题需用户视觉确认 |
+| 2026-03-31 | 统一用 `\cref` 而非 `\ref` |
+| 2026-03-31 | "equivariant quantum cohomology" → "等变量子上同调" |
+| 2026-04-13 | Step 1 中 $[ ]_{U_n}$ 改为 $[ ]_T$ — 需与约化流程记号一致 |
 
 详见: `docs/lessons/`
 
----
-
 ## 🔧 Agent Memory System
-
-literature-experts 团队成员与教训 Memory 文件映射
 
 | Agent | Memory 文件 |
 |-------|-------------|
@@ -227,15 +118,13 @@ literature-experts 团队成员与教训 Memory 文件映射
 
 通用教训: `docs/lessons/agents/ALL-agents-memory.md`
 
----
-
 ## 📝 文献库
 
 | 主题 | 路径 |
 |------|------|
 | 因果推断 | `PDFs/causal-inference/transcript/A First Course in Causal Inference - Peng Ding/` |
 | 微分几何 | `PDFs/differential-geometry/Do Carmo - Differential Geometry.md` |
-| Stein 系列 | `PDFs/Stein系列/` (需从 minerU 恢复) |
 | Quantum Schubert | `PDFs/quantum-schubert/` |
+| Stein 系列 | `PDFs/Stein系列/` (需从 minerU 恢复) |
 
 **PDF 命名**: `{姓}-{年份}-{简短标题}` — 详见 `docs/structure.md`
