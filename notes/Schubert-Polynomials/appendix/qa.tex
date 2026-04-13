@@ -4655,7 +4655,7 @@ $$[\overline{B^-uB/B}]_T \xrightarrow{\;\text{Borel}\;} \mathfrak{S}_u(x;y) \xri
 \textbf{Coxeter 群的有序性}：Weyl 群配备的偏序是 Bruhat order：$u \leq v$ 当且仅当任意约化表示是 $v$ 约化表示的子序列。归纳法的本质是：若 $w < ws_i$，则 $w$ 在 Bruhat order 中更小，所以 $w$ 的信息可以用来得到 $ws_i$ 的信息。
 \textbf{Right descent 的存在性}：这个引理不平凡——它依赖于 $W$ 是有限的。对无限 Coxeter 群，右下降不一定存在，此时归纳法需要修正。
 \textbf{Covering relation}：所有 $\ell(w) = k+1$ 的元素被所有 $\ell(w') = k$ 的元素覆盖——这是有限 Coxeter 群的组合结构的核心。
-─────────────────────────────────────────────────
+\end{insight}
 
 \subsection{$[\tau\overline{B^-uB/B}]_T$ 中 $\tau$ 的作用：pullback 与 $W$-半线性}\label{sec:qa-tau-left-action}
 \textbf{问}：在 Gao--Xiong 的论文中，$[\tau\overline{B^-uB/B}]_T$ 里的 $\tau$ 作用是什么？它如何导致 $\mathfrak{S}_u(\mathbf{x};\tau\mathbf{t}) = \mathfrak{S}_u(\mathbf{x};\mathbf{y})$？与 Anderson-Fulton Section 16.5 的 pullback 公式 $\tau^*[\overline{B^-wB/B}]_T = [\overline{B^-\tau^{-1}wB/B}]_T$ 有何关系？
@@ -4799,65 +4799,43 @@ $$\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xleftrightarrow{\;\text{B
 \end{insight}
 
 \section{$[ ]_{U_n}$ 与 $[ ]_T$ 的记号一致性}\label{sec:qa-U-n-vs-T-consistency}
-\subsection{问题}这里 Step 1 使用 $[ ]_{U_n}$，但约化流程 (Step 2) 和 GX2025 定理都使用 $[ ]_T$，两者是否协调？$[ ]_{U_n}$ 对证明有什么实际作用？
+\subsection{问题}Step 1 使用 $[ ]_{U_n}$，但约化流程 (Step 2) 和 GX2025 定理都使用 $[ ]_T$，两者是否协调？$[ ]_{U_n}$ 对证明有什么实际作用？
 
 \subsection{回答}
 
-您的观察是正确的：整个约化流程（Step 1--Step 5）以及 GX2025 定理都用 $[ ]_T$，没有一处真正用到 $[ ]_{U_n}$。这里需要精确澄清两者的关系。
+您的批评完全正确：整个约化流程（Step 1--Step 5）以及 GX2025 定理都用 $[ ]_T$，没有一处真正用到 $[ ]_{U_n}$。已对 Step 1 进行修正，改用 $[ ]_T$ 并给出 $T$-等变 Borel 同构的完整构造（见 Step 1 正文）。
 
 \vskip 0.3em
-\textbf{一、$[ ]_{U_n}$ 和 $[ ]_T$ 是同一个类的两种记号}
+\textbf{修正后的版本（现已在笔记中）}
 
-设 $X = Fl_n = GL_{2n}/B$。$T \subset U_n \subset GL_{2n}$ 是极大环面。则：
+使用 $[ ]_T$ 的 $T$-等变 Borel 同构为证明提供了**实际的贡献**——它直接给出了 Schubert 类到多项式的同构，无需经过 $U_n$ 的限制映射。具体构造为：
 
-\begin{itemize}
-\item $[ ]_{U_n}$：同一个 Schubert 类 $[\Omega_w]$，被视为 $U_n$-等变上同调 $H^*_{U_n}(X)$ 的元素
-\item $[ ]_T$：同一个 Schubert 类 $[\Omega_w]$，被视为 $T$-等变上同调 $H^*_T(X)$ 的元素
-\end{itemize}
+\begin{enumerate}
+\item \textbf{$T$-等变 Borel 同构（非量子版本）}（\cite[ Theorem 15.6.1]{AndersonFulton}）：
+$$H_T^*(Fl_n) \cong \mathbb{Z}[y_1,\ldots,y_n;\; z_1,\ldots,z_n] / \mathcal{I}_T,$$
+其中理想 $\mathcal{I}_T = \langle e_i(y_1,\ldots,y_n) - e_i(z_1,\ldots,z_n) \mid i=1,\ldots,n \rangle$，$e_i$ 是初等对称多项式。
 
-两者之间有自然的限制映射：
-$$\mathrm{res}: H^*_{U_n}(X) \longrightarrow H^*_T(X), \qquad \rho\bigl([\Omega_w]_{U_n}\bigr) = [\Omega_w]_T.$$
+\item \textbf{Variety--多项式对应}：在这个同构下，Schubert 类直接对应双重 Schubert 多项式：
+$$[\Omega_w]_T \;\xleftrightarrow{\;\text{Borel}\;}\; \mathfrak{S}_w(\mathbf{y};\mathbf{z}) \quad \text{in } H_T^*(Fl_n).$$
+\item \textbf{量子版本的 $T$-等变描述}：
+$$QH_T^*(Fl_n) \cong \mathbb{Z}[\mathbf{y};\mathbf{z};\mathbf{q}] / \widetilde{\mathcal{I}}_T,$$
+其中 $\widetilde{\mathcal{I}}_T$ 是加入了量子除子关系（quantum divisor relations）的修正理想。在这个环中，双重量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{y};\mathbf{z}|\mathbf{q})$ 代表 $[\Omega_w]_T$。
 
-在 Borel 同构的多项式描述下，这个限制映射的作用是把 Chern 根 $x_i$ 置为权变量 $y_i$：
-$$\rho\bigl(\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})\bigr) = \mathfrak{S}_w(\mathbf{y},\mathbf{y}) = \mathfrak{S}_w(\mathbf{y}) = [\Omega_w]_T \quad \text{在 } H^*_T(X) \text{ 中}.$$
-
-因此，$[ ]_{U_n}$ 和 $[ ]_T$ 表示的是完全相同的几何类，区别仅在于把它们放在哪个多项式环中处理。
-
-\vskip 0.3em
-\textbf{二、为什么 Step 1 开头用 $[ ]_{U_n}$？}
-
-Step 1 的公式
-$$[\Omega_u]_{U_n} \star [\Omega_v]_{U_n} = \sum_{d,w} q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,[\Omega_w]_{U_n}$$
-使用 $[ ]_{U_n}$ 是因为这是在 $U_n$-等变量子同调环 $QH^*_{U_n}(Fl_n)$ 的多项式描述中写出的：
-
-$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[\mathbf{x};\mathbf{y};\mathbf{q}] / \widetilde{J},$$
-
-其中 $[\Omega_w]_{U_n}$ 的代表元是双重量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})$。使用 $[ ]_{U_n}$ 是为了明确标识我们在哪个环中工作——这是纯粹的多项式环层面的记号约定。
+\item \textbf{与约化流程的兼容性}：整个 Step 2 的约化流程在 $T$-等变设置下工作：
+$$c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) = \pi_*^T\bigl((ev_1^T)^*[\Omega_u]_T \cdot (ev_2^T)^*[\Omega_v']_T \cdot (ev_3^T)^*[\Omega_w]_T \cap [\overline{\mathcal{M}}_{0,3}(X,d)]\bigr).$$
+GX 定理（Theorem 2.3）也工作在 $H_T^*$，因此修正后的版本保持了证明的一致性。
+\end{enumerate}
 
 \vskip 0.3em
-\textbf{三、为什么说"对证明没有帮助"——您的批评是对的}
+\textbf{关键区别}
 
-您说得对。从约化流程可以看出，整个证明操作都在 $T$-等变设置中进行：
+使用 $[ ]_T$（而非 $[ ]_{U_n}$）的优势在于：$T$-等变 Borel 同构的多项式环 $\mathbb{Z}[\mathbf{y};\mathbf{z};\mathbf{q}]/\widetilde{\mathcal{I}}_T$ 正是约化流程中所有操作发生的舞台。Schubert 类 $[\Omega_w]_T$ 的代表元 $\mathfrak{S}_w(\mathbf{y};\mathbf{z})$ 或 $\widetilde{\mathfrak{S}}_w(\mathbf{y};\mathbf{z}|\mathbf{q})$ 是在同一个多项式环中定义的，约化流程的每一步（projection formula、GX 定理）都在这个设置下运行——没有任何多余的记号跳转。
 
-\begin{align*}
-c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})
-&= \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma'(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T) \tag{定义}\\
-&= \cdots \xrightarrow{\text{约化}} \cdots \xrightarrow{\text{GX Thm 2.3}} \cdots \tag{完成}
-\end{align*}
-
-每一步都使用 $\sigma(u)^T = [\Omega_u]_T$，$[ ]_{U_n}$ 从未在证明的主体中出现。
-
-$[ ]_{U_n}$ 的作用仅限于**识别我们正在使用 $U_n$-等变量子同调的多项式描述**，即确认系数 $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ 来自 $QH^*_{U_n}(Fl_n)$。但在证明的核心技术步骤（projection formula、引理、GX 定理）中，没有任何地方需要调用 $[ ]_{U_n}$ 的特殊性质——所有操作都在 $T$-等变设置下完成。
-
-\vskip 0.3em
-\textbf{四、结论}
-
-$[ ]_{U_n}$ 和 $[ ]_T$ 是同一个几何类的两种记号（通过限制映射 $\rho$ 联系），两者在证明中是协调的，但 $[ ]_{U_n}$ 在证明的技术层面确实是冗余的。它的主要功能是明确记号的上下文（告诉读者我们现在工作在 $U_n$-等变量子同调的多项式环中），但对证明的实质推进没有贡献。
-
-\begin{insight}
-\textbf{两种等变上同调的关系}：$T$-等变上同调 $H_T^*$ 和 $U_n$-等变上同调 $H_{U_n}^*$ 之间的关系是包含-限制：$T \subset U_n$，$H^*_{U_n}(X) = H^*(X \times_{U_n} EU_n)$，而 $H^*_T(X) = H^*(X \times_T ET)$。由于 $EU_n$ 比 $ET$ 更"大"，$H^*_{U_n}$ 的结构更丰富（包含 $\mathbf{x}$ 变量），但两者的 Schubert 类在几何上是同一个对象。
-\textbf{记号 $[ ]_{U_n}$ 的意义}：在笔记中，它主要用于标识我们在 $U_n$-等变量子同调的多项式环描述（Kirillov-Maeno 构造）中工作。但在约化证明的技术步骤里，所有操作都回到 $T$-等变设置，因此 $[ ]_{U_n}$ 是描述性记号而非功能性记号。
-\end{insight}
+★ Insight ─────────────────────────────────────
+\textbf{$[]_T$ 的优势}：$T$-等变 Borel 同构给出的是 Schubert 类的"直接"多项式代表元 $\mathfrak{S}_w(\mathbf{y};\mathbf{z})$，不需要经过任何限制映射。约化流程中每一步（定义、rewrite、projection formula、GX 定理）都工作在同一个 $H_T^*$ 框架下，因此 $[ ]_T$ 是功能性记号，不是冗余记号。
+\textbf{$[]_{U_n}$ 的原本作用}：在 Kirillov-Maeno 构造中，$[ ]_{U_n}$ 的多项式代表元是 $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})$，其中 $\mathbf{x}$ 是万有 Chern 根。这提供了额外的结构（万有丛的几何），但在约化证明中这个结构从未被调用。
+\textbf{修正后的记号优势}：使用 $[ ]_T$ 后，Step 1 给出的同构（\cref{eq:TBorelIsomorphism} 和 \cref{eq:TQuantumBorelIsomorphism}）与其后 Step 2--Step 5 的所有操作完全对齐，没有任何记号上的跳跃。
+────────────────────────────────────────────────-
 
 \subsection{为什么可以限制到 $G = GL_{2n}(\mathbb{C})$}\label{sec:qa-GL-restriction}
 \textbf{问}：为什么证明中要将一般约化群 $G$ 限制到 $G = GL_{2n}(\mathbb{C})$？这个限制的合法性来自哪里？
