@@ -4797,3 +4797,64 @@ $$\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xleftrightarrow{\;\text{B
 \textbf{$\mathbf{x}$ 消失的原因}：Borel 同构把旗流形的基本类（$\mathbf{x}$）编码进了同调环的生成元和关系中。当我们展开量子乘积时，$\mathbf{x}$ 的信息已经被 Schubert 基底的选取所吸收，所以系数只剩下 $\mathbf{y}, \mathbf{z}$ 两个外部权参数——这与经典 Schubert calculus 中系数 $c_{u,v}^w$ 不显含 $\mathbf{x}$ 是同一道理。
 \textbf{Borel 同构的几何直觉}：$X \times_T ET$ 把每条 $T$-轨道压缩成一点，同时保留所有等变信息。Borel 的关键发现是：这个商空间的上同调可以用多项式环模一个具体的理想来显式描述——这是 Schubert calculus 中所有代数工具的基石。
 ────────────────────────────────────────────────-
+
+\section{$[ ]_{U_n}$ 与 $[ ]_T$ 的记号一致性}\label{sec:qa-U-n-vs-T-consistency}
+\subsection{问题}这里 Step 1 使用 $[ ]_{U_n}$，但约化流程 (Step 2) 和 GX2025 定理都使用 $[ ]_T$，两者是否协调？$[ ]_{U_n}$ 对证明有什么实际作用？
+
+\subsection{回答}
+
+您的观察是正确的：整个约化流程（Step 1--Step 5）以及 GX2025 定理都用 $[ ]_T$，没有一处真正用到 $[ ]_{U_n}$。这里需要精确澄清两者的关系。
+
+\vskip 0.3em
+\textbf{一、$[ ]_{U_n}$ 和 $[ ]_T$ 是同一个类的两种记号}
+
+设 $X = Fl_n = GL_{2n}/B$。$T \subset U_n \subset GL_{2n}$ 是极大环面。则：
+
+\begin{itemize}
+\item $[ ]_{U_n}$：同一个 Schubert 类 $[\Omega_w]$，被视为 $U_n$-等变上同调 $H^*_{U_n}(X)$ 的元素
+\item $[ ]_T$：同一个 Schubert 类 $[\Omega_w]$，被视为 $T$-等变上同调 $H^*_T(X)$ 的元素
+\end{itemize}
+
+两者之间有自然的限制映射：
+$$\mathrm{res}: H^*_{U_n}(X) \longrightarrow H^*_T(X), \qquad \rho\bigl([\Omega_w]_{U_n}\bigr) = [\Omega_w]_T.$$
+
+在 Borel 同构的多项式描述下，这个限制映射的作用是把 Chern 根 $x_i$ 置为权变量 $y_i$：
+$$\rho\bigl(\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})\bigr) = \mathfrak{S}_w(\mathbf{y},\mathbf{y}) = \mathfrak{S}_w(\mathbf{y}) = [\Omega_w]_T \quad \text{在 } H^*_T(X) \text{ 中}.$$
+
+因此，$[ ]_{U_n}$ 和 $[ ]_T$ 表示的是完全相同的几何类，区别仅在于把它们放在哪个多项式环中处理。
+
+\vskip 0.3em
+\textbf{二、为什么 Step 1 开头用 $[ ]_{U_n}$？}
+
+Step 1 的公式
+$$[\Omega_u]_{U_n} \star [\Omega_v]_{U_n} = \sum_{d,w} q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,[\Omega_w]_{U_n}$$
+使用 $[ ]_{U_n}$ 是因为这是在 $U_n$-等变量子同调环 $QH^*_{U_n}(Fl_n)$ 的多项式描述中写出的：
+
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[\mathbf{x};\mathbf{y};\mathbf{q}] / \widetilde{J},$$
+
+其中 $[\Omega_w]_{U_n}$ 的代表元是双重量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})$。使用 $[ ]_{U_n}$ 是为了明确标识我们在哪个环中工作——这是纯粹的多项式环层面的记号约定。
+
+\vskip 0.3em
+\textbf{三、为什么说"对证明没有帮助"——您的批评是对的}
+
+您说得对。从约化流程可以看出，整个证明操作都在 $T$-等变设置中进行：
+
+\begin{align*}
+c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})
+&= \pi_*^T(ev_1^*\sigma(u)^T \cdot ev_2^*\sigma'(v)^T \cdot ev_3^*\widetilde{\sigma}(w)^T) \tag{定义}\\
+&= \cdots \xrightarrow{\text{约化}} \cdots \xrightarrow{\text{GX Thm 2.3}} \cdots \tag{完成}
+\end{align*}
+
+每一步都使用 $\sigma(u)^T = [\Omega_u]_T$，$[ ]_{U_n}$ 从未在证明的主体中出现。
+
+$[ ]_{U_n}$ 的作用仅限于**识别我们正在使用 $U_n$-等变量子同调的多项式描述**，即确认系数 $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ 来自 $QH^*_{U_n}(Fl_n)$。但在证明的核心技术步骤（projection formula、引理、GX 定理）中，没有任何地方需要调用 $[ ]_{U_n}$ 的特殊性质——所有操作都在 $T$-等变设置下完成。
+
+\vskip 0.3em
+\textbf{四、结论}
+
+$[ ]_{U_n}$ 和 $[ ]_T$ 是同一个几何类的两种记号（通过限制映射 $\rho$ 联系），两者在证明中是协调的，但 $[ ]_{U_n}$ 在证明的技术层面确实是冗余的。它的主要功能是明确记号的上下文（告诉读者我们现在工作在 $U_n$-等变量子同调的多项式环中），但对证明的实质推进没有贡献。
+
+★ Insight ─────────────────────────────────────
+\textbf{两种等变上同调的关系}：$T$-等变上同调 $H_T^*$ 和 $U_n$-等变上同调 $H_{U_n}^*$ 之间的关系是包含-限制：$T \subset U_n$，$H^*_{U_n}(X) = H^*(X \times_{U_n} EU_n)$，而 $H^*_T(X) = H^*(X \times_T ET)$。由于 $EU_n$ 比 $ET$ 更"大"，$H^*_{U_n}$ 的结构更丰富（包含 $\mathbf{x}$ 变量），但两者的 Schubert 类在几何上是同一个对象。
+\textbf{记号 $[ ]_{U_n}$ 的意义}：在笔记中，它主要用于标识我们在 $U_n$-等变量子同调的多项式环描述（Kirillov-Maeno 构造）中工作。但在约化证明的技术步骤里，所有操作都回到 $T$-等变设置，因此 $[ ]_{U_n}$ 是描述性记号而非功能性记号。
+────────────────────────────────────────────────-
