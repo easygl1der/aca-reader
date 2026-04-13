@@ -4927,3 +4927,33 @@ $$\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xmapsto{\;QH_{U_n}^*\text
 
 \textbf{意义}：几何上计数曲线（量子上同调），代数上用量子参数 $q$ 修正初等对称多项式，多项式层面由 $\widetilde{\mathfrak{S}}_w$ 承载——三者通过同一个环 presentation 统一。同构的验证依赖于 Givental 的公理化量子上同调理论和 Ciocan-Fontanine 的代数几何实现。
 
+
+\subsection{$QH_T^*(Fl_n)$ 与 $QH_{U_n}^*(Fl_n)$ 的定义与区别}\label{sec:qa-QH-T-vs-Un}
+
+\textbf{问}：$QH_T^*(Fl_n)$ 与 $QH_{U_n}^*(Fl_n)$ 的定义分别是什么？两者有何区别？
+
+\textbf{答}：两者都是旗流形 $Fl_n$ 的\textbf{等变量子上同调环}，区别在于所用等变群的粒度不同。
+
+\textbf{共同出发点：等变量子上同调的一般定义。} 设紧 Lie 群 $G$ 作用在紧 Kähler 流形 $X$ 上。$G$-等变量子上同调 $QH_G^*(X)$ 是普通量子上同调 $QH^*(X)$ 的等变推广：它是 $H^*(BG)$-代数，由
+$$QH_G^*(X) := QH^*(X_G), \qquad X_G = EG \times_G X$$
+定义（Borel 构造），其中量子修正由旗流形纤维丛 $X \to X_G \to BG$ 中的逐纤维有理曲线计数给出（见 \cite[§3.3]{Kim1996}）。
+
+\textbf{$QH_{U_n}^*(Fl_n)$（Givental--Kim, Kim 1996）。} 取 $G = U_n$（$GL_n(\mathbb{C})$ 的紧实形式），$X = Fl_n$（$\mathbb{C}^n$ 中的完全旗流形）。系数环是
+$$H^*(BU_n) = \mathbb{Q}[c_1,\ldots,c_n]$$
+其中 $c_i$ 是主 $U_n$-丛的第 $i$ 个 Chern 类。其环表示为（\cite[Theorem 2]{Kim1996}）：
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[x_1,\ldots,x_n;\, y_1,\ldots,y_n;\, q_1,\ldots,q_{n-1}]\;/\;\widetilde{J}$$
+其中 $\widetilde{J} = \langle \widetilde{e}_i(\mathbf{x};\mathbf{q}) - e_i(\mathbf{y}) \mid 1 \le i \le n \rangle$，$\widetilde{e}_i$ 是量子初等对称函数（$e_i$ 的 $q$-形变）。Schubert 基底为 $\{[\Omega_w]_{U_n}\}_{w \in S_n}$，由量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{y})$ 代表。
+
+\textbf{$QH_T^*(Fl_n)$（$T$-等变版本）。} 取 $G = T$，即 $GL_n(\mathbb{C})$（或 $GL_{2n}(\mathbb{C})$，视具体情形）的极大环面。系数环是
+$$H^*(BT) = \mathbb{Z}[t_1,\ldots,t_n]$$
+其中 $t_i$ 是单个环面权重（比 $c_i$ 更细的信息）。Schubert 基底由\textbf{双 Schubert 多项式} $\mathfrak{S}_w(\mathbf{x};\mathbf{t})$ 代表，量子修正后对应量子双 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x};\mathbf{t}|\mathbf{q})$。$T$-等变 Borel 表示为：
+$$QH_T^*(Fl_n) \cong \mathbb{Z}[y_1,\ldots,y_n;\, z_1,\ldots,z_n;\, q_1,\ldots,q_{n-1}]\;/\;\widetilde{\mathcal{I}}_T$$
+（见 \cref{eq:TQuantumBorelIsomorphism} 及 \cite[Theorem~2]{Kim1996}）。
+
+\textbf{两者的关系：限制等变结构。} 包含 $T \hookrightarrow U_n$ 诱导映射 $BT \to BU_n$，对应 Chern 类与权重的关系 $c_i \mapsto e_i(t_1,\ldots,t_n)$。限制等变结构给出：
+$$QH_T^*(Fl_n) \;\cong\; QH_{U_n}^*(Fl_n) \;\otimes_{H^*(BU_n)}\; H^*(BT)$$
+即把系数中的 $c_i$（初等对称多项式）换成单个权重 $e_i(t_1,\ldots,t_n)$，从而将 Chern 类级别的信息细化为逐权重的信息。
+
+\textbf{为何需要 $T$-等变版本？} 双 Schubert 正性猜想（\cref{conj:QuantumDoubleSchubertPositivity}）的目标是证明结构常数
+$$c_{u,v}^{w,d}(\mathbf{y},\mathbf{z}) \in \mathbb{N}[y_i - z_j]$$
+具有正性，其中 $y_i - z_j$ 是 $T$-等变参数的差。这需要在 $T$-等变层面操作（而非 $U_n$-等变层面），因为 $c_i$ 是 $y_i-z_j$ 的初等对称多项式，无法分辨单个 $y_i-z_j$ 的正性。
