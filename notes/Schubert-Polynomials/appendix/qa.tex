@@ -4658,3 +4658,102 @@ $$[\overline{B^-uB/B}]_T \xrightarrow{\;\text{Borel}\;} \mathfrak{S}_u(x;y) \xri
 ────────────────────────────────────────────────-
 
 
+
+\section{$[ ]_{U_n}$ 记号、Borel 同构与双变量系数}\label{sec:qa-Borel-U-n-construction}
+\subsection{问题}这里用的为什么是 $[ ]_{U_n}$ 构造的同构，以及变量只有两个而不是三个，同时你需要给出 Borel 同构的 reference 和准确的同构构造定义。
+
+\subsection{回答}
+
+\textbf{一、为什么使用 $[ ]_{U_n}$（$U_n$-等变）而非 $[ ]_T$（$T$-等变）？}
+
+记号 $[ ]_{U_n}$ 表示 $U_n$-等变 Schubert 类，即旗流形 $Fl_n$ 在酉群 $U_n$ 等变上同调 $H^*_{U_n}(Fl_n)$ 中的 Schubert 类。$[ ]_T$ 则表示在极大环面 $T \subset U_n$ 等变上同调中的类。两者有如下关系：
+
+\begin{enumerate}
+\item \textbf{$T \subset U_n$ 是子群}：$T = (S^1)^n$ 是 $U_n$ 的极大环面。由于 $T$ 作用在 $Fl_n$ 上，我们可以取 $T$-等变上同调或 $U_n$-等变上同调。
+
+\item \textbf{$U_n$ 给出的表示更完整}：$U_n$-等变上同调 $H^*_{U_n}(Fl_n)$ 中的生成元来自旗流形上的自然线丛（tautological line bundles）的第一Chern 类。这些类恰好对应于双重 Schubert 多项式的 $\mathbf{x}$ 变量和 $\mathbf{y}$ 变量，形成一个完整的多项式基。$T$-等变上同调则缺少这种与旗流形几何的直接对应。
+
+\item \textbf{Kirillov-Maeno 构造的优势}：\cite[式 (8)]{KM} 给出的同构
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[x_1,\ldots,x_n;\; y_1,\ldots,y_n;\; q_1,\ldots,q_{n-1}] / \widetilde{J}$$
+使用了 $U_n$ 而非 $T$，原因在于 $U_n$ 的表示环（representation ring）有良好的多项式描述。具体来说，$H^*(BU_n) \cong \mathbb{Z}[c_1,\ldots,c_n]$（万有上同调环），而 $U_n$-等变上同调的 Borel 构造给出：
+$$H^*_{U_n}(Fl_n) = H^*(Fl_n \times_{U_n} EU_n).$$
+\item \textbf{从 $U_n$ 到 $T$ 的退化}：当把所有万有 Chern 类 $c_i$ 置零（即 $H^*_{U_n}(Fl_n) \otimes_{H^*(BU_n)} \mathbb{Q}$）时，得到普通上同调；当取 $q=0$ 时，退化到 $U_n$-等变上同调。这个退化路径在 \cite[ Theorem 2]{Kim1996} 中被系统研究。
+\end{enumerate}
+
+\textbf{记号约定的总结}：在 Step 1 的公式中，$[\Omega_u]_{U_n}$ 和 $[\Omega_v]_{U_n}$ 是 $U_n$-等变 Schubert 类（在 $QH_{U_n}^*(Fl_n)$ 中），而 $[\Omega_v']_T$ 是 $T$-等变 Schubert 类（在 $H_T^*(Fl_n)$ 中）。这是因为 $\Omega_v'$ 是"对偶" Schubert 簇，其等变类在 $T$-等变设置中更自然。
+
+\vskip 0.3em
+\textbf{二、为什么系数 $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ 只依赖 $\mathbf{y}, \mathbf{z}$ 两个变量组？}
+
+注意记号 $(\mathbf{x};\mathbf{y};\mathbf{z})$ 实际上包含\textbf{三组}变量：
+\begin{itemize}
+\item $\mathbf{x} = (x_1,\ldots,x_n)$：旗流形的\textbf{万有丛 Chern 根}——它们是 $H^*_{U_n}(Fl_n)$ 的生成元，编码了 Schubert 基底的编号
+\item $\mathbf{y} = (y_1,\ldots,y_n)$：来自第一个 Schubert 类 $[\Omega_u]_{U_n}$ 的权参数
+\item $\mathbf{z} = (z_1,\ldots,z_n)$：来自第二个（对偶）Schubert 类 $[\Omega_v']_T$ 的权参数
+\end{itemize}
+
+系数 $c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})$ \textbf{只依赖于 $\mathbf{y}, \mathbf{z}$} 的原因在于：$\mathbf{x}$ 已经\textbf{被吸收进同调环本身}了。具体分析：
+
+在 Borel 同构
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[\mathbf{x};\mathbf{y};\mathbf{q}] / \widetilde{J}$$
+下，Schubert 类 $[\Omega_w]_{U_n}$ 本身就是 $\mathbf{x}$ 的多项式（即双重量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})$）。因此，当我们把
+$$[\Omega_u]_{U_n} \star [\Omega_v]_{U_n} = \sum_{d,w} q^d\, c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z})\,[\Omega_w]_{U_n}$$
+展开时：
+
+\begin{itemize}
+\item 左边的 $\star$ 乘积在环 $\mathbb{Z}[\mathbf{x};\mathbf{y};\mathbf{q}] / \widetilde{J}$ 中进行
+\item $[\Omega_u]_{U_n}$ 和 $[\Omega_w]_{U_n}$ 都已经是 $\mathbf{x}$ 的多项式代表元
+\item 乘积展开后，$\mathbf{x}$ 的依赖全部被 $[\Omega_w]_{U_n}$ 的多重线性形式所吸收
+\item 最终系数只剩下 $\mathbf{y}$（来自 $[\Omega_u]$）和 $\mathbf{z}$（来自 $[\Omega_v']$）的参数
+\end{itemize}
+
+几何上：在 Gromov-Witten 不变量
+$$c_{u,v}^{w,(d)}(\mathbf{y},\mathbf{z}) = \pi_*^T\!\left((ev_1^T)^*[\Omega_u]_T \cdot (ev_2^T)^*[\Omega_v']_T \cdot (ev_3^T)^*[\Omega_w]_T \cap [\overline{\mathcal{M}}_{0,3}(X,d)]\right)$$
+中：
+\begin{itemize}
+\item $[\Omega_u]_T$ 的 $T$-等变类包含 $\mathbf{y}$ 权（Schubert 类的"标记"）
+\item $[\Omega_v']_T$ 的 $T$-等变类包含 $\mathbf{z}$ 权（对偶 Schubert 类的"标记"）
+\item $[\Omega_w]_T$ 是积分后的目标类，其 $\mathbf{x}$ 信息在 pushforward $\pi_*^T$ 中被消除
+\end{itemize}
+这就是为什么系数只依赖 $\mathbf{y}, \mathbf{z}$ 而非三组。
+
+\vskip 0.3em
+\textbf{三、Borel 同构的 Reference 和准确构造定义}
+
+\begin{enumerate}
+\item \textbf{经典 Borel 同构}（\cite{Borel}）：设 $G = GL_n(\mathbb{C})$，$B \subset G$ 是上三角 Borel 子群，$T \subset B$ 是对角极大环面。则 $T$-等变上同调有如下显式描述：
+$$H_T^*(G/B) \cong \mathbb{Z}[t_1,\ldots,t_n; x_1,\ldots,x_n] / \mathcal{I},$$
+其中：
+\begin{itemize}
+\item $t_i$ 是 $T$ 的权（weight）变量，$H^*(BT) \cong \mathbb{Z}[t_1,\ldots,t_n]$
+\item $x_j$ 是旗流形上自然丛的第一 Chern 类（亦可理解为表示权的变量）
+\item 理想 $\mathcal{I}$ 由 $e_i(x_1-t_1,\ldots,x_n-t_n) = 0$（$i=1,\ldots,n$）生成，其中 $e_i$ 是初等对称多项式
+\end{itemize}
+这是 Borel 1953 年的基本结果，建立了等变上同调与多项式环之间的联系。
+
+\item \textbf{$U_n$-等变 Borel 同构}（\cite[ Theorem 1]{KM}）：在酉群 $U_n$ 情形下，有
+$$H_{U_n}^*(Fl_n) \cong \mathbb{Z}[x_1,\ldots,x_n;\; y_1,\ldots,y_n] / \mathcal{J},$$
+其中：
+\begin{itemize}
+\item $x_i$ 是万有丛（universal bundle）的 Chern 根，对应 $H^*(BU_n)$
+\item $y_j$ 是 $T_{U_n} = (S^1)^n$ 的权变量（与 $T$-等变版本中的 $t_j$ 相同）
+\item $\mathcal{J} = \langle e_i(x) - e_i(y) \mid i = 1,\ldots,n \rangle$，即两组初等对称多项式之差的理想
+\end{itemize}
+这个构造的几何含义是：$Fl_n$ 上的万有丛 $\mathcal{V}_i$ 的 Chern 类与 $BU_n$ 的权变量通过理想 $\mathcal{J}$ 联系。
+
+\item \textbf{量子版本}（\cite[ Theorem 8]{KM}，亦见 \cite[ Eq. (7)]{Mihalcea}）：引入量子参数 $q_1,\ldots,q_{n-1}$ 后，
+$$QH_{U_n}^*(Fl_n) \cong \mathbb{Z}[x_1,\ldots,x_n;\; y_1,\ldots,y_n;\; q_1,\ldots,q_{n-1}] / \widetilde{J},$$
+其中
+$$\widetilde{J} = \big\langle e_i(x_1,\ldots,x_n; q_1,\ldots,q_{n-1}) - e_i(y_1,\ldots,y_n) \mid i=1,\ldots,n \big\rangle,$$
+而 $e_i(x;q)$ 是修正的初等对称多项式，包含了量子修正。
+
+\item \textbf{Variety-多项式对应}：在上述同构下，双重量子 Schubert 多项式 $\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y})$ 对应 Schubert 类 $[\Omega_w]_{U_n} \in QH_{U_n}^*(Fl_n)$，即
+$$\widetilde{\mathfrak{S}}_w(\mathbf{x},\mathbf{y}) \;\xleftrightarrow{\;\text{Borel 同构}\;}\; [\Omega_w]_{U_n}.$$
+这就是 Step 1 中公式背后的同构基础。
+\end{enumerate}
+
+★ Insight ─────────────────────────────────────
+\textbf{$U_n$ vs $T$ 的选择逻辑}：选择 $U_n$ 而非 $T$ 的关键在于表示论——$U_n$ 的表示环是 $H^*(BU_n)$，它提供了旗流形万有丛的 Chern 根 $\mathbf{x}$，这恰好是 Borel 同构中 $\mathbf{x}$ 变量的来源。$T$ 没有这么好的多项式代表元系统。
+\textbf{$\mathbf{x}$ 消失的原因}：Borel 同构把旗流形的基本类（$\mathbf{x}$）编码进了同调环的生成元和关系中。当我们展开量子乘积时，$\mathbf{x}$ 的信息已经被 Schubert 基底的选取所吸收，所以系数只剩下 $\mathbf{y}, \mathbf{z}$ 两个外部权参数——这与经典 Schubert calculus 中系数 $c_{u,v}^w$ 不显含 $\mathbf{x}$ 是同一道理。
+\textbf{Borel 同构的几何直觉}：$X \times_T ET$ 把每条 $T$-轨道压缩成一点，同时保留所有等变信息。Borel 的关键发现是：这个商空间的上同调可以用多项式环模一个具体的理想来显式描述——这是 Schubert calculus 中所有代数工具的基石。
+────────────────────────────────────────────────-
