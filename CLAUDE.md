@@ -127,6 +127,8 @@
 | `qa-workflow.rules` | 全局 | QA 记录流程、脚注格式 |
 | `note-structure.rules` | notes/** | 目录结构、chapter0 格式、Obsidian callout |
 
+> **⚠️ 路径别名（工作目录 alias）**：`~/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter5.tex` 是当前活跃的章节文件。
+
 ### `docs/` — 完整参考文档
 
 | 文件 | 内容 |
