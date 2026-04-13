@@ -4655,8 +4655,48 @@ $$[\overline{B^-uB/B}]_T \xrightarrow{\;\text{Borel}\;} \mathfrak{S}_u(x;y) \xri
 \textbf{Coxeter 群的有序性}：Weyl 群配备的偏序是 Bruhat order：$u \leq v$ 当且仅当任意约化表示是 $v$ 约化表示的子序列。归纳法的本质是：若 $w < ws_i$，则 $w$ 在 Bruhat order 中更小，所以 $w$ 的信息可以用来得到 $ws_i$ 的信息。
 \textbf{Right descent 的存在性}：这个引理不平凡——它依赖于 $W$ 是有限的。对无限 Coxeter 群，右下降不一定存在，此时归纳法需要修正。
 \textbf{Covering relation}：所有 $\ell(w) = k+1$ 的元素被所有 $\ell(w') = k$ 的元素覆盖——这是有限 Coxeter 群的组合结构的核心。
-────────────────────────────────────────────────-
+─────────────────────────────────────────────────
 
+\subsection{$[\tau\overline{B^-uB/B}]_T$ 中 $\tau$ 的作用：pullback 与 $W$-半线性}\label{sec:qa-tau-left-action}
+\textbf{问}：在 Gao--Xiong 的论文中，$[\tau\overline{B^-uB/B}]_T$ 里的 $\tau$ 作用是什么？它如何导致 $\mathfrak{S}_u(\mathbf{x};\tau\mathbf{t}) = \mathfrak{S}_u(\mathbf{x};\mathbf{y})$？与 Anderson-Fulton Section 16.5 的 pullback 公式 $\tau^*[\overline{B^-wB/B}]_T = [\overline{B^-\tau^{-1}wB/B}]_T$ 有何关系？
+
+\textbf{答}：这个问题的核心在于理解 $H_T^*(G/B)$ 上 $W$-作用的\textbf{半线性}（semilinearity）性质——同一件事在几何层面和代数层面给出了不同的表达式，但它们描述的是同一个 cohomology 类。
+
+\textbf{GX 原文的定义}（\cite[Section 2.2]{GX2025}）：对于 Weyl 群元 $w \in W$，自同构 $gB \mapsto \wgB/B$ 诱导了左作用 $w^L: H_T^*(G/B) \to H_T^*(G/B)$，且 $w^L$ 满足\textbf{半线性}：
+$$w^L(f \cdot x) = w(f) \cdot w^L(x)$$
+其中 $w$ 作用在 $H_T^*(\mathfrak{pt}) = \mathbb{Z}[t_1,\ldots,t_{2n}]$ 上为 $w(t_i) = t_{w(i)}$。这与 Anderson-Fulton \cite[Section 16.5]{AndersonFulton} 中的公式 $\tau_w(f\cdot x) = w(f)\cdot\tau_w(x)$ 完全一致。
+
+\textbf{为什么是 $\mathfrak{S}_u(\mathbf{x};\mathbf{y})$ 而不是 $\mathfrak{S}_{\tau^{-1}u}(\mathbf{x};\mathbf{t})$？} 这里有\textbf{两套坐标系}在起作用：
+\begin{enumerate}
+\item \textbf{pullback 坐标系（直接几何）}：$w^L$ 作为自同构 $L_{\dot{w}}: gB \mapsto \dot{w}gB$ 的 pullback，将几何对象 $[\overline{B^-uB/B}]$ 映射到 $[\overline{B^-wuB/B}]$。按 Schubert 基底展开，给出 $\mathfrak{S}_{wu}(\mathbf{x};\mathbf{t})$。
+\item \textbf{$W$-作用坐标系（多项式参数）}：$w^L$ 在多项式代表元上满足半线性——保持指标 $u$ 不变，只改变 torus 参数 $\mathbf{t} \mapsto w\cdot\mathbf{t}$，给出 $\mathfrak{S}_u(\mathbf{x}; w\cdot\mathbf{t})$。
+\end{enumerate}
+两者描述同一个 cohomology 类，因为 \textbf{double Schubert 多项式的 $W$-不变性}：
+$$\mathfrak{S}_{wu}(\mathbf{x};\mathbf{t}) = \mathfrak{S}_u(\mathbf{x}; w\cdot\mathbf{t})$$
+这来自于 $W$-作用在 Schubert 多项式上的协变性质：下标 $wu$ 和参数 $w\cdot\mathbf{t}$ 以对偶方式变化，使得在共循环中组合 $wu \cdot (w\cdot\mathbf{t})^{-1} = u$ 保持不变。
+
+\textbf{代入具体 $\tau$}：在 $G = \mathrm{GL}_{2n}$ 中，$H_T^*(\mathfrak{pt}) = \mathbb{Z}[t_1,\ldots,t_{2n}]$，变量换名 $t_{n+j} = y_j$，$\tau$ 定义为 $\tau(i) = n+i$。则 $\tau$ 在 $H_T^*(\mathfrak{pt})$ 上的作用为：
+$$\tau\cdot t_i = y_i \;(i\leq n), \qquad \tau\cdot y_j = t_j \;(j\leq n)$$
+所以 $\tau\cdot\mathbf{t} = (y_1,\ldots,y_n)$，从而
+$$[\tau\overline{B^-uB/B}]_T = \tau^L[\overline{B^-uB/B}]_T = \mathfrak{S}_u(\mathbf{x}; \tau\cdot\mathbf{t}) = \boxed{\mathfrak{S}_u(\mathbf{x};\mathbf{y})}$$
+
+\textbf{GX 的 $w^L$ 与 Anderson-Fulton 的 $\tau_w$ 的关系}：两者都是 pullback，但 Weyl 群元素的取法互为逆：
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+ & GX ($w^L$) & Anderson-Fulton ($\tau_w$) \\ \hline
+自同构 & $gB \mapsto \wgB$ & $gB \mapsto \dot{w}^{-1}gB$ \\ \hline
+pullback 下标变化 & $[\overline{B^-wuB/B}]_T$ & $[\overline{B^-w^{-1}uB/B}]_T$ \\ \hline
+多项式代表元 & $\mathfrak{S}_u(\mathbf{x};w\cdot\mathbf{t})$ & $\mathfrak{S}_{w^{-1}u}(\mathbf{x};\mathbf{t})$ \\ \hline
+\end{tabular}
+\end{center}
+两套多项式表达式通过 $\mathfrak{S}_{wu}(\mathbf{x};\mathbf{t}) = \mathfrak{S}_u(\mathbf{x};w\cdot\mathbf{t})$ 联系，是同一个类的不同代表元。
+
+★ Insight ─────────────────────────────────────
+\textbf{semilinearity 是枢纽}：$w^L$ 的半线性（而非线性）是沟通"几何 pullback"和"多项式参数变换"的桥梁。几何上它把 $[\overline{B^-uB/B}]$ 映射到 $[\overline{B^-wuB/B}]$（下标变了），但上同调类在 Schubert 基底下展开时，代表多项式保持下标 $u$，只改变参数 $w\cdot\mathbf{t}$——这两者恰好给出同一个 cohomology 类。
+\textbf{为什么是 $u$ 而不是 $\tau^{-1}u$}：关键在于坐标系的选取。在 pullback 坐标系中，下标变为 $wu$；在 $W$-作用坐标系中，参数变为 $w\cdot\mathbf{t}$。由于 double Schubert 多项式满足 $\mathfrak{S}_{wu}(\mathbf{x};\mathbf{t}) = \mathfrak{S}_u(\mathbf{x};w\cdot\mathbf{t})$，两种表达式在 Borel 同构 $H_T^*(G/B) \cong \mathbb{Z}[x,y]/\mathcal{I}$ 下是等价的。
+\textbf{$\tau$ 的 inversion set}：$\tau$ 在 $H_T^*(\mathfrak{pt})$ 上的作用把 $t_i \mapsto y_i$，其 inversion set $I(\tau) = \{t_i - y_j\}$ 正好等于差变量集 $\{y_j - t_i\}$（相差符号）。这正是 triple Schubert 系数出现在 $\mathbb{N}[y_j - t_i]$ 中的根本机制。
+────────────────────────────────────────────────-
 
 
 \section{$[ ]_{U_n}$ 记号、Borel 同构与双变量系数}\label{sec:qa-Borel-U-n-construction}
