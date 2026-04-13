@@ -4858,3 +4858,35 @@ $[ ]_{U_n}$ 和 $[ ]_T$ 是同一个几何类的两种记号（通过限制映�
 \textbf{两种等变上同调的关系}：$T$-等变上同调 $H_T^*$ 和 $U_n$-等变上同调 $H_{U_n}^*$ 之间的关系是包含-限制：$T \subset U_n$，$H^*_{U_n}(X) = H^*(X \times_{U_n} EU_n)$，而 $H^*_T(X) = H^*(X \times_T ET)$。由于 $EU_n$ 比 $ET$ 更"大"，$H^*_{U_n}$ 的结构更丰富（包含 $\mathbf{x}$ 变量），但两者的 Schubert 类在几何上是同一个对象。
 \textbf{记号 $[ ]_{U_n}$ 的意义}：在笔记中，它主要用于标识我们在 $U_n$-等变量子同调的多项式环描述（Kirillov-Maeno 构造）中工作。但在约化证明的技术步骤里，所有操作都回到 $T$-等变设置，因此 $[ ]_{U_n}$ 是描述性记号而非功能性记号。
 ────────────────────────────────────────────────-
+
+\subsection{为什么可以限制到 $G = GL_{2n}(\mathbb{C})$}\label{sec:qa-GL-restriction}
+\textbf{问}：为什么证明中要将一般约化群 $G$ 限制到 $G = GL_{2n}(\mathbb{C})$？这个限制的合法性来自哪里？
+
+\textbf{答}：这个限制依赖于两个层面：(1) 复约化代数群的结构定理，(2) Schubert calculus 在块分解下的 stability。
+
+\textbf{一、约化群的结构定理}：设 $G$ 为连通复约化代数群，则 $G$ 在中心附近同构于
+$$G \;\cong\; (GL_{n_1} \times \cdots \times GL_{n_r}) / Z$$
+其中 $Z$ 是环面的中心子群。直观地说，任何约化群都是若干 $GL_n$ 的"积"（模去中心），这来自根系的分解。
+
+\textbf{二、Weyl 群和旗流形的乘积分解}：令 $G = GL_{n_1} \times \cdots \times GL_{n_r}$，则
+$$W = S_{n_1} \times \cdots \times S_{n_r}, \qquad G/B \cong Fl_{n_1} \times \cdots \times Fl_{n_r}.$$
+Schubert 胞腔分解 $G/B = \bigsqcup_{w \in W} B^-wB/B$ 中，$B^-$-轨道恰好是各因子旗流形 Schubert 轨道的笛卡尔积。
+
+\textbf{三、块嵌入与 stability}：对于任意 $n$，考虑嵌入
+$$S_n \;\hookrightarrow\; S_{n_1} \times \cdots \times S_{n_r}$$
+其中 $n = n_1 + \cdots + n_r$（这是"块嵌入"）。三元组 Schubert 系数 $c_{u,v}^w(\mathbf{y},\mathbf{t})$ 在 $S_n$ 中定义时，$(u,v,w)$ 仅涉及 $S_n$ 元素；当我们把它们视为 $S_{n_1} \times \cdots \times S_{n_r}$ 中的元素时（补零到每个分块），系数的值不变，因为每个分块内部的 Weyl 群结构完全独立。\textbf{这叫做 Schubert calculus 的"stability"（稳定性）}。
+
+\textbf{四、关键：块限制保持 positivity}：更精确地，GX 引用的 Anderson-Fulton \cite[Section 10.4]{AndersonFulton} 建立了：在 $GL_N$ 中的 positivity 定理 $\Longrightarrow$ 在任意约化群 $G$ 中的 positivity 定理。具体机制：
+\begin{itemize}
+\item 若 $G = GL_{n_1} \times \cdots \times GL_{n_r}$，则 $H_T^*(G/B) = H_T^*(Fl_{n_1}) \otimes \cdots \otimes H_T^*(Fl_{n_r})$（Künneth）
+\item Schubert 基底 $[B^-_wB/B]_T$ 按块独立分解
+\item 因此 $GL_{2n}$ 中的 positivity 蕴含一般约化群中的 positivity
+\end{itemize}
+
+\textbf{五、$GL_{2n}$ 足够的原因}：$GL_{2n}$ 足以包含所有证明所需的结构。首先，$\tau \in S_{2n}$ 的 inversion set $I(\tau) = \{t_i - y_j\}$ 需要 $2n$ 个变量。其次，Gao-Xiong 的 triple Schubert 系数 $c_{u,v}^w(\mathbf{y},\mathbf{t})$ 涉及两组 $n$ 个变量（$\mathbf{y}$ 和 $\mathbf{t}$），这正好嵌入到 $2n$ 个 torus 变量 $(t_1,\ldots,t_n, y_1,\ldots,y_n)$ 中。任何更小的 $GL_m$（$m < 2n$）都无法容纳这样的块分解结构。因此，只要在 $GL_{2n}$ 中证明了 triple Schubert positivity，就自动对所有约化群成立。
+
+★ Insight ─────────────────────────────────────
+\textbf{连通 $\Leftrightarrow$ 块直积}："连通复约化代数群 $\cong$ 若干 $GL_n$ 的积" 是分类定理的直接推论。这与紧李群 $K$ 的复化 $K_\mathbb{C}$ 的分解性质一致——$K_\mathbb{C}$ 的结构由其根系的结构决定，而 type A 根系的分解正好给出 $GL_n$ 的块直积。
+\textbf{Stability 是关键}：Schubert calculus 的 stability 意味着当把 $S_n$ 嵌入 $S_{n+k}$（固定前 $n$ 个位置）时，Schubert 多项式和结构常数保持不变。这使得我们可以在任意大的 $N$ 中工作，而不需要担心"恰好够大"的问题——只要 $N$ 足够大，使得所有出现的 Weyl 群元素都在 $S_N$ 中即可。
+\textbf{Proof stability}：共轭猜想中的 positivity $\mathfrak{S}_u(\mathbf{x};\mathbf{y})\cdot\mathfrak{S}_v(\mathbf{x};\mathbf{z}) = \sum_w c_{u,v}^w(\mathbf{y},\mathbf{z})\,\mathfrak{S}_w(\mathbf{x};\mathbf{z})$ 在块嵌入下稳定——当把 $u,v,w$ 嵌入更大的 $S_N$ 时，等式两边同时保持不变。这意味着只需在 $GL_N$（$N$ 足够大）中证明即可。
+────────────────────────────────────────────────-
