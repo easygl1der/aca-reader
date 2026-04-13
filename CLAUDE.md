@@ -11,6 +11,7 @@
 
 **LaTeX 格式红线**：
 - ❌ `\bm`（向量用 `\mathbf`，矩阵用 `\boldsymbol`）、`\I`（用 `\mathbb{I}`）、unicode 下标 `$n₁$` → `$n_1$`
+- ✅ **空括号记号**：空的方括号写成 `[\cdot]`，空的圆括号写成 `(\cdot)` — 这是用户的符号习惯
 - ❌ Markdown 语法、`\tag{}` 引用公式
 - ✅ 必须 `\label{eq:名称}` + `\cref{eq:名称}`，详细规范见 `.claude/rules/latex-tex.rules`
 
