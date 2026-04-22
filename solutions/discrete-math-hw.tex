@@ -1,13 +1,10 @@
+% !TEX program = xelatex
 \documentclass[11pt]{article}
 
 %----------------------------------------------------------------------------------------
-%  XeCJK 中文支持
+%  中文支持 — ctex 自动处理字体
 %----------------------------------------------------------------------------------------
-\usepackage{xeCJK}
-\xeCJKsetup{
-  CJKspace=true,
-  xCJKecglue={},
-}
+\usepackage{ctex}
 \setCJKmainfont{Songti SC}            % 中文衬线（宋体）
 \setCJKsansfont{Heiti SC}            % 中文无衬线（黑体）
 \setCJKmonofont{LXGW WenKai Mono}    % 中文等宽
@@ -31,7 +28,6 @@
 \usepackage{geometry}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
-\usepackage[framemethod=tikz]{mdframed}
 \usepackage{ifthen}
 \usepackage{siunitx}
 
@@ -41,7 +37,7 @@
 %----------------------------------------------------------------------------------------
 %  数学命令
 %----------------------------------------------------------------------------------------
-%\d is already defined by amsmath as differential operator
+%\d is already defined by amsmath
 \newcommand{\e}{\mathrm{e}}
 \newcommand{\ds}{\displaystyle}
 \newcommand{\OO}{\mathcal{O}}
@@ -84,7 +80,6 @@ renewcommand\headrulewidth{0.5pt}
       attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
       colback=red!1%
     ]
-    \phantomsection
   }{
   \end{tcolorbox}
 }
@@ -92,16 +87,18 @@ renewcommand\headrulewidth{0.5pt}
 %----------------------------------------------------------------------------------------
 %  问答环境
 %----------------------------------------------------------------------------------------
+\newcounter{exr}\counterwithin{exr}{section}
 \newenvironment{question}[2][]{
   \phantomsection
+  \refstepcounter{exr}
   \ifthenelse{\equal{#1}{}}{
     \ifthenelse{\equal{#2}{}}{\section*{}}{%
       \section*{#2}}}{%
     \ifthenelse{\equal{#2}{}}{\section*{(#1)}}{%
-      \section*{(#1) \quad #2}}}
-  \addcontentsline{toc}{section}{\ifthenelse{\equal{#2}{}}{#1}{#2}}
+      \section*{(#1)\quad #2}}}
+  \addcontentsline{toc}{section}{\ifthesection\ifthenelse{\equal{#2}{}}{#1}{#2}\fi}
   \ifthenelse{\equal{#1}{}}{}{
-    \lfoot{\small\itshape 第\thesection题（#1）未完，下页继续\ldots}
+    \lfoot{\small\itshape 第\theexr题（#1）未完，下页继续\ldots}
   }
 }{
   \lfoot{}
@@ -119,15 +116,6 @@ renewcommand\headrulewidth{0.5pt}
       \subsection{(#1)\ #2}}}
 }{
 }
-
-%----------------------------------------------------------------------------------------
-%  Warning / Info
-%----------------------------------------------------------------------------------------
-\mdfdefinestyle{warning}{topline=false,bottomline=false,leftline=false,rightline=false,nobreak,singleextra={\draw(P-|O)++(-0.5em,0)node(tmp1){};\draw(P-|O)++(0.5em,0)node(tmp2){};\fill[black,rotate around={45:(P-|O)}](tmp1)rectangle(tmp2);\node at(P-|O){\color{white}\scriptsize\bf!};\draw[very thick](P-|O)++(0,-1em)--(O);}}
-\newenvironment{warn}[1][Warning:]{\begin{mdframed}[style=warning]\noindent{\textbf{#1}}}{\end{mdframed}}
-
-\mdfdefinestyle{info}{topline=false,bottomline=false,leftline=false,rightline=false,nobreak,singleextra={\draw(P-|O)++(-0.5em,0)node(tmp1){};\draw(P-|O)++(0.5em,0)node(tmp2){};\fill[black](P-|O)circle[radius=0.4em];\node at(P-|O){\color{white}\scriptsize\bf i};\draw[very thick](P-|O)++(0,-0.8em)--(O);}}
-\newenvironment{info}[1][Info:]{\begin{mdframed}[style=info]\noindent{\textbf{#1}}}{\end{mdframed}}
 
 %----------------------------------------------------------------------------------------
 %  DOCUMENT
@@ -216,7 +204,7 @@ renewcommand\headrulewidth{0.5pt}
 
     \textbf{传递性：} 若 $\langle a,b \rangle \in R$ 且 $\langle b,c \rangle \in R$，由对称性已证得 $\langle b,a \rangle \in R$，再由 $(*)$（以 $\langle b,a\rangle$ 和 $\langle b,c\rangle$ 代入）得 $\langle a,c\rangle \in R$，即传递性成立。
 
-    \par\noindent\textbf{注：} 传递性证明的关键步骤——由对称性已知 $\langle b,a\rangle \in R$，再对 $(*)$ 取 $a\mapsto b$，$b\mapsto a$，$c\mapsto c$，由 $\langle b,a\rangle, \langle b,c\rangle \in R$ 推得 $\langle a,c\rangle \in R$。
+    \par\noindent\textbf{注：} 传递性证明的关键——由对称性已知 $\langle b,a\rangle \in R$，再对 $(*)$ 取 $a\mapsto b$，$b\mapsto a$，$c\mapsto c$，由 $\langle b,a\rangle, \langle b,c\rangle \in R$ 推得 $\langle a,c\rangle \in R$。
   \end{Answer}
 \end{question}
 
@@ -259,7 +247,7 @@ renewcommand\headrulewidth{0.5pt}
 
       由 $x(R_1 \circ R_2)y$ 和 $y(R_1 \circ R_2)z$，存在 $u, v$ 使得 $xR_1u, uR_2y$ 及 $yR_1v, vR_2z$。
 
-      由 $R_2$ 传递性：$uR_2y$ 和 $yR_1v$ 不能直接传递，但由 $R_2$ 的传递性只能处理 $R_2$ 内部关系。正确路径为：由 $R_1$ 传递性，$xR_1u$ 和 $uR_2y$ 不能直接传递，须另寻。
+      由 $R_2$ 传递性：$uR_2y$ 和 $yR_1v$ 不能直接传递，须另寻路径。
 
       实际上可证：若 $R_1, R_2$ 传递，则 $R_1 \circ R_2$ 亦传递。
 
