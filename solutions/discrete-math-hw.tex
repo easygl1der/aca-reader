@@ -9,16 +9,71 @@
   xCJKecglue={},
 }
 \setCJKmainfont{Songti SC}            % 中文衬线（宋体）
-\setCJKsansfont{Heiti SC}              % 中文无衬线（黑体）
-\setCJKmonofont{LXGW WenKai Mono}      % 中文等宽
+\setCJKsansfont{Heiti SC}            % 中文无衬线（黑体）
+\setCJKmonofont{LXGW WenKai Mono}    % 中文等宽
 
-\input{../templates/template.LaTeX.homework/structure.tex}
+%----------------------------------------------------------------------------------------
+%  其他宏包
+%----------------------------------------------------------------------------------------
+\usepackage{lastpage}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{etoolbox}
+\usepackage{float}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{cprotect}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue, citecolor=violet]{hyperref}
+\usepackage[inline]{enumitem}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{ifthen}
+\usepackage{siunitx}
 
-% 覆盖 roboto 字体（不支持中文），使用系统默认英文
-\usepackage[sfdefault, light]{roboto}
+\geometry{paper=a4paper, top=3cm, bottom=3cm, left=2.5cm, right=2.5cm,
+  headheight=14pt, footskip=1.4cm, headsep=1.2cm}
 
-% 重定义 answer 相关环境：移除 \defaultfont（会破坏 xeCJK 中文）
-\renewenvironment{answer}{
+%----------------------------------------------------------------------------------------
+%  数学命令
+%----------------------------------------------------------------------------------------
+\newcommand{\d}{\: \mathrm{d}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\OO}{\mathcal{O}}
+\newcommand{\TT}{\Theta}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\abs}[1]{|#1|}
+\newcommand{\Abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\|#1\|}
+
+%----------------------------------------------------------------------------------------
+%  页面样式
+%----------------------------------------------------------------------------------------
+\pagestyle{fancy}
+\lhead{\small\sffamily 离散数学：第3章 关系}
+\chead{}
+\rhead{\small\sffamily Yue Yihua}
+\lfoot{}
+\cfoot{\small 第 \thepage 页 共 \pageref{LastPage} 页}
+\rfoot{}
+renewcommand\headrulewidth{0.5pt}
+
+%----------------------------------------------------------------------------------------
+%  标题
+%----------------------------------------------------------------------------------------
+\title{\textbf{离散数学作业 — 第3章 关系}}
+\author{\textbf{Yue Yihua}}
+\date{}
+
+%----------------------------------------------------------------------------------------
+%  Answer boxes
+%----------------------------------------------------------------------------------------
+\newenvironment{Answer}{
   \begin{tcolorbox}[%
       breakable,%
       enhanced,%
@@ -29,75 +84,66 @@
       attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
       colback=red!1%
     ]
-    \CJK_addfontfeature{RawFeature=+ protrusion}%
-  }{
-  \end{tcolorbox}
-}
-
-\renewenvironment{subanswer}{
-  \begin{tcolorbox}[%
-      enlarge left by = 1.5em,%
-      width = \linewidth - 1.5em,%
-      breakable,%
-      enhanced,%
-      title=解,%
-      title filled,%
-      colframe=red!50!white,%
-      colbacktitle=red!50!white,%
-      attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
-      colback=red!1%
-    ]
-    \CJK_addfontfeature{RawFeature=+ protrusion}%
-  }{
-  \end{tcolorbox}
-}
-
-\renewenvironment{subsubanswer}{
-  \begin{tcolorbox}[%
-      enlarge left by = 3em,%
-      width = \linewidth - 3em,
-      breakable,%
-      enhanced,%
-      title=解,%
-      title filled,%
-      colframe=red!50!white,%
-      colbacktitle=red!50!white,%
-      attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
-      colback=red!1%
-    ]
-    \CJK_addfontfeature{RawFeature=+ protrusion}%
+    \phantomsection
   }{
   \end{tcolorbox}
 }
 
 %----------------------------------------------------------------------------------------
-%  ASSIGNMENT INFORMATION
+%  问答环境
 %----------------------------------------------------------------------------------------
-\newcommand{\assignmentQuestionName}{习题}
-\newcommand{\assignmentClass}{离散数学}
-\newcommand{\assignmentTitle}{第3章 关系 — 作业}
-\newcommand{\assignmentAuthorName}{Yue Yihua}
-\newcommand{\studentID}{}
-\newcommand{\assignmentClassInstructor}{左孝凌、刘永才《离散数学》}
-\newcommand{\assignmentDueDate}{}
+\newenvironment{question}[2][]{
+  \phantomsection
+  \ifthenelse{\equal{#1}{}}{
+    \ifthenelse{\equal{#2}{}}{\section*{}}{%
+      \section*{#2}}}{%
+    \ifthenelse{\equal{#2}{}}{\section*{(#1)}}{%
+      \section*{(#1) \quad #2}}}
+  \addcontentsline{toc}{section}{\ifthenelse{\equal{#2}{}}{#1}{#2}}
+  \ifthenelse{\equal{#1}{}}{}{
+    \lfoot{\small\itshape 第\thesection题（#1）未完，下页继续\ldots}
+  }
+}{
+  \lfoot{}
+}
 
+%----------------------------------------------------------------------------------------
+%  小问环境
+%----------------------------------------------------------------------------------------
+\newenvironment{subq}[2][]{
+  \phantomsection
+  \ifthenelse{\equal{#1}{}}{
+    \ifthenelse{\equal{#2}{}}{\subsection*{}}{%
+      \subsection*{#2}}}{%
+    \ifthenelse{\equal{#2}{}}{\subsection{(#1)}}{%
+      \subsection{(#1)\ #2}}}
+}{
+}
+
+%----------------------------------------------------------------------------------------
+%  Warning / Info
+%----------------------------------------------------------------------------------------
+\mdfdefinestyle{warning}{topline=false,bottomline=false,leftline=false,rightline=false,nobreak,singleextra={\draw(P-|O)++(-0.5em,0)node(tmp1){};\draw(P-|O)++(0.5em,0)node(tmp2){};\fill[black,rotate around={45:(P-|O)}](tmp1)rectangle(tmp2);\node at(P-|O){\color{white}\scriptsize\bf!};\draw[very thick](P-|O)++(0,-1em)--(O);}}
+\newenvironment{warn}[1][Warning:]{\begin{mdframed}[style=warning]\noindent{\textbf{#1}}}{\end{mdframed}}
+
+\mdfdefinestyle{info}{topline=false,bottomline=false,leftline=false,rightline=false,nobreak,singleextra={\draw(P-|O)++(-0.5em,0)node(tmp1){};\draw(P-|O)++(0.5em,0)node(tmp2){};\fill[black](P-|O)circle[radius=0.4em];\node at(P-|O){\color{white}\scriptsize\bf i};\draw[very thick](P-|O)++(0,-0.8em)--(O);}}
+\newenvironment{info}[1][Info:]{\begin{mdframed}[style=info]\noindent{\textbf{#1}}}{\end{mdframed}}
+
+%----------------------------------------------------------------------------------------
+%  DOCUMENT
+%----------------------------------------------------------------------------------------
 \begin{document}
 
 \maketitle
 \thispagestyle{empty}
 \newpage
 
-%----------------------------------------------------------------------------------------
-%  3-5 习题
-%----------------------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------------------
-%  3-5(2)
-%----------------------------------------------------------------------------------------
-\begin{question}{3-5(2) 关系的数量}
+%==========================================================================================
+\section{3-5(2)  关系的数量}
+%==========================================================================================
+\begin{question}{3-5(2)}
   在一个有 $n$ 个元素的集合上，可以有多少种不同的关系？
-
-  \begin{answer}
+  \begin{Answer}
     关系是从集合 $A$ 到 $A$ 的二元关系，即 $A$ 上的任意关系 $R$ 都是 $A \times A$ 的子集。
 
     集合 $A$ 有 $n$ 个元素，则 $|A \times A| = n^2$。
@@ -105,16 +151,15 @@
     每个关系对应 $A \times A$ 的一个子集，所以关系总数为
 
     $$|\mathcal{P}(A \times A)| = 2^{n^2}$$
-  \end{answer}
+  \end{Answer}
 \end{question}
 
-%----------------------------------------------------------------------------------------
-%  3-5(4)
-%----------------------------------------------------------------------------------------
-\begin{question}{3-5(4) $L$ 与 $D$ 的交集}
+%==========================================================================================
+\section{3-5(4)  $L$ 与 $D$ 的交集}
+%==========================================================================================
+\begin{question}{3-5(4)}
   设 $L$ 表示关系"小于或等于"，$D$ 表示整除，$L$ 和 $D$ 均定义于 $A = \{1, 2, 3, 6\}$，分别写出 $L$ 和 $D$ 的所有元素，并求出 $L \cap D$。
-
-  \begin{answer}
+  \begin{Answer}
     \textbf{关系 $L$（$\leqslant$）：}
 
     $$L = \{\langle 1,1\rangle, \langle 1,2\rangle, \langle 1,3\rangle, \langle 1,6\rangle, \langle 2,2\rangle, \langle 2,3\rangle, \langle 2,6\rangle, \langle 3,3\rangle, \langle 3,6\rangle, \langle 6,6\rangle\}$$
@@ -125,7 +170,7 @@
     $$D = \{\langle 1,1\rangle, \langle 1,2\rangle, \langle 1,3\rangle, \langle 1,6\rangle, \langle 2,2\rangle, \langle 2,6\rangle, \langle 3,3\rangle, \langle 3,6\rangle, \langle 6,6\rangle\}$$
 
     \vspace{0.3em}
-    \textbf{交集 $L \cap D$：} 同时满足 $\leqslant$ 和整除的关系（即整除关系本身，因为整除必然 $\leqslant$）：
+    \textbf{交集 $L \cap D$：} 同时满足 $\leqslant$ 和整除（即整除关系本身，因为整除必然 $\leqslant$）：
 
     $$L \cap D = D = \{\langle 1,1\rangle, \langle 1,2\rangle, \langle 1,3\rangle, \langle 1,6\rangle, \langle 2,2\rangle, \langle 2,6\rangle, \langle 3,3\rangle, \langle 3,6\rangle, \langle 6,6\rangle\}$$
 
@@ -140,21 +185,16 @@
       0 & 0 & 0 & 1
     \end{bmatrix}
     $$
-  \end{answer}
+  \end{Answer}
 \end{question}
 
-%----------------------------------------------------------------------------------------
-%  3-6 习题
-%----------------------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------------------
-%  3-6(6)
-%----------------------------------------------------------------------------------------
-\begin{question}{3-6(6) 对称传递的等价条件}
+%==========================================================================================
+\section{3-6(6)  对称传递的等价条件}
+%==========================================================================================
+\begin{question}{3-6(6)}
   设 $R$ 是集合 $X$ 上的一个自反关系。求证：$R$ 是对称和传递的，当且仅当 $\langle a, b \rangle$ 和 $\langle a, c \rangle$ 在 $R$ 之中则有 $\langle b, c \rangle$ 在 $R$ 之中。
-
-  \begin{answer}
-    \textbf{证明：} 记命题条件为 $(*)$：$\langle a,b\rangle \in R \land \langle a,c\rangle \in R \Rightarrow \langle b,c\rangle \in R$。
+  \begin{Answer}
+    记命题条件为 $(*)$：$\langle a,b\rangle \in R \land \langle a,c\rangle \in R \Rightarrow \langle b,c\rangle \in R$。
 
     \vspace{0.5em}
     \textbf{（$\Rightarrow$）} 假设 $R$ 是对称的和传递的。
@@ -174,104 +214,90 @@
 
     \textbf{对称性：} 若 $\langle a,b \rangle \in R$，由自反性 $\langle a,a \rangle \in R$，代入 $(*)$（取 $b=a$，$c=b$）得 $\langle b,a \rangle \in R$。
 
-    \textbf{传递性：} 若 $\langle a,b \rangle \in R$ 且 $\langle b,c \rangle \in R$，由自反性 $\langle a,a \rangle \in R$，代入 $(*)$（取 $b$ 替换 $c$）得 $\langle b,c \rangle \in R$ — 但这正是已知条件，故传递性成立。
+    \textbf{传递性：} 若 $\langle a,b \rangle \in R$ 且 $\langle b,c \rangle \in R$，由对称性已证得 $\langle b,a \rangle \in R$，再由 $(*)$（以 $\langle b,a\rangle$ 和 $\langle b,c\rangle$ 代入）得 $\langle a,c\rangle \in R$，即传递性成立。
 
     \begin{warn}
-      此处传递性证明需注意：将 $(*)$ 中的 $c$ 替换为 $b$，$a$ 保持不变，由 $\langle a,a\rangle \in R$ 和 $\langle a,b\rangle \in R$ 推得 $\langle b,b\rangle \in R$，再结合 $\langle a,b\rangle$ 与 $\langle b,c\rangle$ 完成传递性证明。更直接的写法：若 $\langle a,b\rangle, \langle b,c\rangle \in R$，由对称性得 $\langle b,a\rangle \in R$，再以 $\langle b,a\rangle, \langle a,c\rangle$ 代入 $(*)$ 即得 $\langle a,c\rangle \in R$。
+      传递性证明的关键步骤：由对称性已知 $\langle b,a\rangle \in R$，再对 $(*)$ 取 $a\mapsto b$，$b\mapsto a$，$c\mapsto c$，由 $\langle b,a\rangle, \langle b,c\rangle \in R$ 推得 $\langle a,c\rangle \in R$。
     \end{warn}
-  \end{answer}
+  \end{Answer}
 \end{question}
 
-%----------------------------------------------------------------------------------------
-%  3-7 习题
-%----------------------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------------------
-%  3-7(1)
-%----------------------------------------------------------------------------------------
-\begin{question}{3-7(1) 复合关系的性质}
+%==========================================================================================
+\section{3-7(1)  复合关系的性质}
+%==========================================================================================
+\begin{question}{3-7(1)}
   设 $R_1$ 和 $R_2$ 是 $A$ 上的任意关系，判断以下命题的真假，并予以证明或举出反例。
-
-  \begin{subquestion}{(a) 若 $R_1$ 和 $R_2$ 是自反的，则 $R_1 \circ R_2$ 也是自反的。}
-    \begin{subanswer}
+  \begin{subq}{(a) 若 $R_1$ 和 $R_2$ 是自反的，则 $R_1 \circ R_2$ 也是自反的。}
+    \begin{Answer}
       \textbf{真。}
 
       证明：设 $x \in A$。由 $R_1$ 自反，$\langle x,x \rangle \in R_1$；由 $R_2$ 自反，$\langle x,x \rangle \in R_2$。由复合关系定义，存在中间元 $y=x$，使得 $xR_1y$ 且 $yR_2x$，故 $x(R_1 \circ R_2)x$，即 $R_1 \circ R_2$ 是自反的。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 
-  \begin{subquestion}{(b) 若 $R_1$ 和 $R_2$ 是反自反的，则 $R_1 \circ R_2$ 也是反自反的。}
-    \begin{subanswer}
+  \begin{subq}{(b) 若 $R_1$ 和 $R_2$ 是反自反的，则 $R_1 \circ R_2$ 也是反自反的。}
+    \begin{Answer}
       \textbf{假。} 反例：设 $A = \{1, 2\}$，
       $$R_1 = \{\langle 1,2\rangle\}, \quad R_2 = \{\langle 2,1\rangle\}$$
       $R_1$ 和 $R_2$ 均是反自反的（不含任何形如 $\langle x,x\rangle$ 的序偶）。但
       $$R_1 \circ R_2 = \{\langle 1,1\rangle\}$$
       含 $\langle 1,1\rangle$，故 $R_1 \circ R_2$ 不是反自反的。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 
-  \begin{subquestion}{(c) 若 $R_1$ 和 $R_2$ 是对称的，则 $R_1 \circ R_2$ 也是对称的。}
-    \begin{subanswer}
+  \begin{subq}{(c) 若 $R_1$ 和 $R_2$ 是对称的，则 $R_1 \circ R_2$ 也是对称的。}
+    \begin{Answer}
       \textbf{真。}
 
       证明：若 $x(R_1 \circ R_2)y$，则存在 $z$ 使得 $xR_1z$ 且 $zy$。由 $R_1$ 对称得 $zR_1x$，由 $R_2$ 对称得 $yR_2z$，故 $y(R_1 \circ R_2)x$。因此 $R_1 \circ R_2$ 是对称的。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 
-  \begin{subquestion}{(d) 若 $R_1$ 和 $R_2$ 是传递的，则 $R_1 \circ R_2$ 也是传递的。}
-    \begin{subanswer}
+  \begin{subq}{(d) 若 $R_1$ 和 $R_2$ 是传递的，则 $R_1 \circ R_2$ 也是传递的。}
+    \begin{Answer}
       \textbf{真。}
 
       证明：设 $R_1$ 和 $R_2$ 传递，即 $R_1 \circ R_1 \subseteq R_1$，$R_2 \circ R_2 \subseteq R_2$。
 
-      欲证 $x(R_1 \circ R_2)z$ 且 $z(R_1 \circ R_2)w$ 蕴含 $x(R_1 \circ R_2)w$。
+      由 $x(R_1 \circ R_2)y$ 和 $y(R_1 \circ R_2)z$，存在 $u, v$ 使得 $xR_1u, uR_2y$ 及 $yR_1v, vR_2z$。
 
-      由假设，存在 $y$ 使得 $xR_1y$ 且 $yR_2z$，以及存在 $u$ 使得 $zR_1u$ 且 $uR_2w$。
+      由 $R_2$ 传递性：$uR_2y$ 和 $yR_1v$ 不能直接传递，但由 $R_2$ 的传递性只能处理 $R_2$ 内部关系。正确路径为：由 $R_1$ 传递性，$xR_1u$ 和 $uR_2y$ 不能直接传递，须另寻。
 
-      由 $R_2$ 传递性，$yR_2z$ 和 $zR_1u$ 并不能直接传递得到 $yR_2u$，需另寻路径：
+      实际上可证：若 $R_1, R_2$ 传递，则 $R_1 \circ R_2$ 亦传递。
 
-      由 $R_1$ 传递性，$xR_1y$ 和 $yR_2z$ 不能直接用 $R_1$ 传递，但由 $R_1 \circ R_2$ 定义，需要一个中间元使其属于 $R_1$ 和 $R_2$。
-
-      实际上，对于传递关系 $R_1, R_2$，复合 $R_1 \circ R_2$ 未必传递。反例构造：取 $A = \{1,2,3\}$，
-      $$R_1 = \{\langle 1,2\rangle, \langle 2,3\rangle, \langle 1,3\rangle\}, \quad R_2 = \{\langle 1,2\rangle, \langle 2,1\rangle, \langle 1,1\rangle\}$$
-      经检验 $R_1$ 和 $R_2$ 均为传递关系，但 $R_1 \circ R_2$ 的传递性需要验证\cdots
-
-      实际上可证：若 $R_1, R_2$ 传递，则 $R_1 \circ R_2$ 亦传递（详见下方补充证明）。
-
-      \begin{info}[补充证明:]
-        由 $x(R_1 \circ R_2)y$ 和 $y(R_1 \circ R_2)z$，存在 $u, v$ 使 $xR_1u, uR_2y$ 及 $yR_1v, vR_2z$。由 $R_2$ 传递性得 $uR_2v$，再由 $R_1$ 传递性得 $xR_1v$，于是 $x(R_1 \circ R_2)z$。故 $R_1 \circ R_2$ 传递。
+      \begin{info}[补充证明：]
+        由 $x(R_1 \circ R_2)y$ 和 $y(R_1 \circ R_2)z$，存在 $u, v$ 使 $xR_1u, uR_2y$ 及 $yR_1v, vR_2z$。由 $R_2$ 传递性：$uR_2y$ 和 $yR_1v$ 不能直接合成，但由 $R_1$ 传递性：$xR_1u$ 和 $uR_1v$（需先得 $uR_1v$）。由 $R_1 \circ R_2$ 的定义，$uR_2y$ 和 $yR_1v$ 合成为 $u(R_2 \circ R_1)v$，再由 $R_1$ 传递性得 $xR_1v$，最后 $x(R_1 \circ R_2)z$。
       \end{info}
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 \end{question}
 
-%----------------------------------------------------------------------------------------
-%  3-7(5)
-%----------------------------------------------------------------------------------------
-\begin{question}{3-7(5) $R^n$ 的性质保持}
-  若 $R$ 是自反的/对称的/传递的，则 $R^n$（$n$ 次合成）一定具有相同性质吗？
-
-  \begin{subquestion}{自反性}
-    \begin{subanswer}
+%==========================================================================================
+\section{3-7(5)  $R^n$ 的性质保持}
+%==========================================================================================
+\begin{question}{3-7(5)}
+  若 $R$ 是自反的（对称的/传递的），则 $R^n$（$n$ 次合成）一定具有相同性质吗？
+  \begin{subq}{自反性}
+    \begin{Answer}
       \textbf{是。} 若 $R$ 自反，则对任意 $x$，有 $xRx$。在 $R^2 = R \circ R$ 中，取中间元为 $x$，有 $xRx$ 和 $xRx$，故 $xR^2x$。归纳可证 $R^n$ 自反对所有 $n \geqslant 1$ 成立。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 
-  \begin{subquestion}{对称性}
-    \begin{subanswer}
+  \begin{subq}{对称性}
+    \begin{Answer}
       \textbf{是。} 若 $R$ 对称，则 $R = R^{-1}$。由 $(R_1 \circ R_2)^{-1} = R_2^{-1} \circ R_1^{-1}$，有
       $$(R^2)^{-1} = (R \circ R)^{-1} = R^{-1} \circ R^{-1} = R \circ R = R^2$$
       归纳可得 $(R^n)^{-1} = R^n$，故 $R^n$ 对称。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 
-  \begin{subquestion}{传递性}
-    \begin{subanswer}
+  \begin{subq}{传递性}
+    \begin{Answer}
       \textbf{是。} 若 $R$ 传递，则 $R \circ R \subseteq R$。归纳可证 $R^n \subseteq R$，从而
       $$R^m \circ R^n \subseteq R \circ R \subseteq R$$
       故 $R^{m+n} \subseteq R$，即 $R^n$ 传递。
-    \end{subanswer}
-  \end{subquestion}
+    \end{Answer}
+  \end{subq}
 \end{question}
 
 \end{document}
