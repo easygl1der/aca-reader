@@ -17,9 +17,57 @@
 % 覆盖 roboto 字体（不支持中文），使用系统默认英文
 \usepackage[sfdefault, light]{roboto}
 
-% 修复：xeCJK 环境下 \defaultfont 必须支持中文，不能用 lmr
-\AtBeginDocument{
-  \let\defaultfont\relax  % 禁用 defaultfont 对 answer 环境的干扰
+% 重定义 answer 相关环境：移除 \defaultfont（会破坏 xeCJK 中文）
+\renewenvironment{answer}{
+  \begin{tcolorbox}[%
+      breakable,%
+      enhanced,%
+      title=解,%
+      title filled,%
+      colframe=red!50!white,%
+      colbacktitle=red!50!white,%
+      attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
+      colback=red!1%
+    ]
+    \CJK_addfontfeature{RawFeature=+ protrusion}%
+  }{
+  \end{tcolorbox}
+}
+
+\renewenvironment{subanswer}{
+  \begin{tcolorbox}[%
+      enlarge left by = 1.5em,%
+      width = \linewidth - 1.5em,%
+      breakable,%
+      enhanced,%
+      title=解,%
+      title filled,%
+      colframe=red!50!white,%
+      colbacktitle=red!50!white,%
+      attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
+      colback=red!1%
+    ]
+    \CJK_addfontfeature{RawFeature=+ protrusion}%
+  }{
+  \end{tcolorbox}
+}
+
+\renewenvironment{subsubanswer}{
+  \begin{tcolorbox}[%
+      enlarge left by = 3em,%
+      width = \linewidth - 3em,
+      breakable,%
+      enhanced,%
+      title=解,%
+      title filled,%
+      colframe=red!50!white,%
+      colbacktitle=red!50!white,%
+      attach boxed title to top left = {yshift = -3mm, xshift = 5mm},%
+      colback=red!1%
+    ]
+    \CJK_addfontfeature{RawFeature=+ protrusion}%
+  }{
+  \end{tcolorbox}
 }
 
 %----------------------------------------------------------------------------------------
