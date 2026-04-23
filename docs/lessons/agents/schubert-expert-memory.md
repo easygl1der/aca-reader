@@ -22,6 +22,7 @@
 | L511 | 第一次出现的概念必须补充定义 | 1 |
 | L512 | Chapter 5 量子双重 Schubert 符号规范 | 1 |
 | L513 | rewrite chapter 导致 qa.tex 1300 行内容被删除 | 1 |
+| L514 | Chapter 8 Billey 定理与 Pipe Dreams 符号规范 | 1 |
 
 ---
 
