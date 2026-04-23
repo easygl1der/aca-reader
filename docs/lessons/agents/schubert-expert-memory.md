@@ -510,3 +510,45 @@ git show dfd5d29b5:notes/Schubert-Polynomials/appendix/qa.tex > notes/Schubert-P
 - 每次 commit 后：
   1. 确认只改了目标文件
   2. 确认 qa.tex 行数没有大幅变化
+
+---
+
+## L514: Chapter 8 Billey 定理与 Pipe Dreams 符号规范
+
+**日期**: 2026-04-23
+**经历次数**: 1 次 (累计)
+
+**核心内容摘要**:
+Chapter 8 涵盖三大主题：
+1. **Billey 定理**：Schubert 簇 $X_w$ 的有理光滑性条件 —— $w$ 避免 2-interval、2413、321 模式
+2. **Kostant-Billey 公式**：Schubert 类的局部化公式 $[X_w] = K_w(x)$，其中 $K_w(x) = \prod_{\beta \in S(w)} x_\beta$
+3. **Pipe Dreams**：Fomin-Kirillov 的组合实现，Schubert 多项式 $\mathfrak{S}_w(x) = \sum_{\pi(D)=w} x^D$
+
+**Pipe Dream 符号规范**:
+| 符号 | 含义 |
+|------|------|
+| $\text{PD}_{n-1}$ | 形状为 $(n-1, n-2, \ldots, 1)$ 的 pipe dreams 集合 |
+| $\pi(D)$ | pipe dream $D$ 对应的排列 |
+| $x^D$ | $D$ 中交叉 tile 对应的变量乘积 $\prod x_j$ |
+| $\cross$ | 交叉 tile |
+| $\elbow$ | 弯头 tile |
+
+**Bumpless Pipe Dream（2022, Chan 等）**:
+- 公式：$\mathfrak{S}_w(\mathbf{x}; \mathbf{y}) = \sum_{\pi(D)=w} \prod_{\text{cross tiles}} (x_i - y_j)$
+- 与 Richardson 定理联系更直接
+
+**关键文献**:
+- Billey (1999) — 有理光滑性与 Kostant 多项式
+- Fomin-Kirillov (1994) — Pipe dreams
+- Fomin-Gelfand-Postnikov (1997) — 双参数 Schubert 多项式
+- Postnikov (2002) — 仿射方法与量子上同调
+- Fan-Guo-Xiong (2025) — Bumpless pipe dreams
+
+**章节联系**:
+- Chapter 1：Kostant 多项式 $K_w$ 是 $N^-(w)$ 定义的代数实现
+- Chapter 3：Pipe dreams 给出了 Lascoux-Schützenberger 递推公式的组合证明
+- Chapter 4：Postnikov 仿射方法连接仿射 Schubert 多项式与量子上同调
+
+**经验教训**:
+- 避免模式（pattern avoidance）是 Schubert 几何中的核心技巧
+- 局部化方法是连接几何与组合的桥梁
