@@ -512,6 +512,34 @@ grep -r "\\\\label{" notes/ --include="*.tex" | sort | uniq -c | sort -rn | head
 - 禁止在未协调的情况下复制含 label 的内容
 - 复制内容时必须检查是否含 label，如有必须修改或删除
 
+## L914: Theorem 环境缺少 \label{}
+
+**日期**: 2026-04-23
+**经历次数**: 1 次
+
+**错误描述**:
+Theorem 环境缺少 `\label{}`，后续无法通过 `\cref{}` 引用该定理。
+
+**本次发现**:
+- chapter8.tex:189 — `\begin{Theorem}[Postnikov, 2002]` 缺少 `\label{}`
+
+**正确做法**:
+```latex
+% 错误 ❌
+\begin{Theorem}[Postnikov, 2002]
+...内容...
+\end{Theorem}
+
+% 正确 ✅
+\begin{Theorem}[Postnikov, 2002]\label{th:AffineGrassmannianSchubert}
+...内容...
+\end{Theorem}
+```
+
+**防止措施**:
+- 每个 Theorem/Definition/Lemma 环境必须带 `\label{}`
+- 检查命令: `grep -n "begin{Theorem}" notes/**/*.tex | grep -v "label{"`
+
 核心检查清单
 
 - [ ] 无 Markdown 残留（`**`、`*`、`-`、`>`）
