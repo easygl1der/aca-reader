@@ -1,60 +1,71 @@
 % Chapter 4: Neymanian Repeated Sampling Inference
 % A First Course in Causal Inference - Peng Ding
-% Rewritten in Stein motivation-first style with textbook theorems
+% Rewritten in Stein motivation-first style
 
 \chapter{Neymanian 重复抽样推断}\label{ch:4}
 
-\section{两种推断哲学的对话}
+\section{两种推断哲学的对话}\label{sec:4-1}
 
-在上一章中，我们学习了费舍尔随机化检验（FRT）。Fisher 的方法优雅而精确——它基于随机化的精确性质，在 sharp null 假设下给出精确的 p 值。
+在上一章中，我们遇到了费舍尔随机化检验（Fisher's randomization test, FRT）。这种方法优雅而精确——它基于随机化的精确性质，在 sharp null 假设下给出精确的 p 值，无需任何分布假设。
 
-但 FRT 也有其局限：它只能检验 sharp null 假设，对于构建置信区间需要额外的推理。而且当样本量很大时，枚举所有可能的置换变得计算上不可行。
+然而，FRT 也有其内在局限。首先，它只能检验 \textbf{sharp null 假设}（即所有单元的个体因果效应为零）；对于更一般的 null 假设，FRT 无法处理。其次，当样本量增大时，枚举所有可能的置换变得计算上不可行——我们需要渐近近似。
 
-Jerzy Neyman 在 1923 年的工作中提出了一种互补的方法。这种方法基于\textbf{渐近正态分布}，可以更方便地构建置信区间和进行假设检验。Neyman 的方法不依赖于任何特定的 null 假设，而是直接对因果效应进行统计推断。
+更重要的是：从 Fisher 的视角来看，我们只能得到一个 p 值，却无法直接得到置信区间。而实际研究中，研究者往往更关心"因果效应有多大"而非"因果效应是否为零"。
 
-这两种方法——Fisherian 和 Neymanian——代表了统计推断的两种哲学。理解它们的联系与区别，对于真正掌握因果推断至关重要。
+\textbf{一个自然的问题产生}：能否有一种方法，既保持 Fisher 方法的无分布（distribution-free）精神，又能方便地构建置信区间？
 
-\userannotation{为什么需要两种方法？}{FRT 适用于小样本精确推断和假设检验，Neymanian 适用于大样本渐近推断和置信区间构建。两者互为补充，而非相互排斥。}
+Jerzy Neyman 在 1923 年的开创性工作中给出了一种互补的答案。他的方法基于\textbf{渐近正态分布}，直接对因果效应进行统计推断，既能得到 p 值，也能构建置信区间。这两种方法——Fisherian 的精确小样本推断与 Neymanian 的大样本渐近推断——代表了统计推断的两种哲学，深刻影响了现代因果推断的发展。
 
-\section{有限总体量}
+\userannotation{为什么需要两种方法？}{FRT 适用于小样本精确推断和假设检验，Neymanian 适用于大样本渐近推断和置信区间构建。两者互为补充。}
 
-在 Neymanian 框架中，我们需要一套精确的记号来描述\textbf{有限总体量}——这些是不带 "hat" 的真实值。
+\section{有限总体量}\label{sec:4-2}
 
-考虑一个包含 $n$ 个个体的有限总体，其中 $n_1$ 个被分配到治疗组，$n_0 = n - n_1$ 个被分配到对照组。对于单元 $i = 1, \ldots, n$，我们有潜在结果 $Y_i(1)$ 和 $Y_i(0)$，以及个体效应 $\tau_i = Y_i(1) - Y_i(0)$。
+在 Neymanian 框架中，我们首先需要一套精确的记号来描述\textbf{有限总体}——这是 Neyman 与 Fisher 共同面对的研究对象。
+
+考虑一个包含 $n$ 个单元的有限总体。记 $n_1$ 个单元被分配到治疗组，$n_0 = n - n_1$ 个单元被分配到对照组。对于每个单元 $i = 1, \ldots, n$，我们定义：
+
+\begin{itemize}
+  \item $Y_i(1)$：单元 $i$ 接受治疗后的潜在结果
+  \item $Y_i(0)$：单元 $i$ 接受对照后的潜在结果
+  \item $\tau_i = Y_i(1) - Y_i(0)$：单元 $i$ 的个体因果效应
+\end{itemize}
+
+这些潜在结果都是\textbf{固定的数值}——它们不依赖于我们实际做什么选择，只是"潜在"地存在。
 
 \textbf{有限总体均值}：
 \[
-\bar{Y}(1) = n^{-1} \sum_{i=1}^n Y_i(1), \quad
-\bar{Y}(0) = n^{-1} \sum_{i=1}^n Y_i(0)
+\bar{Y}(1) = \frac{1}{n}\sum_{i=1}^n Y_i(1), \quad
+\bar{Y}(0) = \frac{1}{n}\sum_{i=1}^n Y_i(0)
 \]
 
-\textbf{有限总体方差}（使用 $n-1$ 作为除数使定理更优雅）：
+\textbf{有限总体方差}（使用 $n-1$ 作为除数）：
 \[
-S^2(1) = (n-1)^{-1} \sum_{i=1}^n \{ Y_i(1) - \bar{Y}(1) \}^2, \quad
-S^2(0) = (n-1)^{-1} \sum_{i=1}^n \{ Y_i(0) - \bar{Y}(0) \}^2
+S^2(1) = \frac{1}{n-1}\sum_{i=1}^n \{Y_i(1) - \bar{Y}(1)\}^2, \quad
+S^2(0) = \frac{1}{n-1}\sum_{i=1}^n \{Y_i(0) - \bar{Y}(0)\}^2
 \]
 
 \textbf{有限总体协方差}：
 \[
-S(1,0) = (n-1)^{-1} \sum_{i=1}^n \{ Y_i(1) - \bar{Y}(1) \} \{ Y_i(0) - \bar{Y}(0) \}
+S(1,0) = \frac{1}{n-1}\sum_{i=1}^n \{Y_i(1) - \bar{Y}(1)\}\{Y_i(0) - \bar{Y}(0)\}
 \]
 
-\textbf{个体效应}：
+\textbf{平均因果效应}：
 \[
-\tau = n^{-1} \sum_{i=1}^n \tau_i = \bar{Y}(1) - \bar{Y}(0)
+\tau = \frac{1}{n}\sum_{i=1}^n \tau_i = \bar{Y}(1) - \bar{Y}(0)
 \]
-是平均因果效应的真值。
+这是我们要估计的核心参数。
 
 \textbf{个体效应的方差}：
 \[
-S^2(\tau) = (n-1)^{-1} \sum_{i=1}^n (\tau_i - \tau)^2
+S^2(\tau) = \frac{1}{n-1}\sum_{i=1}^n (\tau_i - \tau)^2
 \]
+衡量治疗效应在单元间的异质性程度。
 
-\userannotation{为什么需要协方差？}{因为 $Y(1)$ 和 $Y(0)$ 之间可能有相关性。如果治疗组和对照组的个体是匹配的（正相关），估计的方差会减小；如果是负相关，方差会增大。}
+\userannotation{为什么需要协方差？}{$Y(1)$ 和 $Y(0)$ 之间可能有相关性。若治疗组和对照组的个体是匹配的（正相关），估计的方差会减小；若是负相关，方差会增大。}
 
-\section{一个关键引理}
+\section{一个关键引理}\label{sec:4-3}
 
-在有限总体量的世界中，有一个优雅的关系连接了协方差与各个方差：
+在有限总体量的世界中，有一个优雅的关系连接了协方差与各个方差。这个恒等式虽然简单，却贯穿整个 Neymanian 推断框架。
 
 \begin{Lemma}[Lemma 4.1 — 方差与协方差的关系]\label{lemm:4.1}
 \[
@@ -63,180 +74,149 @@ S^2(\tau) = (n-1)^{-1} \sum_{i=1}^n (\tau_i - \tau)^2
 其中 $\tau_i = Y_i(1) - Y_i(0)$ 是个体因果效应。
 \end{Lemma}
 
-这个引理的证明是直接的代数运算。这个恒等式将在后续推导中发挥关键作用。\footnote{详见附录 \cref{sec:appendix-lemma-4-1}。}
+\textbf{直觉理解}：如果所有单元的治疗效应都相同（$S^2(\tau) = 0$），则 $Y_i(1)$ 和 $Y_i(0)$ 完全线性相关（相差一个常数），此时 $S(1,0)$ 达到最大值 $[S^2(1) + S^2(0)]/2$。
 
-\textbf{推论}：如果所有个体因果效应都相等（$S^2(\tau) = 0$），那么 $S(1,0) = [S^2(1) + S^2(0)]/2$，即潜在结果完全正相关。
+\textbf{推论}：当 $S^2(\tau) > 0$ 时，$2S(1,0) < S^2(1) + S^2(0)$，即协方差小于两个方差之和的一半。
 
-\section{Neyman (1923) 定理}
+这个引理的证明是直接的代数运算。\footnote{详见附录 \cref{sec:appendix-lemma-4-1}。}
+
+\section{Neyman (1923) 定理}\label{sec:4-4}
 
 基于观测结果，我们可以计算样本均值：
 \[
-\hat{\bar{Y}}(1) = n_1^{-1} \sum_{i=1}^n Z_i Y_i, \quad
-\hat{\bar{Y}}(0) = n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i
+\hat{\bar{Y}}(1) = \frac{1}{n_1}\sum_{i=1}^n Z_i Y_i, \quad
+\hat{\bar{Y}}(0) = \frac{1}{n_0}\sum_{i=1}^n (1 - Z_i) Y_i
 \]
 
-样本方差：
+其中 $Z_i \in \{0,1\}$ 是治疗分配指示变量。
+
+\textbf{样本方差}：
 \[
-\hat{S}^2(1) = (n_1 - 1)^{-1} \sum_{i=1}^n Z_i \{ Y_i - \hat{\bar{Y}}(1) \}^2, \quad
-\hat{S}^2(0) = (n_0 - 1)^{-1} \sum_{i=1}^n (1 - Z_i) \{ Y_i - \hat{\bar{Y}}(0) \}^2
+\hat{S}^2(1) = \frac{1}{n_1-1}\sum_{i=1}^n Z_i\{Y_i - \hat{\bar{Y}}(1)\}^2, \quad
+\hat{S}^2(0) = \frac{1}{n_0-1}\sum_{i=1}^n (1-Z_i)\{Y_i - \hat{\bar{Y}}(0)\}^2
 \]
 
-\textbf{关键观察}：不存在 $S(1,0)$ 和 $S^2(\tau)$ 的样本版本，因为潜在结果 $Y_i(1)$ 和 $Y_i(0)$ 从未对任何单元同时被观测到。
+\textbf{一个基本事实}：不存在 $S(1,0)$ 和 $S^2(\tau)$ 的"样本版本"。这是因为对于每个单元，我们最多只能观测到 $Y_i(1)$ 或 $Y_i(0)$ 中的一个——两者从未同时被观测到。
 
 现在陈述 Neyman 的核心定理：
 
 \begin{Theorem}[Neyman (1923) 定理]\label{chap4-thm:neyman1923}
-在 CRE 下：
+在完全随机化实验（CRE）下，令 $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$。则：
+
 \begin{enumerate}
-  \item \textbf{无偏性}：差值均值估计量 $\hat{\tau} = \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0)$ 对 $\tau$ 是无偏的：
+  \item \textbf{无偏性}：$\hat{\tau}$ 对 $\tau$ 是无偏的：
     \[
     \mathbb{E}(\hat{\tau}) = \tau
     \]
 
-  \item \textbf{方差公式}：$\hat{\tau}$ 有方差
+  \item \textbf{方差公式}：$\hat{\tau}$ 的方差为
     \begin{align}
-    \text{var}(\hat{\tau}) &= \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n} \label{eq:neyman-var} \\
-    &= \frac{n_0}{n_1 n} S^2(1) + \frac{n_1}{n_0 n} S^2(0) + \frac{2}{n} S(1,0) \label{eq:neyman-var-equivalent}
+    \operatorname{var}(\hat{\tau}) &= \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n} \label{eq:neyman-var} \\
+    &= \frac{n_0}{n_1 n}S^2(1) + \frac{n_1}{n_0 n}S^2(0) + \frac{2}{n}S(1,0) \label{eq:neyman-var-equivalent}
     \end{align}
 
   \item \textbf{保守方差估计}：方差估计量
     \[
     \hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}
     \]
-    对估计 $\text{var}(\hat{\tau})$ 是保守的，即
+    对 $\operatorname{var}(\hat{\tau})$ 是保守的，即
     \[
-    \mathbb{E}(\hat{V}) - \text{var}(\hat{\tau}) = \frac{S^2(\tau)}{n} \geq 0
+    \mathbb{E}(\hat{V}) - \operatorname{var}(\hat{\tau}) = \frac{S^2(\tau)}{n} \geq 0
     \]
-    等号当且仅当 $\tau_i = \tau$（所有单元的个体效应恒定）时成立。
+    等号当且仅当 $\tau_i \equiv \tau$（所有单元个体效应恒定）时成立。
 \end{enumerate}
 \end{Theorem}
 
-\textbf{关于期望和方差的含义}：潜在结果都是固定数值，只有治疗指示变量 $Z_i$ 是随机的。因此，期望和方差都相对于 $Z_i$ 的随机性——即 $n_1$ 个 1 和 $n_0$ 个 0 的所有可能排列。
+\textbf{关于期望和方差的含义}：这里所有潜在结果 $\{Y_i(1), Y_i(0)\}$ 都是固定数值。随机性仅来自治疗分配 $Z_i$——即 $n_1$ 个 1 和 $n_0$ 个 0 的所有可能排列构成的集合。
 
-\userannotation{第三项为什么是减项？}{直觉上：如果个体因果效应存在变异（$S^2(\tau) > 0$），治疗组和对照组之间的差异不仅来自随机抽样，还来自因果效应本身的真实变异。这种"真实变异"不应该被算作估计误差，所以被减去。}
+\userannotation{第三项为什么是减项？}{直觉上：若个体因果效应存在变异（$S^2(\tau) > 0$），治疗组和对照组之间的差异不仅来自随机抽样误差，还来自因果效应本身的真实变异。这种"真实变异"不应被算作估计误差。}
 
-\section{方差公式的理解}
+\section{方差公式的深入理解}\label{sec:4-5}
 
-方差公式 \cref{eq:neyman-var} 与经典两样本问题中的方差公式不同，因为它不仅依赖于潜在结果的有限总体方差，还依赖于个体效应的有限总体方差。
+方差公式 \cref{eq:neyman-var} 与经典两样本问题中的方差公式不同，因为它还依赖于个体效应的方差 $S^2(\tau)$。
 
-\textbf{一个令人困惑的现象}：个体效应越异质，$\hat{\tau}$ 的变异性越小。为什么？
+\textbf{一个令人困惑的现象}：个体效应越异质，$\hat{\tau}$ 的方差反而越小。为什么？
 
-从等价格式 \cref{eq:neyman-var-equivalent} 理解：比较正相关和负相关的潜在结果情况。
+从等价格式 \cref{eq:neyman-var-equivalent} 理解：考虑潜在结果之间的相关性。
 
-假设在一次实现的实验中，我们观察到相对较大的治疗潜在结果：
+假设在一次实现中，我们观察到相对较大的治疗潜在结果 $\{Y_i(1)\}$：
 \begin{itemize}
-  \item 如果 $S(1,0) > 0$，则那些接受治疗的单元也有相对较大的对照潜在结果。因此，对照下的观测结果相对较小，导致较大的 $\hat{\tau}$
-  \item 如果 $S(1,0) < 0$，则那些接受治疗的单元有相对较小的对照潜在结果。因此，对照下的观测结果相对较大，导致较小的 $\hat{\tau}$
+  \item 若 $S(1,0) > 0$（正相关），则那些接受治疗的单元也有相对较大的对照潜在结果。因此，对照下的观测结果相对较小，导致较大的 $\hat{\tau}$
+  \item 若 $S(1,0) < 0$（负相关），则那些接受治疗的单元有相对较小的对照潜在结果。因此，对照下的观测结果相对较大，导致较小的 $\hat{\tau}$
 \end{itemize}
 
-总体而言，尽管 $\hat{\tau}$ 的无偏性不依赖于潜在结果之间的相关性，但在正相关情况下更可能观察到更极端的 $\hat{\tau}$。因此，当潜在结果正相关时，$\hat{\tau}$ 的方差更大。
+当潜在结果正相关时，更可能观察到极端的 $\hat{\tau}$，因此方差更大。
+
+\textbf{推论}：当 $S^2(\tau) = 0$ 时，\cref{eq:neyman-var} 简化为 $\operatorname{var}(\hat{\tau}) = S^2(1)/n_1 + S^2(0)/n_0$——此时 Neymanian 方差与经典两样本方差一致。
 
 \section{Neyman (1923) 定理的证明}\label{sec:prove-neyman1923}
 
-\textbf{无偏性证明}：
+\textbf{无偏性}：\footnote{推导详见附录 \cref{sec:appendix-neyman-unbiased}。}
 
-从表示开始：
-\begin{align*}
-\hat{\tau} &= n_1^{-1} \sum_{i=1}^n Z_i Y_i - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i \\
-&= n_1^{-1} \sum_{i=1}^n Z_i Y_i(1) - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i(0)
-\end{align*}
+\textbf{方差证明}：\footnote{推导详见附录 \cref{sec:appendix-neyman-var}。}
 
-利用期望的线性性：
-\begin{align*}
-\mathbb{E}(\hat{\tau}) &= \mathbb{E}\left\{ n_1^{-1} \sum_{i=1}^n Z_i Y_i(1) - n_0^{-1} \sum_{i=1}^n (1 - Z_i) Y_i(0) \right\} \\
-&= n_1^{-1} \sum_{i=1}^n \mathbb{E}(Z_i) Y_i(1) - n_0^{-1} \sum_{i=1}^n \mathbb{E}(1 - Z_i) Y_i(0) \\
-&= n_1^{-1} \sum_{i=1}^n \frac{n_1}{n} Y_i(1) - n_0^{-1} \sum_{i=1}^n \frac{n_0}{n} Y_i(0) \\
-&= n^{-1} \sum_{i=1}^n Y_i(1) - n^{-1} \sum_{i=1}^n Y_i(0) = \tau
-\end{align*}
+\textbf{方差估计的期望}：\footnote{推导详见附录 \cref{sec:appendix-neyman-vhat}。}
 
-\textbf{方差证明}：
+\section{渐近正态性与置信区间}\label{sec:4-6}
 
-我们可以进一步将 $\hat{\tau}$ 写为：
-\[
-\hat{\tau} = \sum_{i=1}^n Z_i \left\{ \frac{Y_i(1)}{n_1} + \frac{Y_i(0)}{n_0} \right\} - n_0^{-1} \sum_{i=1}^n Y_i(0)
-\]
+Neyman (1923) 定理给出了方差的精确表达式，但它是相对于随机分配的分布而言的。在实际应用中，我们还需要知道 $\hat{\tau}$ 的抽样分布形状。
 
-利用简单随机抽样的引理，得到：
-\begin{align*}
-\text{var}(\hat{\tau}) &= \frac{n_1 n_0}{n(n-1)} \sum_{i=1}^n \left\{ \frac{Y_i(1)}{n_1} + \frac{Y_i(0)}{n_0} - \frac{\bar{Y}(1)}{n_1} - \frac{\bar{Y}(0)}{n_0} \right\}^2 \\
-&= \frac{n_0}{n_1 n} S^2(1) + \frac{n_1}{n_0 n} S^2(0) + \frac{2}{n} S(1,0)
-\end{align*}
-
-利用 \cref{lemm:4.1}，我们也可以将方差写为：
-\[
-\text{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}
-\]
-
-\textbf{方差估计的期望}：
-
-因为治疗组是从 $n$ 个单元中简单随机抽取的 $n_1$ 个样本，简单随机抽样引理确保：
-\[
-\mathbb{E}\{\hat{S}^2(1)\} = S^2(1), \quad \mathbb{E}\{\hat{S}^2(0)\} = S^2(0)
-\]
-
-因此，$\hat{V}$ 对 \cref{eq:neyman-var} 中前两项是无偏的。
-
-\section{渐近正态性与置信区间}
-
-\cite{li2017} 进一步证明了基于有限总体 CLT 的 $\hat{\tau}$ 的渐近正态性：
-
-\begin{Theorem}[CLT for 差值均值]\label{chap4-thm:clt}
-令 $n \to \infty$ 和 $n_1 \to \infty$。如果 $n_1/n$ 有 $(0, 1)$ 中的极限值，$\{S^2(1), S^2(0), S(1,0)\}$ 有极限值，且
-\[
-\max_{1 \leq i \leq n} \{Y_i(1) - \bar{Y}(1)\}^2 / n \to 0, \quad
-\max_{1 \leq i \leq n} \{Y_i(0) - \bar{Y}(0)\}^2 / n \to 0
-\]
+\begin{Theorem}[有限总体 CLT]\label{chap4-thm:clt}
+令 $n \to \infty$ 和 $n_1 \to \infty$。假设：
+\begin{enumerate}
+  \item $n_1/n$ 趋向于 $(0,1)$ 中的常数 $p$
+  \item $\{S^2(1), S^2(0), S(1,0)\}$ 有有限极限
+  \item $\max_i |Y_i(1) - \bar{Y}(1)|^2 / n \to 0$ 且 $\max_i |Y_i(0) - \bar{Y}(0)|^2 / n \to 0$（ Lindeberg 条件）
+\end{enumerate}
 则
 \[
-\frac{\hat{\tau} - \tau}{\sqrt{\text{var}(\hat{\tau})}} \xrightarrow{d} N(0, 1)
+\frac{\hat{\tau} - \tau}{\sqrt{\operatorname{var}(\hat{\tau})}} \xrightarrow{d} N(0,1)
 \]
-且
-\[
-\hat{S}^2(1) \to S^2(1), \quad \hat{S}^2(0) \to S^2(0) \quad \text{（依概率）}
-\]
+且 $\hat{S}^2(1) \to S^2(1)$，$\hat{S}^2(0) \to S^2(0)$（依概率）。
 \end{Theorem}
 
-这个定理确保当样本量足够大时，$\hat{\tau}$ 的抽样分布可以用正态分布近似。它还确保样本方差是总体方差的一致估计。
+这个定理意味着：当样本量足够大时，$\hat{\tau}$ 的抽样分布可以用正态分布近似。这为构建置信区间提供了理论基础。
 
-\textbf{置信区间}：这为 $\tau$ 的保守大样本置信区间提供了正当理由：
+\textbf{置信区间}：由 \cref{chap4-thm:clt} 和 Neyman 定理的第三部分，我们得到 $\tau$ 的保守大样本置信区间：
 \[
-\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}
+\hat{\tau} \pm z_{1-\alpha/2}\sqrt{\hat{V}}
 \]
-其中 $z_{1-\alpha/2}$ 是标准正态分布的 $1 - \alpha/2$ 分位数。
+其中 $z_{1-\alpha/2}$ 是标准正态分布的 $1-\alpha/2$ 分位数。
 
-\textbf{与弱零假设的對偶性}：通过置信区间与假设检验的对偶性，这也提供了检验
+\textbf{与弱零假设的对偶性}：通过置信区间与假设检验的对偶性，这也为检验
 \[
 H_0: \tau = 0
 \]
-（称为弱零假设）的基础。
+（称为\textbf{弱零假设}，区别于 Fisher 的 sharp null）提供了渐近基础。
 
-\userannotation{为什么 Neymanian 方法只给出"弱零假设"的检验？}{因为在 Neymanian 框架中，我们无法观测到 $S^2(\tau)$，所以无法精确计算方差。置信区间和检验都是渐近有效的，只在样本量大时可靠。}
+\userannotation{为什么 Neymanian 方法只给"弱零假设"的检验？}{因为在 Neymanian 框架中，我们无法观测到 $S^2(\tau)$，无法精确计算方差。置信区间和检验都是渐近有效的。}
 
-\section{Neymanian 推断与 OLS 的关系}
+\section{Neymanian 推断与 OLS 的关系}\label{sec:4-7}
 
-实践中，研究者经常使用基于回归的推断来估计平均因果效应。标准方法是运行 OLS 回归：
+实践中，许多研究者使用回归方法来估计平均因果效应。标准做法是运行 OLS 回归：
 \[
-(\hat{\alpha}, \hat{\beta}) = \arg\min_{(a,b)} \sum_{i=1}^n (Y_i - a - b Z_i)^2
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{(a,b)}\sum_{i=1}^n (Y_i - a - b Z_i)^2
 \]
-并使用 treatment 系数的估计量 $\hat{\beta}$ 作为平均因果效应的估计量。
+并使用 treatment 系数估计量 $\hat{\beta}$ 作为 $\tau$ 的估计。
 
-\textbf{关键发现}：系数 $\hat{\beta}$ 恰好等于差值均值：
-\begin{equation}\label{eq:4-3}
+\textbf{关键发现}：OLS 系数 $\hat{\beta}$ 恰好等于差值均值：
+\begin{equation}\label{eq:ols-coef}
 \hat{\beta} = \hat{\tau}
 \end{equation}
+\footnote{证明详见附录 \cref{sec:appendix-ols-proof}。}
 
 但是，OLS 的通常方差估计量与 $\hat{V}$ 不同。标准 OLS 方差估计量为：
-\begin{equation}\label{eq:4-4}
-\hat{V}_{\text{OLS}} = \frac{n(n_1-1)}{(n-2)n_1 n_0}\hat{S}^2(1) + \frac{n(n_0-1)}{(n-2)n_1 n_0}\hat{S}^2(0).
+\begin{equation}\label{eq:ols-var}
+\hat{V}_{\text{OLS}} = \frac{n(n_1-1)}{(n-2)n_1 n_0}\hat{S}^2(1) + \frac{n(n_0-1)}{(n-2)n_1 n_0}\hat{S}^2(0)
 \end{equation}
 
-幸运的是，Eicker-Huber-White (EHW) 稳健方差估计量接近 $\hat{V}$：
-\begin{equation}\label{eq:4-5}
-\hat{V}_{\text{EHW}} = \frac{\hat{S}^2(1)}{n_1}\frac{n_1-1}{n_1} + \frac{\hat{S}^2(0)}{n_0}\frac{n_0-1}{n_0},
+\textbf{稳健标准误}：幸运的是，Eicker-Huber-White (EHW) 稳健方差估计量：
+\begin{equation}\label{eq:ehw-var}
+\hat{V}_{\text{EHW}} = \frac{\hat{S}^2(1)}{n_1}\frac{n_1-1}{n_1} + \frac{\hat{S}^2(0)}{n_0}\frac{n_0-1}{n_0}
 \end{equation}
-且 HC2 变体恰好等于 $\hat{V}$。
+接近 $\hat{V}$。特别地，HC2 变体恰好等于 $\hat{V}$。\footnote{详见附录 \cref{sec:appendix-ehw-proof}。}
 
-在 LaLonde 数据上的应用：
+\textbf{实证演示}（LaLonde 数据）：
 \begin{verbatim}
 > tauhat = mean(y[z==1]) - mean(y[z==0])
 > vhat   = var(y[z==1])/n1 + var(y[z==0])/n0
@@ -247,7 +227,7 @@ H_0: \tau = 0
 [1] 670.9967
 \end{verbatim}
 
-OLS 的标准误（通常）太小：
+OLS 的通常标准误偏小：
 \begin{verbatim}
 > olsfit = lm(y ~ z)
 > summary(olsfit)$coef[2, 1:2]
@@ -255,43 +235,49 @@ OLS 的标准误（通常）太小：
  1794.3431   632.8536
 \end{verbatim}
 
-使用 EHW 稳健标准误得到正确结果：
+使用 EHW 稳健标准误（HC2）得到正确结果：
 \begin{verbatim}
 > sqrt(hccm(olsfit, type = "hc2")[2, 2])
 [1] 670.9967
 \end{verbatim}
 
-\section{重尾结局与正态近似的失效}
+\section{重尾结局与正态近似的失效}\label{sec:4-8}
 
-\cref{chap4-thm:clt} 中的 CLT 在某些正则条件下成立。当潜在结局为重尾分布时，这些条件可能被违反。
+\cref{chap4-thm:clt} 中的有限总体 CLT 在某些正则条件下成立。当潜在结局为重尾分布时，这些条件可能被违反。
 
 当对照潜在结果被污染时（例如 Cauchy 分布），正态近似效果很差。模拟研究表明，在重尾情况下，直方图和正态近似之间存在显著差异。
 
-\section{本章小结}
+这提醒我们：所有基于渐近正态性的推断方法都依赖于数据的有限矩条件。在实际应用中，我们应该检查结局变量的分布特征。
+
+\section{本章小结}\label{sec:4-summary}
 
 本章建立了 Neymanian 推断的基础：
 
 \begin{enumerate}
-  \item \textbf{有限总体量}：不带 hat 的真实值
-    \[
-    \bar{Y}(1), \bar{Y}(0), S^2(1), S^2(0), S(1,0), S^2(\tau)
-    \]
+  \item \textbf{有限总体量}（不带 hat 的真实值）：
+    $\{\bar{Y}(1), \bar{Y}(0), S^2(1), S^2(0), S(1,0), S^2(\tau)\}$
+
   \item \textbf{Lemma 4.1}：$2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)$
+
   \item \textbf{Neyman (1923) 定理}：
     \begin{itemize}
       \item $\mathbb{E}(\hat{\tau}) = \tau$（无偏）
-      \item $\text{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$
-      \item $\mathbb{E}(\hat{V}) = \text{var}(\hat{\tau}) + \frac{S^2(\tau)}{n}$（保守）
+      \item $\operatorname{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}$
+      \item $\mathbb{E}(\hat{V}) = \operatorname{var}(\hat{\tau}) + \frac{S^2(\tau)}{n}$（保守）
     \end{itemize}
+
   \item \textbf{方差估计}：$\hat{V} = \frac{\hat{S}^2(1)}{n_1} + \frac{\hat{S}^2(0)}{n_0}$
-  \item \textbf{置信区间}：$\hat{\tau} \pm z_{1-\alpha/2} \sqrt{\hat{V}}$
-  \item \textbf{CLT}：$\frac{\hat{\tau} - \tau}{\sqrt{\text{var}(\hat{\tau})}} \xrightarrow{d} N(0, 1)$
+
+  \item \textbf{置信区间}：$\hat{\tau} \pm z_{1-\alpha/2}\sqrt{\hat{V}}$
+
+  \item \textbf{CLT}：$\frac{\hat{\tau} - \tau}{\sqrt{\operatorname{var}(\hat{\tau})}} \xrightarrow{d} N(0,1)$
+
   \item \textbf{OLS 关系}：$\hat{\beta} = \hat{\tau}$，但需使用 EHW 稳健标准误
 \end{enumerate}
 
-下一章我们将学习如何通过分层（stratification）来提高估计的精度——这是一种利用协变量信息来改进推断的方法。
+下一章我们将学习如何通过\textbf{分层（stratification）}来提高估计的精度——这是一种利用协变量信息来改进推断的方法。
 
-\section{习题}
+\section{习题}\label{sec:4-exercises}
 
 \begin{Exercise}{\ref{ex:4.1} 引理的证明}\label{ex:4.1}
 证明 Lemma \ref{lemm:4.1}：$2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)$。
@@ -300,15 +286,16 @@ OLS 的标准误（通常）太小：
 \begin{Exercise}{\ref{ex:4.2} Neyman (1923) 定理的另一种证明}\label{ex:4.2}
 在 CRE 下，计算：
 \[
-\text{var}\{\hat{\bar{Y}}(1)\}, \quad \text{var}\{\hat{\bar{Y}}(0)\}, \quad \text{cov}\{\hat{\bar{Y}}(1), \hat{\bar{Y}}(0)\}
+\operatorname{var}\{\hat{\bar{Y}}(1)\}, \quad \operatorname{var}\{\hat{\bar{Y}}(0)\}, \quad \operatorname{cov}\{\hat{\bar{Y}}(1), \hat{\bar{Y}}(0)\}
 \]
-并利用这些公式计算 $\text{var}(\hat{\tau})$。
+并利用这些公式推导 $\operatorname{var}(\hat{\tau})$。
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:4.3} Neymanian 推断与 OLS}\label{ex:4.3}
-证明 \eqref{eq:4-3}（即 OLS 系数等于差值均值）。证明 EHW 稳健方差估计量的 HC2 变体恰好等于 $\hat{V}$。
+证明 \cref{eq:ols-coef}（OLS 系数等于差值均值）。证明 EHW 稳健方差估计量的 HC2 变体恰好等于 $\hat{V}$。
+
+\noindent\textbf{推导见附录} \cref{sec:appendix-ex-4-3}。
 \end{Exercise}
-\noindent\textbf{推导见附录} \cref{sec:appendix-4-3-5}。
 
 \begin{Exercise}{\ref{ex:4.4} 治疗效应的异质性}\label{ex:4.4}
 证明 $S^2(\tau) = 0$ 蕴含 $S^2(1) = S^2(0)$。给出反例说明 $S^2(1) = S^2(0)$ 但 $S^2(\tau) \neq 0$。
@@ -319,22 +306,22 @@ OLS 的标准误（通常）太小：
 \begin{Exercise}{\ref{ex:4.5} 方差公式的改进上界}\label{ex:4.5}
 证明方差公式的改进上界：
 \[
-\text{var}(\hat{\tau}) \leq \frac{1}{n}\left\{ \sqrt{\frac{n_0}{n_1}}S(1) + \sqrt{\frac{n_1}{n_0}}S(0) \right\}^2
+\operatorname{var}(\hat{\tau}) \leq \frac{1}{n}\left\{\sqrt{\frac{n_0}{n_1}}S(1) + \sqrt{\frac{n_1}{n_0}}S(0)\right\}^2
 \]
 并讨论等号成立的条件。
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:4.6} Neyman (1923) 的向量版本}\label{ex:4.6}
-将 Neyman (1923) 的结果推广到多结局情形。考虑向量结局 $\boldsymbol{V} \in \mathbb{R}^K$ 的平均因果效应：
+将 Neyman (1923) 的结果推广到多结局情形。考虑向量结局 $\mathbf{V} \in \mathbb{R}^K$ 的平均因果效应：
 \[
-\tau_{\boldsymbol{V}} = \frac{1}{n}\sum_{i=1}^n \{\boldsymbol{V}_i(1) - \boldsymbol{V}_i(0)\}
+\tau_{\mathbf{V}} = \frac{1}{n}\sum_{i=1}^n \{\mathbf{V}_i(1) - \mathbf{V}_i(0)\}
 \]
 
-证明 $\hat{\tau}_{\boldsymbol{V}}$ 对 $\tau_{\boldsymbol{V}}$ 是无偏的，并求出其协方差矩阵。
+证明 $\hat{\tau}_{\mathbf{V}}$ 对 $\tau_{\mathbf{V}}$ 是无偏的，并求出其协方差矩阵。
 \end{Exercise}
 
-\begin{Exercise}{\ref{ex:4.7} BRE 中的推断}\label{ex:4.7}
-回忆在 \cref{def:cre} 中定义的完全随机实验。在这种设定下，推导平均因果效应的方差公式，并比较其与 CRE 中方差的差异。
+\begin{Exercise}{\ref{ex:4.7} 完全随机化实验中的推断}\label{ex:4.7}
+回忆在 \cref{def:cre} 中定义的完全随机化实验。在这种设定下，推导平均因果效应的方差公式，并比较其与 CRE 中方差的差异。
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:4.8} 推荐阅读}\label{ex:4.8}
@@ -342,7 +329,7 @@ OLS 的标准误（通常）太小：
 \parskip=0pt
 \textbf{推荐阅读}：\cite{ding2017} 重新审视了因果推断中的一些经典问题。\cite{imbens2015} 是关于因果推断的权威综述。
 
-\textbf{历史注记}：Neyman 1923 年的原始论文\cite{neyman1923}奠定了有限总体推断的基础。当代统计学家将其视为因果推断范式的里程碑。
+\textbf{历史注记}：Neyman 1923 年的原始论文 \cite{neyman1923} 奠定了有限总体推断的基础。当代统计学家将其视为因果推断范式的里程碑。
 \endgroup
 \end{Exercise}
 
