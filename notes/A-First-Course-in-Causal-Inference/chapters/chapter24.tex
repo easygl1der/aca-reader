@@ -1,0 +1,216 @@
+% Chapter 24: Fuzzy Regression Discontinuity
+% A First Course in Causal Inference - Peng Ding
+
+\chapter{模糊断点回归}
+
+\section{本章导论}
+
+在前两章中，我们分别学习了断点回归设计（Regression Discontinuity Design, RDD）和工具变量法（Instrumental Variables, IV）。本章我们要问一个自然的问题：\textbf{如果把这两种方法结合起来，会发生什么？}
+
+答案就是本章的主题——\textbf{模糊断点回归}（Fuzzy Regression Discontinuity, FRDD）。这是一种"自然实验"，它既保留了断点回归的直观设定，又借助工具变量的识别策略来处理内生性问题。
+
+\section{从清晰断点到模糊断点}
+
+\subsection{清晰断点回归的回顾}
+
+在第 20 章中，我们学习了\textbf{清晰断点回归}（Sharp RDD）。其核心设定是：治疗分配 $Z_i = I(X_i \geq x_0)$ 由运行变量（running variable） $X_i$ 在断点 $x_0$ 处\textbf{确定性}地决定。
+
+在清晰 RDD 下，潜在结果 $\{Y_i(1), Y_i(0)\}$ 在断点处的期望差可以识别：
+\[
+\tau_Y(x_0) = \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 - \varepsilon).
+\]
+
+\subsection{模糊断点回归的引入}
+
+然而，在现实中有许多情况，治疗分配并不是由运行变量\textbf{完全决定}的。运行变量改变了治疗的\textbf{概率}，但不决定治疗的最终结果。
+
+\textbf{关键观察}：在模糊 RDD 中，$Z_i = I(X_i \geq x_0)$ 仍然是一个有效的工具变量——它满足：
+\begin{enumerate}
+  \item \textbf{相关性}：$Z_i$ 与治疗状态 $D_i$ 相关（因为 $X_i \geq x_0$ 增加了接受治疗的概率）
+  \item \textbf{排除限制}：$Z_i$ 通过改变 $D_i$ 来影响 $Y_i$，而没有直接影响（需要额外假设）
+\end{enumerate}
+
+这就将我们引向了工具变量法的框架。
+
+\section{动机实例}
+
+\begin{Example}[印度农村道路项目]\label{eg:indian-road}
+\citet{asther2020rural} 研究了印度政府 2000 年启动的"总理乡村道路计划"。该计划根据 2001 年人口普查的阈值来优先考虑规模较大的村庄。
+
+关键点：村庄人口规模与阈值的差并不能\textbf{直接决定}是否获得道路——它只改变了获得道路的\textbf{概率}。在断点附近，获得道路的概率发生了跳跃，但不是从 0 到 1 的确定性跳跃。
+\end{Example}
+
+\begin{Example}[意大利大学助学金项目]\label{eg:italian-university}
+\citet{li2015evaluating} 研究了意大利大学助学金对辍学率的影响。学生如果标准化家庭收入低于 15,000 欧元，则有资格获得助学金。
+
+为获得助学金，学生必须先申请。因此，资格状态和申请状态共同决定了最终治疗状态。运行变量（15,000 减去标准化家庭收入）单独并不能决定治疗状态，但它在断点处改变了治疗概率。
+\end{Example}
+
+\section{数学设定}
+
+设 $X_i$ 为运行变量，断点为 $x_0$。定义工具变量：
+\[
+Z_i = I(X_i \geq x_0).
+\]
+
+治疗分配 $D_i$ 可能不等于 $Z_i$，但条件概率 $\mathbb{P}(D_i = 1 \mid X_i = x)$ 在 $x_0$ 处有跳跃。
+
+\cref{fig:frdd-treatment} 比较了清晰 RDD 和模糊 RDD 中治疗分配概率的差异。
+
+\begin{figure}
+\centering
+%\includegraphics[width = \textwidth]{figures/RDcompare.pdf}
+\caption{清晰断点回归（左）与模糊断点回归（右）的治疗分配概率比较}\label{fig:frdd-treatment}
+\end{figure}
+
+\section{识别定理}
+
+设 $Y_i$ 为关注的结果变量。视 $Z_i$ 为已分配的治疗，我们可以定义潜在结果 $\{D_i(1), D_i(0), Y_i(1), Y_i(0)\}$。
+
+清晰 RDD 可以识别：
+\[
+\tau_D(x_0) = \mathbb{E}\{D(1) - D(0) \mid X = x_0\}
+\]
+和
+\[
+\tau_Y(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}.
+\]
+
+使用 $Z$ 作为 $D$ 的工具变量，并施加工具变量假设（在 $X = x_0$ 邻域内），我们可以通过应用定理来识别局部依从者平均因果效应（Local Complier Average Causal Effect, LATE）。
+
+\begin{Theorem}[模糊 RDD 识别]\label.thm:identification-frdd}
+设治疗由 $Z = I(X \geq x_0)$ 决定，其中 $x_0$ 是预定的阈值。
+
+假设\textbf{单调性}：
+\[
+D_i(1) \geq D_i(0),
+\]
+和\textbf{排除限制}：
+\[
+D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
+\]
+在 $x_0$ 的无穷小邻域内成立。
+
+局部依从者平均因果效应定义为：
+\[
+\tau_{\mathrm{LATE}}(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid D(1) > D(0), X = x_0\},
+\]
+可以由下式识别：
+\[
+\tau_{\mathrm{LATE}}(x_0) = \frac{\mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}}{\mathbb{E}\{D(1) - D(0) \mid X = x_0\}}.
+\]
+
+进一步假设 $E\{D(1) \mid X = x\}$ 和 $E\{Y(1) \mid X = x\}$ 在 $x = x_0$ 处右连续，$E\{D(0) \mid X = x\}$ 和 $E\{Y(0) \mid X = x\}$ 在 $x = x_0$ 处左连续。如果 $E(D \mid X = x)$ 在 $x = x_0$ 处有非零跳跃，则局部依从者平均因果效应可以由下式识别：
+\[
+\tau_{\mathrm{LATE}}(x_0) = \frac{\lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 0, X = x_0 - \varepsilon)}{\lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 0, X = x_0 - \varepsilon)}.
+\]
+\end{Theorem}
+
+\cref{fig:frdd-identification} 展示了识别公式的几何直观。
+
+\begin{figure}
+\centering
+%\includegraphics[width = \textwidth]{figures/frdd_identification.pdf}
+\caption{模糊断点回归识别公式的几何直观}\label{fig:frdd-identification}
+\end{figure}
+
+\textbf{定理 \ref.thm:identification-frdd} 的直觉}：这是定理 \ref.thm:identification-rdd} 和定理 \ref.thm:CACE-identification} 的叠加。分子是清晰 RDD 识别 $\tau_Y(x_0)$，分母是清晰 RDD 识别 $\tau_D(x_0)$。两者相除，得到依从者亚组的平均因果效应。
+
+\textbf{识别策略的核心思想}：在模糊 RDD 中，我们不再假设治疗由运行变量完全决定，而是假设工具变量 $Z$ 通过影响治疗概率来间接影响结果。这与标准 IV 框架的区别在于：IV 假设在断点的邻域内成立，而不是对全体样本成立。
+
+\section{估计方法}
+
+\subsection{偏误-方差权衡}
+
+在清晰和模糊 RDD 中，核心问题都是指定断点周围的邻域。实际中：
+\begin{itemize}
+  \item 较小的邻域导致较小的偏误，但较大的方差
+  \item 较大的邻域导致较大的偏误，但较小的方差
+\end{itemize}
+
+这就是经典的\textbf{偏误-方差权衡}（bias-variance trade-off）。一些自动选择带宽的程序存在，但它们依赖较强的条件。对一系列邻域选择进行敏感性分析似乎更为明智。
+
+\subsection{两步估计}
+
+假设我们已指定由带宽 $h$ 确定的 $x_0$ 邻域。对于 $X_i \in [x_0 - h, x_0 + h]$ 的数据，我们可以通过以下两步估计 $\tau_{\mathrm{LATE}}(x_0)$：
+
+\textbf{第一步}：估计第一阶段关系
+\[
+\hat{\tau}_D(x_0) = Z_i \text{ 在 OLS 回归 } D_i \sim \{1, Z_i, R_i, L_i\} \text{ 中的系数},
+\]
+其中 $R_i = \max(X_i - x_0, 0)$，$L_i = \min(X_i - x_0, 0)$。
+
+\textbf{第二步}：估计约简型关系
+\[
+\hat{\tau}_Y(x_0) = Z_i \text{ 在 OLS 回归 } Y_i \sim \{1, Z_i, R_i, L_i\} \text{ 中的系数}.
+\]
+
+\textbf{第三步}：计算比率
+\[
+\hat{\tau}_{\mathrm{LATE}}(x_0) = \hat{\tau}_Y(x_0) / \hat{\tau}_D(x_0).
+\]
+
+这被称为\textbf{间接最小二乘估计器}（Indirect Least Squares Estimator）。根据定理 \ref.thm:ils=2sls}，它数值上等同于：
+\[
+Y_i \text{ 对 } \{1, D_i, R_i, L_i\} \text{ 进行 TSLS 回归，其中 } D_i \text{ 以 } Z_i \text{ 为工具变量}.
+\]
+
+总之，在指定 $h$ 后，$\tau_{\mathrm{LATE}}(x_0)$ 的估计归结为断点邻域内的 TSLS 程序。
+
+\section{数据应用}
+
+\subsection{印度农村道路数据}\label{sec:indian-road-app}
+
+重温 \cref{eg:indian-road}。我们可以基于结果 \texttt{occupation\_index\_andrsn} 计算一系列 $h$ 的点估计和标准误。
+
+\cref{fig:indian_road_frdd} 展示了结果。除非 $h$ 很大，否则治疗效应不显著。
+
+\subsection{意大利大学助学金数据}\label{sec:italian-university-app}
+
+重温 \cref{eg:italian-university}。运行变量定义为 15,000 减去标准化家庭收入。分析中将数据限制在 $[-5000, 5000]$ 的子集，然后除以 5000 使运行变量有界于 $[-1, 1]$。
+
+\cref{fig:italy_university_frdd} 展示了结果，表明大学助学金对辍学率没有显著影响。
+
+\section{讨论}
+
+第 20 章和本章都将断点回归建立在给定运行变量时潜在结果条件期望的连续性之上。这个视角在数学上更简单，但它只能精确识别运行变量断点处的局部效应。\citet{hahn2001identification} 开创了这一研究路线。
+
+另一种不那么主流的视角基于\textbf{局部随机化}（local randomization）。\citep{cattaneo2015randomization, li2015evaluating}。如果我们视运行变量为某种底层真实值的噪声测量，而断点有些任意地选择，那么断点附近的单元在系统上并没有差异。这表明在断点的较小邻域内，单元以随机方式接受治疗和控制——就像在随机实验中一样。
+
+\section{本章小结}
+
+本章的核心要点：
+\begin{enumerate}
+  \item \textbf{模糊断点回归}：治疗概率在断点处跳跃，但不像清晰 RDD 那样由运行变量完全决定
+  \item \textbf{识别策略}：将 $Z = I(X \geq x_0)$ 作为工具变量，在单调性和排除限制下识别 LATE
+  \item \textbf{估计方法}：间接最小二乘（ILS）或两阶段最小二乘（TSLS）
+  \item \textbf{偏误-方差权衡}：带宽选择是关键——较小的邻域偏误小但方差大
+  \item \textbf{与清晰 RDD 的关系}：模糊 RDD 是清晰 RDD 和 IV 方法的结合
+\end{enumerate}
+
+下一章我们将学习\textbf{局部随机化视角下的断点回归}，这为 RDD 提供了另一种理论依据。
+
+\section{习题}
+
+\begin{Exercise}{\ref{exr:24-1} 模糊 RDD 识别定理的证明}\label{exr:24-1}
+证明 \cref.thm:identification-frdd} 中的识别公式。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:24-2} 清晰 RDD 与模糊 RDD 的比较}\label{exr:24-2}
+\begin{enumerate}
+  \item 在清晰 RDD 中，治疗分配 $D$ 和工具变量 $Z$ 有什么关系？
+  \item 在模糊 RDD 中，这种关系如何变化？
+  \item 给出清晰 RDD 和模糊 RDD 各一个现实生活中的例子。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:24-3} 带宽敏感性分析}\label{exr:24-3}
+对于 \cref{sec:indian-road-app} 中的印度道路数据，使用不同的带宽 $h$ 进行敏感性分析。报告点估计和标准误如何随 $h$ 变化。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:24-4} ILS 与 TSLS 的等价性}\label{exr:24-4}
+证明在模糊 RDD 中，间接最小二乘估计器（比率形式）和两阶段最小二乘估计器在数值上是等价的。\footnote{推导见附录 \cref{sec:appendix-ils-tsls-equivalence}。}
+\end{Exercise}
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)

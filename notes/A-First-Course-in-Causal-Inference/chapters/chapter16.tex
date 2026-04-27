@@ -1,0 +1,415 @@
+% Chapter 16: Difficulties of Unconfoundedness in Observational Studies
+% A First Course in Causal Inference - Peng Ding
+% Rewrite V1
+
+\chapter{观测性研究中不可混淆性假设的困难}\label{ch:16}
+
+\section{引言：当我们无法控制所有混杂因素时}\label{sec:16-intro}
+
+\textit{``Although we cannot see the wind, we can see its effects on the leaves.''}
+--- 统计学家对隐性混杂的隐喻
+
+在第 \ref{ch:10} 至 \ref{ch:15} 章中，我们详细讨论了观测性研究中因果效应的识别与估计方法。这些方法的核心假设是\textbf{不可混淆性（unconfoundedness）}：
+\[
+Z \perp \{Y(1), Y(0)\} \mid X .
+\tag{16.1}
+\cref{eq:16-unconfoundedness}
+\]
+也就是说，在给定协变量 $X$ 的条件下，治疗分配 $Z$ 与潜在结果相互独立。
+
+然而，这个假设在实践中有多可靠？
+
+正如 George Box 所言：\textit{``所有模型都是错的，但有些有用。''}不可混淆性假设本质上是一个关于数据生成过程的陈述——它声称我们已经控制了所有影响治疗分配和结果的混杂变量。但在真实的观测性研究中，我们真的能确保这一点吗？
+
+\textbf{问题的根源}：协变量 $X$ 永远只是我们观测到的协变量的一个子集。是否存在我们未能观测到的混杂因素 $U$？如果存在，那么不可混淆性假设就不成立，我们基于此假设得到的因果效应估计量可能是有偏的。
+
+本章将系统性地探讨这一困难：
+\begin{itemize}
+  \item 首先，引入\textbf{因果图（causal diagram）}作为可视化因果关系的工具；
+  \item 其次，讨论\textbf{评估不可混淆性假设}的策略——我们无法直接检验它，但可以进行辅助分析；
+  \item 最后，分析\textbf{过度调整（over-adjustment）}的风险——调整错误的协变量反而可能引入新的偏倚。
+\end{itemize}
+
+\section{因果图的基本概念}\label{sec:16-causal-diagram}
+
+\subsection{从因果图到数据生成过程}\label{sec:16-diagram-to-dgp}
+
+Pearl (1995) 引入了因果图作为经验研究中因果推理的有力工具。因果图的美妙之处在于：它能够将变量之间的因果关系以图示形式直观地表达出来，而我们可以直接从图中读出统计学含义。
+
+考虑一个最简单的因果图结构：
+
+\begin{center}
+$X \to Z \to Y$
+\end{center}
+
+其中 $X$ 是协变量，$Z$ 是治疗，$Y$ 是结果。这个图的含义是：$X$ 影响 $Z$，而 $Z$ 影响 $Y$。从数学上讲，这对应于以下数据生成过程：
+\[
+\begin{cases}
+X \sim F_X(x), \\
+Z = f_Z(X, \varepsilon_Z), \\
+Y(z) = f_Y(X, z, \varepsilon_Y(z)),
+\end{cases}
+\tag{16.2}
+\cref{eq:16-dgp-simple}
+\]
+其中 $\varepsilon_Z \perp \varepsilon_Y(z)$（两组误差独立）。从这个方程组中，我们可以直接读出 $Z \perp Y(z) \mid X$，即不可混淆性假设成立。
+
+现在考虑一个更复杂的情形——存在一个未观测的混杂因素 $U$：
+
+\begin{center}
+$U \to Z$, $U \to Y$, $X \to Z$, $X \to Y$
+\end{center}
+
+这个图对应的数据生成过程是：
+\[
+\begin{cases}
+X \sim F_X(x), \\
+U \sim F_U(u), \\
+Z = f_Z(X, U, \varepsilon_Z), \\
+Y(z) = f_Y(X, U, z, \varepsilon_Y(z)),
+\end{cases}
+\tag{16.3}
+\cref{eq:16-dgp-with-U}
+\]
+其中 $\varepsilon_Z \perp \varepsilon_Y(z)$。从方程组中我们可以读出：$Z \perp Y(z) \mid (X, U)$ 成立，但 $Z \not\perp Y(z) \mid X$——不可混淆性在给定 $(X, U)$ 时成立，但仅给定 $X$ 时不成立。在这个情形中，$U$ 被称为\textbf{未测混杂因素（unmeasured confounder）}。
+
+因果图的美学价值在于：它将不可测试的假设转化为直观的图形结构。当图中存在从 $Z$ 到 $Y$ 的后门路径（backdoor path）时，就意味着存在未被阻断的混杂。
+
+\section{评估不可混淆性假设}\label{sec:16-assessing-unconfoundedness}
+
+\subsection{基本困难：假设本身不可检验}\label{sec:16-untestable}
+
+回到不可混淆性假设：
+\[
+Z \bot Y(1) \mid X, \quad Z \bot Y(0) \mid X .
+\tag{16.4}
+\cref{eq:16-unconfoundedness-formal}
+\]
+
+这个假设意味着：
+\[
+\ pr\{Y(1) \mid Z = 1, X\} = \ pr\{Y(1) \mid Z = 0, X\},
+\]
+\[
+\ pr\{Y(0) \mid Z = 1, X\} = \ pr\{Y(0) \mid Z = 0, X\} .
+\tag{16.5}
+\cref{eq:16-unconfoundedness-meaning}
+\]
+
+也就是说，在给定 $X$ 的条件下，治疗组和对照组的潜在结果分布相同。但问题在于：潜在结果分布 $\ pr\{Y(1) \mid Z = 0, X\}$ 和 $\ pr\{Y(0) \mid Z = 1, X\}$ 是反事实的，我们永远无法直接从数据中观测到它们。
+
+因此，\textbf{不可混淆性假设从根本上是不可直接检验的}——我们无法用统计检验来验证它是否成立。这并不意味着我们应该放弃因果推断，而是需要采用其他策略来评估这个假设的合理性。
+
+统计学家区分了两个概念：\textbf{评估（assess）}和\textbf{检验（test）}。前者是指补充性分析，用于支持或削弱初始分析的可信度；后者是正式的统计检验。我们无法检验不可混淆性，但可以评估它。
+
+下面介绍两种主要的评估策略。
+
+\subsection{策略一：利用阴性结果}\label{sec:16-negative-outcomes}
+
+\textbf{核心思想}：如果我们相信 $Z \bot Y(z) \mid X$，那么我们也倾向于相信 $Z \bot Y^{\mathrm{n}}(z) \mid X$，其中 $Y^{\mathrm{n}}$ 是一个与 $Y$ 具有相似混杂结构的\textbf{阴性结果（negative outcome）}。关键在于，我们事先知道 $Z$ 对 $Y^{\mathrm{n}}$ 的因果效应。
+
+形式化地，假设 $Y^{\mathrm{n}}$ 满足：
+\[
+\tau(Z \to Y^{\mathrm{n}}) = \mathbb{E}\{Y^{\mathrm{n}}(1) - Y^{\mathrm{n}}(0)\} \text{ 是已知的}.
+\tag{16.6}
+\cref{eq:16-negative-outcome-effect}
+\]
+一个特别重要的情形是 $\tau(Z \to Y^{\mathrm{n}}) = 0$——即我们事先知道治疗对阴性结果没有因果效应。
+
+如果不可混淆性假设成立，那么数据应该显示 $Z$ 对 $Y^{\mathrm{n}}$ 没有处理效应（或者有已知大小的效应）。如果数据显示出显著的效应，这可能暗示不可混淆性假设被违反。
+
+\begin{Example}[Cornfield 等 (1959)：吸烟与肺癌]\label{ex:16-cornfield}
+Cornfield 等 (1959) 研究了吸烟对肺癌的因果效应。他们在分析中控制了众多重要的背景变量，但仍可能存在某些未测混杂因素使观察到的效应产生偏倚。
+
+为了加强因果关系的证据，他们同时报告了吸烟对车祸的影响——基于生物学知识，吸烟对车祸应该没有因果效应。结果显示关联接近于零。因此，即使无法完全排除未测混杂，这个基于阴性结果的补充分析使吸烟对肺癌因果效应的证据更加有力。
+\end{Example}
+
+\begin{Example}[Jackson 等 (2006)：流感疫苗接种]\label{ex:16-jackson}
+Jackson 等 (2006) 对观测性研究的结果持怀疑态度。这些研究显示，在调整了测量的协变量后，流感疫苗接种显著降低了流感季节的肺炎/流感住院率和全因死亡率。
+
+他们的补充分析考察了流感季节开始之前的结局指标。疫苗接种通常在秋季开始，但流感传播在冬季之前是极少的。基于生物学，疫苗效应在流感季节应该最为显著。但 Jackson 等发现，疫苗效应在流感季节之前反而更大——这暗示观察到的效应可能源于未测混杂。
+\end{Example}
+
+阴性结果分析的力量来自于：如果治疗 $Z$ 通过未测混杂 $U$ 影响结果 $Y$，那么 $Z$ 通常也会通过同样的 $U$ 影响与 $Y$ 有相似混杂结构的变量。因此，如果我们在阴性结果上观察到了预期的零效应（或已知大小的效应），这支持了不可混淆性假设的合理性。
+
+\Lipsitch 等 (2010) 是阴性结果方法的系统性研究。Rosenbaum (1989) 讨论了已知因果效应在因果推断中的作用。
+
+\subsection{策略二：利用阴性暴露}\label{sec:16-negative-exposures}
+
+阴性暴露是阴性结果的对偶概念。假设 $Z^{\mathrm{n}}$ 是一个与 $Z$ 有相似混杂结构的治疗变量，且我们事先知道 $Z^{\mathrm{n}}$ 对 $Y$ 的因果效应：
+\[
+\tau(Z^{\mathrm{n}} \to Y) = \mathbb{E}\{Y(1^{\mathrm{n}}) - Y(0^{\mathrm{n}})\} \text{ 是已知的}.
+\tag{16.7}
+\cref{eq:16-negative-exposure-effect}
+\]
+
+\begin{Example}[Sanderson 等 (2017)：母体暴露与后代结局]\label{ex:16-sanderson}
+Sanderson 等 (2017) 给出了利用阴性暴露的多个例子。他们建议比较母体暴露与后代结局的关联，以及父亲暴露与同样结局的关联。
+
+在母体吸烟与后代结局的研究中：母体吸烟可能受到未测混杂（如社会经济地位）的影响，而父亲吸烟不太可能受到同样的混杂影响（因为父亲不经历怀孕）。因此，如果观察到的母体吸烟效应远大于父亲吸烟效应，这支持了因果解释；如果两者效应相似，则暗示可能存在混杂。
+\end{Example}
+
+阴性暴露分析的逻辑：如果不可混淆性成立，那么 $Z$ 和 $Z^{\mathrm{n}$ 应该表现出与 $Y$ 相似（但已知）的关联模式。如果它们的行为不一致，则暗示存在未被控制的混杂。
+
+\subsection{小结}\label{sec:16-assessment-summary}
+
+不可混淆性假设在本质上是不可直接检验的。虽然阴性结果和阴性暴露分析无法证明或推翻不可混淆性，但将它们作为补充性分析可以加强或削弱因果推断的证据基础。
+
+然而，进行这类补充性分析通常并非易事：它需要更多的数据，更重要的是需要对因果问题的深入理解，以找到令人信服的阴性结果和阴性暴露。在实践中，找到一个与主结果有相同混杂结构但有已知效应的阴性结果/暴露，往往需要领域知识的支持。
+
+\section{过度调整的问题}\label{sec:16-over-adjustment}
+
+在第 \ref{ch:10} 章的协变量平衡检验中，我们已经看到：调整正确的协变量可以消除混杂偏倚。但\textbf{调整错误的协变量会如何？}
+
+Rosenbaum (2002b) 写道：\textit{``没有理由避免调整描述研究对象治疗前特征的变量。''} 类似地，Rubin (2007) 写道：\textit{``通常，条件性越强的假设，越容易接受。''} 两者都主张应该控制所有观测到的治疗前协变量。
+
+Pearl 不同意这个建议，并给出了两个著名的反例。下面我们详细介绍这两个反例。
+
+\subsection{M-偏倚}\label{sec:16-m-bias}
+
+\textbf{M-偏倚（M-bias）}出现在具有 M 结构的因果图中。考虑以下图形：
+
+\begin{center}
+$U_1 \to X \leftarrow U_2$, $U_1 \to Z$, $U_2 \to Y$
+\end{center}
+
+这个图之所以被称为 M 结构，是因为在因果图中它形似字母 M。从图中我们可以读出数据生成过程：
+\[
+\begin{cases}
+U_1 \perp U_2, \\
+X = f_X(U_1, U_2, \varepsilon_X), \\
+Z = f_Z(U_1, \varepsilon_Z), \\
+Y = Y(z) = f_Y(U_2, \varepsilon_Y),
+\end{cases}
+\tag{16.8}
+\cref{eq:16-m-bias-dgp}
+\]
+其中 $(\varepsilon_X, \varepsilon_Z, \varepsilon_Y)$ 是独立的随机误差。在这个因果图中，$X$ 是观测到的，但 $U_1$ 和 $U_2$ 是未观测的。如果改变 $Z$ 的值，$Y$ 的值完全不会改变——因为 $Z$ 到 $Y$ 之间没有因果路径。因此，$Z$ 对 $Y$ 的真实因果效应必然为零。
+
+从数学上看：在这个数据生成过程中，$Z \perp Y$ 成立，因此 $Z$ 和 $Y$ 之间的简单关联为零。不调整 $X$ 的简单估计量是无偏的：
+\[
+\tau_{\mathrm{PF}} = \mathbb{E}(Y \mid Z = 1) - \mathbb{E}(Y \mid Z = 0) = 0 .
+\tag{16.9}
+\cref{eq:16-pfe-unbiased}
+\]
+
+但是，如果我们调整 $X$（即条件于 $X$），情况就不同了。调整后，$U_1$ 和 $U_2$ 不再条件独立：$U_1 \not\perp U_2 \mid X$，进而 $Z \not\perp Y \mid X$，导致调整后的估计量有偏：
+\[
+\int \{ \mathbb{E}(Y \mid Z = 1, X = x) - \mathbb{E}(Y \mid Z = 0, X = x) \} f(x) \, dx \neq 0 .
+\tag{16.10}
+\cref{eq:16-adjusted-bias}
+\]
+
+\textbf{直觉解释}：$X$ 同时受到 $U_1$ 和 $U_2$ 的影响，而 $U_1$ 影响 $Z$，$U_2$ 影响 $Y$。当我们条件于 $X$ 时，我们实际上是在 $X$ 的各个取值上比较 $Z$ 和 $Y$。但 $X$ 的条件化会人为地在 $U_1$ 和 $U_2$ 之间建立关联——这创造了一条从 $Z$ 到 $Y$ 的虚假后门路径。
+
+为了更直观地理解，我们考虑一个正态线性模型的具体例子：\footnote{推导见附录 \cref{sec:appendix-m-bias-derivation}}
+\[
+\begin{cases}
+X = a U_1 + b U_2 + \varepsilon_X, \\
+Z = c U_1 + \varepsilon_Z, \\
+Y = d U_2 + \varepsilon_Y,
+\end{cases}
+\tag{16.11}
+\cref{eq:16-m-bias-normal}
+\]
+其中 $(U_1, U_2, \varepsilon_X, \varepsilon_Z, \varepsilon_Y) \stackrel{\mathrm{IID}}{\sim} \mathrm{N}(0, 1)$。我们可以计算：
+\[
+\operatorname{cov}(Z, Y) = \operatorname{cov}(c U_1 + \varepsilon_Z, d U_2 + \varepsilon_Y) = 0 ,
+\tag{16.12}
+\cref{eq:16-m-bias-cov}
+\]
+这证实了未调整估计量是无偏的。但在给定 $X$ 的条件下，$Z$ 和 $Y$ 的偏相关系数为：\footnote{推导见附录 \cref{sec:appendix-partial-corr}}
+\[
+\rho_{ZY \mid X} \propto - a b c d ,
+\tag{16.13}
+\cref{eq:16-partial-corr}
+\]
+即偏倚与路径系数的乘积 $abcd$ 成正比。
+
+\begin{Example}[M-偏倚的数值演示]\label{ex:16-m-bias-simulation}
+考虑样本量 $n = 10^6$ 的大规模蒙特卡洛模拟：
+\begin{verbatim}
+U1 = rnorm(n)
+U2 = rnorm(n)
+X = U1 + U2 + rnorm(n)
+Y = U2 + rnorm(n)
+Z = U1 + rnorm(n)
+
+# 连续治疗
+summary(lm(Y ~ Z))$coef[2, 1]  # [1] 0.001
+summary(lm(Y ~ Z + X))$coef[2, 1]  # [1] -0.20
+
+# 二值治疗
+Z = (Z >= 0)
+summary(lm(Y ~ Z))$coef[2, 1]  # [1] 0.002
+summary(lm(Y ~ Z + X))$coef[2, 1]  # [1] -0.42
+\end{verbatim}
+未调整的简单估计量接近真实值（0），但调整 $X$ 后的估计量产生了显著偏倚（约 $-0.2$ 到 $-0.4$）。这就是 M-偏倚。
+\end{Example}
+
+M-偏倚的教训是：并非所有治疗前协变量都应该调整。调整一个与未测混杂 $U_1$ 和 $U_2$ 都相关的变量 $X$，可能反而在 $U_1$ 和 $U_2$ 之间建立虚假的关联，从而引入偏倚。
+
+\subsection{Z-偏倚}\label{sec:16-z-bias}
+
+\textbf{Z-偏倚（Z-bias）}是另一个过度调整的例子，但机制与 M-偏倚不同。考虑以下因果图：
+
+\begin{center}
+$Z \leftarrow X \rightarrow U \rightarrow Y$
+\end{center}
+
+其中 $X$ 影响 $Z$ 和 $U$，而 $U$ 同时影响 $Z$ 和 $Y$。对应的数据生成过程是：
+\[
+\begin{cases}
+Z = a X + b U + \varepsilon_Z, \\
+Y(z) = \tau z + c U + \varepsilon_Y,
+\end{cases}
+\tag{16.14}
+\cref{eq:16-z-bias-dgp}
+\]
+其中 $(U, X, \varepsilon_Z, \varepsilon_Y) \stackrel{\mathrm{IID}}{\sim} \mathrm{N}(0, 1)$。在这个设定中，$X \perp U$，但 $X$ 与 $Z$ 和 $Y$ 都有关联——$X$ 通过 $Z$ 影响 $Y$，而 $U$ 是一个未测混杂。
+
+\textbf{直觉}：治疗 $Z$ 是 $X$、未测混杂 $U$ 和其他随机误差的函数。条件于 $X$ 会使 $Z$ 变得更依赖于 $U$，从而\textbf{放大了}由 $U$ 引起的混杂偏倚。
+
+数学上，未调整的 OLS 估计量是：\footnote{推导见附录 \cref{eq:16-z-bias-unadj-derivation}}
+\[
+\tau_{\mathrm{unadj}} = \tau + \frac{c \, \operatorname{cov}(Z, U)}{\operatorname{var}(Z)}
+= \tau + \frac{c b}{a^2 + b^2 + 1} ,
+\tag{16.15}
+\cref{eq:16-z-bias-unadj}
+\]
+其偏倚为 $b c / (a^2 + b^2 + 1)$。
+
+调整后的 OLS 估计量（从 $Y$ 对 $(Z, X)$ 的回归）满足：\footnote{推导见附录 \cref{eq:16-z-bias-adj-derivation}}
+\[
+\tau_{\mathrm{adj}} = \tau + \frac{b c}{b^2 + 1} .
+\tag{16.16}
+\cref{eq:16-z-bias-adj}
+\]
+
+比较两者：当 $a \neq 0$ 时，$a^2 + b^2 + 1 > b^2 + 1$，因此
+\[
+\left| \frac{b c}{a^2 + b^2 + 1} \right| < \left| \frac{b c}{b^2 + 1} \right| .
+\tag{16.17}
+\cref{eq:16-z-bias-comparison}
+\]
+也就是说，\textbf{调整后的估计量比未调整的估计量偏倚更大}！而且，$X$ 与 $Z$ 的关联越强（$a$ 越大），调整引入的偏倚就越大。
+
+\begin{Example}[Z-偏倚的数值演示]\label{ex:16-z-bias-simulation}
+考虑蒙特卡洛模拟：
+\begin{verbatim}
+n = 10^6
+X = rnorm(n)
+U = rnorm(n)
+Z = X + U + rnorm(n)
+Y = U + rnorm(n)
+
+# Z ~ X + U
+summary(lm(Y ~ Z))$coef[2, 1]  # [1] 0.333
+summary(lm(Y ~ Z + X))$coef[2, 1]  # [1] 0.501
+
+# X-Z 关联更强时
+Z = 2*X + U + rnorm(n)
+summary(lm(Y ~ Z))$coef[2, 1]  # [1] 0.167
+summary(lm(Y ~ Z + X))$coef[2, 1]  # [1] 0.501
+
+# X-Z 关联更强时
+Z = 10*X + U + rnorm(n)
+summary(lm(Y ~ Z))$coef[2, 1]  # [1] 0.01
+summary(lm(Y ~ Z + X))$coef[2, 1]  # [1] 0.50
+\end{verbatim}
+可以看到：随着 $X$ 与 $Z$ 的关联增强，未调整估计量越来越接近真实值 $\tau = 0$，而调整后的估计量始终为 $0.5$——因为调整反而引入了更大的偏倚。
+\end{Example}
+
+Z-偏倚的技术细节见 Problem \ref{pro:16-z-bias-formula}。Pearl (2010a, 2011) 用因果图解释了这种现象。Ding 等 (2017b) 提供了更一般的理论。
+
+\textbf{为什么叫 Z-偏倚？} 在 Pearl 的原始论文中，他用符号 $Z$ 表示我们这里的变量 $X$（而用 $X$ 表示治疗变量）。为了避免混淆，本书在第五部分讨论工具变量时会正式使用 $Z$ 这个符号——这也是为什么在工具变量情境下，Z-偏倚也被称为\textbf{工具变量偏倚（instrumental variable bias）}。
+
+\subsection{哪些协变量应该调整？}\label{sec:16-covariate-selection}
+
+真实的因果图可能非常复杂，但我们可以用一个简化的图形来澄清许多概念。考虑以下结构：
+
+\begin{center}
+$X_Y \rightarrow Y$, $X_Y \rightarrow Z$, $X \rightarrow Z$, $X \rightarrow Y$, $X_I \rightarrow Z$, $X_I \rightarrow Y$
+\end{center}
+
+各类协变量的特征如下：
+
+\begin{enumerate}
+  \item \textbf{$X$（混杂变量）}：同时影响治疗和结果。条件于 $X$ 确保不可混淆性假设成立，我们应该控制 $X$。
+  \item \textbf{$X_R$（无关变量）}：既不影响治疗也不影响结果，是纯随机噪声。在分析中包含它不会引入偏倚，但会在有限样本中引入不必要的变异性。
+  \item \textbf{$X_Z$（工具变量）}：仅通过治疗影响结果。在图中包含它不会引入偏倚，但会增加估计量的变异性。然而，在存在未测混杂的情况下（如 Z-偏倚所示），调整 $X_Z$ 会\textbf{放大偏倚}。
+  \item \textbf{$X_Y$（预测变量）}：仅影响结果但不影响治疗。即使不条件于它，不可混淆性假设仍然成立。由于它们对结果有预测力，在分析中包含它们通常能提高精度。
+  \item \textbf{$X_I$（干预后变量）}：受治疗和结果共同影响，是治疗后变量。如果目标是推断治疗对结果的因果效应，我们不应该调整它。
+\end{enumerate}
+
+如果我们相信上述因果图的结构，那么我们应该至少调整 $X$ 以消除偏倚，理想情况下还应进一步调整 $X_Y$ 以减少方差。
+
+\textbf{实践中的困难}：我们永远无法确切知道真实的底层数据生成过程。这是因果推断的根本挑战——我们需要领域知识和假设来指导协变量的选择。
+
+\Cref{tab:16-covariate-types} 总结了各类协变量的特征。
+
+\begin{table}[h]
+\centering
+\caption{协变量类型与调整策略}\label{tab:16-covariate-types}
+\begin{tabular}{llll}
+\hline
+类型 & $Z$ 前置吗？ & $Y$ 前置吗？ & 调整建议 \\
+\hline
+$X$（混杂） & 是 & 是 & 应该调整 \\
+$X_R$（无关） & 否 & 否 & 可调整（增加方差） \\
+$X_Z$（工具） & 是 & 否 & 谨慎：可能放大偏倚 \\
+$X_Y$（预测） & 否 & 是 & 可调整（减少方差） \\
+$X_I$（干预后） & 是 & 是 & 不应调整 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{习题}\label{sec:16-homework}
+
+\begin{Exercise}\label{pro:16-z-bias-formula}
+验证正文中的公式 \cref{eq:16-z-bias-unadj} 和 \cref{eq:16-z-bias-adj}。
+\end{Exercise}
+
+\begin{Exercise}\label{pro:16-m-bias-formula}
+考虑正文中的 M-偏倚正态线性模型。证明给定 $X$ 时 $Z$ 和 $Y$ 的偏相关系数公式 \cref{eq:16-partial-corr}。
+\end{Exercise}
+
+\begin{Exercise}\label{pro:16-negative-control}
+找出一个你自己的研究领域中的阴性结果或阴性暴露的例子。讨论为什么它符合阴性控制的条件，以及它如何帮助评估不可混淆性假设。
+\end{Exercise}
+
+\begin{Exercise}\label{pro:16-cochran}
+\Citet{Cochran:1938} 和 econometricians 提出了以下\textbf{Cochran 公式}（也称为遗漏变量偏倚公式）。设 $(y_i, x_{1i}, x_{2i})_{i=1}^n$ 为 IID 样本，其中 $y_i$ 是标量，$x_{1i}$ 维数为 $K$，$x_{2i}$ 维数为 $L$。考虑 OLS 分解：
+\[
+y_i = \beta_1^{\mathrm{T}} x_{1i} + \beta_2^{\mathrm{T}} x_{2i} + \varepsilon_i \quad \text{（长回归）},
+\]
+\[
+y_i = \gamma^{\mathrm{T}} x_{1i} + e_i \quad \text{（短回归）},
+\]
+\[
+x_{2i} = \delta^{\mathrm{T}} x_{1i} + v_i .
+\]
+证明：$\gamma = \beta_1 + \delta \beta_2$。解释为什么 $\delta \beta_2$ 被称为遗漏变量偏倚。
+\end{Exercise}
+
+\begin{Exercise}\label{pro:16-overadjustment-design}
+设计一个模拟研究，演示以下情形：
+\begin{enumerate}
+  \item 调整混杂变量 $X$ 可以减少偏倚；
+  \item 调整与未测混杂相关的变量会引入 M-偏倚；
+  \item 调整工具变量 $X_Z$ 在存在未测混杂时会放大偏倚。
+\end{enumerate}
+对于每种情形，使用大样本量（$n = 10^5$）计算未调整和调整后的估计量。
+\end{Exercise}
+
+\section{推荐阅读}\label{sec:16-reading}
+
+关于因果图和因果推断的深入讨论，见 Pearl (2000) 的经典教科书。
+
+\VanderWeele 和 Shpitser (2011) 讨论了协变量选择的正式准则。
+
+\Rosenbaum (2002b) 是关于观测性研究中敏感性分析的重要参考文献，也是本章许多思想的源头。
+
+\Ding 等 (2017b) 提供了 Z-偏倚（工具变量偏倚）的一般性理论。
+
+% 本章完

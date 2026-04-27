@@ -1,0 +1,337 @@
+% Chapter 12: Doubly Robust Estimation
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein Style
+
+\chapter{双重稳健估计}\label{ch:12}
+
+\section{引言：一个估计量的双重保险}\label{sec:12-intro}
+
+在第 \ref{ch:11} 章中，我们遇到了一个基本的张力：使用观测数据进行因果推断时，我们需要在两个识别公式之间做出选择。
+
+第一个是\textbf{结果回归公式}（outcome regression）：
+\[
+\tau = E\{\mu_1(X)\} - E\{\mu_0(X)\},
+\label{eq:12-outcome-reg}
+\]
+其中 $\mu_1(X) = E(Y \mid Z=1, X)$ 和 $\mu_0(X) = E(Y \mid Z=0, X)$ 分别是治疗组和对照组在给定协变量 $X$ 下的条件均值函数。这个公式的美妙之处在于：只要我们能正确建模 $\mu_1(X)$ 和 $\mu_0(X)$，就能一致地估计 $\tau$。但问题在于，如果模型错了，估计量就会产生偏倚。
+
+第二个是\textbf{逆概率加权公式}（IPW）：
+\[
+\tau = E\left\{\frac{ZY}{e(X)}\right\} - E\left\{\frac{(1-Z)Y}{1-e(X)}\right\},
+\label{eq:12-ipw}
+\]
+其中 $e(X) = \Pr(Z=1 \mid X)$ 是倾向得分。这个公式同样优雅：只要倾向得分模型正确，估计量就是一致的。但它的弱点同样明显——如果 $e(X)$ 模型错了，后果可能是灾难性的。
+
+一个自然的问题应运而生：\textbf{能否构造一个估计量，只要两个模型中任意一个正确，就能保证一致性？}
+
+这正是 James Robins 及其合作者（\citealp{Scharfstein:1999, BangRobins:2005}）提出的双重稳健估计量（doubly robust estimator）的核心思想。正如我们在下面将看到的，这个估计量巧妙地结合了结果回归和逆概率加权的优点。
+
+\section{总体版本的 DR 估计量}\label{sec:12-population}
+
+为了构造双重稳健估计量，我们同时引入两个工作模型（working models）：
+\begin{itemize}
+  \item \textbf{结果模型}：$\mu_1(X, \beta_1)$ 和 $\mu_0(X, \beta_0)$，分别建模 $E(Y(1) \mid X)$ 和 $E(Y(0) \mid X)$。当结果模型正确时，$\mu_1(X, \beta_1) = \mu_1(X)$。
+  \item \textbf{倾向得分模型}：$e(X, \alpha)$，建模 $\Pr(Z=1 \mid X)$。当倾向得分模型正确时，$e(X, \alpha) = e(X)$。
+\end{itemize}
+
+在实践中，这两个模型都可能错误设定——这也是为什么我们称之为"工作模型"。
+
+基于这两个工作模型，我们定义：
+\begin{align}
+\tilde\mu_1^{\mathrm{dr}} &= E\left[\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)} + \mu_1(X, \beta_1)\right],
+\label{eq:12-dr-mu1} \\
+\tilde\mu_0^{\mathrm{dr}} &= E\left[\frac{(1-Z)\{Y - \mu_0(X, \beta_0)\}}{1-e(X, \alpha)} + \mu_0(X, \beta_0)\right].
+\label{eq:12-dr-mu0}
+\end{align}
+
+这两个公式有另一种等价的书写方式，将它们重新整理为：
+\begin{align}
+\tilde\mu_1^{\mathrm{dr}} &= E\left[\frac{ZY}{e(X, \alpha)} - \frac{Z - e(X, \alpha)}{e(X, \alpha)} \mu_1(X, \beta_1)\right],
+\label{eq:12-dr-mu1-alt} \\
+\tilde\mu_0^{\mathrm{dr}} &= E\left[\frac{(1-Z)Y}{1-e(X, \alpha)} - \frac{e(X, \alpha) - Z}{1-e(X, \alpha)} \mu_0(X, \beta_0)\right].
+\label{eq:12-dr-mu0-alt}
+\end{align}
+
+观察这两种形式，我们发现：
+\begin{itemize}
+  \item \cref{eq:12-dr-mu1} 和 \cref{eq:12-dr-mu0} 是对结果回归估计量的"增强"——在结果回归的基础上添加了逆概率加权项来修正残差。
+  \item \cref{eq:12-dr-mu1-alt} 和 \cref{eq:12-dr-mu0-alt} 是对 IPW 估计量的"增强"——在逆概率加权的基础上添加了插补结果的修正项。
+\end{itemize}
+正因为这种双向增强的结构，双重稳健估计量也被称为\textbf{增强逆概率加权估计量}（augmented inverse propensity score weighting, AIPW）。
+
+\section{双重稳健性定理}\label{sec:12-dr-theorem}
+
+下面这个定理是双重稳健估计量的理论核心。
+
+\begin{Theorem}[双重稳健性]\label{th:12-dr}
+假设可忽略性 $Z \perp \{Y(1), Y(0)\} \mid X$ 和 overlap $0 < e(X) < 1$。
+\begin{enumerate}
+  \item 若 $e(X, \alpha) = e(X)$ 或 $\mu_1(X, \beta_1) = \mu_1(X)$ 之一成立，则 $\tilde\mu_1^{\mathrm{dr}} = E\{Y(1)\}$。
+  \item 若 $e(X, \alpha) = e(X)$ 或 $\mu_0(X, \beta_0) = \mu_0(X)$ 之一成立，则 $\tilde\mu_0^{\mathrm{dr}} = E\{Y(0)\}$。
+  \item 若 $e(X, \alpha) = e(X)$ 或 $\{\mu_1(X, \beta_1) = \mu_1(X), \, \mu_0(X, \beta_0) = \mu_0(X)\}$ 之一成立，则 $\tilde\mu_1^{\mathrm{dr}} - \tilde\mu_0^{\mathrm{dr}} = \tau$。
+\end{enumerate}
+\end{Theorem}
+
+\textbf{为什么称为"双重"稳健？} 因为只要倾向得分模型和结果模型中任意一个正确，$\tilde\mu_1^{\mathrm{dr}} - \tilde\mu_0^{\mathrm{dr}}$ 就等于 $\tau$。这给了估计量两次"保险"的机会。\footnote{定理 \cref{th:12-dr} 的完整证明见附录 \cref{sec:appendix-12-dr-proof}。}
+
+\section{样本版本的 DR 估计量}\label{sec:12-sample}
+
+从总体版本 \cref{eq:12-dr-mu1} 和 \cref{eq:12-dr-mu0} 出发，我们可以用样本 analog 直接构造估计量。
+
+\begin{Definition}[平均因果效应的双重稳健估计量]\label{def:12-dr}
+基于数据 $(X_i, Z_i, Y_i)_{i=1}^n$，按以下步骤构造 $\tau$ 的双重稳健估计量：
+\begin{enumerate}
+  \item 拟合倾向得分：得到 $e(X_i, \hat\alpha)$；
+  \item 拟合结果均值：得到 $\mu_1(X_i, \hat\beta_1)$ 和 $\mu_0(X_i, \hat\beta_0)$；
+  \item 构造双重稳健估计量 $\hat\tau^{\mathrm{dr}} = \hat\mu_1^{\mathrm{dr}} - \hat\mu_0^{\mathrm{dr}}$，其中
+\end{enumerate}
+\[
+\hat\mu_1^{\mathrm{dr}} = \frac{1}{n}\sum_{i=1}^n\left[\frac{Z_i\{Y_i - \mu_1(X_i, \hat\beta_1)\}}{e(X_i, \hat\alpha)} + \mu_1(X_i, \hat\beta_1)\right],
+\]
+\[
+\hat\mu_0^{\mathrm{dr}} = \frac{1}{n}\sum_{i=1}^n\left[\frac{(1-Z_i)\{Y_i - \mu_0(X_i, \hat\beta_0)\}}{1-e(X_i, \hat\alpha)} + \mu_0(X_i, \hat\beta_0)\right].
+\]
+\end{Definition}
+
+根据 \cref{def:12-dr}，我们还可以将双重稳健估计量写成更直观的形式：\footnote{推导见附录 \cref{sec:appendix-12-alt-forms}}
+\[
+\hat\tau^{\mathrm{dr}} = \hat\tau^{\mathrm{reg}} + \frac{1}{n}\sum_{i=1}^n\frac{Z_i\{Y_i - \mu_1(X_i, \hat\beta_1)\}}{e(X_i, \hat\alpha)} - \frac{1}{n}\sum_{i=1}^n\frac{(1-Z_i)\{Y_i - \mu_0(X_i, \hat\beta_0)\}}{1-e(X_i, \hat\alpha)}.
+\label{eq:12-dr-reg-aug}
+\]
+
+这个形式揭示了双重稳健估计量的本质：它从结果回归估计量 $\hat\tau^{\mathrm{reg}}$ 出发，通过添加修正项来获得鲁棒性。类似地，利用 \cref{eq:12-dr-mu1-alt} 和 \cref{eq:12-dr-mu0-alt}，我们也可以写成：\footnote{推导见附录 \cref{sec:appendix-12-alt-forms}}
+\[
+\hat\tau^{\mathrm{dr}} = \hat\tau^{\mathrm{ipw}} - \frac{1}{n}\sum_{i=1}^n\frac{Z_i - e(X_i, \hat\alpha)}{e(X_i, \hat\alpha)}\mu_1(X_i, \hat\beta_1) + \frac{1}{n}\sum_{i=1}^n\frac{e(X_i, \hat\alpha) - Z_i}{1-e(X_i, \hat\alpha)}\mu_0(X_i, \hat\beta_0).
+\label{eq:12-dr-ipw-aug}
+\]
+
+关于方差估计，\cite{Funk:2011} 建议使用非参数 bootstrap 来近似 $\hat\tau^{\mathrm{dr}}$ 的方差。
+
+\section{更深层的直觉}\label{sec:12-intuition}
+
+虽然 \cref{eq:12-dr-mu1} 和 \cref{eq:12-dr-mu0} 的形式看起来并不显然，但它们可以从两个不同的直观角度推导出来。这两个角度恰好对应了结果回归和 IPW 的各自弱点。
+
+\subsection{从 IPW 出发：降低方差}\label{sec:12-ipw-to-dr}
+
+IPW 估计量
+\[
+\mu_1 = E\left\{\frac{ZY}{e(X)}\right\}
+\]
+完全忽略了 $Y$ 的结果模型。它的优势在于不需要任何结果模型假设就能保持一致性。然而，如果协变量能够预测结果，那么即使工作结果模型错误，基于残差的伪潜在结果通常比原始结果具有更小的方差。
+
+给定一个可能错误设定的工作模型 $\mu_1(X, \beta_1)$，我们可以做一个简单的分解：
+\[
+\mu_1 = E\{Y(1)\} = E\{Y(1) - \mu_1(X, \beta_1)\} + E\{\mu_1(X, \beta_1)\}.
+\]
+
+对第一项应用 IPW 公式（将 $Y(1) - \mu_1(X, \beta_1)$ 视为"伪潜在结果"），我们得到：\footnote{推导见附录 \cref{sec:appendix-12-ipw-decomp}}
+\[
+\mu_1 = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)}\right\} + E\{\mu_1(X, \beta_1)\} = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)} + \mu_1(X, \beta_1)\right\}.
+\]
+这个公式在倾向得分模型正确时成立，不需要假设结果模型正确。使用工作模型来提高效率是调查采样中的传统思想。\cite{LittleAn:2004} 和 \cite{Lumley:2011} 都指出了它与双重稳健估计量的联系。
+
+\subsection{从结果回归出发：降低偏倚}\label{sec:12-reg-to-dr}
+
+另一种思路是从结果回归出发，改善其偏倚。结果回归估计量
+\[
+\tilde\mu_1 = E\{\mu_1(X, \beta_1)\}
+\]
+可能不等于 $\mu_1$，因为结果模型可能是错误的。这个估计量的偏倚是 $E\{\mu_1(X,\beta_1) - Y(1)\}$，它可以用 IPW 估计量来估计：\footnote{推导见附录 \cref{sec:appendix-12-bias-correct}}
+\[
+B = E\left\{\frac{Z\{\mu_1(X, \beta_1) - Y\}}{e(X)}\right\},
+\]
+只要倾向得分模型正确。因此，去偏估计量 $\tilde\mu_1 - B$ 恰好等于 \cref{eq:12-dr-mu1}。这给出了构造双重稳健估计量的第二个直观视角。
+
+\section{模拟研究}\label{sec:12-simulation}
+
+为了评估双重稳健估计量在有限样本下的表现，我们考虑四种场景：
+\begin{enumerate}
+  \item 倾向得分模型和结果模型都正确；
+  \item 倾向得分模型错误，但结果模型正确；
+  \item 倾向得分模型正确，但结果模型错误；
+  \item 倾向得分模型和结果模型都错误。
+\end{enumerate}
+
+我们报告估计量的平均偏倚、真标准误和估计标准误。\footnote{模拟细节和完整结果见附录 \cref{sec:appendix-12-simulation}。}
+
+当两个模型都正确时（场景 1），所有估计量几乎无偏，但 IPW 类估计量的方差较大。当倾向得分模型错误但结果模型正确时（场景 2），IPW 类估计量严重偏倚，而结果回归和双重稳健估计量几乎无偏。当倾向得分模型正确但结果模型错误时（场景 3），结果回归估计量偏倚较大，而 IPW 类和双重稳健估计量几乎无偏。\textbf{关键发现在场景 4}：当两个模型都错误时，所有估计量都有偏倚，而双重稳健估计量可能表现出"双重脆弱性"——两个误差的乘积可能导致更大的偏差。\footnote{模拟结果表格见附录 \cref{sec:appendix-12-simulation-table}。}
+
+\section{进一步讨论：为何脆弱？}\label{sec:12-discussion}
+
+回顾 \cref{th:12-dr} 的证明，双重稳健性的关键在于以下乘积结构：\footnote{详细推导见附录 \cref{sec:appendix-12-product-structure}}
+\[
+\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\} = E\left[\frac{e(X) - e(X, \alpha)}{e(X, \alpha)} \times \{\mu_1(X) - \mu_1(X, \beta_1)\}\right].
+\]
+只要 $e(X) = e(X, \alpha)$ 或 $\mu_1(X) = \mu_1(X, \beta_1)$ 之一成立，上式就为零。然而，当两个模型都错误时，两个误差的乘积可能放大偏差——这就是"双重脆弱性"的数学本质。模拟研究证实了这一点。
+
+尽管 \cite{KangSchafer:2007} 基于模拟研究批评了双重稳健估计量，但自 \cite{Scharfstein:1999} 的开创性工作以来，双重稳健估计量一直是因果推断的标准策略。近年来，它在理论统计和计量经济学文献中以更响亮的名字"双机器学习"（double machine learning）重新兴起。\cite{Chernozhukov:2018} 的基本思想是用更灵活的机器学习工具替代传统的参数工作模型。
+
+\section{本章小结}\label{sec:12-summary}
+
+本章介绍了双重稳健估计量，主要内容如下：
+
+\begin{enumerate}
+  \item \textbf{核心思想}：结合结果回归和 IPW，只要其中一个模型正确就能保证一致性。
+  \item \textbf{公式结构（\cref{eq:12-dr-mu1}--\cref{eq:12-dr-mu0}）}：增强逆概率加权估计量（AIPW）。
+  \item \textbf{双重稳健性（\cref{th:12-dr}）}：只要倾向得分模型或结果模型之一正确，$\tilde\mu_1^{\mathrm{dr}} - \tilde\mu_0^{\mathrm{dr}} = \tau$。
+  \item \textbf{两种直觉视角}：从 IPW 降方差（\cref{sec:12-ipw-to-dr}）和从结果回归降偏倚（\cref{sec:12-reg-to-dr}）。
+  \item \textbf{双重脆弱性}：当两个模型都错误时，两个误差的乘积可能放大偏差。
+\end{enumerate}
+
+\section{习题}\label{sec:chapter12-exercises}
+
+\begin{Exercise}{验证双重稳健性}\label{exr:12-1}
+考虑协变量离散的情况 $X \in \{1, \ldots, K\}$。证明在这种情况下，分层估计量、结果回归估计量、Horvitz-Thompson 估计量、Hajek 估计量和双重稳健估计量在数值上是完全相同的。\citep[参见][ Theorem 12.1]{Ding:2023}
+\end{Exercise}
+
+\begin{Exercise}{DR 估计量的另一种形式}\label{exr:12-2}
+基于 \cref{eq:12-dr-mu1}，给出 $\mu_1 = E\{Y(1)\}$ 的双重稳健估计量的另一种形式：
+\[
+\tilde\mu_1^{\mathrm{dr}2} = \frac{E\left[\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}\right]}{E\left[\frac{Z}{e(X, \alpha)}\right]} + E\{\mu_1(X, \beta_1)\}.
+\]
+证明若 $e(X, \alpha) = e(X)$ 或 $\mu_1(X, \beta_1) = \mu_1(X)$ 之一成立，则 $\tilde\mu_1^{\mathrm{dr}2} = \mu_1$。给出估计 $\mu_0$ 的类似公式，并给出基于这些公式的 $\tau$ 的双重稳健估计量的样本 analog。\citep[参见][式 (12.7)]{Ding:2023}
+\end{Exercise}
+
+\begin{Exercise}{DR 估计量的方差}\label{exr:12-3}
+证明 \cref{eq:12-dr-reg-aug} 和 \cref{eq:12-dr-ipw-aug} 的等价性。\citep[参见][式 (12.9)]{Ding:2023}
+\end{Exercise}
+
+% ============================================================
+% Appendix
+% ============================================================
+\newpage
+\appendix
+\section{定理 \cref{th:12-dr} 的证明}\label{sec:appendix-12-dr-proof}
+
+\textbf{背景}：我们需要证明在 ignorability 和 overlap 假设下，双重稳健估计量满足 $\tilde\mu_1^{\mathrm{dr}} = E\{Y(1)\}$ 当且仅当倾向得分模型或结果模型之一正确。
+
+\textbf{证明}：这里给出第一部分的证明，第二部分类似。考虑分解：\footnote{详细步骤见原书 \cite[ Theorem 12.1]{Ding:2023}}
+\[
+\begin{aligned}
+\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\}
+&= E\left[\frac{Z\{Y(1) - \mu_1(X, \beta_1)\}}{e(X, \alpha)} - \{Y(1) - \mu_1(X, \beta_1)\}\right] \\
+&= E\left[\frac{Z - e(X, \alpha)}{e(X, \alpha)}\{Y(1) - \mu_1(X, \beta_1)\}\right] \\
+&= E\left(E\left[\frac{Z - e(X, \alpha)}{e(X, \alpha)}\{Y(1) - \mu_1(X, \beta_1)\} \mid X\right]\right) \quad \text{(tower property)} \\
+&= E\left[E\left\{\frac{Z - e(X, \alpha)}{e(X, \alpha)} \mid X\right\} \times E\left\{Y(1) - \mu_1(X, \beta_1) \mid X\right\}\right] \quad \text{(ignorability)} \\
+&= E\left[\frac{e(X) - e(X, \alpha)}{e(X, \alpha)} \times \{\mu_1(X) - \mu_1(X, \beta_1)\}\right].
+\end{aligned}
+\]
+由此可知，上式为零当且仅当 $e(X) = e(X, \alpha)$ 或 $\mu_1(X) = \mu_1(X, \beta_1)$ 之一成立。\qed
+
+\section{双重稳健估计量的等价形式推导}\label{sec:appendix-12-alt-forms}
+
+\subsection*{\cref{eq:12-dr-reg-aug} 的推导}
+
+从 \cref{def:12-dr} 出发：
+\[
+\hat\tau^{\mathrm{dr}} = \hat\mu_1^{\mathrm{dr}} - \hat\mu_0^{\mathrm{dr}} = \frac{1}{n}\sum_{i=1}^n\left[\mu_1(X_i, \hat\beta_1) - \mu_0(X_i, \hat\beta_0)\right] + \frac{1}{n}\sum_{i=1}^n\left[\frac{Z_i\{Y_i - \mu_1(X_i, \hat\beta_1)\}}{e(X_i, \hat\alpha)} - \frac{(1-Z_i)\{Y_i - \mu_0(X_i, \hat\beta_0)\}}{1-e(X_i, \hat\alpha)}\right].
+\]
+第一项恰好是结果回归估计量 $\hat\tau^{\mathrm{reg}}$，于是得到 \cref{eq:12-dr-reg-aug}。
+
+\subsection*{\cref{eq:12-dr-ipw-aug} 的推导}
+
+利用恒等式
+\[
+\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)} = \frac{ZY}{e(X, \alpha)} - \frac{Z}{e(X, \alpha)}\mu_1(X, \beta_1),
+\]
+以及
+\[
+\frac{(1-Z)\{Y - \mu_0(X, \beta_0)\}}{1-e(X, \alpha)} = \frac{(1-Z)Y}{1-e(X, \alpha)} - \frac{1-Z}{1-e(X, \alpha)}\mu_0(X, \beta_0),
+\]
+代入 \cref{eq:12-dr-reg-aug} 并重新整理项，可得 \cref{eq:12-dr-ipw-aug}。
+
+\section{从 IPW 到 DR 的分解}\label{sec:appendix-12-ipw-decomp}
+
+从分解
+\[
+\mu_1 = E\{Y(1)\} = E\{Y(1) - \mu_1(X, \beta_1)\} + E\{\mu_1(X, \beta_1)\}
+\]
+出发，对第一项应用 IPW 公式（将 $Y(1) - \mu_1(X, \beta_1)$ 视为伪潜在结果）：
+\[
+E\{Y(1) - \mu_1(X, \beta_1)\} = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)}\right\},
+\]
+这在倾向得分模型正确时成立。于是得到
+\[
+\mu_1 = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)}\right\} + E\{\mu_1(X, \beta_1)\}.
+\]
+
+\section{从结果回归到 DR 的偏倚修正}\label{sec:appendix-12-bias-correct}
+
+结果回归估计量 $\tilde\mu_1 = E\{\mu_1(X, \beta_1)\}$ 的偏倚为：
+\[
+\text{bias} = E\{\mu_1(X, \beta_1) - Y(1)\}.
+\]
+如果倾向得分模型正确，这个偏倚可以用 IPW 估计量来估计：
+\[
+B = E\left\{\frac{Z\{\mu_1(X, \beta_1) - Y\}}{e(X)}\right\}.
+\]
+于是去偏估计量为 $\tilde\mu_1 - B$，展开后恰好等于 \cref{eq:12-dr-mu1}。
+
+\section{双重稳健性的乘积结构}\label{sec:appendix-12-product-structure}
+
+从 \cref{sec:appendix-12-dr-proof} 的证明中，我们得到：
+\[
+\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\} = E\left[\frac{e(X) - e(X, \alpha)}{e(X, \alpha)} \times \{\mu_1(X) - \mu_1(X, \beta_1)\}\right].
+\]
+这个乘积结构揭示了双重稳健性的本质：当两个模型都错误时，$e(X) - e(X, \alpha)$ 和 $\mu_1(X) - \mu_1(X, \beta_1)$ 这两个误差会相乘，可能放大偏差。
+
+\section{模拟研究详情}\label{sec:appendix-12-simulation}
+
+\subsection*{数据生成过程}
+
+我们设置样本量 $n = 500$，按以下四个场景生成 500 个独立数据集。
+
+\textbf{场景 1（两个模型都正确）}：
+\begin{verbatim}
+x = matrix(rnorm(n*2), n, 2)
+x1 = cbind(1, x)
+beta.z = c(0, 1, 1)
+pscore = 1/(1 + exp(- as.vector(x1 %*% beta.z)))
+z = rbinom(n, 1, pscore)
+beta.y1 = c(1, 2, 1)
+beta.y0 = c(1, 2, 1)
+y1 = rnorm(n, x1 %*% beta.y1)
+y0 = rnorm(n, x1 %*% beta.y0)
+y = z*y1 + (1-z)*y0
+\end{verbatim}
+
+\textbf{场景 2（倾向得分模型错误）}：使用非线性倾向得分模型。
+
+\textbf{场景 3（结果模型错误）}：使用非线性结果模型。
+
+\textbf{场景 4（两个模型都错误）}：同时使用非线性倾向得分和非线性结果模型。
+
+\subsection*{模拟结果}\label{sec:appendix-12-simulation-table}
+
+\begin{table}[h]
+\centering
+\caption{四种场景下的模拟结果（$n=500$，500 次重复）}
+\label{tab:12-simulation}
+\begin{tabular}{lcccc}
+\hline
+& reg & HT & Hajek & DR \\
+\hline
+\multicolumn{5}{l}{场景 1：两个模型都正确} \\
+平均偏倚 & 0.00 & 0.02 & 0.03 & 0.01 \\
+真标准误 & 0.11 & 0.28 & 0.26 & 0.13 \\
+估计标准误 & 0.10 & 0.25 & 0.23 & 0.12 \\
+\hline
+\multicolumn{5}{l}{场景 2：倾向得分模型错误} \\
+平均偏倚 & 0.00 & $-$0.76 & $-$0.75 & $-$0.01 \\
+真标准误 & 0.12 & 0.59 & 0.47 & 0.18 \\
+估计标准误 & 0.13 & 0.50 & 0.38 & 0.18 \\
+\hline
+\multicolumn{5}{l}{场景 3：结果模型错误} \\
+平均偏倚 & $-$0.05 & 0.00 & $-$0.01 & 0.00 \\
+真标准误 & 0.11 & 0.15 & 0.14 & 0.14 \\
+估计标准误 & 0.11 & 0.14 & 0.13 & 0.14 \\
+\hline
+\multicolumn{5}{l}{场景 4：两个模型都错误} \\
+平均偏倚 & $-$0.08 & 0.11 & $-$0.07 & 0.16 \\
+真标准误 & 0.13 & 0.32 & 0.20 & 0.41 \\
+估计标准误 & 0.13 & 0.25 & 0.16 & 0.26 \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{结论}：当两个模型都错误时（场景 4），双重稳健估计量的表现反而最差，验证了"双重脆弱性"现象。
