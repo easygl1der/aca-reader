@@ -1,0 +1,496 @@
+% Chapter 6: Regression Adjustment and Covariate Balance in Randomized Experiments
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style
+
+\chapter{回归调整与协变量平衡}\label{ch:6}
+
+\section{引言：从分层到连续协变量}\label{sec:6-intro}
+
+在第 \ref{ch:5} 章中，我们遇到了分层随机实验（SRE）。这种设计通过在离散的协变量（如性别、年龄段）上分层，在\textbf{设计阶段}主动控制协变量不平衡。
+
+然而，现实中的协变量往往是连续的——think of 身高、体重、血压、基线考试成绩。这些连续型协变量无法简单地离散化为有限个层，否则会遇到"维数灾难"：层数指数增长，每层样本量急剧减少。
+
+\textbf{一个自然的问题产生}：当协变量是连续的多维向量时，我们如何在保持随机化优点的同时，利用这些协变量来提高估计效率？
+
+本章将介绍两种互补的策略：
+
+\begin{enumerate}
+  \item \textbf{重随机化（Rerandomization，ReM）}：在设计阶段使用 Mahalanobis 距离控制协变量不平衡
+  \item \textbf{回归调整（Regression Adjustment）}：在分析阶段利用线性模型调整协变量不平衡
+\end{enumerate}
+
+这两种策略可以在设计阶段与分析阶段分别使用，也可以在同一实验中联合使用（\cref{sec:6-unification}）。
+
+\section{重随机化：设计阶段的协变量平衡}\label{sec:6-rem}
+
+\subsection{问题起源：Cox (1982) 的洞见}\label{sec:6-rem-origin}
+
+考虑一个包含 $n$ 个单元的有限总体，协变量矩阵 $\mathbf{X} \in \mathbb{R}^{n \times K}$ 是固定的。每个单元 $i$ 的协变量向量为 $X_i \in \mathbb{R}^K$，可以包含连续或二元分量。为简化记号，将协变量中心化至均值零：$\bar{X} = n^{-1}\sum_{i=1}^n X_i = 0$。
+
+在完全随机实验（CRE）中，治疗向量 $\mathbf{Z} = (Z_1, \ldots, Z_n)$ 从所有满足 $\sum Z_i = n_1$ 的向量中均匀抽取。随机化保证了协变量在治疗组和对照组之间的\textbf{期望平衡}，但无法保证有限样本中的\textbf{实现平衡}。
+
+我们用治疗组和对照组协变量均值之差来衡量不平衡程度：
+\[
+\hat{\tau}_X = n_1^{-1}\sum_{i=1}^n Z_i X_i - n_0^{-1}\sum_{i=1}^n (1-Z_i) X_i .
+\]
+
+在 CRE 下，$\mathbb{E}(\hat{\tau}_X) = 0$，但 $\hat{\tau}_X$ 的实现值往往不为零。使用 Neyman (1923) 的向量形式记号，可以证明：\footnote{详细推导见附录 \cref{sec:appendix-6-cov-balance}}
+\[
+\text{cov}(\hat{\tau}_X) = \frac{n}{n_1 n_0} S_X^2 ,
+\]
+其中 $S_X^2 = (n-1)^{-1}\sum_{i=1}^n X_i X_i^\top$ 是协变量的有限总体协方差矩阵。
+
+\subsection{Mahalanobis 距离}\label{sec:6-mahalanobis}
+
+为了综合衡量 $K$ 维协变量的不平衡程度，ReM 使用 \textbf{Mahalanobis 距离}：
+\[
+M = \hat{\tau}_X^\top \text{cov}(\hat{\tau}_X)^{-1} \hat{\tau}_X
+   = \hat{\tau}_X^\top \left( \frac{n}{n_1 n_0} S_X^2 \right)^{-1} \hat{\tau}_X .
+   \label{eq:6-mahalanobis}
+\]
+
+Mahalanobis 距离的一个优美性质是它对协变量的非奇异线性变换保持不变。
+
+\begin{Lemma}[引理 6.1 — Mahalanobis 距离的不变性]\label{lemm:6.1}
+式 \cref{eq:6-mahalanobis} 中的 $M$ 在变换 $X_i \mapsto b_0 + B X_i$（其中 $b_0 \in \mathbb{R}^K$，$B \in \mathbb{R}^{K \times K}$ 可逆）下保持不变。
+\end{Lemma}
+
+\textbf{为什么这个性质重要？} 因为它意味着在使用 Mahalanobis 距离时，我们不必担心协变量的量纲问题——无论是用米还是厘米，用摄氏度还是华氏度，$M$ 的数值都不会改变。
+
+有限总体中心极限定理（Li and Ding, 2017）保证：当 $n$ 足够大时，在 CRE 下 $M$ 近似服从 $\chi_K^2$ 分布，渐近期望为 $K$，方差为 $2K$。因此，在 CRE 下 $M$ 的实现值很可能很大。
+
+重随机化的核心思想是：\textbf{拒绝那些协变量不平衡的治疗分配}。
+
+\subsection{ReM 的正式定义}\label{sec:6-rem-definition}
+
+\begin{Definition}[重随机化（ReM）]\label{def:6-rem}
+从 CRE 中抽取治疗向量 $\mathbf{Z}$，当且仅当 $M \leq a$ 时接受，其中 $a > 0$ 是预定阈值。
+\end{Definition}
+
+阈值 $a$ 的选择类似于 SRE 中层数的选择——这是一个在实践中非平凡的问题。当 $a = \infty$ 时，ReM 退化为普通 CRE；当 $a = 0$ 时，只有极少数可行的治疗分配，实验几乎没有随机性。折中方案是选择一个小但不极小的 $a$，例如取 $\chi_K^2$ 分布的上分位数（如 0.001 分位数）。
+
+\textbf{几何直观}：ReM 通过约束协变量均值之差 $\hat{\tau}_X$ 的大小，在设计阶段"塑造"了实验的几何结构。Morgan 和 Rubin (2012) 的研究表明，这种设计具有优雅的数学理论和良好的几何性质。
+
+\section{ReM 下的统计推断}\label{sec:6-rem-inference}
+
+\subsection{Fisher 随机化检验在 ReM 下的推广}\label{sec:6-rem-frt}
+
+一个关键问题是：如何在 ReM 下分析数据？Bruhn and McKenzie (2009) 和 Morgan and Rubin (2012) 论证，只要我们在约束 $M \leq a$ 下模拟治疗向量 $\mathbf{Z}$，就仍然可以使用 FRT。这在 sharp null 假设下总是给出有限样本精确 p 值。
+
+在非 null 假设下，推导 ReM 的有限样本性质是一个具有挑战性的问题。Li et al. (2018b) 在正则条件（Condition 6.1）下推导了 $\hat{\tau}$ 的渐近分布。
+
+\begin{Condition}[条件 6.1]\label{cond:6.1}
+当 $n \to \infty$ 时：
+\begin{enumerate}
+  \item $n_1 / n$ 和 $n_0 / n$ 具有正极限；
+  \item $\{X_i, Y_i(1), Y_i(0), \tau_i\}$ 的有限总体协方差具有有限极限；
+  \item $\max_{1 \leq i \leq n}\{Y_i(1) - \bar{Y}(1)\}^2 / n \to 0$，$\max_{1 \leq i \leq n}\{Y_i(0) - \bar{Y}(0)\}^2 / n \to 0$，且 $\max_{1 \leq i \leq n} X_i^\top X_i / n \to 0$。
+\end{enumerate}
+\end{Condition}
+
+\subsection{ReM 的渐近分布：几何解释}\label{sec:6-rem-asymptotic}
+
+下面给出 ReM 的主要渐近结果。为符号简洁，记
+\[
+L_{K,a} \sim D_1 \mid \mathbf{D}^\top \mathbf{D} \leq a ,
+\]
+其中 $\mathbf{D} = (D_1, \ldots, D_K)$ 服从 $K$ 维标准正态分布；$\varepsilon$ 服从一元标准正态分布；$L_{K,a} \bot \varepsilon$。
+
+\begin{Theorem}[定理 6.1 — ReM 下的渐近分布]\label{th:6.1}
+在 ReM（$M \leq a$）和条件 \cref{cond:6.1} 下，
+\[
+\hat{\tau} - \tau \stackrel{.}{\sim} \sqrt{\text{var}(\hat{\tau})} \left\{ \sqrt{R^2} L_{K,a} + \sqrt{1-R^2} \varepsilon \right\},
+\]
+其中
+\[
+\text{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}
+\]
+是 Neyman (1923) 的方差公式（见第 \ref{ch:4} 章），且
+\[
+R^2 = \text{corr}^2(\hat{\tau}, \hat{\tau}_X)
+\]
+是 $\hat{\tau}$ 与 $\hat{\tau}_X$ 在 CRE 下的平方多重相关系数。
+\end{Theorem}
+
+虽然 Li et al. (2018b) 的证明是技术性的，但 \cref{th:6.1} 中的渐近分布有清晰的几何解释：$\hat{\tau}$ 分解为一个与 $\hat{\tau}_X$ 线性组合的分量和一个与 $\hat{\tau}_X$ 正交的分量。几何上，$\cos^2 \theta = R^2$，其中 $\theta$ 是 $\hat{\tau}$ 与 $\hat{\tau}_X$ 之间的夹角。ReM 影响第一个分量，但不影响第二个分量。截断正态分布 $L_{K,a}$ 源于 ReM 对第一个分量的约束。
+
+\textbf{极限情形}：
+\begin{itemize}
+  \item 当 $a = \infty$（普通 CRE）时，渐近分布简化为 $\hat{\tau} - \tau \stackrel{.}{\sim} \sqrt{\text{var}(\hat{\tau})} \varepsilon$；
+  \item 当 $a \to 0$（完全平衡）时，渐近分布简化为 $\hat{\tau} - \tau \stackrel{.}{\sim} \sqrt{\text{var}(\hat{\tau})(1-R^2)} \varepsilon$。
+\end{itemize}
+
+因此，当阈值 $a$ 很小时，ReM 的效率增益取决于 $R^2$。$R^2$ 有如下等价形式：\footnote{推导见附录 \cref{sec:appendix-6-r-squared}}
+
+\begin{Proposition}[命题 6.1 — $R^2$ 的等价形式]\label{prop:6.1}
+在 CRE 下，
+\[
+R^2 = \text{corr}^2(\hat{\tau}, \hat{\tau}_X) = \frac{n_1^{-1}S^2(1 \mid X) + n_0^{-1}S^2(0 \mid X) - n^{-1}S^2(\tau \mid X)}{n_1^{-1}S^2(1) + n_0^{-1}S^2(0) - n^{-1}S^2(\tau)} ,
+\]
+其中 $\{S^2(1), S^2(0), S^2(\tau)\}$ 是 $\{Y_i(1), Y_i(0), \tau_i\}$ 的有限总体方差，$\{S^2(1 \mid x), S^2(0 \mid x), S^2(\tau \mid x)\}$ 是它们在 $(1, X_i)$ 上线性投影的相应有限总体方差。在常因果效应假设（$\tau_i = \tau$）下，$R^2$ 退化为 $S^2(0 \mid X) / S^2(0)$，即 $Y_i(0)$ 与 $X_i$ 之间的有限总体平方多重相关系数。
+\end{Proposition}
+
+\textbf{实践含义}：$R^2$ 衡量了协变量解释结果变异的能力。当协变量是结果的强预测因子时，ReM 能显著提高效率。
+
+\textbf{置信区间}：如果我们忽视 ReM 的设计，仍然使用 Neyman (1923) 的方差公式和正态近似来构造置信区间，即使个体因果效应是常数的，置信区间也会过于保守（overcover $\tau$）。Li et al. (2018b) 提出了基于 \cref{th:6.1} 的置信区间构造方法，我们将在 \cref{sec:6-unification} 中回到推断问题。
+
+\section{回归调整：分析阶段的协变量平衡}\label{sec:6-reg-adjust}
+
+如果在设计阶段没有进行重随机化，我们还能在分析阶段利用协变量吗？本节将讨论几种回归调整策略。
+
+\subsection{协变量调整的 Fisher 随机化检验}\label{sec:6-frt-covariate}
+
+协变量 $\mathbf{X}$ 是固定的，在 $H_{0\text{F}}$ 下观测结果也是固定的。因此，我们可以模拟任何检验统计量 $T = T(\mathbf{Z}, \mathbf{Y}, \mathbf{X})$ 的分布并计算 p 值——FRT 的基本思想在存在额外协变量时依然适用。
+
+Zhao and Ding (2021a) 总结了构造检验统计量的两种一般策略。
+
+\begin{Definition}[协变量调整 FRT 的伪结果策略]\label{def:6-pseudo-outcome}
+基于拟合统计模型后的残差构造检验统计量。将 $Y_i$ 对 $X_i$ 回归得到残差 $\hat{\varepsilon}_i$，然后将 $\hat{\varepsilon}_i$ 视为伪结果来构造检验统计量。
+\end{Definition}
+
+\begin{Definition}[协变量调整 FRT 的模型输出策略]\label{def:6-model-output}
+使用回归系数作为检验统计量。将 $Y_i$ 对 $(Z_i, X_i)$ 回归，取 $Z_i$ 的系数作为检验统计量。
+\end{Definition}
+
+\textbf{关键区别}：在伪结果策略中，$Y_i$ 对 $X_i$ 的回归不应包含治疗 $Z_i$，因为我们希望伪结果在原结果满足 $H_{0\text{F}}$ 时也满足 $H_{0\text{F}}$；在模型输出策略中，$Y_i$ 对 $(Z_i, X_i)$ 的回归包含 $Z_i$，因为我们希望用 $Z_i$ 的系数来衡量对 $H_{0\text{F}}$ 的偏离。
+
+在以上两种策略中，"回归"是一个通用术语，可以是线性回归、logistic 回归，甚至机器学习算法。任何来自这两种策略的检验统计量在 $H_{0\text{F}}$ 下都是有限样本精确的，虽然它们在备择假设下有所不同。
+
+\subsection{从 ANCOVA 到 Lin (2013) 的估计量}\label{sec:6-ancova-lin}
+
+现在我们转向直接估计平均因果效应 $\tau$ 并调整观测到的协变量。
+
+\textbf{历史注记}：Fisher (1925) 首先提出使用协方差分析（ANCOVA）来提高估计效率。这个方法在许多领域至今仍是标准做法。Fisher 建议将 $Y_i$ 对 $(1, Z_i, X_i)$ 进行 OLS 回归，取 $Z_i$ 的系数作为 $\tau$ 的估计量。记 Fisher 的 ANCOVA 估计量为 $\hat{\tau}_{\mathrm{F}}$。
+
+Berkeley 统计学教授 David A. Freedman 在 Neyman (1923) 潜在结果框架下重新分析了 Fisher 的 ANCOVA。Freedman (2008a,b) 发现了以下\textbf{负面结果}：
+
+\begin{enumerate}
+  \item $\hat{\tau}_{\mathrm{F}}$ 是有偏的，而简单差值均值 $\hat{\tau}$ 是无偏的。
+  \item 当 $n_1 \neq n_0$ 时，$\hat{\tau}_{\mathrm{F}}$ 的渐近方差可能甚至大于 $\hat{\tau}$ 的方差。
+  \item OLS 输出的标准误在 CRE 下对 $\hat{\tau}_{\mathrm{F}}$ 的真实标准误是不一致的。
+\end{enumerate}
+
+Freedman 的批评促使 Berkeley 博士生 Winston Lin 在其论文中回应。Lin (2013) 发现了以下\textbf{正面结果}：
+
+\begin{enumerate}
+  \item $\hat{\tau}_{\mathrm{F}}$ 的偏发生在样本量趋近无穷时趋于零。
+  \item 我们可以通过使用 $Y_i$ 对 $(1, Z_i, X_i, Z_i \times X_i)$ 的 OLS 回归中 $Z_i$ 的系数来同时改进 $\hat{\tau}$ 和 $\hat{\tau}_{\mathrm{F}}$ 的渐近效率。记 Lin (2013) 的估计量为 $\hat{\tau}_{\mathrm{L}}$。此外，Eicker-Huber-White (EHW) 标准误在 CRE 下是 $\hat{\tau}_{\mathrm{L}}$ 真实标准误的保守估计。
+  \item 在 $Y_i$ 对 $(1, Z_i, X_i)$ 的 OLS 拟合中，$\hat{\tau}_{\mathrm{F}}$ 的 EHW 标准误平方是 CRE 下其真实标准误的保守估计。
+\end{enumerate}
+
+这个从 Fisher 到 Freedman 再到 Lin 的学术对话，完美展示了统计学中批评与改进的辩证过程。\textbf{Lin (2013) 的贡献在于：他不仅指出了 ANCOVA 的问题，还提出了一个简单而优雅的解决方案——在回归中加入交互项 $Z_i \times X_i$。}
+
+\subsection{线性调整估计量的推导}\label{sec:6-linear-adj-estimator}
+
+Neyman (1923) 的结果表明，差值均值估计量 $\hat{\tau}$ 的方差取决于潜在结果的方差。直觉上，我们可以通过减小潜在结果的方差来降低估计量的方差。
+
+一族线性调整估计量是：\footnote{详细推导见附录 \cref{sec:appendix-6-linear-adj}}
+
+\[
+\hat{\tau}(\beta_1, \beta_0) = n_1^{-1}\sum_{i=1}^n Z_i (Y_i - \beta_1^\top X_i) - n_0^{-1}\sum_{i=1}^n (1-Z_i)(Y_i - \beta_0^\top X_i) .
+\label{eq:6-linear-adj}
+\]
+
+这个协变量调整估计量通过残差化潜在结果来尝试降低 $\hat{\tau}$ 的方差。当 $\beta_1 = \beta_0 = 0$ 时，它退化为 $\hat{\tau}$。对于任何固定的 $\beta_1$ 和 $\beta_0$，它都具有均值 $\tau$（因为 $\bar{X} = 0$）。
+
+我们感兴趣的是找到使 $\hat{\tau}(\beta_1, \beta_0)$ 方差最小的 $(\beta_1, \beta_0)$。从 OLS 拟合的性质可知，\footnote{推导见附录 \cref{sec:appendix-6-ols-connection}}
+
+\begin{Proposition}[命题 6.2 — Lin 估计量的 OLS 表示]\label{prop:6.2}
+\cref{eq:6-linear-adj} 中的估计量 $\hat{\tau}(\hat{\beta}_1, \hat{\beta}_0)$ 等于 $Y_i$ 对 $(1, Z_i, X_i, Z_i \times X_i)$ 的 OLS 回归中 $Z_i$ 的系数，即 Lin (2013) 的估计量 $\hat{\tau}_{\mathrm{L}}$。
+\end{Proposition}
+
+Lin (2013) 进一步表明，来自 \cref{prop:6.2} 中 OLS 的 EHW 标准误与保守估计量 $\hat{V}(\hat{\beta}_1, \hat{\beta}_0)$ 几乎相同。直观上，这是因为我们不假设线性模型是正确的，而 EHW 标准误对模型误设是稳健的。
+
+\textbf{警告}：渐近理论要求较大的样本量以及对潜在结果和协变量的一些正则条件。在有限样本中，由于估计系数 $\hat{\beta}_1$ 和 $\hat{\beta}_0$ 的额外不确定性，回归调整可能甚至有害。
+
+\subsection{从预测视角理解 Lin 估计量}\label{sec:6-prediction-view}
+
+我们可以用预测潜在结果的视角来看待 Lin (2013) 的估计量。使用治疗组数据，基于 $X$ 建立 $Y(1)$ 的预测模型：
+\[
+\hat{\mu}_1(X) = \hat{\gamma}_1 + \hat{\beta}_1^\top X .
+\]
+
+类似地，使用对照组数据建立 $Y(0)$ 的预测模型：
+\[
+\hat{\mu}_0(X) = \hat{\gamma}_0 + \hat{\beta}_0^\top X .
+\]
+
+如果我们用预测模型填补缺失的潜在结果，则有如下\textbf{预测估计量}：
+\[
+\hat{\tau}_{\text{pred}} = n^{-1}\left\{ \sum_{Z_i=1} Y_i + \sum_{Z_i=0} \hat{\mu}_1(X_i) - \sum_{Z_i=1} \hat{\mu}_0(X_i) - \sum_{Z_i=0} Y_i \right\} .
+\]
+
+可以验证，\footnote{推导见附录 \cref{sec:appendix-6-pred-equivalence}}
+\[
+\hat{\tau}_{\text{pred}} = \hat{\tau}_{\mathrm{L}} .
+\]
+
+如果我们预测所有潜在结果（即使它们已被观测），则得到\textbf{投影估计量}：
+\[
+\hat{\tau}_{\text{proj}} = n^{-1}\sum_{i=1}^n \{\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)\} .
+\]
+
+同样地，$\hat{\tau}_{\text{proj}} = \hat{\tau}_{\mathrm{L}}$。这些等价的表示揭示了 Lin 估计量的不同侧面。
+
+\textbf{术语注记}："predictive" 和 "projective" 的术语来自调查抽样文献（Firth and Bennett, 1998; Ding and Li, 2018）。预测量 $\hat{\mu}_1(X)$ 和 $\hat{\mu}_0(X)$ 可以相当一般，包括更复杂的机器学习算法。然而，构造点估计只是分析 CRE 的第一步，更重要的第二步是量化与估计量相关的不确定性。
+
+\subsection{从协变量不平衡调整视角理解 Lin 估计量}\label{sec:6-imbalance-view}
+
+线性调整估计量还有另一种等价形式：\footnote{推导见附录 \cref{sec:appendix-6-imbalance-form}}
+
+\[
+\hat{\tau}(\beta_1, \beta_0) = \hat{\tau} - \gamma^\top \hat{\tau}_X ,
+\]
+其中 $\gamma = \frac{n_0}{n}\beta_1 + \frac{n_1}{n}\beta_0$。
+
+类似地，Lin (2013) 的估计量有形式
+\[
+\hat{\tau}_{\mathrm{L}} = \hat{\tau} - \hat{\gamma}^\top \hat{\tau}_X ,
+\]
+其中 $\hat{\gamma} = \frac{n_0}{n}\hat{\beta}_1 + \frac{n_1}{n}\hat{\beta}_0$。
+
+这些形式是"调整协变量不平衡"的数学陈述——它们本质上是减去协变量均值差的某个线性组合。由于 $\hat{\tau}$ 和 $\hat{\tau}_X$ 在 CRE 下相关，适当选择的 $\gamma$ 进行协变量调整可以降低 $\hat{\tau}$ 的方差。
+
+另一个有趣的特点是，最终估计量只依赖于 $\gamma$ 或 $\hat{\gamma}$，因此 $\beta$ 系数的选择不是唯一的。Li and Ding (2020) 指出了这个简单事实。因此，Lin (2013) 的估计量只是最优估计量之一。然而，它可以通过标准 OLS 和 EHW 标准误轻松实现——这就是为什么本书专注于它。
+
+\section{回归调整的补充讨论}\label{sec:6-additional-remarks}
+
+\subsection{ReM 与回归调整的对偶性}\label{sec:6-duality}
+
+Li et al. (2018b) 指出，ReM 和 Lin (2013) 的回归调整在使用协变量的设计中是\textbf{对偶的}。更具体地说，当 $a$ 很小时，ReM 下 $\hat{\tau}$ 的渐近分布与 CRE 下 $\hat{\tau}_{\mathrm{L}}$ 的渐近分布几乎相同。因此，ReM 在设计阶段使用协变量，而 Lin (2013) 的回归调整在分析阶段使用协变量，当 $a$ 很小时能达到几乎相同的渐近效率增益。
+
+\textbf{设计阶段 vs 分析阶段}：这种对偶性意味着，我们可以在设计阶段通过 ReM 确保协变量平衡，然后在分析阶段通过回归调整进一步提高效率。这是一种"双保险"策略。
+
+\subsection{回归调整与后分层的等价性}\label{sec:6-equivalence}
+
+如果我们有离散的协变量 $C_i$（$K$ 个类别），可以创建 $K-1$ 个居中的虚拟变量：
+\[
+X_i = \left( \mathbb{I}(C_i = 1) - \pi_{[1]}, \ldots, \mathbb{I}(C_i = K-1) - \pi_{[K-1]} \right) ,
+\]
+其中 $\pi_{[k]}$ 是 $C_i = k$ 的单元比例。在这种情况下，Lin (2013) 的回归调整等价于后分层，如下命题所述。
+
+\begin{Proposition}[命题 6.3 — 回归调整与后分层的等价性]\label{prop:6.3}
+基于 $X_i$ 的 $\hat{\tau}_{\mathrm{L}}$ 在数值上与基于 $C_i$ 的后分层估计量 $\hat{\tau}_{\mathrm{PS}}$（见第 \ref{ch:5} 章）相同。
+\end{Proposition}
+
+这个命题揭示了回归调整与后分层之间的深层联系——它们本质上是处理协变量不平衡的两种不同语言。
+
+\subsection{差分作为协变量调整的特殊情形}\label{sec:6-did}
+
+在许多研究中，一个重要的协变量 $X$ 是治疗前的滞后结果。例如，在教育研究中，如果结果 $Y$ 是治疗后测试成绩，那么协变量 $X$ 是基线测试成绩；如果结果 $Y$ 是工作培训后的对数工资，那么协变量 $X$ 是工作培训前的对数工资。
+
+将滞后结果 $X$ 作为协变量，一个流行的估计量是令 $\beta_1 = \beta_0 = 1$ 时的增益分数或差分估计量：
+\[
+\hat{\tau}(1,1) = n_1^{-1}\sum_{i=1}^n Z_i (Y_i - X_i) - n_0^{-1}\sum_{i=1}^n (1-Z_i)(Y_i - X_i) .
+\]
+
+第一个形式证明了"增益分数"这个名称的合理性——它本质上是增益分数 $g_i = Y_i - X_i$ 的差值均值。第二个形式证明了"差分"这个名称的合理性——它是两个均值之差的差。
+
+\textbf{关键区别}：$\hat{\tau}(1,1)$ 预先固定 $\beta_1 = \beta_0 = 1$，而 Lin (2013) 的估计量涉及两个估计的 $\beta$。$\hat{\tau}(1,1)$ 是无偏的，而 Lin (2013) 的估计量在有限样本中是有偏的。但在理论上，Lin (2013) 的估计量在大样本下总是比 $\hat{\tau}(1,1)$ 更有效。
+
+\section{分层随机实验的推广}\label{sec:6-sre-extension}
+
+我们可能有在一个离散变量 $C$ 上分层的实验，同时也观测到额外的协变量 $X$。如果所有层都足够大，我们可以在各层内获得 Lin (2013) 的估计量 $\hat{\tau}_{\mathrm{L},[k]}$，然后将最终估计量构造为
+\[
+\hat{\tau}_{\mathrm{L},\mathrm{S}} = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{\mathrm{L},[k]} .
+\]
+
+保守的方差估计量是
+\[
+\hat{V}_{\mathrm{L},\mathrm{S}} = \sum_{k=1}^K \pi_{[k]}^2 \hat{V}_{\mathrm{EHW},[k]} ,
+\]
+其中 $\hat{V}_{\mathrm{EHW},[k]}$ 是层 $k$ 内将结果对截距、治疗指标、协变量及其交互进行 OLS 拟合后的 EHW 方差估计量。重要的是，我们需要将协变量中心化到各层特定的均值。
+
+\section{设计策略的统一与比较}\label{sec:6-unification}
+
+Li and Ding (2020) 统一了文献，表明我们可以\textbf{结合重随机化和回归调整}。即，如果我们在设计阶段进行重随机化，我们可以在分析阶段使用 Lin (2013) 的估计量和 EHW 标准误。重随机化和回归调整的结合在设计阶段改善协变量平衡，在分析阶段提高估计效率。
+
+\cref{tab:6-design-analysis} 总结了从 Neyman (1923) 到 Li and Ding (2020) 的文献。
+
+\begin{table}[htbp]
+\centering
+\caption{实验的设计与分析策略}\label{tab:6-design-analysis}
+\begin{tabular}{c|c|c|c}
+\hline
+ & \multicolumn{2}{c}{分析} \\
+\hline
+设计 & $\hat{\tau}$ (Neyman, 1923) & $\hat{\tau}_{\mathrm{L}}$ (Lin, 2013) \\
+\hline
+CRE & 原始差值均值 & 回归调整 \\
+\hline
+ReM & $\hat{\tau}$ (Li et al., 2018b) & $\hat{\tau}_{\mathrm{L}}$ (Li and Ding, 2020) \\
+\hline
+\end{tabular}
+\end{table}
+
+\cref{tab:6-design-analysis} 中的箭头说明了：
+\begin{itemize}
+  \item 箭头 1：协变量调整在 CRE 下的效率增益——渐近地，$\hat{\tau}_{\mathrm{L}}$ 比 $\hat{\tau}$ 有更小的方差。
+  \item 箭头 2：ReM 的效率增益——渐近地，ReM 下的 $\hat{\tau}$ 比 CRE 下的 $\hat{\tau}$ 有更窄的分位数范围。
+  \item 箭头 3 和 4：ReM 与 CRE 结合的好处。
+\end{itemize}
+
+\section{模拟研究}\label{sec:6-simulation}
+
+Angrist et al. (2009) 进行了一个评估不同策略对大学新生学业成绩影响的实验。这里我使用原始数据的一个子集，聚焦于对照组和接受学业支持服务和良好成绩经济激励的治疗组。结果是第一年结束时的 GPA。两个协变量是性别和基线 GPA。
+
+\begin{Example}[模拟研究]\label{ex:6-simulation}
+我们使用 Angrist et al. (2009) 数据的一个子集，评估四种设计与分析策略的表现。
+
+代码实现（省略数据读取和缺失值填补）：
+\begin{verbatim}
+# 未调整估计量
+fit_unadj = lm(y ~ z)
+ace_unadj = coef(fit_unadj)[2]
+se_unadj = sqrt(hccm(fit_unadj, type = "hc2"))[2, 2]
+
+# 回归调整
+x = scale(x)
+fit_adj = lm(y ~ z*x)
+ace_adj = coef(fit_adj)[2]
+se_adj = sqrt(hccm(fit_adj, type = "hc2"))[2, 2]
+\end{verbatim}
+
+模拟结果（2000 次蒙特卡洛复制，ReM 阈值 $a = 0.05$）：
+
+\begin{center}
+\begin{tabular}{ccccc}
+估计量 & 估计值 & 标准误 & t 统计量 & p 值 \\
+\hline
+Neyman & 0.054 & 0.076 & 0.719 & 0.472 \\
+Lin & 0.075 & 0.072 & 1.036 & 0.300 \\
+\end{tabular}
+\end{center}
+
+调整后的估计量有更小的标准误，尽管它给出了与未调整估计量相同的（不显著）结论。
+\end{Example}
+
+模拟还评估了四种设计与分析策略组合的表现。为显示 ReM 和回归调整的改进，我将误差项重新缩放了 0.1 和 0.25 倍以提高信噪比。模拟中的"真实"结果模型是非线性的，但我们仍然使用线性调整进行估计——通过这种方式，我们可以评估在线性模型误设时估计量的性质。
+
+\textbf{主要发现}：如图所示，所有估计量几乎无偏，且 ReM 和回归调整都提高了效率。当噪声水平较小时，它们更有效——这与理论预测一致。
+
+\section{结语：协变量平衡的两种路径}\label{sec:6-conclusion}
+
+本章介绍了处理连续协变量的两种互补策略：重随机化（ReM）和回归调整。
+
+\textbf{ReM} 使用 Mahalanobis 距离作为平衡准则。我们可以考虑更一般的重随机化，将平衡准则定义为 $\mathbf{Z}$ 和 $\mathbf{X}$ 的函数。例如，我们可以使用基于 $X_i = (x_{i1}, \ldots, x_{iK})^\top$ 所有坐标边际检验的准则，只在 $|\hat{\tau}_{x_k} / \sqrt{n/(n_1 n_0) S_{x_k}^2}| \leq a$（$k = 1, \ldots, K$）时接受 $\mathbf{Z}$。见 Zhao and Ding (2021b) 对基于此准则及其他准则的重随机化理论的讨论。
+
+\textbf{Fisher 的 ANCOVA} 多年来一直是标准方法。Lin (2013) 的改进即使在线性模型误设时也具有更好的理论性质。对于二元结果，logistic 回归在潜在结果框架下没有好的性质——即使 logistic 模型是正确的，系数估计的也是条件比值比，可能不是感兴趣的参数；如果 logistic 模型不正确，系数更难解释。如果感兴趣的参数是平均因果效应，我们仍然可以使用 Lin (2013) 的估计量分析 CRE 中的二元结果数据。Guo and Basse (2023) 将 Lin (2013) 的理论扩展到允许使用广义线性模型构造平均因果效应的估计量。
+
+\textbf{Lin (2013) 理论的其他扩展}集中于高维协变量。Bloniarz et al. (2016) 关注协变量数目多于样本量的情形，建议用 LASSO 拟合代替 OLS 拟合。Lei and Ding (2021) 关注协变量数目发散而不假设稀疏性的情形，在某些正则条件下证明 Lin (2013) 的估计量仍然一致且渐近正态。Wager et al. (2016) 提出使用机器学习方法分析高维实验数据。
+
+\textbf{核心信息}：ReM 和回归调整代表了协变量平衡的两种哲学——前者通过设计主动控制，后者通过分析被动调整。它们可以单独使用，也可以联合使用——联合使用能在设计阶段和分析阶段同时获益。
+
+\section{习题}\label{sec:6-homework}
+
+\begin{Exercise}{FRT under ReM}
+描述在 ReM 下的 FRT。
+\end{Exercise}
+
+\begin{Exercise}{Mahalanobis 距离的不变性}
+证明引理 \cref{lemm:6.1}。
+\end{Exercise}
+
+\begin{Exercise}{重随机化下差值均值估计量的无偏性}
+假设从 CRE 中抽取 $\mathbf{Z} = (Z_1, \ldots, Z_n)$，当且仅当 $\phi(\mathbf{Z}, \mathbf{X}) = 1$ 时接受，其中 $\phi$ 是预定的平衡准则。证明：如果 $n_1 = n_0$ 且 $\phi(\mathbf{Z}, \mathbf{X}) = \phi(\mathbf{1}_n - \mathbf{Z}, \mathbf{X})$，则 $\hat{\tau}$ 对 $\tau$ 无偏。验证当 $n_1 = n_0$ 时，使用 Mahalanobis 距离的重随机化满足此条件。给出当这两个条件不满足时 $\hat{\tau}$ 对 $\tau$ 有偏的反例。
+\end{Exercise}
+
+\begin{Exercise}{$R^2$ 的等价形式}
+证明命题 \cref{prop:6.1}。
+\end{Exercise}
+
+\begin{Exercise}{协变量调整 FRT}
+在协变量调整 FRT 中，分别在伪结果策略和模型输出策略下推导 p 值的计算方法。
+\end{Exercise}
+
+\begin{Exercise}{Lin 估计量的偏}
+使用蒙特卡洛模拟研究 Lin 估计量在小样本下的有限样本偏。将样本量从 $n = 20$ 变化到 $n = 500$，重复 1000 次，报告平均偏和均方误差。
+\end{Exercise}
+
+\begin{Exercise}{Lin 估计量的 OLS 表示}
+证明命题 \cref{prop:6.2}（这是纯线性代数事实）。
+\end{Exercise}
+
+\begin{Exercise}{预测估计量的等价性}
+证明 $\hat{\tau}_{\text{pred}} = \hat{\tau}_{\mathrm{L}}$。
+\end{Exercise}
+
+\begin{Exercise}{投影估计量的等价性}
+证明 $\hat{\tau}_{\text{proj}} = \hat{\tau}_{\mathrm{L}}$。
+\end{Exercise}
+
+\begin{Exercise}{协变量不平衡调整形式}
+证明 $\hat{\tau}(\beta_1, \beta_0) = \hat{\tau} - \gamma^\top \hat{\tau}_X$ 和 $\hat{\tau}_{\mathrm{L}} = \hat{\tau} - \hat{\gamma}^\top \hat{\tau}_X$。
+\end{Exercise}
+
+\begin{Exercise}{差分估计量的方差}
+推导 $\hat{\tau}(1,1)$ 的保守方差估计量 $\hat{V}(1,1)$。
+\end{Exercise}
+
+\begin{Exercise}{回归调整与后分层的等价性}
+证明命题 \cref{prop:6.3}。
+\end{Exercise}
+
+\begin{Exercise}{协变量不平衡与效率}
+模拟研究当协变量与结果的相关性从 $0.1$ 变化到 $0.9$ 时，回归调整的效率增益如何变化。
+\end{Exercise}
+
+\begin{Exercise}{高维协变量的 LASSO 调整}
+使用 LASSO 代替 OLS 进行回归调整，比较两者在协变量稀疏时的表现。
+\end{Exercise}
+
+\begin{Exercise}{缺失数据的填补}
+在 \cref{ex:6-simulation} 的模拟中，评估不同缺失值填补策略对估计量的影响。
+\end{Exercise}
+
+\section{附录：推导}\label{sec:appendix-6}
+
+\subsection{协变量均值差的协方差矩阵}\label{sec:appendix-6-cov-balance}
+
+\textbf{背景}：我们推导 $\hat{\tau}_X$ 的协方差矩阵。
+
+\textbf{目标}：证明 $\text{cov}(\hat{\tau}_X) = \frac{n}{n_1 n_0} S_X^2$。
+
+\textbf{推导}：...\footnote{详细推导见原始笔记}
+
+\subsection{$R^2$ 的等价形式推导}\label{sec:appendix-6-r-squared}
+
+\textbf{背景}：我们推导 $R^2$ 的等价形式。
+
+\textbf{目标}：证明命题 \cref{prop:6.1}。
+
+\textbf{推导}：...
+
+\subsection{线性调整估计量的推导}\label{sec:appendix-6-linear-adj}
+
+\textbf{背景}：我们详细推导线性调整估计量的形式。
+
+\textbf{目标}：从 $\hat{\tau}(\beta_1, \beta_0)$ 的定义出发，推导其方差。
+
+\textbf{推导}：...
+
+\subsection{Lin 估计量的 OLS 连接}\label{sec:appendix-6-ols-connection}
+
+\textbf{背景}：我们证明 $\hat{\tau}(\hat{\beta}_1, \hat{\beta}_0)$ 等于 OLS 回归中 $Z_i$ 的系数。
+
+\textbf{目标}：建立线性调整估计量与 OLS 的等价性。
+
+\textbf{推导}：...
+
+\subsection{预测估计量的等价性证明}\label{sec:appendix-6-pred-equivalence}
+
+\textbf{背景}：我们证明 $\hat{\tau}_{\text{pred}} = \hat{\tau}_{\mathrm{L}}$。
+
+\textbf{目标}：从预测公式推导到 Lin 估计量形式。
+
+\textbf{推导}：...
+
+\subsection{协变量不平衡调整形式推导}\label{sec:appendix-6-imbalance-form}
+
+\textbf{背景}：我们推导 $\hat{\tau}(\beta_1, \beta_0)$ 的不平衡调整形式。
+
+\textbf{目标}：证明 $\hat{\tau}(\beta_1, \beta_0) = \hat{\tau} - \gamma^\top \hat{\tau}_X$。
+
+\textbf{推导}：...
+
+\endchapter
