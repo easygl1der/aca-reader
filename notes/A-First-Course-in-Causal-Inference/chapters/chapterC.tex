@@ -60,9 +60,16 @@ Pearson 相关系数定义为
 
 相关系数衡量的是 $Y$ 与 $X$ 之间的线性依赖程度，其取值在 $[-1, 1]$ 之间。
 
+\textbf{多元相关系数：} 若 $Y$ 是随机变量，$X$ 是随机向量，则多元相关系数定义为
+\[
+R_{YX}^2 = \corr^2(Y, X) = \frac{\cov(Y, X) \, \cov(X)^{-1} \, \cov(X, Y)}{\var(Y)} .
+\]
+它衡量 $Y$ 与 $X$ 向量之间线性依赖的程度，但这个定义在 $Y$ 和 $X$ 之间不对称。
+
 \textbf{协方差的分解：} 类似于方差分解，我们也有协方差的分解公式（见 \cref{sec:derivation-covariance-decomposition}）：
 \[
 \cov(A_1, A_2) = \mathbb{E}\{\cov(A_1, A_2 \mid B)\} + \cov\{\mathbb{E}(A_1 \mid B), \mathbb{E}(A_2 \mid B)\}.
+\tag*{\footnote{推导见附录 \cref{sec:derivation-covariance-decomposition}}}
 \]
 
 这个公式在因果推断中非常重要——它帮助我们理解在控制某个变量 $B$ 后，$A_1$ 与 $A_2$ 之间的关系如何变化。
@@ -81,7 +88,7 @@ Cauchy-Schwarz 不等式是概率论中最基本的不等式之一。对于任�
 |\cov(A, B)| \leq \sqrt{\var(A)\var(B)} .
 \]
 
-这正是 \cref{eq:pearson-correlation} 中相关系数绝对值不超过 1 的根本原因。
+这正是 \cref{eq:pearson-correlation} 中相关系数绝对值不超过 $1$ 的根本原因。
 
 \section{多元正态分布}
 
@@ -116,13 +123,15 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 \cref{eq:conditional-normal} 揭示了多元正态的一个优雅性质：条件期望是线性函数，条件方差与条件均值无关。这个性质在偏相关分析中至关重要。
 
 \textbf{偏相关系数：} 在第一章中我们遇到过偏相关系数。对于三元正态 $(Y, X, Z)^\top$，$Y$ 和 $Z$ 的偏相关系数定义为条件分布 $(Y, Z) \mid X$ 中的相关系数：
-\[
+\begin{equation}\label{eq:partial-correlation}
 \rho_{YZ|X} = \frac{\rho_{YZ} - \rho_{YX}\rho_{ZX}}{\sqrt{1-\rho_{YX}^2}\sqrt{1-\rho_{ZX}^2}} .
-\]
+\end{equation}
 
 即使 $\rho_{YZ} > 0$，偏相关系数 $\rho_{YZ|X}$ 仍可能为负——这正是 Yule-Simpson 悖论在正态情形下的数学本质。
 
 \section{常用小样本分布}
+
+在统计学的小样本推断中，我们经常需要处理以下分布。
 
 \subsection{$\chi^2$ 分布}
 
@@ -132,6 +141,8 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 \]
 其中 $\chi_n^2$ 表示自由度为 $n$ 的卡方分布。$\chi_n^2$ 分布的均值是 $n$，方差是 $2n$。
 
+卡方分布在方差估计与拟合优度检验中扮演核心角色。
+
 \subsection{$t$ 分布}
 
 设 $X \sim N(0, 1)$，$Q_n \sim \chi_n^2$，且 $X \perp Q_n$，则
@@ -139,6 +150,8 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 \frac{X}{\sqrt{Q_n / n}} \sim t_n ,
 \]
 其中 $t_n$ 表示自由度为 $n$ 的 $t$ 分布。当 $n=1$ 时，$t_1$ 分布就是著名的 Cauchy 分布——它没有有限的均值。
+
+$t$ 分布在小样本情形下用于构造均值估计的置信区间。
 
 \section{极限定理}
 
@@ -166,7 +179,7 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 
 \subsection{大数定律}
 
-\begin{Theorem}[弱大数定律]\label{thm:lln}
+\begin{Theorem}[弱大数定律]\labelthm:lln}
 若 $X_1, \ldots, X_n \stackrel{\text{IID}}{\sim} X$ 且 $\mathbb{E}|X| < \infty$，则样本均值依概率收敛到总体均值：
 \[
 \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{p} \mathbb{E}(X).
@@ -175,9 +188,11 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 
 大数定律告诉我们：随着样本量增大，样本均值越来越接近总体均值。这是统计推断的理论基础。
 
+\textbf{历史注记：} 大数定律的研究可以追溯到 Bernoulli（1713），但 Bernoulli 证明的是现在所称的"弱大数定律"。真正严谨的证明由 Chebyshev（1867）和 Borel（1909）给出。
+
 \subsection{中心极限定理}
 
-\begin{Theorem}[中心极限定理]\label{thm:clt}
+\begin{Theorem}[中心极限定理]\label{eq:clt}
 若 $X_1, \ldots, X_n \stackrel{\text{IID}}{\sim} X$ 且 $\var(X) < \infty$，则
 \[
 \frac{\bar{X} - \mathbb{E}(X)}{\sqrt{\var(X) / n}} \xrightarrow{d} N(0, 1).
@@ -186,11 +201,13 @@ Y_1 \mid Y_2 = y_2 \sim N\left(\mu_1 + \frac{\sigma_{12}}{\sigma_2^2}(y_2 - \mu_
 
 中心极限定理是统计学中最重要的定理之一：无论总体分布是什么，只要样本量足够大，标准化后的样本均值就近似服从标准正态分布。这使得我们能够在不知道总体分布的情况下进行统计推断。
 
+\textbf{历史注记：} 中心极限定理的发展经历了漫长历程。De Moivre（1733）首先证明二项分布的近似正态性，Laplace（1810）推广了这一结果。Lindeberg（1922）和 Feller（1935）给出了最一般的条件。
+
 \section{Delta 方法}
 
 Delta 方法是建立非线性函数渐近正态性的有力工具。
 
-\begin{Theorem}[Delta 方法]\label{thm:delta-method}
+\begin{Theorem}[Delta 方法]\label{eq:delta-method}
 设 $\sqrt{n}(X_n - \mu) \xrightarrow{d} N(0, \Sigma)$，函数 $g(x)$ 在 $\mu$ 处有非零导数 $\nabla g(\mu)$。则
 \[
 \sqrt{n}\{g(X_n) - g(\mu)\} \xrightarrow{d} N\left(0, (\nabla g(\mu))^\top \Sigma \, \nabla g(\mu)\right).
@@ -210,6 +227,7 @@ g(X_n) - g(\mu) \approx (\nabla g(\mu))^\top (X_n - \mu).
 其中 $\mu_X \neq 0$。应用 Delta 方法，可得
 \[
 \sqrt{n}\left(\frac{Y_n}{X_n} - \frac{\mu_Y}{\mu_X}\right) \xrightarrow{d} N\left(0, \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2\sigma_X^2}{\mu_X^4} - \frac{2\mu_Y\sigma_{YX}}{\mu_X^3}\right).
+\tag*{\footnote{推导见附录 \cref{sec:derivation-ratio-asymptotic}}}
 \]
 
 这个结果在因果推断中非常重要——许多估计量（如风险比、优势比）都可以表示为某种比率形式。
@@ -275,15 +293,17 @@ Fisher 证明了在原假设 $H_0: p_1 = p_0$ 下，条件分布 $n_{11} \mid n_
 
 基于这个条件分布，我们可以计算精确的 $p$ 值——这就是 Fisher 精确检验的核心思想。
 
+\textbf{动机：} 为什么 Fisher 要用条件分布？原因是：在原假设 $p_1 = p_0$ 下，边缘和 $n_{.1}$（第一列的总和）包含了关于共同成功率 $p$ 的信息，但条件分布 $n_{11} \mid n_{.1}$ 却不依赖这个未知参数——这正是精确推断的关键。
+
 \subsection{风险差、风险比与优势比}
 
 基于二项模型，我们可以估计各参数：
 
-\begin{align*}
-\widehat{\text{RD}} &= \hat{p}_1 - \hat{p}_0, \\
-\log\widehat{\text{RR}} &= \log\frac{\hat{p}_1}{\hat{p}_0}, \\
-\log\widehat{\text{OR}} &= \log\frac{\hat{p}_1/(1-\hat{p}_1)}{\hat{p}_0/(1-\hat{p}_0)} = \log\frac{n_{11}n_{00}}{n_{10}n_{01}} .
-\end{align*}
+\begin{align}
+\widehat{\text{RD}} &= \hat{p}_1 - \hat{p}_0, \label{eq:risk-diff} \\
+\log\widehat{\text{RR}} &= \log\frac{\hat{p}_1}{\hat{p}_0}, \label{eq:log-risk-ratio} \\
+\log\widehat{\text{OR}} &= \log\frac{\hat{p}_1/(1-\hat{p}_1)}{\hat{p}_0/(1-\hat{p}_0)} = \log\frac{n_{11}n_{00}}{n_{10}n_{01}} . \label{eq:log-odds-ratio}
+\end{align}
 
 渐近地，这些估计量都服从正态分布，其方差可由 Delta 方法得到。
 
@@ -292,6 +312,8 @@ Fisher 证明了在原假设 $H_0: p_1 = p_0$ 下，条件分布 $n_{11} \mid n_
 \subsection{Behrens-Fisher 问题}
 
 Behrens-Fisher 问题关心的是：当两个总体的方差未知且可能不等时，如何构造两均值差的置信区间？这个问题没有精确解，只能求助于渐近方法或近似方法。
+
+这个问题在因果推断中经常出现——当我们比较处理组与对照组的潜在结果均值时，往往不能假设两者方差相等。
 
 \subsection{Fieller-Creasy 问题}
 
@@ -324,10 +346,7 @@ Fieller-Creasy 问题涉及比率参数的置信区间构造。例如，在因�
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:c.3} 偏相关系数}\label{ex:c.3}
-考虑三元正态随机向量 $(Y, X, Z)^\top \sim N(\mathbf{0}, \Sigma)$。证明偏相关系数公式：
-\[
-\rho_{YZ|X} = \frac{\rho_{YZ} - \rho_{YX}\rho_{ZX}}{\sqrt{1-\rho_{YX}^2}\sqrt{1-\rho_{ZX}^2}} .
-\]
+考虑三元正态随机向量 $(Y, X, Z)^\top \sim N(\mathbf{0}, \Sigma)$。证明偏相关系数公式（见 \cref{eq:partial-correlation}）。
 \end{Exercise}
 
 \begin{Exercise}{\ref{ex:c.4} Delta 方法应用}\label{ex:c.4}
@@ -346,7 +365,7 @@ Fieller-Creasy 问题涉及比率参数的置信区间构造。例如，在因�
 \parskip=0pt
 \textbf{推荐阅读}：\cite{durrett2019} 是概率论的优秀教材，其中包含对极限理论的详尽讨论。\cite{van2000} 是渐近统计的标准参考。
 
-\textbf{历史注记}：Eve's Law 最早由 Laplace 在 1774 年提出，但 Joe Blitzstein 教授在哈佛统计系任教期间广泛推广了这个名称。
+\textbf{历史注记}：Eve's Law 最早由 Laplace 在 1774 年提出，但 Joe Blitzstein 教授在哈佛统计系任教期间广泛推广了这个名称。中心极限定理的发展历程同样精彩：De Moivre（1733）、Laplace（1810）、Lindeberg（1922）、Feller（1935）逐步建立了最一般的理论。
 \endgroup
 \end{Exercise}
 
@@ -371,7 +390,7 @@ Fieller-Creasy 问题涉及比率参数的置信区间构造。例如，在因�
 代入并整理，可得
 \[
 \cov(A_1, A_2) = \mathbb{E}\{\cov(A_1, A_2 \mid B)\} + \cov\{\mathbb{E}(A_1 \mid B), \mathbb{E}(A_2 \mid B)\} .
-\tag*{$\square$}
+\tag*{\qed}
 \]
 
 \subsection{比率渐近正态性的推导}\label{sec:derivation-ratio-asymptotic}
@@ -391,7 +410,7 @@ Fieller-Creasy 问题涉及比率参数的置信区间构造。例如，在因�
 展开即得渐近方差：
 \[
 \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2\sigma_X^2}{\mu_X^4} - \frac{2\mu_Y\sigma_{YX}}{\mu_X^3} .
-\tag*{$\square$}
+\tag*{\qed}
 \]
 
 % === 用户问答记录 ===
