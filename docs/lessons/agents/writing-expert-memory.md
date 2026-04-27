@@ -1392,6 +1392,37 @@ rm -f "$WRAPPER"
 
 ---
 
+## L724: Chapter 21 (Instrumental Variable) 写作教训
+
+**日期**: 2026-04-28
+**来源**: ch21-writer 主笔 rewrite 因果推断 chapter21
+**累计次数**: 1 次
+
+**写作内容**:
+- 工具变量（IV）章节，Part V 开篇
+- 核心概念：CACE, LATE, 排除限制，单调性，ITT
+- 弱工具变量问题与 FAR 置信集
+
+**做得好的地方**:
+1. **Stein 叙事风格**：从"无法假设可忽略性时怎么办"的问题出发，逐步引入 IV 思想
+2. **Dorn 1953 引言**：使用"鼓励设计"视角，与书中原文一致
+3. **四类依从者**：清晰解释 always taker, complier, defier, never taker
+4. **三个核心假设**：随机性、单调性、排除限制，动机清晰
+5. **CACE 识别定理**：定理 21.1 正确陈述，证明简洁
+6. **弱 IV 问题**：指出比值估计量在 $\tau_D \approx 0$ 时的失效问题
+
+**发现的问题**:
+1. 最初用 `\begin{Lemma}` 包理论 21.1，应为 `\begin{Theorem}`
+2. 最初用 `\itemize` 而非 `\enumerate` 列举例子
+3. 需要添加 AngristImbensRubin:1996, ImbensAngrist:1994, Dorn:1953 引用
+
+**防止措施**:
+- 写完定理后检查环境名称是否与内容匹配
+- 列举关键类型/步骤用 enumerate，不用 itemize
+- 引用论文前检查 references.bib 是否存在对应条目
+
+---
+
 ## L723: Chapter 29 书籍内容与任务描述不匹配
 
 **日期**: 2026-04-26
