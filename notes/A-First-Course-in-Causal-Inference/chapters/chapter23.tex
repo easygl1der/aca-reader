@@ -40,22 +40,22 @@ TSLS 提供了一个优雅的解决方案。顾名思义，这个方法包含两
 
 \subsection{TSLS 的代数推导}\label{sec:TSLS-algebra}
 
-为了看清 TSLS 估计量的本质，我们将其显式地写出来。\footnote{推导过程略，如有需要可参考 \cite{AngristPischke2009}。}
+为了看清 TSLS 估计量的本质，我们将其显式地写出来。\footnote{推导过程详见附录 \cref{sec:appendix-TSLS-derivation}}
 
 第一阶段 OLS 回归可以写成：
 \begin{equation}
-\hat{D}_i = \hat{\Gamma}^{\top}Z_i, \tag{23.3}
+\hat{D}_i = \hat{\Gamma}^{\top}Z_i, \label{eq:23.3}
 \end{equation}
 其中 $\hat{\Gamma} = \left(\sum_{i=1}^{n}Z_iZ_i^{\top}\right)^{-1}\sum_{i=1}^{n}Z_iD_i^{\top}$。
 
 第二阶段的 OLS 估计量为：
 \begin{equation}
-\hat{\beta}_{\mathrm{TSLS}} = \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_iY_i. \tag{23.4}
+\hat{\beta}_{\mathrm{TSLS}} = \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_iY_i. \label{eq:23.4}
 \end{equation}
 
 将 $Y_i = D_i^{\top}\beta + \varepsilon_i$ 代入，经过整理可得：
 \begin{equation}
-\hat{\beta}_{\mathrm{TSLS}} = \beta + \left\{\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_iZ_i^{\top}\right)\hat{\Gamma}\right\}^{-1}\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_i\varepsilon_i\right). \tag{23.5}
+\hat{\beta}_{\mathrm{TSLS}} = \beta + \left\{\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_iZ_i^{\top}\right)\hat{\Gamma}\right\}^{-1}\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_i\varepsilon_i\right). \label{eq:23.5}
 \end{equation}
 
 这个表达式揭示了 TSLS 估计量的本质。由于 $E(Z\varepsilon)=0$，根据大数定律，式 \cref{eq:23.5} 中最后一项的概率极限为 0，因此 $\hat{\beta}_{\mathrm{TSLS}}$ 是 $\beta$ 的相合估计量。
