@@ -1,0 +1,177 @@
+\chapter{两阶段最小二乘}\label{chap:TSLS}
+
+\section{引言：工具变量回归的计算技巧}\label{sec:TSLS-intro}
+
+在上一章中，我们讨论了恰好识别（just-identified）情况下的工具变量（IV）估计：当工具变量 $Z$ 与内生解释变量 $D$ 维度相同时，我们可以直接通过矩条件 $E(ZY)=E(ZD^{\top})\beta$ 求解得到 IV 估计量。然而，在实际研究中，我们常常面临过度识别（over-identified）的情形——也就是说，我们拥有的工具变量数量多于内生变量的数量。
+
+这种情况在经验研究中非常普遍。例如，在研究教育回报的问题时，Angrist and Krueger (1991) 使用出生季度作为教育的工具变量，但实际上我们可能有多个与误差项无关的变量都可以作为工具变量。当工具变量多于内生变量时，矩条件方程组中方程的个数多于未知参数的个数，系统没有唯一的精确解。
+
+一个自然而然的问题是：如何在这种情况下找到一个"最优"的估计量？正是为了回答这个问题，Theil (1953) 和 Basmann (1957) 分别独立地提出了两阶段最小二乘（Two-Stage Least Squares, TSLS）估计量。这是一个巧妙的计算技巧，它将一个看似复杂的过度识别问题转化为两个连续的普通最小二乘回归。
+
+本章我们将详细介绍 TSLS 的动机、原理及其在大样本理论下的性质。
+
+\section{问题设定：过度识别情形}\label{sec:over-identified}
+
+让我们回顾线性工具变量模型的基本设定。假设我们有如下结构方程：
+\begin{equation}
+Y = D^{\top}\beta + \varepsilon, \tag{23.1}
+\end{equation}
+其中 $Y$ 是结果变量，$D$ 是 $p$ 维内生解释变量，$\beta$ 是 $p$ 维待估参数向量。我们假设存在 $q$ 维的工具变量 $Z$ 满足排他性 restriction：$E(\varepsilon Z)=0$。
+
+当 $q>p$（工具变量维度大于内生变量维度）时，我们面临过度识别问题。此时，样本矩条件
+\begin{equation}
+n^{-1}\sum_{i=1}^{n}Z_{i}Y_{i}=n^{-1}\sum_{i=1}^{n}Z_{i}D_{i}^{\top}\beta \tag{23.2}
+\end{equation}
+包含了 $q$ 个方程，但只有 $p$ 个未知参数。当 $q>p$ 时，这些方程通常没有精确解——我们只能寻找一个在某种意义下"最接近"所有矩条件的估计量。
+
+\section{两阶段最小二乘估计量}\label{sec:TSLS-estimator}
+
+TSLS 提供了一个优雅的解决方案。顾名思义，这个方法包含两个阶段：
+
+\begin{definition}[两阶段最小二乘估计量]\label{def:TSLS}
+定义以 $Z$ 为工具变量、$D$ 的系数 $\beta$ 的 TSLS 估计量如下：
+\begin{enumerate}
+\item[\textbf{第一阶段}] 对 $D$ 关于 $Z$ 做 OLS 回归，得到拟合值 $\hat{D}_i$（$i=1,\ldots,n$）。如果 $D_i$ 是向量，则按分量做 OLS 回归。将拟合值向量组成矩阵 $\hat{D}$，其第 $i$ 行为 $\hat{D}_i^{\top}$；
+\item[\textbf{第二阶段}] 对 $Y$ 关于 $\hat{D}$ 做 OLS 回归，得到系数 $\hat{\beta}_{\mathrm{TSLS}}$。
+\end{enumerate}
+\end{definition}
+
+这个定义的表述方式非常直观，但为了理解其深层原理，我们需要进行一些代数推导。
+
+\subsection{TSLS 的代数推导}\label{sec:TSLS-algebra}
+
+为了看清 TSLS 估计量的本质，我们将其显式地写出来。\footnote{推导过程详见附录 \cref{sec:appendix-TSLS-derivation}}
+
+第一阶段 OLS 回归可以写成：
+\begin{equation}
+\hat{D}_i = \hat{\Gamma}^{\top}Z_i, \tag{23.3}
+\end{equation}
+其中 $\hat{\Gamma} = \left(\sum_{i=1}^{n}Z_iZ_i^{\top}\right)^{-1}\sum_{i=1}^{n}Z_iD_i^{\top}$。
+
+第二阶段的 OLS 估计量为：
+\begin{equation}
+\hat{\beta}_{\mathrm{TSLS}} = \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_iY_i. \tag{23.4}
+\end{equation}
+
+将 $Y_i = D_i^{\top}\beta + \varepsilon_i$ 代入，经过整理可得：
+\begin{equation}
+\hat{\beta}_{\mathrm{TSLS}} = \beta + \left\{\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_iZ_i^{\top}\right)\hat{\Gamma}\right\}^{-1}\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_i\varepsilon_i\right). \tag{23.5}
+\end{equation}
+
+这个表达式揭示了 TSLS 估计量的本质。由于 $E(Z\varepsilon)=0$，根据大数定律，式 \cref{eq:23.5} 中最后一项的概率极限为 0，因此 $\hat{\beta}_{\mathrm{TSLS}}$ 是 $\beta$ 的相合估计量。
+
+一个值得注意的代数事实是，当工具变量与内生变量维度相同时（即 $q=p$ 的恰好识别情形），TSLS 估计量与上一章定义的 IV 估计量 $\hat{\beta}_{\mathrm{IV}}$ 在数值上完全相同。
+
+\section{标准误的估计}\label{sec:TSLS-standard-error}
+
+在获得点估计之后，我们需要考虑抽样变异性的度量。基于式 \cref{eq:23.5}，我们可以推导出 TSLS 估计量的渐近方差，并据此构造标准误。
+
+具体而言，首先计算残差 $\hat{\varepsilon}_i = Y_i - \hat{\beta}_{\mathrm{TSLS}}^{\top}D_i$，然后采用 Eicker-Huber-White 稳健方差估计量：
+\begin{equation}
+\hat{V}_{\mathrm{TSLS}} = \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\left(\sum_{i=1}^{n}\hat{\varepsilon}_i^{2}\hat{D}_i\hat{D}_i^{\top}\right)\left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}. \tag{23.6}
+\end{equation}
+
+这里需要特别强调一点：残差 $\hat{\varepsilon}_i$ 来自对原方程 $Y_i$ on $D_i$ 的回归，\emph{而不是}来自第二阶段 OLS 回归 $Y_i$ on $\hat{D}_i$ 的残差。这一细节非常重要，因为它意味着 $\hat{V}_{\mathrm{TSLS}}$ 与直接对第二阶段回归应用稳健标准误所得的结果不同。
+
+\section{特殊情形：单一工具变量与单一内生处理}\label{sec:single-IV-single-treatment}
+
+本节我们考虑一个在应用中最常见的情形：一个工具变量 $Z$ 作用于一个内生处理变量 $D$。考虑如下结构方程组：
+\begin{equation}
+\begin{cases}
+Y_i = \beta_0 + \beta_1 D_i + \beta_2^{\top}X_i + \varepsilon_i, \\
+D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i},
+\end{cases} \tag{23.7}
+\end{equation}
+其中 $D_i$ 是标量内生处理变量，$Z_i$ 是标量工具变量（满足 $E(\varepsilon_iZ_i)=0$），$X_i$ 是外生协变量向量（满足 $E(\varepsilon_iX_i)=0$）。
+
+\subsection{TSLS 的简化形式}\label{sec:TSLS-simplified}
+
+在此特殊情形下，\cref{def:TSLS} 中的 TSLS 估计量简化为：
+
+\begin{definition}[单一内生回归子的 TSLS]\label{def:TSLS-single}
+基于方程组 \cref{eq:23.7}，TSLS 估计量包含以下两步：
+\begin{enumerate}
+\item[\textbf{第一阶段}] 对 $D$ 关于 $(1, Z, X)$ 做 OLS 回归，得到拟合值 $\hat{D}_i$（$i=1,\ldots,n$）；
+\item[\textbf{第二阶段}] 对 $Y$ 关于 $(1, \hat{D}, X)$ 做 OLS 回归，得到系数 $\hat{\beta}_{\mathrm{TSLS}}$，特别是 $\hat{\beta}_{1,\mathrm{TSLS}}$，即 $\hat{D}$ 的系数。
+\end{enumerate}
+\end{definition}
+
+这个两步程序在经验研究中极为常用，因为它在计算上简洁直观，同时保持了良好的统计性质。
+
+\subsection{间接最小二乘}\label{sec:ILS}
+
+结构方程组 \cref{eq:23.7} 还可以通过另一种思路来估计。注意到约化形式（reduced form）为：
+\begin{equation}
+\begin{cases}
+Y_i = \Gamma_0 + \Gamma_1 Z_i + \Gamma_2^{\top}X_i + \varepsilon_{1i}, \\
+D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i},
+\end{cases} \tag{23.8}
+\end{equation}
+其中 $\Gamma_0 = \beta_0 + \beta_1\gamma_0$，$\Gamma_1 = \beta_1\gamma_1$，$\Gamma_2 = \beta_2 + \beta_1\gamma_2$，且 $\varepsilon_{1i} = \varepsilon_i + \beta_1\varepsilon_{2i}$。
+
+关键观察是：由于约化形式方程中的解释变量 $(Z, X)$ 都是外生的，我们可以对这两个方程分别做 OLS 回归，得到一致估计量 $\hat{\Gamma}_1$ 和 $\hat{\gamma}_1$。而待估参数 $\beta_1$ 恰好等于这两个系数的比值：
+\begin{equation}
+\beta_1 = \frac{\Gamma_1}{\gamma_1}. \tag{23.9}
+\end{equation}
+
+因此，我们可以构造间接最小二乘（Indirect Least Squares, ILS）估计量：
+\begin{equation}
+\hat{\beta}_{1,\mathrm{ILS}} = \frac{\hat{\Gamma}_1}{\hat{\gamma}_1}. \tag{23.10}
+\end{equation}
+
+有趣的是，ILS 估计量与 TSLS 估计量在数值上完全相同。
+
+\begin{theorem}[TSLS 与 ILS 的等价性]\label{th:TSLS-ILS-equivalence}
+在单一内生处理变量和单一工具变量的情形下（方程组 \cref{eq:23.7}），我们有
+\begin{equation}
+\hat{\beta}_{1,\mathrm{ILS}} = \hat{\beta}_{1,\mathrm{TSLS}}. \tag{23.11}
+\end{equation}
+\end{theorem}
+
+这个定理的本质是一个代数恒等式，它说明尽管 TSLS 和 ILS 看起来是不同的估计方法，但它们实际上是同一估计量的不同计算路径。\footnote{定理 \cref{th:TSLS-ILS-equivalence} 的证明见习题 \cref{hw:23.2}。}
+
+比值形式的表达式 \cref{eq:23.10} 揭示了 TSLS 估计量的一个重要弱点：当工具变量较弱（即 $\gamma_1$ 接近于零）时，分子和分母都可能面临严重的有限样本偏误问题。
+
+\section{弱工具变量问题}\label{sec:weak-IV}
+
+当工具变量与内生处理变量的相关性较弱时，TSLS 估计量的有限样本性质会严重恶化。这是因为在式 \cref{eq:23.10} 中，我们需要用分母 $\hat{\gamma}_1$ 去除分子 $\hat{\Gamma}_1$，而当 $\gamma_1$ 接近于零时，估计量的分布会变得极度非正态，标准的大样本理论不再适用。
+
+一个更加稳健的推断方法是基于约化形式的 Fieller-Anderson-Rubin (FAR) 方法。该方法的核心思想是：对于任意假设值 $b$，考虑原假设 $H_0(b): \beta_1 = b$。在该假设下，构造调整后的结果变量 $Y_i(b) = Y_i - b D_i$，并检验 $Y_i(b)$ 与工具变量 $Z_i$ 之间是否存在显著关系。如果 $b$ 是真实值，那么根据矩条件 $E(Z\varepsilon)=0$，这一关系应当不显著。
+
+具体地，FAR 置信区间的构造如下：
+\begin{equation}
+\left\{b: |t_Z(b)| \leq z_{1-\alpha/2}\right\}, \tag{23.12}
+\end{equation}
+其中 $t_Z(b)$ 是 $Z$ 在回归 $Y_i(b)$ on $(1, Z, X)$ 中的 $t$ 统计量（使用 EHW 稳健标准误），$z_{1-\alpha/2}$ 是标准正态分布的 $1-\alpha/2$ 分位数。
+
+值得注意的是，这种 FAR 方法在弱工具变量情形下比传统的基于 TSLS 的 Wald 型置信区间更加稳健，而且在某些情况下可以完全避免使用 TSLS 估计量。
+
+\section{应用：Card (1993) 教育回报研究}\label{sec:TSLS-application}
+
+让我们将 TSLS 方法应用于一个经典的经验研究问题：教育对工资的因果效应。Card (1993) 利用美国年轻男性队列数据，使用居住地附近是否有四年制大学作为教育的工具变量，估计了教育的回报率。
+
+在该研究中，工具变量 $Z$ 是"成长地附近是否有四年制大学"的指示变量，处理变量 $D$ 是受教育年限，结果变量 $Y$ 是 1976 年的对数工资。协变量 $X$ 包括种族、年龄及其平方、是否与双亲同住等。
+
+应用 TSLS 方法，我们得到点估计和 95\% 置信区间：
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+ & TSLS 估计 & 下界 & 上界 \\
+\hline
+教育回报率 & 0.132 & 0.026 & 0.237 \\
+\hline
+\end{tabular}
+\end{center}
+
+这意味着，多受一年教育会使工资提高约 13.2\%。使用 FAR 方法，我们得到置信区间为 $[0.028, 0.282]$，与 TSLS 的结果非常接近，这是因为在该数据中工具变量并非特别弱。
+
+\section{小结}\label{sec:TSLS-summary}
+
+本章我们介绍了两阶段最小二乘（TSLS）估计量，这是工具变量方法在过度识别情形下的核心计算技术。TSLS 的关键思想是将一个复杂的矩估计问题转化为两个连续的 OLS 回归，从而大大简化了计算。
+
+从理论角度，我们证明了 TSLS 估计量在大样本下是相合的，并且当工具变量与内生变量维度相同时，它与传统的 IV 估计量完全等价。此外，我们还介绍了 TSLS 与间接最小二乘（ILS）的等价性，以及弱工具变量情形下的 FAR 稳健推断方法。
+
+在应用层面，TSLS 已成为计量经济学中处理内生性问题的标准工具。下一章我们将讨论如何检验工具变量的有效性，以及如何处理可能的工具变量失效情形。
+
+% 可分离文件，不要在此引入 chapter 文件！
+\ifdefined\Separation\else\input{../appendix/appendix-TSLS-derivation}\fi
