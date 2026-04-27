@@ -1,0 +1,259 @@
+% Chapter 10: Outcome Regression for Causal Inference
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style
+
+\chapter{结果回归：连接随机实验与观测性研究}\label{ch:10}
+
+\section{从随机实验到观测性研究：一个自然的问题}
+
+在前几章中，我们研究了随机化实验中的因果推断方法。完全随机化实验（CRE）的关键优势在于：随机分配确保了治疗组和对照组在潜在结果分布上是可比的，从而消除了选择偏差。这使得我们能够从观测数据中直接识别因果效应。
+
+然而，现实中的研究往往无法进行随机化实验。研究者只能利用\textbf{观测性研究（observational studies）}的数据——治疗分配不是由研究者控制的，而是由各种因素决定的。在这些情况下，治疗组和对照组的可比性不再有保证：接受治疗的群体可能本身就与未接受治疗的群体不同。这种差异被称为\textbf{选择偏差（selection bias）}。
+
+\textbf{核心问题产生了}：在观测性研究中，我们能否利用已观测到的协变量信息来恢复因果效应的识别？换句话说，如果治疗分配在给定某些协变量的条件下是"近似随机"的，我们是否可以从观测数据中估计因果效应？
+
+这是因果推断领域的根本问题。本书的第三部分（Part III）将系统讨论这一问题的答案。作为开场，本章介绍四种核心方法的第一种——\textbf{结果回归（outcome regression）}。
+
+\section{三个典型例子}\label{sec:10-motivating-examples}
+
+在形式化理论之前，让我们先通过三个经典例子来理解观测性研究中因果推断的实际场景。
+
+\subsection{职业培训项目的效果}\label{sec:10-lalonde}
+
+\citet{LaLonde:1986} 研究了职业培训项目对个人 earnings 的因果效应。他同时收集了随机实验数据和观测性研究数据。在随机实验中，参与者被随机分配到培训项目或对照组；而在观测性数据中，参与者是否参与培训并非由研究者控制。\citet{LaLonde:1986} 发现，许多传统的统计分析方法在两类数据上给出了截然不同的估计结果。这一发现促使 \citet{Dehejia:1999} 等学者开始探索更适合观测性研究的因果推断方法。LaLonde 数据集后来成为因果推断领域的基准例子。
+
+\subsection{吸烟与同型半胱氨酸水平}\label{sec:10-smoking}
+
+\citet{Bazzano:2003} 利用 NHANES 2005-2006 数据研究了每日吸烟者与不吸烟者之间同型半胱氨酸（homocysteine）水平的差异。已知的协变量包括性别（female）、年龄类别（age3）、教育水平（ed3）、BMI 类别（bmi3）以及收入水平（pov2）。这里的核心问题是：观察到的吸烟组与非吸烟组之间的差异，究竟是吸烟的因果效应，还是由这些协变量分布不同造成的？
+
+\subsection{学校餐饮项目与 BMI}\label{sec:10-school-meal}
+
+\citet{Chan:2016} 研究了学校餐饮项目参与对儿童 BMI 的因果效应。他们使用 NHANES 2007-2008 的子样本数据，包含年龄、性别、种族、家庭收入水平等多个协变量。与前两个例子类似，我们感兴趣的是：在控制这些协变量之后，项目参与对 BMI 是否有因果效应？
+
+这三个例子的共同特征是：我们希望估计某个非随机化治疗对结果的因果效应。它们都是观测性研究的典型场景。
+
+\section{潜在结果框架下的因果效应与选择偏差}\label{sec:10-selection-bias}
+
+现在我们在潜在结果框架下形式化地描述观测性研究的问题。
+
+记第 $i$ 个单元的预处理协变量为 $X_i$，二值治疗指示变量为 $Z_i \in \{0,1\}$，观测结果为 $Y_i$，对应的潜在结果为 $Y_i(1)$ 和 $Y_i(0)$。为简单起见，假设数据是独立同分布的：
+
+\[
+\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i=1}^n \stackrel{\text{iid}}{\sim} \{X, Z, Y(1), Y(0)\}.
+\]
+
+关心的因果效应包括：
+\begin{itemize}
+  \item \textbf{平均因果效应（Average Causal Effect, ACE）}：
+  \[
+  \tau = \mathbb{E}\{Y(1) - Y(0)\}.
+  \]
+  \item \textbf{治疗组平均因果效应（Average Causal Effect on the Treated, ATT）}：
+  \[
+  \tau_{\mathrm{T}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 1\}.
+  \]
+  \item \textbf{对照组平均因果效应（Average Causal Effect on the Control, ATC）}：
+  \[
+  \tau_{\mathrm{C}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 0\}.
+  \]
+\end{itemize}
+
+利用条件期望的线性分解，我们有：
+\[
+\tau_{\mathrm{T}} = \mathbb{E}(Y \mid Z = 1) - \mathbb{E}\{Y(0) \mid Z = 1\}.
+\]
+
+在这个表达式中，$\mathbb{E}(Y \mid Z = 1)$ 可以直接从观测数据估计，但 $\mathbb{E}\{Y(0) \mid Z = 1\}$ 是反事实——它度量的是"如果治疗组个体接受对照处理，他们的结果会是什么"。这是无法直接从数据中观测到的量。
+
+类似地，对于 $\tau_{\mathrm{C}}$，我们有：
+\[
+\tau_{\mathrm{C}} = \mathbb{E}\{Y(1) \mid Z = 0\} - \mathbb{E}(Y \mid Z = 0),
+\]
+其中 $\mathbb{E}\{Y(1) \mid Z = 0\}$ 同样是反事实量。
+
+\textbf{表面因果效应（Prima Facie Causal Effect）}定义为：
+\[
+\tau_{\mathrm{PF}} = \mathbb{E}(Y \mid Z = 1) - \mathbb{E}(Y \mid Z = 0).
+\]
+
+这个量可以直接从数据计算，但它通常不是任何因果效应的无偏估计。偏差的大小由\textbf{选择偏差}刻画：
+\[
+\tau_{\mathrm{PF}} - \tau_{\mathrm{T}} = \mathbb{E}\{Y(0) \mid Z = 1\} - \mathbb{E}\{Y(0) \mid Z = 0\},
+\]
+\[
+\tau_{\mathrm{PF}} - \tau_{\mathrm{C}} = \mathbb{E}\{Y(1) \mid Z = 1\} - \mathbb{E}\{Y(1) \mid Z = 0\}.
+\]
+
+这些选择偏差项度量的是治疗组和对照组在潜在结果均值上的差异——即使治疗没有任何效果，只要两组在潜在结果分布上不同，$\tau_{\mathrm{PF}}$ 就会偏离零。
+
+\textbf{为什么随机化如此重要？} 在 CRE 中，随机分配保证了 $Z \bot \{Y(1), Y(0)\}$，这意味着治疗组和对照组的潜在结果分布是相同的，从而选择偏差项为零。但在观测性研究中，这个条件一般不成立，选择偏差可能任意大。
+
+\section{非参数识别的充分条件}\label{sec:10-identification}
+
+上一节的讨论表明，在没有随机化的情况下，观测数据无法直接识别因果效应——我们需要额外的假设。本节介绍\textbf{不可识别性（ignorability）}假设，这是观测性研究因果推断的理论基础。
+
+\subsection{条件独立假设}\label{sec:10-ignorability}
+
+一个关键假设是：在给定协变量 $X$ 的条件下，治疗分配与潜在结果是独立的。\footnote{这个假设最早由 \cite{Rubin:1978} 系统提出，后来被 \cite{Rosenbaum:1983} 发展为倾向得分理论。}
+
+\begin{Assumption}[不可识别性 / Ignorability]\label{ass:ignorability}
+\[
+Y(z) \bot Z \mid X \quad (z = 0, 1).
+\]
+\end{Assumption}
+
+这个假设有多个等价名称：
+\begin{itemize}
+  \item \textbf{Unconfoundedness}（无混杂）：在流行病学文献中常用
+  \item \textbf{Selection on observables}（可观测选择）：在经济学文献中常用
+  \item \textbf{Conditional independence}（条件独立性）：这是假设的数学描述
+\end{itemize}
+
+直觉上，\cref{ass:ignorability} 表明给定协变量 $X$ 后，治疗组和对照组的潜在结果分布是相同的——治疗分配"近似随机化"。换句话说，所有同时影响治疗分配和潜在结果的变量（即\textbf{混杂因素，confounders}）都被协变量 $X$ 所控制。
+
+\textbf{强不可识别性（Strong Ignorability）}进一步要求：
+\[
+\{Y(1), Y(0)\} \bot Z \mid X.
+\]
+这比 \cref{ass:ignorability} 更强，但对于估计平均因果效应 $\tau$ 来说，两者在大多数统计模型下是等价的。
+
+不可识别性假设的\textbf{可塑性（Plausibility）}取决于研究场景：如果我们观察到足够丰富的协变量 $X$，使得所有混杂因素都被包含，那么这个假设可能是合理的；如果存在未观测的混杂因素，这个假设就不成立。\footnote{关于不可识别性假设的可塑性讨论，见 \cite{Rosenbaum:2018}。}
+
+\subsection{识别公式}\label{sec:10-id-formulas}
+
+在 \cref{ass:ignorability} 下，平均因果效应 $\tau$ 可以从观测数据中非参数地识别。\footnote{这个识别公式由 \cite{Rosenbaum:1983} 正式建立，也被称为 \textbf{g-formula}（见 \cite{Hernan:2020}）。}
+
+\begin{Theorem}[识别定理]\label{thrm:identification}
+在 \cref{ass:ignorability} 下，平均因果效应 $\tau$ 由下式识别：
+\begin{equation}
+\tau = \mathbb{E}\{\tau(X)\}
+= \mathbb{E}\big[\mathbb{E}(Y \mid Z = 1, X) - \mathbb{E}(Y \mid Z = 0, X)\big].
+\label{eq:10-id-formula}
+\end{equation}
+\end{Theorem}
+
+\cref{thrm:identification} 的含义是：给定协变量 $X$ 后，治疗组和对照组的结果条件期望之差就是该协变量取值下的因果效应 $\tau(X)$，而总体因果效应是这些条件因果效应的无条件期望。
+
+对于离散协变量 $X \in \{1, \ldots, K\}$，\cref{eq:10-id-formula} 可以写为：
+\begin{equation}
+\tau = \sum_{k=1}^K \mathbb{E}(Y \mid Z = 1, X = k)\Pr(X = k) - \sum_{k=1}^K \mathbb{E}(Y \mid Z = 0, X = k)\Pr(X = k).
+\label{eq:10-id-discrete}
+\end{equation}
+
+\textbf{关键观察}：不可识别性假设的核心价值在于，它将无法直接观测的因果效应 $\tau$ 转化为可以从小样本中估计的量——条件期望之差的加权平均。
+
+\section{两种简单估计策略及其局限}\label{sec:10-estimation}
+
+基于 \cref{thrm:identification}，我们现在讨论两种估计因果效应的策略。本章的剩余部分将详细展开第一种策略——结果回归。
+
+\subsection{分层（标准化）}\label{sec:10-stratification}
+
+如果协变量 $X$ 是离散的，且取值范围有限，则 \cref{eq:10-id-discrete} 提供了一个直接的估计策略：在每个 $X = k$ 的层内，估计 $\mathbb{E}(Y \mid Z = 1, X = k)$ 和 $\mathbb{E}(Y \mid Z = 0, X = k)$，然后按 $\Pr(X = k)$ 加权平均。
+
+这个方法与第五章讨论的分层随机实验（STR）估计量形式上相同。\footnote{详见 \cref{sec:5-stratified-ace}。}
+
+但这种方法有两个明显困难：
+\begin{enumerate}
+  \item 当 $K$ 很大时，许多层可能只包含治疗组或只包含对照组的单元，导致层内估计量定义不良；
+  \item 对于多维连续协变量，如何定义"层"并不显然。
+\end{enumerate}
+
+这些困难促使我们寻找更一般的估计策略。
+
+\subsection{结果回归}\label{sec:10-outcome-regression}
+
+\textbf{结果回归（Outcome Regression）}的核心思想是：首先对条件期望 $\mathbb{E}(Y \mid Z, X)$ 建立模型，然后利用 \cref{eq:10-id-formula} 估计因果效应。
+
+最常用的方法是对结果拟合一个线性加性模型：
+\begin{equation}
+\mathbb{E}(Y \mid Z, X) = \beta_0 + \beta_z Z + \beta_x^{\top} X.
+\label{eq:10-linear-model}
+\end{equation}
+
+在 \cref{eq:10-linear-model} 下，给定 $X$ 的因果效应是：
+\[
+\tau(X) = \mathbb{E}(Y \mid Z = 1, X) - \mathbb{E}(Y \mid Z = 0, X) = \beta_z,
+\]
+它不依赖于 $X$——这意味着线性模型假设了因果效应的同质性。
+
+因此，平均因果效应为 $\tau = \mathbb{E}\{\tau(X)\} = \beta_z$。如果我们相信不可识别性假设且线性模型正确，那么 $\beta_z$ 就是我们关心的因果效应。
+
+\textbf{更一般的形式}：如果我们允许治疗与协变量的交互，可以拟合：
+\begin{equation}
+\mathbb{E}(Y \mid Z, X) = \beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{zx}^{\top} X Z.
+\label{eq:10-linear-interaction}
+\end{equation}
+
+此时 $\tau(X) = \beta_z + \beta_{zx}^{\top} X$，而 $\tau = \beta_z + \beta_{zx}^{\top} \mathbb{E}(X)$。\footnote{这个估计量与 \cite{Lin:2013} 在随机实验背景下提出的估计量形式相同。}
+
+\textbf{一般结果回归估计量}：如果我们用两个预测模型 $\hat{\mu}_1(X)$ 和 $\hat{\mu}_0(X)$ 分别估计 $\mathbb{E}(Y \mid Z = 1, X)$ 和 $\mathbb{E}(Y \mid Z = 0, X)$，则因果效应的估计为：
+\begin{equation}
+\hat{\tau}^{\text{reg}} = n^{-1} \sum_{i=1}^n \{\hat{\mu}_1(X_i) - \hat{\mu}_0(X_i)\}.
+\label{eq:10-general-reg-estimator}
+\end{equation}
+
+\cref{eq:10-general-reg-estimator} 与第六章讨论的投影估计量（projective estimator）形式相同，\footnote{详见 \cref{sec:6-projective-estimator}。} 这不是巧合——结果回归本质上是一种基于模型的预测方法。
+
+\textbf{模型敏感性}：结果回归方法的核心问题在于其对模型设定的敏感性。如果 \cref{eq:10-linear-model} 或 \cref{eq:10-linear-interaction} 不能正确描述数据生成过程，估计量就可能是有偏的。\cite{Leamer:1978} 早已批评了这种方法在实证研究中的滥用——研究者可能会在众多候选模型中选择报告"符合预期"的因果效应估计，这是因果推断中 p-hacking 的主要来源之一。\footnote{关于模型敏感性问题的更多讨论，见 \citealp[Problem 1.4]{Ding:2023}。}
+
+\section{二值结果的情形}\label{sec:10-binary-outcome}
+
+当结果 $Y$ 是二值变量时，我们可以使用逻辑斯谛模型：
+\begin{equation}
+\mathbb{E}(Y \mid Z, X) = \Pr(Y = 1 \mid Z, X) = \frac{e^{\beta_0 + \beta_z Z + \beta_x^{\top} X}}{1 + e^{\beta_0 + \beta_z Z + \beta_x^{\top} X}}.
+\label{eq:10-logistic-model}
+\end{equation}
+
+基于 \cref{eq:10-logistic-model} 的估计系数，我们可以构造平均因果效应的估计：\footnote{推导见附录 \cref{sec:appendix-10-logistic-derivation}}
+\[
+\hat{\tau} = n^{-1} \sum_{i=1}^n \left\{
+\frac{e^{\hat{\beta}_0 + \hat{\beta}_z + \hat{\beta}_x^{\top} X_i}}{1 + e^{\hat{\beta}_0 + \hat{\beta}_z + \hat{\beta}_x^{\top} X_i}}
+- \frac{e^{\hat{\beta}_0 + \hat{\beta}_x^{\top} X_i}}{1 + e^{\hat{\beta}_0 + \hat{\beta}_x^{\top} X_i}}
+\right\}.
+\]
+
+注意，这个估计量不再是逻辑斯谛模型中 $Z$ 的简单系数——它是非线性函数，依赖于所有系数以及协变量的经验分布。在计量经济学中，这被称为逻辑斯谛模型中的"平均偏效应"或"平均边际效应"。
+
+\section{本章小结}\label{sec:10-summary}
+
+本章作为 Part III 的开篇，介绍了观测性研究中因果推断的四个核心方法（"Four Pillars"）中的第一个——结果回归。关键要点如下：
+
+\begin{enumerate}
+  \item \textbf{选择偏差}是观测性研究的核心困难：治疗组和对照组在潜在结果分布上可能不同。
+  \item \textbf{不可识别性假设}（$Y(z) \bot Z \mid X$）提供了识别因果效应的充分条件——所有混杂因素都被协变量 $X$ 所控制。
+  \item 在不可识别性假设下，因果效应可以写为条件期望之差的无条件期望（\cref{thrm:identification}）。
+  \item \textbf{结果回归}通过建立 $\mathbb{E}(Y \mid Z, X)$ 的模型来估计因果效应，是四种核心方法中最直观的一种。
+  \item 结果回归的核心问题是\textbf{模型敏感性}——错误指定的模型会导致有偏的估计。
+\end{enumerate}
+
+不可识别性假设虽然提供了理论上的识别条件，但在实际研究中，其可塑性取决于我们是否观察到了所有重要的混杂因素。后续章节将介绍其他三种方法（逆概率加权、双稳健估计、匹配），它们从不同角度应对这一挑战。
+
+\section{练习}\label{sec:10-exercises}
+
+\begin{enumerate}
+  \item \textbf{简单恒等式}：证明 $\tau = \Pr(Z = 1)\tau_{\mathrm{T}} + \Pr(Z = 0)\tau_{\mathrm{C}}$。
+
+  \item \textbf{不可识别性的可塑性}：考虑以下数据生成过程：
+  \[
+  Y(1) = g_1(X, V_1), \quad Y(0) = g_0(X, V_0), \quad Z = \mathbb{I}\{g(X, V) \geq 0\},
+  \]
+  其中 $(V_1, V_0) \bot V$。解释为什么在这种情况下不可识别性假设成立。如果将 $V$ 替换为未观测的混杂因素 $U$，结果会如何变化？
+
+  \item \textbf{完全交互逻辑斯谛模型}：假设二值结果 $Y$ 服从以下逻辑斯谛模型：
+  \[
+  \mathbb{E}(Y \mid Z, X) = \frac{e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{xz}^{\top} X Z}}{1 + e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{xz}^{\top} X Z}}.
+  \]
+  推导平均因果效应 $\tau$ 的估计量。
+
+  \item \textbf{模型敏感性实验}：使用模拟数据，比较在线性模型正确和错误设定下，结果回归估计量的表现。讨论模型偏误对估计的影响。
+\end{enumerate}
+
+\section{推荐阅读}\label{sec:10-reading}
+
+\begin{itemize}
+  \item \citet{Rubin:1978} — 不可识别性假设的奠基性论文。
+  \item \citet{Rosenbaum:1983} — 倾向得分理论的核心工作，阐述了不可识别性与倾向得分的关系。
+  \item \citet{Leamer:1978} — 对实证研究中模型依赖性的经典批评。
+  \item \citet{Hernan:2020} — g-formula 的系统介绍与现代视角。
+  \item \citet{Lin:2013} — 随机实验中协变量调整的理论分析。
+\end{itemize}
