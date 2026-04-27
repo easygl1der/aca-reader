@@ -1,0 +1,482 @@
+% Chapter B: OLS基础复习
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style
+
+\chapter{OLS基础复习}\label{ch:B}
+
+\section{为什么需要OLS？}\label{sec:B-why-ols}
+
+在本书的许多章节中，我们将使用回归分析作为因果推断的工具。从第4章的协变量调整，到第6章的Lin估计量，再到第9章的结果回归——回归方法贯穿全书。
+
+然而，回归分析本身是一个深奥的领域。为了不让技术细节干扰对因果推断核心思想的理解，我们有必要在这里建立一个共同的技术基础。
+
+\textbf{本章的目标}是复习\textbf{普通最小二乘法（Ordinary Least Squares, OLS）}的核心结果，特别是：
+\begin{itemize}
+  \item \textbf{FWL定理}（Frisch-Waugh-Lovell Theorem）——将多元OLS简化为单元OLS
+  \item \textbf{稳健标准误}（Robust Standard Errors）——处理异方差问题
+  \item \textbf{EHW估计量}（Eicker-Huber-White Robust Covariance Estimator）——不依赖同方差假设
+\end{itemize}
+
+这些结果将在正文的回归分析中反复使用。例如，在第4章中我们将看到如何使用OLS实现Neymanian推断；在第6章中，FWL定理帮助我们理解为什么Lin的协变量调整估计量如此有效。
+
+\userannotation{本章与正文的对应关系}{B.1-B.3 (OLS基础 + FWL + EHW) 是第4、6章的基础；B.5 (WLS) 与第14章的加权回归相关；B.6 (Logistic) 与第10章的二值结果回归相关。}
+
+\section{总体OLS：线性投影的世界}\label{sec:B-population-ols}
+
+\subsection{从条件期望到线性投影}\label{sec:B-conditional-expectation}
+
+在因果推断中，我们经常关心条件期望函数 $\mathbb{E}(Y \mid X)$——它描述了给定协变量 $X$ 时，结果 $Y$ 的平均行为。
+
+\textbf{一个问题油然而生}：如果 $\mathbb{E}(Y \mid X)$ 不是线性的怎么办？即使真实的条件期望是复杂的非线性函数，我们仍然可以用一个线性函数来\textbf{近似}它。
+
+这就是\textbf{线性投影}的动机。不同于线性模型（后者假设条件期望恰好是线性的），线性投影只是一个\textbf{近似工具}——它不需要任何建模假设。
+
+\subsection{总体OLS系数的定义}\label{sec:B-population-ols-def}
+
+设 $(x_i, y_i)_{i=1}^n \stackrel{\mathrm{IID}}{\sim} (x, y)$，其中 $x$ 是 $p$ 维随机向量，$y$ 是随机标量。记 $(x, y)$ 为一般观测，省略下标。
+
+\textbf{总体OLS系数}定义为：
+\[
+\beta = \arg\min_{b} \mathbb{E}\left\{(y - x^\top b)^2\right\}
+\tag{B.1}
+\]
+
+目标函数是关于 $b$ 的二次函数，因此极小化问题有闭式解：
+
+\[
+\beta = \left\{\mathbb{E}(x x^\top)\right\}^{-1} \mathbb{E}(x y)
+\tag{B.2}
+\]
+
+前提是各阶矩存在且 $\mathbb{E}(x x^\top)$ 可逆。
+
+有了 $\beta$，我们可以定义 $x^\top \beta$ 为 $y$ 在 $x$ 上的\textbf{线性投影}，并定义
+
+\[
+\varepsilon = y - x^\top \beta
+\tag{B.3}
+\]
+
+为\textbf{总体残差}。
+
+\subsection{正交性：一个关键性质}\label{sec:B-orthogonality}
+
+由 $\beta$ 的定义，我们可以验证一个基本性质：
+
+\[
+\mathbb{E}(x \varepsilon) = \mathbb{E}\{x(y - x^\top \beta)\} = \mathbb{E}(xy) - \mathbb{E}(x x^\top)\beta = 0
+\tag{B.4}
+\]
+
+这就是所谓的\textbf{正交性条件}——$x$ 与残差 $\varepsilon$ 的期望内积为零。
+
+\textbf{这个性质为什么重要？} 它意味着在 $x$ 的线性投影意义下，$y$ 中无法被 $x$ 解释的部分（残差）与 $x$ 完全独立。
+
+\textbf{加入截距项的情况}：如果 $x$ 包含常数项 1，则 $\mathbb{E}(\varepsilon) = 0$，且 $\operatorname{cov}(x, \varepsilon) = 0$——残差不仅均值为零，还与所有协变量协方差为零。
+
+\userannotation{OLS分解vs线性模型}{OLS分解（B.3）是纯数学恒等式，无需任何建模假设。而线性模型 $y = x^\top\beta + \varepsilon$ 则是对真实数据生成过程的假设。两者经常被混淆，但它们有本质区别。}
+
+\subsection{单元情形：显式公式}\label{sec:B-univariate-case}
+
+当 $x$ 和 $y$ 都是标量时，定义
+
+\[
+(\alpha, \beta) = \arg\min_{a,b} \mathbb{E}\{(y - a - b x)^2\}
+\]
+
+显式公式为：
+
+\[
+\beta = \frac{\operatorname{cov}(x, y)}{\operatorname{var}(x)}, \quad \alpha = \mathbb{E}(y) - \beta \mathbb{E}(x)
+\tag{B.5}
+\]
+
+\textbf{几何直觉}：$\beta$ 是协方差除以方差——它衡量了 $x$ 和 $y$ 之间的线性关系强度，并按 $x$ 的变异程度标准化。
+
+\textbf{无截距情形}：如果不加入截距，最小化目标变为 $\mathbb{E}\{(y - c x)^2\}$，最优解为
+
+\[
+\gamma = \frac{\mathbb{E}(xy)}{\mathbb{E}(x^2)}
+\tag{B.6}
+\]
+
+当 $\mathbb{E}(x) = 0$ 时，$\gamma = \beta$。
+
+\section{样本OLS：从总体到样本}\label{sec:B-sample-ols}
+
+有了总体OLS的定义，我们可以通过样本矩替换总体矩来获得估计量。
+
+基于数据 $(x_i, y_i)_{i=1}^n \stackrel{\mathrm{IID}}{\sim} (x, y)$，总体OLS系数 $\beta$ 的矩估计为
+
+\[
+\hat{\beta} = \left(n^{-1}\sum_{i=1}^n x_i x_i^\top\right)^{-1} \left(n^{-1}\sum_{i=1}^n x_i y_i\right)
+\tag{B.7}
+\]
+
+残差为 $\hat{\varepsilon}_i = y_i - x_i^\top \hat{\beta}$。
+
+\textbf{这称为样本OLS或简称OLS。} OLS系数 $\hat{\beta}$ 最小化残差平方和
+
+\[
+\hat{\beta} = \arg\min_{b} n^{-1}\sum_{i=1}^n (y_i - x_i^\top b)^2
+\tag{B.8}
+\]
+
+因此 $\hat{\beta}$ 必须满足
+
+\[
+\sum_{i=1}^n x_i(y_i - x_i^\top \hat{\beta}) = 0
+\tag{B.9}
+\]
+
+这称为\textbf{正规方程（Normal Equation）}。
+
+\subsection{矩阵记号}\label{sec:B-matrix-notation}
+
+使用矩阵记号：
+
+\[
+X = \begin{pmatrix} x_1^\top \\ \vdots \\ x_n^\top \end{pmatrix}, \quad
+Y = \begin{pmatrix} y_1 \\ \vdots \\ y_n \end{pmatrix}
+\]
+
+我们可以将OLS系数写为
+
+\[
+\hat{\beta} = (X^\top X)^{-1} X^\top Y
+\tag{B.10}
+\]
+
+拟合值为
+
+\[
+\hat{Y} = X\hat{\beta} = X(X^\top X)^{-1} X^\top Y
+\tag{B.11}
+\]
+
+定义\textbf{帽子矩阵（Hat Matrix）}：
+
+\[
+H = X(X^\top X)^{-1} X^\top
+\tag{B.12}
+\]
+
+则 $\hat{Y} = HY$——帽子矩阵将 $Y$ 投影到 $X$ 张成的列空间。$H$ 的对角元素 $h_{ii}$ 称为\textbf{杠杆值（Leverage Scores）}。
+
+\subsection{渐近分布}\label{sec:B-asymptotic}
+
+假设 $(x, y)$ 有有限的四阶矩，由大数定律和中心极限定理可得：
+
+\[
+\sqrt{n}(\hat{\beta} - \beta) \to \mathrm{N}(0, V)
+\tag{B.13}
+\]
+
+依分布收敛，其中 $V = B^{-1} M B^{-1}$，$B = \mathbb{E}(x x^\top)$，$M = \mathbb{E}(\varepsilon^2 x x^\top)$。
+
+\textbf{这个公式有什么含义？} 它告诉我们 $\hat{\beta}$ 的渐近方差由两部分决定：
+\begin{itemize}
+  \item $B^{-1}$：协变量 $x$ 的变异程度
+  \item $M$：残差的加权协方差矩阵
+\end{itemize}
+
+\section{异方差与稳健标准误}\label{sec:B-heteroskedasticity}
+
+\subsection{经典OLS的同方差假设}\label{sec:B-homoskedasticity}
+
+经典OLS推断假设\textbf{同方差（Homoskedasticity）}：
+
+\[
+\operatorname{var}(\varepsilon \mid x) = \sigma^2
+\tag{B.14}
+\]
+
+即残差的条件方差是一个常数，不依赖于 $x$。
+
+在这个假设下，\cref{eq:neyman-var} 中的渐近方差简化为
+
+\[
+V = \sigma^2 \{ \mathbb{E}(x x^\top) \}^{-1}
+\tag{B.15}
+\]
+
+相应的样本方差估计为
+
+\[
+\hat{V}_{\mathrm{OLS}} = \hat{\sigma}^2 \left(\sum_{i=1}^n x_i x_i^\top\right)^{-1}
+\tag{B.16}
+\]
+
+其中 $\hat{\sigma}^2 = (n-p)^{-1}\sum_{i=1}^n \hat{\varepsilon}_i^2$ 是 $\sigma^2$ 的无偏估计，$p$ 是 $x$ 的维度。
+
+\textbf{但现实中这个假设常常不成立。} 例如：
+\begin{itemize}
+  \item 收入数据中，高收入群体的方差通常大于低收入群体
+  \item 在治疗效果异质性存在时，治疗组的方差可能不同于对照组
+  \item 任何条件方差依赖于 $x$ 的情形
+\end{itemize}
+
+当同方差假设违背时，\cref{B.16} 给出的标准误是错误的。
+
+\subsection{EHW稳健估计量：革命性的突破}\label{sec:B-ehw}
+
+\textbf{一个自然的问题}：能否不使用同方差假设，直接估计 \cref{B.13} 中的方差矩阵？
+
+答案是肯定的。Eicker（1967）、Huber（1967）和White（1980）独立提出了一个革命性的估计量——现称为\textbf{Eicker-Huber-White（EHW）稳健协方差估计量}：
+
+\[
+\hat{V}_{\mathrm{EHW}} = n^{-1} (n^{-1}\sum_{i=1}^n x_i x_i^\top)^{-1} (n^{-1}\sum_{i=1}^n \hat{\varepsilon}_i^2 x_i x_i^\top) (n^{-1}\sum_{i=1}^n x_i x_i^\top)^{-1}
+\tag{B.17}
+\]
+
+\textbf{关键思想}：将 \cref{B.13} 中的 $M = \mathbb{E}(\varepsilon^2 x x^\top)$ 替换为样本均值 $n^{-1}\sum \hat{\varepsilon}_i^2 x_i x_i^\top$。
+
+\textbf{为什么这能工作？} 我们可以证明 $n\hat{V}_{\mathrm{EHW}} \to V$（依概率收敛）。这意味着即使存在异方差，$\hat{V}_{\mathrm{EHW}}$ 仍然一致地估计了 $\hat{\beta}$ 的渐近方差。
+
+\userannotation{EHW的适用范围}{EHW估计量只需要 $x_i$ 的四阶矩存在且有限——不需要任何关于条件方差的假设。这是它被称为"稳健"的原因。}
+
+\subsection{HC变体：改进的小样本性质}\label{sec:B-hc-variants}
+
+虽然 EHW 在大样本下是稳健的，但在小样本中表现可能不稳定。基于杠杆值 $h_{ii}$ 的改进变体（Long and Ervin, 2000）包括：
+
+\begin{enumerate}
+  \item \textbf{HC0}：即 \cref{B.17} 本身（原始 EHW）
+  \item \textbf{HC1}：将 $\hat{\varepsilon}_i^2$ 修正为 $\hat{\varepsilon}_i^2 / (n-p)$
+  \item \textbf{HC2}：将 $\hat{\varepsilon}_i^2$ 修正为 $\hat{\varepsilon}_i^2 / (1 - h_{ii})$
+  \item \textbf{HC3}：将 $\hat{\varepsilon}_i^2$ 修正为 $\hat{\varepsilon}_i^2 / (1 - h_{ii})^2$
+\end{enumerate}
+
+\textbf{直觉}：高杠杆点（$h_{ii}$ 大）的残差被低估，因为这些点的拟合值对 $\hat{\beta}$ 影响更大。HC2 和 HC3 通过除以 $(1 - h_{ii})$ 或其平方来修正这种偏差。
+
+\textbf{实践中}，HC3 通常给出最保守的推断——置信区间最宽，p值最大。
+
+\section{FWL定理：多元OLS的简化}\label{sec:B-fwl}
+
+\subsection{问题的起源}\label{sec:B-fwl-origin}
+
+在多元回归中，我们经常关心一个特定系数——例如，在控制其他变量后，treatment 的效应。
+
+\textbf{直接计算}这个系数需要求解整个多元OLS问题，涉及矩阵求逆。当 $p$ 很大时，这可能计算量大且不直观。
+
+\textbf{历史脉络}：Frisch和Waugh（1933）最初发现了这个定理的核心思想，Lovell（1963）进一步形式化。在计量经济学中，FWL定理是理解"偏回归"和"偏相关"的理论基础。
+
+\textbf{核心洞察}：多元OLS中某个特定变量的系数，等于将该变量对其余变量做残差化后再对残差化结果做单元OLS的系数。
+
+这个洞察不仅有计算上的便利，更有深刻的统计学含义——它告诉我们"控制一个变量"在回归中究竟意味着什么。
+
+\subsection{总体FWL定理}\label{sec:B-fwl-population}
+
+\begin{Theorem}[总体FWL定理]\label{B-thm:FWL-population}
+在 $y$ 对 $(x_1, x_2, \ldots, x_p)$ 的OLS拟合中，$x_1$ 的系数等于以下两种等价计算的结果：
+\begin{enumerate}
+  \item $y$ 在 $x_1$ 上的线性投影系数（在控制 $(x_2, \ldots, x_p)$ 后）
+  \item $\tilde{y}$ 在 $\tilde{x}_1$ 上的单元OLS系数
+\end{enumerate}
+
+其中：
+\begin{itemize}
+  \item $\tilde{y}$ 是 $y$ 对 $(x_2, \ldots, x_p)$ 残差化后的结果
+  \item $\tilde{x}_1$ 是 $x_1$ 对 $(x_2, \ldots, x_p)$ 残差化后的结果
+\end{itemize}
+\end{Theorem}
+
+\textbf{关于残差化 $y$ 的说明}：在定理中，残差化 $x_1$ 是关键步骤，但残差化 $y$ 是可选的——两种方式给出相同的系数。
+
+\textbf{几何直觉}：FWL定理说的是，在 $p$ 维空间中，$y$ 在 $(x_1, \ldots, x_p)$ 上的投影的某个坐标，等于 $y$ 在正交于 $(x_2, \ldots, x_p)$ 的子空间上的投影的某个坐标。
+
+\subsection{样本FWL定理}\label{sec:B-fwl-sample}
+
+\begin{Theorem}[样本FWL定理]\label{B-thm:FWL-sample}
+对于包含列向量 $(Y, X_1, X_2, \ldots, X_p)$ 的数据，$Y$ 对 $(X_1, X_2, \ldots, X_p)$ 的OLS拟合中，$X_1$ 的系数等于以下等价计算的结果：
+\begin{enumerate}
+  \item $Y$ 对 $\tilde{X}_1$ 的OLS系数（其中 $\tilde{X}_1$ 是 $X_1$ 对 $(X_2, \ldots, X_p)$ 残差化后的结果）
+  \item $\tilde{Y}$ 对 $\tilde{X}_1$ 的OLS系数（其中 $\tilde{Y}$ 是 $Y$ 对 $(X_2, \ldots, X_p)$ 残差化后的结果）
+\end{enumerate}
+\end{Theorem}
+
+\textbf{关键含义}：FWL定理意味着，我们可以将一个 $p$ 维多元OLS问题分解为：
+\begin{enumerate}
+  \item 对 $(x_2, \ldots, x_p)$ 残差化 $x_1$ 和 $y$
+  \item 对残差化后的变量做单元OLS
+\end{enumerate}
+
+这个分解在计算和理论分析中都非常有用。
+
+\userannotation{FWL与因果推断}{在第6章的Lin估计量中，FWL定理帮助我们理解协变量调整的机制——控制协变量本质上就是将treatment对其做残差化，然后再估计效应。}
+
+\section{线性模型：一种更强的假设}\label{sec:B-linear-model}
+
+有时候，我们不仅用OLS作为近似工具，而是假设条件期望函数\textbf{恰好}是线性的：
+
+\[
+\mathbb{E}(y \mid x) = x^\top \beta
+\tag{B.18}
+\]
+
+或等价地，
+
+\[
+y = x^\top \beta + \varepsilon \quad \text{且} \quad \mathbb{E}(\varepsilon \mid x) = 0
+\tag{B.19}
+\]
+
+这称为\textbf{线性模型（Linear Model）}或\textbf{限制均值模型（Restricted Mean Model）}。
+
+\textbf{关键区别}：在线性模型下，总体OLS系数 \cref{B.2} 等于真实参数 $\beta$——两者没有近似误差。
+
+验证如下：
+
+\[
+\begin{aligned}
+\{ \mathbb{E}(x x^\top) \}^{-1} \mathbb{E}(x y)
+&= \{ \mathbb{E}(x x^\top) \}^{-1} \mathbb{E}\{x \mathbb{E}(y \mid x)\} \\
+&= \{ \mathbb{E}(x x^\top) \}^{-1} \mathbb{E}(x x^\top \beta) \\
+&= \beta
+\end{aligned}
+\tag{B.20}
+\]
+
+\textbf{实际应用中的考量}：线性模型假设在因果推断中通常是可疑的。我们更倾向于将OLS视为一种\textbf{半参数方法}——它不假设正确性，但仍然提供有用的推断（特别是与稳健标准误结合时）。
+
+\section{加权最小二乘法（WLS）}\label{sec:B-wls}
+
+在某些情况下，不同观测值的精度不同，我们需要对它们进行差异化加权。
+
+假设 $(w_i, x_i, y_i) \stackrel{\mathrm{IID}}{\sim} (w, x, y)$，其中 $w \neq 0$。
+
+\textbf{总体WLS系数}定义为：
+
+\[
+\beta_w = \arg\min_b \mathbb{E}\{w (y - x^\top b)^2\}
+\tag{B.21}
+\]
+
+它满足
+
+\[
+\mathbb{E}\{w x (y - x^\top \beta_w)\} = 0
+\tag{B.22}
+\]
+
+因此
+
+\[
+\beta_w = \{ \mathbb{E}(w x x^\top) \}^{-1} \mathbb{E}(w x y)
+\tag{B.23}
+\]
+
+\textbf{样本WLS系数}：
+
+\[
+\hat{\beta}_w = \arg\min_b \sum_{i=1}^n w_i (y_i - x_i^\top b)^2
+\tag{B.24}
+\]
+
+\textbf{与逆方差加权的关系}：当 $w_i = 1/\operatorname{var}(y_i)$ 时，WLS给出最高效的估计。
+
+\userannotation{WLS与因果推断}{在第14章的逆概率加权（IPW）估计中，WLS提供了一种处理观测研究中非平衡协变量的工具。}
+
+\section{Logistic回归}\label{sec:B-logistic}
+
+当结果 $y$ 是二值的（0/1）时，OLS预测值可能超出 $[0,1]$ 区间，这促使我们考虑\textbf{广义线性模型（GLM）}。
+
+\subsection{模型定义}\label{sec:B-logistic-model}
+
+设
+
+\[
+\Pr(y_i = 1 \mid x_i) = g(x_i^\top \beta)
+\tag{B.25}
+\]
+
+其中 $g(\cdot): \mathbb{R} \to [0,1]$ 是单调函数，其反函数称为\textbf{连接函数（Link Function）}。
+
+\textbf{Logistic形式}：
+
+\[
+g(z) = \frac{e^z}{1+e^z} = (1+e^{-z})^{-1}
+\tag{B.26}
+\]
+
+这称为\textbf{Logistic回归}。
+
+等价地，用 $\operatorname{logit}(z) = \log \frac{z}{1-z}$ 表示：
+
+\[
+\operatorname{logit}\{\Pr(y_i = 1 \mid x_i)\} = x_i^\top \beta
+\tag{B.27}
+\]
+
+\textbf{系数的含义}：对于二元协变量 $x_{i1}$，
+
+\[
+\beta_1 = \log \text{OR}
+\tag{B.28}
+\]
+
+即给定其他协变量时，$x_{i1}$ 对 $y_i$ 的条件对数 odds 比。
+
+\subsection{最大似然估计}\label{sec:B-mle}
+
+设 $\Pr(y_i = 1 \mid x_i) = \pi(x_i, \beta)$。似然函数为
+
+\[
+L(\beta) = \prod_{i=1}^n \{\pi(x_i, \beta)\}^{y_i} \{1 - \pi(x_i, \beta)\}^{1-y_i}
+\tag{B.29}
+\]
+
+\textbf{最大似然估计（MLE）} $\hat{\beta}$ 满足一阶条件：
+
+\[
+\sum_{i=1}^n x_i \{y_i - \pi(x_i, \hat{\beta})\} = 0
+\tag{B.30}
+\]
+
+\textbf{渐近性质}：由一般MLE理论，$\hat{\beta}$ 是一致的且渐近正态：
+
+\[
+\sqrt{n}(\hat{\beta} - \beta) \to \mathrm{N}(0, V)
+\tag{B.31}
+\]
+
+其中 $V = \mathbb{E}[\pi(x_i, \beta)\{1 - \pi(x_i, \beta)\} x_i x_i^\top]$。
+
+\section{附录：关键公式汇总}\label{sec:B-appendix-formulas}
+
+\subsection{B.1 总体OLS系数}
+\[
+\beta = \{\mathbb{E}(x x^\top)\}^{-1} \mathbb{E}(x y)
+\tag{B.2}
+\]
+
+\subsection{B.2 样本OLS系数}
+\[
+\hat{\beta} = (X^\top X)^{-1} X^\top Y
+\tag{B.10}
+\]
+
+\subsection{B.3 EHW稳健协方差估计量}
+\[
+\hat{V}_{\mathrm{EHW}} = n^{-1} \hat{B}^{-1} \hat{M} \hat{B}^{-1}
+\tag{B.17}
+\]
+
+其中 $\hat{B} = n^{-1}\sum x_i x_i^\top$，$\hat{M} = n^{-1}\sum \hat{\varepsilon}_i^2 x_i x_i^\top$。
+
+\section{习题}\label{sec:B-exercises}
+
+\begin{Exercise}{\ref{exr:B-1} OLS残差的性质}
+证明对于包含截距的OLS回归，残差满足 $\sum_{i=1}^n \hat{\varepsilon}_i = 0$ 和 $\sum_{i=1}^n x_{ij} \hat{\varepsilon}_i = 0$（对每个协变量 $j$）。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:B-2} FWL定理的数值验证}
+构造一个包含两个协变量的数据集，验证样本FWL定理——分别用多元OLS和残差化后的单元OLS计算 $x_1$ 的系数，验证两者相等。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:B-3} EHW vs 经典标准误}
+构造一个异方差的数据集，比较 EHW 标准误与经典 OLS 标准误的差异，并讨论哪种更可靠。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:B-4} 帽子矩阵的性质}
+证明帽子矩阵 $H = X(X^\top X)^{-1} X^\top$ 满足：$H$ 是对称幂等矩阵（$H^2 = H$），且 $\operatorname{tr}(H) = p$（协变量维度）。
+\end{Exercise}
