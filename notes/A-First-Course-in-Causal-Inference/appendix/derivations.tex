@@ -1094,3 +1094,224 @@ D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i}.
 \textbf{结论}：得证 $\hat{\beta}_{1,\mathrm{TSLS}} = \hat{\beta}_{1,\mathrm{ILS}}$。
 
 \textbf{直观理解}：这个等价性揭示了 TSLS 和 ILS 实际上是从不同角度求解同一组矩条件方程。TSLS 通过"预测"内生变量的拟合值来建立正交性，而 ILS 则直接利用约化形式中系数之间的比值关系。两种方法在代数上完全等价，但在计算路径和直觉理解上各有优势。
+
+\section{9.1 超级总体框架下的 Neyman 方差公式}\label{sec:appendix-9-conservative}
+
+\textbf{背景}：在 \cref{eq:9-neraman-variance} 中，我们声称在超级总体框架下，Neyman (1923) 的方差估计量是 $\mathrm{var}(\hat{\tau} \mid \mathbf{Z})$ 的无偏估计。本节说明为什么这个"保守性"问题在超级总体框架下消失了。
+
+\textbf{给定条件}：
+\begin{itemize}
+  \item $n$ 个 IID 单元：$\{Z_i, Y_i(1), Y_i(0), X_i\}_{i=1}^n$
+  \item 随机化假设：$Z \perp \{Y(1), Y(0), X\}$
+  \item 治疗组样本量 $n_1$，对照组样本量 $n_0$
+\end{itemize}
+
+\textbf{目标}：证明在 IID 抽样下，样本方差 $S^2(1)$ 和 $S^2(0)$ 分别是 $\mathrm{var}\{Y(1)\}$ 和 $\mathrm{var}\{Y(0)\}$ 的无偏估计。
+
+\textbf{推导步骤}：
+
+\textbf{第一步}：有限总体方差与超级总体方差的关系。
+
+有限总体方差定义为：
+\[
+S_N^2(1) = \frac{1}{n-1}\sum_{i=1}^n \{Y_i(1) - \bar{Y}_N(1)\}^2,
+\]
+其中 $\bar{Y}_N(1) = n^{-1}\sum_{i=1}^n Y_i(1)$。
+
+超级总体方差定义为：
+\[
+\sigma^2(1) = E\{Y_i(1) - E(Y_i(1))\}^2.
+\]
+
+当从超级总体中 IID 抽样时，$E(S_N^2(1)) = \sigma^2(1)$（这是 IID 抽样的标准结果）。
+
+\textbf{第二步}：代入 Neyman 方差公式。
+
+在有限总体框架下，Neyman 的方差估计量是：
+\[
+\hat{V}_N = \frac{S_N^2(1)}{n_1} + \frac{S_N^2(0)}{n_0}.
+\]
+
+取期望：
+\[
+E(\hat{V}_N) = \frac{E\{S_N^2(1)\}}{n_1} + \frac{E\{S_N^2(0)\}}{n_0} = \frac{\sigma^2(1)}{n_1} + \frac{\sigma^2(0)}{n_0} = \mathrm{var}(\hat{\tau} \mid \mathbf{Z}).
+\]
+
+\textbf{结论}：在超级总体框架下，$\hat{V}_N$ 是 $\mathrm{var}(\hat{\tau} \mid \mathbf{Z})$ 的无偏估计——保守性问题消失了。
+
+\section{9.2 OLS 分解与 pooled regression 的等价性}\label{sec:appendix-9-ols-decomposition}
+
+\textbf{背景}：在 \cref{eq:9-pooled-ols} 中，我们声称 Lin (2013) 估计量 $\hat{\tau}_L = \hat{\alpha}_Z$ 等价于 \cref{eq:9-covariate-adj-estimator} 在 $\bar{X}=0$ 时的形式。本节给出完整的 OLS 分解推导。
+
+\textbf{目标}：证明当 $X$ 中心化（即 $\bar{X}=0$）时，
+\[
+\hat{\tau}_L = \hat{\gamma}_1 - \hat{\gamma}_0 = \hat{\alpha}_Z.
+\]
+
+\textbf{推导步骤}：
+
+\textbf{第一步}：OLS 正规方程。
+
+对于合并回归 \cref{eq:9-pooled-ols}，OLS 估计量满足正规方程：
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha}_0 - \hat{\alpha}_Z Z_i - \hat{\alpha}_X^T X_i - \hat{\alpha}_{ZX}^T Z_i X_i) = 0,
+\]
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha}_0 - \hat{\alpha}_Z Z_i - \hat{\alpha}_X^T X_i - \hat{\alpha}_{ZX}^T Z_i X_i) Z_i = 0,
+\]
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha}_0 - \hat{\alpha}_Z Z_i - \hat{\alpha}_X^T X_i - \hat{\alpha}_{ZX}^T Z_i X_i) X_i = 0,
+\]
+\[
+\sum_{i=1}^n (Y_i - \hat{\alpha}_0 - \hat{\alpha}_Z Z_i - \hat{\alpha}_X^T X_i - \hat{\alpha}_{ZX}^T Z_i X_i) Z_i X_i = 0.
+\]
+
+\textbf{第二步}：解释系数。
+
+从最后一个正规方程（交互项）出发，经过代数运算（详见原书 Proposition 6.2 的证明），可以证明：
+\[
+\hat{\alpha}_Z = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}.
+\]
+
+\textbf{第三步}：中心化。
+
+若 $\bar{X} = 0$（$X$ 已中心化），则：
+\[
+\hat{\alpha}_Z = \hat{\gamma}_1 - \hat{\gamma}_0 = \hat{\tau}_L.
+\]
+
+\textbf{结论}：得证 $\hat{\tau}_L = \hat{\alpha}_Z$，即 Lin (2013) 估计量等于合并回归中 treatment 指标的系数。
+
+\section{9.3 EHW 方差估计量的问题}\label{sec:appendix-9-ehw-issue}
+
+\textbf{背景}：在 \cref{sec:9-ehw-correction} 中，我们提到直接使用 OLS 的 EHW 标准误是不正确的。本节解释原因。
+
+\textbf{问题来源}：
+
+在超级总体框架下，协变量 $X$ 的样本均值 $\bar{X}$ 是随机变量——它会随抽样波动。
+
+标准 OLS 的 EHW 方差估计量假设 $\bar{X}$ 是固定的（条件于 $X$ 的实现），因此它没有考虑 $\bar{X}$ 的抽样变异。
+
+当我们将 $\hat{\tau}_L$ 写作：
+\[
+\hat{\tau}_L = \hat{\gamma}_1 - \hat{\gamma}_0 = (\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X} + \text{残差},
+\]
+会发现 $\hat{\tau}_L$ 的方差包含两项：
+\[
+\mathrm{var}(\hat{\tau}_L) = \underbrace{\mathrm{var}(\hat{\gamma}_1 - \hat{\gamma}_0 \mid X)}_{\text{EHW 考虑的}} + \underbrace{\mathrm{var}\{(\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}\}}_{\text{EHW 忽略的}}.
+\]
+
+第二项在有限样本中可能不可忽略，特别是在 $X$ 的维度较高时。
+
+\textbf{校正项的来源}：
+
+从 \cref{eq:9-variance-correction} 可见，校正项为：
+\[
+\frac{1}{n}(\hat{\beta}_1 - \hat{\beta}_0)^T S_X^2 (\hat{\beta}_1 - \hat{\beta}_0).
+\]
+
+这一项正是 $\mathrm{var}\{(\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}\}$ 的估计量。
+
+\section{9.4 SRE 扩展的详细推导}\label{sec:appendix-9-sre-extension}
+
+\textbf{背景}：在 \cref{sec:9-sre-extension} 中，我们声称可以在各层内分别应用 Lin (2013) 估计量，然后加权合并。本节给出详细推导。
+
+\textbf{设定}：
+
+假设 $X_i \in \{1, \dots, K\}$ 是离散的层别变量。SRE 的超级总体框架要求：
+\[
+Z \perp \{Y(1), Y(0)\} \mid X.
+\]
+
+\textbf{目标}：推导 $\tau$ 的协变量调整估计量 $\hat{\tau}_S$ 及其方差。
+
+\textbf{推导步骤}：
+
+\textbf{第一步}：层别估计量。
+
+在第 $k$ 层内，治疗组和对照组子样本满足 $Z \perp \{Y(1), Y(0)\} \mid X=k$（由于 $X=k$ 是确定的，实际上是 $Z \perp \{Y(1), Y(0)\}$）。
+
+对第 $k$ 层应用 Lin (2013) 估计量：
+\[
+\hat{\tau}_{L,[k]} = \hat{\gamma}_{1,[k]} - \hat{\gamma}_{0,[k]} + (\hat{\beta}_{1,[k]} - \hat{\beta}_{0,[k]})^T \bar{X}_{[k]},
+\]
+其中 $\bar{X}_{[k]} = n_{[k]}^{-1}\sum_{X_i=k} X_i$。
+
+\textbf{第二步}：合并各层。
+
+总体估计量是各层估计量的加权平均：
+\[
+\hat{\tau}_S = \sum_{k=1}^K \pi_{[k]} \hat{\tau}_{L,[k]},
+\]
+其中 $\pi_{[k]} = \mathrm{pr}(X=k)$。
+
+\textbf{第三步}：方差估计。
+
+各层估计量在条件于该层数据时相互独立，因此：
+\[
+\mathrm{var}(\hat{\tau}_S) = \sum_{k=1}^K \pi_{[k]}^2 \mathrm{var}(\hat{\tau}_{L,[k]}).
+\]
+
+用各层的校正 EHW 方差估计量估计 $\mathrm{var}(\hat{\tau}_{L,[k]})$，得到 $\hat{V}_S$。
+
+\textbf{结论}：SRE 的协变量调整估计量 $\hat{\tau}_S$ 是 $\tau$ 的无偏估计，方差一致估计量由 $\hat{V}_S$ 给出。
+
+\section{9.5 R 代码实现}\label{sec:appendix-9-r-code}
+
+\textbf{背景}：在 \cref{sec:9-simulation} 中，我们报告了模拟研究的结果。本节给出完整的 R 代码。
+
+\textbf{Lin 估计量函数}：
+
+\textttfamily
+\begin{verbatim}
+linestimator = function(Z, Y, X) {
+  # 标准化协变量
+  X = scale(X)
+
+  n = dim(X)[1]
+  p = dim(X)[2]
+
+  # 完全交互的 OLS 回归
+  linreg = lm(Y ~ Z * X)
+
+  # Lin 估计量（Z 的系数）
+  est = coef(linreg)[2]
+
+  # EHW 标准误
+  vehw = hccm(linreg)[2, 2]
+
+  # 超级总体校正项
+  inter = coef(linreg)[(p+3):(2*p+2)]
+  vsuper = vehh + sum(inter * (cov(X) %*% inter)) / n
+
+  # 返回：估计量、EHW 标准误、校正标准误
+  c(est, sqrt(vehw), sqrt(vsuper))
+}
+\end{verbatim}
+\rmfamily
+
+\textbf{模拟代码}（$n=500$，$2000$ 次重复）：
+
+\textttfamily
+\begin{verbatim}
+set.seed(123)
+res = replicate(2000, {
+  n = 500
+  X = matrix(rnorm(n*2), n, 2)
+  Y1 = X[,1] + X[,1]^2 + runif(n, -0.5, 0.5)
+  Y0 = X[,2] + X[,2]^2 + runif(n, -1, 1)
+  Z = rbinom(n, 1, 0.6)
+  Y = Z*Y1 + (1-Z)*Y0
+  linestimator(Z, Y, X)
+})
+\end{verbatim}
+\rmfamily
+
+\textbf{结果摘要}：
+
+\begin{itemize}
+  \item 偏差：\texttt{mean(res[1,])} $\approx -0.0001$
+  \item 经验标准差：\texttt{sd(res[1,])} $\approx 0.151$
+  \item 平均 EHW 标准误：\texttt{mean(res[2,])} $\approx 0.139$
+  \item 平均校正标准误：\texttt{mean(res[3,])} $\approx 0.153$
+\end{itemize}
