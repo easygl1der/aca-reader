@@ -1262,7 +1262,7 @@ Z \perp \{Y(1), Y(0)\} \mid X.
 
 \textbf{Lin 估计量函数}：
 
-\textttfamily
+\ttfamily
 \begin{verbatim}
 linestimator = function(Z, Y, X) {
   # 标准化协变量
@@ -1282,7 +1282,7 @@ linestimator = function(Z, Y, X) {
 
   # 超级总体校正项
   inter = coef(linreg)[(p+3):(2*p+2)]
-  vsuper = vehh + sum(inter * (cov(X) %*% inter)) / n
+  vsuper = vehw + sum(inter * (cov(X) %*% inter)) / n
 
   # 返回：估计量、EHW 标准误、校正标准误
   c(est, sqrt(vehw), sqrt(vsuper))
@@ -1292,7 +1292,7 @@ linestimator = function(Z, Y, X) {
 
 \textbf{模拟代码}（$n=500$，$2000$ 次重复）：
 
-\textttfamily
+\ttfamily
 \begin{verbatim}
 set.seed(123)
 res = replicate(2000, {
