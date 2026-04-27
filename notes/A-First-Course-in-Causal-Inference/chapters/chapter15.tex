@@ -1,0 +1,193 @@
+% Chapter 15: Matching in Observational Studies
+% A First Course in Causal Inference - Peng Ding
+% Draft V1 - Stein Style Rewrite
+
+\chapter{观测性研究中的匹配}\label{ch:15}
+
+\section{引言：为什么匹配比回归更直观？}\label{sec:15-intro}
+
+\textit{``Matching is a way of making observational studies look like randomized experiments.''}
+--- \citep{Rosenbaum:2002}
+
+在第 \ref{ch:10} 章至第 \ref{ch:12} 章中，我们介绍了观测性研究的四大支柱：结果回归、逆倾向得分加权、双稳健估计量，以及本 章要讨论的\textbf{匹配估计量（matching estimator）}。
+
+为什么匹配如此直观？想象一下：在随机实验中，我们通过随机分配让治疗组和对照组在协变量上达到平衡。但当随机化不可行时，我们能否在设计阶段就主动创造出这种平衡？匹配的核心思想正是如此——\textbf{通过人为配对，使匹配后的数据模拟随机实验的性质}。
+
+这个想法有着悠久的历史。\citet{CochranRubin:1973} 是早期综述性论文，\citet{Rubin:2006b} 收集了 Rubin 在该领域的贡献。现代渐近理论则由 \citet{AbadieImbens:2006,AbadieImbens:2008,AbadieImbens:2011} 的系列论文建立。
+
+\section{匹配的基本思想}\label{sec:15-basic-idea}
+
+考虑一个治疗组单元数 $n_1$ 远小于对照组单元数 $n_0$ 的场景。对每个治疗组单元 $i = 1, \ldots, n_1$，我们在对照组中寻找一个匹配单元 $m(i)$ 使得 $X_i = X_{m(i)}$。
+
+\textbf{理想情况：精确匹配。} 如果对于所有单元都能找到协变量完全相同的匹配，那么匹配后的配对与第 \ref{ch:7} 章讨论的匹配对实验（matched-pairs experiment, MPE）具有相同的性质。条件于配对后，一单位接受治疗而另一单位接受对照的概率是
+\[
+\Pr\{i \text{ 接受治疗}, m(i) \text{ 接受对照}\} = \frac{e(X_i) \{1 - e(X_{m(i)})\}}{\sum_{j} \{e(X_j) + e(X_{m(j)})\}} .
+\]
+由于 $X_i = X_{m(i)}$，我们有 $e(X_i) = e(X_{m(i)})$，这个概率退化为 $e(X_i) / \{e(X_i) + e(X_i)\} = 1/2$。这正是随机化分配的标志。
+
+\textbf{不精确匹配的问题。} 然而在实际中，$X_i = X_{m(i)}$ 通常无法对所有单元成立。\citet{Rosenbaum:2002b} 倡导上述分析策略，但 \citet{GuoRothenhausler:2022} 报告了不精确匹配在 FRT 中的负面结果。这是一个重要警示。
+
+\textbf{倾向得分救兵。} 当协变量维度较高时，直接匹配面临维数灾难。\citet{RosenbaumRubin:1983b} 提出使用倾向得分进行匹配。由于倾向得分是一维的，我们只需寻找 $|\hat e(X_i) - \hat e(X_{m(i)})|$ 很小的配对，或 $|\mathrm{logit}\{\hat e(X_i)\} - \mathrm{logit}\{\hat e(X_{m(i)})\}|$ 很小的配对。\citet{AbadieImbens:2016} 为这一策略提供了形式化理论。
+
+\section{匹配估计量：一对一匹配}\label{sec:15-nn-matching}
+
+本节介绍 Abadie--Imbens (AI) 的标准设置：\footnote{详细推导见附录 \cref{sec:appendix-15-ai-theory}}
+\[
+\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i=1}^{n} \stackrel{\mathrm{IID}}{\sim} \{X, Z, Y(1), Y(0)\}.
+\]
+
+\subsection{ACE 的匹配估计量}\label{sec:15-ace-estimator}
+
+采用 $1-M$ 匹配（带放回）。对治疗单元 $i$，将潜在结果 $Y_i(1)$ 估计为观测值 $Y_i$，
+\[
+\hat Y_i(1) = Y_i .
+\]
+
+将潜在结果 $Y_i(0)$ 估计为匹配对照单元结果的均值：
+\[
+\hat Y_i(0) = M^{-1} \sum_{j=1}^{M} Y_{m_j(i)} ,
+\]
+其中 $m_j(i)$ 是第 $j$ 个匹配单元。
+
+匹配估计量为：
+\[
+\hat\tau^{\mathrm{m}} = n^{-1} \sum_{i=1}^{n} Z_i \{\hat Y_i(1) - \hat Y_i(0)\} + n^{-1} \sum_{i=1}^{n} (1 - Z_i) \{\hat Y_i(0) - \hat Y_i(1)\}.
+\label{eq:15-matching-ace}
+\]
+
+为简化记号，定义 $J(i)$ 为匹配给单元 $i$ 的单元集合，$K_i = |J(i) \cap \{j: Z_j = 1\}|$ 为匹配中治疗单元的个数。
+
+\begin{Proposition}[匹配估计量的偏差]\label{prop:15-matching-bias}
+在 $M$ 固定的情况下，当 $n \to \infty$ 时，
+\[
+\sqrt{n}(\hat\tau^{\mathrm{m}} - \tau) \Rightarrow \mathcal{N}\{0, V^{\mathrm{m}}(\tau)\},
+\]
+其中偏差来自不精确匹配。\footnote{完整方差推导见附录 \cref{sec:appendix-15-matching-variance}}
+\end{Proposition}
+
+\subsection{偏差校正}\label{sec:15-bias-correction}
+
+\citet{AbadieImbens:2008} 指出，简单 bootstrap 不能用于匹配估计量的方差估计。他们提出的方差估计程序不易实现。\citet{OtsuRai:2017} 提出了基于线性展开的 bootstrap，本质上等价于以下简单方差估计量 $\hat V^{\mathrm{mbc}}$。
+
+偏差校正后的匹配估计量：
+\[
+\hat\tau^{\mathrm{mbc}} = \hat\tau^{\mathrm{m}} + n^{-1} \sum_{i=1}^{n} \hat\psi_i ,
+\label{eq:15-bias-corrected}
+\]
+其中 $\hat\psi_i$ 是偏差校正项。\footnote{推导见附录 \cref{sec:appendix-15-bias-correction}}
+
+通过将 $\hat\tau^{\mathrm{mbc}}$ 视为 $\hat\psi_i$ 的样本均值，\citet{AbadieImbens:2008} 首先证明简单 bootstrap 对匹配估计量不适用。\citet{OtsuRai:2017} 的 bootstrap 本质上等价于简单的 $\hat V^{\mathrm{mbc}}$，计算简便。
+
+\section{匹配的双稳健形式}\label{sec:15-dr-form}
+
+偏差校正匹配估计量与双稳健估计量有着密切联系。两者都等于结果回归估计量加上基于残差的修正。
+
+\begin{Proposition}[ACE 偏差校正匹配估计量的双稳健形式]\label{prop:15-dr-ace}
+偏差校正匹配估计量满足
+\[
+\hat\tau^{\mathrm{mbc}} = \hat\tau^{\mathrm{DR}},
+\]
+其中 $\hat\tau^{\mathrm{DR}}$ 是第 \ref{ch:12} 章定义的双稳健估计量。\footnote{证明见附录 \cref{sec:appendix-15-dr-proof}}
+\end{Proposition}
+
+\cref{prop:15-dr-ace} 揭示了一个深刻联系：匹配本质上是估计倾向得分的非参数方法，而 $1 + K_i / M$ 可以视为 $1 / \hat e(X_i)$ 的估计。
+
+当治疗单元的 $e(X_i)$ 很小时，$1 / \hat e(X_i)$ 很大，同时该单元会匹配到很多对照单元，导致 $K_i$ 很大，因此 $1 + K_i / M$ 也很大。这个联系也引发了一个关于匹配的问题：\textbf{固定 $M$ 下，$1 + K_i / M$ 对 $1 / e(X_i)$ 的估计可能非常嘈杂。} 让 $M$ 随样本量增长可能会改善基于匹配倾向得分估计的渐近性质。\citet{LinEtAl:2023} 提供了严格理论：当 $M$ 以适当速率增长时，偏差校正匹配估计量可以达到与双稳健估计量相似的性质。
+
+\section{ATT 的匹配估计量}\label{sec:15-att-estimator}
+
+实践中，我们经常关心的是\textbf{处理组平均因果效应（ATT）}：
+\[
+\tau_{\mathrm{T}} = \mathbb{E}\{Y_i(1) - Y_i(0) \mid Z_i = 1\}.
+\]
+
+ATT 的匹配估计量为：
+\[
+\hat\tau_{\mathrm{T}}^{\mathrm{m}} = n_1^{-1} \sum_{i: Z_i=1} \{\hat Y_i(1) - \hat Y_i(0)\},
+\]
+其中 $\hat Y_i(1) = Y_i$ 而 $\hat Y_i(0) = M^{-1} \sum_{j=1}^{M} Y_{m_j(i)}$。
+
+类似地，偏差校正版本为：
+\[
+\hat\tau_{\mathrm{T}}^{\mathrm{mbc}} = \hat\tau_{\mathrm{T}}^{\mathrm{m}} + n_1^{-1} \sum_{i: Z_i=1} \hat\psi_i^{\mathrm{T}} .
+\label{eq:15-bias-corrected-att}
+\]
+
+\begin{Proposition}[ATT 偏差校正匹配估计量的双稳健形式]\label{prop:15-dr-att}
+ATT 的偏差校正匹配估计量满足
+\[
+\hat\tau_{\mathrm{T}}^{\mathrm{mbc}} = \hat\tau_{\mathrm{T}}^{\mathrm{DR}},
+\]
+其中 $\hat\tau_{\mathrm{T}}^{\mathrm{DR}}$ 是 ATT 的双稳健估计量。\footnote{证明见附录 \cref{sec:appendix-15-dr-att-proof}}
+\end{Proposition}
+
+\cref{prop:15-dr-att} 表明：匹配本质上使用 $K_i / M$ 来估计给定协变量条件下治疗的优势比。
+
+\section{实践中的问题}\label{sec:15-practice}
+
+\subsection{一对一还是一对多？}\label{sec:15-one-to-many}
+
+我们既可以采用一对一匹配，也可以采用一对 $M$ 匹配。当 $M$ 增加时，偏差减小但方差增大。实践中需要权衡。
+
+\subsection{放回还是不放回？}\label{sec:15-replacement}
+
+放回匹配计算更方便，但会引入依赖（同一单元被多次使用）。不放回匹配的计算更复杂，但保证了匹配单元的独立性。当对照组池较大时，两种方法结果差异不大。
+
+\subsection{协变量平衡检验}\label{sec:15-balance-check}
+
+匹配后应检验协变量平衡。使用简单 OLS 检查匹配前后协变量的系数显著性。\textbf{匹配前}，协变量通常高度不平衡（系数显著）；\textbf{匹配后}，协变量应该达到良好平衡（系数不显著）。
+
+\section{实例：LaLonde 数据}\label{sec:15-lalonde}
+
+\citet{LaLonde:1986} 研究工作培训项目对收入的影响。他比较了随机实验结果与观测性研究结果。
+
+实验部分给出 ATT 估计为 \$1794（标准误 \$623）。\footnote{详见第 \ref{ch:10} 章 \ref{sec:10-lalonde} 节}
+
+使用 \citet{Sekhon:2011} 的 Matching 包进行 1-1 匹配分析。匹配后，ATT 估计为 \$1658，与实验结果的 \$1794 非常接近。这说明\textbf{当匹配质量好时，匹配估计量能够很好地近似实验金标准}。
+
+\section{本章小结}\label{sec:15-summary}
+
+本章介绍了观测性研究中的匹配估计量，主要内容如下：
+
+\begin{enumerate}
+  \item \textbf{匹配的动机}：通过人为配对，使观测性研究模拟随机实验的性质——这比直接假设条件独立性更直观。
+  \item \textbf{基本思想（\cref{sec:15-basic-idea}）}：对每个治疗单元，在对照组中找到协变量相似的单元进行匹配。精确匹配使治疗分配机制与匹配对实验相同。
+  \item \textbf{AI 理论（\cref{sec:15-nn-matching}）}：\citet{AbadieImbens:2006,AbadieImbens:2008,AbadieImbens:2011} 建立了匹配估计量的渐近理论，包括偏差校正和方差估计。
+  \item \textbf{双稳健连接（\cref{sec:15-dr-form}）}：偏差校正匹配估计量本质上是另一种形式的双稳健估计量。
+  \item \textbf{ATT 估计（\cref{sec:15-att-estimator}）}：匹配同样适用于 ATT 的估计，且具有类似的双稳健性质。
+  \item \textbf{实践要点（\cref{sec:15-practice}）}：协变量平衡检验是确保匹配质量的关键步骤。
+\end{enumerate}
+
+\section{习题}\label{sec:chapter15-exercises}
+
+\begin{Exercise}{匹配与倾向得分}\label{exr:15-1}
+证明：在精确匹配下，倾向得分对所有配对单元相同，即 $e(X_i) = e(X_{m(i)})$。这如何支持"精确匹配模拟随机实验"的论断？
+\end{Exercise}
+
+\begin{Exercise}{一对一与一对多匹配的偏差比较}\label{exr:15-2}
+考虑 $1-1$ 匹配和 $1-M$ 匹配。当 $M$ 增大时，匹配估计量的偏差如何变化？为什么？
+\end{Exercise}
+
+\begin{Exercise}{匹配估计量的偏差校正项}\label{exr:15-3}
+从 \cref{eq:15-bias-corrected} 出发，推导偏差校正项 $\hat\psi_i$ 的具体形式。\textit{提示：参考 \citet{AbadieImbens:2008} 的推导。}
+\end{Exercise}
+
+\begin{Exercise}{ATT 匹配估计量的性质}\label{exr:15-4}
+证明 \cref{prop:15-dr-att}：ATT 的偏差校正匹配估计量等于 ATT 的双稳健估计量。
+\end{Exercise}
+
+\begin{Exercise}{协变量平衡}\label{exr:15-5}
+对 LaLonde 数据进行匹配分析，检验匹配前后协变量的平衡性。使用不同的 $M$ 值（一对一、一对二、一对四）比较结果。
+\end{Exercise}
+
+\begin{Exercise}{匹配与回归的比较}\label{exr:15-6}
+使用第 \ref{ch:10} 章 \ref{sec:10-job-training} 节的数据，分别用匹配估计量和结果回归估计量估计 ATT。比较两种方法的结果和效率。
+\end{Exercise}
+
+\begin{Exercise}{倾向得分匹配的理论性质}\label{exr:15-7}
+\citet{AbadieImbens:2016} 提供了基于倾向得分匹配的理论。阅读该论文，总结其主要结论及其与 \citet{RosenbaumRubin:1983b} 建议的关联。
+\end{Exercise}
+
+\begin{Exercise}{高维协变量的挑战}\label{exr:15-8}
+当协变量维度很高时，直接匹配面临维数灾难。讨论三种可能的解决策略：降维、惩罚回归、机器学习方法。
+\end{Exercise}
