@@ -1,0 +1,223 @@
+% Chapter 9: Covariate Adjustment in Randomized Experiments
+% A First Course in Causal Inference - Peng Ding
+% Rewrite V1
+
+\chapter{随机实验中的协变量调整}\label{ch:9}
+
+\section{引言：为什么需要协变量调整？}
+
+\textit{``The randomized experiment is the gold standard for causal inference.''}
+--- \citet{Rubin:2005}
+
+在第 \ref{ch:4} 章的完全随机实验（CRE）中，我们证明了差值均值估计量 $\hat{\tau}$ 是平均因果效应 $\tau$ 的无偏估计。然而，无偏性只保证了大样本下的准确性——在有限样本中，$\hat{\tau}$ 的方差仍然可能较大。
+
+一个自然的问题是：\textbf{能否利用已观测到的协变量 $X$ 来提高估计精度？}
+
+这并非一个新问题。Fisher (1935) 早就指出，在农业实验中，通过对土壤肥力等协变量进行\"调整\"可以提高-treatment 效果估计的精确度。Neyman (1923) 在其经典论文中也曾隐含地讨论过类似的思想。然而，将这一思想系统化、理论化的工作，则要等到 20 世纪后期才逐步完成。
+
+本章在超级总体（superpopulation）框架下讨论协变量调整。我们将看到，当协变量能够预测潜在结果时，恰当的协变量调整可以显著提高估计效率。
+
+\section{超级总体框架下的 CRE}\label{sec:9-cre-superpop}
+
+\subsection{基本设定与定义}\label{sec:9-cre-definition}
+
+假设从超级总体中独立同分布地抽取 $n$ 个单元：
+\[
+\{Z_i, Y_i(1), Y_i(0), X_i\}_{i=1}^n \stackrel{\mathrm{IID}}{\sim} \{Z, Y(1), Y(0), X\}.
+\label{eq:9-iid-assumption}
+\]
+
+\begin{Definition}[CRE 的超级总体框架]\label{def:9-cre-superpop}
+在超级总体框架下，完全随机实验满足：
+\[
+Z \perp \{Y(1), Y(0), X\}.
+\label{eq:9-randomization-assumption}
+\]
+\end{Definition}
+
+在这个框架下，平均因果效应可以写为：
+\[
+\tau = E\{Y(1)\} - E\{Y(0)\} = E(Y \mid Z=1) - E(Y \mid Z=0).
+\label{eq:9-ace-expression}
+\]
+
+第一个等号利用了随机化假设 $Z \perp Y(1)$ 和 $Z \perp Y(0)$，第二个等号则说明 $\tau$ 等于观测结果期望的差。
+
+\cref{eq:9-ace-expression} 立刻提示了一个矩估计量——差值均值 $\hat{\tau}$。在给定治疗分配向量 $\mathbf{Z}$ 的条件下，这是标准的双臂独立样本均值比较问题：
+\[
+E(\hat{\tau} \mid \mathbf{Z}) = \tau,
+\qquad
+\mathrm{var}(\hat{\tau} \mid \mathbf{Z}) = \frac{\mathrm{var}\{Y(1)\}}{n_1} + \frac{\mathrm{var}\{Y(0)\}}{n_0}.
+\label{eq:9-neraman-variance}
+\]
+
+在 IID 抽样下，样本方差是总体方差的无偏估计，因此 Neyman (1923) 的方差估计量对 $\mathrm{var}(\hat{\tau} \mid \mathbf{Z})$ 是无偏的。\textbf{超级总体框架消除了保守性问题。}\footnote{详细讨论见附录 \cref{sec:appendix-9-conservative}。}
+
+\subsection{协变量调整的动机}\label{sec:9-covariate-adjustment-motivation}
+
+尽管 $\hat{\tau}$ 在超级总体框架下是渐近无偏且渐近正态的，但其方差 $\mathrm{var}(\hat{\tau} \mid \mathbf{Z})$ 可能较大。当协变量 $X$ 能够预测潜在结果时，我们可以通过\"调整\"协变量来降低方差。
+
+直观理解：在差值均值估计量中，治疗组和对照组的协变量分布可能存在随机不平衡。即使这种不平衡在高维空间中很小，它仍然可能\"污染\"结果均值差。协变量调整的本质，是从结果均值差中减去由协变量不平衡所\"贡献\"的部分。
+
+数学上，我们假设潜在结果关于协变量的线性投影（ANCOVA 框架）：
+\[
+Y(1) = \gamma_1 + \beta_1^T X + \varepsilon(1), \qquad E\{\varepsilon(1)\} = 0,
+\label{eq:9-ols-potential-1}
+\]
+\[
+Y(0) = \gamma_0 + \beta_0^T X + \varepsilon(0), \qquad E\{\varepsilon(0)\} = 0.
+\label{eq:9-ols-potential-0}
+\]
+
+利用这些分解，因果效应可以写为：
+\[
+\tau = E\{Y(1) - Y(0)\} = (\gamma_1 - \gamma_0) + (\beta_1 - \beta_0)^T E(X).
+\label{eq:9-ace-decomposition}
+\]
+
+注意到右边只涉及 $E(X)$，而不涉及 $\varepsilon(1)$ 和 $\varepsilon(0)$——这意味着我们可以先拟合 \cref{eq:9-ols-potential-1} 和 \cref{eq:9-ols-potential-0}，然后用样本版本构造 $\tau$ 的估计量。
+
+\subsection{Lin (2013) 估计量}\label{sec:9-lin-estimator}
+
+设 $\hat{\gamma}_1, \hat{\beta}_1, \hat{\gamma}_0, \hat{\beta}_0$ 分别是 \cref{eq:9-ols-potential-1} 和 \cref{eq:9-ols-potential-0} 的 OLS 估计量。则 $\tau$ 的协变量调整估计量为：
+\[
+\hat{\tau}_{\mathrm{adj}} = \hat{\gamma}_1 - \hat{\gamma}_0 + (\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}.
+\label{eq:9-covariate-adj-estimator}
+\]
+
+一个关键洞察是：若我们对协变量进行中心化，即 $\bar{X} = 0$，则 \cref{eq:9-covariate-adj-estimator} 简化为：
+\[
+\hat{\tau}_L = \hat{\gamma}_1 - \hat{\gamma}_0.
+\label{eq:9-lin-estimator}
+\]
+
+这就是 \citet{Lin:2013} 提出的估计量。\cref{eq:9-lin-estimator} 等价于在合并数据上运行以下 OLS 回归：
+\[
+Y = \alpha_0 + \alpha_Z Z + \alpha_X^T X + \alpha_{ZX}^T (Z \cdot X) + \varepsilon,
+\label{eq:9-pooled-ols}
+\]
+其中 $\hat{\tau}_L = \hat{\alpha}_Z$。\footnote{完整的 OLS 分解推导见附录 \cref{sec:appendix-9-ols-decomposition}。}
+
+\citet{Lin:2013} 证明了在正则条件下，$\hat{\tau}_L$ 是 $\tau$ 的半参数有效估计量——它达到了均方误差意义上的最优下界。
+
+\subsection{方差估计：EHW 校正}\label{sec:9-ehw-correction}
+
+标准 OLS 输出会给出 $\hat{\tau}_L$ 的方差估计量。然而，直接使用 OLS 的异方差-稳健（EHW）标准误是不正确的——因为在超级总体框架下，协变量样本均值 $\bar{X}$ 也有随机变异，而 OLS 标准误没有考虑这一额外的随机性。\footnote{原因分析见附录 \cref{sec:appendix-9-ehw-issue}。}
+
+\citet{Berk et al.:2013}, \citet{NegiWooldridge:2021} 和 \citet{ZhaoDing:2021a} 分别独立地提出了对 EHW 方差估计量的校正项：
+\[
+\hat{V}_L = \hat{V}_{\mathrm{EHW}} + \frac{1}{n}(\hat{\beta}_1 - \hat{\beta}_0)^T S_X^2 (\hat{\beta}_1 - \hat{\beta}_0),
+\label{eq:9-variance-correction}
+\]
+其中：
+- $\hat{V}_{\mathrm{EHW}}$ 是 OLS 输出的 EHW 方差估计量；
+- $S_X^2$ 是协变量 $X$ 的有限总体协方差矩阵的样本版本；
+- $(\hat{\beta}_1 - \hat{\beta}_0)$ 是交互项 $Z \cdot X$ 的系数估计。
+
+加入校正项后，标准误与经验标准差匹配，95\% 置信区间的覆盖率接近标称水平。\footnote{模拟验证见第 \ref{sec:9-simulation} 节。}
+
+\section{模拟研究}\label{sec:9-simulation}
+
+为了验证上述理论结果，我们进行蒙特卡洛模拟。设定样本量 $n=500$，重复 $2000$ 次。潜在结果关于协变量非线性，误差项非正态，真实平均因果效应为 $0$。\footnote{R 代码实现见附录 \cref{sec:appendix-9-r-code}。}
+
+模拟结果显示：
+\begin{enumerate}
+  \item \textbf{Lin 估计量近似无偏}：偏差约为 $-0.0001$，可以忽略。
+  \item \textbf{EHW 标准误偏小}：平均 EHW 标准误为 $0.139$，而经验标准差为 $0.151$，导致 95\% 置信区间覆盖率仅为 $92.7\%$（偏低）。
+  \item \textbf{校正后的标准误准确}：加入 \cref{eq:9-variance-correction} 的校正项后，平均校正标准误为 $0.153$，与经验标准差非常接近，95\% 置信区间覆盖率达到 $95.3\%$。
+\end{enumerate}
+
+这些结果验证了超级总体框架下方差校正的必要性。
+
+\section{SRE 的扩展}\label{sec:9-sre-extension}
+
+前文的讨论可以自然地推广到分层随机实验（SRE）。设 $X_i \in \{1, \dots, K\}$ 为离散的层别协变量。
+
+\begin{Definition}[SRE 的超级总体框架]\label{def:9-sre-superpop}
+在超级总体框架下，分层随机实验满足：
+\[
+Z \perp \{Y(1), Y(0)\} \mid X.
+\label{eq:9-sre-randomization}
+\]
+\end{Definition}
+
+即，在给定层别 $X=k$ 的条件下，治疗分配与潜在结果独立。
+
+层别平均因果效应为：
+\[
+\tau_{[k]} = E\{Y(1) - Y(0) \mid X=k\} = E(Y \mid Z=1, X=k) - E(Y \mid Z=0, X=k).
+\label{eq:9-stratum-ace}
+\]
+
+总体平均因果效应是各层别平均因果效应的加权平均：
+\[
+\tau = \sum_{k=1}^K \mathrm{pr}(X=k) \tau_{[k]}.
+\label{eq:9-total-ace-weighted}
+\]
+
+由于 SRE 等价于各层内独立的 CRE，前文关于 CRE 的所有结果在各层内都成立。因此，我们可以对每一层分别应用 Lin (2013) 估计量，然后加权合并。\footnote{详细推导见附录 \cref{sec:appendix-9-sre-extension}。}
+
+当各层内治疗组和对照组样本量至少为 $2$ 时，我们可以用 $\hat{V}_S$ 作为 $\mathrm{var}(\hat{\tau}_S)$ 的方差估计量。
+
+\section{本章小结}\label{sec:9-summary}
+
+本章在超级总体框架下讨论了随机实验中的协变量调整，主要内容如下：
+
+\begin{enumerate}
+  \item \textbf{超级总体框架（\cref{def:9-cre-superpop}）}：$Z \perp \{Y(1), Y(0), X\}$ 使得 $\tau$ 可以写为观测结果期望的差，消除了保守性问题。
+  \item \textbf{协变量调整的动机}：当 $X$ 能预测潜在结果时，调整协变量可以消除由协变量不平衡带来的额外方差。
+  \item \textbf{Lin (2013) 估计量（\cref{eq:9-lin-estimator}）}：等价于在合并数据上运行含交互项的 OLS 回归，在正则条件下半参数有效。
+  \item \textbf{方差校正（\cref{eq:9-variance-correction}）}：需要在 EHW 方差估计量上添加校正项，才能得到在超级总体框架下一致的标准误。
+  \item \textbf{SRE 扩展（\cref{def:9-sre-superpop}）}：在各层内分别应用协变量调整，然后加权合并。
+\end{enumerate}
+
+协变量调整的核心思想是：\textbf{利用可观测的协变量信息，提高因果效应的估计精度}。这一思想将在后续章节讨论观测性研究时发挥更重要的作用。
+
+\section{习题}\label{sec:chapter9-exercises}
+
+\begin{Exercise}{CRE 的协变量平衡}\label{exr:9-1}
+在超级总体框架下，证明 \cref{eq:9-ace-expression}：平均因果效应可以写为 $E(Y \mid Z=1) - E(Y \mid Z=0)$。
+\end{Exercise}
+
+\begin{Exercise}{OLS 分解与 pooled regression}\label{exr:9-2}
+基于 \cref{eq:9-ols-potential-1} 和 \cref{eq:9-ols-potential-0}，证明观测结果的 OLS 分解为：
+\[
+Y = \alpha_0 + \alpha_Z Z + \alpha_X^T X + \alpha_{ZX}^T (Z \cdot X) + \varepsilon,
+\]
+其中
+\[
+\alpha_0 = \gamma_0,\quad \alpha_Z = \gamma_1 - \gamma_0,\quad \alpha_X = \beta_0,\quad \alpha_{ZX} = \beta_1 - \beta_0.
+\]
+\end{Exercise}
+
+\begin{Exercise}{Lin (2013) 估计量的性质}\label{exr:9-3}
+证明在正则条件下，Lin (2013) 估计量 $\hat{\tau}_L$ 是 $\tau$ 的半参数有效估计量。
+\end{Exercise}
+
+\begin{Exercise}{方差估计量的比较}\label{exr:9-4}
+在超级总体框架下，模拟 $\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i=1}^n$，其中 $\beta_1 \neq \beta_0$。比较以下四种方差估计量的表现：
+\begin{enumerate}
+  \item 标准的 EHW 稳健方差估计量；
+  \item 带校正项 \cref{eq:9-variance-correction} 的 EHW 估计量；
+  \item Bootstrap 方差估计量（协变量在开始时中心化，但不每次重新中心化）；
+  \item Bootstrap 方差估计量（协变量在每次 bootstrap 样本中重新中心化）。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{SRE 中的协变量调整}\label{exr:9-5}
+在 SRE 的超级总体框架下，推导 $\tau$ 的协变量调整估计量及其方差估计量。
+\end{Exercise}
+
+\begin{Exercise}{协变量调整与后分层的关系}\label{exr:9-6}
+证明：当各层的层别倾向得分 $e_{[k]} = n_{[k]1} / n_{[k]}$ 相等时，协变量调整与后分层给出相同的点估计量。
+\end{Exercise}
+
+\begin{Exercise}{文献阅读}\label{exr:9-7}
+阅读 \citet{Lin:2013} 的原文，总结其核心贡献和主要结论。
+\end{Exercise}
+
+\begin{Exercise}{回归调整的几何解释}\label{exr:9-8}
+从几何角度解释协变量调整：为什么减去 $(\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}$ 可以提高估计精度？
+\end{Exercise}
+
+\endinput
