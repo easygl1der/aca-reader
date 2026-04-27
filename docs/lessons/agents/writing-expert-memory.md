@@ -1388,7 +1388,7 @@ rm -f "$WRAPPER"
 - 写章节文件时就规划好 preamble（standalone 方式）
 - 或者保持无 preamble，直接 include 到主文件编译
 
-**最后更新**: 2026-04-26
+**最后更新**: 2026-04-28
 
 ---
 
