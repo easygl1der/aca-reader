@@ -1,0 +1,358 @@
+% Chapter 8: Fisher Randomization Test with Studentized Statistics in Stratified Experiments
+% A First Course in Causal Inference - Peng Ding
+% Draft V1
+
+\chapter{分层实验中的 Fisher 随机化检验：Studentized 统计量}
+\label{ch:8}
+
+\section{引言：从 Chapter 3 的 FRT 到 Chapter 8 的双重保证}
+\label{sec:8-intro}
+
+在第 \ref{ch:3} 章中，我们建立了 Fisher 随机化检验（FRT）的基本框架。在 sharp null 假设 $H_{0F}: Y_i(1) = Y_i(0)$ 下，FRT 对任何检验统计量都给出有限样本精确的 p 值：
+\[
+\mathbb{P}(p_\frt \leq u) \leq u \quad \text{for all} \quad 0 \leq u \leq 1 .
+\tag{3.2}
+\]
+这是 FRT 的核心优势——它不依赖任何分布假设，只依赖随机化的性质。
+
+然而，第 \ref{ch:3} 章也留下了一个关键问题：\textbf{我们应该选择什么检验统计量？}
+
+直观上，我们需要选择能够捕捉 $H_{0F}$ 违反情况的检验统计量。但更微妙的问题是，当我们关心 \textbf{weak null 假设} $H_{0N}: \tau = 0$ 时，使用某些检验统计量（如原始差值均值 $\hat\tau$）的 FRT 可能在 $H_{0N}$ 下表现不佳——甚至可能是反保守的（anti-conservative）。
+
+\citet{DingDasgupta:2017} 的核心贡献在于证明了一个优雅的双重保证（dual guarantees）：\textbf{只要使用 studentized 统计量 $t = \hat\tau / \sqrt{\hat V}$，FRT 就能同时在 $H_{0F}$ 和 $H_{0N}$ 下表现良好。} 本章将详细阐述这一结果，并将它推广到分层实验（Stratified Randomized Experiment, SRE）和带协变量的情形。
+
+\section{Studentized 统计量的双重保证}
+\label{sec:8-dual-guarantees}
+
+\subsection{CRE 中的 Studentized 统计量}
+\label{sec:8-cre-studentized}
+
+考虑第 \ref{ch:3} 章的完全随机实验（CRE）：$n_1$ 个单元接受治疗，$n_0$ 个接受对照（$n = n_1 + n_0$）。我们关心的两个零假设是：
+
+\begin{enumerate}
+  \item \textbf{强零假设（Sharp Null）}：
+  \[
+  H_{0\Fisher}: Y_i(1) = Y_i(0) \quad \text{对所有单元} \quad i = 1, \dots, n .
+  \tag{8.1}
+  \]
+  \item \textbf{弱零假设（Weak Null）}：
+  \[
+  H_{0\Neyman}: \tau = 0 \Longleftrightarrow \bar{Y}(1) = \bar{Y}(0) .
+  \tag{8.2}
+  \]
+\end{enumerate}
+
+在 $H_{0\Fisher}$ 下，所有潜在结果都已知，FRT 对任何检验统计量都给出有限样本精确的 p 值。
+
+在 $H_{0\Neyman}$ 下，平均因果效应为零但个体因果效应可能非零。此时 $\hat\tau$ 仍然是一个合理的检验统计量，但其渐近分布与 $H_{0\Fisher}$ 下的分布不同——因为潜在结果的方差结构发生了变化。
+
+经典的 studentized 统计量定义为：
+\[
+t = \frac{\hat\tau}{\sqrt{\hat V}} ,
+\tag{8.3}
+\]
+其中 $\hat\tau$ 是差值均值估计量，$\hat V$ 是相应的方差估计量。\footnote{式 \cref{eq:8-cre-studentized} 的期望和方差推导见附录 \cref{sec:appendix-8-studentized-t-cre}。}
+
+\subsection{双保证的理论}
+\label{sec:8-dual-theory}
+
+\begin{Theorem}[Ding and Dasgupta (2017) 的双重保证]\label{th:8-dual-guarantee}
+在 CRE 中，使用 studentized 统计量 $t$ 的 FRT 具有以下双重保证：
+\begin{enumerate}
+  \item \textbf{在 $H_{0\Fisher}$ 下}：$p_\frt$ 是有限样本精确的；
+  \item \textbf{在 $H_{0\Neyman}$ 下}：$p_\frt$ 是渐近保守的（asymptotically conservative）。
+\end{enumerate}
+\end{Theorem}
+
+\textbf{为什么需要 studentization 才能获得第二个保证？} 让我们比较 $\hat\tau$ 和 $t$ 在 $H_{0\Neyman}$ 下的行为。
+
+在 $H_{0\Neyman}$ 下，$\hat\tau$ 的渐近分布为：
+\[
+\hat\tau \doteq \mathrm{N}\left(0, \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}\right) .
+\tag{8.4}
+\]
+
+但 FRT pretends 的是 Science Table 由 $H_{0\Fisher}$ 诱导的 $(Y_i, Y_i)_{i=1}^n$，即所有个体因果效应为零。在这个假设下，$\hat\tau$ 的随机化分布为：
+\[
+\hat\tau^\pi \doteq \mathrm{N}\left(0, \frac{s^2}{n_1} + \frac{s^2}{n_0}\right) ,
+\tag{8.5}
+\]
+其中 $s^2$ 是观测结果的样本方差。注意 \cref{eq:8-4} 和 \cref{eq:8-5} 并不匹配——即使在大样本下，FRT 用 \cref{eq:8-5} 作为近似也会在 $H_{0\Neyman}$ 下产生反保守的 p 值。
+
+但当我们使用 studentized 版本 $t = \hat\tau / \sqrt{\hat V}$ 时，情况发生了变化。在 $H_{0\Neyman}$ 下：
+\[
+t \doteq \mathrm{N}(0, C^2) ,
+\tag{8.6}
+\]
+其中 $C^2 \leq 1$，等号成立的充要条件是 $Y_i(1) - Y_i(0) = \tau$ 对所有单元成立（即 constant treatment effect）。
+
+而 FRT 产生的随机化分布为：
+\[
+t^\pi \doteq \mathrm{N}(0, 1) .
+\tag{8.7}
+\]
+
+由于真实分布的方差 $C^2$ 小于 FRT 假设的方差 1，p 值在渐近意义下是保守的——这正是我们想要的。
+
+\textbf{关键洞察}：studentization 消去了未知方差结构的影响，使得 FRT 的随机化分布成为真实分布的上界。
+
+\begin{Remark}
+\citet{DingDasgupta:2017} 证明了这个双重保证是 studentized 统计量独有的性质。其他统计量（如原始 $\hat\tau$）的 FRT 在 $H_{0\Neyman}$ 下可能不再控制第一类错误率。
+\end{Remark}
+
+\section{分层实验中的 Studentized 统计量}
+\label{sec:8-sre-studentized}
+
+现在我们将双重保证推广到第 \ref{ch:5} 章讨论的 SRE。
+
+在 SRE 中，我们有 $K$ 个离散的协变量层（strata）。第 $k$ 层的层别平均因果效应为 $\tau_{[k]}$，总体平均因果效应为 $\tau = \sum_{k=1}^K \pi_{[k]} \tau_{[k]}$。
+
+分层差值均值估计量及其方差估计量已在第 \ref{ch:5} 章给出：
+\[
+\hat\tau_\SRE = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]} ,
+\tag{8.8}
+\]
+\[
+\hat V_\SRE = \sum_{k=1}^K \pi_{[k]}^2 \left( \frac{\hat S_{[k]}^2(1)}{n_{[k]1}} + \frac{\hat S_{[k]}^2(0)}{n_{[k]0}} \right) .
+\tag{8.9}
+\]
+
+基于此，我们定义 SRE 中的 studentized 统计量：
+\[
+t_\SRE = \frac{\hat\tau_\SRE}{\sqrt{\hat V_\SRE}} .
+\tag{8.10}
+\]
+
+\begin{Theorem}[SRE 中 FRT 的双重保证]\label{th:8-sre-dual-guarantee}
+在 SRE 中，使用 studentized 统计量 $t_\SRE$ 的 FRT 具有以下双重保证：
+\begin{enumerate}
+  \item \textbf{在 $H_{0\Fisher}$ 下}：$p_\frt$ 是有限样本精确的；
+  \item \textbf{在 $H_{0\Neyman}$ 下}：$p_\frt$ 是渐近保守的。
+\end{enumerate}
+\end{Theorem}
+
+\SRE 中 FRT 的实现与 CRE 类似，唯一的区别在于：在模拟治疗分配时，必须在 $X$ 的各层内独立进行置换（条件随机化检验）。
+
+\section{带协变量的 FRT}
+\label{sec:8-covariate-frt}
+
+\subsection{CRE 中带协变量的 Studentized 统计量}
+\label{sec:8-cre-covariate}
+
+当有基线协变量 $\mathbf{X}$ 可用时，我们可以利用它来构造更高效的检验统计量。\citet{ZhaoDing:2021a} 推荐使用 studentized Lin 估计量：
+
+\[
+t_\mathrm{L} = \frac{\hat\tau_\mathrm{L}}{\sqrt{\hat V_\mathrm{L}}} ,
+\tag{8.11}
+\]
+
+其中 $\hat\tau_\mathrm{L}$ 是 \citet{Lin:2013} 提出的协变量调整估计量，$\hat V_\mathrm{L}$ 是相应的方差估计量。从 OLS 的角度看，$t_\mathrm{L}$ 就是回归 $Y_i$ on $(1, Z_i, X_i, Z_i X_i)$ 中治疗指标 $Z_i$ 系数的 studentized 统计量。
+
+\begin{Theorem}[Zhao and Ding (2021a) 的多重保证]\label{th:8-covariate-guarantee}
+在 CRE 中，使用 studentized Lin 统计量 $t_\mathrm{L}$ 的 FRT 具有以下多重保证：
+\begin{enumerate}
+  \item \textbf{在 $H_{0\Fisher}$ 下}：$p_\frt$ 是有限样本精确的；
+  \item \textbf{在 $H_{0\Neyman}$ 下}：$p_\frt$ 是渐近保守的；
+  \item \textbf{当 $H_{0\Neyman}$ 不成立且协变量对结果有预测性时}：$p_\frt$ 渐近地比使用 $t$ 的 FRT 更高效（功效更高）；
+  \item \textbf{上述性质在线性结果模型错误设定时仍然成立}。
+\end{enumerate}
+\end{Theorem}
+
+性质（4）特别重要：即使我们用来构造 $\hat\tau_\mathrm{L}$ 的线性模型是错误的，FRT with $t_\mathrm{L}$ 仍然具有双重保证。这是因为 $t_\mathrm{L}$ 的渐近有效性来自于协变量对结果的可预测性，而非模型设定。
+
+\ZhaoDing:2021a 同时指出，其他协变量调整 FRT（如基于伪结果策略的 FRT）在 $H_{0\Neyman}$ 下可能表现不佳——可能是反保守的，或功效低于 $t_\mathrm{L}$。
+
+\subsection{SRE 中带协变量的 Studentized 统计量}
+\label{sec:8-sre-covariate}
+
+在 SRE 中同时使用协变量调整，\citet{ZhaoDing:2021a} 推荐使用：
+\[
+t_{\mathrm{L},\SRE} = \frac{\hat\tau_{\mathrm{L},\SRE}}{\sqrt{\hat V_{\mathrm{L},\SRE}}} .
+\tag{8.12}
+\]
+
+这本质上是将 Lin 协变量调整的思想应用到分层估计量框架中。类似地，它也具有 \cref{th:8-covariate-guarantee} 中的多重保证。
+
+\section{模拟研究}
+\label{sec:8-simulation}
+
+\citet{DingDasgupta:2017} 和 \citet{ZhaoDing:2021a} 通过模拟验证了 studentized 统计量的有限样本性质。我们在此介绍一个典型设置。
+
+考虑一个包含 $n = 100$ 个单元的有限总体，治疗组 $n_1 = 20$，对照组 $n_0 = 80$。对每个单元 $i$，生成协变量 $X_i \sim \mathrm{Unif}(-1, 1)$，潜在结果为：
+\[
+Y_i(1) \sim \mathrm{N}(X_i^3, 1), \quad Y_i(0) \sim \mathrm{N}(-X_i^3, 0.5^2) .
+\]
+对 $Y_i(1)$ 和 $Y_i(0)$ 进行中心化以确保 $\tau = 0$（即满足 $H_{0\Neyman}$）。
+
+模拟比较了 12 种检验统计量：
+\begin{enumerate}
+  \item \textbf{Neyman (1923) 的三种 OLS 实现}：治疗组系数、基于经典标准误的 $t$ 统计量、基于 EHW 标准误的 $t$ 统计量；
+  \item \textbf{伪结果策略}（\citet{Rosenbaum:2002a}）：首先对 $Y_i$ 在 $(1, X_i)$ 上残差化，然后应用上述三种统计量；
+  \item \textbf{Fisher (1925) 的 OLS 实现}（见第 \ref{ch:6} 章）；
+  \item \textbf{Lin (2013) 的 OLS 实现}（见第 \ref{ch:6} 章）：最终三种 studentized 统计量。
+\end{enumerate}
+
+\begin{Result}
+在 $H_{0\Neyman}$ 下，只有四种 studentized 统计量（Lin 的三种和 EHW 的一种）能够保持名义第一类错误率，且实际错误率偏低（保守）。其余八种统计量的实际错误率均高于名义水平，因此不适合用于检验弱零假设。
+\end{Result}
+
+这个模拟结果与 \cref{th:8-dual-guarantee} 的理论预测完全一致。
+
+\section{实践建议}
+\label{sec:8-recommendations}
+
+基于上述理论和模拟结果，我们给出以下实践建议：
+
+\subsection{CRE 的建议}
+\label{sec:8-cre-recommendations}
+
+\begin{enumerate}
+  \item \textbf{如果只关心 $H_{0\Fisher}$}（即是否存在任何处理效应）：使用任何检验统计量的 FRT 都给出有限样本精确 p 值。可以选择功效较高的统计量，如 $\hat\tau$。
+  \item \textbf{如果关心 $H_{0\Neyman}$}（即平均因果效应是否为零）：\textbf{必须使用 studentized 统计量}，推荐使用 $t$ 或 $t_\mathrm{L}$。
+  \item \textbf{如果有协变量可用}：使用 $t_\mathrm{L}$ 通常比 $t$ 更高效。
+\end{enumerate}
+
+\subsection{SRE 的建议}
+\label{sec:8-sre-recommendations}
+
+\begin{enumerate}
+  \item \textbf{无协变量}：使用 $t_\SRE$；
+  \item \textbf{有协变量}：使用 $t_{\mathrm{L},\SRE}$。
+\end{enumerate}
+
+\subsection{重随机化（ReM）的特别说明}
+\label{sec:8-rem-note}
+
+对于使用 Mahalanobis 距离进行重随机化的实验（ReM），\citet{ZhaoDing:2021a} 发现使用原始 $t$ 统计量的 FRT 不再具有 \cref{th:8-dual-guarantee} 中的双重保证。但使用 $t_\mathrm{L}$ 的 FRT 仍然保持这些保证。这凸显了\textbf{协变量调整和 studentization 在 ReM 中的重要性}。
+
+\subsection{匹配对实验（MPE）的建议}
+\label{sec:8-mpe-recommendations}
+
+对于匹配对实验（MPE），建议平行于 SRE 的建议：
+\begin{itemize}
+  \item \textbf{无协变量}：使用 $t$ 统计量（OLS 拟合 $\hat\tau_i$ on $1$ 后的截距项）；
+  \item \textbf{有协变量}：使用 $t$ 统计量（OLS 拟合 $\hat\tau_i$ on $1$ 和 $\hat\tau_{X,i}$ 后的截距项）。
+\end{itemize}
+
+\subsection{核心结论}
+\label{sec:8-core-conclusion}
+
+\textbf{使用 studentized 统计量的 FRT 是更安全的选择。} 当大样本正态近似准确时，基于 Normal 近似和基于 FRT 的 p 值几乎相同。当正态近似不准确时，FRT 至少能保证在 sharp null 假设下 p 值是有效的。这是本书的推荐做法。
+
+\section{案例研究：铁补充剂实验的重新分析}
+\label{sec:8-case-study}
+
+我们重新分析第 \ref{ch:5} 章提到的 \citet{Chong:2016} 实验，比较"足球运动员"组 vs 对照组，以及"医生"组 vs 对照组。数据集包含学生的基线贫血状态作为协变量。
+
+我们使用两种分析框架：
+\begin{itemize}
+  \item \textbf{CRE 分析}（各层内）：使用 $t$ 和 $t_\mathrm{L}$ 的 FRT；
+  \item \textbf{SRE 分析}（跨层汇总）：使用 $t_\SRE$ 和 $t_{\mathrm{L},\SRE}$ 的 FRT。
+\end{itemize}
+
+\cref{tab:8-iron-soccer} 和 \cref{tab:8-iron-physician} 分别报告了 soccer vs control 和 physician vs control 的结果。
+
+\begin{table}[htbp]
+\caption{铁补充剂实验重新分析：soccer vs control}
+\label{tab:8-iron-soccer}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & est & s.e. & $p_\text{Normal}$ & $p_\frt$ \\
+\midrule
+class 1 (N) & 0.051 & 0.502 & 0.919 & 0.924 \\
+class 1 (L) & 0.050 & 0.489 & 0.919 & 0.929 \\
+class 2 (N) & $-$0.158 & 0.451 & 0.726 & 0.722 \\
+class 2 (L) & $-$0.176 & 0.452 & 0.698 & 0.700 \\
+class 3 (N) & 0.005 & 0.403 & 0.990 & 0.989 \\
+class 3 (L) & $-$0.096 & 0.385 & 0.803 & 0.806 \\
+class 4 (N) & $-$0.492 & 0.447 & 0.271 & 0.288 \\
+class 4 (L) & $-$0.511 & 0.447 & 0.253 & 0.283 \\
+class 5 (N) & 0.390 & 0.369 & 0.291 & 0.314 \\
+class 5 (L) & 0.443 & 0.318 & 0.164 & 0.186 \\
+\midrule
+all (N) & $-$0.051 & 0.204 & 0.802 & 0.800 \\
+all (L) & $-$0.074 & 0.200 & 0.712 & 0.712 \\
+\bottomrule
+\end{tabular}
+\par\medskip\small
+N：Neyman (1923) 未调整估计量和检验；L：Lin (2013) 协变量调整估计量和检验。
+\end{table}
+
+\begin{table}[htbp]
+\caption{铁补充剂实验重新分析：physician vs control}
+\label{tab:8-iron-physician}
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & est & s.e. & $p_\text{Normal}$ & $p_\frt$ \\
+\midrule
+class 1 (N) & 0.567 & 0.426 & 0.183 & 0.192 \\
+class 1 (L) & 0.588 & 0.418 & 0.160 & 0.174 \\
+class 2 (N) & 0.193 & 0.438 & 0.659 & 0.666 \\
+class 2 (L) & 0.265 & 0.409 & 0.517 & 0.523 \\
+class 3 (N) & 1.305 & 0.494 & 0.008 & 0.012 \\
+class 3 (L) & 1.501 & 0.462 & 0.001 & 0.003 \\
+class 4 (N) & $-$0.273 & 0.413 & 0.508 & 0.515 \\
+class 4 (L) & $-$0.313 & 0.417 & 0.454 & 0.462 \\
+class 5 (N) & $-$0.050 & 0.379 & 0.895 & 0.912 \\
+class 5 (L) & $-$0.067 & 0.279 & 0.811 & 0.816 \\
+\midrule
+all (N) & 0.406 & 0.202 & 0.045 & 0.047 \\
+all (L) & 0.463 & 0.190 & 0.015 & 0.017 \\
+\bottomrule
+\end{tabular}
+\par\medskip\small
+N：Neyman (1923) 未调整估计量和检验；L：Lin (2013) 协变量调整估计量和检验。
+\end{table}
+
+从表中可以看到几个关键观察：
+
+\begin{enumerate}
+  \item \textbf{协变量调整通常减少标准误}：由于基线贫血状态对结果有预测力，使用 $t_\mathrm{L}$ 的标准误通常小于使用 $t$ 的标准误（在大多数层中成立）。
+  \item \textbf{两种 p 值接近但 FRT 略大}：根据理论，FRT p 值应该略大于基于正态近似的 p 值（保守性），在大多数情况下确实如此。
+  \item \textbf{跨层汇总的 SRE 分析}：soccer 组在所有层中均不显著；physician 组的整体效应显著（$p_\frt \approx 0.017$），且在 class 3 中最为显著（$p_\frt \approx 0.003$）。
+  \item \textbf{小层中的标准误增大}：class 2 和 class 4 中协变量调整反而略微增大了标准误，这是由于层内样本量较小导致渐近近似不准确。
+\end{enumerate}
+
+\cref{fig:8-randomization-dist} 比较了 studentized 统计量的随机化分布与正态近似。在层内子组分析中，随机化分布与 $\mathrm{N}(0,1)$ 之间存在一定偏差；在跨层汇总分析中，偏差变得不明显。总体而言，两种方法得出的结论一致。
+
+\section{本章小结}
+\label{sec:8-summary}
+
+本章探讨了 Fisher 随机化检验在完全随机实验和分层随机实验中的应用，主要结论如下：
+
+\begin{enumerate}
+  \item \textbf{双重保证}（\citet{DingDasgupta:2017}）：使用 studentized 统计量 $t = \hat\tau / \sqrt{\hat V}$ 的 FRT 在 $H_{0\Fisher}$ 下是有限样本精确的，在 $H_{0\Neyman}$ 下是渐近保守的。
+  \item \textbf{Studentization 的必要性}：原始 $\hat\tau$ 的 FRT 在 $H_{0\Neyman}$ 下可能反保守，因为 FRT 假设的方差结构与真实方差结构不匹配。Studentization 消去了这一不匹配。
+  \item \textbf{带协变量的扩展}（\citet{ZhaoDing:2021a}）：使用 studentized Lin 统计量 $t_\mathrm{L}$ 的 FRT 在 $H_{0\Fisher}$ 下精确，在 $H_{0\Neyman}$ 下保守，且当协变量预测结果时功效更高。
+  \item \textbf{SRE 的推广}：对 SRE 使用 $t_\SRE$，对带协变量的 SRE 使用 $t_{\mathrm{L},\SRE}$，均具有双重保证。
+  \item \textbf{实践建议}：使用 studentized 统计量的 FRT 是更安全的选择——当正态近似准确时与渐近 p 值接近，当正态近似不准确时至少保证 sharp null 下的有效性。
+\end{enumerate}
+
+\section{习题}
+\label{sec:chapter8-exercises}
+
+\begin{exercise}{8.1 — Angrist and Lavy (2009) 数据重新分析}
+这是第 7 章 Problem 7.8 的 Fisher  counterpart。报告使用 studentized 统计量的 FRT 所得到的 $p_\frt$。
+\end{exercise}
+
+\begin{exercise}{8.2 — Zhao and Ding (2021a) Figure 1 的复制}
+Zhao and Ding (2021a) 使用模拟来评估各种检验统计量的 FRT 的有限样本性质。基于他们的 Figure 1，他们推荐使用 $t_{\mathrm{L},\SRE}$ 来分析 SRE。复制他们的 Figure 1。
+\end{exercise}
+
+\begin{exercise}{8.3 — Studentization 的直觉}
+解释为什么 studentization 能够修复 $\hat\tau$ 在 $H_{0\Neyman}$ 下的反保守问题。从方差结构的角度阐述你的理由。
+\end{exercise}
+
+\begin{exercise}{8.4 — 推导 $t$ 在 $H_{0\Neyman}$ 下的渐近分布}
+在 CRE 中，推导 studentized 统计量 $t = \hat\tau / \sqrt{\hat V}$ 在 $H_{0\Neyman}$ 下的渐近分布。证明其渐近方差不超过 1。
+\end{exercise}
+
+\begin{exercise}{8.5 — Lin 估计量的性质}
+描述 Lin (2013) 协变量调整估计量 $\hat\tau_\mathrm{L}$ 的构造。证明它在线性结果模型正确设定时是高效的。
+\end{exercise}
+
+\begin{exercise}{8.6 — 推荐阅读}
+\citet{Janssen:1997} 和 \citet{ChungRomano:2013} 在 permutation tests 中使用了 studentized 统计量。在设计-based 框架下，\citet{DingDasgupta:2017} 和 \citet{WuDing:2021} 给出了 multi-armed experiments 的推荐，\citet{ZhaoDing:2021a} 将推荐推广到协变量调整情形。阅读这些文献并撰写一页摘要。
+\end{exercise}
