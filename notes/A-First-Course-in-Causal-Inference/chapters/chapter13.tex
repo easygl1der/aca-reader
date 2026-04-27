@@ -1,0 +1,300 @@
+% Chapter 13: Subclassification on the Propensity Score
+% A First Course in Causal Inference - Peng Ding
+% Rewrite with Stein narrative style
+
+\chapter{基于倾向得分的分层}\label{ch:13}
+
+\section{引言：从分层随机实验到观测性研究}\label{sec:13-intro}
+
+\textit{``Block what you can and randomize what you cannot.''}
+--- \citep[page 103]{BoxHunterHunter:1978}
+
+我们在第 \ref{ch:5} 章看到，分层随机实验（SRE）是一种优雅地解决协变量不平衡问题的方法。在 SRE 中，我们根据离散的协变量 $X$ 将单元分成若干层，在每一层内独立进行完全随机实验。这种方法在设计上保证了各层内的 treatment 和 control 平衡。
+
+然而，现实中的观测性研究面临一个根本性的困难：我们无法控制治疗分配机制。在随机实验中，$e(X) = \pr(Z=1)$ 是由实验设计决定的已知常数；但在观测性研究中，治疗分配概率 $e(X) = \pr(Z=1 \mid X)$ 取决于协变量 $X$，通常既未知又高度依赖于 $X$ 的具体值。
+
+更棘手的是，协变量 $X$ 往往是高维的。当 $X$ 包含数十个甚至数百个变量时，直接按 $X$ 的取值进行分层会导致大多数层只包含极少量的单元——这正是维数灾难（curse of dimensionality）带来的挑战。
+
+这些问题促使我们思考：能否找到一种方法，既能继承 SRE 的思想，又能在观测性研究中有效地控制 confounding？
+
+\textbf{倾向得分（propensity score）}正是为解决这一问题而诞生的核心概念。
+
+\section{倾向得分的维度约化性质}\label{sec:13-dimension-reduction}
+
+\subsection{核心定理}\label{sec:13-theorem}
+
+在第 \ref{ch:5} 章中，我们定义了层别倾向得分 $e_{[k]} = n_{[k]1}/n_{[k]}$，这是在离散协变量下的分层随机实验中治疗分配的层内概率。在观测性研究的语境下，\citet{RosenbaumRubin:1983} 提出了更一般的倾向得分定义。
+
+\begin{Definition}[倾向得分]\label{def:13-pscore}
+倾向得分定义为给定协变量条件下治疗分配的条件概率：
+\[
+e(X) = \pr(Z = 1 \mid X).
+\]
+\end{Definition}
+
+倾向得分是一个取值在 $[0,1]$ 区间的标量函数。下面的定理揭示了它的一个非凡性质——即使原始协变量 $X$ 是高维的，只要强 ignorability 在 $X$ 条件下成立，它在倾向得分条件下也成立。
+
+\begin{Theorem}[倾向得分的维度约化定理]\label{th:11.1}
+如果 $Z \perp \{Y(1), Y(0)\} \mid X$，则有
+\[
+Z \perp \{Y(1), Y(0)\} \mid e(X).
+\]
+\label{th:13-dim-reduction}
+\end{Theorem}
+
+\textbf{直观理解}：强 ignorability 要求我们在高维协变量 $X$ 的条件下进行条件化才能消除混杂。定理 \ref{th:13-dim-reduction} 告诉我们，更进一步地，仅在标量倾向得分 $e(X)$ 条件下条件化就足以消除 $X$ 带来的所有混杂。这意味着，我们可以将高维协变量 $X$ 降维到一维标量 $e(X)$，同时仍然保持因果识别的有效性。
+
+\textbf{证明概要}：\footnote{完整证明见附录 \cref{sec:appendix-13-proof-dim-reduction}}
+
+我们需要证明 $\pr\{Z=1 \mid Y(1), Y(0), e(X)\} = \pr\{Z=1 \mid e(X)\}$。利用 tower property 和强 ignorability 假设，有
+\[
+\pr\{Z=1 \mid Y(1), Y(0), e(X)\} = E\{Z \mid Y(1), Y(0), e(X)\} = E\big[E\{Z \mid Y(1), Y(0), X\} \mid Y(1), Y(0), e(X)\big].
+\]
+由强 ignorability，$E\{Z \mid Y(1), Y(0), X\} = E\{Z \mid X\} = e(X)$，于是
+\[
+\pr\{Z=1 \mid Y(1), Y(0), e(X)\} = E\{e(X) \mid Y(1), Y(0), e(X)\} = e(X).
+\]
+类似地，$\pr\{Z=1 \mid e(X)\} = E\{Z \mid e(X)\} = E\{e(X) \mid e(X)\} = e(X)$。两端相等，定理得证。
+
+\subsection{历史注记}\label{sec:13-history}
+
+\Rosenbaum\ 与 \Rubin\ 于 1983 年在 \textit{Biometrika} 上发表了这篇开创性论文，提出了倾向得分的概念及其在观测性研究中的核心作用。这篇论文是统计学历史上被引用最频繁的工作之一——\citet{Titterington:2013} 将其列为过去一百年中 \textit{Biometrika} 上引用量第二高的论文。近年来，其引用量仍在快速增长。
+
+这篇论文的核心贡献在于：它揭示了因果推断的一个基本对称性——在强 ignorability 假设下，条件化于高维协变量 $X$ 与条件化于一维标量倾向得分 $e(X)$ 在消除混杂方面是等价的。这一发现从根本上简化了观测性研究中的因果推断问题。
+
+\section{倾向得分分层}\label{sec:13-stratification}
+
+\subsection{已知倾向得分的情形}\label{sec:13-known-pscore}
+
+定理 \ref{th:13-dim-reduction} 立刻启发了一种简单的因果效应估计方法——\textbf{倾向得分分层（propensity score stratification）}，也称为\textbf{子分类（subclassification）}。
+
+我们首先考虑最简单的情形：假设倾向得分 $e(X)$ 已知且仅取 $K$ 个可能的值 $\{e_1, \ldots, e_K\}$，其中 $K$ 远小于样本量 $n$。此时定理 \ref{th:13-dim-reduction} 简化为
+\[
+Z \perp \{Y(1), Y(0)\} \mid e(X) = e_k \quad (k = 1, \dots, K).
+\]
+
+这意味着：在每一层 $k$ 内，我们有 $K$ 个独立的完全随机实验（CRE）。因此，我们可以像分析 SRE 那样分析观测数据——这就是"倾向得分分层"的基本思想。
+
+在各层内，治疗组的平均因果效应为
+\[
+\tau_{[k]} = E(Y \mid Z=1, e(X)=e_k) - E(Y \mid Z=0, e(X)=e_k),
+\]
+总体平均因果效应为各层效应的加权平均：
+\[
+\tau = \sum_{k=1}^K \pi_{[k]} \tau_{[k]},
+\]
+其中 $\pi_{[k]} = \pr\{e(X) = e_k\}$ 是第 $k$ 层的权重。
+
+\subsection{未知倾向得分的情形}\label{sec:13-unknown-pscore}
+
+在实际情况中，倾向得分 $e(X) = \pr(Z=1 \mid X)$ 既未知也不离散。我们通常需要先拟合一个统计模型（例如对协变量 $X$ 拟合 logistic 回归模型）来得到\textbf{估计倾向得分（estimated propensity score）} $\hat{e}(X)$。
+
+估计倾向得分 $\hat{e}(X)$ 可以取多达 $n$ 个不同的值——它本质上是连续的。为了应用分层方法，我们需要将其离散化。最常用的离散化策略是按分位数进行划分：
+
+\[
+\hat{e}'(X_i) = e_k, \quad \text{如果 } \hat{e}(X_i) \text{ 落在第 }(k-1)/K \text{ 和 } k/K \text{ 分位数之间}.
+\]
+
+于是我们有近似的条件独立性：
+\[
+Z \perp \{Y(1), Y(0)\} \mid \hat{e}'(X) = e_k \quad (k = 1, \dots, K).
+\]
+
+\textbf{重要说明}：此时 ignorability 仅在近似意义上成立，因为 $\hat{e}'(X)$ 是基于样本估计得到的。在每层内，我们仍然可以使用第 \ref{ch:5} 章的 SRE 分析方法。进一步地，我们可以在各层内使用回归调整来消除剩余偏差并提高效率。
+
+\textbf{稳健性注记}：倾向得分分层估计量的一个吸引人的特性是，它只需要估计倾向得分的\textbf{排序}正确，而不需要精确的数值。这意味着它相对于其他方法（如逆概率加权）是比较稳健的。尽管这种稳健性在许多数值例子中得到了验证，但严格的理论量化在文献中仍然缺失。
+
+\section{分层数 $K$ 的选择}\label{sec:13-choose-K}
+
+选择合适的分层数 $K$ 是实践中的一个关键问题。这个问题涉及偏差与方差的权衡：
+
+\begin{itemize}
+  \item 如果 $K$ 太小，则 $Z \perp \{Y(1), Y(0)\} \mid \hat{e}'(X)$ 即使在近似意义上也难以成立，导致残余偏倚；
+  \item 如果 $K$ 太大，则每层内的单元数过少，许多层可能只包含治疗组或对照组的单元，导致估计量不稳定甚至未定义。
+\end{itemize}
+
+\Rosenbaum\ 与 \Rubin\（1983, 1984）基于 \Cochran\（1968）的启发性研究，建议使用 $K=5$——即五分位数分层。他们证明，在许多情形下，$K=5$ 可以消除大部分由协变量不均衡带来的偏倚。
+
+\textbf{现代视角}：然而，在超大规模数据集下，固定 $K=5$ 可能导致估计量产生偏倚。\citet{LuncefordDavidian:2004} 的研究表明，此时适当增加 $K$ 是合理的，只要每层仍然包含足够数量的治疗组和对照组单元。\citet{WangEtAl:2020} 提出了一种贪婪的 $K$ 选择策略——取使分层估计量良好定义的最大分层数。但这一程序的严格理论尚未完全建立。
+
+\section{与第五章的联系：SRE 的观测性研究版本}\label{sec:13-connection-ch5}
+
+倾向得分分层与第 \ref{ch:5} 章讨论的分层随机实验（SRE）有着深刻的联系。在 SRE 中，我们在设计阶段主动控制了协变量不平衡；而在观测性研究中，我们通过倾向得分分层来近似实现这种控制。
+
+\begin{enumerate}
+  \item \textbf{思想上的对应}：SRE 中我们按协变量 $X$ 的取值分层，在每层内做 CRE；倾向得分分层则按倾向得分 $e(X)$ 的取值分层，在每层内近似地获得"条件随机化"的效果。
+  \item \textbf{记号的对应}：SRE 中的层别倾向得分 $e_{[k]} = n_{[k]1}/n_{[k]}$ 对应于倾向得分分层中每层的 $e_k$；只不过前者是设计决定的，后者需要从数据中估计。
+  \item \textbf{估计量的对应}：两种情形下我们都使用各层差值均值的加权平均作为总体因果效应的估计。唯一的区别在于权重的估计方式。
+\end{enumerate}
+
+这种对应关系揭示了为什么 SRE 的分析工具（如 Neyman 估计量、Fisher 随机化检验）可以直接迁移到倾向得分分层的情境中。
+
+\section{标准误的估计}\label{sec:13-standard-error}
+
+实践中的另一个重要问题是：如何计算基于倾向得分分层的估计量的标准误？
+
+一种常见做法是\textbf{条件化于离散化的倾向得分} $\hat{e}'(X)$，然后基于 SRE 的框架报告标准误。这种做法本质上忽略了估计倾向得分带来的不确定性。由于文献中一个令人惊讶的结果——使用估计倾向得分实际上会\textbf{降低}平均因果效应估计的渐近方差（\citealp{SuEtAl:2023}），这种做法往往导致方差的\textbf{高估}。
+
+另一种做法是对整个过程进行\textbf{自助法（bootstrap）}以纳入完整的不确定性。但由于该估计量的离散性质，自助法的理论性质尚不清晰。
+
+\section{应用实例}\label{sec:13-application}
+
+\subsection{NHANES 数据集}\label{sec:13-nhanes-example}
+
+我们使用第 \ref{ch:10} 章介绍的 NHANES 数据集来说明倾向得分分层的应用。
+
+\textbf{研究问题}：学校供餐计划（Schoolmeal）对学生 BMI 的影响。
+
+\textbf{治疗指标}：$Z_i = 1$ 表示参与学校供餐计划，$Z_i = 0$ 表示未参与。
+
+\textbf{结果变量}：BMI（体质指数）。
+
+\textbf{协变量}：包括年龄、性别、种族、家庭收入等基线特征。
+
+首先，我们拟合 logistic 回归模型来估计倾向得分：
+\[
+\hat{e}(X_i) = \text{logit}^{-1}(\hat{\alpha}_0 + \hat{\alpha}_1 X_{i1} + \cdots + \hat{\alpha}_p X_{ip}).
+\]
+
+图 \ref{fig:13-pscore-hist} 展示了不同分层数（$K = 5, 10, 30$）下估计倾向得分的直方图。可以看到，治疗组（灰色）和对照组（白色）的倾向得分分布存在明显差异，这表明确实存在需要控制的混杂。
+
+\begin{figure}[htbp]
+\centering
+\caption{NHANES 数据集中估计倾向得分的直方图：白色为对照组，灰色为治疗组}\label{fig:13-pscore-hist}
+\end{figure}
+
+表 \ref{tab:13-strat-results} 报告了不同 $K$ 值下（$K \in \{5, 10, 20, 50, 80\}$）的倾向得分分层估计结果。\footnote{具体计算代码见附录 \cref{sec:appendix-13-r-code}}
+
+\begin{table}[htbp]
+\centering
+\caption{不同分层数 $K$ 下的倾向得分分层估计结果}\label{tab:13-strat-results}
+\begin{tabular}{cccccc}
+\hline
+ & $K=5$ & $K=10$ & $K=20$ & $K=50$ & $K=80$ \\
+\hline
+估计值 & $-0.116$ & $-0.178$ & $-0.200$ & $-0.265$ & $-$ \\
+标准误 & $0.283$ & $0.282$ & $0.279$ & $0.272$ & NA \\
+\hline
+\end{tabular}
+\end{table}
+
+从结果可以看出：
+\begin{enumerate}
+  \item 随着 $K$ 从 5 增加到 50，标准误逐渐减小，估计值趋于稳定（约 $-0.2$）；
+  \item 当 $K=80$ 时，标准误未定义（NA），因为某些层只包含单一处理组的单元）；
+  \item 所有估计值都是负的，表明学校供餐计划可能有助于降低 BMI，但统计上不显著。
+\end{enumerate}
+
+\subsection{与其他方法的比较}\label{sec:13-comparison}
+
+表 \ref{tab:13-compare-regression} 比较了倾向得分分层与几种回归估计量的结果。
+
+\begin{table}[htbp]
+\centering
+\caption{不同估计方法的比较}\label{tab:13-compare-regression}
+\begin{tabular}{cccc}
+\hline
+ & naive & Fisher & Lin \\
+\hline
+估计值 & $0.534$ & $0.061$ & $-0.017$ \\
+标准误 & $0.225$ & $0.227$ & $0.226$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{关键观察}：
+\begin{itemize}
+  \item \textbf{朴素估计量（naive）}给出的估计值最大（$0.534$），这是由于协变量在治疗组和对照组之间的巨大不平衡；
+  \item \textbf{Fisher 估计量}（协变量调整后的 OLS）给出了一个较小的正估计（$0.061$），但不显著；
+  \item \textbf{Lin 估计量}（包含交互项的 OLS）给出了接近零的估计（$-0.017$）；
+  \item 倾向得分分层估计量（$-0.17$ 到 $-0.27$）与 Lin 估计量在定性上是一致的，且在不同 $K$ 值下保持稳定。
+\end{itemize}
+
+这些结果说明：倾向得分分层是一种有效且稳健的因果效应估计方法，它既继承了 SRE 的设计思想，又适用于观测性研究的复杂情境。
+
+\section{小结}\label{sec:13-summary}
+
+本章介绍了倾向得分分层的核心思想和方法：
+
+\begin{enumerate}
+  \item \textbf{维度约化}：定理 \ref{th:13-dim-reduction} 表明，在强 ignorability 假设下，条件化于倾向得分 $e(X)$ 与条件化于高维协变量 $X$ 在消除混杂方面是等价的；
+  \item \textbf{分层思想}：将连续的倾向得分离散化为 $K$ 层，在每层内近似获得"条件随机化"的效果；
+  \item \textbf{与 SRE 的联系}：倾向得分分层本质上是将 SRE 的设计思想应用于观测性研究；
+  \item \textbf{$K$ 的选择}：$K=5$ 是经典推荐，但在超大规模数据下可适当增加；
+  \item \textbf{稳健性}：倾向得分分层只要求估计倾向得分的排序正确，对模型设定相对稳健。
+\end{enumerate}
+
+倾向得分分层是因果推断工具箱中的基础工具之一。它不仅可以直接用于估计因果效应，还构成了逆概率加权、 doubly robust 估计等更高级方法的基础。
+
+\section{附录：关键公式推导}\label{sec:appendix-13}
+
+\subsection{定理 \ref{th:13-dim-reduction} 的完整证明}\label{sec:appendix-13-proof-dim-reduction}
+
+我们需要证明在强 ignorability 条件下，
+\[
+\pr\{Z=1 \mid Y(1), Y(0), e(X)\} = \pr\{Z=1 \mid e(X)\}.
+\]
+
+首先，由条件概率的定义和 tower property，
+\[
+\pr\{Z=1 \mid Y(1), Y(0), e(X)\} = E\{Z \mid Y(1), Y(0), e(X)\}.
+\]
+
+对上式应用 tower property（先关于 $X$ 条件化，再关于 $Y(1), Y(0), e(X)$ 条件化）：
+\[
+E\{Z \mid Y(1), Y(0), e(X)\} = E\big[ E\{Z \mid Y(1), Y(0), X\} \mid Y(1), Y(0), e(X) \big].
+\]
+
+由强 ignorability 假设 $Z \perp \{Y(1), Y(0)\} \mid X$，有
+\[
+E\{Z \mid Y(1), Y(0), X\} = E\{Z \mid X\} = e(X).
+\]
+
+因此，
+\[
+E\{Z \mid Y(1), Y(0), e(X)\} = E\{e(X) \mid Y(1), Y(0), e(X)\} = e(X).
+\]
+
+另一方面，
+\[
+\pr\{Z=1 \mid e(X)\} = E\{Z \mid e(X)\} = E\big[ E\{Z \mid X\} \mid e(X) \big] = E\{e(X) \mid e(X)\} = e(X).
+\]
+
+两端相等，定理证毕。
+
+\subsection{NHANES 数据分析的 R 代码}\label{sec:appendix-13-r-code}
+
+以下是本章数据分析使用的 R 代码示例：
+
+\begin{lstlisting}[language=R]
+# 读取数据
+nhanes_bmi = read.csv("nhanes_bmi.csv")[, -1]
+z = nhanes_bmi$Schoolmeal
+y = nhanes_bmi$BMI
+x = as.matrix(nhanes_bmi[, -c(1, 2)])
+x = scale(x)  # 标准化协变量
+
+# 估计倾向得分
+pscore = glm(z ~ x, family = binomial)$fitted.values
+
+# 倾向得分分层
+n.strata = c(5, 10, 20, 50, 80)
+strat.res = sapply(n.strata, FUN = function(nn) {
+  q.pscore = quantile(pscore, (1:(nn-1)) / nn)
+  ps.strata = cut(pscore, breaks = c(0, q.pscore, 1),
+                  labels = 1:nn)
+  Neyman_SRE(z, y, ps.strata)
+})
+
+rownames(strat.res) = c("est", "se")
+colnames(strat.res) = n.strata
+round(strat.res, 3)
+\end{lstlisting}
+
+其中 \texttt{Neyman\_SRE} 函数定义于第 \ref{ch:5} 章，用于计算 SRE 框架下的 Neyman 估计量及其标准误。
+
+\endchapter
+
+% Local Variables:
+% TeX-master: "../A-First-Course-in-Causal-Inference"
+% End:
