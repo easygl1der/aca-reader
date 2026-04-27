@@ -1388,7 +1388,34 @@ rm -f "$WRAPPER"
 - 写章节文件时就规划好 preamble（standalone 方式）
 - 或者保持无 preamble，直接 include 到主文件编译
 
-**最后更新**: 2026-04-23
+**最后更新**: 2026-04-26
+
+---
+
+## L723: Chapter 29 书籍内容与任务描述不匹配
+
+**日期**: 2026-04-26
+**经历次数**: 1 次 (累计)
+
+**错误描述**:
+任务描述说 Chapter 29 涵盖"高维因果推断"和"LASSO在因果推断中的应用"，但书籍第29章实际内容是"Time-Varying Treatment and Confounding"（时间变动的处理变量与混淆）。
+
+**书籍 Chapter 29 实际内容**:
+1. 序列可忽略性（Sequential Ignorability）
+2. g-公式与结果建模（g-formula）
+3. 逆概率加权（IPW）
+4. 边际结构模型（MSM）
+5. 结构嵌套模型（SNM）
+
+**高维/LASSO 内容实际位置**:
+- LASSO 在第6章 rerandomization/regression adjustment 中首次提到
+- 高维内容分散在第20章（overlap）和文献引用中
+- Bloniarz et al. (2016), Wager et al. (2016) 等关于 LASSO 调整的论文出现在参考文献中
+
+**正确做法**:
+- 写作前必须读取 transcript 确认章节真实内容
+- 不要假设任务描述与书籍内容一致
+- 本章重点：高维动机只在 MSM/SNM 部分简短提及（LASSO 调整属于前沿文献，完整讨论超出本书范围）
 
 ---
 
