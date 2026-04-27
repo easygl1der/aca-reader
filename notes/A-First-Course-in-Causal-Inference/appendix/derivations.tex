@@ -872,3 +872,72 @@ h_i = \frac{1}{n} + \frac{(0 - n_1/n)^2}{n_0 n_1/n} = \frac{1}{n} + \frac{n_1}{n
 实际上，精确计算可得 $\hat{V}_{\text{HC2}} = \hat{V}$（因为 $n_1/(n-2) \cdot (n_1-1)^{-1} = 1/n_1$ 当调整系数正确时）。
 
 \textbf{结论}：HC2 变体恰好等于 Neyman 保守方差估计量 $\hat{V}$。
+
+\section{DiD 估计量的推导（Chapter 26）}\label{sec:appendix-26-did}
+
+\textbf{背景（Background）}：本节推导第 \ref{ch:26} 章中 DiD 估计量如何从潜在结果框架中导出，以及 TWFE 回归与 DiD 估计量的等价性。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $G_i \in \{0, 1\}$：单元 $i$ 的组别，$G_i=1$ 为处理组，$G_i=0$ 为对照组
+  \item $T_t \in \{0, 1\}$：时间，$T_t=0$ 为政策前，$T_t=1$ 为政策后
+  \item $Y_{it}(d)$：单元 $i$ 在时间 $t$ 接受处理水平 $d \in \{0,1\}$ 时的潜在结果
+  \item $D_i = G_i$：处理指示变量
+  \item $\tau_t = \mathbb{E}(Y_{it}(1) - Y_{it}(0) \mid G_i=1)$：处理组在时间 $t$ 的 ATT
+\end{itemize}
+
+\textbf{已知（Given）}：四个总体均值 $\bar{Y}_{00}, \bar{Y}_{01}, \bar{Y}_{10}, \bar{Y}_{11}$ 的定义如第 \ref{sec:26-basic-setup} 节所示。
+
+\textbf{目标（Goal）}：证明 DiD 估计量 $\hat{\tau}_\text{DiD} = (\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00})$ 识别 $\tau_1$（当平行趋势假设成立时）。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：展开处理组的时间差分。
+
+\[
+\bar{Y}_{11} - \bar{Y}_{10} = \underbrace{\bar{Y}_{11}(1) - \bar{Y}_{10}(1)}_{\text{观测差分}} = \underbrace{\tau_1}_{\text{ATT}} + \underbrace{\bigl[ \bar{Y}_{11}(0) - \bar{Y}_{10}(0) \bigr]}_{\text{若无处理，处理组的时间变化}}.
+\]
+
+\textbf{第二步}：展开对照组的时间差分。
+
+\[
+\bar{Y}_{01} - \bar{Y}_{00} = \bar{Y}_{11}(0) - \bar{Y}_{10}(0).
+\]
+因为对照组未受处理，其时间差分完全反映了在无处理情况下的结果变化。
+
+\textbf{第三步}：计算双重差分。
+
+\[
+\begin{aligned}
+\text{DiD} &= (\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00}) \\
+&= \bigl[ \tau_1 + (\bar{Y}_{11}(0) - \bar{Y}_{10}(0)) \bigr] - \bigl[ \bar{Y}_{11}(0) - \bar{Y}_{10}(0) \bigr] \\
+&= \tau_1.
+\end{aligned}
+\]
+
+\textbf{结论}：在平行趋势假设 $\bar{Y}_{11}(0) - \bar{Y}_{10}(0) = \bar{Y}_{01} - \bar{Y}_{00}$ 下，DiD 估计量精确识别 $\tau_1$。
+
+\textbf{TWFE 与 DiD 的等价性}：
+
+考虑回归模型：
+\[
+Y_{it} = \alpha + \beta D_{it} + \gamma_i + \delta_t + \varepsilon_{it},
+\quad D_{it} = G_i \cdot T_t.
+\]
+
+OLS 估计 $\beta$ 可显式写为：
+\[
+\hat{\beta} = \bar{Y}_{11} - \bar{Y}_{10} - \bar{Y}_{01} + \bar{Y}_{00} = \hat{\tau}_\text{DiD}.
+\]
+
+这是因为固定效应 $\gamma_i$ 和 $\delta_t$ 分别吸收了组间均值和时间均值，使得 $\hat{\beta}$ 恰好等于处理组时间差分减去对照组时间差分。
+
+\textbf{Bootstrap 标准误差}：
+
+对于 DiD 估计量，可以按以下步骤计算聚类 Bootstrap 标准误差：
+\begin{enumerate}
+  \item 按单元（cluster）进行重抽样：对每个单元 $i$，抽取所有时期 $t$ 的观测值 $(Y_{it}, D_{it})$
+  \item 在每个重抽样样本上计算 $\hat{\tau}_\text{DiD}$
+  \item 重复 $B$ 次（例如 $B=999$），得到 Bootstrap 分布 $\{\hat{\tau}_\text{DiD}^{(b)}\}_{b=1}^B$
+  \item 标准误差为 $\hat{\sigma}_\text{boot} = \sqrt{(B-1)^{-1} \sum_{b=1}^B (\hat{\tau}_\text{DiD}^{(b)} - \bar{\hat{\tau}})^2}$
+\end{enumerate}
