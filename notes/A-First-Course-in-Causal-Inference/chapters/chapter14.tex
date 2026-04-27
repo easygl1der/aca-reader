@@ -1,0 +1,269 @@
+% Chapter 14: Weighted Least Squares for Causal Inference
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style
+
+\chapter{加权最小二乘法用于因果推断}\label{ch:14}
+
+\section{一个问题意识：IPW 估计量的另一种面孔}\label{sec:14-1}
+
+在第十二章中，我们学习了基于逆概率加权（IPW）的 Hajek 估计量：
+\begin{equation}\label{eq:hajek-estimator}
+\hat{\tau}^{\text{hajek}}
+= \frac{\sum_{i=1}^n \frac{Z_i Y_i}{\hat{e}(X_i)}}{\sum_{i=1}^n \frac{Z_i}{\hat{e}(X_i)}}
+  - \frac{\sum_{i=1}^n \frac{(1-Z_i)Y_i}{1-\hat{e}(X_i)}}{\sum_{i=1}^n \frac{1-Z_i}{1-\hat{e}(X_i)}}
+\end{equation}
+这个估计量优美而简洁——它本质上是治疗组和对照组加权均值的差。
+
+然而，一个深邃的观察（Imbens, 2004）是：\cref{eq:hajek-estimator} 实际上与一个加权最小二乘（WLS）回归的系数完全等价。更精确地说，$\hat{\tau}^{\text{hajek}}$ 恰好等于在如下 WLS 回归中 $Z_i$ 的系数：
+\[
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{\alpha,\beta} \sum_{i=1}^n w_i (Y_i - \alpha - \beta Z_i)^2
+\]
+其中权重为
+\begin{equation}\label{eq:wls-weights-14.1}
+w_i = \frac{Z_i}{\hat{e}(X_i)} + \frac{1-Z_i}{1-\hat{e}(X_i)}
+= \begin{cases}
+\frac{1}{\hat{e}(X_i)} & \text{if } Z_i = 1; \\[6pt]
+\frac{1}{1-\hat{e}(X_i)} & \text{if } Z_i = 0.
+\end{cases}
+\end{equation}
+
+这个等价性绝非偶然的代数巧合——它揭示了 IPW 与加权回归之间深刻的联系，也为更高效的估计开辟了道路。
+
+\section{Hajek 估计量作为 WLS 估计量}\label{sec:14-2}
+
+让我们更仔细地审视这个等价性。
+
+\begin{Proposition}[命题 14.1 — Hajek 估计量与 WLS]\label{prop:14.1}
+在 \cref{sec:14-1} 的记号下，$\hat{\tau}^{\text{hajek}}$ 严格等于上述 WLS 回归中 $Z_i$ 的系数 $\hat{\beta}$。
+\end{Proposition}
+
+\textbf{为什么这个结果有意义？} 让我们回顾一下完全随机化实验（CRE）的情形。当倾向得分恒为常数 $e(X_i) \equiv p$ 时，权重 $w_i$ 也恒为常数，此时 WLS 退化为普通的 OLS。因此，CRE 中用 OLS 系数估计 $\tau$ 的经典结果（参见第四章）可以视为本命题的特例。
+
+\textbf{直觉理解}：在观测研究中，不同单元接受治疗或对照的概率不同。如果我们用 $1/\hat{e}(X_i)$ 加权治疗组，用 $1/\{1-\hat{e}(X_i)\}$ 加权对照组，就相当于构造了一个"伪随机化实验"——加权后的样本可以代表总体。于是，加权均值之差（ Hajek 估计量）等价于在这个伪实验中进行 OLS 回归得到的 treatment 系数。
+
+\begin{Remark}注记\end{Remark}
+由 \cref{prop:14.1}，我们可以通过 WLS 回归方便地计算 $\hat{\tau}^{\text{hajek}}$。但需要注意：由于倾向得分是估计的，WLS 报告的标准误并非 $\hat{\tau}^{\text{hajek}}$ 的真实标准误。Bootstrap 提供了一种简便的近似方法。\footnote{详见附录 \cref{sec:appendix-wls-hajek-proof}。}
+
+这个等价性不仅在代数上优雅，更重要的是它为\textbf{加入协变量调整}提供了自然的框架。
+
+\section{加入协变量：Lin (2013) 的推广与双重稳健性}\label{sec:14-3}
+
+在 CRE 中，我们可以通过在回归中加入协变量来提高估计效率。Lin (2013) 的做法是在 OLS 回归中加入 treatment 与协变量的交互项：
+\[
+Y_i \sim (1, Z_i, X_i, Z_i X_i)
+\]
+其中协变量需要中心化（$\bar{X}=0$）。
+
+\textbf{自然的问题是}：在观测研究中，我们能否做类似的推广？
+
+答案是肯定的——我们只需要将普通 OLS 替换为 WLS（权重取 \cref{eq:wls-weights-14.1}）。具体而言，估计量 $\hat{\tau}$ 取为 WLS 回归
+\[
+Y_i \sim (1, Z_i, X_i, Z_i X_i)
+\]
+中 $Z_i$ 的系数。
+
+这个推广最早由 Hirano and Imbens (2001) 在一项应用中采用。
+
+\subsection{完全交互线性模型}\label{sec:14-3-1}
+
+假设潜在结果的条件期望是线性的：
+\[
+\mathbb{E}(Y \mid Z=1, X) = \beta_{10} + \beta_{1x}^\top X, \quad
+\mathbb{E}(Y \mid Z=0, X) = \beta_{00} + \beta_{0x}^\top X
+\]
+
+\textbf{两种情形}：
+
+\begin{enumerate}
+  \item \textbf{结局模型正确}：若上述线性模型正确指定，则 WLS 和 OLS 都给出 $\tau$ 的相合估计，且 $Z$ 系数的估计量相合于 $\tau$。
+
+  \item \textbf{倾向得分模型正确，结局模型错误}：更引人注目的是，即使结局模型错误，只要倾向得分模型正确，WLS 中 $Z$ 的系数仍然相合于 $\tau$。这就是所谓的\textbf{双重稳健性（double robustness）}。
+\end{enumerate}
+
+这个双重稳健性结果最早见于 Robins et al. (2007)，他们将功劳归于 M. Joffe 的未发表论文。
+
+\subsection{结局回归估计量与双重稳健估计量}\label{sec:14-3-2}
+
+设 $\hat{e}(X_i, \hat{\alpha})$ 为估计的倾向得分，$(\mu_1(X_i, \hat{\beta}_1), \mu_0(X_i, \hat{\beta}_0))$ 为基于 WLS 的结局条件均值拟合值。
+
+\textbf{结局回归估计量}为
+\[
+\hat{\tau}_{\text{wls}}^{\text{reg}}
+= \frac{1}{n}\sum_{i=1}^n \mu_1(X_i, \hat{\beta}_1)
+  - \frac{1}{n}\sum_{i=1}^n \mu_0(X_i, \hat{\beta}_0)
+\]
+
+\textbf{双重稳健估计量}为
+\[
+\hat{\tau}_{\text{wls}}^{\text{dr}}
+= \hat{\tau}_{\text{wls}}^{\text{reg}}
+  + \frac{1}{n}\sum_{i=1}^n \frac{Z_i\{Y_i - \mu_1(X_i, \hat{\beta}_1)\}}{\hat{e}(X_i, \hat{\alpha})}
+  - \frac{1}{n}\sum_{i=1}^n \frac{(1-Z_i)\{Y_i - \mu_0(X_i, \hat{\beta}_0)\}}{1 - \hat{e}(X_i, \hat{\alpha})}
+\]
+
+一个深刻的结果是：当结局模型为线性模型时，这个双重稳健估计量恰好等于结局回归估计量——二者都简化为 WLS 回归中 $Z_i$ 的系数。
+
+\begin{Theorem}[定理 14.2 — 双重稳健性]\label{tab:thm-14-2}
+若 $\bar{X}=0$ 且
+\[
+(\mu_1(X_i, \hat{\beta}_1), \mu_0(X_i, \hat{\beta}_0))
+= (\hat{\beta}_{10} + \hat{\beta}_{1x}^\top X_i, \; \hat{\beta}_{00} + \hat{\beta}_{0x}^\top X_i)
+\]
+基于权重 \cref{eq:wls-weights-14.1} 对 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$ 的 WLS 拟合，则
+\[
+\hat{\tau}_{\text{wls}}^{\text{dr}}
+= \hat{\tau}_{\text{wls}}^{\text{reg}}
+= \hat{\beta}_{10} - \hat{\beta}_{00}
+\]
+即 $Z_i$ 在 WLS 回归中的系数。
+\end{Theorem}
+
+\textbf{证明思路}：\footnote{详细证明见附录 \cref{sec:appendix-thm-14-2-proof}。}
+
+WLS 回归包含截距项，因此加权残差的均值为零。这给出两个正交条件：
+\[
+\sum_{i=1}^n \frac{Z_i(Y_i - \hat{\beta}_{10} - \hat{\beta}_{1x}^\top X_i)}{\hat{e}(X_i)} = 0,
+\quad
+\sum_{i=1}^n \frac{(1-Z_i)(Y_i - \hat{\beta}_{00} - \hat{\beta}_{0x}^\top X_i)}{1-\hat{e}(X_i)} = 0.
+\]
+
+这两个条件确保 $\hat{\tau}_{\text{wls}}^{\text{dr}} - \hat{\tau}_{\text{wls}}^{\text{reg}} = 0$。进一步，利用协变量中心化（$\bar{X}=0$），两者都简化为 $\hat{\beta}_{10} - \hat{\beta}_{00}$。
+
+\subsection{Freedman and Berk (2008) 的警示}\label{sec:14-3-3}
+
+Freedman and Berk (2008) 基于模拟研究对上述 WLS 估计量提出了批评。他们指出：当结局模型正确时，WLS 估计量由于权重的变异性而比 OLS 估计量表现更差。
+
+然而，这个结论并非普遍成立。关键在于数据的\textbf{异方差结构}——若误差方差与倾向得分成反比，则 WLS 估计量将比 OLS 更高效。
+
+此外，Freedman and Berk (2008) 也注意到一个重要事实：当结局模型错误时，只要倾向得分模型正确，WLS 估计量仍然是相合的。这正是双重稳健性的价值所在。
+
+\textbf{标准误的问题}：WLS 回归报告的标准误忽略了倾向得分估计的不确定性，这个缺陷可以通过 Bootstrap 轻易弥补。
+
+\userannotation{什么时候该用 WLS？}{当（1）倾向得分模型可信且（2）误差方差可能与倾向得分相关（异方差）时，WLS 是更好的选择。当结局模型可信时，简单的 OLS 可能更稳定。}
+
+\section{处理组平均因果效应的 WLS}\label{sec:14-4}
+
+上述结果可以平行地推广到\textbf{处理组平均因果效应}（Average Causal Effect on the Treated, $\tau_T$）的情形。
+
+处理组 Hajek 估计量为
+\[
+\hat{\tau}_T^{\text{hajek}}
+= \hat{\bar{Y}}(1) - \frac{\sum_{i=1}^n \hat{o}(X_i)(1-Z_i)Y_i}{\sum_{i=1}^n \hat{o}(X_i)(1-Z_i)}
+\]
+其中 $\hat{o}(X_i) = \hat{e}(X_i)/\{1-\hat{e}(X_i)\}$。
+
+\begin{Proposition}[命题 14.2 — 处理组 Hajek 估计量与 WLS]\label{prop:14.2}
+$\hat{\tau}_T^{\text{hajek}}$ 严格等于如下 WLS 回归中 $Z_i$ 的系数：
+\[
+(\hat{\alpha}, \hat{\beta}) = \arg\min_{\alpha,\beta} \sum_{i=1}^n w_{T_i}(Y_i - \alpha - \beta Z_i)^2
+\]
+其中权重为
+\begin{equation}\label{eq:wls-weights-14.2}
+w_{T_i} = Z_i + (1-Z_i)\hat{o}(X_i)
+= \begin{cases}
+1 & \text{if } Z_i = 1; \\[6pt]
+\hat{o}(X_i) & \text{if } Z_i = 0.
+\end{cases}
+\end{equation}
+\end{Proposition}
+
+若进一步中心化协变量（$\hat{\bar{X}}(1)=0$），则 $\tau_T$ 可以用 WLS 回归
+\[
+Y_i \sim (1, Z_i, X_i, Z_i X_i)
+\]
+（权重取 \cref{eq:wls-weights-14.2}）中 $Z_i$ 的系数来估计。
+
+\begin{Theorem}[定理 14.3 — 处理组的双重稳健性]\label{tab:thm-14-3}
+若 $\hat{\bar{X}}(1)=0$ 且 $\mu_0(X_i, \hat{\beta}_0) = \hat{\beta}_{00} + \hat{\beta}_{0x}^\top X_i$ 基于权重 \cref{eq:wls-weights-14.2} 对 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$ 的 WLS 拟合，则
+\[
+\hat{\tau}_{T,\text{wls}}^{\text{dr}}
+= \hat{\tau}_{T,\text{wls}}^{\text{reg}}
+= \hat{\beta}_{10} - \hat{\beta}_{00}
+\]
+即 $Z_i$ 在 WLS 回归中的系数。
+\end{Theorem}
+
+\textbf{证明思路}：\footnote{详细证明见附录 \cref{sec:appendix-thm-14-3-proof}。}
+
+\section{统一视角：回归估计量一览}\label{sec:14-5}
+
+\cref{tab:14-1} 总结了完全随机化实验（CRE）与非混杂假设下观测研究中回归估计量的对应关系。
+
+\begin{table}[htbp]
+\caption{回归估计量一览：CRE 与观测研究的对比}\label{tab:14-1}
+\begin{center}
+\begin{tabular}{ccc}
+\hline
+ & CRE & 非混杂观测研究 \\ \hline
+不含协变量 & $Y_i \sim (1, Z_i)$ & $Y_i \sim (1, Z_i)$（权重 $w_i$）\\
+含协变量 & $Y_i \sim (1, Z_i, X_i, Z_i X_i)$ & $Y_i \sim (1, Z_i, X_i, Z_i X_i)$（权重 $w_i$）\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+其中权重 $w_i$ 如 \cref{eq:wls-weights-14.1} 所示。
+
+\textbf{核心洞察}：在 CRE 中使用 OLS，在观测研究中只需将 OLS 替换为带逆概率权重的 WLS——两者在代数形式上完全对应。这揭示了随机化实验与观测研究之间深刻的类比。
+
+\section{本章小结}\label{sec:14-summary}
+
+本章建立了加权最小二乘法（WLS）与因果推断之间的联系：
+
+\begin{enumerate}
+  \item \textbf{等价性}：Hajek 估计量严格等于 WLS 回归中 treatment 变量的系数
+
+  \item \textbf{协变量调整}：通过在 WLS 中加入 $X_i$ 和 $Z_i X_i$ 项，可以提高估计效率（Lin, 2013）
+
+  \item \textbf{双重稳健性}：只要倾向得分模型和结局模型中至少有一个正确，WLS 估计量就相合（Robins et al., 2007）
+
+  \item \textbf{异方差效率}：当误差方差与倾向得分相关时，WLS 比 OLS 更高效
+
+  \item \textbf{处理组效应}：所有结果平行推广到 $\tau_T$ 的估计
+\end{enumerate}
+
+WLS 为因果推断提供了一个统一的框架——它既是 IPW 的另一种表述，又自然地融入了协变量调整和双重稳健性的思想。
+
+\section{习题}\label{sec:14-exercises}
+
+\begin{Exercise}{\ref{ex:14.1} 命题 14.1 和 14.2 的证明}\label{ex:14.1}
+证明 \cref{prop:14.1} 和 \cref{prop:14.2}。
+
+\noindent\textbf{提示}：这些是附录 B.3 中一元 WLS 问题的特例。利用 WLS 的正规方程即可证明。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:14.2} 预测估计量与双重稳健估计量}\label{ex:14.2}
+另一种结局回归估计量是预测估计量
+\[
+\hat{\tau}^{\text{pred}} = \hat{\mu}_1^{\text{pred}} - \hat{\mu}_0^{\text{pred}}
+\]
+其中
+\[
+\hat{\mu}_1^{\text{pred}} = \frac{1}{n}\sum_{i=1}^n \{Z_i Y_i + (1-Z_i)\mu_1(X_i, \hat{\beta}_1)\},
+\quad
+\hat{\mu}_0^{\text{pred}} = \frac{1}{n}\sum_{i=1}^n \{Z_i\mu_0(X_i, \hat{\beta}_1) + (1-Z_i)Y_i\}.
+\]
+
+证明：当 $(\mu_1(X_i,\hat{\beta}_1), \mu_0(X_i,\hat{\beta}_1)) = (\hat{\beta}_{10} + \hat{\beta}_{1x}^\top X_i, \hat{\beta}_{00} + \hat{\beta}_{0x}^\top X_i)$ 来自基于权重
+\[
+w_i = Z_i/\hat{o}(X_i) + (1-Z_i)\hat{o}(X_i)
+\]
+对 $Y_i \sim (1, X_i)$ 的 WLS 拟合时，双重稳健估计量等于 $\hat{\tau}^{\text{pred}}$。
+
+\noindent\textbf{参考文献}：Cao et al. (2009) 和 Vermeulen and Vansteelandt (2015) 从其他理论角度 motivation 了上述权重。
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:14.3} WLS 的效率性质}\label{ex:14.3}
+讨论在何种情形下 WLS 估计量比 OLS 估计量更有效。在 Freedman and Berk (2008) 的模拟设置中，为什么 OLS 表现更好？这与本 章讨论的异方差情形有何关联？
+\end{Exercise}
+
+\begin{Exercise}{\ref{ex:14.4} 推荐阅读}\label{ex:14.4}
+\begingroup
+\parskip=0pt
+\textbf{推荐阅读}：\cite{robins2007} 是关于因果推断中加权方法的权威综述。\cite{lin2013} 讨论了协变量调整在随机化实验中的应用。
+
+\textbf{历史注记}：WLS 与 IPW 的等价性最早由 Imbens (2004) 明确指出。双重稳健性的概念在 Robins et al. (2007) 中得到了系统阐述。
+\endgroup
+\end{Exercise}
+
+% === 用户问答记录 ===
+% (后续通过 interactive-qa 更新)
