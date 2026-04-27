@@ -1,0 +1,453 @@
+% Chapter 22: Compliance and Intention-to-Treat Analysis
+% A First Course in Causal Inference - Peng Ding
+% Draft V1 - Stein narrative style
+
+\chapter{依从性与意向治疗分析}\label{ch:22}
+
+\section{引言：从随机实验到现实世界}\label{sec:22-intro}
+
+在前面几章中，我们假设随机化实验的治疗分配能够被完美执行。然而，现实世界中的实验往往面临一个棘手的问题：\textbf{依从性（compliance）}问题。
+
+想象一项药物临床试验。研究人员将患者随机分配到治疗组或对照组，但有些患者可能忘记服药，有些可能自行停药，还有些对照组患者可能通过其他途径获得了该药物。这种"分配与实际治疗不符"的现象，就是依从性问题的核心。
+
+正如计量经济学家 \citet{AngristImbensRubin:1996} 所指出的：
+
+\textit{``The essential problem of causal inference is that we can observe at most one of the potential outcomes for any unit.''}
+
+在依从性问题的语境下，这句话有了更深的含义：我们不仅无法同时观察同一个体的治疗组和对照组结果，还可能无法控制该个体实际接受的治疗。
+
+\textbf{本章的核心问题}：当治疗分配与实际治疗不一致时，我们如何估计治疗效果？
+
+\textbf{历史脉络}：依从性问题的系统研究始于 \citet{Zelen:1979} 的开创性工作，随后被 \citet{ImbensAngrist:1994} 和 \citet{AngristImbensRubin:1996} 发展到潜在结果框架下。本章遵循这一脉络，从实验设计视角介绍工具变量方法。
+
+\section{鼓励设计与依从性问题}\label{sec:22-encouragement-design}
+
+\subsection{基本设定与记号}
+
+考虑一个包含 $n$ 个单元的完全随机实验。记号如下：
+
+\begin{itemize}
+  \item $Z_i \in \{0, 1\}$：治疗分配（1 = 治疗组，0 = 对照组）
+  \item $D_i \in \{0, 1\}$：实际接受的治疗（1 = 接受治疗，0 = 未接受治疗）
+  \item $Y_i$：关注的结果
+\end{itemize}
+
+当存在某些单元满足 $Z_i \neq D_i$ 时，\textbf{依从性问题（noncompliance problem）}就出现了。这种情况在涉及人类被试的实验中尤为常见——实验人员无法强迫被试接受治疗，只能"鼓励"他们。
+
+\textbf{潜在结果记号}：每个单元有四个潜在结果
+\[
+\{D_i(1), D_i(0), Y_i(1), Y_i(0)\},
+\]
+其中 $D_i(z)$ 是在治疗分配 $z$ 下会接受的治疗，$Y_i(z)$ 是在治疗分配 $z$ 下的结果。观测值为：
+\[
+D_i = Z_i D_i(1) + (1 - Z_i) D_i(0), \quad Y_i = Z_i Y_i(1) + (1 - Z_i) Y_i(0).
+\]
+
+\subsection{随机化假设与可识别性}
+
+我们首先假设完全随机化且忽略协变量。
+
+\begin{Assumption}[随机化]\label{asm:22-randomization}
+治疗分配 $Z$ 与潜在结果独立：
+\[
+Z \perp\!\!\!\perp \{D(1), D(0), Y(1), Y(0)\}.
+\]
+\end{Assumption}
+
+随机化允许我们识别治疗分配对 $D$ 和 $Y$ 的平均因果效应：\footnote{推导见附录 \cref{sec:appendix-22-itt-identification}}
+\[
+\tau_D = \mathbb{E}\{D(1) - D(0)\} = \mathbb{E}(D \mid Z = 1) - \mathbb{E}(D \mid Z = 0),
+\]
+\[
+\tau_Y = \mathbb{E}\{Y(1) - Y(0)\} = \mathbb{E}(Y \mid Z = 1) - \mathbb{E}(Y \mid Z = 0).
+\]
+
+我们可以用简单的差值均值估计量 $\hat\tau_D$ 和 $\hat\tau_Y$ 来估计 $\tau_D$ 和 $\tau_Y$。
+
+\subsection{意向治疗分析（ITT）}
+
+报告 $\hat\tau_Y$ 及其标准误的分析称为\textbf{意向治疗分析（intention-to-treat, ITT analysis）}。\footnote{ITT 分析的名称来源于临床试验，其核心思想是按照原始分配而非实际接受的治疗进行分析。}
+
+ITT 估计的是\textbf{治疗分配}对结果的影响，而非\textbf{实际接受的治疗}对结果的影响。这是一个重要的区别：
+
+\[
+\underbrace{\hat\tau_Y}_{\text{ITT 估计量}} \xrightarrow{p} \underbrace{\tau_Y}_{\text{治疗分配的因果效应}},
+\]
+但我们真正关心的科学问题往往是：
+\[
+\underbrace{\tau_{\text{treatment}}}_{\text{实际治疗的因果效应}} \neq \underbrace{\tau_Y}_{\text{治疗分配的因果效应}}.
+\]
+
+这就是依从性问题带来的核心挑战。
+
+\section{潜在依从性类型与依从性因果效应}\label{sec:22-latent-compliance}
+
+\subsection{四类依从性状态}\label{sec:22-compliance-types}
+
+遵循 \citet{ImbensAngrist:1994} 的开创性工作，我们根据潜在治疗接受值 $\{D_i(1), D_i(0)\}$ 对总体进行分层。由于 $D$ 是二值的，共有四种可能的组合：
+
+\begin{Definition}[依从性类型]\label{def:22-compliance-types}
+令 $U_i = \{D_i(1), D_i(0)\}$，则：
+\[
+U_i =
+\begin{cases}
+\text{a（always taker）}, & \text{若 } D_i(1) = 1 \text{ 且 } D_i(0) = 1; \\
+\text{c（complier）}, & \text{若 } D_i(1) = 1 \text{ 且 } D_i(0) = 0; \\
+\text{d（defier）}, & \text{若 } D_i(1) = 0 \text{ 且 } D_i(0) = 1; \\
+\text{n（never taker）}, & \text{若 } D_i(1) = 0 \text{ 且 } D_i(0) = 0.
+\end{cases}
+\]
+\end{Definition}
+
+\textbf{直观理解}：
+\begin{itemize}
+  \item \textbf{Always takers}：无论分配如何，都会接受治疗
+  \item \textbf{Never takers}：无论分配如何，都不会接受治疗
+  \item \textbf{Compliers}：服从分配——分配到治疗组则接受，分配到对照组则不接受
+  \item \textbf{Defiers}：反着来——分配到治疗组反而不接受，分配到对照组反而接受
+\end{itemize}
+
+由于我们无法同时观察 $D_i(1)$ 和 $D_i(0)$，类型 $U_i$ 是\textbf{潜变量}。
+
+\subsection{平均因果效应的分解}\label{sec:22-decomposition}
+
+基于潜在类型 $U$，利用全概率公式可以将 $\tau_Y$ 分解为四项：\footnote{完整推导见附录 \cref{sec:appendix-22-tau-y-decomposition}}
+\[
+\begin{aligned}
+\tau_Y = & \; \mathbb{E}\{Y(1) - Y(0) \mid U = \text{a}\} \Pr(U = \text{a}) \\
+& + \mathbb{E}\{Y(1) - Y(0) \mid U = \text{c}\} \Pr(U = \text{c}) \\
+& + \mathbb{E}\{Y(1) - Y(0) \mid U = \text{d}\} \Pr(U = \text{d}) \\
+& + \mathbb{E}\{Y(1) - Y(0) \mid U = \text{n}\} \Pr(U = \text{n}).
+\label{eq:22-tau-y-decomposition}
+\end{aligned}
+\]
+
+这说明 $\tau_Y$ 是四个潜在亚组因果效应的加权平均。
+
+类似地，$\tau_D$ 的分解为：\footnote{推导见附录 \cref{sec:appendix-22-tau-d-decomposition}}
+\[
+\begin{aligned}
+\tau_D = & \; \mathbb{E}\{D(1) - D(0) \mid U = \text{a}\} \Pr(U = \text{a}) \\
+& + \mathbb{E}\{D(1) - D(0) \mid U = \text{c}\} \Pr(U = \text{c}) \\
+& + \mathbb{E}\{D(1) - D(0) \mid U = \text{d}\} \Pr(U = \text{d}) \\
+& + \mathbb{E}\{D(1) - D(0) \mid U = \text{n}\} \Pr(U = \text{n}) \\
+= & \; 0 \cdot \Pr(U = \text{a}) + 1 \cdot \Pr(U = \text{c}) + (-1) \cdot \Pr(U = \text{d}) + 0 \cdot \Pr(U = \text{n}) \\
+= & \; \Pr(U = \text{c}) - \Pr(U = \text{d}).
+\label{eq:22-tau-d-decomposition}
+\end{aligned}
+\]
+
+\section{非参数识别}\label{sec:22-identification}
+
+上述分解表明，仅凭观测数据无法唯一识别 $\tau_Y$——我们有四个未知数（四个亚组的因果效应）但只有两个方程（$\tau_Y$ 和 $\tau_D$ 的识别）。为了进一步识别，我们需要额外的假设。
+
+\subsection{单调性假设}
+
+\begin{Assumption}[单调性]\label{asm:22-monotonicity}
+$\Pr(U = \text{d}) = 0$，或等价地，$D_i(1) \geq D_i(0)$ 对所有单元成立。即，\textbf{不存在 defiers}。
+\end{Assumption}
+
+\textbf{何时成立？} 单调性假设在\textbf{单侧依从性问题（one-sided noncompliance）}中自动成立：当对照组被试无法获得治疗时，$D_i(0) = 0$ 对所有单元成立，从而 $D_i(1) \geq D_i(0)$ 必然成立。
+
+\textbf{可检验的含义}：在随机化下，单调性假设有一个可检验的含义：\footnote{推导见附录 \cref{sec:appendix-22-monotonicity-implication}}
+\[
+\Pr(D = 1 \mid Z = 1) \geq \Pr(D = 1 \mid Z = 0).
+\tag{22.1}\label{eq:22-monotonicity-inequality}
+\]
+
+注意：\cref{asm:22-monotonicity} 比 \cref{eq:22-monotonicity-inequality} 更强。前者限制每个个体的 $D_i(1)$ 和 $D_i(0)$，后者只限制平均值。当可检验的不等式成立时，我们无法用数据反驳单调性假设。
+
+在单调性假设下，\cref{eq:22-tau-d-decomposition} 简化为：
+\[
+\tau_D = \Pr(U = \text{c}) \equiv \pi_c.
+\tag{22.2}\label{eq:22-tau-d-monotonicity}
+\]
+
+这意味着 compliers 的比例 $\pi_c$ 等于治疗分配对实际治疗的平均因果效应——这是一个可以识别的数量。
+
+\subsection{排斥限制假设}
+
+\begin{Assumption}[排斥限制]\label{asm:22-exclusion-restriction}
+对于 always takers（$U = \text{a}$）和 never takers（$U = \text{n}$），有 $Y_i(1) = Y_i(0)$。
+\end{Assumption}
+
+\textbf{直观理解}：排斥限制要求治疗分配\textbf{只能通过实际接受的治疗}影响结果，不能有其他直接通路。在双盲随机对照试验中，这是生物学上合理的——如果治疗分配没有改变实际接受的治疗，它也不会改变结果。
+
+\textbf{何时可能被违反？} 当治疗分配有直接影响结果的通路时（而非通过实际接受的治疗）。例如，在非双盲试验中，被试可能因为知道自己被分配到治疗组而改变行为。
+
+在排斥限制假设下，\cref{eq:22-tau-y-decomposition} 中的第一项和最后一项变为零：
+\[
+\tau_Y = \mathbb{E}\{Y(1) - Y(0) \mid U = \text{c}\} \Pr(U = \text{c}).
+\tag{22.3}\label{eq:22-tau-y-under-exclusion}
+\]
+
+结合 \cref{eq:22-tau-d-monotonicity} 和 \cref{eq:22-tau-y-under-exclusion}，我们得到识别结果。
+
+\subsection{主要识别定理}
+
+\begin{Theorem}[CACE/LATE 的识别]\label{th:22-cace-identification}
+在 \cref{asm:22-randomization}、\cref{asm:22-monotonicity} 和 \cref{asm:22-exclusion-restriction} 下，如果 $\tau_D \neq 0$，则
+\[
+\mathbb{E}\{Y(1) - Y(0) \mid U = \text{c}\} = \frac{\tau_Y}{\tau_D}.
+\tag{22.4}\label{eq:22-cace-formula}
+\]
+\end{Theorem}
+
+\textbf{证明思路}：由 \cref{eq:22-tau-y-under-exclusion} 和 \cref{eq:22-tau-d-monotonicity} 可直接得到。\footnote{完整证明见附录 \cref{sec:appendix-22-cace-proof}}。
+
+\cref{th:22-cace-identification} 的含义是：在上述三个假设下，$\tau_Y / \tau_D$ 识别了 compliers 的平均因果效应。
+
+\textbf{一个哲学性的观察}：识别结果只涉及 compliers——那些"遵医嘱"的人。这意味着我们无法直接得知治疗对 always takers、never takers 或 defiers 的效果。这既是局限，也是优势——它允许我们专注于一个明确定义的亚组。
+
+\section{依从性平均因果效应（CACE/LATE）}\label{sec:22-cace}
+
+\subsection{定义}\label{sec:22-cace-definition}
+
+\begin{Definition}[CACE 或 LATE]\label{def:22-cace}
+\textbf{依从性平均因果效应（complier average causal effect, CACE）}或\textbf{局部平均治疗效应（local average treatment effect, LATE）}定义为：
+\[
+\tau_c = \mathbb{E}\{Y(1) - Y(0) \mid U = \text{c}\}.
+\]
+\end{Definition}
+
+CACE 有两种等价形式：
+\[
+\tau_c = \mathbb{E}\{Y(1) - Y(0) \mid D(1) = 1, D(0) = 0\} = \mathbb{E}\{Y(1) - Y(0) \mid D(1) > D(0)\}.
+\]
+
+基于 \cref{def:22-cace}，\cref{th:22-cace-identification} 可以写成：
+\[
+\tau_c = \frac{\tau_Y}{\tau_D}.
+\tag{22.5}\label{eq:22-cace-ratio}
+\]
+
+即，\textbf{CACE/LATE 等于结果平均因果效应与治疗接受平均因果效应之比}。
+
+在完全随机化下，进一步有：
+\[
+\tau_c = \frac{\mathbb{E}(Y \mid Z = 1) - \mathbb{E}(Y \mid Z = 0)}{\mathbb{E}(D \mid Z = 1) - \mathbb{E}(D \mid Z = 0)}.
+\tag{22.6}\label{eq:22-cace-observed}
+\]
+
+因此，在完全随机化、单调性和排斥限制下，我们可以\textbf{非参数地识别 CACE}——它等于观测数据中结果差值均值与治疗接受差值均值之比。
+
+\section{估计}\label{sec:22-estimation}
+
+\subsection{Wald 估计量}\label{sec:22-wald-estimator}
+
+基于 \cref{eq:22-cace-observed}，我们可以用简单的比值估计 CACE：
+\[
+\hat{\tau}_c = \frac{\hat{\tau}_Y}{\hat{\tau}_D},
+\tag{22.7}\label{eq:22-wald-estimator}
+\]
+其中
+\[
+\hat{\tau}_Y = \frac{1}{n_1} \sum_{i: Z_i=1} Y_i - \frac{1}{n_0} \sum_{i: Z_i=0} Y_i, \quad
+\hat{\tau}_D = \frac{1}{n_1} \sum_{i: Z_i=1} D_i - \frac{1}{n_0} \sum_{i: Z_i=0} D_i.
+\]
+
+这就是著名的 \textbf{Wald 估计量}（\citealp{Wald:1940}），也称为 \textbf{工具变量估计量}。在这个语境下，$Z$ 作为 $D$ 的工具变量。
+
+\textbf{直观理解}：Wald 估计量可以理解为"缩放的" ITT 估计量。$\hat{\tau}_Y$ 估计治疗分配的效果，$\hat{\tau}_D$ 估计治疗分配对实际治疗的"转化率"（即 compliers 的比例）。二者的比值估计了对于那些"被转化"的 compliers，治疗的实际效果。
+
+\subsection{方差估计}\label{sec:22-variance-estimation}
+
+为了进行统计推断，我们需要估计 $\hat{\tau}_c$ 的方差。\footnote{渐近方差公式的推导见附录 \cref{sec:appendix-22-asymptotic-variance}}。
+
+基本思想是将 $\hat{\tau}_c$ 在真实值附近线性化：\footnote{详细推导见附录 \cref{sec:appendix-22-wald-delta-method}}
+\[
+\hat{\tau}_c - \tau_c \approx \frac{\hat{\tau}_Y - \tau_c \hat{\tau}_D}{\tau_D}.
+\]
+
+定义调整后的结果 $A_i = Y_i - \tau_c D_i$，则上式近似为 $\hat{\tau}_A / \tau_D$，其中 $\hat{\tau}_A$ 是调整后结果的差值均值。
+
+因此，$\hat{\tau}_c$ 的渐近方差约为 $\hat{V}_A / \tau_D^2$，其中 $\hat{V}_A$ 是调整后结果的 Neyman 型方差估计量：
+
+\[
+\hat{V}_A = \frac{\hat{S}_A^2(1)}{n_1} + \frac{\hat{S}_A^2(0)}{n_0},
+\tag{22.8}\label{eq:22-adjusted-variance}
+\]
+
+其中 $\hat{S}_A^2(1)$ 和 $\hat{S}_A^2(0)$ 分别是治疗组和对照组中调整后结果的样本方差。
+
+最终，我们使用
+\[
+\hat{V}_{\hat{\tau}_c} = \frac{\hat{V}_A}{\hat{\tau}_D^2}
+\tag{22.9}\label{eq:22-cace-variance}
+\]
+作为 $\hat{\tau}_c$ 的方差估计量。
+
+基于此，我们可以构建 $\tau_c$ 的 $1-\alpha$ 置信区间：
+\[
+\hat{\tau}_c \pm z_{1-\alpha/2} \sqrt{\hat{V}_{\hat{\tau}_c}}.
+\tag{22.10}\label{eq:22-cace-ci}
+\]
+
+\section{弱工具变量}\label{sec:22-weak-iv}
+
+\subsection{问题诊断}\label{sec:22-weak-iv-problem}
+
+即使 $\tau_D > 0$（即 compliers 确实存在），$\hat{\tau}_D$ 仍有可能接近甚至等于零。这会导致 Wald 估计量的方差急剧增大——实际上，当 $\tau_D \to 0$ 时，$\text{var}(\hat{\tau}_c) \to \infty$。\footnote{这与经典统计学中的 Fieller-Creasy 问题类似。}
+
+这就是\textbf{弱工具变量（weak instrumental variable）}问题。在这种情况下：
+\begin{itemize}
+  \item $\hat{\tau}_c$ 存在有限样本偏
+  \item 渐近分布不再是正态
+  \item 基于正态近似的置信区间覆盖性质很差
+\end{itemize}
+
+\textbf{诊断指标}：一个常用的诊断是 $F$ 统计量或 $\hat{\tau}_D$ 的绝对值。经验法则：当 $\hat{\tau}_D$ 很小时，应谨慎对待 Wald 估计量。
+
+\subsection{FAR 置信区间}\label{sec:22-far-ci}
+
+从估计角度，当工具变量弱时，我们建议关注\textbf{置信区间}而非点估计。从检验角度，有一个简单的解决方案——由于 $\tau_c = \tau_Y / \tau_D$，原假设 $\tau_c = 0$ 等价于 $\tau_Y = 0$。
+
+更精细的方法是构建\textbf{Fieller-Anderson-Rubin（FAR）置信区间}。其思想是通过反转一系列假设检验来构建 $\tau_c$ 的置信域。\footnote{FAR 置信区间的详细讨论见附录 \cref{sec:appendix-22-far-ci}。}
+
+对于给定的 $b$，考虑原假设 $H_0(b): \tau_c = b$。这等价于 $\tau_Y - b\tau_D = 0$，即调整后的结果 $A(b)_i = Y_i - b D_i$ 的平均因果效应为零。
+
+构造 Wald 型检验并反转，可以得到置信域：
+\[
+\left\{ b: \frac{\hat{\tau}_A^2(b)}{\hat{V}_A(b)} \leq z_{1-\alpha/2}^2 \right\},
+\tag{22.11}\label{eq:22-far-set}
+\]
+其中 $\hat{\tau}_A(b)$ 和 $\hat{V}_A(b)$ 是调整后结果 $A(b)_i = Y_i - b D_i$ 的点估计和方差估计。
+
+FAR 置信域可能是单个区间、两个不相连的区间、空集或整个实数线。当工具变量强时，它收敛到标准 Wald 置信区间；当工具变量弱时，它提供更可靠的推断。
+
+\section{协变量调整}\label{sec:22-covariates}
+
+到目前为止我们都假设没有协变量。加入协变量可以提高估计的效率和稳健性。
+
+\subsection{完全随机化下的协变量调整}
+
+假设条件随机化成立：
+\[
+Z \perp \{D(1), D(0), Y(1), Y(0), X\}.
+\]
+
+我们可以使用 \citet{Lin:2013} 的协变量调整估计量。对于结果和和治疗接受，分别拟合包含协变量的回归模型：
+\[
+D_i = \beta_0 + \beta_1 Z_i + \beta_2 X_i + \beta_3 Z_i X_i + \epsilon_i,
+\]
+\[
+Y_i = \alpha_0 + \alpha_1 Z_i + \alpha_2 X_i + \alpha_3 Z_i X_i + \eta_i,
+\]
+取 $\hat{\tau}_{D,\text{L}} = \hat{\beta}_1$ 和 $\hat{\tau}_{Y,\text{L}} = \hat{\alpha}_1$，则调整后的 CACE 估计量为：
+\[
+\hat{\tau}_{c,\text{L}} = \frac{\hat{\tau}_{Y,\text{L}}}{\hat{\tau}_{D,\text{L}}}.
+\tag{22.12}\label{eq:22-lin-cace}
+\]
+
+渐近方差可以通过 Bootstrap 近似。
+
+\section{实例：JOBS II 培训项目}\label{sec:22-application}
+
+\textbf{研究背景}：JOBS II 是一个随机化现场实验，研究职业培训对失业工人求职自我效能的影响。\citet{JuddKenny:1981} 原始设计比较复杂，这里使用 \citet{ImbensKlein:2015} 的简化版本。
+
+\textbf{数据}：来自 \texttt{jobsdata.csv}。关键变量：
+\begin{itemize}
+  \item \texttt{treat}：是否被随机分配参加培训项目（$Z$）
+  \item \texttt{comply}：是否实际参加了培训项目（$D$）
+  \item \texttt{jobseek}：求职自我效能得分（$Y$，1-5 分制）
+\end{itemize}
+
+\textbf{描述性统计}：\footnote{详细数据分析代码见附录 \cref{sec:appendix-22-jobs-analysis}}
+
+\begin{Example}[JOBS II 数据的 IV 分析]\label{ex:22-jobs-iv}
+我们使用 Wald 估计量分析 JOBS II 数据。结果如下：
+
+\begin{center}
+\begin{tabular}{lcccc}
+\hline
+方法 & 估计量 & 标准误 & 95\% CI 下限 & 95\% CI 上限 \\
+\hline
+Delta 方法 & 0.109 & 0.081 & -0.050 & 0.268 \\
+Bootstrap & 0.109 & 0.083 & -0.054 & 0.271 \\
+含协变量调整 & 0.118 & 0.082 & -0.042 & 0.278 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{解读}：点估计表明，对于 compliers，参加培训项目使求职自我效能得分提高约 0.11 分（满分 5 分）。但 95\% 置信区间包含零，这意味着在常规显著性水平下，我们无法拒绝"培训对 compliers 无效果"的原假设。
+\end{Example}
+
+\section{CACE 的解释}\label{sec:22-cace-interpretation}
+
+\cref{def:22-cace} 中定义的 $\tau_c$ 有两种等价解释：
+
+\begin{enumerate}
+  \item \textbf{治疗分配的因果效应（among compliers）}：$\tau_c = \mathbb{E}\{Y(1) - Y(0) \mid U = \text{c}\}$ 是治疗分配对 compliers 结果的平均因果效应。
+  \item \textbf{实际治疗的因果效应（among compliers）}：对于 compliers，有 $D(1) = 1$ 和 $D(0) = 0$，因此 $D = Z$。所以 $\tau_c$ 也是实际接受的治疗对 compliers 结果的因果效应。
+\end{enumerate}
+
+第二种解释更具科学吸引力——它回答了"对于那些会遵医嘱的人，治疗真的有效果吗？"这个问题。
+
+\textbf{局限性}：CACE 只告诉我们关于 compliers 的信息，我们无法直接得知治疗对 always takers、never takers 或 defiers 的效果。如果这些亚组与 compliers 有本质不同的治疗效果，CACE 可能无法代表治疗对整个人群的效果。
+
+\section{本章小结}\label{sec:22-summary}
+
+本章介绍了依从性问题的框架，主要内容如下：
+
+\begin{enumerate}
+  \item \textbf{依从性问题的普遍性}：在涉及人类被试的实验中，治疗分配与实际治疗往往不一致。
+  \item \textbf{四类依从性状态}：always takers、compliers、defiers、never takers。
+  \item \textbf{关键假设}：随机化、单调性（无 defiers）、排斥限制（治疗分配只能通过实际治疗影响结果）。
+  \item \textbf{识别}（\cref{th:22-cace-identification}）：在上述假设下，CACE = $\tau_Y / \tau_D$。
+  \item \textbf{估计}：Wald 估计量 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$。
+  \item \textbf{弱工具变量问题}：当 compliers 比例很小时，Wald 估计量表现不佳，需要使用 FAR 置信区间。
+  \item \textbf{协变量调整}：可以提高效率和稳健性。
+\end{enumerate}
+
+\section{习题}\label{sec:chapter22-exercises}
+
+\begin{Exercise}{ITT 与 CACE 的关系}\label{exr:22-1}
+证明在 \cref{asm:22-monotonicity} 下，$\tau_Y = \tau_c \cdot \pi_c$，其中 $\pi_c = \Pr(U = \text{c})$。
+\end{Exercise}
+
+\begin{Exercise}{单调性的可检验含义}\label{exr:22-2}
+证明在完全随机化下，\cref{asm:22-monotonicity} 蕴含 \cref{eq:22-monotonicity-inequality}。
+\end{Exercise}
+
+\begin{Exercise}{Wald 估计量的方差}\label{exr:22-3}
+证明当 $\tau_D = 0$ 时，$\text{var}(\hat{\tau}_c) = \infty$。
+\end{Exercise}
+
+\begin{Exercise}{单侧依从性}\label{exr:22-4}
+考虑单侧依从性情形：对照组被试无法获得治疗，即 $D_i(0) = 0$ 对所有 $i$ 成立。
+\begin{enumerate}
+  \item 证明此时 \cref{asm:22-monotonicity} 自动成立。
+  \item 在这种情况下，CACE 如何简化为 ITT 的函数？
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{FAR 置信区间的形状}\label{exr:22-5}
+在 \cref{eq:22-far-set} 中，FAR 置信集可能是单个闭区间、两个不相连的区间、空集或整个实数线。找出每种情况对应的精确条件。
+\end{Exercise}
+
+\begin{Exercise}{协变量调整的 CACE}\label{exr:22-6}
+使用 JOBS II 数据进行以下分析：
+\begin{enumerate}
+  \item 计算原始 Wald 估计量及其标准误。
+  \item 加入协变量（sex, age, marital, nonwhite, educ, income）后重新估计。
+  \item 比较两种方法的估计量和标准误。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{Always takers 与 Never takers}\label{exr:22-7}
+假设我们想估计 always takers 的平均因果效应。
+\begin{enumerate}
+  \item 在当前框架下，这个量能否被识别？为什么？
+  \item 如果加入额外假设"always takers 和 never takers 的潜在结果分布相同"，结果会如何改变？
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{模拟研究}\label{exr:22-8}
+进行模拟研究，比较以下三种情况：
+\begin{enumerate}
+  \item 强工具变量（$\pi_c = 0.5$）
+  \item 中等强度工具变量（$\pi_c = 0.2$）
+  \item 弱工具变量（$\pi_c = 0.05$）
+\end{enumerate}
+对每种情况，报告 Wald 估计量的偏差、均方误差和置信区间的覆盖概率。
+\end{Exercise}
