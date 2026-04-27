@@ -1,6 +1,6 @@
 % Chapter 17: E-Value: Evidence for Causation in Observational Studies with Unmeasured Confounding
 % A First Course in Causal Inference - Peng Ding
-% Rewrite V1 - Stein narrative style
+% Rewrite V2 - After Team Lead review
 
 \chapter{E-Value：未测混杂观测性研究中的因果证据}\label{ch:17}
 
@@ -10,13 +10,12 @@
 --- \citep{Fisher1957}
 
 在 Part III 中，我们详细讨论了观测性研究的四大支柱：outcome regression（第 \ref{ch:10} 章）、逆倾向得分加权（第 \ref{ch:11} 章）、双重稳健（第 \ref{ch:12} 章）以及匹配（第 \ref{ch:15} 章）。这四种方法的核心假设是\textbf{可忽略性（ignorability）}：
-
-\[
+\begin{equation}
 Z \perp \{Y(1), Y(0)\} \mid X .
-\tag{17.1}
-\]
+\label{eq:17-ignorability}
+\end{equation}
 
-即在协变量 $X$ 条件 下，治疗分配 $Z$ 与潜在结果相互独立。这个假设保证了我们可以从观测数据中识别因果效应。然而，\textbf{可忽略性假设无法从数据本身验证}——它是一种根本性的假设，依赖于研究者的领域知识和对因果结构的判断。
+即在协变量 $X$ 条件下，治疗分配 $Z$ 与潜在结果相互独立。这个假设保证了我们可以从观测数据中识别因果效应。然而，\textbf{可忽略性假设无法从数据本身验证}——它是一种根本性的假设，依赖于研究者的领域知识和对因果结构的判断。
 
 这正是观测性研究长期被批评的原因：如果无法控制所有混淆因素，观察到的治疗与结果之间的关联可能是虚假的。统计学能告诉我们观测数据中的关联有多强，但无法保证这种关联背后存在真实的因果关系。
 
@@ -28,61 +27,51 @@ Z \perp \{Y(1), Y(0)\} \mid X .
 
 \subsection{从可忽略性到潜在可忽略性}\label{sec:17-latent-ignorability}
 
-放弃假设（\ref{eq:17-ignorability}）并不意味着放弃一切分析工具。我们仍然可以假设\textbf{潜在可忽略性（latent ignorability）}：
-
-\[
+放弃假设 \cref{eq:17-ignorability} 并不意味着放弃一切分析工具。我们仍然可以假设\textbf{潜在可忽略性（latent ignorability）}：
+\begin{equation}
 Z \perp \{Y(1), Y(0)\} \mid (X, U) ,
-\tag{17.2}
-\tag{17.3}
-\]
+\label{eq:17-latent-ignorability}
+\end{equation}
 
-其中 $U$ 是未测混杂变量，条件于 $(X,U)$ 时治疗与潜在结果独立。注意（\ref{eq:17-latent-ignorability}）比（\ref{eq:17-ignorability}）更弱——它允许 $Z$ 与 $Y$ 之间存在通过 $U$ 传递的关联，只要这种关联可以被 $U$ 完全解释。
+其中 $U$ 是未测混杂变量，条件于 $(X,U)$ 时治疗与潜在结果独立。注意 \cref{eq:17-latent-ignorability} 比 \cref{eq:17-ignorability} 更弱——它允许 $Z$ 与 $Y$ 之间存在通过 $U$ 传递的关联，只要这种关联可以被 $U$ 完全解释。
 
 本章的方法在二值结果 $Y$ 上表现最佳（Ding and VanderWeele, 2016），但可推广到其他非负结果。为简化叙述，除非特别说明，我们均假设 $Y$ 为二值。
 
 \subsection{真实风险比与观测风险比}\label{sec:17-true-vs-observed-rr}
 
 在 $X=x$ 条件下，真实的条件风险比为：
-
-\[
-\RR_{ZY|x}^{\mathrm{true}} = \frac{\pr\{Y(1)=1 \mid X=x\}}{\pr\{Y(0)=1 \mid X=x\}} .
-\tag{17.4}
-\tag{17.5}
-\]
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{true}} = \frac{\pr\{Y(1)=1 \mid X=x\}}{\pr\{Y(0)=1 \mid X=x\}} .
+\label{eq:17-true-rr}
+\end{equation}
 
 但我们从数据中能直接计算的是观测风险比：
-
-\[
-\RR_{ZY|x}^{\mathrm{obs}} = \frac{\pr(Y=1 \mid Z=1, X=x)}{\pr(Y=1 \mid Z=0, X=x)} .
-\tag{17.6}
-\tag{17.7}
-\]
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{obs}} = \frac{\pr(Y=1 \mid Z=1, X=x)}{\pr(Y=1 \mid Z=0, X=x)} .
+\label{eq:17-obs-rr}
+\end{equation}
 
 在存在未测混杂 $U$ 时，二者一般不相等。直观上，这是因为 $U$ 在治疗组和对照组中的分布不同（$U$ 同时影响治疗分配和结果），而真实的因果效应需要控制 $U$ 后才能得到。
 
 考虑如下因果图（条件于 $X$）：
 
 \[
-Z \rightarrow U \rightarrow Y ,
+Z \leftarrow U \rightarrow Y ,
 \]
 
 其中 $U$ 是 $Z$ 和 $Y$ 的共同原因（common cause）。在此结构下，$Z \perp Y \mid (X,U)$ 但 $Z \not\perp Y \mid X$。为简化，我们假设 $U$ 为二值，尽管 Ding and VanderWeele (2016) 的理论对 $U$ 的一般形式也成立。
 
 定义两个灵敏度参数：
-
-\[
-\RR_{ZU|x} = \frac{\pr(U=1 \mid Z=1, X=x)}{\pr(U=1 \mid Z=0, X=x)} ,
-\tag{17.8}
-\tag{17.9}
-\]
+\begin{equation}
+\RR_{ZU\mid x} = \frac{\pr(U=1 \mid Z=1, X=x)}{\pr(U=1 \mid Z=0, X=x)} ,
+\label{eq:17-sensitivity-zu}
+\end{equation}
 
 衡量\textbf{治疗-混杂关联}；以及
-
-\[
-\RR_{UY|x} = \frac{\pr(Y=1 \mid U=1, X=x)}{\pr(Y=1 \mid U=0, X=x)} ,
-\tag{17.10}
-\tag{17.11}
-\]
+\begin{equation}
+\RR_{UY\mid x} = \frac{\pr(Y=1 \mid U=1, X=x)}{\pr(Y=1 \mid U=0, X=x)} ,
+\label{eq:17-sensitivity-uy}
+\end{equation}
 
 衡量\textbf{混杂-结果关联}。这两个量都无法从数据中识别——它们是未知的灵敏度参数，反映了未测混杂的强度。
 
@@ -91,62 +80,57 @@ Z \rightarrow U \rightarrow Y ,
 下面的定理是整个 E-value 理论的基石。
 
 \begin{Theorem}[Cornfield-type 上界]\label{th:17-cornfield}
-在假设 (\ref{eq:17-latent-ignorability}) 下，假设
-\[
-\RR_{ZY|x}^{\mathrm{obs}} > 1, \quad \RR_{ZU|x} > 1, \quad \RR_{UY|x} > 1 .
-\tag{17.12}
-\tag{17.13}
-\]
+在假设 \cref{eq:17-latent-ignorability} 下，假设
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{obs}} > 1, \quad \RR_{ZU\mid x} > 1, \quad \RR_{UY\mid x} > 1 .
+\label{eq:17-assumptions}
+\end{equation}
 则有
-\[
-\RR_{ZY|x}^{\mathrm{obs}} \leq \frac{\RR_{ZU|x} \cdot \RR_{UY|x}}{\RR_{ZU|x} + \RR_{UY|x} - 1} .
-\tag{17.14}
-\tag{17.15}
-\]
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{obs}} \leq \frac{\RR_{ZU\mid x} \cdot \RR_{UY\mid x}}{\RR_{ZU\mid x} + \RR_{UY\mid x} - 1} .
+\label{eq:17-cornfield-bound}
+\end{equation}
 \end{Theorem}
 
-\textbf{定理 \ref{th:17-cornfield} 的含义}：在潜在可忽略性下，治疗与结果之间的观测关联完全来自两条路径——$Z\leftarrow U \rightarrow Y$——的组合效应。上界 $\RR_{ZU|x} \cdot \RR_{UY|x} / (\RR_{ZU|x} + \RR_{UY|x} - 1)$ 体现了这两条路径的"乘法阻塞"：要产生一个较大的 $\RR_{ZY|x}^{\mathrm{obs}}$，两条路径都必须足够强。
+\textbf{定理 \ref{th:17-cornfield} 的含义}：在潜在可忽略性下，治疗与结果之间的观测关联完全来自两条路径——$Z \leftarrow U \rightarrow Y$——的组合效应。上界 $\RR_{ZU\mid x} \cdot \RR_{UY\mid x} / (\RR_{ZU\mid x} + \RR_{UY\mid x} - 1)$ 体现了这两条路径的"乘法阻塞"：要产生一个较大的 $\RR_{ZY\mid x}^{\mathrm{obs}}$，两条路径都必须足够强。
 
-特别地，从 (\ref{eq:17-cornfield-bound}) 可推出 \textbf{Cornfield 不等式}（Gastwirth et al., 1998）：
-\[
-\min(\RR_{ZU|x}, \RR_{UY|x}) \geq \RR_{ZY|x}^{\mathrm{obs}} .
-\tag{17.16}
-\tag{17.17}
-\]
+特别地，从 \cref{eq:17-cornfield-bound} 可推出 \textbf{Cornfield 不等式}（Gastwirth et al., 1998）：
+\begin{equation}
+\min(\RR_{ZU\mid x}, \RR_{UY\mid x}) \geq \RR_{ZY\mid x}^{\mathrm{obs}} .
+\label{eq:17-cornfield-inequality}
+\end{equation}
+
 即：要完全解释掉观测到的风险比，未测混杂与治疗的关联以及与结果的关联，都必须\textbf{至少与观测到的风险比一样强}。这个简单而强大的结论，首次由 Cornfield et al. (1959) 在讨论吸烟与肺癌时得到。
 
-\textbf{证明思路}：定义 $f_{1,x} = \pr(U=1 \mid Z=1, X=x)$ 和 $f_{0,x} = \pr(U=1 \mid Z=0, X=x)$。通过全概率公式分解 $\RR_{ZY|x}^{\mathrm{obs}}$ 并利用 $Z \perp Y \mid (X,U)$，可得恒等式 (\ref{eq:17-rr-identity})。\footnote{完整证明推导见附录 \cref{sec:appendix-17-proof-theorem}}
+\textbf{证明思路}：定义 $f_{1,x} = \pr(U=1 \mid Z=1, X=x)$ 和 $f_{0,x} = \pr(U=1 \mid Z=0, X=x)$。通过全概率公式分解 $\RR_{ZY\mid x}^{\mathrm{obs}}$ 并利用 $Z \perp Y \mid (X,U)$，可得恒等式 (\ref{eq:17-rr-identity})。\footnote{完整证明推导见附录 \cref{sec:appendix-17-proof-theorem}}
 
 \section{E-value}\label{sec:17-evalue}
 
 \subsection{从 Cornfield 不等式到 E-value}\label{sec:17-from-cornfield-to-evalue}
 
-从定理 \ref{th:17-cornfield} 和引理 \ref{lm:17-beta-properties}(4)，定义 $w = \max(\RR_{ZU|x}, \RR_{UY|x})$，则
-\[
-\RR_{ZY|x}^{\mathrm{obs}} \leq \frac{w^2}{2w - 1} .
-\tag{17.18}
-\tag{17.19}
-\]
+从定理 \ref{th:17-cornfield} 和引理 \ref{lm:17-beta-properties}(4)，定义 $w = \max(\RR_{ZU\mid x}, \RR_{UY\mid x})$，则
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{obs}} \leq \frac{w^2}{2w - 1} .
+\label{eq:17-w-bound}
+\end{equation}
 
 解这个二次不等式，较小根始终 $\leq 1$，故
-\[
-w \geq \RR_{ZY|x}^{\mathrm{obs}} + \sqrt{\RR_{ZY|x}^{\mathrm{obs}}(\RR_{ZY|x}^{\mathrm{obs}} - 1)} .
-\tag{17.20}
-\tag{17.21}
-\]
+\begin{equation}
+w \geq \RR_{ZY\mid x}^{\mathrm{obs}} + \sqrt{\RR_{ZY\mid x}^{\mathrm{obs}}(\RR_{ZY\mid x}^{\mathrm{obs}} - 1)} .
+\label{eq:17-w-lower-bound}
+\end{equation}
 
 这给出了 E-value 的定义。
 
 \begin{Definition}[E-value]\label{def:17-evalue}
-给定观测条件风险比 $\RR_{ZY|x}^{\mathrm{obs}}$，定义 \textbf{E-value} 为
-\[
-\RR_{ZY|x}^{\mathrm{obs}} + \sqrt{\RR_{ZY|x}^{\mathrm{obs}}(\RR_{ZY|x}^{\mathrm{obs}} - 1)} .
-\tag{17.22}
-\tag{17.23}
-\]
+给定观测条件风险比 $\RR_{ZY\mid x}^{\mathrm{obs}}$，定义 \textbf{E-value} 为
+\begin{equation}
+\mathrm{E\text{-}value} = \RR_{ZY\mid x}^{\mathrm{obs}} + \sqrt{\RR_{ZY\mid x}^{\mathrm{obs}}(\RR_{ZY\mid x}^{\mathrm{obs}} - 1)} .
+\label{eq:17-evalue}
+\end{equation}
 \end{Definition}
 
-\textbf{E-value 的解释}：E-value 表示要完全解释掉观测到的风险比，$\max(\RR_{ZU|x}, \RR_{UY|x})$ 必须达到的最小值。换言之，如果领域知识认为任何合理的未测混杂，其与治疗和结果的关联程度都不可能超过某个阈值 $R$，那么当 $R < \mathrm{E-value}$ 时，我们有理由相信因果关系确实存在。
+\textbf{E-value 的解释}：E-value 表示要完全解释掉观测到的风险比，$\max(\RR_{ZU\mid x}, \RR_{UY\mid x})$ 必须达到的最小值。换言之，如果领域知识认为任何合理的未测混杂，其与治疗和结果的关联程度都不可能超过某个阈值 $R$，那么当 $R < \mathrm{E\text{-}value}$ 时，我们有理由相信因果关系确实存在。
 
 \textbf{E-value 与 Fisher $p$ 值的对比}：在随机化实验中，Fisher $p$ 值衡量的是因果证据。但在大样本观测性研究中，$p$ 值可能是因果证据的误导性度量——即使真实因果效应为零，微弱的未测混杂也可以产生极小的 $p$ 值。采样误差随样本量增大而减小，但未测混杂带来的不确定性\textbf{不会}随样本量增大而消失。E-value 正是为了填补这一空白而设计的。
 
@@ -181,18 +165,18 @@ w \geq \RR_{ZY|x}^{\mathrm{obs}} + \sqrt{\RR_{ZY|x}^{\mathrm{obs}}(\RR_{ZY|x}^{\
 \begin{itemize}
   \item 解释点估计的 E-value：
     \[
-    \mathrm{E-value} = 10.73 + \sqrt{10.73 \times 9.73} \approx 20.95 .
+    \mathrm{E\text{-}value} = 10.73 + \sqrt{10.73 \times 9.73} \approx 20.95 .
     \]
   \item 解释下限的 E-value：
     \[
-    \mathrm{E-value}_{\mathrm{CI}} = 8.02 + \sqrt{8.02 \times 7.02} \approx 15.52 .
-    \end{itemize}
+    \mathrm{E\text{-}value}_{\mathrm{CI}} = 8.02 + \sqrt{8.02 \times 7.02} \approx 15.52 .
+    \]
 \end{itemize}
 
 \textbf{解读}：要完全解释掉观察到的风险比（甚至其置信下限），未测混杂与治疗的关联以及与结果的关联，都必须达到至少 15.52。这意味着未测混杂必须是一个\textbf{极强}的风险因子——它与吸烟的关联程度要接近吸烟本身与肺癌的关联程度（10 倍以上）。在领域知识上，这种强度的未知混杂似乎不太合理，因此该研究提供了较强的因果证据。
 \end{Example}
 
-图 \ref{fig:17-confounding-contour}（Hammond and Horn 数据的混淆强度轮廓）展示了要解释掉点估计和置信下限，两类混淆强度 $(\RR_{ZU|x}, \RR_{UY|x})$ 需要满足的条件。
+图 \ref{fig:17-confounding-contour}（Hammond and Horn 数据的混淆强度轮廓）展示了要解释掉点估计和置信下限，两类混淆强度 $(\RR_{ZU\mid x}, \RR_{UY\mid x})$ 需要满足的条件。
 
 \section{扩展}\label{sec:17-extensions}
 
@@ -228,24 +212,20 @@ E-value 量化了第 (1) 条准则，但没有涉及其他八条。这是 E-valu
 \subsection{逻辑斯蒂回归后的 E-value}\label{sec:17-evalue-logistic}
 
 流行病学研究中，二值结果常用逻辑斯蒂回归建模：
-
-\[
+\begin{equation}
 \pr(Y_i = 1 \mid Z_i, X_i) = \frac{e^{\beta_0 + \beta_1 Z_i + \beta_2^\top X_i}}{1 + e^{\beta_0 + \beta_1 Z_i + \beta_2^\top X_i}} .
-\tag{17.24}
-\tag{17.25}
-\]
+\label{eq:17-logistic-model}
+\end{equation}
 
 其中系数 $\beta_1$ 是给定 $X$ 下治疗与结果的\textbf{条件比数比（conditional odds ratio）}的对数。逻辑斯蒂模型的一个重要假设是：比数比在所有 $X$ 取值上是共同的（common odds ratio）。
 
-当结果罕见时（$\pr(Y=1 \mid Z, X)$ 接近 0），条件比数比近似于条件风险比（见命题 \ref{prop:1-rare-approx}）。\footnote{详见附录 \cref{sec:appendix-17-rare-approx}}
+当结果罕见时（$\pr(Y=1 \mid Z, X)$ 接近 0），条件比数比近似于条件风险比（见附录 \cref{sec:appendix-17-rare-approx}）。
 
 因此，在罕见结果假设下，我们可以直接基于逻辑斯蒂回归估计的 $\hat\beta_1$ 计算 E-value：
-
-\[
-\widehat{\mathrm{E-value}} = \exp(\hat\beta_1) + \sqrt{\exp(\hat\beta_1)(\exp(\hat\beta_1) - 1)} .
-\tag{17.26}
-\tag{17.27}
-\]
+\begin{equation}
+\widehat{\mathrm{E\text{-}value}} = \exp(\hat\beta_1) + \sqrt{\exp(\hat\beta_1)(\exp(\hat\beta_1) - 1)} .
+\label{eq:17-evalue-logistic}
+\end{equation}
 
 这使得 E-value 可以方便地应用于常规的流行病学分析流程。
 
@@ -260,21 +240,19 @@ E-value 量化了第 (1) 条准则，但没有涉及其他八条。这是 E-valu
 定理 \ref{th:17-cornfield} 假设真实因果效应为零。Ding and VanderWeele (2016) 将结果推广到允许非零真实因果效应的情形。
 
 \begin{Theorem}[含真实因果效应的下界]\label{th:17-true-rr-bound}
-修改 $\RR_{UY|x}$ 的定义为：
-\[
-\RR_{UY|x} = \max_{z=0,1} \frac{\pr(Y=1 \mid Z=z, U=1, X=x)}{\pr(Y=1 \mid Z=z, U=0, X=x)} .
-\tag{17.28}
-\tag{17.29}
-\]
-则在假设 (\ref{eq:17-latent-ignorability}) 下，
-\[
-\RR_{ZY|x}^{\mathrm{true}} \geq \frac{\RR_{ZY|x}^{\mathrm{obs}}}{\frac{\RR_{ZU|x} \cdot \RR_{UY|x}}{\RR_{ZU|x} + \RR_{UY|x} - 1}} .
-\tag{17.30}
-\tag{17.31}
-\]
+修改 $\RR_{UY\mid x}$ 的定义为：
+\begin{equation}
+\RR_{UY\mid x} = \max_{z=0,1} \frac{\pr(Y=1 \mid Z=z, U=1, X=x)}{\pr(Y=1 \mid Z=z, U=0, X=x)} .
+\label{eq:17-uy-max}
+\end{equation}
+则在假设 \cref{eq:17-latent-ignorability} 下，
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{true}} \geq \frac{\RR_{ZY\mid x}^{\mathrm{obs}}}{\frac{\RR_{ZU\mid x} \cdot \RR_{UY\mid x}}{\RR_{ZU\mid x} + \RR_{UY\mid x} - 1}} .
+\label{eq:17-true-rr-lower-bound}
+\end{equation}
 \end{Theorem}
 
-\textbf{定理 \ref{th:17-true-rr-bound} 的解读}：即使存在未测混杂，定理也给出了真实因果效应 $\RR_{ZY|x}^{\mathrm{true}}$ 的一个下界。这个下界等于观测风险比除以 Cornfield 上界。当灵敏度参数取不同值时，我们可以评估因果效应下界对未测混杂强度的敏感性。
+\textbf{定理 \ref{th:17-true-rr-bound} 的解读}：即使存在未测混杂，定理也给出了真实因果效应 $\RR_{ZY\mid x}^{\mathrm{true}}$ 的一个下界。这个下界等于观测风险比除以 Cornfield 上界。当灵敏度参数取不同值时，我们可以评估因果效应下界对未测混杂强度的敏感性。
 
 \section{批评与回应}\label{sec:17-critiques}
 
@@ -282,17 +260,17 @@ E-value 量化了第 (1) 条准则，但没有涉及其他八条。这是 E-valu
 
 \subsection{E-value 不过是风险比的单调变换}\label{sec:17-critique-monotone}
 
-从图 \ref{fig:17-evalue-vs-rr} 可以看出，当风险比较大时，E-value 近似等于 $2 \cdot \RR_{ZY|x}^{\mathrm{obs}}$——几乎是线性的。因此批评者认为 E-value 不过是风险比的一个单调变换，没有提供额外信息。
+当风险比较大时，E-value 近似等于 $2 \cdot \RR_{ZY\mid x}^{\mathrm{obs}}$——几乎是线性的。因此批评者认为 E-value 不过是风险比的一个单调变换，没有提供额外信息。
 
 这\textbf{部分正确}——E-value 确实完全基于风险比的点估计和置信限。但关键在于：E-value 有\textbf{有意义的解释}（定义 \ref{def:17-evalue}），而风险比本身没有这种"需要多强的未测混杂"的解释。从风险比 10.73 到 E-value 20.95，数字变了，但解释的含义完全不同。
 
 \subsection{E-value 的校准问题}\label{sec:17-critique-calibration}
 
-E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的关联，未测混杂与治疗和结果关联所必须达到的最小值。问题在于：这个未测混杂本身是无法观测的，因此很难判断某个 E-value 究竟算"大"还是"小"。
+E-value 等于 $\max(\RR_{ZU\mid x}, \RR_{UY\mid x})$——即要解释掉观察到的关联，未测混杂与治疗和结果关联所必须达到的最小值。问题在于：这个未测混杂本身是无法观测的，因此很难判断某个 E-value 究竟算"大"还是"小"。
 
 此外，E-value 的大小取决于我们调整了多少协变量 $X$——它量化的是\textbf{给定已调整协变量后}的残余混杂强度。不同研究之间的 E-value 不能直接比较，因为它们的 $X$ 不同。
 
-一个直观的校准思路是"逐一剔除协变量"法：如果我们把某个已调整的协变量 $X_j$ 当作"未测混杂"来对待，计算 $Z-X_j$ 和 $X_j-Y$ 的风险比，这些比值可以提供参考尺度。但这一方法尚无严格的理论支撑。
+一个直观的校准思路是"逐一剔除协变量"法：如果我们把某个已调整的协变量 $X_j$ 当作"未测混杂"来对待，计算 $Z\text{-}X_j$ 和 $X_j\text{-}Y$ 的风险比，这些比值可以提供参考尺度。但这一方法尚无严格的理论支撑。
 
 \subsection{E-value 最适用于二值结果和风险比}\label{sec:17-critique-binary-only}
 
@@ -304,8 +282,8 @@ E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的�
 
 \begin{enumerate}
   \item \textbf{未测混杂无法从数据中验证}，但我们可以量化：要解释掉观察到的关联，未测混杂必须有多强？
-  \item \textbf{Cornfield 不等式}：要完全解释掉风险比 $\RR^{\mathrm{obs}}$，未测混杂与治疗的关联和与结果的关联都必须至少达到 $\RR^{\mathrm{obs}}$；
-  \item \textbf{E-value} 是这一思想的精确数学化：$\mathrm{E-value} = \RR^{\mathrm{obs}} + \sqrt{\RR^{\mathrm{obs}}(\RR^{\mathrm{obs}} - 1)}$；
+  \item \textbf{Cornfield 不等式}：要完全解释掉风险比 $\RR_{ZY\mid x}^{\mathrm{obs}}$，未测混杂与治疗的关联和与结果的关联都必须至少达到 $\RR_{ZY\mid x}^{\mathrm{obs}}$；
+  \item \textbf{E-value} 是这一思想的精确数学化：$\mathrm{E\text{-}value} = \RR_{ZY\mid x}^{\mathrm{obs}} + \sqrt{\RR_{ZY\mid x}^{\mathrm{obs}}(\RR_{ZY\mid x}^{\mathrm{obs}} - 1)}$；
   \item E-value 越大，意味着需要越强的未测混杂才能解释掉观察到的关联，因果证据越强；
   \item E-value 有明确的局限性——它只量化了 Bradford Hill 准则中的"强度"维度，且最适用于二值结果和风险比。
 \end{enumerate}
@@ -319,7 +297,7 @@ E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的�
 \end{HomeworkProblem}
 
 \begin{HomeworkProblem}[17.2]\label{hw:17-2}
-证明在假设 $Z \perp Y \mid (X,U)$ 下，如果 $\RR_{ZU|x} > 1$ 但 $\RR_{UY|x} < 1$，则 $\RR_{ZY|x}^{\mathrm{obs}} < 1$。这说明 (\ref{eq:17-assumptions}) 中的第三个条件在某种意义上是冗余的。
+证明在假设 $Z \perp Y \mid (X,U)$ 下，如果 $\RR_{ZU\mid x} > 1$ 但 $\RR_{UY\mid x} < 1$，则 $\RR_{ZY\mid x}^{\mathrm{obs}} < 1$。这说明 \cref{eq:17-assumptions} 中的第三个条件在某种意义上是冗余的。
 \end{HomeworkProblem}
 
 \begin{HomeworkProblem}[17.3]\label{hw:17-3}
@@ -327,12 +305,11 @@ E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的�
 \end{HomeworkProblem}
 
 \begin{HomeworkProblem}[17.4]\label{hw:17-4}
-（Schlesselman 1978 公式）在二值治疗 $Z$、结果 $Y$ 和未测混杂 $U$ 下，假设层内（$U=0$ 和 $U=1$）治疗对结果的风险比相同，$\RR_{ZY|U=0} = \RR_{ZY|U=1}$，且混杂对结果的风险比在两组治疗下也相同（记为 $\gamma$）。证明：
-\[
+（Schlesselman 1978 公式）在二值治疗 $Z$、结果 $Y$ 和未测混杂 $U$ 下，假设层内（$U=0$ 和 $U=1$）治疗对结果的风险比相同，$\RR_{ZY\mid U=0} = \RR_{ZY\mid U=1}$，且混杂对结果的风险比在两组治疗下也相同（记为 $\gamma$）。证明：
+\begin{equation}
 \frac{\RR_{ZY}^{\mathrm{obs}}}{\RR_{ZY}^{\mathrm{true}}} = \frac{1 + (\gamma - 1)\pr(U=1 \mid Z=1)}{1 + (\gamma - 1)\pr(U=1 \mid Z=0)} .
-\tag{17.32}
-\tag{17.33}
-\]
+\label{eq:17-schlesselman}
+\end{equation}
 并讨论此公式与定理 \ref{th:17-cornfield} 的关系。
 \end{HomeworkProblem}
 
@@ -342,18 +319,16 @@ E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的�
 
 \begin{HomeworkProblem}[17.6]\label{hw:17-6}
 （风险差的 Cornfield 不等式）考虑二值 $Z, Y, U$。在潜在可忽略性 $Z \perp Y \mid U$ 下，证明风险差的 Cornfield 不等式：
-\[
+\begin{equation}
 \RD_{ZY}^{\mathrm{obs}} = \RD_{ZU} \times \RD_{UY} ,
-\tag{17.34}
-\tag{17.35}
-\]
+\label{eq:17-rd-cornfield}
+\end{equation}
 并由此推出：
-\[
+\begin{equation}
 \min(\RD_{ZU}, \RD_{UY}) \geq \RD_{ZY}^{\mathrm{obs}}, \quad
 \max(\RD_{ZU}, \RD_{UY}) \geq \sqrt{\RD_{ZY}^{\mathrm{obs}}} .
-\tag{17.36}
-\tag{17.37}
-\]
+\label{eq:17-rd-cornfield-ineq}
+\end{equation}
 \end{HomeworkProblem}
 
 \section{推荐阅读}\label{sec:17-reading}
@@ -374,25 +349,23 @@ E-value 等于 $\max(\RR_{ZU|x}, \RR_{UY|x})$——即要解释掉观察到的�
 
 \section{背景与目标}\label{sec:appendix-17-proof-bg}
 
-我们要在假设 (\ref{eq:17-latent-ignorability}) 下，证明观测风险比的上界。核心思想是：条件于 $(X,U)$ 后，治疗 $Z$ 与结果 $Y$ 独立，因此观测风险比中的分子和分母分别是 $U$ 在治疗组和对照组中分布的加权平均。
+我们要在假设 \cref{eq:17-latent-ignorability} 下，证明观测风险比的上界。核心思想是：条件于 $(X,U)$ 后，治疗 $Z$ 与结果 $Y$ 独立，因此观测风险比中的分子和分母分别是 $U$ 在治疗组和对照组中分布的加权平均。
 
 \section{记号定义}\label{sec:appendix-17-proof-notation}
 
 定义：
-\[
+\begin{equation}
 f_{1,x} = \pr(U=1 \mid Z=1, X=x), \quad f_{0,x} = \pr(U=1 \mid Z=0, X=x) .
-\tag{17.A.1}
-\tag{17.A.2}
-\]
+\label{eq:17-app-f-def}
+\end{equation}
 
-由灵敏度参数的定义 (\ref{eq:17-sensitivity-zu})：
-\[
-\RR_{ZU|x} = \frac{f_{1,x}}{f_{0,x}} \quad \Longrightarrow \quad f_{0,x} = \frac{f_{1,x}}{\RR_{ZU|x}} .
-\tag{17.A.3}
-\tag{17.A.4}
-\]
+由灵敏度参数的定义 \cref{eq:17-sensitivity-zu}：
+\begin{equation}
+\RR_{ZU\mid x} = \frac{f_{1,x}}{f_{0,x}} \quad \Longrightarrow \quad f_{0,x} = \frac{f_{1,x}}{\RR_{ZU\mid x}} .
+\label{eq:17-app-fzu-relation}
+\end{equation}
 
-定义 $\gamma_x = \RR_{UY|x}$ 以简化记号。
+定义 $\gamma_x = \RR_{UY\mid x}$ 以简化记号。
 
 \section{详细推导}\label{sec:appendix-17-proof-derivation}
 
@@ -405,8 +378,6 @@ f_{1,x} = \pr(U=1 \mid Z=1, X=x), \quad f_{0,x} = \pr(U=1 \mid Z=0, X=x) .
 &= \gamma_x f_{1,x} + (1 - f_{1,x}) \cdot 1 \\
 &= (\gamma_x - 1) f_{1,x} + 1 .
 \end{aligned}
-\tag{17.A.5}
-\tag{17.A.6}
 \]
 
 分母（对照组的条件结果概率）为：
@@ -418,23 +389,18 @@ f_{1,x} = \pr(U=1 \mid Z=1, X=x), \quad f_{0,x} = \pr(U=1 \mid Z=0, X=x) .
 &= \gamma_x f_{0,x} + (1 - f_{0,x}) \\
 &= (\gamma_x - 1) f_{0,x} + 1 .
 \end{aligned}
-\tag{17.A.7}
-\tag{17.A.8}
 \]
 
-代入 $f_{0,x} = f_{1,x} / \RR_{ZU|x}$，得：
+代入 $f_{0,x} = f_{1,x} / \RR_{ZU\mid x}$，得：
 \[
-\pr(Y=1 \mid Z=0, X=x) = (\gamma_x - 1) \frac{f_{1,x}}{\RR_{ZU|x}} + 1 .
-\tag{17.A.9}
-\tag{17.A.10}
+\pr(Y=1 \mid Z=0, X=x) = (\gamma_x - 1) \frac{f_{1,x}}{\RR_{ZU\mid x}} + 1 .
 \]
 
 因此观测风险比可以写成：
-\[
-\RR_{ZY|x}^{\mathrm{obs}} = \frac{(\gamma_x - 1) f_{1,x} + 1}{(\gamma_x - 1) \frac{f_{1,x}}{\RR_{ZU|x}} + 1} .
-\tag{17.A.11}
-\tag{17.A.12}
-\]
+\begin{equation}
+\RR_{ZY\mid x}^{\mathrm{obs}} = \frac{(\gamma_x - 1) f_{1,x} + 1}{(\gamma_x - 1) \frac{f_{1,x}}{\RR_{ZU\mid x}} + 1} .
+\label{eq:17-rr-identity}
+\end{equation}
 
 \section{单调性与上界}\label{sec:appendix-17-proof-monotonicity}
 
@@ -442,26 +408,16 @@ f_{1,x} = \pr(U=1 \mid Z=1, X=x), \quad f_{0,x} = \pr(U=1 \mid Z=0, X=x) .
 \[
 g(t) = \frac{(a-1)t + 1}{(a-1)\frac{t}{b} + 1}
 \]
-在 $a > 1, b > 1$ 时关于 $t$ 单调递增（习题 \ref{hw:17-1}）。因此 $f_{1,x}$ 越大，$\RR_{ZY|x}^{\mathrm{obs}}$ 越大。取上界 $f_{1,x} = 1$：
+在 $a > 1, b > 1$ 时关于 $t$ 单调递增（习题 \ref{hw:17-1}）。因此 $f_{1,x}$ 越大，$\RR_{ZY\mid x}^{\mathrm{obs}}$ 越大。取上界 $f_{1,x} = 1$：
 \[
-\RR_{ZY|x}^{\mathrm{obs}} \leq \frac{(\gamma_x - 1) + 1}{\frac{\gamma_x - 1}{\RR_{ZU|x}} + 1} = \frac{\gamma_x \cdot \RR_{ZU|x}}{\gamma_x + \RR_{ZU|x} - 1} .
-\tag{17.A.13}
-\tag{17.A.14}
+\RR_{ZY\mid x}^{\mathrm{obs}} \leq \frac{(\gamma_x - 1) + 1}{\frac{\gamma_x - 1}{\RR_{ZU\mid x}} + 1} = \frac{\gamma_x \cdot \RR_{ZU\mid x}}{\gamma_x + \RR_{ZU\mid x} - 1} .
 \]
 
-这正是定理 \ref{th:17-cornfield} 中的上界 (\ref{eq:17-cornfield-bound})。
+这正是定理 \ref{th:17-cornfield} 中的上界 \cref{eq:17-cornfield-bound}。
 
-\section{恒等式 (\ref{eq:17-rr-identity})}\label{sec:appendix-17-identity}
+\section{恒等式}\label{sec:appendix-17-identity}
 
-由以上推导，我们实际得到了一个精确的恒等式（而非仅仅是上界）：
-
-\[
-\RR_{ZY|x}^{\mathrm{obs}} = \frac{(\RR_{UY|x} - 1) f_{1,x} + 1}{\frac{\RR_{UY|x} - 1}{\RR_{ZU|x}} f_{1,x} + 1} .
-\tag{17.A.15}
-\tag{17.A.16}
-\]
-
-这个恒等式涉及三个灵敏度参数 $(f_{1,x}, \RR_{ZU|x}, \RR_{UY|x})$，而定理 \ref{th:17-cornfield} 的上界只涉及后两者。数学上恒等式强于不等式，但恒等式需要多一个灵敏度参数——这是灵敏度分析中\textbf{准确度与便利性之间的权衡}。
+由以上推导，我们实际得到了一个精确的恒等式（而非仅仅是上界）\cref{eq:17-rr-identity}。这个恒等式涉及三个灵敏度参数 $(f_{1,x}, \RR_{ZU\mid x}, \RR_{UY\mid x})$，而定理 \ref{th:17-cornfield} 的上界只涉及后两者。数学上恒等式强于不等式，但恒等式需要多一个灵敏度参数——这是灵敏度分析中\textbf{准确度与便利性之间的权衡}。
 
 \chapter{附录：引理 \ref{lm:17-beta-properties} 的证明}\label{sec:appendix-17-lemma-proof}
 
@@ -472,51 +428,38 @@ g(t) = \frac{(a-1)t + 1}{(a-1)\frac{t}{b} + 1}
 \textbf{性质 (2) 单调性}：计算偏导数：
 \[
 \frac{\partial \beta}{\partial w_1} = \frac{w_2 (w_1 + w_2 - 1) - w_1 w_2}{(w_1 + w_2 - 1)^2} = \frac{w_2 (w_2 - 1)}{(w_1 + w_2 - 1)^2} > 0 .
-\tag{17.B.1}
-\tag{17.B.2}
 \]
 同理 $\partial \beta / \partial w_2 > 0$，故 $\beta$ 对两个变量均单调递增。
 
 \textbf{性质 (3) 上界}：
 \[
 \beta(w_1, w_2) = \frac{w_1 w_2}{w_1 + w_2 - 1} \leq \frac{w_1 w_2}{w_1} = w_2 \quad (\text{因为 } w_2 - 1 \geq 0) .
-\tag{17.B.3}
-\tag{17.B.4}
 \]
 对称地得到 $\beta \leq w_1$。
 
 \textbf{性质 (4) $w = \max(w_1, w_2)$ 时的界}：设 $w_1 = w$，$w_2 \leq w$，则
 \[
 \beta(w_1, w_2) = \frac{w \cdot w_2}{w + w_2 - 1} \leq \frac{w \cdot w}{w + w - 1} = \frac{w^2}{2w - 1} .
-\tag{17.B.5}
-\tag{17.B.6}
 \]
 证毕。
 
 \chapter{附录：罕见结果近似}\label{sec:appendix-17-rare-approx}
 
-对于二值结果 $Y$，逻辑斯蒂模型 (\ref{eq:17-logistic-model}) 中治疗指示变量 $Z$ 的系数 $\beta_1$ 是条件\textbf{比数比（odds ratio）}：
-
+对于二值结果 $Y$，逻辑斯蒂模型 \cref{eq:17-logistic-model} 中治疗指示变量 $Z$ 的系数 $\beta_1$ 是条件\textbf{比数比（odds ratio）}：
 \[
-\beta_1 = \log \mathrm{OR}_{ZY|x} = \log \frac{\mathrm{odds}(Y=1 \mid Z=1, X=x)}{\mathrm{odds}(Y=1 \mid Z=0, X=x)} .
-\tag{17.C.1}
-\tag{17.C.2}
+\beta_1 = \log \mathrm{OR}_{ZY\mid x} = \log \frac{\mathrm{odds}(Y=1 \mid Z=1, X=x)}{\mathrm{odds}(Y=1 \mid Z=0, X=x)} .
 \]
 
 当结果罕见时，$\pr(Y=1 \mid Z=1, X=x) \approx 0$ 且 $\pr(Y=1 \mid Z=0, X=x) \approx 0$，此时
 \[
 \mathrm{odds}(Y=1 \mid Z, X) \approx \frac{\pr(Y=1 \mid Z, X)}{1 - \pr(Y=1 \mid Z, X)} \approx \pr(Y=1 \mid Z, X) .
-\tag{17.C.3}
-\tag{17.C.4}
 \]
 
 因此罕见结果假设下，条件比数比近似于条件风险比：
 \[
-\beta_1 \approx \log \RR_{ZY|x}^{\mathrm{obs}} .
-\tag{17.C.5}
-\tag{17.C.6}
+\beta_1 \approx \log \RR_{ZY\mid x}^{\mathrm{obs}} .
 \]
 
-由此可得 $\exp(\beta_1) \approx \RR_{ZY|x}^{\mathrm{obs}}$，进而 E-value 的计算公式 (\ref{eq:17-evalue-formula}) 可直接应用于逻辑斯蒂回归系数。
+由此可得 $\exp(\beta_1) \approx \RR_{ZY\mid x}^{\mathrm{obs}}$，进而 E-value 的计算公式 \cref{eq:17-evalue} 可直接应用于逻辑斯蒂回归系数。
 
 \end{document}
