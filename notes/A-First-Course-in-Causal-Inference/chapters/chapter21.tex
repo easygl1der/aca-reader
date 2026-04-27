@@ -1,0 +1,304 @@
+% Chapter 21: Instrumental Variable
+% A First Course in Causal Inference - Peng Ding
+% Draft V1 - Stein narrative style
+
+\chapter{工具变量：从不完美实验到因果效应}
+\label{ch:21}
+
+\section{引言：无法假设无混淆时，我们还能做什么？}
+
+在前几章中，我们学习了如何通过随机实验和观测性研究（在可忽略性假设下）来估计因果效应。第 \ref{ch:3} 章的完全随机实验（CRE）通过随机分配治疗消除了未测混淆。第 \ref{ch:10} 章讨论了当治疗分配机制已知（或可估计）时，如何在观测性研究中识别因果效应。
+
+但现实往往不这么友好。想象以下场景：
+
+\begin{itemize}
+  \item \textbf{Jobs 项目}：研究者想评估 Jobs 项目对收入的影响，但只有部分被分配到treatment的人实际参加了项目。
+  \item \textbf{医学临床试验}：患者被随机分配到治疗组或对照组，但由于副作用，部分患者没有遵从分配的治疗。
+  \item \textbf{Mendelian Randomization}：遗传变异（作为工具变量）随机分配在人群中使用，但遗传变异对疾病的影响可能通过多条途径实现。
+\end{itemize}
+
+在这些场景中，治疗分配 $Z$ 与实际接受的治疗 $D$ 不一致。更根本的问题是：$D$ 与潜在结果之间可能存在\textbf{未测混淆（unmeasured confounding）}。传统的回归方法无法给出因果效应的无偏估计。
+
+那么，当无法假设可忽略性时，我们还能识别因果效应吗？
+
+\textbf{工具变量（Instrumental Variable, IV）}方法提供了一个出路。\footnote{问：为什么工具变量能解决无法假设可忽略性的问题？见附录 \cref{sec:qa-iv-intuition}。} 核心思想是：找到一个\textbf{外生（exogenous）}的变量 $Z$，它影响治疗 $D$，但不影响结局 $Y$（除了通过 $D$ 的途径）。虽然我们无法直接观察 $D$ 的因果效应，但可以通过 $Z$ 来\textbf{间接}推断。
+
+本章采用 \citet{Ding:2024} 提出的\textbf{鼓励设计（encouragement design）}视角来介绍 IV 方法。正如 \citet{Dorn:1953} 建议的，观测性研究的设计者应该始终问自己：\textit{``如果我无法做随机实验，能否找到一个自然的随机化来源？''} 鼓励设计正是这种思想的体现。
+
+\section{鼓励设计与非依从性}
+\label{sec:21-encouragement}
+
+考虑一个实验，其中研究者\textbf{鼓励（encourage）}部分单元接受治疗，但不是所有被鼓励的单元都会实际接受治疗。设
+
+\begin{itemize}
+  \item $Z \in \{0, 1\}$：治疗分配（$Z=1$ 表示被分配到治疗组）
+  \item $D \in \{0, 1, 2, \ldots\}$：实际接受的治疗（或剂量）
+  \item $Y$：结局
+\end{itemize}
+
+与标准随机实验不同，这里存在\textbf{非依从性（noncompliance）}：被分配到治疗组的人可能没有实际接受治疗，被分配到对照组的人可能通过其他途径接受了治疗。
+
+\textbf{关键假设：随机分配（Assumption 21.1）}\footnote{问：为什么随机分配是关键假设？它如何帮助我们？见附录 \cref{sec:qa-randomization-assumption}。}
+\begin{Assumption}[随机分配]\label{asm:21-randomization}
+治疗分配 $Z$ 与所有潜在结果独立：
+\[
+Z \perp\!\!\!\perp \{D(1), D(0), Y(1), Y(0)\},
+\]
+其中 $D(z)$ 是在分配 $z$ 下的潜在治疗接受情况，$Y(z)$ 是相应的潜在结局。
+\end{Assumption}
+
+在随机化实验中，这个假设天然成立。\cref{asm:21-randomization} 保证了治疗分配 $Z$ 本身不影响结局（除了通过实际接受的治疗 $D$ 间接影响之外）。
+
+\textbf{意向性治疗分析（Intention-to-Treat, ITT）}：报告 $\hat\tau_Y$ 及其标准误差的过程称为 ITT 分析。\footnote{问：ITT 分析估计的是什么效应？见附录 \cref{sec:qa-itt-meaning}。} 在 \cref{asm:21-randomization} 下，ITT 估计量
+\[
+\hat\tau_Y = \bar{Y}_1 - \bar{Y}_0
+\]
+一致地估计了治疗分配对结局的平均因果效应。但这不是我们真正关心的——我们想知道的是\textbf{实际接受的治疗}对结局的因果效应。
+
+这就是 IV 方法要解决的问题。
+
+\section{潜在依从性类型与因果效应分解}
+\label{sec:21-latent-compliance}
+
+\subsection{四类依从者}
+
+由于我们无法同时观察到 $D_i(1)$ 和 $D_i(0)$，每个个体的依从性类型是\textbf{潜在的（latent）}。记潜在依从性类型为 $U_i = (D_i(1), D_i(0))$，可以有四种取值：
+
+\begin{enumerate}
+  \item \textbf{Always taker（总是接受者）}：$U_i = a$，$D_i(1) = D_i(0) = 1$。无论是否被鼓励，都接受治疗。
+  \item \textbf{Complier（依从者）}：$U_i = c$，$D_i(1) = 1, D_i(0) = 0$。只有在被鼓励时才会接受治疗。
+  \item \textbf{Defier（违背者）}：$U_i = d$，$D_i(1) = 0, D_i(0) = 1$。被鼓励时反而拒绝治疗（对鼓励反向反应）。
+  \item \textbf{Never taker（从不接受者）}：$U_i = n$，$D_i(1) = D_i(0) = 0$。无论是否被鼓励，都不接受治疗。
+\end{enumerate}
+
+\textbf{注意}：由于我们无法同时观察 $D(1)$ 和 $D(0)$，$U_i$ 对每个个体来说是不可观测的潜在类型。我们只能通过群体的统计性质来推断各类人群的比例。
+
+\subsection{ACE 的四类分解}
+
+基于上述分类，总体平均因果效应可以分解为四类的加权平均：\footnote{推导见附录 \cref{sec:appendix-21-ace-decomposition}}
+\begin{align}
+\tau_Y &= \mathbb{E}\{Y(1) - Y(0)\} \label{eq:21-ace-decomposition} \\
+&= \mathbb{E}\{Y(1) - Y(0) \mid U = a\} \Pr(U = a) \label{eq:21-term-always} \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = c\} \Pr(U = c) \label{eq:21-term-complier} \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = d\} \Pr(U = d) \label{eq:21-term-defier} \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = n\} \Pr(U = n). \label{eq:21-term-never}
+\end{align}
+
+\cref{eq:21-ace-decomposition} 清晰地表明了问题所在：我们观测到的是四类人的混合效应，而我们通常只想知道\textbf{某一类人}（特别是 complier）的因果效应。
+
+\section{三个核心假设：单调性、排除限制与随机性}
+\label{sec:21-three-assumptions}
+
+要识别 complier 的因果效应（CACE），我们需要三个关键假设。
+
+\subsection{假设一：单调性（Monotonicity）}
+
+\begin{Assumption}[单调性]\label{asm:21-monotonicity}
+没有 defier：$\Pr(U_i = d) = 0$，或者等价地，$D_i(1) \geq D_i(0)$ 对所有 $i$ 成立。
+\end{Assumption}
+
+\textbf{动机}：Defier 对鼓励反向反应——被鼓励反而拒绝治疗。这类人在现实中极为罕见，而且即使存在，我们也无法用数据识别他们的效应。\textbf{单调性假设排除了 defier 的存在}。
+
+\textbf{可检验的含义}：在随机化下，单调性等价于
+\begin{equation}
+\Pr(D = 1 \mid Z = 1) \geq \Pr(D = 1 \mid Z = 0),
+\label{eq:21-monotonicity-testable}
+\end{equation}
+即治疗接受率在被鼓励组不低于对照组。\footnote{问：为什么 \cref{eq:21-monotonicity-testable} 是单调性的可检验含义？见附录 \cref{sec:qa-monotonicity-testable}。} 这提供了一个检验方向——如果数据不满足这个不等式，单调性假设就不成立。
+
+但注意，\cref{eq:21-monotonicity-testable} 只是平均层面的约束，远弱于 $D_i(1) \geq D_i(0)$ 对每个个体的约束。当数据满足 \cref{eq:21-monotonicity-testable} 时，我们无法用观测数据否定 \cref{asm:21-monotonicity}。
+
+在\textbf{单侧非依从（one-sided noncompliance）}情况下（被分配到对照组的人完全没有机会接受治疗，即 $D_i(0) = 0$ 对所有人成立），单调性假设自动满足。
+
+\subsection{假设二：排除限制（Exclusion Restriction）}
+
+\begin{Assumption}[排除限制]\label{asm:21-exclusion}
+对 always taker 和 never taker，治疗分配不影响结局：
+\[
+Y_i(1) = Y_i(0) \quad \text{当} \quad U_i = a \text{ 或 } U_i = n.
+\]
+\end{Assumption}
+
+\textbf{动机}：对于 always taker 和 never taker，无论是否被分配到治疗组，他们最终都会（或都不会）接受治疗。由于他们的治疗状态不受 $Z$ 影响，他们的结局也不应该受 $Z$ 影响——除非 $Z$ 有\textbf{直接效应（direct effect）}绕过 $D$ 影响 $Y$。排除限制假设排除了这种直接效应。
+
+\textbf{等价表述}：如果 $D_i(1) = D_i(0)$，则 $Y_i(1) = Y_i(0)$ 对所有 $i$ 成立。换言之，治疗分配\textbf{只有通过实际接受的治疗}才能影响结局。
+
+在\textbf{双盲随机实验}中，这是生物学上合理的假设——结局只取决于实际接受的治疗。但在非盲实验、或者治疗分配可能通过非治疗途径（如安慰剂效应、医生关注等）影响结局时，这个假设可能不成立。
+
+\textbf{违反排除限制的例子}：如果实验不是双盲的，患者知道自己被分配到治疗组可能产生安慰剂效应，或者医生对治疗组患者给予更多关注，这些都会导致 $Z$ 有直接效应绕过 $D$ 影响 $Y$。
+
+\subsection{假设三：随机性（我们已经有的）}
+
+\cref{asm:21-randomization} 保证了 $Z$ 的外生性——它不受潜在结果的混淆。
+
+\section{识别 Complier 平均因果效应（CACE）}
+\label{sec:21-identification}
+
+在 \cref{asm:21-monotonicity} 和 \cref{asm:21-exclusion} 下，\cref{eq:21-ace-decomposition} 中的第一项（always taker）和第四项（never taker）变为零，因为对这两类人 $Y(1) = Y(0)$。同时，第三项（defier）在单调性下消失。因此
+
+\begin{equation}
+\tau_Y = \mathbb{E}\{Y(1) - Y(0) \mid U = c\} \Pr(U = c).
+\label{eq:21-reduced-ace}
+\end{equation}
+
+另一方面，治疗接受率差为
+\begin{equation}
+\tau_D = \mathbb{E}\{D(1) - D(0)\} = \Pr(U = c),
+\label{eq:21-proportion-complier}
+\end{equation}
+因为只有 complier 在 $Z=1$ 时接受治疗而在 $Z=0$ 时不接受治疗，其他三类人的治疗接受状态在两种分配下相同。
+
+\textbf{定理 21.1（CACE 识别）}\label{th:21-cace-identification}
+在 \cref{asm:21-monotonicity} 和 \cref{asm:21-exclusion} 下，
+\begin{equation}
+\tau_c \stackrel{\text{def}}{=} \mathbb{E}\{Y(1) - Y(0) \mid U = c\} = \frac{\tau_Y}{\tau_D}.
+\label{eq:21-cace-ratio}
+\end{equation}
+\end{Lemma}
+
+\begin{Corollary}[CACE/LATE 非参数识别]\label{cor:21-cace-nonparametric}
+在 \cref{asm:21-randomization}、\cref{asm:21-monotonicity} 和 \cref{asm:21-exclusion} 下，
+\begin{equation}
+\tau_c = \frac{\mathbb{E}(Y \mid Z = 1) - \mathbb{E}(Y \mid Z = 0)}{\mathbb{E}(D \mid Z = 1) - \mathbb{E}(D \mid Z = 0)}.
+\label{eq:21-cace-identification-formula}
+\end{equation}
+\end{Corollary}
+
+\textbf{直觉}：分子是 ITT 对结局的效应，分母是 ITT 对治疗的效应。比值 $\tau_Y / \tau_D$ 衡量的是"被鼓励而实际接受治疗的人"的因果效应——这正是 complier average causal effect（CACE），也称为\textbf{局部平均处理效应（Local Average Treatment Effect, LATE）}\footnote{问：为什么叫"局部"平均处理效应？见附录 \cref{sec:qa-why-local}。}。
+
+\cref{cor:21-cace-nonparametric} 的重要意义在于：它不需要任何参数假设（如线性、正态等），因此被称为\textbf{非参数识别}。
+
+\textbf{CACE 的解释}：CACE 是 complier 子群体的平均因果效应。在单调性下，complier 定义为满足 $D(1) > D(0)$（即 $D(1) = 1, D(0) = 0$）的单元。由于对 complier 有 $D = Z$，CACE 也可以解释为 complier 群体中\textbf{实际接受的治疗}对结局的因果效应。
+
+\textbf{局限性}：CACE 只告诉我们 complier 的因果效应。对于 always taker、never taker、或者不满足单调性的 defier，我们无法用 IV 方法识别他们的效应。这也是为什么称之为"局部"——它只识别了总体中一个子群体的效应。
+
+\section{估计}
+\label{sec:21-estimation}
+
+基于 \cref{cor:21-cace-nonparametric}，我们可以用简单的比值估计量来估计 $\tau_c$：
+
+\begin{equation}
+\hat{\tau}_c = \frac{\hat{\tau}_Y}{\hat{\tau}_D} = \frac{\bar{Y}_1 - \bar{Y}_0}{\bar{D}_1 - \bar{D}_0},
+\label{eq:21-wald-estimator}
+\end{equation}
+其中 $\bar{Y}_z$ 和 $\bar{D}_z$ 分别是 $Z=z$ 组中的样本均值。
+
+\cref{eq:21-wald-estimator} 被称为\textbf{Wald 估计量}或\textbf{IV 估计量}。
+
+\textbf{方差估计}：\footnote{推导见附录 \cref{sec:appendix-21-wald-variance}}
+在 $\tau_c \neq 0$ 的常规情况下，可以使用
+\[
+\hat{V}(\hat{\tau}_c) = \frac{\hat{V}_Y}{\hat{\tau}_D^2},
+\]
+其中 $\hat{V}_Y$ 是 $\hat{\tau}_Y$ 的 Neyman 型方差估计量。
+
+\textbf{置信区间}：
+\[
+\left( \frac{\hat{\tau}_Y}{\hat{\tau}_D} - z_{1-\alpha/2} \sqrt{\frac{\hat{V}_Y}{\hat{\tau}_D^2}},\ \frac{\hat{\tau}_Y}{\hat{\tau}_D} + z_{1-\alpha/2} \sqrt{\frac{\hat{V}_Y}{\hat{\tau}_D^2}} \right).
+\]
+
+\textbf{注意}：在原假设 $\tau_c = 0$ 下，方差估计量 $\hat{V}_Y / \hat{\tau}_D^2$ 是不一致的——它只能用于检验，不能用于估计。但它揭示了一个洞见：Wald 估计量本质上是 ITT 估计量乘以 $1/\hat{\tau}_D > 1$，其标准误差也以相同因子增大。
+
+\section{协变量}
+\label{sec:21-covariates}
+
+与标准随机实验一样，我们可以在 IV 分析中加入协变量 $X$。
+
+\subsection{CRE 中的协变量调整}
+
+在 \cref{asm:21-randomization} 的基础上，加入协变量后，\cref{cor:21-cace-nonparametric} 变为条件形式：
+
+\begin{equation}
+\tau_c(x) = \frac{\mathbb{E}(Y \mid Z = 1, X = x) - \mathbb{E}(Y \mid Z = 0, X = x)}{\mathbb{E}(D \mid Z = 1, X = x) - \mathbb{E}(D \mid Z = 0, X = x)}.
+\label{eq:21-cace-with-covariates}
+\end{equation}
+
+然后通过在 $X$ 的分布上积分得到边际 CACE。
+
+在 CRE 中，我们可以在每层 $X = x$ 中独立进行 IV 分析，然后汇总得到总体估计。
+
+\subsection{条件随机化或不可混淆观测性研究}
+
+如果治疗分配机制是条件随机的（给定 $X$）：
+\[
+Z \perp\!\!\!\perp \{D(1), D(0), Y(1), Y(0)\} \mid X,
+\]
+那么 \cref{eq:21-cace-with-covariates} 仍然适用。
+
+如果是在\textbf{不可混淆的观测性研究}中（治疗分配机制满足给定 $X$ 的可忽略性），我们可以用逆概率加权或分层方法来调整协变量。
+
+\section{弱工具变量}
+\label{sec:21-weak-iv}
+
+\subsection{问题}
+
+前述理论假设 $\tau_D > 0$（即 complier 比例为正）。当 $\tau_D$ 接近 0 时，即存在\textbf{弱工具变量（weak instrumental variable）}时，Wald 估计量会出现严重问题。
+
+具体来说，即使 $\tau_D > 0$，也有正概率出现 $\hat{\tau}_D = 0$，此时 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$ 的方差是无穷大。\footnote{问：为什么 $\hat{\tau}_D$ 可能为 0？见附录 \cref{sec:qa-weak-iv-problem}。}
+
+在弱 IV 情况下：
+\begin{itemize}
+  \item $\hat{\tau}_c$ 有有限样本偏差
+  \item $\hat{\tau}_c$ 的渐近分布不是正态的
+  \item Wald 型置信区间的覆盖性质很差
+\end{itemize}
+
+\textbf{关键洞见}：对于二元结局 $Y$，我们知道 $\tau_Y \in [-1, 1]$，但 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$ 可能远超出这个范围。
+
+\subsection{对弱 IV 稳健的推断方法}
+
+当存在弱 IV 时，一个稳健的方法是使用 \textbf{Fieller-Anderson-Rubin（FAR）置信集}。\footnote{问：FAR 置信集的基本思想是什么？见附录 \cref{sec:qa-far-confidence-set}。}
+
+FAR 方法的核心思想是：不把 $\tau_c$ 的估计量和方差分开处理，而是直接构建 $\tau_c$ 的置信集，使得该集合在弱 IV 情况下仍然有正确的覆盖概率。
+
+在简单情形（CRE 无协变量）下，FAR 置信集可以简化为一个二次不等式
+\[
+(\tau - \hat{\tau}_Y)^2 \leq z_{1-\alpha/2}^2 \hat{V}_Y,
+\]
+其解可能是闭区间、两个不相连区间、空集或整个实数线。
+
+\section{CACE 的解释}
+\label{sec:21-interpreting-cace}
+
+notation $\{D(1), D(0), Y(1), Y(0)\}$ 是关于治疗分配 $Z$ 的潜在干预结果的 notation。在这个 notation 下，$\tau_c$ 是治疗分配对 complier 结局的平均因果效应。
+
+\textbf{好消息}：对 complier，由于 $D(1) = 1$ 且 $D(0) = 0$，我们有 $D = Z$。因此，$\tau_c$ 也可以解释为 complier 群体中\textbf{实际接受的治疗}对结局的平均因果效应。
+
+\textbf{另一种 notation}：\citet{Angrist:1996} 使用 $Y_i(z, d)$ 表示单元 $i$ 在治疗分配 $z$ 和治疗接受 $d$ 下的潜在结局。在这种 notation 下，排除限制假设变为
+
+\begin{Assumption}[排除限制（Angrist notation）]\label{asm:21-exclusion-angrist}
+$Y_i(z, d) = Y_i(d)$ 对所有 $i, z, d$ 成立，即潜在结局只是 $d$ 的函数。
+\end{Assumption}
+
+在这种 notation 下，\cref{asm:21-exclusion-angrist} 排除了从 $Z$ 到 $Y$ 的直接箭头，此时 $Z$ 是 $D$ 的工具变量。
+
+\textbf{定理 21.2}\label{th:21-cace-theorem-2}
+在 \cref{asm:21-monotonicity}、\cref{asm:21-exclusion-angrist} 和随机性下，
+\[
+\tau_c = \frac{\mathbb{E}\{Y(D(1)) - Y(D(0))\}}{\mathbb{E}\{D(1) - D(0)\}},
+\]
+即 CACE 是潜在结局增量与治疗接受增量的期望比值。
+
+\textbf{解释的微妙之处}：虽然 $\tau_c$ 可以解释为 complier 群体中"实际治疗对结局的因果效应"，但这个群体是由工具变量 $Z$ 的分布所定义的子群体。不同 $Z$ 分布下识别的 complier 可能是不同的子群体！这是 LATE 的一个根本性局限。
+
+\userannotation{为什么 CACE 是``局部''的？}{因为它是总体中一个特定子群体（complier）的平均因果效应。这个子群体恰好是那些``被 $Z$ 影响而改变治疗状态''的人。不同的工具变量可能识别不同的子群体。}
+
+\section{习题}\label{sec:21-exercises}
+
+\begin{Exercise}{\ref{exr:21-1} Wald 估计量的方差}\label{exr:21-1}
+证明 Wald 估计量 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$ 的渐近方差为 $\hat{V}_Y / \tau_D^2$，其中 $\hat{V}_Y$ 是 ITT 估计量 $\hat{\tau}_Y$ 的方差。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:21-2} 强单调性下的 IV 估计}\label{exr:21-2}
+在强单调性（所有人都是 complier 或 never taker，且 $\Pr(U=n)=0$）下，证明 IV 估计量 $\hat{\tau}_c$ 的一致性。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:21-3} 单侧非依从性}\label{exr:21-3}
+在单侧非依从性（never taker 存在，但没有 always taker，且 $D_i(0)=0$ 对所有人成立）下，推导 CACE 的识别公式，并解释其含义。
+\end{Exercise}
+
+\begin{Exercise}{\ref{exr:21-4} 违反排除限制的后果}\label{exr:21-4}
+假设排除限制不成立，即存在 always taker 使得 $Y_i(1) \neq Y_i(0)$。证明此时 \cref{eq:21-cace-identification-formula} 估计量是有偏的，并讨论偏误的方向。
+\end{Exercise}
+
+\end{chapter}
