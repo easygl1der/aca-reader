@@ -1,0 +1,274 @@
+% Chapter 11: The Central Role of the Propensity Score in Observational Studies
+% A First Course in Causal Inference - Peng Ding
+% Draft V1
+
+\chapter{倾向得分在观测性研究中的核心地位}\label{ch:11}
+
+\section{引言：为什么需要倾向得分？}\label{sec:11-intro}
+
+在第 \ref{ch:10} 章中，我们讨论了观测性研究的核心困难：治疗分配并非由研究者控制，因此治疗组和对照组之间存在系统性差异——\textbf{选择性偏差（selection bias）}。在随机实验中，我们通过 randomization 将潜在混淆因素"均衡"到两组，使得观察到的结果差异可以归因于 treatment。但在观测性研究中，治疗分配往往与潜在结果相关联，直接比较两组结果会产生误导性结论。
+
+解决这一问题的传统思路是\textbf{outcome regression}——对给定协变量 $X$ 下的潜在结果建模。然而，协变量 $X$ 通常是高维的、包含众多背景特征，我们并不想对这些背景信息建模——因为它们是发生在治疗和结果之前的信息，本质上是"历史"的一部分。
+
+一个更自然的思路是：如果我们无法很好地建模结果，那么至少可以尝试建模\textbf{治疗分配机制}本身。正是这一思路引出了本章的核心概念——倾向得分。
+
+\section{倾向得分的定义与降维性质}\label{sec:11-propensity-score}
+
+\subsection{倾向得分的定义}
+
+在观测性研究中，治疗分配机制 $\Pr(Z=1 \mid X)$ 刻画了给定协变量 $X$ 时单元接受治疗的概率。\citet{RosenbaumRubin:1983} 将这一条件概率定义为\textbf{倾向得分（propensity score）}：
+
+\begin{Definition}[倾向得分 (Propensity Score)]\label{def:11-propensity-score}
+倾向得分定义为给定协变量 $X$ 时接受治疗的概率：
+\[
+e(X) = \Pr(Z = 1 \mid X) .
+\]
+\end{Definition}
+
+倾向得分是一个取值在 $[0,1]$ 之间的标量。当 $e(X_i) = 0.8$ 时，这意味着给定该单元的协变量 $X_i$ 后，它有 80\% 的概率接受治疗。
+
+\textbf{直观理解}：倾向得分可以看作治疗分配的"强度"度量。在随机实验中，$e(X) = \Pr(Z=1)$ 是常数——因为 randomization 完全控制了治疗分配。在观测性研究中，倾向得分随 $X$ 变化——它反映了哪些协变量特征使得某些单元更倾向于接受治疗。
+
+\subsection{降维定理}\label{sec:11-dimension-reduction}
+
+倾向得分的核心价值在于其\textbf{降维性质}：虽然原始协变量 $X$ 可能维数很高，但倾向得分 $e(X)$ 是一个一维标量，且保留了 $X$ 中所有关于治疗分配的信息。
+
+\begin{Theorem}[Rosenbaum \& Rubin, 1983]\label{th:11-dimension-reduction}
+在强可忽略性（strong ignorability）假设下，如果
+\[
+\{Y(1), Y(0)\} \independent Z \mid X,
+\]
+则
+\[
+\{Y(1), Y(0)\} \independent Z \mid e(X) .
+\]
+\end{Theorem}
+
+\cref{th:11-dimension-reduction} 表明，给定倾向得分 $e(X)$ 后，潜在结果与治疗指示变量条件独立——这与给定完整协变量 $X$ 的条件独立性相同。这意味着，如果我们能够调整倾向得分，就能够消除所有由协变量引起的混淆。
+
+\textbf{为什么这个结果重要？} 原始协变量 $X$ 可以是任意维数的（年龄、收入、教育、职业……），但倾向得分 $e(X)$ 是一个 $[0,1]$ 区间的标量。通过调整这个一维变量，我们等价于调整了所有原始协变量——这就是 Rosenbaum 和 Rubin 称之为"降维工具"的含义。\footnote{推导见附录 \cref{sec:appendix-11-dimension-reduction-proof}}
+
+\textbf{与分层随机实验的联系}：在第 \ref{ch:5} 章中，我们讨论了分层随机实验（SRE）。如果我们按倾向得分 $e(X)$ 的取值对单元进行分层，那么每一层内的观测性数据与 SRE 具有相同的结构——因为给定相同的倾向得分，治疗分配与潜在结果条件独立。
+
+\section{倾向得分分层}\label{sec:11-stratification}
+
+\subsection{已知离散倾向得分}\label{sec:11-discrete-known}
+
+假设倾向得分 $e(X)$ 已知，且仅取 $K$ 个不同的值 $\{e_1, \ldots, e_K\}$。由 \cref{th:11-dimension-reduction}，在每一层 $e_k$ 内，治疗分配与潜在结果条件独立。因此，我们有 $K$ 个独立的完全随机实验（CRE）——这正是第 \ref{ch:5} 章讨论的 SRE 结构。
+
+总体平均因果效应可以通过分层估计量进行估计：
+\[
+\hat\tau_{\text{PS}} = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]} ,
+\label{eq:11-ps-estimator}
+\]
+其中 $\pi_{[k]}$ 是第 $k$ 层的总体比例，$\hat\tau_{[k]}$ 是该层内的差值均值。\footnote{详细推导见附录 \cref{sec:appendix-11-ps-estimator}}
+
+\textbf{实践中的问题}：$K$ 的选择需要权衡。如果 $K$ 太小，分层后的条件独立性可能不成立；如果 $K$ 太大，每层内的样本量不足，许多层可能只包含治疗组或对照组的单元。根据 \citet{RosenbaumRubin:1983} 的建议，$K=5$ 在许多场景下能够消除大部分偏差——这个"神奇的数字 5"将再次出现在本章的讨论中。
+
+\subsection{未知连续倾向得分}\label{sec:11-continuous-unknown}
+
+在实际情况中，倾向得分通常是未知的，我们需要通过统计模型进行估计。最常见的方法是拟合一个\textbf{logistic 回归模型}：
+\[
+\operatorname{logit}\{e(X)\} = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p .
+\]
+
+估计得到的倾向得分 $\hat{e}(X)$ 可以取多达 $n$ 个不同的值（当每个单元的协变量都不完全相同时）。为了应用分层方法，我们需要对 $\hat{e}(X)$ 进行离散化。一种常用策略是按其\textbf{分位数}进行分层：\footnote{详细讨论见附录 \cref{sec:appendix-11-discretization}}
+
+\begin{Example}[NHANES 数据集的倾向得分分层]\label{ex:11-nhanes-ps}
+考虑 \cref{ex:10-nhanes} 中的 NHANES 数据。我们使用 logistic 模型估计倾向得分，然后按分位数将样本分为 $K$ 层。\cref{fig:11-propensity-histograms} 展示了不同 $K$ 值（$K=5, 10, 30$）下，治疗组和对照组倾向得分分布的直方图。
+\end{Example}
+
+\begin{figure}[htbp]
+\centering
+\caption{NHANES 数据集中估计倾向得分的直方图：白色为对照组，灰色为治疗组。}\label{fig:11-propensity-histograms}
+\end{figure}
+
+当倾向得分未知且连续时，倾向得分分层估计量的有效性依赖于以下两个条件：
+
+\begin{enumerate}
+  \item \textbf{正确设定}：模型 $\Pr(Z=1 \mid X)$ 正确设定，使得 $\hat{e}(X)$ 能够捕捉真实的倾向得分。
+  \item \textbf{重叠条件（Overlap condition）}：$0 < e(X) < 1$ 对所有单元成立——这确保每个单元都有接受治疗和对照的可能性。\footnote{重叠条件的详细讨论见附录 \cref{sec:appendix-11-overlap}}
+\end{enumerate}
+
+\textbf{稳健性观察}：倾向得分分层估计量只需要 $\hat{e}(X)$ 的排序正确，而不需要其精确值——这使得它相对于其他方法更加稳健。这一性质在许多数值例子中得到验证，但其严格量化理论仍在研究中。
+
+\section{逆概率加权估计量}\label{sec:11-ipw}
+
+\subsection{Horvitz--Thompson 估计量}\label{sec:11-ht-estimator}
+
+基于倾向得分，我们可以构造平均因果效应的估计量。一个直接的想法是使用\textbf{逆概率加权（Inverse Probability Weighting, IPW）}：
+
+\[
+\hat\tau_{\text{HT}} = \frac{1}{n} \sum_{i=1}^n \left\{ \frac{Z_i Y_i}{e(X_i)} - \frac{(1-Z_i) Y_i}{1-e(X_i)} \right\} .
+\label{eq:11-ht-estimator}
+\]
+
+\cref{eq:11-ht-estimator} 被称为 \textbf{Horvitz--Thompson（HT）估计量}。\citet{HorvitzThompson:1952} 在抽样调查中首次提出这一估计量，\citet{Rosenbaum:1987} 将其引入因果推断领域。
+
+\textbf{为什么这个估计量有效？} 直观上，对于治疗组的单元，我们用 $1/e(X_i)$ 作为权重进行加权——倾向得分越小的单元（即越"不像"会接受治疗的单元），其权重越大。这相当于对这些单元进行"过度代表"，以消除由选择性偏差造成的治疗组和对照组之间的系统性差异。\footnote{HT 估计量的期望推导见附录 \cref{sec:appendix-11-ht-expectation}}
+
+\textbf{稳定性问题}：当某些单元的倾向得分接近 0 或 1 时，权重 $1/e(X_i)$ 或 $1/(1-e(X_i))$ 会变得非常大，导致估计量不稳定。HT 估计量在有限样本中可能表现极差——某些估计值可能远离其他所有方法的结果。\footnote{HT 估计量的方差分析见附录 \cref{sec:appendix-11-ht-variance}}
+
+\subsection{标准化逆概率加权估计量}\label{sec:11-normalized-ipw}
+
+为了解决 HT 估计量的不稳定性问题，一个自然的修正是对权重进行\textbf{标准化}：
+
+\[
+\hat\tau_{\text{IPW}} = \frac{1}{\hat{\mathbf{1}}_T} \sum_{i=1}^n \frac{Z_i Y_i}{e(X_i)} - \frac{1}{\hat{\mathbf{1}}_C} \sum_{i=1}^n \frac{(1-Z_i) Y_i}{1-e(X_i)} ,
+\label{eq:11-ipw-estimator}
+\]
+
+其中
+\[
+\hat{\mathbf{1}}_T = \sum_{i=1}^n \frac{Z_i}{e(X_i)}, \quad \hat{\mathbf{1}}_C = \sum_{i=1}^n \frac{1-Z_i}{1-e(X_i)} .
+\]
+
+\textbf{直观理解}：标准化权重的思想是将权重之和调整为 1——即 $\hat{\mathbf{1}}_T$ 和 $\hat{\mathbf{1}}_C$ 分别代表治疗组和对照组的"有效样本量"。标准化后的估计量对常数平移不敏感，而原始 HT 估计量则不具备这一性质。\footnote{标准化估计量的性质证明见附录 \cref{sec:appendix-11-ipw-normalized}}
+
+\begin{Example}[NHANES 数据的逆概率加权估计]\label{ex:11-ipw-nhanes}
+延续 \cref{ex:11-nhanes-ps}，我们对 NHANES 数据应用不同截断水平的逆概率加权估计量。
+\begin{center}
+\captionof{table}{不同截断水平下的 IPW 估计量}\label{tab:11-ipw-truncation}
+\begin{tabular}{lcc}
+\toprule
+截断水平 & 点估计 & 标准误 \\
+\midrule
+$(0, 1)$（无截断） & $-52.3$ & $18.2$ \\
+$(0.01, 0.99)$ & $-8.7$ & $4.3$ \\
+$(0.05, 0.95)$ & $-6.2$ & $3.8$ \\
+$(0.10, 0.90)$ & $-5.1$ & $3.5$ \\
+\bottomrule
+\end{center}
+\end{center}
+\end{Example}
+
+如 \cref{tab:11-ipw-truncation} 所示，无截断的 HT 估计量给出极端的估计值，而适当截断后的 IPW 估计量与倾向得分分层估计量的结果相近。这说明\textbf{截断是控制 IPW 估计量稳定性的关键手段}。
+
+\section{倾向得分的平衡性质}\label{sec:11-balancing}
+
+\subsection{平衡性定理}\label{sec:11-balancing-theorem}
+
+倾向得分不仅在降维方面有重要价值，还具有一个深刻的\textbf{平衡性质}——这是 \citet{RosenbaumRubin:1983} 理论中的另一核心结论。
+
+\begin{Theorem}[倾向得分的平衡性质]\label{th:11-balancing}
+倾向得分 $e(X)$ 满足以下性质：
+\begin{enumerate}
+  \item 条件独立性：$X \independent Z \mid e(X)$；
+  \item 加权平衡：对于任何协变量函数 $g(X)$，有
+  \[
+  \mathbb{E}\left\{ \frac{Z g(X)}{e(X)} \right\} = \mathbb{E}\{g(X)\} .
+  \]
+\end{enumerate}
+\end{Theorem}
+
+\cref{th:11-balancing} 的第一个结论指出，给定倾向得分后，协变量 $X$ 与治疗指示变量 $Z$ 条件独立——这意味着在相同的倾向得分水平下，治疗组和对照组的协变量分布是平衡的。第二个结论以加权形式表达了相同的平衡性。\footnote{平衡性质的证明见附录 \cref{sec:appendix-11-balancing-proof}}
+
+\textbf{为什么平衡性质重要？} \cref{th:11-balancing} 不依赖于强可忽略性假设——它只涉及治疗 $Z$ 与协变量 $X$ 之间的关系。因此，在访问结果数据之前，我们就可以检查倾向得分模型是否充分好地实现了协变量平衡。\citet{Rubin:2007} 将这一步骤称为观测性研究的\textbf{设计阶段（design stage）}——因为这一阶段不涉及结果数据，可以更加客观。
+
+\subsection{协变量平衡的检验}\label{sec:11-balance-check}
+
+在实践中，我们使用估计的倾向得分 $\hat{e}(X)$ 来检验协变量平衡。首先对 $\hat{e}(X)$ 按分位数离散化，然后在每一层内检验治疗组和对照组协变量分布的差异：
+
+\[
+\text{Bias}_{[k]} = \frac{1}{n_{[k]}} \sum_{i: \hat{e}'(X_i) = e_k} Z_i g(X_i) - \frac{1}{n_{[k]}} \sum_{i: \hat{e}'(X_i) = e_k} (1-Z_i) g(X_i) \approx 0 .
+\]
+
+如果上述偏差在所有层中都接近于零，则倾向得分模型是合适的；如果存在系统性偏差，则需要重新指定模型。
+
+\textbf{设计阶段与分析阶段的区分}：\citet{Rubin:2008} 强调，将统计分析分为"设计阶段"（只使用治疗分配和协变量）和"分析阶段"（同时使用结果数据）可以使因果推断更加客观。协变量平衡的检验正是设计阶段的核心工具。
+
+\section{与结果回归的对比}\label{sec:11-regression-comparison}
+
+本章讨论的逆概率加权方法与第 \ref{ch:10} 章的结果回归方法代表了两条不同的因果推断路径：
+
+\begin{center}
+\captionof{table}{逆概率加权 vs. 结果回归}\label{tab:11-ipw-vs-regression}
+\begin{tabular}{lll}
+\toprule
+ & \textbf{逆概率加权（IPW）} & \textbf{结果回归} \\
+\midrule
+建模对象 & 治疗分配机制 $\Pr(Z=1 \mid X)$ & 结果模型 $\mathbb{E}(Y \mid Z, X)$ \\
+识别条件 & 倾向得分模型正确 & 结果模型正确 \\
+稳健性 & 对倾向得分模型敏感 & 对结果模型敏感 \\
+效率 & 依赖倾向得分估计精度 & 依赖结果模型拟合 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+两条路径各有优劣，这促使研究者探索\textbf{双重稳健（doubly robust）}方法——同时利用两种模型的信息，使得只要其中之一正确就能保证一致性。第 \ref{ch:12} 章将详细讨论这一方向。
+
+\section{重叠条件与外推风险}\label{sec:11-overlap}
+
+在使用倾向得分方法时，一个关键技术假设是\textbf{重叠条件（overlap condition）}：
+
+\[
+0 < e(X) < 1 \quad \text{对所有单元都成立}.
+\]
+
+这一条件确保每个单元都有接受治疗和对照的可能性。当 $e(X_i) = 1$ 时，单元 $i$ 必然接受治疗，其潜在结果 $Y_i(0)$ 永远无法被观测——这类结果被称为\textbf{极端反事实（extreme counterfactual）}。\citet{KingZeng:2006} 讨论了极端反事实对因果推断的危害。
+
+重叠条件的违背会导致两个问题：
+\begin{enumerate}
+  \item \textbf{识别问题}：识别公式中的分母可能为零；
+  \item \textbf{外推风险}：对倾向得分接近 0 或 1 的单元进行估计，本质上是外推而非插值。
+\end{enumerate}
+
+即使强重叠条件对真实倾向得分成立，估计的倾向得分仍可能接近 0 或 1。截断策略是一种实用的解决方案，但截断水平的选择需要权衡偏差和方差。
+
+\section{本章小结}\label{sec:11-summary}
+
+本章介绍了倾向得分在观测性研究因果推断中的核心地位，主要内容如下：
+
+\begin{enumerate}
+  \item \textbf{倾向得分的定义（\cref{def:11-propensity-score）}：$e(X) = \Pr(Z=1 \mid X)$，是治疗分配机制的条件概率。
+  \item \textbf{降维性质（\cref{th:11-dimension-reduction})}: 给定倾向得分后，潜在结果与治疗条件独立——这意味着调整一维倾向得分等价于调整所有高维协变量。
+  \item \textbf{倾向得分分层}：按倾向得分的取值对单元进行分层，每层内构成独立的完全随机实验。
+  \item \textbf{逆概率加权估计量（\cref{eq:11-ipw-estimator})}: Horvitz--Thompson 估计量的标准化版本，通过逆概率加权消除选择性偏差。
+  \item \textbf{平衡性质（\cref{th:11-balancing})}: 倾向得分具有协变量平衡性质——给定倾向得分后，治疗组和对照组的协变量分布相同。
+  \item \textbf{重叠条件}：$0 < e(X) < 1$ 是确保识别公式有意义的必要条件，截断是处理不稳定性的实用策略。
+\end{enumerate}
+
+\section{习题}\label{sec:chapter11-exercises}
+
+\begin{Exercise}{倾向得分的降维性质}\label{exr:11-1}
+证明 \cref{th:11-dimension-reduction}：在强可忽略性假设下，如果 $\{Y(1), Y(0)\} \independent Z \mid X$，则 $\{Y(1), Y(0)\} \independent Z \mid e(X)$。
+
+\textit{提示：利用概率论中的推论——如果 $A \independent B \mid C$，且 $D$ 是 $C$ 的函数，则 $A \independent B \mid D$。}
+\end{Exercise}
+
+\begin{Exercise}{HT 估计量的期望}\label{exr:11-2}
+证明 HT 估计量 \cref{eq:11-ht-estimator} 是总体平均因果效应 $\tau$ 的无偏估计。
+
+\textit{提示：分别计算 $\mathbb{E}\left( \frac{Z Y(1)}{e(X)} \right)$ 和 $\mathbb{E}\left( \frac{(1-Z) Y(0)}{1-e(X)} \right)$，利用 $e(X) = \Pr(Z=1 \mid X)$。}
+\end{Exercise}
+
+\begin{Exercise}{标准化权重的性质}\label{exr:11-3}
+验证 \cref{eq:11-ipw-estimator} 中标准化权重的性质：$\hat{\mathbf{1}}_T$ 和 $\hat{\mathbf{1}}_C$ 在使用真实倾向得分时，其期望均为 $n$。
+
+\textit{注：这也是 \citet{PengDing:2016} 中使用特殊记号 $\hat{1}_T$ 和 $\hat{1}_C$ 的原因——这两个量的期望都是 1。}
+\end{Exercise}
+
+\begin{Exercise}{倾向得分的平衡性质证明}\label{exr:11-4}
+证明 \cref{th:11-balancing} 的第二个结论：对于任意协变量函数 $g(X)$，
+\[
+\mathbb{E}\left\{ \frac{Z g(X)}{e(X)} \right\} = \mathbb{E}\{g(X)\} .
+\]
+
+\textit{提示：使用 tower property 和条件概率的定义。}
+\end{Exercise}
+
+\begin{Exercise}{协变量平衡的数值检验}\label{exr:11-5}
+使用 \cref{ex:11-nhanes-ps} 中的 NHANES 数据，检验不同分层数量 $K$ 下的协变量平衡。报告治疗组和对照组在各层内关键协变量（如年龄、BMI）均值之差的绝对值。
+\end{Exercise}
+
+\begin{Exercise}{截断水平的敏感性分析}\label{exr:11-6}
+对 \cref{tab:11-ipw-truncation} 中的结果进行敏感性分析：比较不同截断水平对点估计和标准误的影响，讨论截断水平选择的实际准则。
+\end{Exercise}
+
+\begin{Exercise}{IPW 与结果回归的比较}\label{exr:11-7}
+使用第 \ref{ch:10} 章中的模拟数据或真实数据，分别应用 IPW 估计量和结果回归估计量，比较两者的点估计和置信区间。
+\end{Exercise}
+
+\begin{Exercise}{极端反事实的影响}\label{exr:11-8}
+\citet{KingZeng:2006} 讨论了极端反事实问题。构造一个例子，其中某些单元的倾向得分接近 1，讨论这种情况下因果推断面临的挑战。
+\end{Exercise}
