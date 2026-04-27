@@ -86,33 +86,34 @@ Z_i = I(X_i \geq x_0).
 设治疗由 $Z = I(X \geq x_0)$ 决定，其中 $x_0$ 是预定的阈值。
 
 假设\textbf{单调性}：
-\[
+\begin{equation}
 D_i(1) \geq D_i(0),
 \label{eq:24-monotonicity}
-\]
+\end{equation}
 和\textbf{排除限制}：
-\[
+\begin{equation}
 D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
 \label{eq:24-exclusion}
-\]
+\end{equation}
 在 $x_0$ 的无穷小邻域内成立。
 
-局部依从者平均因果效应定义为：
-\[
+\textbf{连续性假设}：$E\{D(1) \mid X = x\}$ 和 $E\{Y(1) \mid X = x\}$ 在 $x = x_0$ 处右连续，$E\{D(0) \mid X = x\}$ 和 $E\{Y(0) \mid X = x\}$ 在 $x = x_0$ 处左连续。
+
+局部依从者平均因果效应（Local Average Treatment Effect, LATE）定义为：
+\begin{equation}
 \tau_{\mathrm{LATE}}(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid D(1) > D(0), X = x_0\},
 \label{eq:24-late-def}
-\]
+\end{equation}
 可以由下式识别：
-\[
+\begin{equation}
 \tau_{\mathrm{LATE}}(x_0) = \frac{\mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}}{\mathbb{E}\{D(1) - D(0) \mid X = x_0\}}.
 \label{eq:24-late-ident}
-\]
-
-进一步假设 $E\{D(1) \mid X = x\}$ 和 $E\{Y(1) \mid X = x\}$ 在 $x = x_0$ 处右连续，$E\{D(0) \mid X = x\}$ 和 $E\{Y(0) \mid X = x\}$ 在 $x = x_0$ 处左连续。如果 $E(D \mid X = x)$ 在 $x = x_0$ 处有非零跳跃，则局部依从者平均因果效应可以由下式识别：
-\[
+\end{equation}
+如果 $E(D \mid X = x)$ 在 $x = x_0$ 处有非零跳跃，则局部依从者平均因果效应可以由下式识别：
+\begin{equation}
 \tau_{\mathrm{LATE}}(x_0) = \frac{\lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 0, X = x_0 - \varepsilon)}{\lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 0, X = x_0 - \varepsilon)}.
 \label{eq:24-late-ident-eps}
-\]
+\end{equation}
 \end{Theorem}
 
 \textbf{定理 \cref{th:frdd-identification} 的直觉}：这是清晰 RDD 识别和工具变量识别定理的叠加。分子是 \eqref{eq:24-tau-y}，分母是 \eqref{eq:24-tau-d}。两者相除，得到依从者亚组的平均因果效应。
