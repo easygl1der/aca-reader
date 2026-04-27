@@ -1,0 +1,566 @@
+% Chapter 29: Time-Varying Treatment and Confounding
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein motivation-first style
+
+\chapter{时间变动的处理变量与混淆}\label{ch:29}
+
+\section{从单时间点到多时间点：一个自然的推广}\label{sec:29-1}
+
+在前面各章中，我们考虑的都是\textbf{单一时间点}的处理变量——每个单元在某个特定时刻接受或不接受治疗。然而，现实世界中的治疗往往是\textbf{时间变动}的：患者在不同时间点接受不同强度的治疗；政策在不同阶段被动态调整；个人在不同年龄做出不同的选择。
+
+\textbf{为什么时间变动会带来新的挑战？}
+
+考虑一个两时间点的例子：$Z_1$ 是初始治疗（如是否服用阿司匹林），$X_1$ 是治疗后的中间结果（如血压变化），$Z_2$ 是后续治疗（如是否接受手术），$Y$ 是最终结局（如是否在5年内死亡）。在这个序列中：
+
+\begin{itemize}
+  \item $Z_1$ 可能影响 $X_1$（治疗改变中间结果）
+  \item $X_1$ 可能同时影响 $Z_2$ 和 $Y$（中间结果既是后续治疗的原因，也是结局的原因）
+  \item 这时，$X_1$ 同时扮演着\textbf{时间变动协变量}和\textbf{时间变动混淆变量}的角色
+\end{itemize}
+
+在单一时间点框架下，我们只需条件于基线协变量 $X_0$ 即可阻断所有混淆。但在时间变动的情况下，$X_1$ 既是治疗 $Z_2$ 的"前置原因"，也是结局 $Y$ 的"前置原因"——它可能本身就是由 $Z_1$ 产生的，从而部分介导了 $Z_1$ 对 $Y$ 的因果效应。这种复杂的时序结构使得简单的条件独立性假设不再够用。
+
+这就是本章要解决的核心问题：\textbf{当处理变量随时间变动时，如何识别和估计因果效应？}
+
+为简化记号，本章主要采用两时间点的设置来阐述核心思想。推广到更多时间点在概念上直接，但有限样本下会产生技术复杂性——组合数随时间点数量指数增长。我们将讨论这些复杂性，并将一般结果留给习题。
+
+\section{基本设置与序列可忽略性}\label{sec:29-2}
+
+\subsection{时序结构}
+
+两时间点的变量时序如下：
+\[
+X_0 \to Z_1 \to X_1 \to Z_2 \to Y
+\]
+
+其中：
+\begin{itemize}
+  \item $X_0$：基线协变量（治疗前的特征）
+  \item $Z_1$：时间点1的处理变量
+  \item $X_1$：时间点1与时间点2之间的时变协变量
+  \item $Z_2$：时间点2的处理变量
+  \item $Y$：最终结局
+\end{itemize}
+
+对于二元处理 $(Z_1, Z_2)$，每个单元有四个潜在结局：
+\[
+Y(z_1, z_2), \quad z_1, z_2 \in \{0, 1\}
+\]
+
+观测到的结局等于：
+\[
+Y = Y(Z_1, Z_2) = \sum_{z_1=0}^1 \sum_{z_2=0}^1 \mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2) Y(z_1, z_2)
+\]
+
+\subsection{序列可忽略性假设}
+
+在单一时间点的情况下，$Z \perp Y(z) \mid X$（处理在给定协变量条件下随机化）是我们识别因果效应的关键假设。对于时间变动的情况，这个假设需要\textbf{序列化}——在每个时间点，处理不仅依赖于当前的协变量历史，还依赖于整个历史。
+
+\begin{Assumption}[序列可忽略性]\label{assum:29.1}
+\textbf{(1)} $Z_1$ 在给定 $X_0$ 条件下随机化：
+\[
+Z_1 \perp Y(z_1, z_2) \mid X_0, \quad \forall z_1, z_2 \in \{0, 1\}
+\]
+
+\textbf{(2)} $Z_2$ 在给定 $(Z_1, X_1, X_0)$ 条件下随机化：
+\[
+Z_2 \perp Y(z_1, z_2) \mid (Z_1, X_1, X_0), \quad \forall z_1, z_2 \in \{0, 1\}
+\]
+\end{Assumption}
+
+\textbf{理解 Assumption \ref{assum:29.1}}：这个假设包含两部分递进的条件。第一部分说明 $Z_1$ 仅被基线协变量 $X_0$ 混淆——一旦我们条件于 $X_0$，$Z_1$ 就等同于随机化实验。第二部分则说明 $Z_2$ 被 $(Z_1, X_1, X_0)$ 混淆——我们不仅需要控制基线协变量 $X_0$，还需要控制由 $Z_1$ 产生的时变协变量 $X_1$。
+
+\textbf{一个重要的微妙之处}：序列可忽略性\textbf{允许} $X_1$ 与 $Y$ 之间存在未测量的混淆 $U$（如图 \ref{fig:29.2} 所示）。这是因为 $X_1$ 本身可能是由 $Z_1$ 产生的，它部分介导了 $Z_1$ 对 $Y$ 的效应——这并非混淆，而是\textbf{中介}。然而，如果 $U$ 同时影响 $X_1$ 和 $Y$（且不通过 $Z_1, Z_2$），则即使满足序列可忽略性，识别仍然会受到挑战。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{images/459dbc58690d9628af6d939aa356592d4e8b8cb35fc3ee47e5565a443dbc8cbb.jpg}
+\caption{Assumption \ref{assum:29.1} 成立且 $X_1$ 与 $Y$ 之间无未测量混淆 $U$ 的因果图。}
+\label{fig:29.1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{images/fc451469204f8bd2d7424c5f6866f5dbc15053027ff863c8de6b79850192c746.jpg}
+\caption{Assumption \ref{assum:29.1} 成立但 $X_1$ 与 $Y$ 之间存在未测量混淆 $U$ 的因果图。序列可忽略性仅排除了 $(Z_1, Z_2)$ 与 $Y$ 之间的混淆，但允许 $X_1$ 与 $Y$ 之间存在未测量关联。}
+\label{fig:29.2}
+\end{figure}
+
+\section{g公式与结果建模}\label{sec:29-3}
+
+在单一时间点情况下，基于结果的识别公式为：
+\[
+E\{Y(z)\} = E\{E(Y \mid Z = z, X)\}
+\]
+
+对于离散 $X$，这化为：
+\[
+E\{Y(z)\} = \sum_x E(Y \mid Z = z, X = x) \Pr(X = x)
+\]
+
+对于连续 $X$，这化为：
+\[
+E\{Y(z)\} = \int E(Y \mid Z = z, X = x) f(x) \, dx
+\]
+
+接下来的定理将这个公式推广到两时间点的设置。
+
+\begin{Theorem}[g公式]\label{thrm:29.1}
+在 Assumption \ref{assum:29.1} 下，
+\[
+E\{Y(z_1, z_2)\} = E\Big[ E\{E(Y \mid z_2, z_1, X_1, X_0) \mid z_1, X_0\} \Big]
+\tag{29.1}
+\]
+\end{Theorem}
+
+\textbf{定理 \ref{thrm:29.1} 的直观理解}：等式右边是从内到外嵌套的条件期望。最内层 $E(Y \mid z_2, z_1, X_1, X_0)$ 是在固定历史 $(z_1, X_0)$、中间协变量 $X_1$ 和第二时刻治疗 $z_2$ 的条件下结局的期望。中间层 $E\{ \cdot \mid z_1, X_0\}$ 对 $X_1$ 求平均——但注意，这是\textbf{逆概率加权}的平均，因为 $\Pr(X_1 \mid z_1, X_0)$ 与 $Z_1 = z_1$ 相关。最外层 $E[\cdot]$ 对 $X_0$ 求边际平均。
+
+对于离散 $X_0, X_1$，\ref{eq:29.1} 化为：
+\[
+E\{Y(z_1, z_2)\} = \sum_{x_0} \sum_{x_1} E(Y \mid z_2, z_1, x_1, x_0) \Pr(x_1 \mid z_1, x_0) \Pr(x_0)
+\tag{29.2}
+\]
+
+对于连续 $X_0, X_1$，\ref{eq:29.1} 化为：
+\[
+E\{Y(z_1, z_2)\} = \iint E(Y \mid z_2, z_1, x_1, x_0) f(x_1 \mid z_1, x_0) f(x_0) \, dx_1 \, dx_0
+\tag{29.3}
+\]
+
+\textbf{与全概率公式的比较}：根据观测数据的全概率公式，
+\[
+\begin{aligned}
+E(Y) = & \sum_{x_0} \sum_{z_1} \sum_{x_1} \sum_{z_2} E(Y \mid z_2, z_1, x_1, x_0) \\
+& \Pr(z_2 \mid z_1, x_1, x_0) \Pr(x_1 \mid z_1, x_0) \Pr(z_1 \mid x_0) \Pr(x_0)
+\end{aligned}
+\tag{29.4}
+\]
+
+对比 \ref{eq:29.3} 与 \ref{eq:29.4}，关键区别在于：\ref{eq:29.3} 中\textbf{没有} $\Pr(z_2 \mid \cdots)$ 和 $\Pr(z_1 \mid \cdots)$ 项——这正是因为潜在结局 $Y(z_1, z_2)$ 的定义是\textbf{固定} $Z_1 = z_1$ 和 $Z_2 = z_2$，而非观测到的分配概率。
+
+\ref{eq:29.2} 和 \ref{eq:29.3} 被称为 \textbf{g公式（g-formula）}，由 Robins 命名。这个名称源于它的一般化形式——当处理变量随时间变动时，这个公式提供了一种递推的识别策略。
+
+\textbf{定理 \ref{thrm:29.1} 的证明}。\footnote{详见附录 \cref{sec:derivation-thm-29.1}。}
+
+\subsection{基于结果建模的插件估计}\label{sec:29-3-1}
+
+g公式 \ref{eq:29.2} 和 \ref{eq:29.3} 提示我们：为了估计潜在结局的均值，我们需要对 $E(Y \mid z_2, z_1, x_1, x_0)$、$\Pr(x_1 \mid z_1, x_0)$ 和 $\Pr(x_0)$ 建模。有了这些拟合模型，我们可以将它们"插入"g公式得到估计。
+
+在某些特殊函数形式下，这个任务可以简化。下面的例29.1给出线性结果模型下的结果。
+
+\begin{Example}[例29.1 — 线性结果模型]\label{ex:29.1}
+假设线性结果模型：
+\[
+E(Y \mid z_2, z_1, x_1, x_0) = \beta_0 + \beta_1 z_2 + \beta_2 z_1 + \beta_3 x_1 + \beta_4 x_0
+\tag{29.5}
+\]
+
+可以验证：
+\[
+\begin{aligned}
+E\{Y(z_1, z_2)\} = & \sum_{x_0} \sum_{x_1} (\beta_0 + \beta_1 z_2 + \beta_2 z_1 + \beta_3 x_1 + \beta_4 x_0) \\
+& \Pr(x_1 \mid z_1, x_0) \Pr(x_0) \\
+= & \beta_0 + \beta_1 z_2 + \beta_2 z_1 + \beta_3 \sum_{x_0} E(X_1 \mid z_1, x_0) \Pr(x_0) + \beta_4 E(X_0) \\
+= & \beta_0 + \beta_1 z_2 + \beta_2 z_1 + \beta_3 E\{X_1(z_1)\} + \beta_4 E(X_0)
+\end{aligned}
+\tag{29.6}
+\]
+
+其中我们定义了 $X_1$ 在治疗 $Z_1 = z_1$ 下的潜在结局：
+\[
+E\{X_1(z_1)\} = \sum_{x_0} E(X_1 \mid z_1, x_0) \Pr(x_0)
+\tag{29.7}
+\]
+
+定义 $\tau_{Z_1 \to X_1} = E\{X_1(1) - X_1(0)\}$，则：
+\[
+E\{Y(1, 0) - Y(0, 0)\} = \beta_2 + \beta_3 \tau_{Z_1 \to X_1}
+\tag{29.8}
+\]
+\[
+E\{Y(0, 1) - Y(0, 0)\} = \beta_1
+\tag{29.9}
+\]
+\[
+E\{Y(1, 1) - Y(0, 0)\} = \beta_1 + \beta_2 + \beta_3 \tau_{Z_1 \to X_1}
+\tag{29.10}
+\]
+
+\textbf{直观解释}（参见图 \ref{fig:29.3}）：\ref{eq:29.8} 中 $Z_1$ 的效应等于路径 $Z_1 \to Y$（系数 $\beta_2$）和路径 $Z_1 \to X_1 \to Y$（系数 $\beta_3 \tau_{Z_1 \to X_1}$）之和；\ref{eq:29.9} 中 $Z_2$ 的效应等于路径 $Z_2 \to Y$（系数 $\beta_1$）；\ref{eq:29.10} 中 $(Z_1, Z_2)$ 的总效应等于三条路径系数之和。
+
+\begin{figure}[htbp]
+\centering
+includegraphics[width=0.5\textwidth]{images/713d1ba2f50c0527a6a7759f58f6e5942115a4ac9b2746ad7874cc5347518c86.jpg}
+\caption{带路径系数的线性因果图，条件于基线协变量 $X_0$。}
+\label{fig:29.3}
+\end{figure}
+\end{Example}
+
+\textbf{g-null 悖论}。Robins 和 Wasserman（1997）指出了基于结果建模的插件估计的一个令人惊讶的缺陷。他们证明：如果在这个策略中出现模型错误设定，数据分析者可能\textbf{错误地拒绝}零因果效应 null 假设，即使在真实数据生成过程中 $(Z_1, Z_2)$ 对 $Y$ 的因果效应确实为零。他们称之为 \textbf{g-null 悖论（g-null paradox）}。令人惊讶的是，即使在例29.1的简单线性结果模型中，g-null 悖论也可能出现（见习题29.1）。
+
+\subsection{基于结果建模的递推估计}\label{sec:29-3-2}
+
+29.3.1节的插件估计涉及对时变协变量 $X_1$ 建模，并导致令人不快的 g-null 悖论——这不是一个理想的方法。
+
+递推期望公式 \ref{eq:29.1} 启发了一种更简单的估计方法。从最内层条件期望开始，记：
+\[
+\tilde{Y}_2(z_1, z_2) = E(Y \mid Z_2 = z_2, Z_1 = z_1, X_1, X_0)
+\]
+
+我们可以用 $(Z_2 = z_2, Z_1 = z_1)$ 子集数据拟合 $Y$ 对 $(X_1, X_0)$ 的模型，得到所有单元的拟合值 $\hat{Y}_{2i}(z_1, z_2)$。然后进入外层条件期望，记：
+\[
+\tilde{Y}_1(z_1, z_2) = E\{\tilde{Y}_2(z_1, z_2) \mid Z_1 = z_1, X_0\}
+\]
+
+我们可以用 $Z_1 = z_1$ 子集数据拟合 $\hat{Y}_2(z_1, z_2)$ 对 $X_0$ 的模型，得到所有单元的拟合值 $\hat{Y}_{1i}(z_1, z_2)$。最终的 $E\{Y(z_1, z_2)\}$ 估计量为：
+\[
+\hat{E}\{Y(z_1, z_2)\} = n^{-1} \sum_{i=1}^n \hat{Y}_{1i}(z_1, z_2)
+\tag{29.11}
+\]
+
+这种递推估计\textbf{不涉及}对 $X_1$ 建模，因此避免了 g-null 悖论（见习题29.2）。然而，基于递推回归的估计量实现起来并不容易，因为它涉及建模与因果图自然结构不对应的变量——例如 $\tilde{Y}_2(z_1, z_2)$。
+
+\section{逆概率加权}\label{sec:29-4}
+
+在单一时间点情况下，IPW 识别公式为：
+\[
+E\{Y(z)\} = E\left\{ \frac{\mathbf{1}(Z = z) Y}{\Pr(Z = z \mid X)} \right\}
+\]
+
+接下来的结果将其推广到两时间点设置。定义：
+\[
+e(z_1, X_0) = \Pr(Z_1 = z_1 \mid X_0)
+\tag{29.12}
+\]
+\[
+e(z_2, Z_1, X_1, X_0) = \Pr(Z_2 = z_2 \mid Z_1, X_1, X_0)
+\tag{29.13}
+\]
+
+为时间点1和时间点2的倾向得分。
+
+\begin{Theorem}[IPW 识别公式]\label{thrm:29.2}
+在 Assumption \ref{assum:29.1} 下，
+\[
+E\{Y(z_1, z_2)\} = E\left\{ \frac{\mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2) Y}{e(z_1, X_0) \, e(z_2, Z_1, X_1, X_0)} \right\}
+\tag{29.14}
+\]
+\end{Theorem}
+
+\textbf{定理 \ref{thrm:29.2} 揭示的重叠假设}：
+\[
+0 < e(z_1, X_0) < 1, \quad 0 < e(z_2, Z_1, X_1, X_0) < 1
+\tag{29.15}
+\]
+
+对所有 $z_1, z_2$。如果某些倾向得分为 0 或 1，识别公式 \ref{eq:29.14} 会爆炸到无穷。
+
+\textbf{直观理解}：这个公式本质上是单一时间点 IPW 公式的两次应用——首先在 $Z_2$ 上"调整"，然后在 $Z_1$ 上"调整"。分子中的指示函数 $\mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2)$ 选择出接受特定治疗序列的单元，分母中的倾向得分对此进行加权，使每个单元在分析中代表与其倾向得分成反比的单元数。
+
+\textbf{估计策略}。基于 IPW 的估计非常简单，只需对两个二元治疗指标建模。首先，我们可以拟合 $Z_1$ 对 $X_0$ 的模型，得到所有单元的拟合值 $\hat{e}_1(z_1, X_{0i})$；拟合 $Z_2$ 对 $(Z_1, X_1, X_0)$ 的模型，得到所有单元的拟合值 $\hat{e}_2(z_2, Z_{1i}, X_{1i}, X_{0i})$。然后得到以下 IPW 估计量（Horvitz-Thompson 型）：
+\[
+\hat{E}^{\mathrm{ht}}\{Y(z_1, z_2)\} = n^{-1} \sum_{i=1}^n \frac{\mathbf{1}(Z_{1i} = z_1) \mathbf{1}(Z_{2i} = z_2) Y_i}{\hat{e}_1(z_1, X_{0i}) \hat{e}_2(z_2, Z_{1i}, X_{1i}, X_{0i})}
+\tag{29.16}
+\]
+
+与第11章的讨论类似，HT 估计量对结局的位移不具有不变性，且在有限样本下存在不稳定性。修正后的 Hajek 型估计量为 $\hat{E}^{\mathrm{haj}}\{Y(z_1, z_2)\} = \hat{E}^{\mathrm{ht}}\{Y(z_1, z_2)\} / \hat{1}^{\mathrm{ht}}(z_1, z_2)$，其中：
+\[
+\hat{1}^{\mathrm{ht}}(z_1, z_2) = n^{-1} \sum_{i=1}^n \frac{\mathbf{1}(Z_{1i} = z_1) \mathbf{1}(Z_{2i} = z_2)}{\hat{e}_1(z_1, X_{0i}) \hat{e}_2(z_2, Z_{1i}, X_{1i}, X_{0i})}
+\tag{29.17}
+\]
+
+\section{多时间点情形}\label{sec:29-5}
+
+将29.2和29.3节的估计策略推广到多时间点并非易事。即使对于二元处理和 $K$ 个时间点，处理组合的数量也随 $K$ 指数增长（例如 $2^5 = 32$，$2^{10} = 1024$）。因此，29.2和29.3节的结果回归和 IPW 估计量在有限样本下是不可行的——因为它们要求每个处理组合水平组合都有足够的数据。
+
+为应对这一挑战，Robins 提出了两种强大的估计框架：\textbf{边际结构模型（Marginal Structural Model, MSM）}和\textbf{结构嵌套模型（Structural Nested Model, SNM）}。
+
+\subsection{边际结构模型}\label{sec:29-5-1}
+
+一种强有力的方法基于\textbf{边际结构模型（MSM）}（Robins et al., 2000; Hernán et al., 2000）。为简化记号，我们仅展示 $K=2$ 的 MSM，尽管其主要用途在于一般情形。
+
+\begin{Definition}[MSM — 边际结构模型]\label{def:29.1}
+$Y(z_1, z_2)$ 的边际均值为：
+\[
+E\{Y(z_1, z_2)\} = f(z_1, z_2; \beta)
+\tag{29.18}
+\]
+\end{Definition}
+
+一个典型例子是 $E\{Y(z_1, z_2)\} = \beta_0 + \beta_1 z_1 + \beta_2 z_2$。我们也可以将基线协变量纳入模型。
+
+\begin{Definition}[带基线协变量的 MSM]\label{def:29.2}
+给定 $X_0$ 条件下 $Y(z_1, z_2)$ 的均值为：
+\[
+E\{Y(z_1, z_2) \mid X_0\} = f(z_1, z_2, X_0; \beta)
+\tag{29.19}
+\]
+\end{Definition}
+
+一个典型例子是：
+\[
+E\{Y(z_1, z_2) \mid X_0\} = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3^{\mathsf{T}} X_0
+\tag{29.20}
+\]
+
+如果我们观测到所有潜在结局，可以通过以下最小化问题求解 $\beta$：
+\[
+\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\left\{ Y(z_1, z_2) - f(z_1, z_2, X_0; b) \right\}^2
+\tag{29.21}
+\]
+
+在序列可忽略性下，我们可以通过仅涉及观测变量的最小化问题求解 $\beta$。
+
+\begin{Theorem}[MSM 下的 IPW]\label{thrm:29.3}
+在 Assumption \ref{assum:29.1} 和 Definition \ref{def:29.2} 下，\ref{eq:29.21} 中的 $\beta$ 等于：
+\[
+\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\left[ \frac{\mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2)}{e(z_1, X_0) \, e(z_2, Z_1, X_1, X_0)} \{ Y - f(z_1, z_2, X_0; b) \}^2 \right]
+\tag{29.22}
+\]
+\end{Theorem}
+
+\textbf{估计策略}。定理 \ref{thrm:29.3} 暗示了一种基于加权回归的简单估计策略。例如，在 \ref{eq:29.20} 下，我们可以拟合 $Y_i$ 对 $(1, Z_{1i}, Z_{2i}, X_{0i})$ 的加权最小二乘（WLS）回归，权重为 $\hat{e}_1^{-1}(Z_{1i}, X_{0i}) \hat{e}_{2i}^{-1}(Z_{2i}, Z_{1i}, X_{1i}, X_{0i})$。
+
+\textbf{与结果回归的比较}：MSM 的 IPW 方法与结果回归方法的关键区别在于：结果回归直接建模 $E(Y \mid Z, X)$，而 MSM 的 IPW 方法建模 $E\{Y(z) \mid X_0\}$ 并通过逆概率加权来处理时变混淆。MSM 的优势在于它允许我们指定\textbf{边际}（而非条件）结构，这有时更加自然。
+
+\textbf{高维协变量下的 MSM}。当 $X_0$ 维数很高时，\ref{eq:29.20} 中的线性模型 $\beta_3^{\mathsf{T}} X_0$ 面临维数灾难。此时，稀疏性假设变得关键——即 $\beta_3$ 中只有少数元素非零。LASSO（Tibshirani, 1996）等正则化方法可以用于在高维下估计 $\beta$，但需要额外的理论保证来确保因果推断的渐近有效性（见 Bloniarz et al., 2016; Wager et al., 2016）。
+
+\subsection{结构嵌套模型}\label{sec:29-5-2}
+
+IPW 的一个关键问题是：如果重叠假设 \ref{eq:29.15} 被违背，IPW 不可用。为解决这一挑战，Robins 提出了结构嵌套模型。这里我们仅回顾两时间点的版本。
+
+\begin{Definition}[结构嵌套模型（SNM）]\label{def:29.3}
+时间点1的条件效应为：
+\[
+E\{Y(z_1, 0) - Y(0, 0) \mid Z_1 = z_1, X_0\} = g_1(z_1, X_0; \beta)
+\tag{29.23}
+\]
+
+时间点2的条件效应为：
+\[
+E\{Y(z_1, z_2) - Y(z_1, 0) \mid Z_2 = z_2, Z_1 = z_1, X_1, X_0\} = g_2(z_2, z_1, X_1, X_0; \beta)
+\tag{29.24}
+\]
+\end{Definition}
+
+在 Definition \ref{def:29.3} 中，有两个逻辑约束：
+\[
+g_1(0, X_0; \beta) = 0, \quad g_2(0, z_1, X_1, X_0; \beta) = 0, \quad \forall z_1
+\tag{29.25}
+\]
+
+两个典型选择如下。
+
+\begin{Example}[例29.2 — 加法齐次 SNM]\label{ex:29.2}
+假设：
+\[
+\begin{cases}
+g_1(z_1, X_0; \beta) = \beta_1 z_1 \\
+g_2(z_2, z_1, X_1, X_0; \beta) = (\beta_2 + \beta_3 z_1) z_2
+\end{cases}
+\tag{29.26}
+\]
+\end{Example}
+
+\begin{Example}[例29.3 — 协变量调整 SNM]\label{ex:29.3}
+假设：
+\[
+\begin{cases}
+g_1(z_1, X_0; \beta) = (\beta_1 + \beta_2^{\mathsf{T}} X_0) z_1 \\
+g_2(z_2, z_1, X_1, X_0; \beta) = (\beta_3 + \beta_4 z_1 + \beta_5^{\mathsf{T}} X_1) z_2
+\end{cases}
+\tag{29.27}
+\]
+\end{Example}
+
+\textbf{MSM 与 SNM 的比较}。结构嵌套模型允许同时调整基线协变量和时变协变量，而边际结构模型仅允许调整基线协变量。Definition \ref{def:29.3} 下的估计更为复杂，策略基于估计方程。
+
+\textbf{估计方程}。首先引入两个重要构建块。定义：
+\[
+U_2(\beta) = Y - g_2(Z_2, Z_1, X_1, X_0; \beta)
+\tag{29.28}
+\]
+\[
+U_1(\beta) = Y - g_2(Z_2, Z_1, X_1, X_0; \beta) - g_1(Z_1, X_0; \beta)
+\tag{29.29}
+\]
+
+它们不能直接从数据计算，因为它们依赖于参数的真实值。在真值处，它们具有以下性质。
+
+\begin{Lemma}[引理 29.1]\label{lemm:29.1}
+在 Assumption \ref{assum:29.1} 和 Definition \ref{def:29.3} 下，
+\[
+E\{U_2(\beta) \mid Z_2, Z_1, X_1, X_0\} = E\{U_2(\beta) \mid Z_1, X_1, X_0\} = E\{Y(Z_1, 0) \mid Z_1, X_1, X_0\}
+\tag{29.30}
+\]
+且
+\[
+E\{U_1(\beta) \mid Z_1, X_0\} = E\{U_1(\beta) \mid X_0\} = E\{Y(0, 0) \mid X_0\}
+\tag{29.31}
+\]
+\end{Lemma}
+
+\textbf{引理 \ref{lemm:29.1} 的直观理解}：$U_1(\beta)$ 扮演着"接受任何治疗前的对照潜在结局"的角色，而 $U_2(\beta)$ 扮演着"接受时间点1治疗后、时间点2前的对照潜在结局"的角色。
+
+\begin{Theorem}[定理 29.4 — SNM 估计方程]\label{thrm:29.4}
+在 Assumption \ref{assum:29.1} 和 Definition \ref{def:29.3} 下，
+\[
+E\left[ h_2(Z_1, X_1, X_0) \{ Z_2 - e(1, Z_1, X_1, X_0) \} U_2(\beta) \right] = 0
+\tag{29.32}
+\]
+且
+\[
+E\left[ h_1(X_0) \{ Z_1 - e(1, X_0) \} U_1(\beta) \right] = 0
+\tag{29.33}
+\]
+
+对任何函数 $h_1$ 和 $h_2$（只要矩存在）。
+\end{Theorem}
+
+使用定理 \ref{thrm:29.4} 时，我们必须指定 $h_1$ 和 $h_2$ 以确保有足够的方程来求解 $\beta$。例29.4回顾例29.2。
+
+\begin{Example}[例29.4 — 例29.2下的估计方程]\label{ex:29.4}
+在例29.2下，我们可以选择 $h_1 = 1$ 和 $h_2 = (1, Z_1)$ 得到：
+\[
+\begin{aligned}
+E[\{Z_2 - e(1, Z_1, X_1, X_0)\} \{Y - (\beta_2 + \beta_3 Z_1) Z_2\}] & = 0 \\
+E[Z_1 \{Z_2 - e(1, Z_1, X_1, X_0)\} \{Y - (\beta_2 + \beta_3 Z_1) Z_2\}] & = 0 \\
+E[\{Z_1 - e(1, X_0)\} \{Y - (\beta_2 + \beta_3 Z_1) Z_2 - \beta_1 Z_1\}] & = 0
+\end{aligned}
+\tag{29.34}
+\]
+
+然后我们可以从上述线性方程组求解 $\beta$（见习题29.6）。
+\end{Example}
+
+\textbf{更高效的估计}。一个自然的问题是：替代性的 $(h_1, h_2)$ 选择是否能导致更高效的估计量？答案是肯定的。例如，我们可以选择许多 $(h_1, h_2)$ 并使用广义矩方法（GMM; Hansen, 1982）。技术细节超出本书范围。Naimi et al.（2017）和 Vansteelandt and Joffe（2014）提供了结构嵌套模型的教程。
+
+\section{习题}\label{sec:29-homework}
+
+% 29.1 $g$-null 悖论
+
+\subsection{$g$-null 悖论}\label{sec:hw-29.1}
+
+考虑图 \ref{fig:29-hw1} 中的简单因果图：没有基线协变量 $X_0$，也没有从 $(Z_1, Z_2)$ 到 $Y$ 的箭头。因此 $(Z_1, Z_2)$ 对 $Y$ 的因果效应为零。
+
+\begin{figure}[htbp]
+\centering
+% placeholder - in real compilation this would be the actual image
+\caption{习题29.1图：$X_1$ 与 $Y$ 之间存在未测量混淆 $U$ 的因果图。}
+\label{fig:29-hw1}
+\end{figure}
+
+回顾例29.1。证明：如果
+\[
+\beta_1 = \beta_2 = 0 \quad \text{且} \quad \beta_3 = 0
+\tag{29.35}
+\]
+或者
+\[
+\beta_1 = \beta_2 = 0 \quad \text{且} \quad E\{X_1(z_1)\} \ \text{不依赖于} \ z_1
+\tag{29.36}
+\]
+则期望 $E\{Y(z_1, z_2)\}$ 不依赖于 $(z_1, z_2)$。
+
+\textbf{注}：然而，\ref{eq:29.35} 中的 $\beta_3 = 0$ 排除了 $Y$ 对 $X_1$ 的依赖，与 $X_1$ 和 $Y$ 之间存在未测量混淆 $U$ 矛盾；$E\{X_1(z_1)\}$ 对 $z_1$ 的独立性排除了 $X_1$ 对 $Z_1$ 的依赖，与 $Z_1$ 到 $X_1$ 的箭头矛盾。也就是说，如果 $X_1$ 和 $Y$ 之间存在未测量混淆 $U$，且 $Z_1$ 到 $X_1$ 存在箭头，那么例29.1中 $E\{Y(z_1, z_2)\}$ 的公式必定依赖于 $(z_1, z_2)$，这与 $(Z_1, Z_2)$ 对 $Y$ 无因果效应的假设矛盾——这就是 $g$-null 悖论。
+
+\subsection{零模型下的递推估计}\label{sec:hw-29.2}
+
+考虑29.3.2节的递推估计方法在习题29.1的因果图下。基于线性模型，证明估计量收敛到0。
+
+\subsection{MSM 下的 IPW}\label{sec:hw-29.3}
+
+证明定理 \ref{thrm:29.3}。
+
+\subsection{定义29.2的非线性例子}\label{sec:hw-29.4}
+
+定义29.2的另一个典型例子是：
+\[
+\operatorname{logit}[\Pr\{Y(z_1, z_2) = 1 \mid X_0\}] = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3^{\mathsf{T}} X_0
+\tag{29.37}
+\]
+
+如果我们观测到所有潜在结局，可以通过最小化负对数似然函数来求解 $\beta$（见第B.6.2节的更简单版本）：
+\[
+\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\{ \log(1 + e^{\ell}) - Y(z_1, z_2) \ell \}
+\tag{29.38}
+\]
+其中 $\ell = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3^{\mathsf{T}} X_0$。在序列可忽略性下，我们可以从以下仅涉及观测变量的最小化问题求解 $\beta$。
+
+\textbf{定理29.5（MSM 下的 IPW）}。在 Assumption \ref{assum:29.1} 和 Definition \ref{def:29.2} 下，\ref{eq:29.38} 中的 $\beta$ 等于：
+\[
+\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\left[ \frac{\mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2)}{e(z_1, X_0) \, e(z_2, Z_1, X_1, X_0)} \{ \log(1 + e^{\ell}) - Y(z_1, z_2) \ell \} \right]
+\tag{29.39}
+\]
+
+证明定理29.5。
+
+\textbf{注}：定理29.5暗示了一种基于加权回归的简单估计策略。例如，在 \ref{eq:29.37} 下，我们可以拟合 $Y_i$ 对 $(1, Z_{1i}, Z_{2i}, X_{0i})$ 的加权 logistic 回归，权重为 $\hat{e}_1^{-1}(Z_{1i}, X_{0i}) \hat{e}_{2i}^{-1}(Z_{2i}, Z_{1i}, X_{1i}, X_{0i})$。
+
+\subsection{单时间点结构嵌套模型}\label{sec:hw-29.5}
+
+回顾观测研究的标准设置：IID 数据从 $\{X, Z, Y(1), Y(0)\}$ 中抽取。定义倾向得分为 $e(X) = \Pr(Z = 1 \mid X)$。假设：
+\[
+Z \perp Y(0) \mid X
+\tag{29.40}
+$$
+及以下结构嵌套模型。
+
+\textbf{定义29.4（单时间点结构嵌套模型）}。个体效应的条件均值为：
+\[
+E\{Y(z) - Y(0) \mid Z = z, X\} = g(z, X; \beta)
+\tag{29.41}
+\]
+
+在定义29.4中，逻辑约束为 $g(0, X; \beta) = 0$。证明以下结果。
+
+\textbf{(1)} 我们有：
+\[
+E\{Y - g(Z, X; \beta) \mid X, Z\} = E\{Y - g(Z, X; \beta) \mid X\} = E\{Y(0) \mid X\}
+\tag{29.42}
+$$
+
+\textbf{(2)} 我们有：
+\[
+E[ h(X) \{Z - e(X)\} \{Y - g(Z, X; \beta)\} ] = 0
+\tag{29.43}
+\]
+对任何函数 $h$，只要矩存在。
+
+\textbf{注}：\ref{eq:29.43} 是参数估计的基础。考虑定义29.4的特殊情况 $g(z, X; \beta) = \beta z$。选择 $h(X) = 1$ 得到：
+\[
+E[\{Z - e(X)\} \{Y - \beta Z\}] = 0
+\tag{29.44}
+\]
+这正是倾向得分加权的标准方程（见第11章）。
+
+\section{推荐阅读}\label{sec:29-reading}
+
+Robins 和他的合作者的一系列开创性论文奠定了本章材料的基础。Robins（1986）引入了 g-formula 和边际结构模型的基本思想；Robins（1998）系统阐述了结构嵌套模型；Robins 和 Hernán（2009）提供了 g-方法的综合综述。Robins 和 Waterman（1994）比较了 MSM 和 SNM 两种方法。关于 g-null 悖论的更多讨论，见 Robins 和 Wasserman（1997）和 McGrath et al.（2021）。
+
+在高维协变量背景下，Bloniarz et al.（2016）提出用 LASSO 调整实验中的处理效应估计；Wager et al.（2016）提出使用机器学习方法分析高维实验数据；Lei 和 Ding（2021）在不假设稀疏性的正则条件下证明 Lin（2013）估计量的渐近正态性。D'Amour et al.（2021）讨论了高维协变量观测研究中的重叠问题。
+
+\section{附录：定理29.1的证明}\label{sec:derivation-thm-29.1}
+
+\textbf{定理 \ref{thrm:29.1} 证明}。由塔性质，
+\[
+E\{Y(z_1, z_2)\} = E[ E\{Y(z_1, z_2) \mid X_0\} ]
+\]
+
+因此我们聚焦于 $E\{Y(z_1, z_2) \mid X_0\}$。由 Assumption \ref{assum:29.1}(1) 和塔性质，
+\[
+\begin{aligned}
+E\{Y(z_1, z_2) \mid X_0\} & = E\{Y(z_1, z_2) \mid z_1, X_0\} \\
+& = E[ E\{Y(z_1, z_2) \mid z_1, X_1, X_0\} \mid z_1, X_0 ]
+\end{aligned}
+$$
+
+由 Assumption \ref{assum:29.1}(2)，
+\[
+\begin{aligned}
+E\{Y(z_1, z_2) \mid X_0\} & = E[ E\{Y \mid z_2, z_1, X_1, X_0\} \mid z_1, X_0 ] \\
+& = E\{ E(Y \mid z_2, z_1, X_1, X_0) \mid z_1, X_0 \}
+\end{aligned}
+$$
+
+取期望即得 \ref{eq:29.1}。$\square$
