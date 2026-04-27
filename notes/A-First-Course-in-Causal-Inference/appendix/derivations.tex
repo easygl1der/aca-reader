@@ -941,3 +941,156 @@ OLS 估计 $\beta$ 可显式写为：
   \item 重复 $B$ 次（例如 $B=999$），得到 Bootstrap 分布 $\{\hat{\tau}_\text{DiD}^{(b)}\}_{b=1}^B$
   \item 标准误差为 $\hat{\sigma}_\text{boot} = \sqrt{(B-1)^{-1} \sum_{b=1}^B (\hat{\tau}_\text{DiD}^{(b)} - \bar{\hat{\tau}})^2}$
 \end{enumerate}
+
+\section{第 23 章 TSLS 估计量的代数推导}\label{sec:appendix-TSLS-derivation}
+
+\textbf{背景}：第 \cref{chap:TSLS} 章中，我们介绍了两阶段最小二乘（TSLS）估计量。本节给出其代数推导的完整细节。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $Y_i$：结果变量
+  \item $D_i$：$p$ 维内生解释变量
+  \item $Z_i$：$q$ 维工具变量（$q \geq p$）
+  \item $\beta$：$p$ 维待估参数向量
+  \item $\varepsilon_i$：误差项，满足 $E(\varepsilon_i Z_i) = 0$
+  \item $\hat{D}_i$：第一阶段 OLS 的拟合值
+  \item $\hat{\Gamma}$：第一阶段 OLS 的系数矩阵
+\end{itemize}
+
+\textbf{目标（Goal）}：推导 TSLS 估计量的显式表达式，并证明其在过度识别情形下的相合性。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\subsection*{第一步：第一阶段 OLS}
+
+第一阶段回归 $D$ on $Z$ 的 OLS 估计量为：
+\[
+\hat{\Gamma} = \left(\sum_{i=1}^{n}Z_iZ_i^{\top}\right)^{-1}\sum_{i=1}^{n}Z_iD_i^{\top}.
+\]
+
+相应的拟合值为：
+\[
+\hat{D}_i = \hat{\Gamma}^{\top}Z_i. \tag{A.1}
+\]
+
+第一阶段的正交性条件给出：
+\[
+\sum_{i=1}^{n}\hat{D}_i\check{D}_i^{\top} = 0, \tag{A.2}
+\]
+其中 $\check{D}_i = D_i - \hat{D}_i$ 是第一阶段残差。
+
+由正交性可得：
+\[
+\sum_{i=1}^{n}\hat{D}_iD_i^{\top} = \sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}. \tag{A.3}
+\]
+
+\subsection*{第二步：第二阶段 OLS}
+
+第二阶段回归 $Y$ on $\hat{D}$ 的 OLS 估计量为：
+\[
+\hat{\beta}_{\mathrm{TSLS}} = \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_iY_i. \tag{A.4}
+\]
+
+\subsection*{第三步：代入结构方程}
+
+将结构方程 $Y_i = D_i^{\top}\beta + \varepsilon_i$ 代入 \eqref{eq:A.4}：
+\[
+\begin{aligned}
+\hat{\beta}_{\mathrm{TSLS}} &= \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_i(D_i^{\top}\beta + \varepsilon_i) \\
+&= \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_iD_i^{\top}\beta + \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_i\varepsilon_i.
+\end{aligned}
+\]
+
+利用正交性条件 \eqref{eq:A.3}：
+\[
+\hat{\beta}_{\mathrm{TSLS}} = \beta + \left(\sum_{i=1}^{n}\hat{D}_i\hat{D}_i^{\top}\right)^{-1}\sum_{i=1}^{n}\hat{D}_i\varepsilon_i. \tag{A.5}
+\]
+
+\subsection*{第四步：显式表达式}
+
+将 $\hat{D}_i = \hat{\Gamma}^{\top}Z_i$ 代入 \eqref{eq:A.5}：
+\[
+\begin{aligned}
+\hat{\beta}_{\mathrm{TSLS}} &= \beta + \left(\hat{\Gamma}^{\top}\sum_{i=1}^{n}Z_iZ_i^{\top}\hat{\Gamma}\right)^{-1}\hat{\Gamma}^{\top}\sum_{i=1}^{n}Z_i\varepsilon_i \\
+&= \beta + \left\{\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_iZ_i^{\top}\right)\hat{\Gamma}\right\}^{-1}\hat{\Gamma}^{\top}\left(n^{-1}\sum_{i=1}^{n}Z_i\varepsilon_i\right). \tag{A.6}
+\end{aligned}
+\]
+
+\subsection*{第五步：相合性}
+
+由于 $E(Z_i\varepsilon_i) = 0$（工具变量的排他性 restriction），根据大数定律：
+\[
+n^{-1}\sum_{i=1}^{n}Z_i\varepsilon_i \xrightarrow{p} 0.
+\]
+
+同时，
+\[
+n^{-1}\sum_{i=1}^{n}Z_iZ_i^{\top} \xrightarrow{p} E(ZZ^{\top}),
+\]
+\[
+\hat{\Gamma} \xrightarrow{p} \Gamma = E(ZZ^{\top})^{-1}E(ZD^{\top}).
+\]
+
+将这些收敛结果代入 \eqref{eq:A.6}，得到：
+\[
+\hat{\beta}_{\mathrm{TSLS}} \xrightarrow{p} \beta. \tag{A.7}
+\]
+
+\textbf{结论}：TSLS 估计量是 $\beta$ 的相合估计量。
+
+\subsection*{与 IV 估计量的等价性（恰好识别情形）}
+
+当 $q = p$（工具变量与内生变量维度相同）时，$\hat{\Gamma}$ 是方阵。此时：
+\[
+\hat{\beta}_{\mathrm{TSLS}} = \left(\hat{\Gamma}^{-1}\sum_{i=1}^{n}Z_iY_i\right) = \left(\sum_{i=1}^{n}Z_iD_i^{\top}\right)^{-1}\sum_{i=1}^{n}Z_iY_i = \hat{\beta}_{\mathrm{IV}}.
+\]
+
+因此，在恰好识别情形下，TSLS 与 IV 估计量完全等价。
+
+\section{TSLS 与 ILS 等价性的证明}\label{sec:appendix-TSLS-ILS-proof}
+
+\textbf{背景}：定理 \cref{th:TSLS-ILS-equivalence} 声称，在单一内生处理变量和单一工具变量的情形下，TSLS 估计量与 ILS 估计量在数值上完全相同。本节给出简要证明。
+
+\textbf{设定}：考虑结构方程组（\cref{eq:23.7}）：
+\[
+\begin{cases}
+Y_i = \beta_0 + \beta_1 D_i + \beta_2^{\top}X_i + \varepsilon_i, \\
+D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i}.
+\end{cases}
+\]
+
+\textbf{目标（Goal）}：证明 $\hat{\beta}_{1,\mathrm{TSLS}} = \hat{\Gamma}_1 / \hat{\gamma}_1 = \hat{\beta}_{1,\mathrm{ILS}}$。
+
+\textbf{证明}：
+
+约化形式 OLS 给出：
+\[
+\hat{\Gamma}_1 = \frac{\sum_{i}(Z_i - \bar{Z})(Y_i - \bar{Y})}{\sum_{i}(Z_i - \bar{Z})^2}, \quad
+\hat{\gamma}_1 = \frac{\sum_{i}(Z_i - \bar{Z})(D_i - \bar{D})}{\sum_{i}(Z_i - \bar{Z})^2}.
+\]
+
+因此，
+\[
+\frac{\hat{\Gamma}_1}{\hat{\gamma}_1} = \frac{\sum_{i}(Z_i - \bar{Z})(Y_i - \bar{Y})}{\sum_{i}(Z_i - \bar{Z})(D_i - \bar{D})}. \tag{A.8}
+\]
+
+另一方面，TSLS 的第一阶段拟合值为：
+\[
+\hat{D}_i = \hat{\gamma}_0 + \hat{\gamma}_1 Z_i + \hat{\gamma}_2^{\top}X_i.
+\]
+
+第二阶段回归 $Y$ on $(1, \hat{D}, X)$ 中，$\hat{D}$ 的系数为：
+\[
+\hat{\beta}_{1,\mathrm{TSLS}} = \frac{\sum_{i}(Y_i - \bar{Y})(\hat{D}_i - \bar{\hat{D}})}{\sum_{i}(\hat{D}_i - \bar{\hat{D}})^2}.
+\]
+
+可以验证（利用第一阶段正交性），分母等于 $\hat{\gamma}_1 \sum_{i}(Z_i - \bar{Z})(\hat{D}_i - \bar{\hat{D}}) = \hat{\gamma}_1^2 \sum_{i}(Z_i - \bar{Z})^2$，分子等于 $\hat{\gamma}_1 \sum_{i}(Z_i - \bar{Z})(Y_i - \bar{Y})$。
+
+因此，
+\[
+\hat{\beta}_{1,\mathrm{TSLS}} = \frac{\hat{\gamma}_1 \sum_{i}(Z_i - \bar{Z})(Y_i - \bar{Y})}{\hat{\gamma}_1^2 \sum_{i}(Z_i - \bar{Z})^2} = \frac{\sum_{i}(Z_i - \bar{Z})(Y_i - \bar{Y})}{\hat{\gamma}_1 \sum_{i}(Z_i - \bar{Z})^2} = \frac{\hat{\Gamma}_1}{\hat{\gamma}_1}.
+\]
+
+\textbf{结论}：得证 $\hat{\beta}_{1,\mathrm{TSLS}} = \hat{\beta}_{1,\mathrm{ILS}}$。
+
+\textbf{直观理解}：这个等价性揭示了 TSLS 和 ILS 实际上是从不同角度求解同一组矩条件方程。TSLS 通过"预测"内生变量的拟合值来建立正交性，而 ILS 则直接利用约化形式中系数之间的比值关系。两种方法在代数上完全等价，但在计算路径和直觉理解上各有优势。

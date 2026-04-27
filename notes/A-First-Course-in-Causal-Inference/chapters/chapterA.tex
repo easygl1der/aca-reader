@@ -1,0 +1,515 @@
+% Chapter A: Probability and Statistics Foundations
+% A First Course in Causal Inference - Peng Ding
+% Appendix A - Asymptotic Theory Foundation
+% Written in Stein motivation-first style
+
+\chapter{概率与统计基础}\label{ch:probability}
+
+\section{本章导论}
+
+在进入正文之前，我们需要建立一些概率与统计的基础知识。这些内容将在后续章节中频繁使用——尤其是当我们讨论渐近推断（asymptotic inference）时。
+
+\textbf{为什么这些基础内容重要？}
+
+在前几章的讨论中，我们假设样本量足够大，从而可以使用各种近似结论。但这些近似何时成立？收敛速度如何？当我们用样本均值估计总体均值时，误差的分布是什么？
+
+为了回答这些问题，我们必须回到概率论的基本极限定理——\textbf{大数定律（Law of Large Numbers）}和\textbf{中心极限定理（Central Limit Theorem）}。这两个定理是整个渐近统计学的基石。
+
+历史注记：中心极限定理的发展历程跨越了两个多世纪。从 de Moivre（1733）关于二项分布的近似，到 Laplace（1812）的扩展，再到 Lindeberg（1922）和 Feller（1935）的严格证明，这个定理的进化本身就是一部概率论的历史。
+
+\section{相关系数}\label{sec:correlation}
+
+\subsection{为什么我们需要相关系数？}
+
+在因果推断中，我们经常需要度量两个变量之间的线性依赖程度。例如，在回归分析中，我们想知道某个协变量与结果变量之间的关联强度；在倾向得分分析中，我们评估协变量在治疗组和对照组之间的平衡性。
+
+这就引出了\textbf{相关系数}的概念。
+
+\subsection{Pearson 相关系数}
+
+\begin{Definition}[Pearson 相关系数]\label{def:pearson-correlation}
+对于两个随机变量 $Y$ 和 $X$，定义它们的 Pearson 相关系数为
+\[
+\rho_{YX} = \frac{\operatorname{cov}(Y, X)}{\sqrt{\operatorname{var}(Y)\operatorname{var}(X)}}
+\]
+\end{Definition}
+
+这个量度量的是 $Y$ 和 $X$ 之间的线性依赖程度。注意定义是对称的：
+\[
+\rho_{YX} = \rho_{XY}
+\]
+
+当 $|\rho_{YX}| = 1$ 时，$Y$ 和 $X$ 存在完美的线性关系；当 $\rho_{YX} = 0$ 时，两者无线性相关（但可能有其他非线性关系）。
+
+\subsection{复相关系数平方}
+
+在多元情形中，我们经常想知道一个随机变量 $Y$ 与一组随机向量 $\mathbf{X}$ 之间的线性依赖程度。这引出了复相关系数平方的概念。
+
+\begin{Definition}[复相关系数平方]\label{def:multiple-correlation}
+对于随机变量 $Y$ 和随机向量 $\mathbf{X} = (X_1, \ldots, X_p)^\top$，定义复相关系数平方为
+\[
+R_{Y\mathbf{X}}^2 = \operatorname{corr}^2(Y, \mathbf{X}) = \frac{\operatorname{cov}(Y, \mathbf{X}) \operatorname{cov}(\mathbf{X})^{-1} \operatorname{cov}(\mathbf{X}, Y)}{\operatorname{var}(Y)}
+\]
+其中 $\operatorname{cov}(Y, \mathbf{X})$ 是行向量，$\operatorname{cov}(\mathbf{X}, Y)$ 是列向量。
+\end{Definition}
+
+\textbf{注意}：这个定义不是对称的——$R_{Y\mathbf{X}}^2 \neq R_{\mathbf{X}Y}^2$。这反映了回归分析中"$Y$ 对 $\mathbf{X}$ 回归"与"$\mathbf{X}$ 对 $Y$ 回归"的不对称性。
+
+\section{多元正态分布}\label{sec:multivariate-normal}
+
+在因果推断的渐近分析中，正态分布扮演着核心角色。许多统计量在大样本下都趋向于正态分布，而多元正态分布在条件期望和回归分析中有着优雅的性质。
+
+\subsection{多元正态的基本性质}
+
+\begin{Definition}[多元正态分布]\label{def:multivariate-normal}
+称随机向量 $\mathbf{Z} \sim \mathrm{N}(\mu, \Sigma)$ 服从均值为 $\mu$、协方差矩阵为 $\Sigma$ 的多元正态分布。
+\end{Definition}
+
+多元正态分布的一个关键性质是：它完全由均值向量和协方差矩阵决定。这使得它在理论研究和实际应用中都非常方便。
+
+\subsection{边际分布}
+
+将 $\mathbf{Z}$ 分为两部分：
+\[
+\mathbf{Z} = \begin{pmatrix} \mathbf{Z}_1 \\ \mathbf{Z}_2 \end{pmatrix}
+\sim \mathrm{N}\left(
+\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix},
+\begin{pmatrix} \Sigma_{11} & \Sigma_{12} \\ \Sigma_{21} & \Sigma_{22} \end{pmatrix}
+\right)
+\]
+
+\textbf{命题 A.1}：边际分布也是正态的：
+\[
+\mathbf{Z}_1 \sim \mathrm{N}(\mu_1, \Sigma_{11}), \quad \mathbf{Z}_2 \sim \mathrm{N}(\mu_2, \Sigma_{22})
+\]
+
+\subsection{条件分布}
+
+更精彩的是条件分布的性质。假设 $\Sigma_{22}$ 正定，则条件分布
+\[
+\mathbf{Z}_1 \mid \mathbf{Z}_2 = \mathbf{z}_2 \sim \mathrm{N}(\mu_{1|2}, \Sigma_{1|2})
+\]
+其中
+\[
+\mu_{1|2} = \mu_1 + \Sigma_{12}\Sigma_{22}^{-1}(\mathbf{z}_2 - \mu_2)
+\]
+\[
+\Sigma_{1|2} = \Sigma_{11} - \Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}
+\]
+
+\textbf{洞察}：条件均值是 $\mathbf{z}_2$ 的线性函数，条件协方差与 $\mathbf{z}_2$ 无关！这就是为什么线性回归在正态假设下有如此优雅的理论性质。
+
+\section{卡方分布与 $t$ 分布}\label{sec:chi-square-t}
+
+在后续章节中，我们会频繁遇到小样本分布——特别是当样本量不够大、不能用正态近似时。
+
+\subsection{卡方分布的起源}
+
+历史上，卡方分布（$\chi^2$ 分布）由 Karl Pearson 在 1900 年提出，用于检验观察频数与理论频数之间的拟合优度。
+
+\begin{Definition}[卡方分布]\label{def:chi-square}
+若 $X_1, \ldots, X_n \stackrel{\mathrm{iid}}{\sim} \mathrm{N}(0,1)$，则
+\[
+\sum_{i=1}^n X_i^2 \sim \chi_n^2
+\]
+服从自由度为 $n$ 的卡方分布。
+\end{Definition}
+
+\textbf{性质}：
+\begin{itemize}
+  \item 均值：$\mathbb{E}[\chi_n^2] = n$
+  \item 方差：$\operatorname{var}(\chi_n^2) = 2n$
+\end{itemize}
+
+\subsection{$t$ 分布}
+
+$t$ 分布由 William Gosset 于 1908 年以``Student''为笔名发表。它描述的是在总体方差未知时，用样本方差替代后的标准化均值的分布。
+
+\begin{Definition}[$t$ 分布]\label{def:t-distribution}
+若 $X \sim \mathrm{N}(0,1)$，$Q_n \sim \chi_n^2$，且 $X \bot Q_n$（独立），则
+\[
+\frac{X}{\sqrt{Q_n/n}} \sim t_n
+\]
+服从自由度为 $n$ 的 $t$ 分布。
+\end{Definition}
+
+\textbf{特例}：当 $n=1$ 时，$t_1$ 分布就是 Cauchy 分布，它没有有限的均值！
+
+随着自由度增加，$t$ 分布越来越接近标准正态分布。这与直觉一致——样本量越大，对总体方差的估计越准确，$t$ 统计量就越像标准正态。
+
+\section{Cauchy-Schwarz 不等式}\label{sec:cauchy-schwarz}
+
+Cauchy-Schwarz 不等式是概率论和线性代数中最基本的不等式之一。它的历史可以追溯到 Cauchy（1821）和 Schwarz（1888）的工作。
+
+\begin{Theorem}[Cauchy-Schwarz 不等式]\label{def:cauchy-schwarz}
+对于两个随机变量 $A$ 和 $B$，有
+\[
+|\mathbb{E}(AB)| \leq \sqrt{\mathbb{E}(A^2)\mathbb{E}(B^2)}
+\]
+等号成立当且仅当 $B = \beta A$（对某个常数 $\beta$）。
+\end{Theorem}
+
+对随机变量中心化（减去均值）后，得到协方差形式：
+\[
+|\operatorname{cov}(A, B)| \leq \sqrt{\operatorname{var}(A)\operatorname{var}(B)}
+\]
+等号成立当且仅当存在常数 $\alpha, \beta$ 使得 $B = \alpha + \beta A$。
+
+这个不等式在因果推断中有重要应用——它保证了相关系数的绝对值不超过 1。
+
+\section{迭代期望与方差分解}\label{sec:tower-property}
+
+在处理条件概率和条件期望时，\textbf{迭代期望公式}（Tower Property）和\textbf{方差分解公式}是最基础的工具。
+
+\subsection{迭代期望公式（Adam 定律与 Eve 定律）}
+
+\begin{Proposition}[迭代期望公式]\label{prop:iterated-expectation}
+给定随机变量或向量 $A, B, C$，有
+\[
+\mathbb{E}(A) = \mathbb{E}\{\mathbb{E}(A \mid B)\}
+\]
+和
+\[
+\mathbb{E}(A \mid C) = \mathbb{E}\{\mathbb{E}(A \mid B, C) \mid C\}.
+\]
+\end{Proposition}
+
+在研究生阶段，我的导师 Carl Morris 和 Joe Blitzstein 将第二个公式称为\textbf{Eve 定律}——因为它具有``EVVE''的形式。相应地，第一个公式被称为\textbf{Adam 定律}。
+
+这个公式的直觉很清晰：要计算关于 $B$ 的条件期望的平均，只需直接计算无条件期望即可。
+
+\subsection{方差分解公式（Eve 定律）}
+
+\begin{Proposition}[方差分解]\label{prop:variance-decomposition}
+给定随机变量 $A$ 和随机变量/向量 $B, C$，有
+\[
+\operatorname{var}(A) = \mathbb{E}\{\operatorname{var}(A \mid B)\} + \operatorname{var}\{\mathbb{E}(A \mid B)\}
+\]
+和
+\[
+\operatorname{var}(A \mid C) = \mathbb{E}\{\operatorname{var}(A \mid B, C) \mid C\} + \operatorname{var}\{\mathbb{E}(A \mid B, C) \mid C\}.
+\]
+\end{Proposition}
+
+\textbf{洞察}：总方差等于条件方差的期望加上条件期望的方差。第一项度量的是``组内变异''，第二项度量的是``组间变异''。这个分解在分层分析（stratified analysis）中特别有用。
+
+\subsection{协方差分解}
+
+类似地，协方差也有分解公式：
+\[
+\operatorname{cov}(A_1, A_2) = \mathbb{E}\{\operatorname{cov}(A_1, A_2 \mid B)\} + \operatorname{cov}\{\mathbb{E}(A_1 \mid B), \mathbb{E}(A_2 \mid B)\}
+\]
+
+这个公式在处理分组数据时非常有用——它说明总的协方差可以分解为组内协方差的平均加上组间协方差的协方差。
+
+\section{极限定理}\label{sec:limiting-theorems}
+
+这是本章最核心的部分。极限定理是整个渐近统计学的基石，它们告诉我们当样本量增大时，统计量会如何行为。
+
+\subsection{为什么需要极限定理？}
+
+在有限样本下，很多统计量的精确分布非常复杂甚至不可求。但极限定理告诉我们：\textbf{当样本量趋于无穷时，这些复杂的精确分布会趋近于某种简单的极限分布}。
+
+这给了我们两样东西：
+\begin{enumerate}
+  \item \textbf{近似}：当样本量足够大时，我们可以用极限分布近似精确分布
+  \item \textbf{工具}：我们可以研究统计量的收敛速度
+\end{enumerate}
+
+\subsection{收敛性的定义}
+
+在陈述极限定理之前，我们需要明确什么是``收敛''。
+
+\begin{Definition}[依概率收敛]\label{def:convergence-probability}
+称随机变量序列 $(X_n)_{n \geq 1}$ 依概率收敛到 $X$，如果对任意 $\varepsilon > 0$，
+\[
+\Pr(|X_n - X| > \varepsilon) \to 0 \quad \text{当 } n \to \infty \text{ 时}.
+\]
+记作 $X_n \xrightarrow{p} X$ 或 $X_n \to X$（依概率）。
+\end{Definition}
+
+\begin{Definition}[依分布收敛]\label{def:convergence-distribution}
+称随机变量序列 $(X_n)_{n \geq 1}$ 依分布收敛到 $X$，如果对任意 $x$（$X$ 的连续点），
+\[
+\Pr(X_n \leq x) \to \Pr(X \leq x) \quad \text{当 } n \to \infty \text{ 时}.
+\]
+记作 $X_n \xrightarrow{d} X$ 或 $X_n \to X$（依分布）。
+\end{Definition}
+
+\textbf{重要事实}：依概率收敛强于依分布收敛——如果 $X_n \xrightarrow{p} X$，则一定有 $X_n \xrightarrow{d} X$。但反之不成立。
+
+\subsection{大数定律（LLN）}
+
+\begin{Theorem}[弱大数定律]\label{def:law-large-numbers}
+若 $X_1, \ldots, X_n \stackrel{\mathrm{iid}}{\sim} X$，且 $\mathbb{E}|X| < \infty$，则样本均值
+\[
+\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{p} \mathbb{E}(X)
+\quad \text{当 } n \to \infty \text{ 时}.
+\]
+\end{Theorem}
+
+\textbf{含义}：大数定律告诉我们，样本均值会越来越接近（依概率）总体均值。这是统计推断的直觉基础——重复试验的平均值会趋近于真实均值。
+
+\textbf{历史注记}：大数定律的最早形式由 Bernoulli（1713）给出，但 Bernoulli 的大数定律只适用于伯努利分布。现代形式的大数定律由 Khintchine（1929）给出。
+
+\subsection{中心极限定理（CLT）}
+
+如果说大数定律告诉我们均值趋向于常数，那么中心极限定理则告诉我们这个趋向的速度和分布。
+
+\begin{Theorem}[中心极限定理]\label{def:central-limit-theorem}
+若 $X_1, \ldots, X_n \stackrel{\mathrm{iid}}{\sim} X$，且 $\operatorname{var}(X) < \infty$，则
+\[
+\frac{\bar{X} - \mathbb{E}(X)}{\sqrt{\operatorname{var}(X)/n}} \xrightarrow{d} \mathrm{N}(0, 1)
+\quad \text{当 } n \to \infty \text{ 时}.
+\]
+\end{Theorem}
+
+\textbf{含义}：标准化的样本均值（减去均值再除以标准误）渐近服从标准正态分布。无论原始分布是什么——只要是独立同分布的、有限方差的——这个结论都成立！
+
+\textbf{历史注记}：中心极限定理的发展跨越了两个多世纪。de Moivre（1733）首先得到了二项分布的正态近似；Laplace（1812）扩展了这一结果；Lindeberg（1922）和 Feller（1935）给出了最一般的条件。
+
+\textbf{收敛速度}：CLT 的收敛速度通常为 $O(1/\sqrt{n})$。也就是说，要将误差减少一半，样本量需要增加到四倍。
+
+\section{Delta 法}\label{sec:delta-method}
+
+在因果推断中，我们经常需要估计一个参数的函数——例如，风险的比值 $\theta_1/\theta_2$，或者指数变换 $e^\theta$。Delta 法告诉我们如何得到这些非线性函数的渐近分布。
+
+\subsection{为什么需要 Delta 法？}
+
+假设我们有一个渐近正态的估计量 $\sqrt{n}(\hat{\theta} - \theta) \xrightarrow{d} \mathrm{N}(0, \sigma^2)$。
+
+我们想知道 $g(\hat{\theta})$ 的渐近分布，其中 $g$ 是一个非线性函数。Delta 法给出了答案。
+
+\begin{Theorem}[Delta 法]\label{def:delta-method}
+假设 $\sqrt{n}(\hat{\theta} - \theta) \xrightarrow{d} \mathrm{N}(0, \Sigma)$，且函数 $g(x)$ 在 $\theta$ 处有非零导数 $\nabla g(\theta)$。则
+\[
+\sqrt{n}\{g(\hat{\theta}) - g(\theta)\} \xrightarrow{d} \mathrm{N}\left(0, (\nabla g(\theta))^\top \Sigma \nabla g(\theta)\right).
+\]
+\end{Theorem}
+
+直觉上，这个结论来自一阶泰勒展开：
+\[
+g(\hat{\theta}) - g(\theta) \approx (\nabla g(\theta))^\top (\hat{\theta} - \theta).
+\]
+因此，$g(\hat{\theta})$ 的渐近分布就是线性变换后的正态分布。
+
+\textbf{应用 A.1：比率的渐近正态性}\footnote{详细推导见附录 \cref{sec:appendix-ratio-delta-method}。}
+
+假设
+\[
+\sqrt{n}\begin{pmatrix} Y_n - \mu_Y \\ X_n - \mu_X \end{pmatrix} \xrightarrow{d} \mathrm{N}\left(\begin{pmatrix} 0 \\ 0 \end{pmatrix}, \begin{pmatrix} \sigma_Y^2 & \sigma_{YX} \\ \sigma_{YX} & \sigma_X^2 \end{pmatrix}\right)
+\]
+且 $\mu_X \neq 0$。则
+\[
+\sqrt{n}\left(\frac{Y_n}{X_n} - \frac{\mu_Y}{\mu_X}\right) \xrightarrow{d} \mathrm{N}\left(0, \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2 \sigma_X^2}{\mu_X^4} - \frac{2\mu_Y \sigma_{YX}}{\mu_X^3}\right).
+\]
+
+\textbf{应用 A.2：乘积的渐近正态性}\footnote{详细推导见附录 \cref{sec:appendix-product-delta-method}。}
+
+在上述假设下，
+\[
+\sqrt{n}(X_n Y_n - \mu_X \mu_Y) \xrightarrow{d} \mathrm{N}\left(0, \mu_Y^2 \sigma_X^2 + \mu_X^2 \sigma_Y^2 + 2\mu_X \mu_Y \sigma_{YX}\right).
+\]
+
+这些结果在处理风险比（risk ratio）、标准化均值差（standardized mean difference）等因果推断中的常见量时非常有用。
+
+\section{点估计}\label{sec:point-estimation}
+
+现在我们转向统计推断部分。在因果推断中，我们需要用样本数据估计因果效应。这涉及两个基本问题：如何估计？估计量有什么好的性质？
+
+\subsection{估计量的基本要求}
+
+假设 $\theta$ 是我们感兴趣的参数（通常是因果效应），$\hat{\theta}$ 是基于数据的估计量。
+
+\begin{Definition}[无偏性]\label{def:unbiasedness}
+如果对所有可能的 $\theta$ 和 $\eta$（ nuisance parameters）都有
+\[
+\mathbb{E}(\hat{\theta}) = \theta,
+\]
+则称 $\hat{\theta}$ 是 $\theta$ 的无偏估计量。
+\end{Definition}
+
+无偏性要求估计量的均值恰好等于真值。但这个要求有时过于严格——在很多情况下，无偏估计量不存在或极不稳定。
+
+\begin{Definition}[一致性]\label{def:consistency}
+如果当样本量趋于无穷时，对所有可能的 $\theta$ 和 $\eta$ 都有
+\[
+\hat{\theta} \xrightarrow{p} \theta,
+\]
+则称 $\hat{\theta}$ 是 $\theta$ 的一致估计量。
+\end{Definition}
+
+一致性是基本的渐近要求——它保证我们拥有越来越多的数据时，估计会越来越接近真值。
+
+\textbf{重要}：无偏性 $\not\Rightarrow$ 一致性，一致性 $\not\Rightarrow$ 无偏性。无偏估计可能在有限样本下表现很差；一致估计可能在有限样本下有较大的偏倚。
+
+\section{置信区间}\label{sec:confidence-interval}
+
+点估计只给我们一个数值，但我们通常想知道这个估计的精度——即真实参数可能落在什么范围内？
+
+\begin{Definition}[置信区间]\label{def:confidence-interval}
+如果对所有 $\theta$ 和 $\eta$，数据依赖的区间 $[\hat{\theta}_L, \hat{\theta}_U]$ 满足
+\[
+\Pr(\hat{\theta}_L \leq \theta \leq \hat{\theta}_U) \geq 1 - \alpha,
+\]
+则称这个区间是 $\theta$ 的置信水平为 $1-\alpha$ 的置信区间。
+\end{Definition}
+
+\textbf{正确理解}：置信区间是随机区间！如果我们重复抽样 100 次，每次计算一个 95\% 置信区间，那么大约有 95 个区间会包含真实的 $\theta$。但对于我们实际得到的那个区间，它要么包含 $\theta$，要么不包含——我们不知道是哪一个。
+
+\begin{Definition}[渐近置信区间]\label{def:asymptotic-confidence-interval}
+如果对所有 $\theta$ 和 $\eta$，数据依赖的区间 $[\hat{\theta}_L, \hat{\theta}_U]$ 满足
+\[
+\Pr(\hat{\theta}_L \leq \theta \leq \hat{\theta}_U) \to 1 - \alpha' \quad (\alpha' \leq \alpha)
+\quad \text{当 } n \to \infty \text{ 时},
+\]
+则称这个区间是 $\theta$ 的渐近置信水平为 $1-\alpha$ 的置信区间。
+\end{Definition}
+
+渐近置信区间允许覆盖率在极限时略高于标称水平 $1-\alpha$（即保守性），但不允许低于标称水平。
+
+标准选择是 $\alpha = 0.05$，对应 95\% 置信区间。
+
+\section{假设检验}\label{sec:hypothesis-testing}
+
+在因果推断中，我们经常需要检验某种处理是否有效果。这引出了假设检验问题。
+
+\subsection{原假设与备择假设}
+
+最基本的形式是检验
+\[
+H_0: \theta = 0 \quad \text{（无因果效应）}
+\]
+vs
+\[
+H_1: \theta \neq 0 \quad \text{（存在因果效应）}.
+\]
+
+决策规则 $\phi$ 是数据的二元函数：$\phi = 1$ 表示拒绝 $H_0$，$\phi = 0$ 表示不拒绝 $H_0$。
+
+\subsection{第一类错误与第二类错误}
+
+\begin{Definition}[第一类错误率]\label{def:type-one-error}
+当 $H_0$ 成立时，定义检验 $\phi$ 的第一类错误率为
+\[
+\sup_{\theta, \eta} \Pr(\phi = 1),
+\]
+即在所有满足 $H_0$ 的参数值下，拒绝概率的最大值。
+\end{Definition}
+
+标准做法是控制第一类错误率不超过 $\alpha = 0.05$。
+
+\begin{Definition}[第二类错误率]\label{def:type-two-error}
+当 $H_0$ 不成立时，定义检验 $\phi$ 的第二类错误率为
+\[
+\Pr(\phi = 0) \quad \text{（在某个特定的 } H_1 \text{ 下）}.
+\]
+\end{Definition}
+
+\textbf{权衡}：在固定样本量下，减小第一类错误通常会导致第二类错误增大；反之亦然。要同时减小两类错误，必须增加样本量。
+
+\section{本章小结}
+
+本章回顾了概率论和统计推断的基础知识，为后续章节的渐近分析奠定了基础。
+
+\textbf{核心要点}：
+\begin{enumerate}
+  \item \textbf{相关系数}度量两个变量之间的线性依赖程度，其绝对值不超过 1（由 Cauchy-Schwarz 保证）
+  \item \textbf{多元正态分布}的边际分布和条件分布仍是正态的，条件均值是线性函数
+  \item \textbf{迭代期望}和\textbf{方差分解}是处理条件概率的强大工具
+  \item \textbf{大数定律}保证样本均值趋向于总体均值
+  \item \textbf{中心极限定理}给出样本均值收敛到正态分布的速度和分布
+  \item \textbf{Delta 法}允许我们得到非线性函数的渐近分布
+  \item \textbf{无偏性}和\textbf{一致性}是估计量的两个基本要求，但无偏性 $\not\Rightarrow$ 一致性
+  \item \textbf{置信区间}和\textbf{假设检验}提供了推断的不确定性量化工具
+\end{enumerate}
+
+这些工具将在后续章节中反复使用——特别是在讨论 Neyman 的渐近推断框架时。
+
+% === 附录脚注内容 ===
+
+% 附录：Delta 法详细推导
+
+\section{附录：Delta 法推导}\label{sec:appendix-delta-method}
+
+\textbf{背景}：Delta 法是得到非线性函数渐近分布的标准工具。它的核心思想是利用一阶泰勒展开近似。
+
+\textbf{目标}：证明若 $\sqrt{n}(\hat{\theta} - \theta) \xrightarrow{d} \mathrm{N}(0, \Sigma)$，且 $g$ 在 $\theta$ 处可导，则
+\[
+\sqrt{n}\{g(\hat{\theta}) - g(\theta)\} \xrightarrow{d} \mathrm{N}\left(0, (\nabla g(\theta))^\top \Sigma \nabla g(\theta)\right).
+\]
+
+\textbf{推导步骤}：
+
+\textbf{第一步：泰勒展开}。对 $g$ 在 $\theta$ 处做一阶泰勒展开：
+\[
+g(\hat{\theta}) = g(\theta) + \nabla g(\theta)^\top (\hat{\theta} - \theta) + R_n,
+\]
+其中余项 $R_n = o_p(|\hat{\theta} - \theta|)$。
+
+\textbf{第二步：代入}。因此
+\[
+\sqrt{n}\{g(\hat{\theta}) - g(\theta)\} = \sqrt{n} \nabla g(\theta)^\top (\hat{\theta} - \theta) + \sqrt{n} R_n.
+\]
+
+\textbf{第三步：余项可忽略}。因为 $\hat{\theta} - \theta = O_p(1/\sqrt{n})$，我们有
+\[
+\sqrt{n} R_n = \sqrt{n} \cdot o_p(|\hat{\theta} - \theta|) = o_p(1) \to 0.
+\]
+
+\textbf{第四步：线性变换}。由假设 $\sqrt{n}(\hat{\theta} - \theta) \xrightarrow{d} \mathrm{N}(0, \Sigma)$，而线性变换不改变渐近正态性：
+\[
+\sqrt{n} \nabla g(\theta)^\top (\hat{\theta} - \theta) \xrightarrow{d} \mathrm{N}\left(0, (\nabla g(\theta))^\top \Sigma \nabla g(\theta)\right).
+\]
+
+\textbf{结论}：结合第三步和第四步，利用 Slutsky 定理得到最终结果。\qed
+
+\subsection{比率的 Delta 法推导}\label{sec:appendix-ratio-delta-method}
+
+\textbf{目标}：在正文应用 A.1 的假设下，证明
+\[
+\sqrt{n}\left(\frac{Y_n}{X_n} - \frac{\mu_Y}{\mu_X}\right) \xrightarrow{d} \mathrm{N}\left(0, \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2 \sigma_X^2}{\mu_X^4} - \frac{2\mu_Y \sigma_{YX}}{\mu_X^3}\right).
+\]
+
+\textbf{推导步骤}：
+
+设 $g(Y, X) = Y/X$。则
+\[
+\frac{\partial g}{\partial Y} = \frac{1}{X}, \quad \frac{\partial g}{\partial X} = -\frac{Y}{X^2}.
+\]
+在 $(\mu_Y, \mu_X)$ 处求值：
+\[
+\nabla g(\mu_Y, \mu_X) = \begin{pmatrix} 1/\mu_X \\ -\mu_Y/\mu_X^2 \end{pmatrix}.
+\]
+
+应用 Delta 法，得到渐近方差：
+\[
+\text{Var} = \begin{pmatrix} 1/\mu_X & -\mu_Y/\mu_X^2 \end{pmatrix}
+\begin{pmatrix} \sigma_Y^2 & \sigma_{YX} \\ \sigma_{YX} & \sigma_X^2 \end{pmatrix}
+\begin{pmatrix} 1/\mu_X \\ -\mu_Y/\mu_X^2 \end{pmatrix}
+= \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2 \sigma_X^2}{\mu_X^4} - \frac{2\mu_Y \sigma_{YX}}{\mu_X^3}.
+\]
+
+\textbf{特例}：当 $Y_n$ 和 $X_n$ 渐近独立（$\sigma_{YX} = 0$）时，
+\[
+\text{Var} = \frac{\sigma_Y^2}{\mu_X^2} + \frac{\mu_Y^2 \sigma_X^2}{\mu_X^4}.
+\]
+
+\subsection{乘积的 Delta 法推导}\label{sec:appendix-product-delta-method}
+
+\textbf{目标}：在相同假设下，证明乘积 $X_n Y_n$ 的渐近正态性。
+
+设 $g(Y, X) = XY$。则
+\[
+\nabla g(\mu_Y, \mu_X) = \begin{pmatrix} \mu_X \\ \mu_Y \end{pmatrix}.
+\]
+
+渐近方差为：
+\[
+\text{Var} = \begin{pmatrix} \mu_X & \mu_Y \end{pmatrix}
+\begin{pmatrix} \sigma_Y^2 & \sigma_{YX} \\ \sigma_{YX} & \sigma_X^2 \end{pmatrix}
+\begin{pmatrix} \mu_X \\ \mu_Y \end{pmatrix}
+= \mu_X^2 \sigma_Y^2 + \mu_Y^2 \sigma_X^2 + 2\mu_X \mu_Y \sigma_{YX}.
+\]
+
+\textbf{特例}：当 $X_n$ 和 $Y_n$ 渐近独立时，$\text{Var} = \mu_Y^2 \sigma_X^2 + \mu_X^2 \sigma_Y^2$。

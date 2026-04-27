@@ -1,7 +1,7 @@
 % Chapter 24: Fuzzy Regression Discontinuity
 % A First Course in Causal Inference - Peng Ding
 
-\chapter{模糊断点回归}
+\chapter{模糊断点回归}\label{ch:24}
 
 \section{本章导论}
 
@@ -13,11 +13,12 @@
 
 \subsection{清晰断点回归的回顾}
 
-在第 20 章中，我们学习了\textbf{清晰断点回归}（Sharp RDD）。其核心设定是：治疗分配 $Z_i = I(X_i \geq x_0)$ 由运行变量（running variable） $X_i$ 在断点 $x_0$ 处\textbf{确定性}地决定。
+在第 \ref{ch:20} 章中，我们学习了\textbf{清晰断点回归}（Sharp RDD）。其核心设定是：治疗分配 $Z_i = I(X_i \geq x_0)$ 由运行变量（running variable） $X_i$ 在断点 $x_0$ 处\textbf{确定性}地决定。
 
 在清晰 RDD 下，潜在结果 $\{Y_i(1), Y_i(0)\}$ 在断点处的期望差可以识别：
 \[
 \tau_Y(x_0) = \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 - \varepsilon).
+\tag{推导见附录 \cref{sec:appendix-sharp-rdd}}
 \]
 
 \subsection{模糊断点回归的引入}
@@ -34,13 +35,13 @@
 
 \section{动机实例}
 
-\begin{Example}[印度农村道路项目]\label{eg:indian-road}
-\citet{asther2020rural} 研究了印度政府 2000 年启动的"总理乡村道路计划"。该计划根据 2001 年人口普查的阈值来优先考虑规模较大的村庄。
+\begin{Example}[印度农村道路项目]\label{eg:indian-road-frdd}
+\citet{asher2020rural} 研究了印度政府 2000 年启动的"总理乡村道路计划"。该计划根据 2001 年人口普查的阈值来优先考虑规模较大的村庄。
 
 关键点：村庄人口规模与阈值的差并不能\textbf{直接决定}是否获得道路——它只改变了获得道路的\textbf{概率}。在断点附近，获得道路的概率发生了跳跃，但不是从 0 到 1 的确定性跳跃。
 \end{Example}
 
-\begin{Example}[意大利大学助学金项目]\label{eg:italian-university}
+\begin{Example}[意大利大学助学金项目]\label{eg:italian-university-frdd}
 \citet{li2015evaluating} 研究了意大利大学助学金对辍学率的影响。学生如果标准化家庭收入低于 15,000 欧元，则有资格获得助学金。
 
 为获得助学金，学生必须先申请。因此，资格状态和申请状态共同决定了最终治疗状态。运行变量（15,000 减去标准化家庭收入）单独并不能决定治疗状态，但它在断点处改变了治疗概率。
@@ -51,6 +52,7 @@
 设 $X_i$ 为运行变量，断点为 $x_0$。定义工具变量：
 \[
 Z_i = I(X_i \geq x_0).
+\tag{24.1}
 \]
 
 治疗分配 $D_i$ 可能不等于 $Z_i$，但条件概率 $\mathbb{P}(D_i = 1 \mid X_i = x)$ 在 $x_0$ 处有跳跃。
@@ -70,51 +72,50 @@ Z_i = I(X_i \geq x_0).
 清晰 RDD 可以识别：
 \[
 \tau_D(x_0) = \mathbb{E}\{D(1) - D(0) \mid X = x_0\}
+\tag{24.2}
 \]
 和
 \[
 \tau_Y(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}.
+\tag{24.3}
 \]
 
 使用 $Z$ 作为 $D$ 的工具变量，并施加工具变量假设（在 $X = x_0$ 邻域内），我们可以通过应用定理来识别局部依从者平均因果效应（Local Complier Average Causal Effect, LATE）。
 
-\begin{Theorem}[模糊 RDD 识别]\label.thm:identification-frdd}
+\begin{Theorem}[模糊 RDD 识别]\label.thm:frdd-identification}
 设治疗由 $Z = I(X \geq x_0)$ 决定，其中 $x_0$ 是预定的阈值。
 
 假设\textbf{单调性}：
 \[
 D_i(1) \geq D_i(0),
+\tag{24.4}
 \]
 和\textbf{排除限制}：
 \[
 D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
+\tag{24.5}
 \]
 在 $x_0$ 的无穷小邻域内成立。
 
 局部依从者平均因果效应定义为：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid D(1) > D(0), X = x_0\},
+\tag{24.6}
 \]
 可以由下式识别：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \frac{\mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}}{\mathbb{E}\{D(1) - D(0) \mid X = x_0\}}.
+\tag{24.7}
 \]
 
 进一步假设 $E\{D(1) \mid X = x\}$ 和 $E\{Y(1) \mid X = x\}$ 在 $x = x_0$ 处右连续，$E\{D(0) \mid X = x\}$ 和 $E\{Y(0) \mid X = x\}$ 在 $x = x_0$ 处左连续。如果 $E(D \mid X = x)$ 在 $x = x_0$ 处有非零跳跃，则局部依从者平均因果效应可以由下式识别：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \frac{\lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 0, X = x_0 - \varepsilon)}{\lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 0, X = x_0 - \varepsilon)}.
+\tag{24.8}
 \]
 \end{Theorem}
 
-\cref{fig:frdd-identification} 展示了识别公式的几何直观。
-
-\begin{figure}
-\centering
-%\includegraphics[width = \textwidth]{figures/frdd_identification.pdf}
-\caption{模糊断点回归识别公式的几何直观}\label{fig:frdd-identification}
-\end{figure}
-
-\textbf{定理 \ref.thm:identification-frdd} 的直觉}：这是定理 \ref.thm:identification-rdd} 和定理 \ref.thm:CACE-identification} 的叠加。分子是清晰 RDD 识别 $\tau_Y(x_0)$，分母是清晰 RDD 识别 $\tau_D(x_0)$。两者相除，得到依从者亚组的平均因果效应。
+\textbf{定理 \cref{th:frdd-identification} 的直觉}：这是清晰 RDD 识别和 IV 识别定理的叠加。分子是清晰 RDD 识别 $\tau_Y(x_0)$，分母是清晰 RDD 识别 $\tau_D(x_0)$。两者相除，得到依从者亚组的平均因果效应。
 
 \textbf{识别策略的核心思想}：在模糊 RDD 中，我们不再假设治疗由运行变量完全决定，而是假设工具变量 $Z$ 通过影响治疗概率来间接影响结果。这与标准 IV 框架的区别在于：IV 假设在断点的邻域内成立，而不是对全体样本成立。
 
@@ -136,46 +137,66 @@ D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
 
 \textbf{第一步}：估计第一阶段关系
 \[
-\hat{\tau}_D(x_0) = Z_i \text{ 在 OLS 回归 } D_i \sim \{1, Z_i, R_i, L_i\} \text{ 中的系数},
+\hat{\tau}_D(x_0) = \text{the coefficient of } Z_i \text{ in the OLS fit of } D_i \text{ on } \{1, Z_i, R_i, L_i\},
+\tag{24.9}
 \]
 其中 $R_i = \max(X_i - x_0, 0)$，$L_i = \min(X_i - x_0, 0)$。
 
 \textbf{第二步}：估计约简型关系
 \[
-\hat{\tau}_Y(x_0) = Z_i \text{ 在 OLS 回归 } Y_i \sim \{1, Z_i, R_i, L_i\} \text{ 中的系数}.
+\hat{\tau}_Y(x_0) = \text{the coefficient of } Z_i \text{ in the OLS fit of } Y_i \text{ on } \{1, Z_i, R_i, L_i\}.
+\tag{24.10}
 \]
 
 \textbf{第三步}：计算比率
 \[
 \hat{\tau}_{\mathrm{LATE}}(x_0) = \hat{\tau}_Y(x_0) / \hat{\tau}_D(x_0).
+\tag{24.11}
 \]
 
-这被称为\textbf{间接最小二乘估计器}（Indirect Least Squares Estimator）。根据定理 \ref.thm:ils=2sls}，它数值上等同于：
+这被称为\textbf{间接最小二乘估计器}（Indirect Least Squares Estimator）。根据定理，间接最小二乘估计器数值上等同于：
 \[
-Y_i \text{ 对 } \{1, D_i, R_i, L_i\} \text{ 进行 TSLS 回归，其中 } D_i \text{ 以 } Z_i \text{ 为工具变量}.
+\text{the coefficient of } D_i \text{ in the TSLS fit of } Y_i \text{ on } \{1, D_i, R_i, L_i\}
 \]
+with $D_i$ instrumented by $Z_i$。
 
 总之，在指定 $h$ 后，$\tau_{\mathrm{LATE}}(x_0)$ 的估计归结为断点邻域内的 TSLS 程序。
 
 \section{数据应用}
 
-\subsection{印度农村道路数据}\label{sec:indian-road-app}
+\subsection{印度农村道路数据}\label{sec:indian-road-app-frdd}
 
-重温 \cref{eg:indian-road}。我们可以基于结果 \texttt{occupation\_index\_andrsn} 计算一系列 $h$ 的点估计和标准误。
+重温 \cref{eg:indian-road-frdd}。我们可以基于结果 \texttt{occupation\_index\_andrsn} 计算一系列 $h$ 的点估计和标准误。
 
 \cref{fig:indian_road_frdd} 展示了结果。除非 $h$ 很大，否则治疗效应不显著。
 
-\subsection{意大利大学助学金数据}\label{sec:italian-university-app}
+\begin{figure}
+\centering
+%\includegraphics[width = 0.9\textwidth]{figures/frd_indian.pdf}
+\caption{重分析 \citet{asher2020rural} 的数据，TSLS 的点估计和标准误}\label{fig:indian_road_frdd}
+\end{figure}
 
-重温 \cref{eg:italian-university}。运行变量定义为 15,000 减去标准化家庭收入。分析中将数据限制在 $[-5000, 5000]$ 的子集，然后除以 5000 使运行变量有界于 $[-1, 1]$。
+\subsection{意大利大学助学金数据}\label{sec:italian-university-app-frdd}
+
+重温 \cref{eg:italian-university-frdd}。运行变量定义为 15,000 减去标准化家庭收入。分析中将数据限制在 $[-5000, 5000]$ 的子集，然后除以 5000 使运行变量有界于 $[-1, 1]$。
 
 \cref{fig:italy_university_frdd} 展示了结果，表明大学助学金对辍学率没有显著影响。
 
+\begin{figure}
+\centering
+%\includegraphics[width = 0.9\textwidth]{figures/frd_italy.pdf}
+\caption{重分析 \citet{li2015evaluating} 的数据，TSLS 的点估计和标准误}\label{fig:italy_university_frdd}
+\end{figure}
+
 \section{讨论}
 
-第 20 章和本章都将断点回归建立在给定运行变量时潜在结果条件期望的连续性之上。这个视角在数学上更简单，但它只能精确识别运行变量断点处的局部效应。\citet{hahn2001identification} 开创了这一研究路线。
+第 \ref{ch:20} 章和本章都将断点回归建立在给定运行变量时潜在结果条件期望的连续性之上。这个视角在数学上更简单，但它只能精确识别运行变量断点处的局部效应。\citet{hahn2001identification} 开创了这一研究路线。
 
 另一种不那么主流的视角基于\textbf{局部随机化}（local randomization）。\citep{cattaneo2015randomization, li2015evaluating}。如果我们视运行变量为某种底层真实值的噪声测量，而断点有些任意地选择，那么断点附近的单元在系统上并没有差异。这表明在断点的较小邻域内，单元以随机方式接受治疗和控制——就像在随机实验中一样。
+
+与清晰 RDD 的选择邻域问题类似，在局部随机化视角下，决定随机实验应该有多"局部"也是至关重要的。将这种直觉数学量化并不容易，因此对一系列带宽 $h$ 进行敏感性分析似乎也是第二种视角下的合理方法。
+
+\citet{sekhon2017interpreting} 提供了断点回归的概念性讨论。
 
 \section{本章小结}
 
@@ -193,7 +214,7 @@ Y_i \text{ 对 } \{1, D_i, R_i, L_i\} \text{ 进行 TSLS 回归，其中 } D_i \
 \section{习题}
 
 \begin{Exercise}{\ref{exr:24-1} 模糊 RDD 识别定理的证明}\label{exr:24-1}
-证明 \cref.thm:identification-frdd} 中的识别公式。
+证明 \cref{th:frdd-identification} 中的识别公式。
 \end{Exercise}
 
 \begin{Exercise}{\ref{exr:24-2} 清晰 RDD 与模糊 RDD 的比较}\label{exr:24-2}
@@ -205,7 +226,7 @@ Y_i \text{ 对 } \{1, D_i, R_i, L_i\} \text{ 进行 TSLS 回归，其中 } D_i \
 \end{Exercise}
 
 \begin{Exercise}{\ref{exr:24-3} 带宽敏感性分析}\label{exr:24-3}
-对于 \cref{sec:indian-road-app} 中的印度道路数据，使用不同的带宽 $h$ 进行敏感性分析。报告点估计和标准误如何随 $h$ 变化。
+对于 \cref{sec:indian-road-app-frdd} 中的印度道路数据，使用不同的带宽 $h$ 进行敏感性分析。报告点估计和标准误如何随 $h$ 变化。
 \end{Exercise}
 
 \begin{Exercise}{\ref{exr:24-4} ILS 与 TSLS 的等价性}\label{exr:24-4}
