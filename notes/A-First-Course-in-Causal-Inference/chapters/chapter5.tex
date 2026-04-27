@@ -1,6 +1,6 @@
 % Chapter 5: Stratification and Post-Stratification in Randomized Experiments
 % A First Course in Causal Inference - Peng Ding
-% Draft V2 - Rewritten with Stein Academic Style
+% Draft V3 - Final Version (after review)
 
 \chapter{分层与后分层随机实验}\label{ch:5}
 
@@ -108,7 +108,7 @@ FRT 的基本思想适用于任何随机实验：我们可以用任何检验统�
 \[
 T = \hat{\tau}_{\mathrm{S}} = \sum_{k=1}^{K} \pi_{[k]} \hat{\tau}_{[k]} ,
 \]
-其中 $\hat{\tau}_{[k]}$ 由 \cref{eq:5-stratum-diff-means} 定义。这个统计量直接衡量了跨层的平均treatment effect。
+其中 $\hat{\tau}_{[k]}$ 由 \cref{eq:5-stratum-diff-means} 定义。这个统计量直接衡量了跨层的平均因果效应。
 \end{Example}
 
 \subsubsection{学生化分层估计量}\label{sec:5-studentized-statistic}
@@ -126,7 +126,7 @@ t_\SRE = \frac{\hat\tau_\SRE}{\sqrt{\hat V_\SRE}} ,
 这里 $\hat S_{[k]}^2(1)$ 和 $\hat S_{[k]}^2(0)$ 分别是治疗组和对照组结果在第 $k$ 层内的样本方差。\footnote{式 \cref{eq:5-studentized-t} 和 \cref{eq:5-sre-variance-estimator} 的期望和方差推导见附录 \cref{sec:appendix-5-studentized-t}。}
 
 \begin{Example}[学生化分层统计量的应用]\label{ex:5-studentized}
-对于 \cref{eq:5-studentized-t} 中的学生化统计量 $t_\SRE$，我们需要计算其方差估计量 $\hat V_\SRE$（由 \cref{eq:5-sre-variance-estimator} 给出）。在 FRT 中，我们通过模拟所有可行的treatment分配来计算 $t_\SRE$ 的精确分布。
+对于 \cref{eq:5-studentized-t} 中的学生化统计量 $t_\SRE$，我们需要计算其方差估计量 $\hat V_\SRE$（由 \cref{eq:5-sre-variance-estimator} 给出）。在 FRT 中，我们通过模拟所有可行的 treatment 分配来计算 $t_\SRE$ 的精确分布。
 \end{Example}
 
 \subsubsection{合并 Wilcoxon 秩和统计量}\label{sec:5-wilcoxon}
@@ -140,7 +140,7 @@ W_\SRE = \sum_{k=1}^K c_{[k]} W_{[k]} .
 \citet{VanElteren:1960} 提出了两种加权方法：一种使用 $c_{[k]} = 1 / (n_{[k]1} n_{[k]0})$，另一种使用 $c_{[k]} = 1 / (n_{[k]} + 1)$。
 
 \begin{Example}[Van Elteren 统计量的应用]\label{ex:5-wilcoxon}
-在第 $k$ 层内，我们计算 Wilcoxon 秩和统计量 $W_{[k]}$（回忆第 \ref{ch:4} 章的 \cref{ex:4-wilcoxon-rank-sum}）。然后使用 \cref{eq:5-wilcoxon-combined} 合并各层统计量。Van Elteren (1960) 的两种加权方法在不同场景下各有优势。
+在第 $k$ 层内，我们计算 Wilcoxon 秩和统计量 $W_{[k]}$（回忆第 \ref{ch:4} 章的 Wilcoxon 秩和检验），然后使用 \cref{eq:5-wilcoxon-combined} 合并各层统计量。Van Elteren (1960) 的两种加权方法在不同场景下各有优势。
 \end{Example}
 
 \subsubsection{Hodges--Lehmann 对齐秩统计量}\label{sec:5-hodges-lehmann}
@@ -286,11 +286,11 @@ CRE 下差值均值估计量的方差分解为：\footnote{完整推导见附录
 
 \section{实践中的问题}\label{sec:5-practice}
 
-如何选择 $X$ 来构建 SRE？理论上，$X$ 应该能预测潜在结果。在某些情况下，实验者根据先导研究等对预测协变量有足够的背景知识，那么 $X$ 的选择是 straightforward 的。在其他情况下，这种背景知识不够清晰，实验者反而根据方便性选择 $X$——例如，$X$ 可以是研究区域的指示变量或学生年级。
+如何选择 $X$ 来构建 SRE？理论上，$X$ 应该能预测潜在结果。在某些情况下，实验者根据先导研究等对预测协变量有足够的背景知识，那么 $X$ 的选择可以直接确定。在其他情况下，这种背景知识不够清晰，实验者反而根据方便性选择 $X$——例如，$X$ 可以是研究区域的指示变量或学生年级。
 
 \textbf{$K$ 的选择是一个相关问题}。理论上，如果所有层都足够大，增加 $K$ 会提高估计效率。然而，极端大的 $K$ 甚至可能降低估计效率。在模拟研究中，我们观察到增加 $K$ 的边际收益递减。经验上，$K = 5$ 通常足以获得效率增益。
 
-\textbf{多维连续协变量怎么办？} 如果我们有先导研究，可以建立给定这些协变量时潜在结果 $Y(0)$ 的模型，然后选择 $X$ 为预测量 $\hat Y(0)$ 的离散化版本。一般地，如果我们没有这样的先导研究或者不想做 ad hoc 的离散化，我们可以使用一种更通用的策略，称为\textbf{重随机化（rerandomization）}。
+\textbf{多维连续协变量怎么办？} 如果我们有先导研究，可以建立给定这些协变量时潜在结果 $Y(0)$ 的模型，然后选择 $X$ 为预测量 $\hat Y(0)$ 的离散化版本。一般地，如果我们没有这样的先导研究或者不想做特设的离散化，我们可以使用一种更通用的策略，称为\textbf{重随机化（rerandomization）}。
 
 \section{本章小结}\label{sec:5-summary}
 
