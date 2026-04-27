@@ -1,0 +1,285 @@
+% Chapter 20: The Parallel World Framework
+% A First Course in Causal Inference - Peng Ding
+% Rewrite V1 - Stein Narrative Style
+
+\chapter{平行世界框架}\label{ch:20}
+
+\section{引言：跨越两个世界的桥梁}\label{sec:20-intro}
+
+\textit{``If we could intervene on a unit and set its treatment, then we would know its potential outcome under that treatment. But what if the treatment is deterministic for some units? Can we still conceive their counterfactual outcomes?''}
+--- \citep[adapted from King and Zeng, 2006]{}
+
+在因果推断中，我们始终面对一个根本性的哲学困难：对于每个单元，我们只能观测到**一个**世界的结果，而必须推断**另一个**世界的结果。Rubin 的潜在结果框架（Rubin, 1974, 1975）用数学语言精确化了这个直观的"平行世界"隐喻。
+
+在第 \ref{ch:11} 章讨论倾向得分时，我们遇到了一个关键的技术性假设——\textbf{重叠假设（overlap assumption）}：
+
+\[
+0 < e(X) < 1 .
+\tag{20.1}
+\label{eq:overlap-assumption}
+
+\]
+
+这个假设保证每个单元都有正概率接受两种治疗，从而允许我们比较同一单元在不同治疗下的潜在结果。然而，当 $e(X) = 0$ 或 $e(X) = 1$ 时，事情变得微妙起来：如果一个单元注定接受治疗，那么谈论它在"如果没接受治疗"情况下的潜在结果还有意义吗？
+
+本章将深入探讨这一哲学困难，并介绍一个优雅的解决方案——\textbf{回归断点设计（Regression Discontinuity, RD）}。
+
+\section{重叠假设的隐含要求}\label{sec:20-overlap-implications}
+
+在第 \ref{ch:11} 章我们看到，倾向得分方法的有效性依赖于重叠假设 \cref{eq:overlap-assumption}。然而，D'Amour 等人（2021）指出了一个令人不安的矛盾：
+
+\begin{itemize}
+  \item \textbf{更多协变量}使可忽略性假设（ignorability）更可信（忽略第 \ref{ch:16} 章讨论的 M-bias）；
+  \item \textbf{更多协变量}使重叠假设更不可信，因为治疗分配变得更加可预测。
+\end{itemize}
+
+这个张力在高清协变量场景中尤为突出。严格重叠假设要求：
+
+\begin{Assumption}[严格重叠]\label{ass:strict-overlap}
+存在某个 $\eta \in (0, 1/2)$ 使得
+\[
+\eta \leq e(X) \leq 1 - \eta .
+\]
+\end{Assumption}
+
+D'Amour 等人（2021）证明了严格重叠假设在协变量维度 $p$ 很大时具有极强的隐含条件。\footnote{推导见附录 \cref{sec:appendix-20-overlap-proof}}
+
+\begin{Theorem}[D'Amour et al., 2021]\label{th:20-overlap-implication}
+在 \cref{ass:strict-overlap} 下，设 $e = \pr(Z=1)$ 为治疗组比例，$\lambda_1$ 和 $\lambda_0$ 分别为 $X|Z=1$ 和 $X|Z=0$ 条件下协变量矩阵的最大特征值。则
+\[
+\frac{1}{p} \sum_{k=1}^{p} \bigl| \mathbb{E}(X_k \mid Z=1) - \mathbb{E}(X_k \mid Z=0) \bigr|
+\leq p^{-1/2} C^{1/2} \bigl\{ e \lambda_1^{1/2} + (1-e) \lambda_0^{1/2} \bigr\},
+\tag{20.2}
+\label{eq:overlap-theorem}
+\]
+其中 $C = \dfrac{(e-\eta)(1-e-\eta)}{e^2(1-e)^2\eta(1-\eta)}$ 是仅依赖于 $(e,\eta)$ 的正常数。
+\end{Theorem}
+
+\cref{eq:overlap-theorem} 的含义是深刻的：严格重叠假设要求治疗组和对照组在所有协变量维度上的均值差异都趋近于零。在高维情况下，这是一个极强的要求——它几乎等同于要求两组在每一维上都达到近乎完美的平衡。
+
+\section{当重叠失败时：修整与结果建模}\label{sec:20-when-overlap-fails}
+
+当 \cref{ass:strict-overlap} 不成立时，一个常见的策略是基于估计的倾向得分进行\textbf{修整（trimming）}（Crump 等, 2009; Yang and Ding, 2018b）。修整删除了重叠区域外的单元，从而改变了目标总体和估计量。
+
+然而，D'Amour 等人（2021）的上述结果暗示了一个令人担忧的事实：在高维场景中，我们需要修整更大比例的单元才能达到满意的重叠。这意味着修整可能显著改变我们的研究问题。
+
+另一个思路是转向\textbf{结果建模}。如果在高清协变量下，结果均值仅依赖于 $X$ 的某个低维函数 $r(X)$：
+
+\[
+\mathbb{E}\{Y(z) \mid X\} = f_z(r(X)), \quad (z=0,1),
+\tag{20.3}
+\label{eq:outcome-modeling}
+\]
+
+那么控制 $r(X)$ 就足够了。由于维度约化，$r(X)$ 上的严格重叠条件可能远弱于 $X$ 上的。\footnote{详细理论见附录 \cref{sec:appendix-20-outcome-modeling}}
+
+这个方向在概念上直截了当，但相应的理论和方法仍有待发展。
+
+\section{无重叠情形下的因果推断：回归断点设计}\label{sec:20-rd-intro}
+
+让我们从最简单的情况开始——单位协变量 $X$。一种极端的治疗分配机制是确定性的：
+
+\[
+Z = \mathbb{I}(X \geq x_0),
+\tag{20.4}
+\label{eq:rd-treatment-rule}
+
+\]
+
+其中 $x_0$ 是预设的阈值。
+
+这种分配的一个有趣后果是：可忽略性假设自动成立——
+
+\[
+Z \perp \{Y(1), Y(0)\} \mid X ,
+\tag{20.5}
+\label{eq:rd-ignorability}
+
+\]
+
+因为 $Z$ 是 $X$ 的确定性函数，而常数与任何随机变量独立。然而，重叠假设必然被违反：
+
+\[
+e(x) = \pr(Z=1 \mid X=x) = \mathbb{I}(x \geq x_0) =
+\begin{cases}
+1 & \text{若 } x \geq x_0, \\
+0 & \text{若 } x < x_0 .
+\end{cases}
+\tag{20.6}
+\label{eq:rd-propensity}
+
+\]
+
+这正是\textbf{回归断点设计（RD）}的核心思想。
+
+\subsection{RD 的经典例子}\label{sec:20-rd-examples}
+
+\textbf{例 20.1}（学业成就证书效应）Thistlethwaite 和 Campbell（1960）首次提出了回归断点分析的想法。他们的动机问题是：学生获得"优异证书"对其后来职业规划的影响。证书是否获得取决于学生的"奖学金资格考试"成绩是否超过某个阈值。
+
+\textbf{例 20.2}（HIV 治疗时机）Bor 等（2014）利用回归断点研究 HIV 患者何时开始抗逆转录病毒治疗对死亡率的影响。治疗取决于患者的 CD4 计数是否低于 200 cells/$\mu$L。
+
+\textbf{例 20.3}（最低饮酒年龄）Carpenter 和 Dobkin（2009）研究了酒精消费对死亡率的影响，利用法定最低饮酒年龄作为酒精消费的断点。
+
+\subsection{RD 的数学表述}\label{sec:20-rd-math}
+
+决定治疗的变量 $X$ 称为\textbf{运行变量（running variable）}。直观上，回归断点可以识别断点 $x_0$ 处的局部平均因果效应：
+
+\[
+\tau(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}.
+\tag{20.7}
+\label{eq:rd-local-ace}
+
+\]
+
+\begin{Theorem}[RD 识别定理]\label{th:20-rd-identification}
+假设治疗由 $Z = \mathbb{I}(X \geq x_0)$ 确定，其中 $x_0$ 是预设阈值。假设 $\mathbb{E}\{Y(1) \mid X=x\}$ 在 $x_0$ 处右连续，$\mathbb{E}\{Y(0) \mid X=x\}$ 在 $x_0$ 处左连续。则在 $X=x_0$ 处的局部平均因果效应由下式识别：
+\[
+\tau(x_0) = \lim_{\varepsilon \to 0^+} \mathbb{E}(Y \mid Z=1, X=x_0+\varepsilon) - \lim_{\varepsilon \to 0^+} \mathbb{E}(Y \mid Z=0, X=x_0-\varepsilon).
+\tag{20.8}
+\label{eq:rd-identification}
+\]
+\end{Theorem}
+
+由于 \cref{eq:rd-identification} 的右端仅涉及可观测量，参数 $\tau(x_0)$ 是非参数可识别的。\footnote{证明见附录 \cref{sec:appendix-20-rd-proof}}
+
+\subsection{边界附近的回归分析}\label{sec:20-rd-regression}
+
+假设 $\mathbb{E}(Y \mid Z=1, X=x) = \gamma_1 + \beta_1 x$ 和 $\mathbb{E}(Y \mid Z=0, X=x) = \gamma_0 + \beta_0 x$ 关于 $x$ 线性。则我们可以估计 $x_0$ 处的平均因果效应为
+
+\[
+\hat{\tau}(x_0) = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0) x_0 .
+\tag{20.9}
+\label{eq:rd-ols-estimator}
+
+\]
+
+数值上，$\hat{\tau}(x_0)$ 与 OLS 回归
+
+\[
+Y_i \sim \{1, Z_i, X_i - x_0, Z_i(X_i - x_0)\}
+\tag{20.10}
+\label{eq:rd-ols-model}
+
+\]
+
+中 $Z_i$ 的系数相同。\footnote{代数推导见附录 \cref{sec:appendix-20-ols-equivalence}}
+
+然而，这种方法对线性模型假设的违背可能敏感。理论建议仅使用断点附近的局部观测值进行回归。\texttt{rdrobust} 包实现了各种"局部"带宽选择，这本质上是一种敏感性分析。
+
+\subsection{RD 的问题}\label{sec:20-rd-problems}
+
+RD 分析可能出什么问题？技术上，关键挑战在于指定断点附近的邻域。
+
+此外，\cref{th:20-rd-identification} 的连续性条件可能在实践中被违背。例如，如果死亡率在 21 岁有跳跃，我们可能无法将 \cref{fig:mlda} 中的死亡跳跃归因于最低饮酒年龄的变化。
+
+McCrary（2008）提出了一个间接的有效性检验：检查运行变量在断点处的密度。运行变量密度在断点处的不连续性可能表明某些单元能够完美地操控其治疗状态。
+
+\section{本章小结}\label{sec:20-summary}
+
+本章探讨了当重叠假设不成立时的因果推断策略：
+
+\begin{enumerate}
+  \item \textbf{重叠假设的困难}：高维协变量下，严格重叠是一个极强的要求，几乎要求治疗组和对照组在所有维度上平衡。
+  \item \textbf{修整与结果建模}：当重叠有限时，修整可以恢复重叠但会改变目标总体；结果建模提供了一种在维度约化下可能更温和的重叠条件。
+  \item \textbf{回归断点设计}：当治疗分配完全由运行变量决定时，RD 提供了一种不依赖重叠假设的识别策略，识别断点处的局部平均因果效应。
+\end{enumerate}
+
+RD 设计的核心洞察在于：当确定性治疗分配使得某些单元的潜在结果在物理上无法构想时（"如果接受治疗"的单元永远不可能被分配到对照组），我们可以将注意力转向边界处的局部效应——那里的单元恰好在阈值两侧，其潜在结果是可构想的。
+
+\section*{附录：公式推导}\label{sec:appendix-20}
+
+\subsection{定理 \cref{th:20-overlap-implication} 的证明}\label{sec:appendix-20-overlap-proof}
+
+为完整性起见，我们给出 \cref{th:20-overlap-implication} 的简要推导。\footnote{详细内容见 D'Amour et al. (2021, Corollary 1)}
+
+设 $\Sigma_1 = \cov(X \mid Z=1)$ 和 $\Sigma_0 = \cov(X \mid Z=0)$。根据条件协方差的分解，
+
+\[
+\Sigma = \mathbb{E}\{\cov(X \mid Z)\} + \cov\{\mathbb{E}(X \mid Z)\}.
+\tag{20.11}
+\label{eq:cov-decomposition}
+
+\]
+
+在严格重叠假设下，$\Sigma_1$ 和 $\Sigma_0$ 的特征值以 $C$ 为界。利用 Cauchy-Schwarz 不等式和对偶范数，我们得到
+
+\[
+\frac{1}{p} \sum_{k=1}^p |\mathbb{E}(X_k \mid Z=1) - \mathbb{E}(X_k \mid Z=0)|
+\leq \frac{1}{\sqrt{p}} \|\Sigma^{1/2}\| \cdot \|d\|,
+\tag{20.12}
+\label{eq:overlap-proof-step}
+
+\]
+
+其中 $d = \mathbb{E}(X \mid Z=1) - \mathbb{E}(X \mid Z=0)$ 是均值差异向量，$\|\cdot\|$ 是欧几里得范数。结合 \cref{eq:cov-decomposition} 和严格重叠给出的特征值界，我们得到 \cref{eq:overlap-theorem}。\qed
+
+\subsection{结果建模的定理}\label{sec:appendix-20-outcome-modeling}
+
+在 \cref{eq:outcome-modeling} 下，均衡因果效应 $\tau = \mathbb{E}\{Y(1) - Y(0)\}$ 可由下式识别：
+
+\[
+\tau = \mathbb{E}\bigl\{ \mathbb{E}(Y \mid Z=1, r(X)) - \mathbb{E}(Y \mid Z=0, r(X)) \bigr\}
+\tag{20.13}
+\label{eq:outcome-modeling-formula}
+
+\]
+
+或等价地，
+
+\[
+\tau = \mathbb{E}\left\{ \frac{ZY}{e(r(X))} \right\} - \mathbb{E}\left\{ \frac{(1-Z)Y}{1-e(r(X))} \right\},
+\tag{20.14}
+\label{eq:outcome-modeling-ipw}
+
+\]
+
+其中 $e(r(X)) = \pr\{Z=1 \mid r(X)\}$。\footnote{证明思路：利用 $r(X)$ 上的条件期望和潜在结果的定义，直接展开即可。}
+
+\subsection{定理 \cref{th:20-rd-identification} 的证明}\label{sec:appendix-20-rd-proof}
+
+由右连续性，
+
+\[
+\mathbb{E}\{Y(1) \mid X=x_0\} = \lim_{\varepsilon \to 0^+} \mathbb{E}\{Y(1) \mid X=x_0+\varepsilon\}.
+\tag{20.15}
+\label{eq:rd-proof-right}
+
+\]
+
+由 $Z$ 的定义，当 $X=x_0+\varepsilon$ 时，$Z=1$，因此
+
+\[
+\mathbb{E}\{Y(1) \mid X=x_0+\varepsilon\} = \mathbb{E}(Y \mid Z=1, X=x_0+\varepsilon).
+\tag{20.16}
+\label{eq:rd-proof-z}
+
+\]
+
+左连续性给出 $\mathbb{E}\{Y(0) \mid X=x_0\}$ 的类似表达式。取差即得 \cref{eq:rd-identification}。\qed
+
+\subsection{OLS 等价性的推导}\label{sec:appendix-20-ols-equivalence}
+
+设 $R_i = \max(X_i - x_0, 0)$ 和 $L_i = \min(X_i - x_0, 0)$。则
+
+\[
+Z_i(X_i - x_0) = Z_i R_i - (1-Z_i)L_i = R_i - L_i - (1-Z_i)R_i + (1-Z_i)L_i .
+\tag{20.17}
+\label{eq:rd-ols-expand}
+
+\]
+
+在模型 $Y_i \sim \{1, Z_i, X_i-x_0, Z_i(X_i-x_0)\}$ 中，$Z_i$ 的系数为
+
+\[
+\hat{\tau} = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0)x_0 .
+\tag{20.18}
+\label{eq:rd-ols-tau}
+
+\]
+
+这与 \cref{eq:rd-ols-estimator} 相同。类似地，对模型 $Y_i \sim \{1, Z_i, R_i, L_i\}$ 展开并比较系数可得相同结果。\qed
+
+% 需要添加到 references.bib 的条目：
+% DAmour et al. (2021), King and Zeng (2006), Crump et al. (2009), Yang and Ding (2018b),
+% Thistlethwaite and Campbell (1960), Bor et al. (2014), Carpenter and Dobkin (2009),
+% Lee (2008), Rubin (2008), McCrary (2008)
