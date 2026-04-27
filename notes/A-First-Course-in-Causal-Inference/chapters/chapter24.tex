@@ -18,7 +18,7 @@
 在清晰 RDD 下，潜在结果 $\{Y_i(1), Y_i(0)\}$ 在断点处的期望差可以识别：
 \[
 \tau_Y(x_0) = \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid X = x_0 - \varepsilon).
-\tag{推导见附录 \cref{sec:appendix-sharp-rdd}}
+\tag{24.1}\label{eq:24-sharp-rdd}
 \]
 
 \subsection{模糊断点回归的引入}
@@ -52,7 +52,7 @@
 设 $X_i$ 为运行变量，断点为 $x_0$。定义工具变量：
 \[
 Z_i = I(X_i \geq x_0).
-\tag{24.1}
+\label{eq:24-running-var}
 \]
 
 治疗分配 $D_i$ 可能不等于 $Z_i$，但条件概率 $\mathbb{P}(D_i = 1 \mid X_i = x)$ 在 $x_0$ 处有跳跃。
@@ -72,50 +72,50 @@ Z_i = I(X_i \geq x_0).
 清晰 RDD 可以识别：
 \[
 \tau_D(x_0) = \mathbb{E}\{D(1) - D(0) \mid X = x_0\}
-\tag{24.2}
+\label{eq:24-tau-d}
 \]
 和
 \[
 \tau_Y(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}.
-\tag{24.3}
+\label{eq:24-tau-y}
 \]
 
 使用 $Z$ 作为 $D$ 的工具变量，并施加工具变量假设（在 $X = x_0$ 邻域内），我们可以通过应用定理来识别局部依从者平均因果效应（Local Complier Average Causal Effect, LATE）。
 
-\begin{Theorem}[模糊 RDD 识别]\label.thm:frdd-identification}
+\begin{Theorem}[模糊 RDD 识别]\label{th:frdd-identification}
 设治疗由 $Z = I(X \geq x_0)$ 决定，其中 $x_0$ 是预定的阈值。
 
 假设\textbf{单调性}：
 \[
 D_i(1) \geq D_i(0),
-\tag{24.4}
+\label{eq:24-monotonicity}
 \]
 和\textbf{排除限制}：
 \[
 D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
-\tag{24.5}
+\label{eq:24-exclusion}
 \]
 在 $x_0$ 的无穷小邻域内成立。
 
 局部依从者平均因果效应定义为：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid D(1) > D(0), X = x_0\},
-\tag{24.6}
+\label{eq:24-late-def}
 \]
 可以由下式识别：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \frac{\mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}}{\mathbb{E}\{D(1) - D(0) \mid X = x_0\}}.
-\tag{24.7}
+\label{eq:24-late-ident}
 \]
 
 进一步假设 $E\{D(1) \mid X = x\}$ 和 $E\{Y(1) \mid X = x\}$ 在 $x = x_0$ 处右连续，$E\{D(0) \mid X = x\}$ 和 $E\{Y(0) \mid X = x\}$ 在 $x = x_0$ 处左连续。如果 $E(D \mid X = x)$ 在 $x = x_0$ 处有非零跳跃，则局部依从者平均因果效应可以由下式识别：
 \[
 \tau_{\mathrm{LATE}}(x_0) = \frac{\lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(Y \mid Z = 0, X = x_0 - \varepsilon)}{\lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 1, X = x_0 + \varepsilon) - \lim_{\varepsilon \to 0+} \mathbb{E}(D \mid Z = 0, X = x_0 - \varepsilon)}.
-\tag{24.8}
+\label{eq:24-late-ident-eps}
 \]
 \end{Theorem}
 
-\textbf{定理 \cref{th:frdd-identification} 的直觉}：这是清晰 RDD 识别和 IV 识别定理的叠加。分子是清晰 RDD 识别 $\tau_Y(x_0)$，分母是清晰 RDD 识别 $\tau_D(x_0)$。两者相除，得到依从者亚组的平均因果效应。
+\textbf{定理 \cref{th:frdd-identification} 的直觉}：这是清晰 RDD 识别和工具变量识别定理的叠加。分子是 \eqref{eq:24-tau-y}，分母是 \eqref{eq:24-tau-d}。两者相除，得到依从者亚组的平均因果效应。
 
 \textbf{识别策略的核心思想}：在模糊 RDD 中，我们不再假设治疗由运行变量完全决定，而是假设工具变量 $Z$ 通过影响治疗概率来间接影响结果。这与标准 IV 框架的区别在于：IV 假设在断点的邻域内成立，而不是对全体样本成立。
 
@@ -131,36 +131,36 @@ D_i(1) = D_i(0) \Longrightarrow Y_i(1) = Y_i(0),
 
 这就是经典的\textbf{偏误-方差权衡}（bias-variance trade-off）。一些自动选择带宽的程序存在，但它们依赖较强的条件。对一系列邻域选择进行敏感性分析似乎更为明智。
 
-\subsection{两步估计}
+\subsection{间接最小二乘估计}
 
 假设我们已指定由带宽 $h$ 确定的 $x_0$ 邻域。对于 $X_i \in [x_0 - h, x_0 + h]$ 的数据，我们可以通过以下两步估计 $\tau_{\mathrm{LATE}}(x_0)$：
 
 \textbf{第一步}：估计第一阶段关系
 \[
 \hat{\tau}_D(x_0) = \text{the coefficient of } Z_i \text{ in the OLS fit of } D_i \text{ on } \{1, Z_i, R_i, L_i\},
-\tag{24.9}
+\label{eq:24-first-stage}
 \]
 其中 $R_i = \max(X_i - x_0, 0)$，$L_i = \min(X_i - x_0, 0)$。
 
 \textbf{第二步}：估计约简型关系
 \[
 \hat{\tau}_Y(x_0) = \text{the coefficient of } Z_i \text{ in the OLS fit of } Y_i \text{ on } \{1, Z_i, R_i, L_i\}.
-\tag{24.10}
+\label{eq:24-reduced-form}
 \]
 
 \textbf{第三步}：计算比率
 \[
 \hat{\tau}_{\mathrm{LATE}}(x_0) = \hat{\tau}_Y(x_0) / \hat{\tau}_D(x_0).
-\tag{24.11}
+\label{eq:24-ils-estimator}
 \]
 
-这被称为\textbf{间接最小二乘估计器}（Indirect Least Squares Estimator）。根据定理，间接最小二乘估计器数值上等同于：
+这被称为\textbf{间接最小二乘估计器}（Indirect Least Squares Estimator, ILS）。根据定理，ILS 估计器数值上等同于：
 \[
 \text{the coefficient of } D_i \text{ in the TSLS fit of } Y_i \text{ on } \{1, D_i, R_i, L_i\}
 \]
 with $D_i$ instrumented by $Z_i$。
 
-总之，在指定 $h$ 后，$\tau_{\mathrm{LATE}}(x_0)$ 的估计归结为断点邻域内的 TSLS 程序。
+总之，在指定 $h$ 后，$\tau_{\mathrm{LATE}}(x_0)$ 的估计归结为断点邻域内的两阶段最小二乘（TSLS）程序。
 
 \section{数据应用}
 
