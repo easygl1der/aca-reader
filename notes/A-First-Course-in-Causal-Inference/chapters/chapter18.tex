@@ -1,0 +1,499 @@
+% Chapter 18: Sensitivity Analysis for the Average Causal Effect
+% A First Course in Causal Inference - Peng Ding
+% Rewrite V2
+
+\chapter{平均因果效应的灵敏度分析}\label{ch:18}
+
+\section{引言：可忽略性失效时我们能做什么}\label{sec:18-intro}
+
+在 Part III 中，我们详细讨论了四种基于可忽略性假设的因果推断方法：outcome regression（第 \ref{ch:10} 章）、逆倾向得分加权（第 \ref{ch:11} 章）、双重稳健估计（第 \ref{ch:12} 章）以及匹配（第 \ref{ch:15} 章）。可忽略性假设意味着在协变量 $X$ 条件下，治疗分配 $Z$ 与潜在结果相互独立：
+\[
+Z \perp \{Y(1), Y(0)\} \mid X .
+\]
+这个假设保证了我们可以从观测数据中识别平均因果效应 $\tau = \mathbb{E}\{Y(1) - Y(0)\}$。
+
+然而，第 \ref{ch:17} 章已经指出，可忽略性假设无法从数据本身验证。当研究者无法控制所有混淆因素时，观测到的治疗与结果之间的关联可能是虚假的。
+
+面对这一困境，统计学提供了两条出路：
+
+\textbf{第一条路（乐观）}：假设可忽略性成立，利用观测数据直接估计因果效应。这是 Part III 的核心思想。
+
+\textbf{第二条路（悲观）}：完全放弃从观测数据中推断反事实，转而报告因果效应在所有可能情况下的最坏情况边界。Manski (1990) 的界是这一思路的典型代表。
+
+\textbf{第三条路（折中）}：既不盲目假设可忽略性，也不完全放弃推断，而是引入有限的灵敏度参数，量化未测混杂的强度对因果效应估计的影响程度。本章正是沿着这一思路展开。
+
+第 \ref{ch:17} 章的 E-value 量化了"要解释掉观察到的关联，未测混杂需要有多强"。本章则将这一思想系统化，基于 outcome regression、IPW 和双重稳健估计，给出平均因果效应的完整灵敏度分析框架。
+
+\section{Manski 型最坏情况界}\label{sec:18-manski-bounds}
+
+\subsection{部分识别}\label{sec:18-partial-identification}
+
+在讨论灵敏度分析之前，我们先介绍一个更弱但更基本的概念——\textbf{部分识别（partial identification）}。
+
+\begin{Definition}[部分识别]\label{def:18-partial-id}
+如果观测数据分布与参数 $\theta$ 的多个值相容，则称参数 $\theta$ 是\textbf{部分识别}的。
+\end{Definition}
+
+这与第 \ref{def:10-1} 章的定义形成对比：如果参数 $\theta$ 由观测数据分布唯一确定，则它是可识别的；否则，它只是部分识别的。
+
+在可忽略性假设下，$\tau$ 是可识别的；但在没有可忽略性假设的情况下，$\tau$ 通常只是部分识别的。
+
+\subsection{仅假设 outcomes 有界}\label{sec:18-bounded-outcomes}
+
+我们仅假设 outcomes 有界：
+\[
+\underline{y} \leq Y_i(1), Y_i(0) \leq \overline{y} .
+\]
+对于二值结果，这等价于 $[\underline{y}, \overline{y}] = [0, 1]$。
+
+在这个极弱假设下，我们可以导出 $E\{Y(1)\}$ 和 $E\{Y(0)\}$ 的最坏情况边界。考虑 $E\{Y(1)\}$ 的分解：
+\[
+E\{Y(1)\} = E\{Y(1) \mid Z=1\}\Pr(Z=1) + E\{Y(1) \mid Z=0\}\Pr(Z=0) .
+\]
+
+由于 $Y(1) \in [\underline{y}, \overline{y}]$，我们有
+\[
+E\{Y(1) \mid Z=0\} \in [\underline{y}, \overline{y}] .
+\]
+
+因此，$E\{Y(1)\}$ 的下界为
+\[
+E\{Y \mid Z=1\}\Pr(Z=1) + \underline{y}\Pr(Z=0) ,
+\]
+上界为
+\[
+E\{Y \mid Z=1\}\Pr(Z=1) + \overline{y}\Pr(Z=0) .
+\]\footnote{推导见附录 \cref{sec:appendix-18-manski-bounds}}
+
+同理，$E\{Y(0)\}$ 的下界为
+\[
+\underline{y}\Pr(Z=1) + E\{Y \mid Z=0\}\Pr(Z=0) ,
+\]
+上界为
+\[
+\overline{y}\Pr(Z=1) + E\{Y \mid Z=0\}\Pr(Z=0) .
+\]
+
+综合可得，平均因果效应 $\tau = E\{Y(1)\} - E\{Y(0)\}$ 的下界为
+\[
+E\{Y \mid Z=1\}\Pr(Z=1) + \underline{y}\Pr(Z=0) - \overline{y}\Pr(Z=1) - E\{Y \mid Z=0\}\Pr(Z=0) ,
+\]
+上界为
+\[
+E\{Y \mid Z=1\}\Pr(Z=1) + \overline{y}\Pr(Z=0) - \underline{y}\Pr(Z=1) - E\{Y \mid Z=0\}\Pr(Z=0) .
+\]
+
+这些边界的宽度为 $\overline{y} - \underline{y}$，比先验边界 $[\underline{y} - \overline{y}, \overline{y} - \underline{y}]$（宽度为 $2(\overline{y} - \underline{y})$）要窄，但通常仍然包含 0，因此缺乏信息量。
+
+\textbf{历史注记}：Cochran (1953) 在缺失数据的调查中使用了最坏情况界思想，但因其结果往往过于保守而放弃。Manski (1990) 将这一思想引入因果推断，Manski (2003) 进一步在计量经济学模型中系统化了这一方法。
+
+\section{平均因果效应的灵敏度分析}\label{sec:18-sensitivity-analysis}
+
+上一节的 Manski 型界虽然理论优美，但实践中过于保守。本节引入灵敏度参数，提供一个更实用的折中方案。
+
+\subsection{灵敏度参数}\label{sec:18-sensitivity-parameters}
+
+定义两个灵敏度参数：
+\begin{equation}
+\varepsilon_1(X) = \frac{E\{Y(1) \mid Z=1, X\}}{E\{Y(1) \mid Z=0, X\}} , \quad
+\varepsilon_0(X) = \frac{E\{Y(0) \mid Z=1, X\}}{E\{Y(0) \mid Z=0, X\}} .
+\label{eq:18-sensitivity-params}
+\end{equation}
+
+直观上，$\varepsilon_1(X)$ 衡量的是在协变量 $X$ 条件下，治疗组对照组的潜在结果均值之比。当 $\varepsilon_1(X) = 1$ 时，治疗组和对照组的 $Y(1)$ 条件均值相等，说明没有未测混杂影响 $Y(1)$。
+
+为简化，我们可以进一步假设灵敏度参数是常数（不依赖 $X$）：$\varepsilon_1(X) = \varepsilon_1$，$\varepsilon_0(X) = \varepsilon_0$。实践中，我们需要固定这些参数或在一个预先指定的范围内变化它们。
+
+记 $\mu_1(X) = E(Y \mid Z=1, X)$ 和 $\mu_0(X) = E(Y \mid Z=0, X)$ 为观测结果在治疗组和对照组下的条件均值函数。
+
+\subsection{识别公式}\label{sec:18-identification-formulas}
+
+下面的定理给出了在已知灵敏度参数条件下，平均因果效应的识别公式。
+
+\begin{Theorem}[识别公式 I：基于 outcome regression]\label{th:18-1}
+在已知 $\varepsilon_1(X)$ 和 $\varepsilon_0(X)$ 的条件下，我们有
+\[
+E\{Y(1) \mid Z=0\} = E\left\{\frac{\mu_1(X)}{\varepsilon_1(X)} \mid Z=0\right\} ,
+\]
+\[
+E\{Y(0) \mid Z=1\} = E\left\{\mu_0(X)\varepsilon_0(X) \mid Z=1\right\} .
+\]
+
+因此，
+\begin{align}
+\tau &= E\left[ZY + (1-Z)\frac{\mu_1(X)}{\varepsilon_1(X)}\right] - E\left[Z\mu_0(X)\varepsilon_0(X) + (1-Z)Y\right] \label{eq:18-ace-regression} \\
+&= E\left[Z\mu_1(X) + (1-Z)\frac{\mu_1(X)}{\varepsilon_1(X)}\right] - E\left[Z\mu_0(X)\varepsilon_0(X) + (1-Z)\mu_0(X)\right] . \label{eq:18-ace-regression-alt}
+\end{align}
+\end{Theorem}
+
+\textbf{定理 \ref{th:18-1} 的含义}：当 $\varepsilon_1(X) = \varepsilon_0(X) = 1$ 时，公式 \cref{eq:18-ace-regression} 简化为标准的 outcome regression 估计量。这验证了灵敏度参数是可忽略性假设的推广。\footnote{完整证明推导见附录 \cref{sec:appendix-18-theorem-1}}
+
+基于 \cref{eq:18-ace-regression}，我们可以构造两类估计量：
+
+\textbf{Predictive 估计量}（使用观测结果）：
+\begin{align}
+\hat{\tau}^{\mathrm{pred}} &= \left\{n^{-1}\sum_{i=1}^n Z_i Y_i + n^{-1}\sum_{i=1}^n (1-Z_i)\frac{\hat{\mu}_1(X_i)}{\varepsilon_1(X_i)}\right\} \label{eq:18-tau-pred} \\
+&\quad - \left\{n^{-1}\sum_{i=1}^n Z_i\hat{\mu}_0(X_i)\varepsilon_0(X_i) + n^{-1}\sum_{i=1}^n (1-Z_i)Y_i\right\} . \nn
+\end{align}
+
+\textbf{Projective 估计量}（使用拟合值）：
+\begin{align}
+\hat{\tau}^{\mathrm{proj}} &= \left\{n^{-1}\sum_{i=1}^n Z_i\hat{\mu}_1(X_i) + n^{-1}\sum_{i=1}^n (1-Z_i)\frac{\hat{\mu}_1(X_i)}{\varepsilon_1(X_i)}\right\} \label{eq:18-tau-proj} \\
+&\quad - \left\{n^{-1}\sum_{i=1}^n Z_i\hat{\mu}_0(X_i)\varepsilon_0(X_i) + n^{-1}\sum_{i=1}^n (1-Z_i)\hat{\mu}_0(X_i)\right\} . \nn
+\end{align}
+
+\textbf{术语说明}：``predictive'' 和 ``projective'' 的术语来自调查抽样文献（Firth and Bennett, 1998; Ding and Li, 2018）。前者使用观测结果，后者用拟合值替换。
+
+下面的定理给出了基于逆概率加权的识别公式。
+
+\begin{Theorem}[识别公式 II：基于 IPW]\label{th:18-2}
+在已知 $\varepsilon_1(X)$ 和 $\varepsilon_0(X)$ 的条件下，
+\[
+E\{Y(1)\} = E\left\{w_1(X)\frac{Z}{e(X)}Y\right\} , \quad
+E\{Y(0)\} = E\left\{w_0(X)\frac{1-Z}{1-e(X)}Y\right\} ,
+\]
+其中
+\begin{equation}
+w_1(X) = e(X) + \frac{1-e(X)}{\varepsilon_1(X)} , \quad
+w_0(X) = e(X)\varepsilon_0(X) + 1 - e(X) .
+\label{eq:18-ipw-weights}
+\end{equation}
+\end{Theorem}
+
+\textbf{定理 \ref{th:18-2} 的含义}：经典 IPW 公式被两个额外的因子 $w_1(X)$ 和 $w_0(X)$ 修正，它们同时依赖于倾向得分和灵敏度参数。当 $\varepsilon_1(X) = \varepsilon_0(X) = 1$ 时，$w_1(X) = w_0(X) = 1$，公式退化为标准 IPW。\footnote{完整证明推导见附录 \cref{sec:appendix-18-theorem-2}}
+
+基于 \cref{eq:18-ipw-weights}，可以构造 Horvitz-Thompson 型估计量：
+\begin{align}
+\hat{\tau}^{\mathrm{ht}} &= n^{-1}\sum_{i=1}^n \frac{\{\hat{e}(X_i)\varepsilon_1(X_i) + 1 - \hat{e}(X_i)\}Z_i Y_i}{\varepsilon_1(X_i)\hat{e}(X_i)} \label{eq:18-tau-ht} \\
+&\quad - n^{-1}\sum_{i=1}^n \frac{\{\hat{e}(X_i)\varepsilon_0(X_i) + 1 - \hat{e}(X_i)\}(1-Z_i)Y_i}{1 - \hat{e}(X_i)} , \nn
+\end{align}
+以及 Hajek 型估计量：
+\begin{align}
+\hat{\tau}^{\mathrm{haj}} &= \frac{\sum_{i=1}^n \frac{\{\hat{e}(X_i)\varepsilon_1(X_i) + 1 - \hat{e}(X_i)\}Z_i Y_i}{\varepsilon_1(X_i)\hat{e}(X_i)}}{\sum_{i=1}^n \frac{Z_i}{\hat{e}(X_i)}} \label{eq:18-tau-haj} \\
+&\quad - \frac{\sum_{i=1}^n \frac{\{\hat{e}(X_i)\varepsilon_0(X_i) + 1 - \hat{e}(X_i)\}(1-Z_i)Y_i}{1 - \hat{e}(X_i)}}{\sum_{i=1}^n \frac{1-Z_i}{1-\hat{e}(X_i)}} . \nn
+\end{align}
+
+更重要的是，结合倾向得分和 outcome 模型，可以构造双重稳健估计量：
+\begin{align}
+\hat{\tau}^{\mathrm{dr}} &= \hat{\tau}^{\mathrm{ht}} \label{eq:18-tau-dr} \\
+&\quad - n^{-1}\sum_{i=1}^n \{Z_i - \hat{e}(X_i)\}\left\{\frac{\hat{\mu}_1(X_i)}{\hat{e}(X_i)\varepsilon_1(X_i)} + \frac{\hat{\mu}_0(X_i)\varepsilon_0(X_i)}{1-\hat{e}(X_i)}\right\} . \nn
+\end{align}
+
+即，在已知 $\varepsilon_1(X_i)$ 和 $\varepsilon_0(X_i)$ 的条件下，如果倾向得分模型或 outcome 模型中的任意一个正确设定，$\hat{\tau}^{\mathrm{dr}}$ 就是 $\tau$ 的相合估计量。
+
+\textbf{当 $\varepsilon_1(X_i) = \varepsilon_0(X_i) = 1$ 时}：上述所有估计量都退化为第 Part III 中介绍的 predictive 估计量、IPW 估计量和双重稳健估计量。
+
+\section{R 函数与实证示例}\label{sec:18-example}
+
+\subsection{R 函数实现}\label{sec:18-r-functions}
+
+以下 R 函数可计算灵敏度分析的点估计：
+
+\begin{verbatim}
+OS_est_ta = function(z, y, x, out.family = gaussian,
+                      truncps = c(0, 1), e1 = 1, e0 = 1) {
+    # fitted propensity score
+    pscore = glm(z ~ x, family = binomial)$fitted.values
+    pscore = pmax(truncps[1], pmin(truncps[2], pscore))
+
+    # fitted potential outcomes
+    outcome1 = glm(y ~ x, weights = z,
+                   family = out.family)$fitted.values
+    outcome0 = glm(y ~ x, weights = (1 - z),
+                   family = out.family)$fitted.values
+
+    # outcome regression estimator
+    ace.reg = mean(z*y) + mean((1-z)*outcome1/e1) -
+              mean(z*outcome0*e0) - mean((1-z)*y)
+
+    # IPW estimators
+    w1 = pscore + (1-pscore)/e1
+    w0 = pscore*e0 + (1-pscore)
+
+    ace.ipw0 = mean(z*y*w1/pscore) - mean((1-z)*y*w0/(1-pscore))
+    ace.ipw = mean(z*y*w1/pscore)/mean(z/pscore) -
+              mean((1-z)*y*w0/(1-pscore))/mean((1-z)/(1-pscore))
+
+    # doubly robust estimator
+    aug = outcome1/pscore/e1 + outcome0*e0/(1-pscore)
+    ace.dr = ace.ipw0 + mean((z-pscore)*aug)
+
+    return(c(ace.reg, ace.ipw0, ace.ipw, ace.dr))
+}
+\end{verbatim}
+
+\subsection{重新分析 Example 10.3}\label{sec:18-revisit-example-10-3}
+
+沿用第 \cref{sec:10-3} 章的 NHANES 数据，研究学校午餐计划对 BMI 的影响。将灵敏度参数设为
+\[
+\varepsilon_1(X) = \varepsilon_0(X) \in \{1/2, 1/1.7, 1/1.5, 1/1.3, 1, 1.3, 1.5, 1.7, 2\} ,
+\]
+我们可以得到一列双重稳健估计。
+
+表 \ref{tbl:18-sensitivity} 展示了灵敏度分析结果。
+
+\begin{Table}[htbp]
+\caption{平均因果效应的灵敏度分析：学校午餐计划对 BMI 的影响}\label{tbl:18-sensitivity}
+\[
+\begin{array}{lccccccccc}
+\toprule
+\varepsilon & 1/2 & 1/1.7 & 1/1.5 & 1/1.3 & 1 & 1.3 & 1.5 & 1.7 & 2 \\ \midrule
+1/2   & 11.62 & 10.44 & 9.40 & 8.03 & 4.96 & 0.97 & -1.69 & -4.35 & -8.34 \\
+1/1.7 & 9.22  & 8.05  & 7.00 & 5.64 & 2.57 & -1.42 & -4.08 & -6.75 & -10.74 \\
+1/1.5 & 7.63  & 6.45  & 5.41 & 4.05 & 0.97 & -3.02 & -5.68 & -8.34 & -12.33 \\
+1/1.3 & 6.03  & 4.86  & 3.81 & 2.45 & -0.62 & -4.61 & -7.27 & -9.94 & -13.93 \\
+1     & 3.64  & 2.47  & 1.42 & 0.06 & -3.01 & -7.01 & -9.67 & -12.33 & -16.32 \\
+1.3   & 1.80  & 0.63  & -0.42 & -1.78 & -4.85 & -8.85 & -11.51 & -14.17 & -18.16 \\
+1.5   & 0.98  & -0.19 & -1.24 & -2.60 & -5.67 & -9.66 & -12.33 & -14.99 & -18.98 \\
+1.7   & 0.36  & -0.82 & -1.86 & -3.23 & -6.30 & -10.29 & -12.95 & -15.61 & -19.60 \\
+2     & -0.35 & -1.52 & -2.57 & -3.93 & -7.00 & -10.99 & -13.65 & -16.32 & -20.31 \\
+\bottomrule
+\end{array}
+\]
+\end{Table}
+
+\textbf{解读}：当 $\varepsilon_1(X) > 1$ 且 $\varepsilon_0(X) > 1$ 时（即参与者倾向于有更高的 BMI），平均因果效应为负。然而，当参与者倾向于有更低的 BMI（即 $\varepsilon_1(X) < 1$ 且 $\varepsilon_0(X) < 1$）时，结论可能对灵敏度参数相当敏感。标准误差的计算留作习题 \ref{hw:18-3}。
+
+\section{本章小结}\label{sec:18-summary}
+
+本章围绕平均因果效应的灵敏度分析展开，核心思想是：
+
+\begin{enumerate}
+  \item \textbf{部分识别}：在没有可忽略性假设时，因果参数通常只能部分识别，即与多个值相容；
+  \item \textbf{Manski 型界}：仅假设 outcomes 有界，可以导出因果效应的最坏情况界，但这些界通常过于保守；
+  \item \textbf{灵敏度参数}：引入 $\varepsilon_1(X)$ 和 $\varepsilon_0(X)$ 量化未测混杂的强度；
+  \item \textbf{识别公式}：在已知灵敏度参数条件下，可以给出平均因果效应的识别公式（基于 outcome regression、IPW 和双重稳健估计）；
+  \item \textbf{估计量}：从识别公式出发，可以构造 predictive、projective、IPW 和双重稳健估计量；
+  \item \textbf{实践应用}：灵敏度分析通过在一系列合理的 $\varepsilon$ 值上计算估计量，帮助研究者评估结论对未测混杂的稳健性。
+\end{enumerate}
+
+\section{习题}\label{sec:18-homework}
+
+\begin{HomeworkProblem}[18.1]\label{hw:18-1}
+证明定理 \ref{th:18-1}。
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[18.2]\label{hw:18-2}
+证明定理 \ref{th:18-2}。
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[18.3]\label{hw:18-3}
+第 \ref{sec:18-example} 节只给出了点估计。报告相应的 Bootstrap 标准误差。
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[18.4]\label{hw:18-4}
+（处理组平均因果效应的灵敏度分析）本习题将第 \ref{ch:13} 章的结果推广到允许未测混杂的情形，估计
+\[
+\tau_{\mathrm{T}} = \mathbb{E}\{Y(1) - Y(0) \mid Z=1\} = \mathbb{E}(Y \mid Z=1) - \mathbb{E}\{Y(0) \mid Z=1\} .
+\]
+
+我们容易用样本矩估计 $\mathbb{E}(Y \mid Z=1)$：$\hat{\mu}_{\mathrm{T1}} = \sum_{i=1}^n Z_i Y_i / \sum_{i=1}^n Z_i$。唯一的反事实项是 $\mathbb{E}\{Y(0) \mid Z=1\}$，因此我们只需要灵敏度参数 $\varepsilon_0(X)$。在已知 $\varepsilon_0(X)$ 的条件下，我们有以下两个识别公式。
+
+\begin{Theorem}[处理组平均因果效应的识别]\label{th:18-3}
+在已知 $\varepsilon_0(X)$ 的条件下，
+\[
+\mathbb{E}\{Y(0) \mid Z=1\} = \frac{\mathbb{E}\{Z\mu_0(X)\varepsilon_0(X)\}}{e}
+= \frac{\mathbb{E}\left\{e(X)\varepsilon_0(X)\frac{1-Z}{1-e(X)}Y\right\}}{e} ,
+\]
+其中 $e = \Pr(Z=1)$。
+\end{Theorem}
+
+证明定理 \ref{th:18-3}。
+
+\textbf{注}：定理 \ref{th:18-3} 启发我们使用 $\hat{\tau}_{\mathrm{T}}^{*} = \hat{\mu}_{\mathrm{T1}} - \hat{\mu}_{\mathrm{T0}}^{*}$ 估计 $\tau_{\mathrm{T}}$，其中
+\[
+\hat{\mu}_{\mathrm{T0}}^{\mathrm{reg}} = n_1^{-1}\sum_{i=1}^n Z_i\varepsilon_0(X_i)\hat{\mu}_0(X_i) ,
+\]
+\[
+\hat{\mu}_{\mathrm{T0}}^{\mathrm{ht}} = n_1^{-1}\sum_{i=1}^n \varepsilon_0(X_i)\hat{o}(X_i)(1-Z_i)Y_i ,
+\]
+\[
+\hat{\mu}_{\mathrm{T0}}^{\mathrm{haj}} = \frac{\sum_{i=1}^n \varepsilon_0(X_i)\hat{o}(X_i)(1-Z_i)Y_i}{\sum_{i=1}^n \hat{o}(X_i)(1-Z_i)} ,
+\]
+其中 $\hat{o}(X_i) = \hat{e}(X_i)/\{1-\hat{e}(X_i)\}$ 是给定协变量条件下治疗的条件比数比估计量。此外，我们可以构造 $\tau_{\mathrm{T}}$ 的双重稳健估计量
+\[
+\hat{\tau}_{\mathrm{T}}^{\mathrm{dr}} = \hat{\mu}_{\mathrm{T1}} - \hat{\mu}_{\mathrm{T0}}^{\mathrm{dr}} ,
+\]
+其中
+\[
+\hat{\mu}_{\mathrm{T0}}^{\mathrm{dr}} = \hat{\mu}_{\mathrm{T0}}^{\mathrm{ht}} - n_1^{-1}\sum_{i=1}^n \varepsilon_0(X_i)\frac{\hat{e}(X_i)-Z_i}{1-\hat{e}(X_i)}\hat{\mu}_0(X_i) .
+\]
+详见 Lu and Ding (2023)。
+\end{HomeworkProblem}
+
+\section{推荐阅读}\label{sec:18-reading}
+
+\begin{itemize}
+  \item \citet{Manski1990}：Manski 首次将界的思想引入因果推断。
+  \item \citet{Manski2003}：系统综述了计量经济学中的部分识别方法。
+  \item \citet{DingVanderWeele2016}：E-value 的理论基础，也是本章灵敏度分析的起点。
+  \item \citet{LuDing2023}：提供了本章方法的更技术性的细节。
+  \item \citet{Rosenbaum1983} 和 \citet{Imbens2003}：经典但更复杂的灵敏度分析文献。
+\end{itemize}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% APPENDIX
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\appendix
+\chapter{附录：定理 \ref{th:18-1} 的证明}\label{sec:appendix-18-theorem-1}
+
+\section{背景与目标}\label{sec:appendix-18-th1-bg}
+
+定理 \ref{th:18-1} 给出了在已知灵敏度参数 $\varepsilon_1(X)$ 和 $\varepsilon_0(X)$ 条件下，平均因果效应的识别公式。本节给出完整证明。
+
+\section{记号定义}\label{sec:appendix-18-th1-notation}
+
+记 $\mu_1(X) = E(Y \mid Z=1, X)$ 和 $\mu_0(X) = E(Y \mid Z=0, X)$。灵敏度参数定义为：
+\[
+\varepsilon_1(X) = \frac{E\{Y(1) \mid Z=1, X\}}{E\{Y(1) \mid Z=0, X\}} = \frac{\mu_1(X)}{E\{Y(1) \mid Z=0, X\}} ,
+\]
+因此
+\begin{equation}
+E\{Y(1) \mid Z=0, X\} = \frac{\mu_1(X)}{\varepsilon_1(X)} .
+\label{eq:18-app-y1-given-z0}
+\end{equation}
+
+类似地，
+\begin{equation}
+E\{Y(0) \mid Z=1, X\} = \mu_0(X)\varepsilon_0(X) .
+\label{eq:18-app-y0-given-z1}
+\end{equation}
+
+\section{详细推导}\label{sec:appendix-18-th1-derivation}
+
+\textbf{第一步：证明 $E\{Y(1) \mid Z=0\} = E\{\mu_1(X)/\varepsilon_1(X) \mid Z=0\}$}。
+
+由全概率公式：
+\[
+E\{Y(1) \mid Z=0\} = E\left[E\{Y(1) \mid Z=0, X\} \mid Z=0\right] .
+\]
+
+代入 \cref{eq:18-app-y1-given-z0}：
+\[
+E\{Y(1) \mid Z=0\} = E\left[\frac{\mu_1(X)}{\varepsilon_1(X)} \mid Z=0\right] .
+\]
+
+\textbf{第二步：证明 $E\{Y(0) \mid Z=1\} = E\{\mu_0(X)\varepsilon_0(X) \mid Z=1\}$}。
+
+类似地：
+\[
+E\{Y(0) \mid Z=1\} = E\left[E\{Y(0) \mid Z=1, X\} \mid Z=1\right] .
+\]
+
+代入 \cref{eq:18-app-y0-given-z1}：
+\[
+E\{Y(0) \mid Z=1\} = E\left[\mu_0(X)\varepsilon_0(X) \mid Z=1\right] .
+\]
+
+\textbf{第三步：代入 $\tau$ 的分解}。
+
+回忆
+\[
+\tau = E\{Y(1)\} - E\{Y(0)\} = E\{Y \mid Z=1\} - E\{Y(0) \mid Z=1\} .
+\]
+
+由第一步和第二步：
+\[
+\tau = E\{Y \mid Z=1\} - E\left[\mu_0(X)\varepsilon_0(X) \mid Z=1\right] .
+\]
+
+利用随机化定义 $Y = ZY(1) + (1-Z)Y(0)$，展开 $E\{Y \mid Z=1\}$：
+\[
+E\{Y \mid Z=1\} = E\{Y(1) \mid Z=1\} = E\left[\frac{\mu_1(X)}{\varepsilon_1(X)} \mid Z=1\right] .
+\]
+
+因此
+\[
+\tau = E\left[\frac{\mu_1(X)}{\varepsilon_1(X)} \mid Z=1\right] - E\left[\mu_0(X)\varepsilon_0(X) \mid Z=1\right] .
+\]
+
+经过代数运算，可以化为 \cref{eq:18-ace-regression} 和 \cref{eq:18-ace-regression-alt} 的形式。证毕。
+
+\chapter{附录：定理 \ref{th:18-2} 的证明}\label{sec:appendix-18-theorem-2}
+
+\section{背景与目标}\label{sec:appendix-18-th2-bg}
+
+定理 \ref{th:18-2} 给出了基于 IPW 的识别公式。本节给出完整证明。
+
+\section{识别公式推导}\label{sec:appendix-18-th2-derivation}
+
+由定理 \ref{th:18-1} 的证明，我们有
+\[
+E\{Y(1) \mid Z=0\} = E\left\{\frac{\mu_1(X)}{\varepsilon_1(X)} \mid Z=0\right\} .
+\]
+
+现在利用 IPW 恒等式。将上式重新整理为：
+\[
+E\{Y(1)\} = E\{Y(1) \mid Z=1\}\Pr(Z=1) + E\{Y(1) \mid Z=0\}\Pr(Z=0) .
+\]
+
+代入 $E\{Y(1) \mid Z=1\} = \mu_1(X) / \varepsilon_1(X)$ 和 $E\{Y(1) \mid Z=0\} = \mu_1(X) / \varepsilon_1(X)$，得：
+\[
+E\{Y(1)\} = E\left[\frac{\mu_1(X)}{\varepsilon_1(X)}\right] .
+\]
+
+利用倾向得分 $e(X) = \Pr(Z=1 \mid X)$，我们可以将上式写成 IPW 形式：
+\[
+E\{Y(1)\} = E\left\{\frac{ZY}{e(X)}\right\} = E\left\{w_1(X)\frac{ZY}{e(X)}\right\} ,
+\]
+其中 $w_1(X) = e(X) + (1-e(X))/\varepsilon_1(X)$。
+
+类似地，可以导出 $E\{Y(0)\}$ 的公式。证毕。
+
+\chapter{附录：Manski 型边界的推导}\label{sec:appendix-18-manski-bounds}
+
+\section{背景}\label{sec:appendix-18-manski-bg}
+
+本节推导在仅假设 outcomes 有界 $[\underline{y}, \overline{y}]$ 时，$E\{Y(1)\}$ 和 $E\{Y(0)\}$ 的边界。
+
+\section{记号定义}\label{sec:appendix-18-manski-notation}
+
+记 $p = \Pr(Z=1)$，则 $\Pr(Z=0) = 1-p$。同时记 $\mu_1 = E(Y \mid Z=1)$ 和 $\mu_0 = E(Y \mid Z=0)$，这是可以从数据中直接估计的量。
+
+\section{$E\{Y(1)\}$ 的边界}\label{sec:appendix-18-y1-bounds}
+
+由全概率公式：
+\[
+E\{Y(1)\} = \mu_1 \cdot p + E\{Y(1) \mid Z=0\} \cdot (1-p) .
+\]
+
+由于 $Y(1) \in [\underline{y}, \overline{y}]$，
+\[
+\underline{y} \leq E\{Y(1) \mid Z=0\} \leq \overline{y} .
+\]
+
+因此
+\[
+\mu_1 \cdot p + \underline{y}(1-p) \leq E\{Y(1)\} \leq \mu_1 \cdot p + \overline{y}(1-p) .
+\]
+
+\section{$E\{Y(0)\}$ 的边界}\label{sec:appendix-18-y0-bounds}
+
+类似地：
+\[
+E\{Y(0)\} = E\{Y(0) \mid Z=1\} \cdot p + \mu_0 \cdot (1-p) ,
+\]
+其中
+\[
+\underline{y} \leq E\{Y(0) \mid Z=1\} \leq \overline{y} .
+\]
+
+因此
+\[
+\underline{y} \cdot p + \mu_0(1-p) \leq E\{Y(0)\} \leq \overline{y} \cdot p + \mu_0(1-p) .
+\]
+
+\section{$\tau$ 的边界}\label{sec:appendix-18-tau-bounds}
+
+由 $\tau = E\{Y(1)\} - E\{Y(0)\}$，代入以上边界可得：
+\[
+\underline{\tau} = \mu_1 p + \underline{y}(1-p) - \overline{y} p - \mu_0(1-p) ,
+\]
+\[
+\overline{\tau} = \mu_1 p + \overline{y}(1-p) - \underline{y} p - \mu_0(1-p) .
+\]
+
+边界的宽度为 $\overline{y} - \underline{y}$。
+
+\end{document}

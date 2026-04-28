@@ -1,0 +1,181 @@
+% Chapter 19: Rosenbaum-Style p-Values for Matched Observational Studies
+% A First Course in Causal Inference - Peng Ding
+% Rewritten in Stein Style
+
+\chapter{Rosenbaum 风格 p 值：匹配观测研究中的未测量混杂}\label{ch:19}
+
+\section{引言：从理想实验到现实挑战}\label{sec:19-intro}
+
+在前面的章节中，我们讨论了匹配（matching）在观测研究中的应用。匹配的核心思想是：通过构造相似的处理组和对照组单位，来近似随机化实验的条件。正如我们在第 11 章看到的，当可忽略性假设成立时，匹配可以有效地消除选择偏差。
+
+然而，现实的观测研究往往面临一个根本性的困难：我们永远无法保证所有混淆变量都被观测到并纳入匹配。遗漏变量偏倚（omitted variable bias）是一个永恒的威胁——那些我们没有观测到的协变量，可能同时影响处理分配和结果，从而破坏因果推断的有效性。
+
+Paul Rosenbaum 在 1987 年的开创性工作中提出了一个优雅的解决方案：不是试图证明未测量混杂不存在，而是系统地量化未测量混杂需要多大才能动摇我们的结论。\textbf{灵敏度分析}（sensitivity analysis）的核心思想是：当我们允许未测量混杂存在时，因果结论的稳健性如何？
+
+本章专注于匹配观测研究中的 Rosenbaum 风格 p 值计算方法。我们将看到，即使在未知混杂存在的情况下，Rosenbaum 的灵敏度分析框架也能帮我们回答：这个结论在多大的未测量混杂强度下仍然是可信的？
+
+\section{匹配观测研究的灵敏度分析模型}\label{sec:19-model}
+
+\subsection{配对结构的记号}\label{sec:19-notation}
+
+考虑一个匹配对照研究，我们构造了 $n$ 个配对。每个配对 $i$ 包含两个单位：$j=1$ 表示处理组，$j=0$ 表示对照组。令 $(i,1)$ 为第 $i$ 对的处理单位，$(i,0)$ 为对照单位。
+
+每个单位 $(i,j)$ 都有两个潜在结果：$Y_{ij}(1)$ 和 $Y_{ij}(0)$。在 sharp null hypothesis 下：
+\[
+H_{0F}: Y_{ij}(1) = Y_{ij}(0) \quad \text{for all } i,j.
+\label{eq:19-sharp-null}
+\]
+
+在理想情况下（即没有未测量混杂），每个配对中的处理和对照单位是同质的，处理分配与潜在结果独立。此时，如果我们进行随机化实验，每对中处理组接受治疗的概率应为 $\pi_{i1} = 1/2$。
+
+\subsection{Rosenbaum 灵敏度分析模型}\label{sec:19-assumption}
+
+然而，在观测研究中，由于未测量混杂的存在，处理分配概率可能在配对之间不相等。Rosenbaum (1987b) 提出了一个关键的灵敏度分析模型。
+
+\begin{Assumption}[Rosenbaum 灵敏度分析模型]\label{as:19-rosenbaum}
+对于第 $i$ 对中的两个单位，处理分配的 odds 比被一个有界常数 $\Gamma \geq 1$ 控制：
+\[
+\frac{\pi_{i1}/\pi_{i0}}{(1-\pi_{i1})/(1-\pi_{i0})} \leq \Gamma, \quad i=1,\ldots,n,
+\label{eq:19-odds-ratio-bound}
+\]
+其中 $\pi_{i1} = \Pr\{Z_{i1}=1 \mid \text{pair } i\}$ 是配对 $i$ 中处理组接受处理的概率。
+\end{Assumption}
+
+\textbf{如何理解 $\Gamma$？} 这个参数衡量了未测量混杂导致的处理分配不均衡程度：
+
+\begin{itemize}
+  \item 当 $\Gamma = 1$ 时，\cref{eq:19-odds-ratio-bound} 意味着 $\pi_{i1} = \pi_{i0} = 1/2$，即每对中处理和对照的概率相等。这正是标准匹配实验（MPE）的情形。
+  \item 当 $\Gamma > 1$ 时，处理分配概率可能在配对之间变化，变化幅度由 $\Gamma$ 控制。
+  \item $\Gamma$ 越大，未测量混杂的影响越强，我们的因果结论就越脆弱。
+\end{itemize}
+
+\textbf{为什么这个模型是"自然的"？} \cref{as:19-rosenbaum} 只假设处理分配的 odds 比有界，而没有对潜在的未测量混杂做任何具体假设。这种半参数化的设定使得灵敏度分析具有普遍的适用性——无论未测量混杂的具体形式如何，只要其导致的 odds 比不超过 $\Gamma$，我们的 p 值计算就是有效的。
+
+\section{最坏情况 p 值}\label{sec:19-worst-case}
+
+\subsection{检验统计量}\label{sec:19-test-stat}
+
+在 sharp null hypothesis $H_{0F}$ 下，我们观察到的是处理效应为零的"无效"数据。利用这个性质，我们可以构造 Fisher randomization test 风格的检验统计量。
+
+令 $q_i$ 为第 $i$ 对的某种处理效应度量，常见的 choices 包括：
+
+\begin{enumerate}
+  \item \textbf{Sign statistic}：$q_i = Z_{i1} - Z_{i0}$（即配对中处理 vs 对照的指示函数）
+  \item \textbf{Pair $t$ statistic}：$q_i = Y_{i1} - Y_{i0}$（观测到的处理组与对照组结果差）
+  \item \textbf{Wilcoxon signed-rank statistic}：基于 $|Y_{i1} - Y_{i0}|$ 的符号秩统计量
+\end{enumerate}
+
+检验统计量定义为：
+\[
+T = \sum_{i=1}^n S_i q_i,
+\label{eq:19-test-stat}
+\]
+其中 $S_i \in \{0,1\}$ 是配对 $i$ 的处理指示（$S_i=1$ 表示该对参与检验），$q_i$ 是配对 $i$ 的贡献权重。
+
+在标准的完全随机化检验中，$S_i$ 在零假设下是已知的（或可精确计算）。但在灵敏度分析框架下，$S_i$ 的分布受到 \cref{as:19-rosenbaum} 的约束。
+
+\subsection{最坏情况分布}\label{sec:19-worst-case-dist}
+
+\begin{Theorem}[最坏情况 p 值]\label{th:19-worst-case}
+在 \cref{as:19-rosenbaum} 下，零假设 $H_{0F}$ 成立时，配对 $i$ 的处理指示 $S_i$ 服从最坏情况的 Bernoulli 分布：
+\[
+S_i \sim \text{Bernoulli}\left(\frac{\Gamma}{1+\Gamma}\right),
+\label{eq:19-s_i-dist}
+\]
+且各配对的 $S_i$ 之间相互独立。
+\end{Theorem}
+
+\textbf{为什么是最坏情况？} 给定 odds ratio 上界 $\Gamma$，$S_i$ 的概率可以在 $[\pi_{\min}, \pi_{\max}]$ 之间变化，其中
+\[
+\pi_{\max} = \frac{\Gamma}{1+\Gamma}, \quad \pi_{\min} = \frac{1}{1+\Gamma}.
+\]
+为了得到最大的 p 值（即最不利于拒绝零假设的情况），我们选择 $S_i$ 的期望为 $\pi_{\max}$。这对应于处理效应"看起来最小"的那种分布。
+
+\cref{th:19-worst-case} 的证明表明，在所有满足 \cref{as:19-rosenbaum} 的分布中，\cref{eq:19-s_i-dist} 给出了最保守的 p 值。\footnote{定理 \cref{th:19-worst-case} 的完整证明见附录 \cref{sec:appendix-19-worst-case-proof}。}
+
+\subsection{p 值的计算}\label{sec:19-p-value}
+
+基于 \cref{th:19-worst-case}，我们可以计算最坏情况 p 值。对于给定的观测检验统计量 $T^{\obs}$，双边 p 值为：
+\[
+\text{p}_{\Gamma} = \Pr_{\Gamma}\left(|T - T^{\obs}| \geq |T^{\obs}|\right),
+\label{eq:19-worst-p-value}
+\]
+其中 $T$ 服从 \cref{eq:19-s_i-dist} 下 $S_i$ 的混合分布。
+
+当 $q_i \geq 0$ 时，我们可以简化计算。定义
+\[
+T = \sum_{i=1}^n S_i q_i, \quad S_i \sim \text{Bernoulli}\left(\frac{\Gamma}{1+\Gamma}\right).
+\]
+由于 $q_i$ 是固定的（由观测数据决定），$T$ 的分布是 $n$ 个独立 Bernoulli 随机变量的加权求和。
+
+\section{实例分析}\label{sec:19-examples}
+
+\subsection{LaLonde 数据重访}\label{sec:19-lalonde}
+
+LaLonde (1986) 的数据集是因果推断领域最著名的实例之一。该数据集包含一个工作培训项目（National Supported Work Demonstration）的参与者及其结果。
+
+我们考虑使用检验统计量：
+\[
+T = \sum_{i=1}^n S_i |\hat{\tau}_i|,
+\label{eq:19-lalonde-stat}
+\]
+其中 $\hat{\tau}_i$ 是第 $i$ 对的处理效应估计。
+
+\textbf{灵敏度分析结果}：
+
+\begin{itemize}
+  \item 在理想 MPE（$\Gamma = 1$）下，模拟得到的 p 值为 $0.002$，强烈拒绝零假设。
+  \item 当 $\Gamma = 1.1$ 时（仅允许 $10\%$ 的处理分配 odds 偏离），最坏情况 p 值上升到 $0.011$。
+  \item 当 $\Gamma = 1.3$ 时，最坏情况 p 值超过 $0.05$，在常规显著性水平下无法拒绝零假设。
+\end{itemize}
+
+更精确地说，$\Gamma = 1.233$ 是临界值：当未测量混杂导致的 odds 比不超过 $1.233$ 时，我们仍能在 $0.05$ 水平下拒绝零假设；超过这个值，结论就不再稳健。
+
+\begin{Example}[LaLonde 数据的灵敏度曲线]\label{ex:19-lalonde-sensitivity}
+图 \ref{fig:19-lalonde-sensitivity} 展示了 p 值随 $\Gamma$ 变化的灵敏度曲线。曲线的陡峭程度告诉我们结论对未测量混杂的敏感程度——曲线越平缓，结论越稳健。
+\end{Example}
+
+\subsection{Rosenbaum 包中的其他实例}\label{sec:19-rosenbaum-packages}
+
+Rosenbaum 的 R 包（如 \texttt{sensitivity2x2} 和 \texttt{sensitivitymv}）提供了便捷的灵敏度分析工具。我们简要介绍两个应用场景。
+
+\textbf{实例 1：两分类处理的配对研究}。对于 $2\times 2$ 配对数据，可以计算在给定 $\Gamma$ 下拒绝零假设的最小处理组比例。
+
+\textbf{实例 2：多分类处理的匹配研究}。对于多水平处理（如剂量梯度），灵敏度分析可以量化每个处理水平相对于对照组的效应稳定性。
+
+这些包的共同特点是：研究者可以系统地探索因果结论在不同未测量混杂强度下的稳健性，而不是简单地说"结论成立"或"结论不成立"。
+
+\section{练习}\label{sec:19-exercises}
+
+\begin{Exercise}{Rosenbaum 灵敏度模型的基本性质}\label{ex:19-gamma-properties}
+证明：当 $\Gamma \to \infty$ 时，\cref{as:19-rosenbaum} 中的约束变得无效，此时 $S_i$ 的最坏情况分布趋近于 Bernoulli$(1/2)$。这对应着什么实际含义？
+\end{Exercise}
+
+\begin{Exercise}{最坏情况 p 值的单调性}\label{ex:19-pvalue-monotone}
+设 $T^{\obs}$ 为观测到的检验统计量。证明：最坏情况 p 值 $\text{p}_{\Gamma}$ 是 $\Gamma$ 的单调递增函数。解释这在直觉上意味着什么。
+\end{Exercise}
+
+\begin{Exercise}{Sign statistic 的灵敏度分析}\label{ex:19-sign-stat}
+对于 sign statistic $q_i = 1$（所有配对权重相等），推导 $T$ 在 \cref{eq:19-s_i-dist} 下的分布，并给出 p 值的显式计算公式。
+\end{Exercise}
+
+\begin{Exercise}{LaLonde 数据的计算}\label{ex:19-lalonde-compute}
+使用 LaLonde 数据集，计算在不同 $\Gamma$ 值（$1, 1.1, 1.2, 1.3, 1.5$）下的最坏情况 p 值，并绘制灵敏度曲线。
+\end{Exercise}
+
+\section{本章小结}\label{sec:19-summary}
+
+本章介绍了 Rosenbaum 风格的灵敏度分析框架，这是处理匹配观测研究中未测量混杂的标准方法。
+
+\textbf{核心要点}：
+
+\begin{enumerate}
+  \item \cref{as:19-rosenbaum} 通过 odds ratio 上界 $\Gamma \geq 1$ 量化了未测量混杂的强度。
+  \item $\Gamma = 1$ 对应于标准匹配实验；当 $\Gamma > 1$ 时，处理分配概率在配对之间可能不相等。
+  \item \cref{th:19-worst-case} 给出了零假设下 $S_i$ 的最坏情况分布，这使得我们可以计算保守的 p 值。
+  \item 灵敏度分析不试图"证明"因果效应存在，而是量化结论在何种未测量混杂强度下仍然成立。
+\end{enumerate}
+
+\textbf{历史注记}：Rosenbaum (1987b) 的工作是观测研究灵敏度分析的开创性文献。此后，这一框架被推广到更复杂的研究设计，包括分层分析、倾向得分匹配等。Rosenbaum 的专著 (2002, 2010) 系统地发展了这一理论。
+
+\textbf{与其他章节的联系}：本章的方法建立在第 11 章的匹配理论基础之上，并借鉴了第 3 章 Fisher randomization test 的思想。灵敏度分析的思想也与第 12 章双重稳健估计的"稳健性"概念相呼应——两者都关注因果结论在模型假设偏离时的稳健性。
