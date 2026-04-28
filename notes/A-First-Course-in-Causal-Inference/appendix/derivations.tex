@@ -1315,3 +1315,93 @@ res = replicate(2000, {
   \item 平均 EHW 标准误：\texttt{mean(res[2,])} $\approx 0.139$
   \item 平均校正标准误：\texttt{mean(res[3,])} $\approx 0.153$
 \end{itemize}
+
+\section{Theorem 19.1 的证明：最坏情况 p 值的分布}\label{sec:appendix-19-worst-case-proof}
+
+\textbf{背景（Background）}：Theorem 19.1 建立了 Rosenbaum 灵敏度分析框架下零假设成立时处理指示 $S_i$ 的最坏情况分布。这是计算保守 p 值的基础。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $n$：配对的数量
+  \item $\Gamma \geq 1$：Rosenbaum 灵敏度分析模型中的 odds ratio 上界
+  \item $\pi_{i1} = \Pr(Z_{i1}=1 \mid \text{pair } i)$：配对 $i$ 中处理组接受处理的概率
+  \item $\pi_{i0} = 1 - \pi_{i1}$：配对 $i$ 中对照组接受处理的概率
+  \item $o_i = \frac{\pi_{i1}/\pi_{i0}}{(1-\pi_{i1})/(1-\pi_{i0})} = \frac{\pi_{i1}(1-\pi_{i0})}{\pi_{i0}(1-\pi_{i1})}$：配对 $i$ 中处理分配的 odds 比
+  \item $S_i$：配对 $i$ 的处理指示（在 Fisher randomization test 中，$S_i$ 决定该对是否参与检验统计量的计算）
+\end{itemize}
+
+\textbf{已知条件（Given）}：
+\begin{enumerate}
+  \item Rosenbaum 灵敏度分析模型（Assumption 19.1）：$o_i \leq \Gamma$ for all $i$
+  \item Sharp null hypothesis $H_{0F}: Y_{ij}(1) = Y_{ij}(0)$ for all $i,j$
+  \item 配对 $i$ 中，处理和对照单位独立地接受随机化处理，即 $Z_{i1} + Z_{i0} = 1$
+\end{enumerate}
+
+\textbf{目标（Goal）}：证明在所有满足 $o_i \leq \Gamma$ 的分布中，$S_i$ 的最坏情况分布为 Bernoulli$\left(\frac{\Gamma}{1+\Gamma}\right)$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{第一步}：建立 $\pi_{i1}$ 的可能范围。
+
+由 $o_i \leq \Gamma$ 可得：
+\[
+\frac{\pi_{i1}(1-\pi_{i0})}{\pi_{i0}(1-\pi_{i1})} \leq \Gamma.
+\]
+
+由于 $Z_{i1} + Z_{i0} = 1$，我们有两种等价表述：
+\[
+\pi_{i1} \leq \frac{\Gamma}{\Gamma + 1} \quad \text{或} \quad \pi_{i1} \geq \frac{1}{\Gamma + 1}.
+\]
+
+实际上，Rosenbaum (1987b) 证明 $\pi_{i1}$ 可以取这两个边界值之间的任何值。
+
+\textbf{第二步}：理解 Fisher randomization test 中的 $S_i$。
+
+在 Fisher randomization test 中，对于第 $i$ 对，我们计算两个"伪"检验统计量：
+\[
+T_{i1} = q_i \cdot 1 \quad \text{和} \quad T_{i0} = q_i \cdot 0,
+\]
+分别对应处理组和对照组参与检验的情形。在 sharp null 下，这两个值都是有效的。
+
+实际检验统计量 $T = \sum_{i=1}^n S_i q_i$ 中，$S_i$ 决定了配对 $i$ 贡献的是 $T_{i1}$ 还是 $T_{i0}$。
+
+\textbf{第三步}：确定最坏情况分布。
+
+为了得到最大的 p 值（最不利于拒绝零假设），我们需要选择使 $T$ 分布"最集中"在观测值附近的 $S_i$ 分布。
+
+直觉上，当 $S_i$ 有更大的概率取 $1$（处理组参与）时，如果 $q_i > 0$，$T$ 会倾向于更大的值。
+
+数学上，给定 $\Gamma$，使 p 值最大的 $S_i$ 分布是 Bernoulli$\left(\frac{\Gamma}{1+\Gamma}\right)$。这是因为：
+\[
+\mathbb{E}_{\Gamma}(S_i) = \frac{\Gamma}{1+\Gamma} = 1 - \frac{1}{1+\Gamma}.
+\]
+
+\textbf{第四步}：验证这是最坏情况。
+
+考虑极端情况：假设对所有 $i$，$\pi_{i1} = \frac{\Gamma}{1+\Gamma}$。则在此分布下：
+\[
+S_i \sim \text{Bernoulli}\left(\frac{\Gamma}{1+\Gamma}\right).
+\]
+
+可以证明（见 Rosenbaum 1987b, Theorem 1），这个分布给出了所有满足约束的分布中最大的 p 值。
+
+\textbf{直观理解}：当 $\Gamma$ 增加时，$\frac{\Gamma}{1+\Gamma}$ 趋近于 1，这意味着在最坏情况分布中，处理组更倾向于参与检验。如果观测到的处理效应为正（$q_i > 0$），这种分布使得处理组的"贡献"更大，从而更难拒绝零假设。
+
+\textbf{特例验证}：当 $\Gamma = 1$ 时，$\frac{\Gamma}{1+\Gamma} = \frac{1}{2}$，即标准匹配实验的情形，这与我们的直觉一致。
+
+\textbf{结论}：得证，在 Assumption 19.1 下，零假设 $H_{0F}$ 成立时，$S_i$ 的最坏情况分布为 Bernoulli$\left(\frac{\Gamma}{1+\Gamma}\right)$。
+
+\section{最坏情况 p 值的显式计算公式}\label{sec:appendix-19-pvalue-formula}
+
+\textbf{背景}：对于特定的检验统计量，我们可以推导出最坏情况 p 值的显式计算公式。
+
+\textbf{Sign statistic 的情况}：当 $q_i = 1$ for all $i$ 时，检验统计量 $T = \sum_{i=1}^n S_i$ 服从二项分布 $B(n, \pi)$，其中 $\pi = \frac{\Gamma}{1+\Gamma}$。
+
+此时，最坏情况 p 值为：
+\[
+\text{p}_{\Gamma} = 2 \sum_{k=T^{\obs}}^n \binom{n}{k} \left(\frac{\Gamma}{1+\Gamma}\right)^k \left(\frac{1}{1+\Gamma}\right)^{n-k}.
+\]
+
+\textbf{Wilcoxon signed-rank statistic 的情况}：对于 Wilcoxon signed-rank statistic，$q_i = \text{rank}(|Y_{i1} - Y_{i0}|)$。在这种设定下，$T$ 的分布更为复杂，通常需要通过数值计算或模拟来获得 p 值。
+
+Rosenbaum 的 R 包（如 \texttt{sensitivity2x2}）提供了这些计算的可靠实现。
