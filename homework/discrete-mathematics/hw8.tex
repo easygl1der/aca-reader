@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+
+\usepackage{xeCJK}
+\setCJKmainfont{STSong}
+\setCJKsansfont{Heiti SC}
+
+\input{../../templates/template.LaTeX.homework/structure.tex}
+
+%----------------------------------------------------------------------------------------
+%  ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+\newcommand{\assignmentQuestionName}{习题}
+\newcommand{\assignmentClass}{离散数学}
+\newcommand{\assignmentTitle}{第3章 关系 — 第8次作业}
+\newcommand{\assignmentAuthorName}{乐绎华}
+\newcommand{\studentID}{23363017}
+\newcommand{\assignmentClassInstructor}{左孝凌、刘永才《离散数学》}
+\newcommand{\assignmentDueDate}{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+%----------------------------------------------------------------------------------------
+%  3-8(1) 邻接矩阵与闭包
+%----------------------------------------------------------------------------------------
+
+\begin{question}{3-8(1) 有向图的邻接矩阵与闭包}
+  根据图 3-8.1 中的有向图，写出邻接矩阵和关系 $R$，并求出自反闭包和对称闭包。
+
+  \begin{answer}
+    \textbf{（1）有向图分析}（图 3-8.1 的结构：顶点 $X = \{a, b, c\}$，边集为 $\{\langle a,a\rangle, \langle a,b\rangle, \langle b,c\rangle, \langle c,b\rangle\}$）。
+
+    \vspace{0.5em}
+    \textbf{（2）邻接矩阵}（顶点顺序 $a, b, c$）：
+
+    $$M = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix}$$
+
+    其中 $M[i,j] = 1$ 当且仅当存在从顶点 $i$ 指向顶点 $j$ 的弧。
+
+    \vspace{0.5em}
+    \textbf{（3）关系 $R$}：
+
+    $$R = \{\langle a,a\rangle,\ \langle a,b\rangle,\ \langle b,c\rangle,\ \langle c,b\rangle\}$$
+
+    \vspace{0.5em}
+    \textbf{（4）关系 $R^2$（复合）}：$R^2 = R \circ R = \{\langle x,z\rangle \mid \exists y,\ xRy \land yRz\}$
+
+    \begin{itemize}
+      \item 由 $\langle a,a\rangle \in R$ 和 $\langle a,a\rangle \in R$：$\langle a,a\rangle \in R^2$
+      \item 由 $\langle a,a\rangle \in R$ 和 $\langle a,b\rangle \in R$：$\langle a,b\rangle \in R^2$
+      \item 由 $\langle a,b\rangle \in R$ 和 $\langle b,c\rangle \in R$：$\langle a,c\rangle \in R^2$
+      \item 由 $\langle b,c\rangle \in R$ 和 $\langle c,b\rangle \in R$：$\langle b,b\rangle \in R^2$
+      \item 由 $\langle c,b\rangle \in R$ 和 $\langle b,c\rangle \in R$：$\langle c,c\rangle \in R^2$
+      \item 由 $\langle c,b\rangle \in R$ 和 $\langle b,c\rangle \in R$：$\langle c,b\rangle \in R^2$（已在 $R$ 中）
+    \end{itemize}
+
+    $$R^2 = \{\langle a,a\rangle,\ \langle a,b\rangle,\ \langle a,c\rangle,\ \langle b,b\rangle,\ \langle b,c\rangle,\ \langle c,b\rangle,\ \langle c,c\rangle\}$$
+
+    \vspace{0.5em}
+    \textbf{（5）自反闭包 $r(R)$}：由定理 3-8.2，$r(R) = R \cup I_X$，其中 $I_X = \{\langle a,a\rangle, \langle b,b\rangle, \langle c,c\rangle\}$。
+
+    $$r(R) = \{\langle a,a\rangle,\ \langle a,b\rangle,\ \langle b,b\rangle,\ \langle b,c\rangle,\ \langle c,b\rangle,\ \langle c,c\rangle\}$$
+
+    自反闭包矩阵（对角线置 1）：
+
+    $$M_{r(R)} = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 1 & 1 \end{bmatrix}$$
+
+    \vspace{0.5em}
+    \textbf{（6）对称闭包 $s(R)$}：由定理 3-8.3（原文为 $s(R) = R \cup R^\complement$），即加上所有逆序偶。
+
+    逆序偶集合：$R^{-1} = \{\langle b,a\rangle\}$
+
+    $$s(R) = R \cup R^{-1} = \{\langle a,a\rangle,\ \langle a,b\rangle,\ \langle b,a\rangle,\ \langle b,c\rangle,\ \langle c,b\rangle\}$$
+
+    对称闭包矩阵（将 $M$ 关于主对角线对称化）：
+
+    $$M_{s(R)} = \begin{bmatrix} 1 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix}$$
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  3-8(2b) Warshall 算法
+%----------------------------------------------------------------------------------------
+
+\begin{question}{3-8(2b) Warshall 算法求传递闭包}
+  设集合 $A = \{a, b, c, d\}$，$A$ 上的关系 $R = \{\langle a,b\rangle, \langle b,a\rangle, \langle b,c\rangle, \langle c,d\rangle\}$，用 Warshall 算法求出 $R$ 的传递闭包。
+
+  \begin{answer}
+    \textbf{Warshall 算法步骤}：对于 $n$ 阶矩阵 $A$：
+
+    \begin{enumerate}
+      \item $A := M_R$（初始化）
+      \item 对 $i = 1, 2, \dots, n$：
+      \begin{enumerate}
+        \item 对所有 $j$，若 $A[j,i] = 1$，则对 $k = 1, 2, \dots, n$：$A[j,k] := A[j,k] \lor A[i,k]$
+      \end{enumerate}
+    \end{enumerate}
+
+    \vspace{0.5em}
+    \textbf{初始矩阵} $M_R$（顶点顺序 $a,b,c,d$）：
+
+    $$A^{(0)} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 1 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    \vspace{0.5em}
+    \textbf{$i = 1$（检查第 1 列）}：$A[j,1] = 1$ 的行有 $j=2$。
+
+    将第 2 行与第 1 行按位或后更新第 2 行：
+
+    $$A^{(1)} = \begin{bmatrix} 0 & 1 & 0 & 0 \\ 1 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    （因为 $A[2,1]=1$，所以 $A[2,k] := A[2,k] \lor A[1,k]$，即第 2 行不变）
+
+    \vspace{0.5em}
+    \textbf{$i = 2$（检查第 2 列）}：$A[j,2] = 1$ 的行有 $j=1, 2$。
+
+    \begin{itemize}
+      \item $j=1$：$A[1,2]=1$，更新第 1 行：$A[1,k] := A[1,k] \lor A[2,k]$
+        $$A[1,] \leftarrow [0\lor 1,\ 1\lor 1,\ 0\lor 1,\ 0\lor 0] = [1,\ 1,\ 1,\ 0]$$
+      \item $j=2$：$A[2,2]=1$，更新第 2 行：$A[2,k] := A[2,k] \lor A[2,k]$（不变）
+    \end{itemize}
+
+    $$A^{(2)} = \begin{bmatrix} 1 & 1 & 1 & 0 \\ 1 & 1 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    \vspace{0.5em}
+    \textbf{$i = 3$（检查第 3 列）}：$A[j,3] = 1$ 的行有 $j=1, 2$。
+
+    \begin{itemize}
+      \item $j=1$：$A[1,3]=1$，更新第 1 行：$A[1,k] := A[1,k] \lor A[3,k]$
+        $$A[1,] \leftarrow [1\lor 0,\ 1\lor 0,\ 1\lor 0,\ 0\lor 1] = [1,\ 1,\ 1,\ 1]$$
+      \item $j=2$：$A[2,3]=1$，更新第 2 行：$A[2,k] := A[2,k] \lor A[3,k]$
+        $$A[2,] \leftarrow [1\lor 0,\ 1\lor 0,\ 1\lor 0,\ 0\lor 1] = [1,\ 1,\ 1,\ 1]$$
+    \end{itemize}
+
+    $$A^{(3)} = \begin{bmatrix} 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    \vspace{0.5em}
+    \textbf{$i = 4$（检查第 4 列）}：$A[j,4] = 1$ 的行有 $j=1, 2, 3$。
+
+    \begin{itemize}
+      \item $j=1$：$A[1,4]=1$，更新第 1 行：$A[1,k] := A[1,k] \lor A[4,k]$（第 4 列为零，不变）
+      \item $j=2$：$A[2,4]=1$，更新第 2 行：同上（不变）
+      \item $j=3$：$A[3,4]=1$，更新第 3 行：$A[3,k] := A[3,k] \lor A[4,k]$（不变）
+    \end{itemize}
+
+    $$A^{(4)} = \begin{bmatrix} 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    \vspace{0.5em}
+    \textbf{传递闭包矩阵}：
+
+    $$M_{t(R)} = \begin{bmatrix} 1 & 1 & 1 & 1 \\ 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+
+    \textbf{传递闭包关系}：
+
+    $$t(R) = R^+ = \{\langle a,a\rangle, \langle a,b\rangle, \langle a,c\rangle, \langle a,d\rangle, \langle b,a\rangle, \langle b,b\rangle, \langle b,c\rangle, \langle b,d\rangle, \langle c,d\rangle\}$$
+
+    \begin{info}[验证:]
+      对角线出现 $\langle b,b\rangle$ 是因为 $bRa \land aRb$，由传递性得 $bRb$。类似地，$aRd$ 由路径 $aRb \land bRc \land cRd$ 推出。
+    \end{info}
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  3-8(7) 闭包运算性质
+%----------------------------------------------------------------------------------------
+
+\begin{question}{3-8(7) 闭包运算对并集的包含关系}
+  设 $R_1$ 和 $R_2$ 是集合 $A$ 上的关系，证明：
+
+  \begin{enumerate}
+    \item[a)] $r(R_1 \cup R_2) = r(R_1) \cup r(R_2)$
+    \item[b)] $s(R_1 \cup R_2) = s(R_1) \cup s(R_2)$
+    \item[c)] $t(R_1 \cup R_2) \supseteq t(R_1) \cup t(R_2)$
+  \end{enumerate}
+
+  \begin{answer}
+    \vspa
+
+    \noindent\textbf{a) 自反闭包对并集相等：$r(R_1 \cup R_2) = r(R_1) \cup r(R_2)$}
+
+    \vsp
+
+    由定理 3-8.2，自反闭包运算为 $r(R) = R \cup I_A$。于是
+
+    \begin{align}
+      r(R_1 \cup R_2) &= (R_1 \cup R_2) \cup I_A \\
+      &= (R_1 \cup I_A) \cup (R_2 \cup I_A) \\
+      &= r(R_1) \cup r(R_2)
+    \end{align}
+
+    等号成立。
+
+    \vsp
+    \noindent\textbf{b) 对称闭包对并集相等：$s(R_1 \cup R_2) = s(R_1) \cup s(R_2)$}
+
+    \vsp
+
+    由定理 3-8.3，对称闭包运算为 $s(R) = R \cup R^{-1}$。记 $R_1^c = R_1^{-1}$，$R_2^c = R_2^{-1}$。
+
+    \begin{align}
+      s(R_1 \cup R_2) &= (R_1 \cup R_2) \cup (R_1 \cup R_2)^{-1} \\
+      &= (R_1 \cup R_2) \cup (R_1^{-1} \cup R_2^{-1}) \quad (\text{逆运算对并集分配}) \\
+      &= (R_1 \cup R_1^{-1}) \cup (R_2 \cup R_2^{-1}) \\
+      &= s(R_1) \cup s(R_2)
+    \end{align}
+
+    等号成立。
+
+    \vsp
+    \noindent\textbf{c) 传递闭包对并集的包含：$t(R_1 \cup R_2) \supseteq t(R_1) \cup t(R_2)$}
+
+    \vsp
+
+    首先，传递闭包可表示为 $t(R) = \bigcup_{i=1}^{\infty} R^i$（定理 3-8.4）。
+
+    注意到对任意正整数 $i$，由 $R_1 \subseteq R_1 \cup R_2$ 和 $R_2 \subseteq R_1 \cup R_2$，有
+
+    $$R_1^i \subseteq (R_1 \cup R_2)^i, \qquad R_2^i \subseteq (R_1 \cup R_2)^i$$
+
+    因此
+
+    $$t(R_1) = \bigcup_{i=1}^{\infty} R_1^i \subseteq \bigcup_{i=1}^{\infty} (R_1 \cup R_2)^i = t(R_1 \cup R_2)$$
+
+    同理 $t(R_2) \subseteq t(R_1 \cup R_2)$，于是
+
+    $$t(R_1) \cup t(R_2) \subseteq t(R_1 \cup R_2)$$
+
+    \begin{warn}
+      此处等号一般不成立。反例：取 $A = \{1,2,3\}$，$R_1 = \{\langle 1,2\rangle\}$，$R_2 = \{\langle 2,3\rangle\}$，则 $t(R_1) = \{\langle 1,2\rangle\}$，$t(R_2) = \{\langle 2,3\rangle\}$，$t(R_1) \cup t(R_2) = \{\langle 1,2\rangle, \langle 2,3\rangle\}$；而 $t(R_1 \cup R_2) = \{\langle 1,2\rangle, \langle 2,3\rangle, \langle 1,3\rangle\}$（因为 $1R_1 2$ 且 $2R_2 3$，故 $1(R_1 \cup R_2)^+ 3$），显然 $\langle 1,3\rangle \in t(R_1 \cup R_2)$ 但 $\langle 1,3\rangle \notin t(R_1) \cup t(R_2)$。
+    \end{warn}
+  \end{answer}
+\end{question}
+
+\end{document}
