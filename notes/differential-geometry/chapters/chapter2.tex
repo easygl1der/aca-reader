@@ -181,13 +181,71 @@ C = \{(x,y,z) \in \mathbb{R}^3; z = +\sqrt{x^2+y^2}\}
 Show that the cylinder $\{(x,y,z)\in \mathbb{R}^3;x^2 +y^2 = 1\}$ is a regular surface, and find parametrizations whose coordinate neighborhoods cover it.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：圆柱面可以通过将平面卷起来得到。我们可以利用极坐标中的角度 $u$ 和高度 $v$ 作为参数。
+
+\textbf{解答}：
+设 $S = \{(x,y,z) \in \mathbb{R}^3; x^2 + y^2 = 1\}$。定义映射 $\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 为
+\[
+\mathbf{x}(u, v) = (\cos u, \sin u, v).
+\]
+
+为了覆盖整个圆柱面，我们需要至少两个坐标邻域。例如：
+\begin{enumerate}
+    \item $U_1 = \{(u, v) \in \mathbb{R}^2; 0 < u < 2\pi, -\infty < v < +\infty\}$，
+    \item $U_2 = \{(u, v) \in \mathbb{R}^2; -\pi < u < \pi, -\infty < v < +\infty\}$。
+\end{enumerate}
+
+\textbf{验证正则性}（以 $U_1$ 为例）：
+\begin{enumerate}
+    \item \textbf{可微性}：$\cos u, \sin u, v$ 显然是无限可微的。
+    \item \textbf{同胚}：$\mathbf{x}$ 在 $U_1$ 上是单射，且其逆映射
+    \[
+    u = \operatorname{atan2}(y, x), \quad v = z
+    \]
+    在 $\mathbf{x}(U_1)$ 上连续（注意在 $U_1$ 的范围内 $\operatorname{atan2}$ 是连续的）。
+    \item \textbf{正则条件}：计算偏导数：
+    \[
+    \mathbf{x}_u = (-\sin u, \cos u, 0), \quad \mathbf{x}_v = (0, 0, 1).
+    \]
+    向量积 $\mathbf{x}_u \times \mathbf{x}_v = (\cos u, \sin u, 0)$。
+    由于 $|\mathbf{x}_u \times \mathbf{x}_v|^2 = \cos^2 u + \sin^2 u = 1 \neq 0$，故 $\mathbf{x}_u$ 与 $\mathbf{x}_v$ 线性无关。
+\end{enumerate}
+综上所述，$S$ 是一个正则曲面。
+\end{solution}
+
 \begin{exercise}{2-2, 2 — do Carmo, Exercise 2-2, 2}
 Is the set $\{(x,y,z)\in \mathbb{R}^3;z = 0$ and $x^{2} + y^{2}\leq 1\}$ a regular surface? Is the set $\{(x,y,z)\in \mathbb{R}^3;z = 0$, and $x^{2} + y^{2} < 1\}$ a regular surface?
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+\begin{enumerate}
+    \item 集合 $S_1 = \{(x,y,z) \in \mathbb{R}^3; z = 0, x^2 + y^2 \leq 1\}$ \textbf{不是}正则曲面。
+    原因：考虑边界点 $p$，满足 $x^2 + y^2 = 1$。在 $S_1$ 中，$p$ 的任何邻域都包含边界，因此它不与 $\mathbb{R}^2$ 中的开集同胚。具体来说，正则曲面的每一点都必须有一个邻域同胚于 $\mathbb{R}^2$ 中的开盘，而闭圆盘的边界点不满足此性质。
+
+    \item 集合 $S_2 = \{(x,y,z) \in \mathbb{R}^3; z = 0, x^2 + y^2 < 1\}$ \textbf{是}正则曲面。
+    原因：它可以视为可微函数 $z = f(x, y) = 0$ 在开集 $U = \{(x, y) \in \mathbb{R}^2; x^2 + y^2 < 1\}$ 上的图像（graph）。任何定义在开集上的可微函数的图像都是正则曲面。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-2, 3 — do Carmo, Exercise 2-2, 3}
 Show that the two-sheeted cone, with its vertex at the origin, that is, the set $\{(x,y,z)\in \mathbb{R}^3;x^2 +y^2 -z^2 = 0\}$, is not a regular surface.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：锥面在原点处有一个"尖点"。虽然在原点以外的部分是平滑的，但原点的存在破坏了整体的正则性。
+
+\textbf{解答}：
+考虑原点 $P = (0, 0, 0)$。如果 $S$ 是正则曲面，则存在 $P$ 的邻域 $V \subset \mathbb{R}^3$ 使得 $V \cap S$ 与 $\mathbb{R}^2$ 中的开盘 $U$ 同胚。
+
+考虑连通性：
+\begin{itemize}
+    \item 在 $\mathbb{R}^2$ 中，如果从开盘 $U$ 中移除一个点，剩余的集合 $U \setminus \{q\}$ 仍然是连通的。
+    \item 在锥面 $S$ 中，如果从 $V \cap S$ 中移除原点 $P$，剩余的集合将分为两部分（对应 $z > 0$ 和 $z < 0$），因而是不连通的。
+\end{itemize}
+由于同胚必须保持连通性，这种矛盾说明 $P$ 点不存在满足定义的邻域。因此，$S$ 不是正则曲面。
+\end{solution}
 
 \begin{exercise}{2-2, 4 — do Carmo, Exercise 2-2, 4}
 Let $f(x, y, z) = z^2$. Prove that $0$ is not a regular value of $f$ and yet that $f^{-1}(0)$ is a regular surface.
