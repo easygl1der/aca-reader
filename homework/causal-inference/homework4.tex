@@ -224,6 +224,20 @@ $$
 is a positive constant depending only on $(e, \eta)$, and $\lambda_1$ and $\lambda_0$ are the maximum eigenvalues of the covariance matrices $\cov(X\mid Z=1)$ and $\cov(X\mid Z=0)$, respectively.
 \end{thesis}
 
+
+\beginemark{Relevant computation formulas:}
+\begin{enumerate}
+\item \textbf{E-value bounding formula:} The upper bound for the observed risk ratio is
+$$\RR_{ZY\mid x}^\obs \leq \frac{\RR_{ZU\mid x} \cdot \RR_{UY\mid x}}{\RR_{ZU\mid x} + \RR_{UY\mid x} - 1}.$$
+When $\RR_{ZU\mid x} = \RR_{UY\mid x} = r$, the bound simplifies to $r$.
+\item \textbf{Constant $C$ in overlap inequality:}
+$$C = \frac{(e-\eta)(1-e-\eta)}{e^2(1-e)^2\eta(1-\eta)}.$$
+For practical computation, note that $C \approx 1/(e(1-e))$ when $\eta$ is small.
+\item \textbf{IPW estimator for general estimand:} $\tau^h = E\{w(X) \cdot ZY / e(X)\} / E\{h(X)\}$ where $w(X) = h(X) + \{1-e(X)\}/e(X) \cdot something$.
+\item \textbf{Risk difference product formula:} $\RD_{ZY}^\obs = \RD_{ZU} \times \RD_{UY}$ for binary confounders.
+\end{enumerate}
+\endremark}
+
  \Paragraph{20.1~Implications of overlap}\label{hw::overlap-implications}
 
 In Part III of this book, causal inference with observational studies relies on two critical assumptions: ignorability $Z\ind \{Y(1), Y(0)\} \mid X$ and overlap $0 < e(X) < 1$.

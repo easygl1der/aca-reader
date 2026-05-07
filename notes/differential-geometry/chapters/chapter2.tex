@@ -887,13 +887,70 @@ A = \int_0^{2\pi} \int_0^{\theta_0} \sin\theta\, d\theta\, d\varphi = 2\pi(1 - c
 Let $S \subset \mathbb{R}^3$ be a regular surface and let $p \in S$. Show that the first fundamental form $I_p$ is a positive definite bilinear form on $T_pS$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+第一基本形式 $I_p$ 定义为 $\mathbb{R}^3$ 中的欧几里得内积在切空间 $T_pS$ 上的限制，即对 $v, w \in T_pS$，有 $I_p(v, w) = v \cdot w$。
+
+\begin{enumerate}
+    \item \textbf{双线性}：欧几里得内积在 $\mathbb{R}^3$ 上是双线性的。作为线性子空间 $T_pS$ 上的限制，它显然保持双线性。即：
+    \[
+    I_p(a v_1 + b v_2, w) = a I_p(v_1, w) + b I_p(v_2, w).
+    \]
+    \item \textbf{正定性}：
+    \begin{itemize}
+        \item 对任何 $v \in T_pS$，有 $I_p(v, v) = v \cdot v = \|v\|^2 \geq 0$。
+        \item 且 $I_p(v, v) = 0$ 当且仅当 $\|v\| = 0$，即 $v = 0$。
+    \end{itemize}
+\end{enumerate}
+因此，$I_p$ 是切空间上的正定双线性型。
+\end{solution}
+
 \begin{exercise}{2-5, 2 — do Carmo, Exercise 2-5, 2}
 Let $S$ be the cylinder $x^2 + y^2 = 1$. Compute the first fundamental form in the parametrization $\mathbf{x}(u,v) = (\cos u, \sin u, v)$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+计算参数化的偏导数：
+\[
+\mathbf{x}_u = (-\sin u, \cos u, 0), \quad \mathbf{x}_v = (0, 0, 1).
+\]
+计算第一基本形式的系数 $E, F, G$：
+\begin{itemize}
+    \item $E = \mathbf{x}_u \cdot \mathbf{x}_u = (-\sin u)^2 + \cos^2 u + 0^2 = 1$；
+    \item $F = \mathbf{x}_u \cdot \mathbf{x}_v = (-\sin u)(0) + (\cos u)(0) + (0)(1) = 0$；
+    \item $G = \mathbf{x}_v \cdot \mathbf{x}_v = 0^2 + 0^2 + 1^2 = 1$。
+\end{itemize}
+因此，圆柱面的第一基本形式为：
+\[
+I = E\, du^2 + 2F\, du\, dv + G\, dv^2 = du^2 + dv^2.
+\]
+这说明圆柱面在局部度量上与平面（$I = du^2 + dv^2$）是一致的，这符合圆柱面是可展曲面（developable surface）的直观。
+\end{solution}
+
 \begin{exercise}{2-5, 3 — do Carmo, Exercise 2-5, 3}
 Let $S$ be the surface of revolution obtained by rotating the curve $z = f(x)$, $x > 0$, around the $z$-axis. Find the first fundamental form in the natural parametrization.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+取参数化 $\mathbf{x}(u, v) = (u \cos v, u \sin v, f(u))$，其中 $u > 0$ 表示点到 $z$ 轴的距离，$v \in (0, 2\pi)$ 是旋转角。
+
+计算偏导数：
+\[
+\mathbf{x}_u = (\cos v, \sin v, f'(u)), \quad \mathbf{x}_v = (-u \sin v, u \cos v, 0).
+\]
+计算 Gauss 系数：
+\begin{itemize}
+    \item $E = \mathbf{x}_u \cdot \mathbf{x}_u = \cos^2 v + \sin^2 v + (f'(u))^2 = 1 + (f'(u))^2$；
+    \item $F = \mathbf{x}_u \cdot \mathbf{x}_v = -u \sin v \cos v + u \sin v \cos v + 0 = 0$；
+    \item $G = \mathbf{x}_v \cdot \mathbf{x}_v = u^2 \sin^2 v + u^2 \cos^2 v = u^2$。
+\end{itemize}
+因此，旋转面的第一基本形式为：
+\[
+I = (1 + (f'(u))^2)\, du^2 + u^2\, dv^2.
+\]
+\end{solution}
 
 \begin{exercise}{2-5, 4* — do Carmo, Exercise 2-5, 4}
 Show that the area $A$ of a region $R$ on a surface $S$ is given by
@@ -903,9 +960,68 @@ A = \iint_R d\sigma,
 where $d\sigma = \sqrt{EG - F^2}\, du\, dv$ is the element of area.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+曲面上区域 $R$ 的面积定义为偏导向量叉积模长的二重积分：
+\[
+A = \iint_R \|\mathbf{x}_u \times \mathbf{x}_v\|\, du\, dv.
+\]
+
+我们要证明 $\|\mathbf{x}_u \times \mathbf{x}_v\| = \sqrt{EG - F^2}$。利用向量积模长的恒等式（Lagrange 恒等式的特殊形式）：
+\[
+\|\mathbf{a} \times \mathbf{b}\|^2 = \|\mathbf{a}\|^2 \|\mathbf{b}\|^2 - (\mathbf{a} \cdot \mathbf{b})^2.
+\]
+令 $\mathbf{a} = \mathbf{x}_u, \mathbf{b} = \mathbf{x}_v$，代入第一基本形式的 Gauss 系数定义：
+\begin{itemize}
+    \item $\|\mathbf{x}_u\|^2 = E$；
+    \item $\|\mathbf{x}_v\|^2 = G$；
+    \item $\mathbf{x}_u \cdot \mathbf{x}_v = F$。
+\end{itemize}
+由此得：
+\[
+\|\mathbf{x}_u \times \mathbf{x}_v\|^2 = EG - F^2.
+\]
+取平方根得 $\|\mathbf{x}_u \times \mathbf{x}_v\| = \sqrt{EG - F^2}$。因此面积元为 $d\sigma = \sqrt{EG - F^2}\, du\, dv$，面积公式成立。
+\end{solution}
+
 \begin{exercise}{2-5, 5 — do Carmo, Exercise 2-5, 5}
 Let $T$ be the torus with parameters as in Example 6 of Sec. 2-2. Compute the area of $T$.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+环面 $T$ 的参数化通常表示为：
+\[
+\mathbf{x}(u, v) = ((a + r \cos u) \cos v, (a + r \cos u) \sin v, r \sin u),
+\]
+其中 $a$ 是中心圆半径，$r$ 是截面圆半径（$0 < r < a$），$u, v \in [0, 2\pi]$。
+
+\begin{enumerate}
+    \item \textbf{计算 Gauss 系数}：
+    \[
+    \mathbf{x}_u = (-r \sin u \cos v, -r \sin u \sin v, r \cos u),
+    \]
+    \[
+    \mathbf{x}_v = (-(a + r \cos u) \sin v, (a + r \cos u) \cos v, 0).
+    \]
+    经计算（参见练习 2-5, 3 的类似过程）：
+    \[
+    E = r^2, \quad F = 0, \quad G = (a + r \cos u)^2.
+    \]
+    \item \textbf{面积元}：
+    \[
+    d\sigma = \sqrt{EG - F^2}\, du\, dv = r(a + r \cos u)\, du\, dv.
+    \]
+    \item \textbf{计算面积}：
+    \[
+    A = \int_0^{2\pi} \int_0^{2\pi} r(a + r \cos u)\, du\, dv = 2\pi r \int_0^{2\pi} (a + r \cos u)\, du.
+    \]
+    \[
+    A = 2\pi r [au + r \sin u]_0^{2\pi} = 2\pi r (2\pi a) = 4\pi^2 ar.
+    \]
+\end{enumerate}
+结论：环面的面积为 $4\pi^2 ar$。
+\end{solution}
 
 \begin{exercise}{2-5, 6 — do Carmo, Exercise 2-5, 6}
 Let $S$ be a regular surface and let $p \in S$. Show that the angle $\theta$ between two curves $\alpha, \beta$ on $S$ intersecting at $p$ satisfies
@@ -913,6 +1029,25 @@ Let $S$ be a regular surface and let $p \in S$. Show that the angle $\theta$ bet
 \cos\theta = \frac{I_p(\alpha'(0), \beta'(0))}{\|\alpha'(0)\| \|\beta'(0)\|}.
 \]
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+在 $\mathbb{R}^3$ 中，两条相交曲线之间的夹角 $\theta$ 定义为它们在交点处切向量之间的夹角。
+
+\begin{enumerate}
+    \item 设 $v = \alpha'(0)$ 和 $w = \beta'(0)$ 为两条曲线在 $p$ 点处的切向量。由定义，$v, w \in T_pS$。
+    \item 根据 $\mathbb{R}^3$ 中向量夹角的定义：
+    \[
+    \cos\theta = \frac{v \cdot w}{\|v\| \|w\|}.
+    \]
+    \item 第一基本形式 $I_p(v, w)$ 正是切空间上的欧几里得内积 $v \cdot w$。
+    \item 将 $I_p$ 代入公式，即得：
+    \[
+    \cos\theta = \frac{I_p(\alpha'(0), \beta'(0))}{\|\alpha'(0)\| \|\beta'(0)\|}.
+    \]
+\end{enumerate}
+这个结论再次强调了：曲面上曲线之间的角度是由第一基本形式（内在度量）完全决定的。
+\end{solution}
 
 % ==================== Section 2-6: Orientation ====================
 \section{Orientation on Surfaces}\label{sec:orientation}
@@ -951,13 +1086,66 @@ Möbius 带是\textbf{不可定向}的经典例子。如果你沿着 Möbius 带
 Show that the cylinder $x^2 + y^2 = 1$ is orientable.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+根据可定向性的定义，我们需要在圆柱面 $S = \{(x,y,z); x^2 + y^2 = 1\}$ 上构造一个连续的单位法向量场。
+
+\begin{enumerate}
+    \item \textbf{构造向量场}：对曲面上的任意点 $p = (x, y, z)$，定义向量：
+    \[
+    N(x, y, z) = (x, y, 0).
+    \]
+    \item \textbf{验证单位长度}：由于点 $(x, y, z)$ 在圆柱面上，满足 $x^2 + y^2 = 1$。因此：
+    \[
+    \|N\| = \sqrt{x^2 + y^2 + 0^2} = 1.
+    \]
+    \item \textbf{验证正交性}：圆柱面可视为函数 $f(x, y, z) = x^2 + y^2 - 1$ 的零水平集。其梯度向量为 $\nabla f = (2x, 2y, 0)$。由多元微积分可知，梯度向量与水平集正交。由于 $N$ 与 $\nabla f$ 平行，故 $N$ 是曲面的法向量。
+    \item \textbf{验证连续性}：$N$ 的分量函数 $x$ 和 $y$ 是点坐标的连续函数。因此，$N$ 是一个连续的单位法向量场。
+\end{enumerate}
+结论：由于存在整体定义的连续单位法向量场，圆柱面是可定向的。
+\end{solution}
+
 \begin{exercise}{2-6, 2* — do Carmo, Exercise 2-6, 2}
 Show that the Möbius band is not orientable.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+Möbius 带是不可定向曲面的典型代表。我们可以通过观察沿中心线环绕一周后法向量的变化来证明这一点。
+
+\begin{enumerate}
+    \item \textbf{参数化描述}：Möbius 带可以通过将一个矩形条带扭转 $180^\circ$ 后首尾相接得到。其中心线是一圆周。
+    \item \textbf{法向量的连续性}：假设 Möbius 带上存在一个连续的单位法向量场 $N$。
+    \item \textbf{沿环路移动}：考虑沿 Möbius 带中心线移动。起始点为 $p$。我们选择 $p$ 点处的一个法向量 $N(p)$。
+    \item \textbf{方向翻转}：由于 Möbius 带的构造性质，当点沿着中心线环绕一周回到 $p$ 时，曲面的"面"发生了翻转。这意味着如果我们连续地诱导法向量，当我们回到起始点 $p$ 时，得到的法向量将是 $-N(p)$。
+    \item \textbf{矛盾}：对于同一个点 $p$，法向量场 $N$ 必须有唯一的值。然而上述过程显示 $N(p) = -N(p)$，由于 $N$ 是单位向量，这不可能。
+\end{enumerate}
+结论：Möbius 带上不存在整体连续的单位法向量场，因此它是不可定向的。
+\end{solution}
+
 \begin{exercise}{2-6, 3 — do Carmo, Exercise 2-6, 3}
 Let $S$ be a regular surface covered by two parametrizations $\mathbf{x}_1: U_1 \to S$ and $\mathbf{x}_2: U_2 \to S$. Show that if the overlap $\mathbf{x}_1(U_1) \cap \mathbf{x}_2(U_2)$ is connected, then the orientability of $S$ is equivalent to the Jacobian of the coordinate change $\mathbf{x}_2^{-1} \circ \mathbf{x}_1$ being positive on $U_1 \cap \mathbf{x}_1^{-1}(\mathbf{x}_2(U_2))$.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+设 $\Phi = \mathbf{x}_2^{-1} \circ \mathbf{x}_1$ 是坐标变换映射。
+
+\begin{enumerate}
+    \item \textbf{法向量的关系}：设 $N_1, N_2$ 分别是由参数化 $\mathbf{x}_1, \mathbf{x}_2$ 诱导的单位法向量。在重叠区域上，它们的关系为：
+    \[
+    N_1 = \operatorname{sgn}(J_\Phi) N_2,
+    \]
+    其中 $J_\Phi$ 是坐标变换的雅可比行列式。
+    \item \textbf{连通性的作用}：由于雅可比行列式 $J_\Phi$ 是连续函数且在重叠区域上处处不为零，根据连通集上连续函数的性质，如果重叠区域是连通的，则 $J_\Phi$ 的符号必须在整个重叠区域上保持不变（始终为正或始终为负）。
+    \item \textbf{构造整体法向量场}：
+    \begin{itemize}
+        \item 如果 $J_\Phi > 0$，则 $N_1 = N_2$。我们可以通过在 $\mathbf{x}_1(U_1)$ 上令 $N = N_1$，在 $\mathbf{x}_2(U_2)$ 上令 $N = N_2$ 来定义一个整体连续的法向量场。因此 $S$ 是可定向的。
+        \item 如果 $J_\Phi < 0$，我们可以通过交换 $\mathbf{x}_2$ 的参数（例如令 $\tilde{\mathbf{x}}_2(u,v) = \mathbf{x}_2(v,u)$）来得到一个新的参数化 $\tilde{\mathbf{x}}_2$。此时新的雅可比行列式将变为正值，从而转化为前一种情况。
+    \end{itemize}
+\end{enumerate}
+结论：当曲面仅由两个坐标邻域覆盖且其交集连通时，雅可比行列式的恒正性（或通过调整使其恒正）是曲面可定向性的充分必要条件。不可定向曲面（如 Möbius 带）的两个坐标邻域交集必然是不连通的。
+\end{solution}
 
 % ==================== Section 2-7: Geometry of the Gauss Map ====================
 \section{Geometry of the Gauss Map}\label{sec:gauss-map}
@@ -1029,21 +1217,133 @@ K = \frac{\det(dN_p)}{\det(d\mathbf{x}_p)},
 where $d\mathbf{x}_p$ is the differential of a parametrization at $p$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+（注：题干中的公式是一个符号化的表达。在严格的张量或微分形式语言中，$K$ 定义为 Gauss 映射 $N: S \to S^2$ 的拉回面积元与原面积元的比值。）
+
+\begin{enumerate}
+    \item \textbf{Gauss 曲率的定义}：Gauss 曲率 $K(p)$ 定义为线性映射 $dN_p: T_pS \to T_pS$ 的行列式。即 $K(p) = \det(dN_p)$。
+    \item \textbf{局部坐标下的表示}：设 $\mathbf{x}(u, v)$ 是 $p$ 点附近的参数化。切空间 $T_pS$ 的基为 $\{\mathbf{x}_u, \mathbf{x}_v\}$。Gauss 映射的微分在此基下的矩阵满足：
+    \[
+    N_u = dN_p(\mathbf{x}_u), \quad N_v = dN_p(\mathbf{x}_v).
+    \]
+    由于 $N_u, N_v$ 落在切平面内，它们可以表示为 $\mathbf{x}_u, \mathbf{x}_v$ 的线性组合。
+    \item \textbf{向量积关系}：根据行列式的几何意义，线性映射对面积的缩放倍数等于其行列式。因此：
+    \[
+    N_u \times N_v = \det(dN_p) (\mathbf{x}_u \times \mathbf{x}_v) = K (\mathbf{x}_u \times \mathbf{x}_v).
+    \]
+    \item \textbf{结论}：上式说明 $K$ 是两个向量积的比值。若我们将 $d\mathbf{x}_p$ 理解为将单位正方形映射为平行四边形 $\mathbf{x}_u \times \mathbf{x}_v$ 的算子，将 $dN_p \circ d\mathbf{x}_p$ 理解为映射为 $N_u \times N_v$ 的算子，则 $K$ 恰好反映了这种"行列式"（即面积元）的比率。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-7, 2 — do Carmo, Exercise 2-7, 2}
 Compute the Gauss curvature of the cylinder $x^2 + y^2 = 1$.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+利用 Gauss 映射的定义进行计算。
+
+\begin{enumerate}
+    \item \textbf{Gauss 映射}：圆柱面的单位法向量场为 $N(x, y, z) = (x, y, 0)$。
+    \item \textbf{参数化下的微分}：使用参数化 $\mathbf{x}(u, v) = (\cos u, \sin u, v)$。
+    \[
+    \mathbf{x}_u = (-\sin u, \cos u, 0), \quad \mathbf{x}_v = (0, 0, 1).
+    \]
+    Gauss 映射在参数化下的表达式为 $N(u, v) = (\cos u, \sin u, 0)$。
+    \item \textbf{计算偏导数}：
+    \[
+    N_u = (-\sin u, \cos u, 0) = 1 \cdot \mathbf{x}_u + 0 \cdot \mathbf{x}_v,
+    \]
+    \[
+    N_v = (0, 0, 0) = 0 \cdot \mathbf{x}_u + 0 \cdot \mathbf{x}_v.
+    \]
+    \item \textbf{Weingarten 映射矩阵}：在基 $\{\mathbf{x}_u, \mathbf{x}_v\}$ 下，$dN_p$ 的矩阵为：
+    \[
+    \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}.
+    \]
+    \item \textbf{Gauss 曲率}：$K = \det(dN_p) = 1 \cdot 0 - 0 \cdot 0 = 0$。
+\end{enumerate}
+结论：圆柱面的 Gauss 曲率处处为 0。这与其可以被"展开"成平面的性质一致。
+\end{solution}
 
 \begin{exercise}{2-7, 3* — do Carmo, Exercise 2-7, 3}
 Show that the Theorema Egregium holds: the Gauss curvature $K$ of a surface can be expressed in terms of the first fundamental form coefficients $E, F, G$ and their derivatives.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答思路}：
+这是高斯绝妙定理（Theorema Egregium）的核心。证明的核心在于将曲率这一原本看起来依赖于空间嵌入（第二基本形式）的量，转化为仅依赖于内在度量（第一基本形式）的量。
+
+\begin{enumerate}
+    \item \textbf{Gauss 方程}：将参数化的二阶偏导数在基 $\{\mathbf{x}_u, \mathbf{x}_v, N\}$ 下展开：
+    \[
+    \mathbf{x}_{uu} = \Gamma_{11}^1 \mathbf{x}_u + \Gamma_{11}^2 \mathbf{x}_v + L N,
+    \]
+    \[
+    \mathbf{x}_{uv} = \Gamma_{12}^1 \mathbf{x}_u + \Gamma_{12}^2 \mathbf{x}_v + M N,
+    \]
+    \[
+    \mathbf{x}_{vv} = \Gamma_{22}^1 \mathbf{x}_u + \Gamma_{22}^2 \mathbf{x}_v + N' N,
+    \]
+    其中 $\Gamma_{ij}^k$ 称为 Christoffel 符号。
+    \item \textbf{Christoffel 符号的内在性}：通过计算 $\mathbf{x}_{uu} \cdot \mathbf{x}_u$ 等，可以证明 $\Gamma_{ij}^k$ 可以完全用 $E, F, G$ 及其一阶导数表示。
+    \item \textbf{相容性条件}：利用 $\mathbf{x}_{uuv} = \mathbf{x}_{uvu}$，可以导出一系列方程。其中最重要的一个方程（高斯方程）将 $LN - M^2$ 与 $\Gamma_{ij}^k$ 及其导数联系起来。
+    \item \textbf{结论}：由于 $K = \frac{LN - M^2}{EG - F^2}$，而分子可以通过 Christoffel 符号（内在量）表示，分母本身就是内在量，因此 $K$ 是内在的。
+\end{enumerate}
+这证明了：无论曲面如何在空间中弯曲（只要不发生拉伸），其 Gauss 曲率保持不变。
+\end{solution}
+
 \begin{exercise}{2-7, 4 — do Carmo, Exercise 2-7, 4}
 Let $S$ be a surface of revolution. Show that the Gauss curvature at a point depends only on the distance of the point from the axis of revolution.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+利用旋转面的第一基本形式和 Gauss 绝妙定理。
+
+\begin{enumerate}
+    \item \textbf{第一基本形式}：在练习 2-5, 3 中，我们求得旋转面 $\mathbf{x}(u, v) = (u \cos v, u \sin v, f(u))$ 的 Gauss 系数为：
+    \[
+    E = 1 + (f'(u))^2, \quad F = 0, \quad G = u^2.
+    \]
+    其中 $u$ 正是点到旋转轴（$z$ 轴）的距离。
+    \item \textbf{Gauss 绝妙定理}：根据绝妙定理，Gauss 曲率 $K$ 仅取决于 $E, F, G$ 及其导数。
+    \item \textbf{依赖关系分析}：
+    \begin{itemize}
+        \item $E, F, G$ 均只是 $u$ 的函数，与旋转角 $v$ 无关。
+        \item 因此，$E, F, G$ 对 $v$ 的偏导数均为 0，对 $u$ 的偏导数仍仅是 $u$ 的函数。
+        \item 将这些量代入 $K$ 的计算公式（如 Brioschi 公式），得到的 $K$ 必然也仅是 $u$ 的函数。
+    \end{itemize}
+\end{enumerate}
+结论：在旋转面上，同一纬线（$u$ 相同）上的点具有相同的 Gauss 曲率。因此 $K$ 仅取决于点到旋转轴的距离。
+\end{solution}
+
 \begin{exercise}{2-7, 5 — do Carmo, Exercise 2-7, 5}
-Show that if $K > 0$ everywhere on a connected surface $S$, then no geodesic on $S$ can have a conjugate point.
+Show that if $K \leq 0$ everywhere on a connected surface $S$, then no geodesic on $S$ can have a conjugate point.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+（注：原题干中 $K > 0$ 为误读或笔误，实际上 $K > 0$ 时测地线通常存在共轭点（如球面）。正确的命题应为 $K \leq 0$。）
+
+\begin{enumerate}
+    \item \textbf{Jacobi 方程}：设 $\gamma(t)$ 是 $S$ 上的测地线。沿 $\gamma$ 的 Jacobi 场 $J(t)$ 满足方程：
+    \[
+    J''(t) + K(t) J(t) = 0.
+    \]
+    对于切空间中的标量分量 $y(t)$，方程为 $y'' + K y = 0$。
+    \item \textbf{共轭点的定义}：若存在 $t_0 > 0$ 使得 Jacobi 场满足 $y(0) = 0$ 且 $y(t_0) = 0$（且 $y$ 不恒为 0），则称 $\gamma(t_0)$ 是 $\gamma(0)$ 的共轭点。
+    \item \textbf{分析 $K \leq 0$ 情形}：假设 $y(0) = 0$ 且 $y'(0) = 1$。
+    \begin{itemize}
+        \item 在 $t$ 较小时，$y(t) > 0$。
+        \item 由于 $y'' = -K y$ 且 $K \leq 0, y > 0$，因此 $y'' \geq 0$。
+        \item 这意味着 $y(t)$ 是一个凸函数。
+        \item 对于凸函数，如果其起始值为 0 且斜率为正，则它在 $t > 0$ 时将始终保持正值，且斜率 $y'(t)$ 单调不减。
+    \end{itemize}
+    \item \textbf{结论}：由于 $y(t)$ 在 $t > 0$ 时始终大于 0，因此不存在 $t_0 > 0$ 使得 $y(t_0) = 0$。故不存在共轭点。
+\end{enumerate}
+\end{solution}
 
 % ==================== Section 2-8: Parallel Transport; Geodesics ====================
 \section{Parallel Transport; Geodesics}\label{sec:geodesics}
@@ -1106,6 +1406,27 @@ L(\alpha) \leq L(\beta),
 \begin{exercise}{2-8, 1 — do Carmo, Exercise 2-8, 1}
 Show that on a plane, geodesics are straight lines.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+利用测地线的定义及平面法向量恒定的性质。
+
+\begin{enumerate}
+    \item \textbf{平面的切空间}：设 $S$ 是 $\mathbb{R}^3$ 中的一个平面。其单位法向量 $N$ 是常向量。在平面上任何一点 $p$，$T_pS$ 就是该平面本身。
+    \item \textbf{协变导数}：设 $\alpha(t)$ 是平面上的一条曲线。其切向量 $V(t) = \alpha'(t)$ 始终落在该平面内。因此其导数 $V'(t) = \alpha''(t)$ 也落在该平面内（即法向分量为 0）。
+    \item \textbf{投影关系}：由于 $V'(t)$ 已经在切平面内，其向切平面的投影就是其自身：
+    \[
+    \frac{DV}{dt} = \alpha''(t).
+    \]
+    \item \textbf{测地线方程}：根据测地线定义，$\frac{D\alpha'}{dt} = 0$，即 $\alpha''(t) = 0$。
+    \item \textbf{积分求解}：对 $\alpha''(t) = 0$ 积分两次得：
+    \[
+    \alpha(t) = \mathbf{v} t + \mathbf{p},
+    \]
+    其中 $\mathbf{v}$ 和 $\mathbf{p}$ 是常向量。这正是直线的参数方程。
+\end{enumerate}
+结论：平面上的测地线是直线。
+\end{solution}
 
 \begin{exercise}{2-8, 2* — do Carmo, Exercise 2-8, 2}
 Show that on the sphere $S^2$, the geodesics are arcs of great circles.
