@@ -181,17 +181,56 @@ C = \{(x,y,z) \in \mathbb{R}^3; z = +\sqrt{x^2+y^2}\}
 Show that the cylinder $\{(x,y,z)\in \mathbb{R}^3;x^2 +y^2 = 1\}$ is a regular surface, and find parametrizations whose coordinate neighborhoods cover it.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：柱面是由圆周沿垂直方向平移得到的。我们可以利用隐函数定理（正则值命题）来证明其正则性，或者直接构造参数化。
+
+\textbf{证明}：
+设 $f(x,y,z) = x^2 + y^2$。柱面是集合 $f^{-1}(1)$。
+计算梯度：$\nabla f = (2x, 2y, 0)$。
+在柱面上，$x^2 + y^2 = 1$，故 $(x,y) \neq (0,0)$，从而 $\nabla f \neq (0,0,0)$。
+根据正则值命题，$1$ 是 $f$ 的正则值，故 $f^{-1}(1)$ 是正则曲面。
+
+\textbf{参数化}：
+取 $\mathbf{x}_1(u,v) = (\cos u, \sin u, v)$，$u \in (0, 2\pi)$，$v \in \mathbb{R}$。
+取 $\mathbf{x}_2(u,v) = (\cos u, \sin u, v)$，$u \in (-\pi, \pi)$，$v \in \mathbb{R}$。
+这两个局部坐标邻域的并集覆盖了整个柱面。$\square$
+\end{solution}
+
 \begin{exercise}{2-2, 2 — do Carmo, Exercise 2-2, 2}
 Is the set $\{(x,y,z)\in \mathbb{R}^3;z = 0$ and $x^{2} + y^{2}\leq 1\}$ a regular surface? Is the set $\{(x,y,z)\in \mathbb{R}^3;z = 0$, and $x^{2} + y^{2} < 1\}$ a regular surface?
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+1. 闭圆盘 $S_1 = \{(x,y,z); z=0, x^2+y^2 \leq 1\}$ \textbf{不是}正则曲面。
+原因：对于边界点 $p = (1,0,0) \in S_1$，任何包含 $p$ 的邻域 $V \cap S_1$ 在 $p$ 点附近只有一侧有定义，它不 homeomorphic 到 $\mathbb{R}^2$ 中的一个开集。
+
+2. 开圆盘 $S_2 = \{(x,y,z); z=0, x^2+y^2 < 1\}$ \textbf{是}正则曲面。
+原因：它是平面 $z=0$（一个正则曲面）的一个开子集，或者可以直接视为函数 $z = 0$ 在开集 $x^2+y^2 < 1$ 上的图像。
+\end{solution}
 
 \begin{exercise}{2-2, 3 — do Carmo, Exercise 2-2, 3}
 Show that the two-sheeted cone, with its vertex at the origin, that is, the set $\{(x,y,z)\in \mathbb{R}^3;x^2 +y^2 -z^2 = 0\}$, is not a regular surface.
 \end{exercise}
 
+\begin{solution}
+\textbf{证明}：
+考虑原点 $O = (0,0,0)$。在 $O$ 的任何邻域内，锥面由两部分构成，它们在顶点处相交。
+如果锥面是正则曲面，则在 $O$ 点应存在切平面。但由方程 $f(x,y,z) = x^2+y^2-z^2 = 0$ 确定的曲面，其梯度 $\nabla f = (2x, 2y, -2z)$ 在原点处为零向量。
+更形式化地，原点的任何邻域与锥面的交集在去掉原点后有两个连通分支，这与 $\mathbb{R}^2$ 中开盘去掉一点后仍连通的拓扑性质矛盾。因此它不是正则曲面。$\square$
+\end{solution}
+
 \begin{exercise}{2-2, 4 — do Carmo, Exercise 2-2, 4}
 Let $f(x, y, z) = z^2$. Prove that $0$ is not a regular value of $f$ and yet that $f^{-1}(0)$ is a regular surface.
 \end{exercise}
+
+\begin{solution}
+\textbf{证明}：
+1. $\nabla f = (0, 0, 2z)$。在 $f(x,y,z) = 0$（即 $z=0$）处，$\nabla f = (0,0,0)$。故 $0$ 不是 $f$ 的正则值。
+2. 然而，$f^{-1}(0) = \{(x,y,z); z^2 = 0\} = \{(x,y,z); z = 0\}$。
+这恰好是 $xy$ 平面，它是正则曲面（可视为函数 $z = 0$ 的图像）。
+这说明"正则值"是判定正则曲面的充分而非必要条件。$\square$
+\end{solution}
 
 \begin{exercise}{2-2, 5* — do Carmo, Exercise 2-2, 5}
 Let $P = \{(x, y, z) \in \mathbb{R}^3; x = y\}$ (a plane) and let $\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ be given by
@@ -201,9 +240,36 @@ Let $P = \{(x, y, z) \in \mathbb{R}^3; x = y\}$ (a plane) and let $\mathbf{x}: U
 where $U = \{(u,v)\in \mathbb{R}^2;u > v\}$. Clearly, $\mathbf{x}(U)\subset P$. Is $\mathbf{x}$ a parametrization of $P$?
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：我们需要验证 $\mathbf{x}$ 是否满足正则曲面定义的三个条件。
+
+\textbf{解答}：
+1. 可微性：显然。
+2. 正则性：计算偏导向量
+\[
+\mathbf{x}_u = (1, 1, v), \quad \mathbf{x}_v = (1, 1, u).
+\]
+其外积为 $\mathbf{x}_u \wedge \mathbf{x}_v = (u-v, v-u, 0)$。
+因为在 $U$ 上 $u > v$，故 $u-v \neq 0$，外积永不为零。正则性满足。
+3. 同胚性：$\mathbf{x}$ 必须是单射且逆连续。
+由 $x = u+v$, $z = uv$ 知 $u, v$ 是方程 $t^2 - xt + z = 0$ 的两个根。
+由于 $u > v$，这两个根被唯一确定。判别式 $D = x^2 - 4z = (u-v)^2 > 0$。
+这表明 $\mathbf{x}(U)$ 是平面 $P$ 中满足 $x^2 > 4z$ 的部分。这是一个开集，且映射是单射。
+由于它只是覆盖了 $P$ 的一部分，它不是整个 $P$ 的参数化，但是它是其像 $\mathbf{x}(U) \subset P$ 的一个合法参数化。$\square$
+\end{solution}
+
 \begin{exercise}{2-2, 6 — do Carmo, Exercise 2-2, 6}
 Give another proof of Prop. 1 by applying Prop. 2 to $h(x, y, z) = f(x, y) - z$.
 \end{exercise}
+
+\begin{solution}
+\textbf{证明}：
+设曲面是函数 $z = f(x,y)$ 的图像。构造辅助函数 $h(x,y,z) = f(x,y) - z$。
+则曲面可表示为 $h^{-1}(0)$。
+计算梯度：$\nabla h = (f_x, f_y, -1)$。
+由于第三个分量恒为 $-1$，梯度 $\nabla h$ 在任何点都不为零向量。
+根据命题 2（正则值命题），$0$ 是 $h$ 的正则值，故 $h^{-1}(0)$ 是正则曲面。$\square$
+\end{solution}
 
 \begin{exercise}{2-2, 7 — do Carmo, Exercise 2-2, 7}
 Let $f(x, y, z) = (x + y + z - 1)^2$.
@@ -214,12 +280,41 @@ Let $f(x, y, z) = (x + y + z - 1)^2$.
 \end{enumerate}
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+\textbf{a.} $\nabla f = 2(x+y+z-1)(1, 1, 1)$。
+临界点：$x+y+z-1 = 0$（整个平面）。
+临界值：$f(\text{临界点}) = 0^2 = 0$。
+
+\textbf{b.} 当 $c \neq 0$ 且 $c > 0$ 时（因为 $f \geq 0$），$c$ 是正则值。
+但需注意：对于 $c > 0$，$f^{-1}(c)$ 由两个平行平面 $x+y+z-1 = \pm\sqrt{c}$ 组成，它们是正则曲面。
+当 $c = 0$ 时，$f^{-1}(0)$ 是平面 $x+y+z-1 = 0$，也是正则曲面（即便 $0$ 不是正则值）。
+当 $c < 0$ 时，集合为空。
+
+\textbf{c.} 对于 $f = xyz^2$：
+$\nabla f = (yz^2, xz^2, 2xyz)$。
+临界点：
+1. $z=0$（整个 $xy$ 平面）；
+2. $x=0, y=0$（$z$ 轴）。
+临界值：$f(x,y,0) = 0$，$f(0,0,z) = 0$。故唯一临界值是 $0$。
+当 $c \neq 0$ 时，$f^{-1}(c)$ 是正则曲面。
+\end{solution}
+
 \begin{exercise}{2-2, 8* — do Carmo, Exercise 2-2, 8}
 Let $\mathbf{x}(u, v)$ be as in Def. 1. Verify that $d\mathbf{x}_q: \mathbb{R}^2 \to \mathbb{R}^3$ is one-to-one if and only if
 \[
 \frac{\partial \mathbf{x}}{\partial u} \wedge \frac{\partial \mathbf{x}}{\partial v} \neq 0.
 \]
 \end{exercise}
+
+\begin{solution}
+\textbf{证明}：
+线性映射 $d\mathbf{x}_q$ 是单射当且仅当其雅可比矩阵的秩为 2。
+雅可比矩阵的两列恰好是向量 $\mathbf{x}_u$ 和 $\mathbf{x}_v$。
+在 $\mathbb{R}^3$ 中，两个向量线性无关当且仅当它们不共线。
+而 $\mathbf{x}_u \wedge \mathbf{x}_v = 0$ 当且仅当 $\mathbf{x}_u$ 与 $\mathbf{x}_v$ 线性相关。
+故 $d\mathbf{x}_q$ 是单射当且仅当 $\mathbf{x}_u \wedge \mathbf{x}_v \neq 0$。$\square$
+\end{solution}
 
 \begin{exercise}{2-2, 9 — do Carmo, Exercise 2-2, 9}
 Let $V$ be an open set in the $xy$ plane. Show that the set
@@ -229,6 +324,16 @@ Let $V$ be an open set in the $xy$ plane. Show that the set
 is a regular surface.
 \end{exercise}
 
+\begin{solution}
+\textbf{证明}：
+该集合是平面 $z = 0$ 的一个开子集。
+取参数化 $\mathbf{x}(u,v) = (u,v,0)$，其中 $(u,v) \in V$。
+1. $\mathbf{x}$ 显然可微；
+2. $\mathbf{x}$ 是恒等映射，显然是同胚；
+3. $\mathbf{x}_u \wedge \mathbf{x}_v = (1,0,0) \wedge (0,1,0) = (0,0,1) \neq 0$。
+因此它是正则曲面。$\square$
+\end{solution}
+
 \begin{exercise}{2-2, 10* — do Carmo, Exercise 2-2, 10}
 Let $C$ be a figure "8" in the $xy$ plane and let $S$ be the cylindrical surface over $C$ (见 \cref{fig:fig2-11}，教材 Figure 2-11); that is,
 \[
@@ -236,6 +341,14 @@ S = \{(x, y, z) \in \mathbb{R}^3; (x, y) \in C \}.
 \]
 Is the set $S$ a regular surface?
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+\textbf{不是}。
+原因在于 "8" 字曲线的交点 $p$。在 $S$ 中，通过该交点的任何邻域都包含两条相交的竖直带状区域。
+这类似于练习 3 中的锥面顶点，该点附近的局部拓扑不是一个开盘（它是一个"十字形"的局部结构）。
+正式地说，在该交点处无法定义唯一的切平面，且该点任何邻域去掉后会分成四个分支，不 homeomorphic 到 $\mathbb{R}^2$。
+\end{solution}
 
 \begin{figure}[H]
 \centering
