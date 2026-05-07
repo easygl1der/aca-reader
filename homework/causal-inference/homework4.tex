@@ -1,0 +1,206 @@
+\documentclass[krantz1]{krantz}
+\usepackage{fixltx2e,fix-cm}
+\usepackage{amssymb, bbm, bm, mathtools}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{color, rotating}
+\usepackage{subcaption}
+\usepackage{hyperref}
+
+% Theorem-like environments
+\newtheorem{exercise}{Exercise}[chapter]
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+% Custom macros from the book
+\def\iidsim{\stackrel{\textup{IID}}{\sim}}
+\def\indsim{\stackrel{ind}{\sim}}
+\def\convergeas{\stackrel{a.s.}{\longrightarrow}}
+\def\converged{\stackrel{\textup{d}}{\longrightarrow}}
+\def\pr{\textup{pr}}
+\def\cov{\textup{cov}}
+\def\RD{\textsf{rd}}
+\def\RR{\textsf{rr}}
+\def\OR{\textsf{or}}
+\def\true{\textup{true}}
+\def\obs{\textup{obs}}
+\def\se{\textup{se}}
+\def\logit{\textup{logit}}
+\def\expit{\textup{expit}}
+
+\begin{document}
+
+\chapter{Problem Set 4}
+
+\section{Book Exercises from Peng Ding's \textit{A First Course in Causal Inference}}
+
+\subsection{Chapter 13: The Average Causal Effect on the Treated Units and Other Estimands}
+
+\begin{exercise}
+\label{ex:13.1}
+\textbf{Comparing $\tau_{\mathrm{T}},\tau_{\mathrm{C}}$, and $\tau$}
+
+Assume $Z \perp \{Y(1), Y(0)\} \mid X$. Recall $e(X) = \pr(Z = 1 \mid X)$ is the propensity score, $e = \pr(Z = 1)$ is the marginal probability of the treatment, and $\tau(X) = E\{Y(1) - Y(0) \mid X\}$ is the CATE. Show that
+\[
+\tau_{\mathrm{T}} - \tau = \frac{\cov\{e(X), \tau(X)\}}{e}, \quad \tau_{\mathrm{C}} - \tau = - \frac{\cov\{e(X), \tau(X)\}}{1 - e}.
+\]
+
+Remark: The differences among $\tau_{\mathrm{T}}, \tau_{\mathrm{C}}, \tau$ depend on the covariance between the propensity score and CATE. When $e(X)$ and $\tau(X)$ are uncorrelated, their differences are 0.
+\end{exercise}
+
+\begin{exercise}
+\label{ex:13.6}
+\textbf{Estimating individual effect and conditional average causal effect}
+
+Assume that $\{Z_i, X_i, Y_i(1), Y_i(0)\}_{i=1}^n \iidsim \{Z, X, Y(1), Y(0)\}$. The individual effect is $\tau_i = Y_i(1) - Y_i(0)$ and the conditional average causal effect is $\tau(X_i) = E\{Y_i(1) - Y_i(0) \mid X_i\}$.
+
+\begin{enumerate}
+\item Under randomization with $Z_{i} \indsim \{Y_{i}(1), Y_{i}(0)\}$ and $e = \pr(Z_{i} = 1)$, show that
+\[
+\delta_{i} = \frac{Z_{i} Y_{i}}{e} - \frac{(1 - Z_{i}) Y_{i}}{1 - e}
+\]
+is an unbiased predictor of the individual effect in the sense that $E(\delta_{i} - \tau_{i}) = 0$. Further show that $E(\delta_i) = \tau$ for all $i$.
+
+\item Under ignorability with $Z_{i} \indsim \{Y_{i}(1), Y_{i}(0)\} \mid X_{i}$ and $e(X_{i}) = \pr(Z_{i} = 1 \mid X_{i})$, show that
+\[
+\delta_{i} = \frac{Z_{i} Y_{i}}{e(X_{i})} - \frac{(1 - Z_{i}) Y_{i}}{1 - e(X_{i})}
+\]
+is an unbiased predictor of the individual effect and the conditional average causal effect in the sense that $E(\delta_{i} - \tau_{i}) = 0$ and $E\{\delta_{i} - \tau(X_{i})\} = 0$. Further show that $E(\delta_i) = \tau$ for all $i$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+\label{ex:13.10}
+\textbf{Doubly robust estimation for general estimand}
+
+For a given $h(X)$, we have the following formulas for constructing the doubly robust estimator for $\tau^h$:
+\[
+\tilde{\mu}_1^{h,\mathrm{dr}} = E \left[ \frac{Z h(X) \{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)} + h(X) \mu_1(X, \beta_1) \right],
+\]
+\[
+\tilde{\mu}_0^{h,\mathrm{dr}} = E \left[ \frac{(1 - Z) h(X) \{Y - \mu_0(X, \beta_0)\}}{1 - e(X, \alpha)} + h(X) \mu_0(X, \beta_0) \right].
+\]
+
+Show that under ignorability and overlap:
+\begin{enumerate}
+\item if either $e(X, \alpha) = e(X)$ or $\mu_1(X, \beta_1) = \mu_1(X)$, then $\tilde{\mu}_1^{h,\mathrm{dr}} = E\{h(X)Y(1)\}$;
+\item if either $e(X, \alpha) = e(X)$ or $\mu_0(X, \beta_0) = \mu_0(X)$, then $\tilde{\mu}_0^{h,\mathrm{dr}} = E\{h(X)Y(0)\}$;
+\item if either $e(X, \alpha) = e(X)$ or $\{\mu_1(X, \beta_1) = \mu_1(X), \mu_0(X, \beta_0) = \mu_0(X)\}$, then
+\[
+\frac{\tilde{\mu}_1^{h,\mathrm{dr}} - \tilde{\mu}_0^{h,\mathrm{dr}}}{E\{h(X)\}} = \tau^h.
+\]
+\end{enumerate}
+\end{exercise}
+
+\subsection{Chapter 14: Using the Propensity Score in Regressions for Causal Effects}
+
+\begin{exercise}
+\label{ex:14.3}
+\textbf{Weighted logistic regression with a binary outcome}
+
+With a binary outcome, we can replace linear outcome models with logistic outcome models. Show that with weights in the logistic regressions, the doubly robust estimators equal the outcome regression estimator. The result holds for both $\tau$ and $\tau_{\mathrm{T}}$.
+\end{exercise}
+
+\subsection{Chapter 17: E-Value: Evidence for Causation in Observational Studies with Unmeasured Confounding}
+
+\begin{exercise}
+\label{ex:17.1}
+\textbf{A technical lemma for the proof of Theorem 17.1}
+
+Show that $f(x) = \frac{ax + 1}{bx + 1}$ is increasing in $x$ if $a > b$ and decreasing in $x$ if $a < b$.
+\end{exercise}
+
+\begin{exercise}
+\label{ex:17.2}
+\textbf{Technical assumption for Theorem 17.1}
+
+Revisit the proof of Theorem 17.1. Assume $Z \perp Y \mid (X, U)$. Show that if $\mathbb{R}_{ZU|x} > 1$ but $\mathbb{R}_{UY|x} < 1$, then $\mathbb{R}_{ZY|x}^{\mathrm{obs}} < 1$.
+
+Remark: This result is intuitive. Condition on $X$. It says that if the $Z$-$U$ relationship is positive and the $U$-$Y$ relationship is negative, then the $Z$-$Y$ relationship is negative given the conditional independence of $Z$ and $Y$ given $U$.
+\end{exercise}
+
+\begin{exercise}
+\label{ex:17.6}
+\textbf{Cornfield-type inequalities for the risk difference}
+
+Consider binary $Z, Y, U$, and condition on $X$ implicitly. Assume latent ignorability given $U$. Show that under $Z \perp Y \mid U$, we have
+\[
+\RD_{ZY}^{\obs} = \RD_{ZU} \times \RD_{UY}
+\]
+where $\RD_{ZY}^{\obs}$ is the observed risk difference of $Z$ on $Y$, and $\RD_{ZU}$ and $\RD_{UY}$ are the treatment-confounder and confounder-outcome risk differences, respectively.
+
+Remark: Without loss of generality, assume that $\RD_{ZY}^{\obs}, \RD_{ZU}, \RD_{UY}$ are all positive. Then the above implies:
+\[
+\min(\RD_{ZU}, \RD_{UY}) \geq \RD_{ZY}^{\obs}
+\]
+and
+\[
+\max(\RD_{ZU}, \RD_{UY}) \geq \sqrt{\RD_{ZY}^{\obs}}.
+\]
+
+These are the Cornfield inequalities for the risk difference with a binary confounder.
+\end{exercise}
+
+\subsection{Chapter 20: Overlap in Observational Studies: Difficulties and Opportunities}
+
+\begin{exercise}
+\label{ex:20.1}
+\textbf{Implications of overlap}
+
+In Part III of this book, causal inference with observational studies relies on two critical assumptions: ignorability $Z \perp \{Y(1), Y(0)\} \mid X$ and overlap $0 < e(X) < 1$.
+
+D'Amour et al. (2021) pointed out the tension between these two assumptions: typically, more covariates make the ignorability assumption more plausible, but more covariates make the overlap assumption less plausible because the treatment becomes more predictable given more covariates.
+
+Many statistical analyses require a strict version of overlap:
+\[
+\eta \leq e(X) \leq 1 - \eta \quad \text{for some } \eta \in (0, 1/2).
+\]
+
+D'Amour et al. (2021) showed that this strict overlap condition has very strong implications when the number of covariates is large.
+
+Show that Assumption 20.1 implies $\eta \leq e \leq 1 - \eta$ and
+\[
+p^{-1} \sum_{k=1}^{p} \left| E(X_k \mid Z = 1) - E(X_k \mid Z = 0) \right| \leq p^{-1/2} C^{1/2} \{e \lambda_1^{1/2} + (1 - e) \lambda_0^{1/2}\},
+\]
+where $C = \frac{(e - \eta)(1 - e - \eta)}{e^2 (1 - e)^2 \eta (1 - \eta)}$ is a positive constant depending only on $(e, \eta)$, and $\lambda_1$ and $\lambda_0$ are the maximum eigenvalues of the covariance matrices $\cov(X \mid Z = 1)$ and $\cov(X \mid Z = 0)$, respectively.
+\end{exercise}
+
+\section{Theoretical Exercises: Identification Formulas for Sensitivity Analysis}
+
+Denote $\mu_z(X) = \mathbb{E}(Y \mid Z = z, X)$ and $e(X) = \pr(Z = 1 \mid X)$.
+Suppose that
+\[
+\frac{\mathbb{E}\{Y(1) \mid Z = 1, X\}}{\mathbb{E}\{Y(1) \mid Z = 0, X\}} = \epsilon_1(X), \quad
+\frac{\mathbb{E}\{Y(0) \mid Z = 1, X\}}{\mathbb{E}\{Y(0) \mid Z = 0, X\}} = \epsilon_0(X)
+\]
+with known $\epsilon_1(X)$ and $\epsilon_0(X)$.
+
+\begin{exercise}
+\label{ex:sens-a}
+Show that
+\[
+\mathbb{E}\{Y(1) \mid Z = 0\} = \mathbb{E}\{\mu_1(X) / \epsilon_1(X) \mid Z = 0\}, \quad
+\mathbb{E}\{Y(0) \mid Z = 1\} = \mathbb{E}\{\mu_0(X) \epsilon_0(X) \mid Z = 1\}
+\]
+and hence
+\[
+\mathrm{ACE} = \mathbb{E}\{Z Y + (1-Z)\mu_1(X)/\epsilon_1(X)\} - \mathbb{E}\{Z\mu_0(X)/\epsilon_0(X) + (1-Z)Y\}.
+\]
+\end{exercise}
+
+\begin{exercise}
+\label{ex:sens-b}
+Show that
+\[
+\mathbb{E}\{Y(1)\} = \mathbb{E}\left\{w_1(X) \frac{ZY}{e(X)}\right\}, \quad
+\mathbb{E}\{Y(0)\} = \mathbb{E}\left\{w_0(X) \frac{(1-Z)Y}{1-e(X)}\right\},
+\]
+where $w_1(X) = e(X) + \{1-e(X)\}/\epsilon_1(X)$ and $w_0(X) = e(X)\epsilon_0(X) + \{1-e(X)\}$.
+\end{exercise}
+
+\begin{exercise}
+\label{ex:sens-c}
+\textbf{(Optional)} Derive the doubly robust estimation formula.
+\end{exercise}
+
+\end{document}
