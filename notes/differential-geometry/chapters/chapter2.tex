@@ -251,6 +251,26 @@ Show that the two-sheeted cone, with its vertex at the origin, that is, the set 
 Let $f(x, y, z) = z^2$. Prove that $0$ is not a regular value of $f$ and yet that $f^{-1}(0)$ is a regular surface.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+\begin{enumerate}
+    \item \textbf{证明 0 不是正则值}：
+    计算 $f$ 的梯度：$\nabla f = (0, 0, 2z)$。
+    对于任何点 $(x, y, z) \in f^{-1}(0)$，都有 $z^2 = 0$，即 $z = 0$。
+    因此，在 $f^{-1}(0)$ 的所有点处，$\nabla f = (0, 0, 0)$。
+    因为梯度在 $f^{-1}(0)$ 的每一点都为零，所以 $0$ 不是 $f$ 的正则值。
+
+    \item \textbf{证明 $f^{-1}(0)$ 是正则曲面}：
+    由定义，$f^{-1}(0) = \{(x, y, z) \in \mathbb{R}^3; z = 0\}$。
+    这正是 $\mathbb{R}^3$ 中的 $xy$ 平面。我们可以用单一坐标片覆盖它：
+    \[
+    \mathbf{x}(u, v) = (u, v, 0), \quad (u, v) \in \mathbb{R}^2.
+    \]
+    显然这是一个正则参数化。因此，$xy$ 平面是一个正则曲面。
+\end{enumerate}
+这个练习说明：正则值定理给出了集合成为正则曲面的\textbf{充分条件}，但并非\textbf{必要条件}。
+\end{solution}
+
 \begin{exercise}{2-2, 5* — do Carmo, Exercise 2-2, 5}
 Let $P = \{(x, y, z) \in \mathbb{R}^3; x = y\}$ (a plane) and let $\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ be given by
 \[
@@ -259,18 +279,101 @@ Let $P = \{(x, y, z) \in \mathbb{R}^3; x = y\}$ (a plane) and let $\mathbf{x}: U
 where $U = \{(u,v)\in \mathbb{R}^2;u > v\}$. Clearly, $\mathbf{x}(U)\subset P$. Is $\mathbf{x}$ a parametrization of $P$?
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：要判断 $\mathbf{x}$ 是否为 $P$ 的参数化，我们需要验证正则曲面定义中的三个条件：
+
+\begin{enumerate}
+    \item \textbf{可微性}：$\mathbf{x}(u, v) = (u+v, u+v, uv)$ 的分量均为多项式，因而是无限可微的。
+
+    \item \textbf{同胚}：
+    \begin{itemize}
+        \item \textbf{单射性}：设 $\mathbf{x}(u, v) = (x, y, z)$，则 $x = u+v$ 且 $z = uv$。根据韦达定理，$u, v$ 是二次方程 $t^2 - xt + z = 0$ 的两个根。根为 $t = \frac{x \pm \sqrt{x^2 - 4z}}{2}$。由于定义域要求 $u > v$，故 $u$ 必须取大根，$v$ 必须取小根：
+        \[
+        u = \frac{x + \sqrt{x^2 - 4z}}{2}, \quad v = \frac{x - \sqrt{x^2 - 4z}}{2}.
+        \]
+        这表明对给定的 $(x, y, z)$，$(u, v)$ 是唯一确定的，故 $\mathbf{x}$ 是单射。
+        \item \textbf{逆映射连续性}：从上述公式可以看出，$u$ 和 $v$ 作为 $x, z$ 的函数在迹 $\mathbf{x}(U)$（满足 $x^2 - 4z > 0$）上是连续的。
+    \end{itemize}
+
+    \item \textbf{正则条件}：计算偏导数
+    \[
+    \mathbf{x}_u = (1, 1, v), \quad \mathbf{x}_v = (1, 1, u).
+    \]
+    雅可比矩阵为 $\begin{pmatrix} 1 & 1 \\ 1 & 1 \\ v & u \end{pmatrix}$。两列向量线性相关的充要条件是它们成比例。由于前两个分量均为 1，这要求 $v = u$。但在 $U$ 中 $u > v$，故两列向量始终线性无关。
+\end{enumerate}
+结论：$\mathbf{x}$ 是 $P$ 的一个参数化（它覆盖了平面 $x=y$ 中满足 $x^2 > 4z$ 的开子集）。
+\end{solution}
+
 \begin{exercise}{2-2, 6 — do Carmo, Exercise 2-2, 6}
 Give another proof of Prop. 1 by applying Prop. 2 to $h(x, y, z) = f(x, y) - z$.
 \end{exercise}
+
+\begin{solution}
+\textbf{背景说明}：
+\begin{itemize}
+    \item \textbf{命题 1}：可微函数 $z = f(x, y)$ 的图像是正则曲面。
+    \item \textbf{命题 2}（正则值定理）：若 $a$ 是 $h: U \subset \mathbb{R}^3 \to \mathbb{R}$ 的正则值，则 $h^{-1}(a)$ 是正则曲面。
+\end{itemize}
+
+\textbf{解答}：
+定义函数 $h: U \times \mathbb{R} \to \mathbb{R}$ 为
+\[
+h(x, y, z) = f(x, y) - z.
+\]
+显然，$f$ 的图像正是集合 $h^{-1}(0) = \{(x, y, z); h(x, y, z) = 0\}$。
+
+为了应用命题 2，我们需要证明 0 是 $h$ 的正则值。计算 $h$ 的梯度：
+\[
+\nabla h = \left( \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y}, -1 \right).
+\]
+由于梯度的第三个分量始终为 $-1 \neq 0$，因此梯度向量在任何点都不可能为零向量。这意味着 $h$ 的所有值（包括 0）都是正则值。
+
+根据命题 2，$h^{-1}(0)$ 是正则曲面。证毕。
+\end{solution}
 
 \begin{exercise}{2-2, 7 — do Carmo, Exercise 2-2, 7}
 Let $f(x, y, z) = (x + y + z - 1)^2$.
 \begin{enumerate}
 \item[a.] Locate the critical points and critical values of $f$.
 \item[b.] For what values of $c$ is the set $f(x, y, z) = c$ a regular surface?
-\item[c.] Answer the questions of parts a and b for the function $f(x, y, z) = xyz^2$.
+\item[c.] Answer the questions in a and b for the function $f(x, y, z) = xyz^2$.
 \end{enumerate}
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+
+\textbf{第一部分：$f(x, y, z) = (x + y + z - 1)^2$}
+\begin{itemize}
+    \item[a.] \textbf{临界点与临界值}：
+    计算梯度：$\nabla f = (2(x+y+z-1), 2(x+y+z-1), 2(x+y+z-1))$。
+    临界点满足 $\nabla f = (0, 0, 0)$，即 $x + y + z - 1 = 0$（这是一个平面）。
+    临界值为 $f(x, y, z) = 0^2 = 0$。
+    \item[b.] \textbf{正则性分析}：
+    \begin{itemize}
+        \item 若 $c < 0$，$f^{-1}(c)$ 为空集，空集显然满足正则曲面定义。
+        \item 若 $c = 0$，$f^{-1}(0) = \{(x,y,z); x+y+z-1=0\}$ 是一个平面，它是正则曲面。
+        \item 若 $c > 0$，$f^{-1}(c) = \{(x,y,z); x+y+z-1 = \pm\sqrt{c}\}$，这是两个平行平面的并集。由于这两个平面不相交，且每个平面都是正则曲面，它们的并集也是正则曲面。
+    \end{itemize}
+    结论：对于所有 $c \in \mathbb{R}$，$f^{-1}(c)$ 都是正则曲面。
+\end{itemize}
+
+\textbf{第二部分：$f(x, y, z) = xyz^2$}
+\begin{itemize}
+    \item[c1.] \textbf{临界点与临界值}：
+    梯度为 $\nabla f = (yz^2, xz^2, 2xyz)$。
+    临界点满足：
+    (1) $z = 0$（对应整个 $xy$ 平面）；
+    (2) $x = 0$ 且 $y = 0$（对应整个 $z$ 轴）。
+    在这两种情况下，临界值均为 $f = 0$。
+    \item[c2.] \textbf{正则性分析}：
+    \begin{itemize}
+        \item 若 $c \neq 0$，则 $c$ 是正则值。由正则值定理，$f^{-1}(c)$ 是正则曲面。
+        \item 若 $c = 0$，$f^{-1}(0) = \{(x,y,z); xyz^2 = 0\}$ 是三个坐标平面（$x=0, y=0, z=0$）的并集。这个集合在坐标轴处发生交汇，不满足正则曲面的局部同胚性质。
+    \end{itemize}
+    结论：当 $c \neq 0$ 时，$f^{-1}(c)$ 是正则曲面。
+\end{itemize}
+\end{solution}
 
 \begin{exercise}{2-2, 8* — do Carmo, Exercise 2-2, 8}
 Let $\mathbf{x}(u, v)$ be as in Def. 1. Verify that $d\mathbf{x}_q: \mathbb{R}^2 \to \mathbb{R}^3$ is one-to-one if and only if
@@ -279,21 +382,74 @@ Let $\mathbf{x}(u, v)$ be as in Def. 1. Verify that $d\mathbf{x}_q: \mathbb{R}^2
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+微分 $d\mathbf{x}_q$ 是从 $\mathbb{R}^2$ 到 $\mathbb{R}^3$ 的线性映射。在标准基下，其矩阵表示为以 $\mathbf{x}_u = \frac{\partial \mathbf{x}}{\partial u}$ 和 $\mathbf{x}_v = \frac{\partial \mathbf{x}}{\partial v}$ 为列向量的 $3 \times 2$ 矩阵：
+\[
+d\mathbf{x}_q = \begin{pmatrix} \mathbf{x}_u & \mathbf{x}_v \end{pmatrix}.
+\]
+
+\begin{itemize}
+    \item 一个线性映射是单射（one-to-one），当且仅当其列向量线性无关。
+    \item 对于 $\mathbb{R}^3$ 中的两个向量 $\mathbf{x}_u$ 和 $\mathbf{x}_v$，它们线性无关当且仅当它们的向量积（叉乘）不为零：
+    \[
+    \mathbf{x}_u \times \mathbf{x}_v \neq 0.
+    \]
+\end{itemize}
+注：在 $\mathbb{R}^3$ 中，$\mathbf{x}_u \wedge \mathbf{x}_v$ 通常指代向量积 $\mathbf{x}_u \times \mathbf{x}_v$。其模长代表了两向量张成的平行四边形的面积；面积非零当且仅当向量线性无关。证毕。
+\end{solution}
+
 \begin{exercise}{2-2, 9 — do Carmo, Exercise 2-2, 9}
 Let $V$ be an open set in the $xy$ plane. Show that the set
 \[
-\{(x, y, z) \in \mathbb{R}^3; z = 0 \text{ and } (x, y) \in V\}
+S = \{(x, y, z) \in \mathbb{R}^3; z = 0 \text{ and } (x, y) \in V\}
 \]
 is a regular surface.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+该集合是 $\mathbb{R}^3$ 中的一个开区域在 $xy$ 平面上的平铺。我们可以直接给出一个覆盖全集的参数化。
+
+定义映射 $\mathbf{x}: V \subset \mathbb{R}^2 \to \mathbb{R}^3$ 为：
+\[
+\mathbf{x}(u, v) = (u, v, 0).
+\]
+
+验证定义条件：
+\begin{enumerate}
+    \item \textbf{可微性}：分量函数 $u, v, 0$ 显然是无限可微的。
+    \item \textbf{同胚}：
+    \begin{itemize}
+        \item $\mathbf{x}$ 是单射：若 $(u_1, v_1, 0) = (u_2, v_2, 0)$，则 $u_1 = u_2, v_1 = v_2$。
+        \item 逆映射为 $\mathbf{x}^{-1}(x, y, 0) = (x, y)$，这是从 $\mathbb{R}^3$ 到 $\mathbb{R}^2$ 的投影映射在 $S$ 上的限制，显然是连续的。
+    \end{itemize}
+    \item \textbf{正则条件}：计算偏导数：
+    \[
+    \mathbf{x}_u = (1, 0, 0), \quad \mathbf{x}_v = (0, 1, 0).
+    \]
+    向量积 $\mathbf{x}_u \times \mathbf{x}_v = (0, 0, 1) \neq 0$。
+\end{enumerate}
+因此，$S$ 是一个正则曲面。
+\end{solution}
 
 \begin{exercise}{2-2, 10* — do Carmo, Exercise 2-2, 10}
 Let $C$ be a figure "8" in the $xy$ plane and let $S$ be the cylindrical surface over $C$ (见 \cref{fig:fig2-11}，教材 Figure 2-11); that is,
 \[
 S = \{(x, y, z) \in \mathbb{R}^3; (x, y) \in C \}.
 \]
-Is the set $S$ a regular surface?
+Is $S$ a regular surface?
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+该集合 \textbf{不是} 正则曲面。
+
+\textbf{原因}：
+字形 "8" 曲线 $C$ 在原点（或者交叉点）处发生自交。设自交点为 $(x_0, y_0)$。那么对于曲面 $S$，直线 $L = \{(x_0, y_0, z); z \in \mathbb{R}\}$ 是其自交线。
+
+对于 $L$ 上的任何一点 $p$，在其邻域内，$S$ 看起来像是两个平面的交叉。这意味着 $p$ 的任何邻域在拓扑上都不与 $\mathbb{R}^2$ 中的开盘同胚（在交叉点附近，集合不是局部平坦的）。正则曲面的定义要求每一点都存在一个同胚于开盘的邻域，而自交的存在破坏了这一性质。
+\end{solution}
 
 \begin{figure}[H]
 \centering
