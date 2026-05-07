@@ -508,21 +508,106 @@ f \circ \mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}
 Let $S^2 = \{(x,y,z) \in \mathbb{R}^3; x^2 + y^2 + z^2 = 1\}$ be the unit sphere and let $f: S^2 \to \mathbb{R}$ be given by $f(x,y,z) = z$. Show that $f$ is differentiable.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+根据曲面上可微函数的定义，我们需要证明对于 $S^2$ 的任何参数化 $\mathbf{x}: U \to S^2$，合成函数 $f \circ \mathbf{x}: U \to \mathbb{R}$ 是可微的。
+
+\begin{enumerate}
+    \item 考虑 $\mathbb{R}^3$ 上的函数 $\tilde{f}: \mathbb{R}^3 \to \mathbb{R}$，定义为 $\tilde{f}(x, y, z) = z$。这是一个多项式函数，在 $\mathbb{R}^3$ 上显然是无限可微的。
+    \item 球面上的函数 $f$ 正是 $\tilde{f}$ 在 $S^2$ 上的限制，即 $f = \tilde{f}|_{S^2}$。
+    \item 对于 $S^2$ 的任何参数化 $\mathbf{x}(u, v) = (x(u, v), y(u, v), z(u, v))$，由于 $\mathbf{x}$ 是可微映射，其分量函数 $x, y, z$ 都是 $(u, v)$ 的可微函数。
+    \item 合成函数为 $(f \circ \mathbf{x})(u, v) = \tilde{f}(x(u, v), y(u, v), z(u, v)) = z(u, v)$。
+    \item 由于 $z(u, v)$ 是可微函数，因此 $f \circ \mathbf{x}$ 在 $U$ 上可微。
+\end{enumerate}
+结论：$f$ 是 $S^2$ 上的可微函数。
+\end{solution}
+
 \begin{exercise}{2-3, 2 — do Carmo, Exercise 2-3, 2}
 Let $S \subset \mathbb{R}^3$ be a regular surface and let $p \in S$. Show that there exists a neighborhood $V$ of $p$ in $S$ such that the projection onto the tangent plane at $p$ maps $V$ diffeomorphically onto an open set of $\mathbb{R}^2$.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+通过旋转和平移，我们可以假设 $p = (0, 0, 0)$，且 $p$ 点处的切平面 $T_pS$ 为 $xy$ 平面（即 $z = 0$）。
+
+\begin{enumerate}
+    \item \textbf{局部图形表示}：根据正则曲面的性质（教材 2-2 节命题 4），如果 $T_pS$ 是 $xy$ 平面，则在 $p$ 点附近存在邻域 $V \subset S$，使得 $S$ 可以表示为一个可微函数 $z = f(x, y)$ 的图像。
+    \item \textbf{投影映射}：定义投影映射 $\pi: V \to \mathbb{R}^2$ 为 $\pi(x, y, z) = (x, y)$。由于 $\pi$ 是 $\mathbb{R}^3$ 中线性投影映射在 $S$ 上的限制，它在 $S$ 上是可微的。
+    \item \textbf{逆映射}：由于 $V$ 是图像，对任何 $(x, y) \in \pi(V)$，其在 $V$ 中的原像唯一确定为 $\mathbf{x}(x, y) = (x, y, f(x, y))$。
+    \item \textbf{微分同胚}：
+    \begin{itemize}
+        \item $\mathbf{x}$ 是可微映射（因为 $f$ 可微）。
+        \item $\pi \circ \mathbf{x} = \text{id}_{\pi(V)}$ 且 $\mathbf{x} \circ \pi = \text{id}_V$。
+    \end{itemize}
+    因此，$\pi$ 是从 $V$ 到开集 $U = \pi(V) \subset \mathbb{R}^2$ 的微分同胚。
+\end{enumerate}
+结论：在 $p$ 点附近的局部区域，曲面总能微分同胚地投影到其切平面上。
+\end{solution}
 
 \begin{exercise}{2-3, 3* — do Carmo, Exercise 2-3, 3}
 Let $\mathbf{x}: U \to S$ be a parametrization of a regular surface $S$. Show that $\mathbf{x}^{-1}: \mathbf{x}(U) \to U$ is continuous. (This shows that condition 2 in the definition of a regular surface can be replaced by: $\mathbf{x}$ is a homeomorphism onto its image.)
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+我们要证明如果 $\mathbf{x}$ 满足可微性（条件 1）和正则性（条件 3），则 $\mathbf{x}^{-1}$ 必然是连续的。
+
+\begin{enumerate}
+    \item \textbf{构造 3D 映射}：设 $q \in U$。定义映射 $F: U \times \mathbb{R} \to \mathbb{R}^3$ 为：
+    \[
+    F(u, v, t) = \mathbf{x}(u, v) + t N(u, v),
+    \]
+    其中 $N(u, v) = \frac{\mathbf{x}_u \times \mathbf{x}_v}{|\mathbf{x}_u \times \mathbf{x}_v|}$ 是曲面在点 $(u, v)$ 处的单位法向量。
+    \item \textbf{雅可比行列式}：计算 $F$ 在 $(q, 0)$ 处的导数。其雅可比矩阵的列向量为 $\mathbf{x}_u, \mathbf{x}_v, N$。由于 $\mathbf{x}_u$ 和 $\mathbf{x}_v$ 线性无关且 $N$ 与它们正交且非零，这三个向量构成 $\mathbb{R}^3$ 的基。因此，$\det(dF_{(q,0)}) \neq 0$。
+    \item \textbf{应用逆映射定理}：根据逆映射定理，存在 $(q, 0)$ 的邻域和 $\mathbf{x}(q)$ 的邻域 $W \subset \mathbb{R}^3$，使得 $F$ 在该邻域内有可微的逆映射 $F^{-1}: W \to U \times \mathbb{R}$。
+    \item \textbf{导出连续性}：注意到在 $W \cap S$ 上，$t = 0$，故 $F^{-1}(p) = (u, v, 0)$。这意味着 $\mathbf{x}^{-1}$ 正是 $F^{-1}$ 在 $W \cap S$ 上的限制并投影到前两个分量。由于 $F^{-1}$ 是连续的（甚至是可微的），其限制映射 $\mathbf{x}^{-1}$ 在 $\mathbf{x}(q)$ 附近必然连续。
+\end{enumerate}
+结论：正则条件保证了局部逆映射的连续性。
+\end{solution}
+
 \begin{exercise}{2-3, 4 — do Carmo, Exercise 2-3, 4}
 Let $F: S_1 \to S_2$ be a differentiable map between regular surfaces. Show that the set of critical points of $F$ is closed in $S_1$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+我们要证明临界点集 $C = \{p \in S_1; dF_p \text{ 不是同构}\}$ 是 $S_1$ 中的闭集。
+
+\begin{enumerate}
+    \item \textbf{局部表示}：设 $p \in S_1$。取 $p$ 的邻域参数化 $\mathbf{x}: U \to S_1$ 和 $F(p)$ 的邻域参数化 $\mathbf{y}: V \to S_2$。映射 $F$ 在此邻域下的局部表示为 $\hat{F} = \mathbf{y}^{-1} \circ F \circ \mathbf{x}: U \to V$。
+    \item \textbf{临界点的刻画}：点 $p = \mathbf{x}(q)$ 是 $F$ 的临界点，当且仅当微分 $d\hat{F}_q$ 的秩小于 2。由于 $\hat{F}$ 是从 $\mathbb{R}^2$ 到 $\mathbb{R}^2$ 的映射，$d\hat{F}_q$ 是一个 $2 \times 2$ 矩阵。临界点条件等价于：
+    \[
+    \det(d\hat{F}_q) = 0.
+    \right]
+    \item \textbf{连续性}：由于 $F$ 是可微的，$\hat{F}$ 的偏导数是连续函数。因此，行列式函数 $h(q) = \det(d\hat{F}_q)$ 是 $U$ 上的连续函数。
+    \item \textbf{结论}：临界点集在 $U$ 中的部分是连续函数 $h$ 的零点集 $h^{-1}(0)$，而闭集的原像在连续映射下是闭集。因此，临界点集在每个坐标邻域内都是闭的。由于 $S_1$ 的拓扑由其坐标邻域诱导，这意味着临界点集在 $S_1$ 中是闭集。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-3, 5 — do Carmo, Exercise 2-3, 5}
 Show that the map $F: S^2 \to S^2$ given by $F(x,y,z) = (-x,y,z)$ (a rotation by $\pi$ around the $y$-axis) is differentiable. Find the matrix of $dF_p$ in an appropriate basis.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+（注：$F(x,y,z) = (-x,y,z)$ 实际上是关于 $yz$ 平面的镜像反射。如果是绕 $y$ 轴旋转 $\pi$，公式应为 $(-x,y,-z)$。以下按题干公式进行解答。）
+
+\begin{enumerate}
+    \item \textbf{可微性}：映射 $F$ 是 $\mathbb{R}^3$ 中线性映射 $\tilde{F}(x, y, z) = (-x, y, z)$ 在 $S^2$ 上的限制。由于线性映射是无限可微的，且 $F(S^2) \subset S^2$（因为 $(-x)^2 + y^2 + z^2 = x^2 + y^2 + z^2 = 1$），故 $F$ 是 $S^2$ 上的可微映射。
+    \item \textbf{微分的矩阵}：
+    对于 $p \in S^2$，其切空间 $T_pS^2$ 是由满足 $v \cdot p = 0$ 的向量 $v \in \mathbb{R}^3$ 组成的平面。由于 $F$ 是线性的，其在 $p$ 点的微分 $dF_p: T_pS^2 \to T_{F(p)}S^2$ 正是 $\tilde{F}$ 在切空间上的限制：
+    \[
+    dF_p(v) = (-v_x, v_y, v_z).
+    \]
+    如果我们选择 $T_pS^2$ 的基 $\{w_1, w_2\}$ 和 $T_{F(p)}S^2$ 的基 $\{dF_p(w_1), dF_p(w_2)\}$，则矩阵显然为单位矩阵。
+    
+    更具启发性的做法是，若 $p = (1, 0, 0)$，则 $T_pS^2$ 为 $yz$ 平面，基可取为 $e_2=(0,1,0), e_3=(0,0,1)$。此时 $F(p)=(-1,0,0)$，$T_{F(p)}S^2$ 亦为 $yz$ 平面。在该基下：
+    \[
+    dF_p(e_2) = (0,1,0) = e_2, \quad dF_p(e_3) = (0,0,1) = e_3.
+    \]
+    矩阵为 $\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$。
+\end{enumerate}
+\end{solution}
 
 % ==================== Section 2-4: The Differential of a Map ====================
 \section{The Differential of a Map; Tangent Plane}\label{sec:differential-tangent-plane}
@@ -588,25 +673,129 @@ d(G \circ F)_p = dG_{F(p)} \circ dF_p.
 Let $S \subset \mathbb{R}^3$ be a regular surface and let $p \in S$. Show that $T_pS$ depends only on the set $S$, not on the parametrization used in its definition.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+切空间 $T_pS$ 的定义基于通过点 $p$ 的可微曲线。具体来说，$v \in T_pS$ 当且仅当存在可微曲线 $\alpha: I \to S$ 使得 $\alpha(0) = p, \alpha'(0) = v$。
+
+\begin{enumerate}
+    \item \textbf{曲线的可微性是本征的}：根据 2-3 节命题 1（坐标变换是可微的），如果一条曲线在某个参数化下是可微的，那么它在任何其他参数化下也是可微的。因此，"曲面上的可微曲线"这一集合仅取决于曲面 $S$。
+    \item \textbf{切向量的定义}：切向量定义为这些本征定义的曲线的切向量（在 $\mathbb{R}^3$ 中）。因为曲线集合独立于参数化，所以它们的切向量集合 $T_pS$ 也独立于参数化。
+    \item \textbf{代数验证}：设 $\mathbf{x}: U \to S$ 和 $\mathbf{y}: V \to S$ 是两个不同的参数化，且 $\mathbf{x}(q) = \mathbf{y}(r) = p$。由链式法则：
+    \[
+    d\mathbf{y}_r = d(\mathbf{x} \circ (\mathbf{x}^{-1} \circ \mathbf{y}))_r = d\mathbf{x}_q \circ d(\mathbf{x}^{-1} \circ \mathbf{y})_r.
+    \]
+    由于 $\mathbf{x}^{-1} \circ \mathbf{y}$ 是 $\mathbb{R}^2$ 开集之间的微分同胚，其微分 $d(\mathbf{x}^{-1} \circ \mathbf{y})_r$ 是 $\mathbb{R}^2$ 上的同构。因此，$d\mathbf{y}_r(\mathbb{R}^2) = d\mathbf{x}_q(\mathbb{R}^2)$。这说明切空间作为 $\mathbb{R}^3$ 的子空间是唯一确定的。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-4, 2* — do Carmo, Exercise 2-4, 2}
 Let $F: S_1 \to S_2$ be a differentiable map between regular surfaces. Show that $dF_p: T_pS_1 \to T_{F(p)}S_2$ is a linear map.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+设 $\mathbf{x}: U \to S_1$ 是 $S_1$ 在 $p = \mathbf{x}(q)$ 处的参数化。切空间 $T_pS_1$ 的任一向量 $v$ 可以表示为 $v = a \mathbf{x}_u + b \mathbf{x}_v$，它是曲线 $\alpha(t) = \mathbf{x}(q + t(a, b))$ 在 $t=0$ 处的切向量。
+
+根据微分的定义：
+\[
+dF_p(v) = \left. \frac{d}{dt} (F \circ \alpha(t)) \right|_{t=0} = \left. \frac{d}{dt} (F \circ \mathbf{x}(q + t(a, b))) \right|_{t=0}.
+\]
+由多元微积分的链式法则，上述导数为：
+\[
+dF_p(v) = \frac{\partial(F \circ \mathbf{x})}{\partial u} a + \frac{\partial(F \circ \mathbf{x})}{\partial v} b.
+\]
+观察上式：
+\begin{itemize}
+    \item 偏导数 $\frac{\partial(F \circ \mathbf{x})}{\partial u}$ 和 $\frac{\partial(F \circ \mathbf{x})}{\partial v}$ 是 $T_{F(p)}S_2$ 中的固定向量（仅依赖于 $F, \mathbf{x}$ 和点 $p$）。
+    \item 系数 $a, b$ 是向量 $v$ 在基 $\{\mathbf{x}_u, \mathbf{x}_v\}$ 下的坐标，它们线性依赖于 $v$。
+\end{itemize}
+因为 $dF_p(v)$ 是 $a$ 和 $b$ 的线性组合，而 $a, b$ 是 $v$ 的线性函数，所以 $dF_p$ 是线性映射。
+\end{solution}
 
 \begin{exercise}{2-4, 3 — do Carmo, Exercise 2-4, 3}
 Let $F: S \to \mathbb{R}$ be a differentiable function on a regular surface $S$. Show that the set of critical points of $F$ is closed in $S$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+点 $p \in S$ 是函数 $F: S \to \mathbb{R}$ 的临界点，当且仅当微分 $dF_p: T_pS \to \mathbb{R}$ 是零映射。
+
+\begin{enumerate}
+    \item \textbf{局部表示}：取 $p$ 附近的参数化 $\mathbf{x}(u, v)$。则 $p = \mathbf{x}(q)$ 是临界点当且仅当：
+    \[
+    \frac{\partial(F \circ \mathbf{x})}{\partial u}(q) = 0 \quad \text{且} \quad \frac{\partial(F \circ \mathbf{x})}{\partial v}(q) = 0.
+    \]
+    \item \textbf{连续性}：由于 $F$ 是可微的，偏导数 $f_1(q) = \frac{\partial(F \circ \mathbf{x})}{\partial u}$ 和 $f_2(q) = \frac{\partial(F \circ \mathbf{x})}{\partial v}$ 是 $U$ 上的连续函数。
+    \item \textbf{闭集性质}：临界点集在 $U$ 中的部分是 $f_1^{-1}(0) \cap f_2^{-1}(0)$。因为 $f_1, f_2$ 连续，它们的零点集是闭集，闭集的交集仍为闭集。
+    \item \textbf{结论}：临界点集在每个局部坐标邻域内都是闭的，因此在 $S$ 中是闭集。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-4, 4 — do Carmo, Exercise 2-4, 4}
 Let $S^2 = \{(x,y,z); x^2+y^2+z^2 = 1\}$ and let $F: S^2 \to \mathbb{R}$ be given by $F(x,y,z) = z$. Find all critical points of $F$ and compute $dF_p$ at each critical point.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+点 $p \in S^2$ 是 $F$ 的临界点当且仅当 $dF_p$ 是零映射。
+
+\begin{enumerate}
+    \item \textbf{刻画临界点}：$F$ 是 $\mathbb{R}^3$ 中函数 $\tilde{F}(x, y, z) = z$ 的限制。对于 $v \in T_pS^2$，有：
+    \[
+    dF_p(v) = \nabla\tilde{F} \cdot v = (0, 0, 1) \cdot v.
+    \]
+    $dF_p = 0$ 意味着向量 $(0, 0, 1)$ 与 $T_pS^2$ 中的所有向量正交。
+    \item \textbf{定位点}：在单位球面上，$T_pS^2$ 正是与向量 $p$ 正交的平面。因此，$(0, 0, 1)$ 与 $T_pS^2$ 正交意味着 $(0, 0, 1)$ 必须与 $p$ 平行。
+    \[
+    p = (0, 0, 1) \quad \text{或} \quad p = (0, 0, -1).
+    \]
+    这两个点分别是北极和南极。
+    \item \textbf{计算微分}：在临界点处，根据定义，微分 $dF_p$ 是从 $T_pS^2$ 到 $\mathbb{R}$ 的零映射。即对于任何 $v \in T_pS^2$，$dF_p(v) = 0$。
+\end{enumerate}
+\end{solution}
 
 \begin{exercise}{2-4, 5* — do Carmo, Exercise 2-4, 5}
 Let $F: S_1 \to S_2$ be a differentiable map between regular surfaces. Show that if $F$ is a diffeomorphism (i.e., $F$ is invertible and both $F$ and $F^{-1}$ are differentiable), then $dF_p: T_pS_1 \to T_{F(p)}S_2$ is an isomorphism for all $p \in S_1$.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+如果 $F$ 是微分同胚，则存在可微映射 $G = F^{-1}: S_2 \to S_1$。
+
+\begin{enumerate}
+    \item \textbf{恒等映射的微分}：由定义，$G \circ F = \text{id}_{S_1}$ 且 $F \circ G = \text{id}_{S_2}$。显然，恒等映射 $\text{id}_S$ 的微分是切空间上的恒等变换 $I$。
+    \item \textbf{应用链式法则}：根据曲面映射微分的链式法则：
+    \[
+    d(G \circ F)_p = dG_{F(p)} \circ dF_p = d(\text{id}_{S_1})_p = I_{T_pS_1}.
+    \]
+    类似地：
+    \[
+    d(F \circ G)_{F(p)} = dF_p \circ dG_{F(p)} = d(\text{id}_{S_2})_{F(p)} = I_{T_{F(p)}S_2}.
+    \]
+    \item \textbf{结论}：这表明线性映射 $dF_p$ 具有双侧逆映射 $dG_{F(p)}$。在有限维线性代数中，具有逆映射的线性映射是同构（isomorphism）。因此，$dF_p$ 是切空间之间的同构。
+\end{enumerate}
+\end{solution}
+
 \begin{exercise}{2-4, 6 — do Carmo, Exercise 2-4, 6}
 Let $S \subset \mathbb{R}^3$ be a regular surface and let $p \in S$. Show that the tangent plane $T_pS$ can be characterized as the set of vectors $v \in \mathbb{R}^3$ such that $v \cdot N(p) = 0$, where $N(p)$ is a normal vector to $S$ at $p$.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+法向量 $N(p)$ 的定义是 $\mathbb{R}^3$ 中与 $p$ 点处所有切向量都正交的非零向量。
+
+\begin{enumerate}
+    \item \textbf{切空间的维数}：根据正则曲面的定义，切空间 $T_pS$ 是 $\mathbb{R}^3$ 的一个 2 维子空间。
+    \item \textbf{正交补空间}：在 $\mathbb{R}^3$ 中，与给定非零向量 $N(p)$ 正交的所有向量构成的集合 $\{v \in \mathbb{R}^3; v \cdot N(p) = 0\}$ 是一个 2 维线性子空间。
+    \item \textbf{包含关系与一致性}：
+    \begin{itemize}
+        \item 由法向量的定义，对任何 $v \in T_pS$，都有 $v \cdot N(p) = 0$。即 $T_pS \subset \{v \in \mathbb{R}^3; v \cdot N(p) = 0\}$。
+        \item 由于包含方和被包含方都是 $\mathbb{R}^3$ 的 2 维子空间，根据线性代数结论，它们必须相等。
+    \end{itemize}
+    \item \textbf{参数化验证}：若取参数化 $\mathbf{x}(u, v)$，则 $T_pS = \text{span}\{\mathbf{x}_u, \mathbf{x}_v\}$，且 $N(p)$ 平行于 $\mathbf{x}_u \times \mathbf{x}_v$。向量 $v \in \mathbb{R}^3$ 与 $\mathbf{x}_u \times \mathbf{x}_v$ 正交当且仅当 $v$ 落在 $\mathbf{x}_u$ 和 $\mathbf{x}_v$ 张成的平面内。
+\end{enumerate}
+结论：切平面恰好是法向量的正交补空间。
+\end{solution}
 
 % ==================== Section 2-5: The First Fundamental Form ====================
 \section{The First Fundamental Form}\label{sec:first-fundamental-form}

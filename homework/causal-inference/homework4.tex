@@ -90,6 +90,22 @@ $$
 Further show that $E(\delta_i) = \tau$ for all $i=1,\ldots, n$.
 \end{enumerate}
 
+
+\begin{definition}[General estimand $\tau^h$]\label{13:def:tau-h}
+For a given function $h(X)$, the general estimand is
+$$
+\tau^h = \frac{E\{h(X)\tau(X)\}}{E\{h(X)\}} = \frac{E[h(X)\{\mu_1(X) - \mu_0(X)\}]}{E\{h(X)\}},
+$$
+where $\mu_1(X) = E\{Y(1)\mid X\}$ and $\mu_0(X) = E\{Y(0)\mid X\}$.
+\end{definition}
+
+\begin{definition}[Doubly robust estimator]\label{13:def:DR-estimator}
+The doubly robust estimator uses outcome regression models $\mu_1(X,\beta_1)$ and $\mu_0(X,\beta_0)$, and propensity score model $e(X,\alpha)$:
+\begin{align*}
+\tilde{\mu}_1^{h,\mathrm{dr}} &= E\left[\frac{Zh(X)\{Y-\mu_1(X,\beta_1)\}}{e(X,\alpha)} + h(X)\mu_1(X,\beta_1)\right], \\
+\tilde{\mu}_0^{h,\mathrm{dr}} &= E\left[\frac{(1-Z)h(X)\{Y-\mu_0(X,\beta_0)\}}{1-e(X,\alpha)} + h(X)\mu_0(X,\beta_0)\right].
+\end{align*}
+\end{definition}
  \Paragraph{13.10~Doubly robust estimation for general estimand}\label{hw::general-estimand-dr}
 
 For a given $h(X)$, we have the following formulas for constructing the doubly robust estimator for $\tau^h$:
@@ -118,6 +134,18 @@ With a binary outcome, we can replace linear outcome models with logistic outcom
 
 \subsection{Chapter 17: E-Value: Evidence for Causation in Observational Studies with Unmeasured Confounding}
 
+\begin{definition}[Risk ratios and risk difference]\label{17:def:RR-RD}
+For binary $Y$, the true conditional causal risk ratio is
+$$\RR_{ZY\mid x}^\true = \frac{\pr\{Y(1)=1\mid X=x\}}{\pr\{Y(0)=1\mid X=x\}}.$$
+The observed conditional risk ratio is
+$$\RR_{ZY\mid x}^\obs = \frac{\pr(Y=1\mid Z=1,X=x)}{\pr(Y=1\mid Z=0,X=x)}.$$
+The treatment-confounder risk ratio is
+$$\RR_{ZU\mid x} = \frac{\pr(U=1\mid Z=1,X=x)}{\pr(U=1\mid Z=0,X=x)}.$$
+The confounder-outcome risk ratio is
+$$\RR_{UY\mid x} = \frac{\pr(Y=1\mid U=1,X=x)}{\pr(Y=1\mid U=0,X=x)}.$$
+The risk difference is $\RD_{ZY} = \pr(Y=1\mid Z=1) - \pr(Y=1\mid Z=0)$.
+\end{definition}
+
 \begin{thesis}\label{17.1}\emph{(Theorem 17.1, Ding, 2025)}
 Under $Z\ind Y\mid (X, U)$, assume
 \begin{equation}\label{eq::evalue-17.1}
@@ -139,6 +167,17 @@ Revisit the proof of \cref{17.1}. Assume $Z\ind Y \mid (X, U)$. Show that if $\R
 
 Remark: This result is intuitive. Condition on $X$. It says that if the $Z$-$U$ relationship is positive and the $U$-$Y$ relationship is negative, then the $Z$-$Y$ relationship is negative given the conditional independence of $Z$ and $Y$ given $U$.
 
+
+\begin{definition}[Cornfield-type risk differences]\label{17:def:cornfield-rd}
+For binary $Z, Y, U$, the observed risk difference is
+$$\RD_{ZY}^{\obs} = \pr(Y=1\mid Z=1) - \pr(Y=1\mid Z=0).$$
+The treatment-confounder risk difference is
+$$\RD_{ZU} = \pr(U=1\mid Z=1) - \pr(U=1\mid Z=0).$$
+The confounder-outcome risk difference is
+$$\RD_{UY} = \pr(Y=1\mid U=1) - \pr(Y=1\mid U=0).$$
+Under latent ignorability $Z\ind Y\mid U$, we have the product relation $\RD_{ZY}^{\obs} = \RD_{ZU} \times \RD_{UY}$.
+\end{definition}
+
  \Paragraph{17.6~Cornfield-type inequalities for the risk difference}\label{hw::cornfield-rd}
 
 Consider binary $Z, Y, U$, and condition on $X$ implicitly. Assume latent ignorability given $U$. Show that under $Z\ind Y \mid U$, we have
@@ -159,6 +198,15 @@ $$
 These are the Cornfield inequalities for the risk difference with a binary confounder.
 
 \subsection{Chapter 20: Overlap in Observational Studies: Difficulties and Opportunities}
+
+\begin{definition}[Overlap and propensity score]\label{20:def:overlap}
+The propensity score is $e(X) = \pr(Z=1\mid X)$.
+The overlap condition requires $0 < e(X) < 1$.
+The marginal probability of treatment is $e = \pr(Z=1)$.
+Let $\lambda_1$ and $\lambda_0$ be the maximum eigenvalues of $\cov(X\mid Z=1)$ and $\cov(X\mid Z=0)$, respectively.
+The strict overlap condition requires $\eta \leq e(X) \leq 1-\eta$ for some $\eta \in (0,1/2)$.
+\end{definition}
+
 
 \begin{assumption}[strict overlap]\label{20.1}
 $\eta \leq e(X) \leq 1-\eta$ for some $\eta \in (0,1/2).$
