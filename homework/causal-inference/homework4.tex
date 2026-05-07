@@ -12,7 +12,7 @@
 \newtheorem{example}{Example}
 \newtheorem{definition}{Definition}
 \newtheorem{assumption}{Assumption}[chapter]
-\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{thesis}{Theorem}[chapter]
 
 % Custom macros from the book
 \def\iidsim{\stackrel{\textup{IID}}{\sim}}
@@ -41,9 +41,7 @@
 
 \subsection{Chapter 13: The Average Causal Effect on the Treated Units and Other Estimands}
 
-\subsectionmark{The Average Causal Effect on the Treated Units}
-
- \paragraph{13.1~Comparing $\tau_\mathrm{T}, \tau_\mathrm{C}$, and $\tau$}\label{hw::difference-tau-T-tau}
+ paragraph{13.1~Comparing $\tau_\mathrm{T}, \tau_\mathrm{C}$, and $\tau$}\label{hw::difference-tau-T-tau}
 
 Assume $Z\ind \{Y(1), Y(0)\} \mid X$. Recall $e(X) = \pr(Z=1\mid X)$ is the propensity score, $e = \pr(Z=1)$ is the marginal probability of the treatment, and $\tau(X) = E\{Y(1)-Y(0) \mid X\}$ is the CATE.
 Show that
@@ -54,7 +52,7 @@ $$
 
 Remark: The results above also imply that $\tau_\mathrm{T} - \tau_\mathrm{C} = \cov\{e(X), \tau(X)\} / \{e(1-e)\}$. So the differences among $\tau_\mathrm{T}, \tau_\mathrm{C}, \tau$ depend on the covariance between the propensity score and CATE. When $e(X)$ and $\tau(X)$ are uncorrelated, their differences are 0.
 
- \paragraph{13.6~Estimating individual effect and conditional average causal effect}\label{hw::individual-effect-prediction}
+ paragraph{13.6~Estimating individual effect and conditional average causal effect}\label{hw::individual-effect-prediction}
 
 Assume that $\{Z_i, X_i, Y_i(1), Y_i(0)\}_{i=1}^n \iidsim \{Z, X, Y(1), Y(0)\}$. The individual effect is $\tau_i = Y_i(1) - Y_i(0)$ and the conditional average causal effect is $\tau(X_i) = E\{Y_i(1) - Y_i(0) \mid X_i\}$.
 
@@ -83,7 +81,7 @@ $$
 Further show that $E(\delta_i) = \tau$ for all $i=1,\ldots, n$.
 \end{enumerate}
 
- \paragraph{13.10~Doubly robust estimation for general estimand}\label{hw::general-estimand-dr}
+ paragraph{13.10~Doubly robust estimation for general estimand}\label{hw::general-estimand-dr}
 
 For a given $h(X)$, we have the following formulas for constructing the doubly robust estimator for $\tau^h$:
 \begin{align*}
@@ -105,13 +103,13 @@ $$
 
 \subsection{Chapter 14: Using the Propensity Score in Regressions for Causal Effects}
 
- \paragraph{14.3~Weighted logistic regression with a binary outcome}\label{hw::logistic-regression}
+ paragraph{14.3~Weighted logistic regression with a binary outcome}\label{hw::logistic-regression}
 
 With a binary outcome, we can replace linear outcome models with logistic outcome models. Show that with weights in the logistic regressions, the doubly robust estimators equal the outcome regression estimator. The result holds for both $\tau$ and $\tau_\mathrm{T}$.
 
 \subsection{Chapter 17: E-Value: Evidence for Causation in Observational Studies with Unmeasured Confounding}
 
-\begin theorem}\label{17.1}
+\begin{thesis}\label{17.1}
 Under $Z\ind Y\mid (X, U)$, assume
 \begin{equation}\label{eq::evalue-17.1}
 \RR_{ZY\mid x}^\obs > 1, \quad \RR_{ZU\mid x} > 1,\quad \RR_{UY\mid x} > 1.
@@ -120,19 +118,19 @@ We have
 $$
 \RR_{ZY\mid x}^\obs \leq \frac{ \RR_{ZU\mid x}  \RR_{UY\mid x} }{  \RR_{ZU\mid x} + \RR_{UY\mid x} - 1} .
 $$
-\end theorem}
+\end{thesis}
 
- \paragraph{17.1~A technical lemma for the proof of \cref{17.1}}\label{hw::technical-lemma}
+ paragraph{17.1~A technical lemma for the proof of \cref{17.1}}\label{hw::technical-lemma}
 
 Show that $f(x) = \frac{ax+1}{bx+1}$ is increasing in $x$ if $a > b$ and decreasing in $x$ if $a < b$.
 
- \paragraph{17.2~Technical assumption for Theorem 17.1}\label{hw::technical-assumption}
+ paragraph{17.2~Technical assumption for Theorem 17.1}\label{hw::technical-assumption}
 
 Revisit the proof of \cref{17.1}. Assume $Z\ind Y \mid (X, U)$. Show that if $\RR_{ZU|x} > 1$ but $\RR_{UY|x} < 1$, then $\RR_{ZY|x}^{\obs} < 1$.
 
 Remark: This result is intuitive. Condition on $X$. It says that if the $Z$-$U$ relationship is positive and the $U$-$Y$ relationship is negative, then the $Z$-$Y$ relationship is negative given the conditional independence of $Z$ and $Y$ given $U$.
 
- \paragraph{17.6~Cornfield-type inequalities for the risk difference}\label{hw::cornfield-rd}
+ paragraph{17.6~Cornfield-type inequalities for the risk difference}\label{hw::cornfield-rd}
 
 Consider binary $Z, Y, U$, and condition on $X$ implicitly. Assume latent ignorability given $U$. Show that under $Z\ind Y \mid U$, we have
 $$
@@ -157,7 +155,7 @@ These are the Cornfield inequalities for the risk difference with a binary confo
 $\eta \leq e(X) \leq 1-\eta$ for some $\eta \in (0,1/2).$
 \end{assumption}
 
-\begin theorem}\label{20.1}
+\begin{thesis}\label{20.2}
 Assumption \ref{20.1} implies that $\eta \leq e \leq 1-\eta$ and
 \begin{align}
 & p^{-1} \sum_{k=1}^p \big | E(X_k\mid Z=1) - E(X_k\mid Z=0) \big | \leq p^{-1/2} C^{1/2} \{ e\lambda_1^{1/2} + (1-e) \lambda_0^{1/2} \},
@@ -167,9 +165,9 @@ $$
 C = \frac{ (e-\eta)(1-e-\eta) }{ e^2(1-e)^2 \eta (1-\eta) }
 $$
 is a positive constant depending only on $(e, \eta)$, and $\lambda_1$ and $\lambda_0$ are the maximum eigenvalues of the covariance matrices $\cov(X\mid Z=1)$ and $\cov(X\mid Z=0)$, respectively.
-\end theorem}
+\end{thesis}
 
- \paragraph{20.1~Implications of overlap}\label{hw::overlap-implications}
+ paragraph{20.1~Implications of overlap}\label{hw::overlap-implications}
 
 In Part III of this book, causal inference with observational studies relies on two critical assumptions: ignorability $Z\ind \{Y(1), Y(0)\} \mid X$ and overlap $0 < e(X) < 1$.
 
@@ -189,7 +187,7 @@ $$
 $$
 with known $\epsilon_1(X)$ and $\epsilon_0(X)$.
 
- \paragraph{(a)~Identification formulas}\label{hw::sensitivity-id}
+ paragraph{(a)~Identification formulas}\label{hw::sensitivity-id}
 
 Show that
 $$
@@ -201,7 +199,7 @@ $$
 \mathrm{ACE} = E\{ZY + (1-Z)\mu_1(X)/\epsilon_1(X)\} - E\{Z\mu_0(X)\epsilon_0(X) + (1-Z)Y\}.
 $$
 
- \paragraph{(b)~IPW representation}\label{hw::sensitivity-ipw}
+ paragraph{(b)~IPW representation}\label{hw::sensitivity-ipw}
 
 Show that
 $$
@@ -210,7 +208,7 @@ E\{Y(0)\} = E\left\{w_0(X)\frac{(1-Z)Y}{1-e(X)}\right\},
 $$
 where $w_1(X) = e(X) + \{1-e(X)\}/\epsilon_1(X)$ and $w_0(X) = e(X)\epsilon_0(X) + \{1-e(X)\}$.
 
- \paragraph{(c)~Doubly robust estimation (Optional)}\label{hw::sensitivity-dr}
+ paragraph{(c)~Doubly robust estimation (Optional)}\label{hw::sensitivity-dr}
 
 Derive the doubly robust estimation formula.
 
