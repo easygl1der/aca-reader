@@ -1432,18 +1432,117 @@ Show that on a plane, geodesics are straight lines.
 Show that on the sphere $S^2$, the geodesics are arcs of great circles.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：
+利用测地线的几何刻画：测地线的加速度向量 $\alpha''(s)$ 必须与曲面法向量 $N$ 平行。
+
+\begin{enumerate}
+    \item \textbf{球面法向量}：在单位球面上，点 $p$ 处的单位法向量就是位置向量 $N(p) = p$。
+    \item \textbf{大圆的性质}：大圆是过球心的平面与球面的交线。设 $\alpha(s)$ 是以弧长为参数的大圆。
+    \begin{itemize}
+        \item 因为 $\alpha(s)$ 是平面曲线且半径为 1，其加速度向量 $\alpha''(s)$ 始终指向圆心（即球心）。
+        \item 故 $\alpha''(s)$ 与位置向量 $\alpha(s)$ 平行，从而与法向量 $N$ 平行。
+        \item 这意味着其在切平面上的投影（协变导数）为 0，故大圆是测地线。
+    \end{itemize}
+    \item \textbf{一般性证明}：设 $\alpha(s)$ 是球面上任意一条测地线。
+    \begin{itemize}
+        \item 由测地线定义，$\alpha''(s) = \lambda(s) \alpha(s)$。
+        \item 考虑向量 $\mathbf{L} = \alpha(s) \times \alpha'(s)$。
+        \item 对其求导：$\mathbf{L}' = \alpha' \times \alpha' + \alpha \times \alpha'' = 0 + \alpha \times (\lambda \alpha) = 0$。
+        \item 因此 $\mathbf{L}$ 是一个常向量。这说明位置向量 $\alpha(s)$ 始终垂直于固定向量 $\mathbf{L}$。
+        \item 满足 $\alpha(s) \cdot \mathbf{L} = 0$ 的点构成一个过原点的平面。
+    \end{itemize}
+\end{enumerate}
+结论：球面上任何测地线都必然落在过原点的平面内。球面上位于过原点平面内的曲线正是大圆。
+\end{solution}
+
 \begin{exercise}{2-8, 3 — do Carmo, Exercise 2-8, 3}
 Let $S$ be a surface of revolution. Show that meridians (curves of constant longitude) are geodesics.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+我们可以利用对称性和测地线的几何刻画来证明。
+
+\begin{enumerate}
+    \item \textbf{经线的定义}：经线是旋转面与过旋转轴（设为 $z$ 轴）的平面的交线。设 $\alpha(s)$ 是这样一条经线，对应的平面为 $\Pi$。
+    \item \textbf{对称性分析}：旋转面关于平面 $\Pi$ 具有镜像对称性。
+    \item \textbf{法向量的方向}：由于曲面对称，在经线 $\alpha(s)$ 上的任何一点 $p$，曲面的单位法向量 $N(p)$ 必须落在平面 $\Pi$ 内。
+    （反证法：若 $N(p)$ 有垂直于 $\Pi$ 的分量，根据对称性，镜像点应有相反的分量，但这与法向量的唯一性矛盾。）
+    \item \textbf{加速度向量的方向}：由于经线 $\alpha(s)$ 本身是平面 $\Pi$ 内的一条曲线，其加速度向量 $\alpha''(s)$ 也必然完全落在平面 $\Pi$ 内。
+    \item \textbf{结论}：
+    \begin{itemize}
+        \item 在平面 $\Pi$ 内，$\alpha''(s)$ 正交于切向量 $\alpha'(s)$。
+        \item 而 $N(p)$ 也在平面 $\Pi$ 内且正交于切向量 $\alpha'(s)$（因为 $\alpha'(s) \in T_pS$）。
+        \item 在 2 维平面 $\Pi$ 中，与给定向量 $\alpha'(s)$ 正交的方向是唯一的。因此 $\alpha''(s)$ 必然与 $N(p)$ 平行。
+    \end{itemize}
+\end{enumerate}
+由于 $\alpha''(s)$ 平行于法向量，其在切平面上的投影为 0，即 $\frac{D\alpha'}{ds} = 0$。故经线是测地线。
+\end{solution}
 
 \begin{exercise}{2-8, 4* — do Carmo, Exercise 2-8, 4}
 Let $\alpha: [a,b] \to S$ be a geodesic on a regular surface $S$. Show that the arc length $L(\alpha)$ is stationary under variations of $\alpha$ with fixed endpoints.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答思路}：
+这是一个变分法中的经典结论。我们证明测地线是弧长泛函的驻点。
+
+\begin{enumerate}
+    \item \textbf{变分的定义}：设 $\alpha(t)$ 是单位速度测地线。考虑变分 $h(t, \epsilon)$，使得 $h(t, 0) = \alpha(t)$，且端点固定：$h(a, \epsilon) = \alpha(a), h(b, \epsilon) = \alpha(b)$。
+    \item \textbf{变分向量场}：定义 $V(t) = \frac{\partial h}{\partial \epsilon}|_{\epsilon=0}$。由于端点固定，有 $V(a) = V(b) = 0$。
+    \item \textbf{弧长的变分}：弧长泛函为 $L(\epsilon) = \int_a^b \|\frac{\partial h}{\partial t}\| \, dt$。其对 $\epsilon$ 的导数（第一变分）在 $\epsilon=0$ 处为：
+    \[
+    L'(0) = \int_a^b \frac{1}{\|\alpha'(t)\|} \left\langle \frac{D V}{dt}, \alpha'(t) \right\rangle \, dt.
+    \]
+    由于是单位速度，$\|\alpha'\| = 1$。
+    \item \textbf{分部积分}：利用公式 $\frac{d}{dt}\langle V, \alpha' \rangle = \langle \frac{DV}{dt}, \alpha' \rangle + \langle V, \frac{D\alpha'}{dt} \rangle$，代入积分式：
+    \[
+    L'(0) = \left[ \langle V, \alpha' \rangle \right]_a^b - \int_a^b \left\langle V, \frac{D\alpha'}{dt} \right\rangle \, dt.
+    \]
+    \item \textbf{代入边界条件与测地线条件}：
+    \begin{itemize}
+        \item 边界项 $[ \langle V, \alpha' \rangle ]_a^b = 0$，因为 $V(a) = V(b) = 0$。
+        \item 积分项为 0，因为 $\alpha$ 是测地线，满足 $\frac{D\alpha'}{dt} = 0$。
+    \end{itemize}
+\end{enumerate}
+结论：$L'(0) = 0$，即弧长在测地线处取平稳值。
+\end{solution}
+
 \begin{exercise}{2-8, 5 — do Carmo, Exercise 2-8, 5}
 Let $C$ be a curve on a surface $S$ and let $p \in C$. Show that the geodesic curvature $k_g$ of $C$ at $p$ satisfies
 \[
-k_g = \frac{I_p(T', N)}{\|T\|^3},
+k_g = \frac{[\alpha', \alpha'', N]}{\|\alpha'\|^3},
 \]
-where $T = \alpha'$ is the unit tangent vector and $N$ is a unit normal to $S$.
+其中 $[\cdot]$ 表示 $\mathbb{R}^3$ 中的向量三重积，$\alpha$ 是 $C$ 的参数化（不一定是单位速度），$N$ 是曲面在 $p$ 点的单位法向量。
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：
+（注：原题干公式有误。测地曲率 $k_g$ 衡量的是曲线加速度在切平面内的分量。以下给出一般参数化下的推导。）
+
+\begin{enumerate}
+    \item \textbf{测地曲率定义}：对于单位速度曲线 $\alpha(s)$，其测地曲率定义为 $k_g = \langle \alpha''(s), N \times \alpha'(s) \rangle$。
+    \item \textbf{非单位速度参数化}：设 $\alpha(t)$ 是任意参数化，其弧长为 $s(t)$。
+    \begin{itemize}
+        \item 速度向量：$\alpha' = \frac{ds}{dt} T$，其中 $T = \frac{d\alpha}{ds}$ 是单位切向量。速度为 $v = \|\alpha'\| = \frac{ds}{dt}$。
+        \item 加速度向量：$\alpha'' = \frac{d^2s}{dt^2} T + (\frac{ds}{dt})^2 \frac{dT}{ds}$。
+    \end{itemize}
+    \item \textbf{计算三重积}：
+    考虑 $[\alpha', \alpha'', N] = \langle \alpha'' , N \times \alpha' \rangle$。
+    将加速度和速度表达式代入：
+    \[
+    \langle \alpha'' , N \times \alpha' \rangle = \left\langle \frac{d^2s}{dt^2} T + v^2 \frac{dT}{ds} , N \times (v T) \right\rangle.
+    \]
+    由于 $T \times T = 0$，第一项积分消失：
+    \[
+    \langle \alpha'' , N \times \alpha' \rangle = v^3 \left\langle \frac{dT}{ds} , N \times T \right\rangle.
+    \]
+    \item \textbf{识别测地曲率}：由单位速度下的定义可知 $\langle \frac{dT}{ds}, N \times T \rangle = k_g$。
+    因此：
+    \[
+    [\alpha', \alpha'', N] = v^3 k_g = \|\alpha'\|^3 k_g.
+    \]
+\end{enumerate}
+结论：$k_g = \frac{[\alpha', \alpha'', N]}{\|\alpha'\|^3}$。证毕。
+\end{solution}
