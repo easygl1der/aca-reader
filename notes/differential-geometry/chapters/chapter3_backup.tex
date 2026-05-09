@@ -1,0 +1,1109 @@
+% Chapter 3: The Geometry of Surfaces
+\chapter{The Geometry of Surfaces}\label{chap:ch3}
+
+\section*{Introduction}\label{sec:ch3-intro}
+
+\textbf{Why do we study the geometry of surfaces?} 在第一章中，我们研究的是曲线的几何——一条曲线如何弯曲，由曲率和挠率完全描述。曲线的曲率是外蕴几何量：它描述了曲线作为嵌入 $\mathbb{R}^3$ 的对象的弯曲程度，我们无法从曲线本身（不借助外部空间）知道它的曲率。
+
+曲面的情况则更为丰富和深刻。一个曲面既可以通过其在 $\mathbb{R}^3$ 中的嵌入方式（外蕴几何）来研究，也可以仅从曲面自身的内蕴结构（内蕴几何）来研究。内蕴几何只涉及曲面上可以仅用弧长、角度、面积来定义的概念——这些是曲面作为度量空间本身固有的性质，与如何将曲面嵌入 $\mathbb{R}^3$ 无关。
+
+本章的核心任务是理解曲面的弯曲程度。给定一张曲面 $S$ 和其上一点 $p$，我们想回答以下问题：
+
+\begin{itemize}
+    \item 曲面在 $p$ 点沿某个方向是向上弯还是向下弯？
+    \item 曲面在 $p$ 点沿哪个方向弯得最厉害？
+    \item 曲面的总弯曲程度——即 Gauss 曲率 $K$——究竟是内蕴的还是外蕴的？
+\end{itemize}
+
+第二个问题的答案催生了 Weingarten 映射（形状算子）$S_p$——这是连接第一和第二基本形式的核心工具。第三个问题的答案则是数学史上最著名的结果之一：\textbf{Theorema Egregium}（非凡定理）——Gauss 曲率 $K$ 是内蕴几何量。这一发现是 Gauss 最深刻的贡献之一，也是现代微分几何的基石。
+
+在本章中，我们将依次建立以下工具：从 Gauss 映射的定义出发，到法曲率与 Meusnier 定理，再到主曲率与 Euler 公式，最后以 Theorema Egregium 和可积性方程收尾。
+
+% ==================== Section 3-2: The Definition of the Gauss Map ====================
+\section{The Gauss Map and Its Fundamental Properties}\label{sec:gauss-map}
+
+\subsection{The Gauss Map}\label{sec:gauss-map-def}
+
+在第二章中，我们定义了正则曲面 $S \subset \mathbb{R}^3$ 及其切平面 $T_pS$。每一点 $p \in S$ 都有一个单位法向量 $N(p)$，它与切平面正交。由于 $N(p)$ 是单位向量，它自然地位于单位球面 $S^2 \subset \mathbb{R}^3$ 上。
+
+\begin{Definition}[Gauss 映射 (Gauss map)]\label{def:gauss-map}
+设 $S \subset \mathbb{R}^3$ 是可定向的正则曲面，$N: S \to S^2$ 是单位法向量场。映射
+\[
+N: S \longrightarrow S^2,\qquad p \longmapsto N(p)
+\]
+称为\textbf{\underline{Gauss 映射}}（Gauss map）。
+\end{Definition}
+
+直观上，Gauss 映射将曲面上的每一点"投影"到单位球面上——它记录了曲面上法向量的分布情况。Gauss 映射的几何图像见 \cref{fig:fig3-2}。
+
+\begin{figure}[H]
+\centering
+\subfloat[Figure 3-2. The Gauss map $N: S \to S^2$]{\label{fig:fig3-2}\includegraphics[width=0.6\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/216853bb9c9d2a1d4811f2cd06eea0b1ea035c4b263de20ca9c903b47accf589.jpg}}
+\end{figure}
+
+Gauss 映射的微分 $dN_p: T_pS \to T_{N(p)}S^2$ 将曲面在 $p$ 点的切向量映射为球面在 $N(p)$ 点的切向量。这里有一个关键观察：$T_{N(p)}S^2$ 与 $T_pS$ 是同一个平面——两者都垂直于 $N(p)$。因此，$dN_p$ 可以视为切空间 $T_pS$ 上的一个线性变换。
+
+\subsection{The Weingarten Map (Shape Operator)}\label{sec:weingarten}
+
+\begin{Definition}[Weingarten 映射 (Weingarten map / Shape operator)]\label{def:weingarten-map}
+设 $N: S \to S^2$ 是 Gauss 映射。点 $p$ 处的\textbf{\underline{Weingarten 映射}}（Weingarten map）或\textbf{\underline{形状算子}}（shape operator）为
+\[
+S_p = -dN_p: T_pS \longrightarrow T_pS.
+\tag{3-2-1}
+\]
+负号是历史惯例，使得 $S_p$ 在法曲率计算中有一个自然的解释。
+\end{Definition}
+
+Weingarten 映射是曲面论的核心工具。它是一个线性变换，关于第一基本形式的内积是自共轭的（self-adjoint）——这意味着
+\[
+\langle S_p(v), w \rangle = \langle v, S_p(w) \rangle,\qquad \forall\, v, w \in T_pS.
+\tag{3-2-2}
+\]
+
+自共轭性保证了 $S_p$ 有实特征值和两两正交的特征向量——这将在主曲率一节中发挥关键作用。
+
+$dN_p$ 的几何意义见 \cref{fig:fig3-3}。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-3. $dN_p$ takes a tangent vector to the sphere's tangent plane]{\label{fig:fig3-3}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/fa20784ffa0cf87b26556fefc3048146f0287308bc09e31a93cf962aa4714cf4.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-4. Plane: $dN_p = 0$]{\label{fig:fig3-4}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/f6b49975c2896eba1d8c302e6ea2aacff718212b7aa3cc41b9d9a8de01a2b3bc.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-5. Unit sphere: $d\bar{N}_p(v) = -v$ (so $S_p = -dN_p = I$) ]{\label{fig:fig3-5}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/c0ffa599c2b6e7a0e2c8b098970dfcc6ec6474b8b6c2b0a1a998e43e4a126acf.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-6. 圆柱面：沿母线 $dN = 0$，沿圆周 $dN = -I$（即 $S = I$） ]{\label{fig:fig3-6}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/7e110dac56ae33192bfe686568e285d52b2bcf6e289089bc6e98471f331ffa9e.jpg}}
+\end{minipage}
+\end{figure}
+
+\textbf{基本例子.} Weingarten 映射在简单曲面上的行为非常直观：
+
+\begin{itemize}
+    \item \textbf{平面}（\cref{fig:fig3-4}）：法向量恒为常向量，$dN_p = 0$，故 $S_p = 0$（零变换）。
+    \item \textbf{单位球面}（\cref{fig:fig3-5}）：法向量指向球心，$dN_p(v) = -v$，故 $S_p = I$（恒等变换）。
+    \item \textbf{圆柱面}（\cref{fig:fig3-6}）：沿母线方向（直线的切方向），$dN = 0$；沿圆周方向，$dN = -I$（即 $S = I$）。
+\end{itemize}
+
+\subsection{The Second Fundamental Form}\label{sec:second-fundamental-form}
+
+Weingarten 映射 $S_p$ 与第一基本形式 $I$ 共同决定了第二基本形式。
+
+\begin{Definition}[第二基本形式 (Second fundamental form)]\label{def:second-fundamental-form}
+设 $S \subset \mathbb{R}^3$ 是正则曲面，$S_p: T_pS \to T_pS$ 是 Weingarten 映射。$p$ 点处的\textbf{\underline{第二基本形式}}（second fundamental form）是切空间上的二次型
+\[
+\II_p(v, w) = \langle S_p(v), w \rangle = \langle -dN_p(v), w \rangle,\qquad v, w \in T_pS.
+\tag{3-2-3}
+\]
+\end{Definition}
+
+第二基本形式衡量的是曲面在法向上的二阶变化——即曲面如何偏离其切平面。回忆第一基本形式 $I$ 只涉及切向量之间的内积，它决定了曲面上的度量性质（弧长、面积、角度），完全不涉及曲面如何弯曲。第二基本形式则补充了弯曲信息。
+
+\textbf{Coefficients.} 在参数化 $\mathbf{x}(u,v)$ 下，第二基本形式可以写成
+\[
+\II = L\,du^2 + 2M\,dudv + N\,dv^2,
+\tag{3-2-4}
+\]
+其中
+\[
+L = \langle \mathbf{x}_{uu}, N \rangle,\quad M = \langle \mathbf{x}_{uv}, N \rangle,\quad N_{\text{coeff}} = \langle \mathbf{x}_{vv}, N \rangle.
+\tag{3-2-5}
+\]
+
+这里 $\mathbf{x}_{uu} = \partial^2\mathbf{x}/\partial u^2$ 等是参数化的二阶偏导数，$N$ 是单位法向量。
+
+\begin{Remark}[两个基本形式的对比]
+第一基本形式 $I$ 衡量切平面上的内积——它测量曲面作为度量空间的结构。
+第二基本形式 $\II$ 衡量曲面如何"离开"切平面——它测量曲面作为嵌入 $\mathbb{R}^3$ 的子流形的弯曲程度。
+
+这两个基本形式共同决定了曲面的全部局部几何——这就是曲面论的基本定理（Bonnet 定理）的核心内容。
+\end{Remark}
+
+\begin{Example}[平面的第二基本形式]\label{ex:plane-second-form}
+设 $S$ 是 $xy$ 平面，参数化为 $\mathbf{x}(u,v) = (u,v,0)$。则
+\[
+\mathbf{x}_u = (1,0,0),\quad \mathbf{x}_v = (0,1,0),\quad N = (0,0,1).
+\]
+由于所有二阶导数为零，$L = M = N_{\text{coeff}} = 0$。平面的第二基本形式恒为零——这符合直觉：平面完全不弯曲。
+\end{Example}
+
+\begin{Example}[球面的第二基本形式]\label{ex:sphere-second-form}
+单位球面 $S^2$ 在地理坐标下的参数化为
+\[
+\mathbf{x}(\theta,\varphi) = (\sin\theta\cos\varphi,\; \sin\theta\sin\varphi,\; \cos\theta).
+\]
+直接计算（见 \cref{sec:ch3-derivations}）可得
+\[
+L = -1,\quad M = 0,\quad N_{\text{coeff}} = -\sin^2\theta.
+\tag{3-2-6}
+\]
+球面上 $S_p = I$（因为 $dN_p(v) = -v$，所以 $S_p = -dN_p = I$），故 $\kappa_1 = \kappa_2 = 1$。这说明球面是\textbf{全脐点}（totally umbilic）曲面——所有方向的法曲率都相等。
+\end{Example}
+
+\begin{Example}[旋转抛物面的第二基本形式]\label{ex:paraboloid-second-form}
+考虑旋转抛物面 $z = x^2 + y^2$，参数化为 $\mathbf{x}(u,v) = (u, v, u^2+v^2)$。计算得
+\[
+L = \frac{2}{\sqrt{1+4(u^2+v^2)}},\quad M = 0,\quad N_{\text{coeff}} = \frac{2}{\sqrt{1+4(u^2+v^2)}}.
+\tag{3-2-7}
+\]
+在原点处，$L=N_{\text{coeff}}=2$，$M=0$。
+\end{Example}
+
+\textbf{定向的影响.} 第二基本形式的系数依赖于法向量的选择。如果选择相反的法向量方向 $-N$，则 $L, M, N_{\text{coeff}}$ 全部变号。因此，在定向改变时，第二基本形式整体变号——但其零迹（zero set）和特征值（主曲率）不受影响。
+
+值得注意的是，并非所有曲面都可以定义整体的单位法向量场——Möbius 带就是著名的反例（见 \cref{fig:fig3-1}）。
+
+\begin{figure}[H]
+\centering
+\subfloat[Figure 3-1. The Möbius strip — 不可定向曲面的经典例子，注意其法向量无法整体定义]{\label{fig:fig3-1}\includegraphics[width=0.5\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/53c3f147d73fbbaff460736e7109c90902470b480130ac9116222c530a8f7b29.jpg}}
+\end{figure}
+
+\begin{Proposition}[两个基本形式的关系]\label{prop:second-form-weingarten}
+对任意 $v, w \in T_pS$，有
+\[
+\II_p(v, w) = \langle S_p(v), w \rangle = I_p(S_p(v), w).
+\tag{3-2-8}
+\]
+\end{Proposition}
+
+这个命题表明：给定第一基本形式的系数 $E, F, G$ 和 Weingarten 映射在基底下的矩阵，我们可以计算第二基本形式。反过来，给定两个基本形式的系数，我们可以确定 $S_p$。在参数化基底下，$S_p$ 的矩阵为
+\[
+S_p = \begin{pmatrix} E & F \\ F & G \end{pmatrix}^{-1} \begin{pmatrix} L & M \\ M & N_{\text{coeff}} \end{pmatrix}.
+\tag{3-2-9}
+\tag{3-7}\label{eq:matrix-representation}
+\]
+
+\subsection*{3-2 节练习}
+
+\begin{exercise}{3-2, 1 — do Carmo, Exercise 3-2, 1}
+Show that at a hyperbolic point, the principal directions bisect the asymptotic directions.
+\end{exercise}
+
+\begin{exercise}{3-2, 2 — do Carmo, Exercise 3-2, 2}
+Show that if a surface is tangent to a plane along a curve, then the points of this curve are either parabolic or planar.
+\end{exercise}
+
+\begin{exercise}{3-2, 3 — do Carmo, Exercise 3-2, 3}
+Let $C \subset S$ be a regular curve on a surface $S$ with Gaussian curvature $K > 0$. Show that the curvature $k$ of $C$ at $p$ satisfies
+\[
+| k | \geq \min (| k _ {1} |, | k _ {2} |),
+\]
+where $k_{1}$ and $k_{2}$ are the principal curvatures of $S$ at $p$.
+\end{exercise}
+
+\begin{exercise}{3-2, 4 — do Carmo, Exercise 3-2, 4}
+Assume that a surface $S$ has the property that $|k_1| \leq 1$, $|k_2| \leq 1$ everywhere. Is it true that the curvature $k$ of a curve on $S$ also satisfies $|k| \leq 1$?
+\end{exercise}
+
+\begin{exercise}{3-2, 5 — do Carmo, Exercise 3-2, 5}
+Show that the mean curvature $H$ at $p \in S$ is given by
+\[
+H = \frac {1}{\pi} \int_ {0} ^ {\pi} k _ {n} (\theta) d \theta,
+\]
+where $k_{n}(\theta)$ is the normal curvature at $p$ along a direction making an angle $\theta$ with a fixed direction.
+\end{exercise}
+
+\begin{exercise}{3-2, 6 — do Carmo, Exercise 3-2, 6}
+Show that the sum of the normal curvatures for any pair of orthogonal directions, at a point $p$, is constant.
+\end{exercise}
+
+\begin{exercise}{3-2, 7 — do Carmo, Exercise 3-2, 7}
+Show that if the mean curvature is zero at a nonplanar point, then this point has two orthogonal asymptotic directions.
+\end{exercise}
+
+\begin{exercise}{3-2, 8 — do Carmo, Exercise 3-2, 8}
+Describe the region of the unit sphere covered by the image of the Gauss map of the following surfaces:
+\begin{itemize}
+\item[a.] Paraboloid of revolution $z = x^{2} + y^{2}$
+\item[b.] Hyperboloid of revolution $x^{2} + y^{2} - z^{2} = 1$
+\item[c.] Catenoid $x^{2} + y^{2} = \cosh^{2}z$
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-2, 9 — do Carmo, Exercise 3-2, 9}
+Prove that
+\begin{itemize}
+\item[a.] The image $N \circ \alpha$ by the Gauss map $N \colon S \to S^2$ of a parametrized regular curve $\alpha \colon I \to S$ which contains no planar or parabolic points is a parametrized regular curve on the sphere $S^2$ (called the spherical image of $\alpha$).
+\item[b.] If $C = \alpha(I)$ is a line of curvature, and $k$ is its curvature at $p$, then
+\[
+k = | k _ {n} k _ {N} |,
+\]
+where $k_{n}$ is the normal curvature at $p$ along the tangent line of $C$ and $k_{N}$ is the curvature of the spherical image $N(C) \subset S^2$ at $N(p)$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-2, 10 — do Carmo, Exercise 3-2, 10}
+Assume that the osculating plane of a line of curvature $C \subset S$, which is nowhere tangent to an asymptotic direction, makes a constant angle with the tangent plane of $S$ along $C$. Prove that $C$ is a plane curve.
+\end{exercise}
+
+\begin{exercise}{3-2, 11 — do Carmo, Exercise 3-2, 11}
+Let $p$ be an elliptic point of a surface $S$, and let $r$ and $r'$ be conjugate directions at $p$. Let $r$ vary in $T_p(S)$ and show that the minimum of the angle of $r$ with $r'$ is reached at a unique pair of directions in $T_p(S)$ that are symmetric with respect to the principal directions.
+\end{exercise}
+
+\begin{exercise}{3-2, 12 — do Carmo, Exercise 3-2, 12}
+Let $p$ be a hyperbolic point of a surface $S$, and let $r$ be a direction in $T_{p}(S)$. Describe and justify a geometric construction to find the conjugate direction $r'$ of $r$ in terms of the Dupin indicatrix.
+\end{exercise}
+
+\begin{exercise}{3-2, 13* — do Carmo, Exercise 3-2, 13}
+(Theorem of Beltrami-Enneper.) Prove that the absolute value of the torsion $\tau$ at a point of an asymptotic curve, whose curvature is nowhere zero, is given by
+\[
+| \tau | = \sqrt {- K},
+\]
+where $K$ is the Gaussian curvature of the surface at the given point.
+\end{exercise}
+
+\begin{exercise}{3-2, 14 — do Carmo, Exercise 3-2, 14}
+If the surface $S_{1}$ intersects the surface $S_{2}$ along the regular curve $C$, then the curvature $k$ of $C$ at $p \in C$ is given by
+\[
+k ^ {2} \sin^ {2} \theta = \lambda_ {1} ^ {2} + \lambda_ {2} ^ {2} - 2 \lambda_ {1} \lambda_ {2} \cos \theta,
+\]
+where $\lambda_{1}$ and $\lambda_{2}$ are the normal curvatures at $p$, along the tangent line to $C$, of $S_{1}$ and $S_{2}$, respectively, and $\theta$ is the angle made up by the normal vectors of $S_{1}$ and $S_{2}$ at $p$.
+\end{exercise}
+
+\begin{exercise}{3-2, 15 — do Carmo, Exercise 3-2, 15}
+(Theorem of Joachimstahl.) Suppose that $S_{1}$ and $S_{2}$ intersect along a regular curve $C$ and make an angle $\theta(p)$, $p \in C$. Assume that $C$ is a line of curvature of $S_{1}$. Prove that $\theta(p)$ is constant if and only if $C$ is a line of curvature of $S_{2}$.
+\end{exercise}
+
+\begin{exercise}{3-2, 16 — do Carmo, Exercise 3-2, 16}
+Show that the meridians of a torus are lines of curvature.
+\end{exercise}
+
+\begin{exercise}{3-2, 17 — do Carmo, Exercise 3-2, 17}
+Show that if $H \equiv 0$ on $S$ and $S$ has no planar points, then the Gauss map $N \colon S \to S^2$ has the following property:
+\[
+\langle d N _ {p} \left(w _ {1}\right), d N _ {p} \left(w _ {2}\right) \rangle = - K (p) \langle w _ {1}, w _ {2} \rangle
+\]
+for all $p \in S$ and all $w_{1}, w_{2} \in T_{p}(S)$. Show that the above condition implies that the angle of two intersecting curves on $S$ and the angle of their spherical images are equal up to a sign.
+\end{exercise}
+
+\begin{exercise}{3-2, 18 — do Carmo, Exercise 3-2, 18}
+Let $\lambda_1, \ldots, \lambda_m$ be the normal curvatures at $p \in S$ along directions making angles $0, 2\pi / m, \ldots, (m - 1)2\pi / m$ with a principal direction, $m > 2$. Prove that
+\[
+\lambda_ {1} + \dots + \lambda_ {m} = m H,
+\]
+where $H$ is the mean curvature at $p$.
+\end{exercise}
+
+\begin{exercise}{3-2, 19* — do Carmo, Exercise 3-2, 19}
+Let $C \subset S$ be a regular curve in $S$. Let $p \in C$ and $\alpha(s)$ be a parametrization of $C$ in $p$ by arc length so that $\alpha(0) = p$. Choose in $T_p(S)$ an orthonormal positive basis $\{t, h\}$, where $t = \alpha'(0)$. The geodesic torsion $\tau_g$ of $C \subset S$ at $p$ is defined by
+\[
+\tau_ {g} = \left\langle \frac {d N}{d s} (0), h \right\rangle.
+\]
+Prove that
+\begin{itemize}
+\item[a.] $\tau_{g} = (k_{1} - k_{2})\cos \varphi \sin \varphi$, where $\varphi$ is the angle from $e_1$ to $t$ and $t$ is the unit tangent vector corresponding to the principal curvature $k_{1}$.
+\item[b.] If $\tau$ is the torsion of $C$, $n$ is the (principal) normal vector of $C$ and $\cos \theta = \langle N, n \rangle$, then
+\[
+\frac {d \theta}{d s} = \tau - \tau_ {g}.
+\]
+\item[c.] The lines of curvature of $S$ are characterized by having geodesic torsion identically zero.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-2, 20* — do Carmo, Exercise 3-2, 20}
+(Dupin's Theorem.) Three families of surfaces are said to form a triply orthogonal system in an open set $U \subset R^3$ if a unique surface of each family passes through each point $p \in U$ and if the three surfaces that pass through $p$ are pairwise orthogonal. Use part c of Exercise 19 to prove Dupin's theorem: The surfaces of a triply orthogonal system intersect each other in lines of curvature.
+\end{exercise}
+
+% ==================== Section 3-3: The Gauss Map in Local Coordinates ====================
+\section{The Gauss Map in Local Coordinates}\label{sec:gauss-map-local}
+
+有了 Weingarten 映射和第二基本形式，我们现在可以在局部坐标下深入研究曲面的弯曲。本节将建立曲率理论的核心工具：法曲率、Meusnier 定理、主曲率、Euler 公式、Dupin 指示线，以及 Gauss 和 Codazzi-Mainardi 方程。
+
+\subsection{Normal Curvature}\label{sec:normal-curvature}
+
+\textbf{问题.} 给定曲面上一点 $p$ 和一个切方向 $v$，我们想知道曲面在该方向上是向上弯还是向下弯，弯得有多厉害。
+
+\begin{Definition}[法曲率 (Normal curvature)]\label{def:normal-curvature}
+设 $p \in S$，$v \in T_pS$ 是单位切向量（$I(v,v)=1$）。沿方向 $v$ 的\textbf{\underline{法曲率}}（normal curvature）为
+\[
+\kappa_n(p, v) = \II_p(v, v) = \langle S_p(v), v \rangle.
+\tag{3-3-1}
+\]
+\end{Definition}
+
+法曲率描述了曲面在给定方向上如何偏离切平面。直观上：取经过 $p$ 点、方向为 $v$ 的曲线，将其投影到法平面（由 $v$ 和 $N$ 张成）中，所得平面曲线的曲率即为 $\kappa_n$。
+
+\begin{Proposition}[Meusnier 定理 (Meusnier's theorem)]\label{prop:meusnier}
+所有经过 $p$ 点、方向为 $v$ 的曲线在 $p$ 点有相同的法曲率 $\kappa_n(p, v)$。
+\end{Proposition}
+
+Meusnier 定理告诉我们：法曲率只依赖于方向 $v$，而不依赖于具体曲线的选择。这是曲面几何的一个基本事实——它说明法曲率是曲面的内蕴属性。Meusnier 定理的几何图像见 \cref{fig:fig3-9}。
+
+\begin{figure}[H]
+\centering
+\subfloat[Figure 3-9. Meusnier theorem: $C$ and $C_n$ have the same normal curvature at $p$ along direction $v$]{\label{fig:fig3-9}\includegraphics[width=0.7\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/abfd2dd612b61811187d0ac919d565af01261274794d2ae6aa1462cd928fb782.jpg}}
+\end{figure}
+
+\textbf{Sign convention.} 法曲率的符号取决于曲面相对于法向量的弯曲方向：
+\begin{itemize}
+    \item $\kappa_n > 0$：曲面在 $v$ 方向上朝向法向量 $N$ 的方向弯曲
+    \item $\kappa_n < 0$：曲面在 $v$ 方向上朝向 $-N$ 的方向弯曲
+    \item $\kappa_n = 0$：沿 $v$ 方向是平直的（如直纹面的一条直母线）
+\end{itemize}
+
+\begin{Example}[平面的法曲率]\label{ex:plane-normal-curvature}
+平面的第二基本形式恒为零，因此对所有方向 $v$，$\kappa_n \equiv 0$。
+\end{Example}
+
+\begin{Example}[球面的法曲率]\label{ex:sphere-normal-curvature}
+单位球面上，$S_p = I$。因此
+\[
+\kappa_n(p, v) = \langle I(v), v \rangle = \langle v, v \rangle = 1.
+\tag{3-3-2}
+\]
+球面在所有点、所有方向上的法曲率都等于 $1$——这是一个常曲率曲面。
+\end{Example}
+
+球面和柱面上的法截面曲线分别见 \cref{fig:fig3-11,fig:fig3-12}。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-11. Normal sections on a sphere]{\label{fig:fig3-11}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/227d2ec19911994fc941ec9432ddb1cfd3e572d48741f680e500425d912c828c.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\subfloat[Figure 3-12. Normal sections on a cylinder]{\label{fig:fig3-12}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/8d9ccd0cac320e86a39e1080c07a25794887d5efbedbde0154ca6bb63775aa41.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Proposition}[法曲率的计算公式]\label{prop:normal-curvature-formula}
+设 $v = a\mathbf{x}_u + b\mathbf{x}_v$ 是切向量（满足 $I(v,v)=E a^2 + 2F ab + G b^2 = 1$）。则
+\[
+\kappa_n = \frac{L\,a^2 + 2M\,ab + N_{\text{coeff}}\,b^2}{E\,a^2 + 2F\,ab + G\,b^2}.
+\tag{3-3-3}
+\]
+\end{Proposition}
+
+这个公式表明：在给定方向 $(a:b)$ 上，法曲率是第二基本形式与第一基本形式的比值。
+
+\subsection{Principal Curvatures and Directions}\label{sec:principal-curvatures}
+
+\textbf{核心问题.} 在一点 $p$ 处，法曲率 $\kappa_n(p, v)$ 随方向 $v$ 变化。这个函数的最大值和最小值是多少？它们出现在哪些方向上？
+
+Weingarten 映射 $S_p: T_pS \to T_pS$ 是自共轭的，因此它有实特征值 $\kappa_1, \kappa_2$ 和两两正交的特征向量。
+
+\begin{Definition}[主曲率与主方向 (Principal curvatures and directions)]\label{def:principal-curvatures}
+$S_p$ 的特征值 $\kappa_1, \kappa_2$ 称为\textbf{\underline{主曲率}}（principal curvatures），对应的特征方向称为\textbf{\underline{主方向}}（principal directions）。
+\end{Definition}
+
+主曲率可以通过求解特征方程得到：
+\[
+\det(S_p - \kappa I) = 0.
+\tag{3-3-4}
+\]
+
+使用矩阵表示，这等价于
+\[
+\det\begin{pmatrix} L - \kappa E & M - \kappa F \\ M - \kappa F & N_{\text{coeff}} - \kappa G \end{pmatrix} = 0,
+\tag{3-3-5}
+\]
+即
+\[
+(EG - F^2)\kappa^2 - (EN - 2FM + GL)\kappa + (LN_{\text{coeff}} - M^2) = 0.
+\tag{3-3-6}
+\]
+
+\begin{Proposition}[主曲率的显式公式]\label{prop:principal-curvature-explicit}
+主曲率 $\kappa_1, \kappa_2$ 由下式给出：
+\[
+\kappa_{1,2} = \frac{EN - 2FM + GL \pm \sqrt{(EN - 2FM + GL)^2 - 4(EG - F^2)(LN_{\text{coeff}} - M^2)}}{2(EG - F^2)}.
+\tag{3-3-7}
+\]
+\end{Proposition}
+
+\begin{Theorem}[主曲率是最值]\label{th:principal-curvature-extrema}
+在点 $p$ 处，法曲率 $\kappa_n(p, v)$ 在单位圆（$I(v,v)=1$）上的最大值是 $\kappa_1$，最小值是 $\kappa_2$。此外，主方向恰好是这些极值出现的方向。
+\end{Theorem}
+
+这一定理告诉我们：给定一个方向，如果我们把它旋转到主方向上，就能在该点看到法曲率的最大和最小值。所有其他方向的法曲率都介于二者之间。
+
+\begin{Example}[球面的主曲率]\label{ex:sphere-principal}
+单位球面上，$S_p = I$，所以 $\kappa_1 = \kappa_2 = 1$。球面是全脐点曲面——所有方向都是主方向，且主曲率相等。
+\end{Example}
+
+\begin{Example}[圆柱面的主曲率]\label{ex:cylinder-principal}
+考虑圆柱面 $x^2 + y^2 = 1$，参数化为 $\mathbf{x}(u,v) = (\cos u, \sin u, v)$。计算得
+\[
+\kappa_1 = 1,\quad \kappa_2 = 0.
+\tag{3-3-8}
+\]
+主方向分别是：$\kappa_1 = 1$ 对应圆周方向（曲面在该方向上弯向法向量），$\kappa_2 = 0$ 对应直母线方向（该方向上曲面是平直的）。
+\end{Example}
+
+\textbf{主曲率的几何意义.} 主曲率之所以重要，有以下几个原因：
+\begin{enumerate}
+    \item \textbf{极值性质}：它们给出了法曲率的最小值和最大值
+    \item \textbf{Gauss 曲率}：$K = \kappa_1 \cdot \kappa_2 = \det(S_p)$
+    \item \textbf{平均曲率}：$H = \frac{\kappa_1 + \kappa_2}{2} = \frac{1}{2}\mathrm{tr}(S_p)$
+    \item \textbf{分类}：$K>0$（椭圆点）、$K=0$（抛物/平点）、$K<0$（双曲点）
+\end{enumerate}
+
+Gauss 映射在椭圆点和双曲点的行为对比见 \cref{fig:fig3-21}。
+
+\begin{figure}[H]
+\centering
+\subfloat[Figure 3-21. Gauss map preserves orientation at an elliptic point and reverses it at a hyperbolic point]{\label{fig:fig3-21}\includegraphics[width=0.7\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/d42a2c1f8e0fd7fb1b2f96e33ec9e102f57dbebb73264d3f9373471d1f03715e.jpg}}
+\end{figure}
+
+\subsection{Euler Formula and Dupin Indicatrix}\label{sec:euler-dupin}
+
+\begin{Theorem}[Euler 公式 (Euler's formula)]\label{th:euler-formula}
+设 $\kappa_1, \kappa_2$ 是 $p$ 点的主曲率，$\theta$ 是任意方向与主方向之间的夹角。则
+\[
+\kappa_n(\theta) = \kappa_1 \cos^2\theta + \kappa_2 \sin^2\theta.
+\tag{3-3-9}
+\]
+\end{Theorem}
+
+Euler 公式给出了法曲率随方向变化的完整描述——它在任意方向上的值都可以由主曲率插值得到。
+
+\textbf{Dupin 指示线 (Dupin indicatrix).} Dupin 指示线是研究主曲率几何意义的工具——它由法曲率的等距像构成（见 \cref{fig:fig3-13}）。
+
+\begin{figure}[H]
+\centering
+\subfloat[Figure 3-13. The Dupin indicatrix — 椭圆点（左）与双曲点（右）的刻画]{\label{fig:fig3-13}\includegraphics[width=0.6\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6cd2b935fbe366fbd1d068ac39b24d5e8497b3d219b67564caa24aa4568cbea4.jpg}}
+\end{figure}
+
+在椭圆点处（$K>0$），Dupin 指示线是一个椭圆——所有方向的法曲率同号；
+在双曲点处（$K<0$），Dupin 指示线是一对双曲线——存在两个法曲率为零的方向，称为\textbf{渐近方向}（asymptotic directions）；
+在抛物点处（$K=0$），Dupin 指示线是一对平行直线或一个点。
+
+渐近方向是法曲率为零的方向。在双曲点上，两个渐近方向将切平面分割为四个区域，每个区域内的法曲率符号相反。
+
+\begin{Definition}[渐近方向与渐近曲线]\label{def:asymptotic-directions}
+法曲率为零的方向称为\textbf{渐近方向}（asymptotic direction）。若曲面上的一条曲线在其每一点的切方向都是渐近方向，则称该曲线为\textbf{渐近曲线}（asymptotic curve）。
+\end{Definition}
+
+渐近曲线的例子包括马鞍面 $z = xy$ 的坐标曲线（见 do Carmo Exercise 3-3, 4）。
+
+Gauss 曲率 $K = \kappa_1 \kappa_2$ 和平均曲率 $H = (\kappa_1 + \kappa_2)/2$ 是两个由主曲率派生出的重要量：
+
+\begin{itemize}
+    \item $K > 0$（椭圆点）：曲面局部像椭圆抛物面，全部位于切平面一侧
+    \item $K = 0$（抛物/平点）：至少有一个主曲率为零（如柱面）
+    \item $K < 0$（双曲点）：曲面局部像马鞍面，穿过切平面
+\end{itemize}
+
+Gauss 曲率衡量的是曲面的"总弯曲程度"——但它是内蕴的还是外蕴的？这是下一个定理要回答的问题。
+
+\subsection{Theorema Egregium}\label{sec:theorema-egregium}
+
+这是微分几何史上最著名的定理之一。
+
+\begin{Theorem}[Theorema Egregium (非凡定理)]\label{th:theorema-egregium}
+Gauss 曲率 $K$ 是曲面的内蕴几何量。它仅由第一基本形式的系数 $E, F, G$ 及其一阶、二阶导数决定，与第二基本形式无关。
+\end{Theorem}
+
+这一定理的证明通过 Gauss 方程（见下节）显式地给出。Gauss 曲率的内蕴性有一个惊人的推论：如果你是一只蚂蚁，只能在曲面上测量弧长、面积、角度（这些都由第一基本形式决定），你仍然可以计算出 Gauss 曲率 $K$！
+
+换句话说，$K$ 不是由曲面如何"弯曲"进 $\mathbb{R}^3$ 决定的——它是曲面自身内蕴结构的一部分。这一发现深刻地揭示了内蕴几何与外蕴几何之间的区别。
+
+\subsection{The Fundamental Equations}\label{sec:gauss-codazzi}
+
+给定一个曲面，它的两个基本形式 $I$ 和 $II$ 并不是任意的——它们必须满足某些兼容性条件。这些条件来自 $\mathbb{R}^3$ 的欧几里得几何。
+
+\begin{Proposition}[Gauss 方程 (Gauss equation)]\label{prop:gauss-equation}
+Gauss 曲率 $K$ 可以用第一基本形式的系数 $E, F, G$ 及其导数来表示：
+\[
+K = \frac{1}{(EG-F^2)^2}\begin{vmatrix}
+E & F & F_u + \frac{1}{2}(G_v - F_u - E_v) \\
+F & G & G_u + \frac{1}{2}(E_v - G_u - F_v) \\
+E_u - \frac{1}{2}F_v & F_u - \frac{1}{2}G_u & L
+\end{vmatrix}.
+\tag{3-3-10}
+\tag{3-17}\label{eq:gauss-equation}
+\]
+\end{Proposition}
+
+Gauss 方程的右端只涉及第一基本形式和第二基本形式的系数 $L$——但 $L$ 本身可以通过第一基本形式和曲面如何嵌入 $\mathbb{R}^3$ 的方式来确定。关键是：$K$ 的最终表达式可以完全用 $E, F, G$ 及其导数表示，这就是 Theorema Egregium 的精确表述。
+
+\begin{Proposition}[Codazzi-Mainardi 方程]\label{prop:codazzi-mainardi}
+第二基本形式的系数 $L, M, N_{\text{coeff}}$ 与第一基本形式的系数 $E, F, G$ 必须满足：
+\[
+\begin{aligned}
+L_v - M_u &= L\Gamma_{12}^1 + M\bigl(\Gamma_{12}^2 - \Gamma_{11}^1\bigr) - N_{\text{coeff}}\,\Gamma_{11}^2, \\
+N_{\text{coeff}\,u} - M_v &= L\Gamma_{22}^1 + M\bigl(\Gamma_{22}^2 - \Gamma_{21}^1\bigr) - N_{\text{coeff}}\,\Gamma_{21}^2.
+\end{aligned}
+\tag{3-3-11}
+\]
+其中 $\Gamma_{ij}^k$ 是 Christoffel 符号（见 \cref{sec:ch3-derivations}）。
+\end{Proposition}
+
+\begin{Remark}[Bonnet 定理]
+Gauss 和 Codazzi-Mainardi 方程是可积性条件。Bonnet 定理指出：给定满足这些方程的 $E, F, G, L, M, N_{\text{coeff}}$，在单连通区域上存在一个嵌入曲面，且其基本形式正是给定的这些系数。
+\end{Remark}
+
+简单来说：
+\begin{itemize}
+    \item \textbf{Gauss 方程}：确保内蕴几何与外蕴几何的一致性（$K$ 的两种定义相等）
+    \item \textbf{Codazzi-Mainardi 方程}：确保存在良好定义的曲面
+\end{itemize}
+
+\subsection*{3-3 节练习}
+
+\begin{exercise}{3-3, 1 — do Carmo, Exercise 3-3, 1}
+Show that at the origin $(0,0,0)$ of the hyperboloid $z = axy$ we have $K = -a^2$ and $H = 0$.
+\end{exercise}
+
+\begin{exercise}{3-3, 2 — do Carmo, Exercise 3-3, 2}
+Determine the asymptotic curves and the lines of curvature of the helicoid $x = v \cos u$, $y = v \sin u$, $z = cu$, and show that its mean curvature is zero.
+\end{exercise}
+
+\begin{exercise}{3-3, 3 — do Carmo, Exercise 3-3, 3}
+Determine the asymptotic curves of the catenoid
+\[
+\mathbf {x} (u, v) = (\cosh v \cos u, \cosh v \sin u, v).
+\]
+\end{exercise}
+
+\begin{exercise}{3-3, 4 — do Carmo, Exercise 3-3, 4}
+Determine the asymptotic curves and the lines of curvature of $z = xy$.
+\end{exercise}
+
+\begin{exercise}{3-3, 5* — do Carmo, Exercise 3-3, 5}
+Consider the parametrized surface (Enneper's surface)
+\[
+\mathbf{x}(u, v) = \bigl(u - \tfrac{u^3}{3} + uv^2,\; v - \tfrac{v^3}{3} + vu^2,\; u^2 - v^2\bigr)
+\]
+and show that
+\begin{itemize}
+\item[a.] The coefficients of the first fundamental form are $E = G = (1 + u ^ {2} + v ^ {2}) ^ {2}$, $F = 0$.
+\item[b.] The coefficients of the second fundamental form are $e = 2$, $g = -2$, $f = 0$.
+\item[c.] The principal curvatures are $k _ {1} = \frac {2}{\left(1 + u ^ {2} + v ^ {2}\right) ^ {2}}$, $k _ {2} = - \frac {2}{\left(1 + u ^ {2} + v ^ {2}\right) ^ {2}}$.
+\item[d.] The lines of curvature are the coordinate curves.
+\item[e.] The asymptotic curves are $u + v = \mathrm{const}$, $u - v = \mathrm{const}$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 6* — do Carmo, Exercise 3-3, 6}
+(A Surface with $K \equiv -1$; the Pseudosphere.)
+\begin{itemize}
+\item[a.] Determine an equation for the plane curve $C$, which is such that the segment of the tangent line between the point of tangency and some line $r$ in the plane, which does not meet the curve, is constantly equal to 1 (this curve is called the tractrix).
+\item[b.] Rotate the tractrix $C$ about the line $r$; determine if the ``surface'' of revolution thus obtained (the pseudosphere) is regular and find out a parametrization in a neighborhood of a regular point.
+\item[c.] Show that the Gaussian curvature of any regular point of the pseudosphere is $-1$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 7* — do Carmo, Exercise 3-3, 7}
+(Surfaces of Revolution with Constant Curvature.) $(\varphi(v) \cos u, \varphi(v) \sin u, \psi(v))$, $\varphi \neq 0$ is given as a surface of revolution with constant Gaussian curvature $K$. To determine the functions $\varphi$ and $\psi$, choose the parameter $v$ in such a way that $(\varphi')^2 + (\psi')^2 = 1$. Show that
+\begin{itemize}
+\item[a.] $\varphi$ satisfies $\varphi'' + K\varphi = 0$ and $\psi$ is given by $\psi = \int \sqrt{1 - (\varphi')^2} dv$.
+\item[b.] All surfaces of revolution with constant curvature $K = 1$ which intersect perpendicularly the plane $xOy$ are given by $\varphi (v) = C \cos v$, $\psi (v) = \int_ {0} ^ {v} \sqrt {1 - C ^ {2} \sin^ {2} v} d v$, where $C$ is a constant. Determine the domain of $v$ and draw a rough sketch of the profile of the surface in the $xz$ plane for the cases $C = 1$, $C > 1$, $C < 1$. Observe that $C = 1$ gives a sphere.
+\item[c.] All surfaces of revolution with constant curvature $K = -1$ may be given by one of the following types:
+\begin{enumerate}
+\item $\varphi(v) = C \cosh v$, $\psi (v) = \int_ {0} ^ {v} \sqrt {1 - C ^ {2} \sinh^ {2} v} d v$.
+\item $\varphi (v) = C\sinh v$, $\psi (v) = \int_ {0} ^ {v} \sqrt {1 - C ^ {2} \cosh^ {2} v} d v$.
+\item $\varphi (v) = e^{v}$, $\psi (v) = \int_ {0} ^ {v} \sqrt {1 - e ^ {2 v}} d v$.
+\end{enumerate}
+Determine the domain of $v$ and draw a rough sketch of the profile of the surface in the $xz$ plane.
+\item[d.] The surface of type 3 in part c is the pseudosphere of Exercise 6.
+\item[e.] The only surfaces of revolution with $K \equiv 0$ are the right circular cylinder, the right circular cone, and the plane.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 8* — do Carmo, Exercise 3-3, 8}
+(Contact of Order $\geq 2$ of Surfaces.) Two surfaces $S$ and $\bar{S}$, with a common point $p$, have contact of order $\geq 2$ at $p$ if there exist parametrizations $\mathbf{x}(u, v)$ and $\bar{\mathbf{x}}(u, v)$ in $p$ of $S$ and $\bar{S}$, respectively, such that $\mathbf{x} _ {u} = \bar {\mathbf{x}} _ {u}$, $\mathbf{x} _ {v} = \bar {\mathbf{x}} _ {v}$, $\mathbf{x} _ {u u} = \bar {\mathbf{x}} _ {u u}$, $\mathbf{x} _ {u v} = \bar {\mathbf{x}} _ {u v}$, $\mathbf{x} _ {v v} = \bar {\mathbf{x}} _ {v v}$ at $p$. Prove the following:
+\begin{itemize}
+\item[a.] Let $S$ and $\bar{S}$ have contact of order $\geq 2$ at $p$; $\mathbf{x} \colon U \to S$ and $\bar{\mathbf{x}} \colon U \to \bar{S}$ be arbitrary parametrizations in $p$ of $S$ and $\bar{S}$, respectively; and $f \colon V \subset R^3 \to R$ be a differentiable function in a neighborhood $V$ of $p$ in $R^3$. Then the partial derivatives of order $\leq 2$ of $f \circ \bar{\mathbf{x}}$ are zero in $\bar{\mathbf{x}}^{-1}(p)$ if and only if the partial derivatives of order $\leq 2$ of $f \circ \mathbf{x}$ are zero in $\mathbf{x}^{-1}(p)$.
+\item[b.] Let $S$ and $\bar{S}$ have contact of order $\geq 2$ at $p$. Let $z = f(x,y)$, $z = \bar{f}(x,y)$ be the equations, in a neighborhood of $p$, of $S$ and $\bar{S}$, respectively, where the $xy$ plane is the common tangent plane at $p = (0,0)$. Then the function $f(x,y) - \bar{f}(x,y)$ has all partial derivatives of order $\leq 2$, at $(0,0)$, equal to zero.
+\item[c.] Let $p$ be a point in a surface $S \subset R^3$. Let $Oxyz$ be a Cartesian coordinate system for $R^3$ such that $O = p$ and the $xy$ plane is the tangent plane of $S$ at $p$. Show that the paraboloid $z = \frac {1}{2} \left(x ^ {2} f _ {x x} + 2 x y f _ {x y} + y ^ {2} f _ {y y}\right)$ has contact of order $\geq 2$ at $p$ with $S$ (the surface is called the osculating paraboloid of $S$ at $p$).
+\item[d.] If a paraboloid (the degenerate cases of plane and parabolic cylinder are included) has contact of order $\geq 2$ with a surface $S$ at $p$, then it is the osculating paraboloid of $S$ at $p$.
+\item[e.] If two surfaces have contact of order $\geq 2$ at $p$, then the osculating paraboloids of $S$ and $\bar{S}$ at $p$ coincide. Conclude that the Gaussian and mean curvatures of $S$ and $\bar{S}$ at $p$ are equal.
+\item[f.] The notion of contact of order $\geq 2$ is invariant by diffeomorphisms of $R^3$.
+\item[g.] If $S$ and $\bar{S}$ have contact of order $\geq 2$ at $p$, then $\lim _ {r \rightarrow 0} \frac {d}{r ^ {2}} = 0$, where $d$ is the length of the segment cut by the surfaces in a straight line normal to $T_{p}(S) = T_{p}(\bar{S})$, which is at a distance $r$ from $p$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 9 — do Carmo, Exercise 3-3, 9}
+(Contact of Curves.) Define contact of order $\geq n$ ($n$ integer $\geq 1$) for regular curves in $R^3$ with a common point $p$ and prove that
+\begin{itemize}
+\item[a.] The notion of contact of order $\geq n$ is invariant by diffeomorphisms.
+\item[b.] Two curves have contact of order $\geq 1$ at $p$ if and only if they are tangent at $p$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 10* — do Carmo, Exercise 3-3, 10}
+(Contact of Curves and Surfaces.) A curve $C$ and a surface $S$, which have a common point $p$, have contact of order $\geq n$ at $p$ if there exists a curve $\bar{C} \subset S$ passing through $p$ such that $C$ and $\bar{C}$ have contact of order $\geq n$ at $p$. Prove that
+\begin{itemize}
+\item[a.] If $f(x,y,z) = 0$ is a representation of a neighborhood of $p$ in $S$ and $\alpha(t) = (x(t),y(t),z(t))$ is a parametrization of $C$ in $p$, with $\alpha(0) = p$, then $C$ and $S$ have contact of order $\geq n$ if and only if $f (x (0), y (0), z (0)) = 0$, $\frac {d f}{d t} = 0$, $\ldots$, $\frac {d ^ {n} f}{d t ^ {n}} = 0$, where the derivatives are computed for $t = 0$.
+\item[b.] If a plane has contact of order $\geq 2$ with a curve $C$ at $p$, then this is the osculating plane of $C$ at $p$.
+\item[c.] If a sphere has contact of order $\geq 3$ with a curve $C$ at $p$, and $\alpha(s)$ is a parametrization by arc length of this curve, with $\alpha(0) = p$, then the center of the sphere is given by $\alpha (0) + \frac {1}{k} n + \frac {k ^ {\prime}}{k ^ {2} \tau} b$. Such a sphere is called the osculating sphere of $C$ at $p$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 11 — do Carmo, Exercise 3-3, 11}
+Consider the monkey saddle $S$ of Example 2. Construct the Dupin indicatrix at $p = (0,0,0)$ using the definition of Sec. 3-2, and compare it with the curve obtained as the intersection of $S$ with a plane parallel to $T_{p}(S)$ and close to $p$. Why are they not ``approximately similar''?
+\end{exercise}
+
+\begin{exercise}{3-3, 12 — do Carmo, Exercise 3-3, 12}
+Consider the parametrized surface
+\[
+\mathbf {x} (u, v) = \left(\sin u \cos v, \sin u \sin v, \cos u + \log \tan \frac {u}{2} + \varphi (v)\right),
+\]
+where $\varphi$ is a differentiable function. Prove that
+\begin{itemize}
+\item[a.] The curves $v = \mathrm{const}$ are contained in planes which pass through the $z$ axis and intersect the surface under a constant angle $\theta$ given by $\cos \theta = \frac {\varphi^ {\prime}}{\sqrt {1 + (\varphi^ {\prime}) ^ {2}}}$. Conclude that the curves $v = \mathrm{const}$ are lines of curvature of the surface.
+\item[b.] The length of the segment of a tangent line to a curve $v = \mathrm{const}$, determined by its point of tangency and the $z$ axis, is constantly equal to 1. Conclude that the curves $v = \mathrm{const}$ are tractrices.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 13 — do Carmo, Exercise 3-3, 13}
+Let $F \colon R^3 \to R^3$ be the map (a similarity) defined by $F(p) = cp$, $p \in R^3$, $c$ a positive constant. Let $S \subset R^3$ be a regular surface and set $F(S) = \bar{S}$. Show that $\bar{S}$ is a regular surface, and find formulas relating the Gaussian and mean curvatures, $K$ and $H$, of $S$ with the Gaussian and mean curvatures, $\bar{K}$ and $\bar{H}$, of $\bar{S}$.
+\end{exercise}
+
+\begin{exercise}{3-3, 14 — do Carmo, Exercise 3-3, 14}
+Consider the surface obtained by rotating the curve $y = x^3$, $-1 < x < 1$, about the line $x = 1$. Show that the points obtained by rotation of the origin $(0,0)$ of the curve are planar points of the surface.
+\end{exercise}
+
+\begin{exercise}{3-3, 15 — do Carmo, Exercise 3-3, 15}
+Give an example of a surface which has an isolated parabolic point $p$ (that is, no other parabolic point is contained in some neighborhood of $p$).
+\end{exercise}
+
+\begin{exercise}{3-3, 16 — do Carmo, Exercise 3-3, 16}
+Show that a surface which is compact (i.e., it is bounded and closed in $R^3$) has an elliptic point.
+\end{exercise}
+
+\begin{exercise}{3-3, 17 — do Carmo, Exercise 3-3, 17}
+Define Gaussian curvature for a nonorientable surface. Can you define mean curvature for a nonorientable surface?
+\end{exercise}
+
+\begin{exercise}{3-3, 18 — do Carmo, Exercise 3-3, 18}
+Show that the Möbius strip of Fig. 3-1 can be parametrized by
+\[
+\mathbf{x} (u, v) = \left(\left(2 - v \sin \frac {u}{2}\right) \sin u, \left(2 - v \sin \frac {u}{2}\right) \cos u, v \cos \frac {u}{2}\right)
+\]
+and that its Gaussian curvature is
+\[
+K = - \frac {1}{\left\{\frac {1}{4} v ^ {2} + (2 - v \sin (u / 2)) ^ {2} \right\} ^ {2}}.
+\]
+\end{exercise}
+
+\begin{exercise}{3-3, 19 — do Carmo, Exercise 3-3, 19}
+Obtain the asymptotic curves of the one-sheeted hyperboloid $x^{2} + y^{2} - z^{2} = 1$.
+\end{exercise}
+
+\begin{exercise}{3-3, 20 — do Carmo, Exercise 3-3, 20}
+Determine the umbilical points of the ellipsoid
+\[
+\frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} + \frac {z ^ {2}}{c ^ {2}} = 1.
+\]
+\end{exercise}
+
+\begin{exercise}{3-3, 21* — do Carmo, Exercise 3-3, 21}
+Let $S$ be a surface with orientation $N$. Let $V \subset S$ be an open set in $S$ and let $f \colon V \subset S \to R$ be any nowhere-zero differentiable function in $V$. Let $v_{1}$ and $v_{2}$ be two differentiable (tangent) vector fields in $V$ such that at each point of $V$, $v_{1}$ and $v_{2}$ are orthonormal and $v_{1} \wedge v_{2} = N$.
+\begin{itemize}
+\item[a.] Prove that the Gaussian curvature $K$ of $V$ is given by
+\[
+K = \frac {\langle d (f N) (v _ {1}) \wedge d (f N) (v _ {2}) , f N \rangle}{f ^ {3}}.
+\]
+\item[b.] Apply the above result to show that if $f$ is the restriction of $\sqrt {\frac {x ^ {2}}{a ^ {4}} + \frac {y ^ {2}}{b ^ {4}} + \frac {z ^ {2}}{c ^ {4}}}$ to the ellipsoid $\frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} + \frac {z ^ {2}}{c ^ {2}} = 1$, then the Gaussian curvature of the ellipsoid is $K = \frac {1}{a ^ {2} b ^ {2} c ^ {2}} \frac {1}{f ^ {4}}$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 22* — do Carmo, Exercise 3-3, 22}
+(The Hessian.) Let $h \colon S \to R$ be a differentiable function on a surface $S$, and let $p \in S$ be a critical point of $h$ (i.e., $dh_p = 0$). Let $w \in T_p(S)$ and let $\alpha \colon (-\epsilon , \epsilon) \to S$ be a parametrized curve with $\alpha(0) = p$, $\alpha'(0) = w$. Set $H _ {p} h (w) = \left. \frac {d ^ {2} (h \circ \alpha)}{d t ^ {2}} \right| _ {t = 0}$.
+\begin{itemize}
+\item[a.] Let $\mathbf{x}\colon U\to S$ be a parametrization of $S$ at $p$, and show that $H _ {p} h (u ^ {\prime} \mathbf {x} _ {u} + v ^ {\prime} \mathbf {x} _ {v}) = h _ {u u} (p) (u ^ {\prime}) ^ {2} + 2 h _ {u v} (p) u ^ {\prime} v ^ {\prime} + h _ {v v} (p) (v ^ {\prime}) ^ {2}$. Conclude that $H_{p}h \colon T_{p}(S) \to R$ is a well-defined quadratic form on $T_{p}(S)$. $H_{p}h$ is called the Hessian of $h$ at $p$.
+\item[b.] Let $h \colon S \to R$ be the height function of $S$ relative to $T_p(S)$; that is, $h(q) = \langle q - p, N(p) \rangle$, $q \in S$. Verify that $p$ is a critical point of $h$ and thus that the Hessian $H_p h$ is well defined. Show that if $w \in T_p(S)$, $|w| = 1$, then $H_{p}h(w) =$ normal curvature at $p$ in the direction of $w$. Conclude that the Hessian at $p$ of the height function relative to $T_p(S)$ is the second fundamental form of $S$ at $p$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 23* — do Carmo, Exercise 3-3, 23}
+(Morse Functions on Surfaces.) A critical point $p \in S$ of a differentiable function $h \colon S \to R$ is nondegenerate if the self-adjoint linear map $A_{p}h$ associated to the quadratic form $H_{p}h$ is nonsingular. Otherwise, $p$ is a degenerate critical point. A differentiable function on $S$ is a Morse function if all its critical points are nondegenerate. Let $h_{r} \colon S \subset R^{3} \to R$ be the distance function from $S$ to $r$; i.e., $h _ {r} (q) = \sqrt {\langle q - r , q - r \rangle}$, $q \in S$, $r \in R ^ {3}$, $r \notin S$.
+\begin{itemize}
+\item[a.] Show that $p \in S$ is a critical point of $h$, if and only if the straight line $pr$ is normal to $S$ at $p$.
+\item[b.] Let $p$ be a critical point of $h_r \colon S \to R$. Let $w \in T_p(S)$, $|w| = 1$, and let $\alpha \colon (-\epsilon, \epsilon) \to S$ be a curve parametrized by arc length with $\alpha(0) = p$, $\alpha'(0) = w$. Prove that $H _ {p} h _ {r} (w) = \frac {1}{h _ {r} (p)} - k _ {n}$, where $k_{n}$ is the normal curvature at $p$ along the direction of $w$. Conclude that the orthonormal basis $\{e_1, e_2\}$, where $e_1$ and $e_2$ are along the principal directions of $T_p(S)$, diagonalizes the self-adjoint linear map $A_{p}h_{r}$. Conclude further that $p$ is a degenerate critical point of $h_r$ if and only if either $h_r(p) = 1 / k_1$ or $h_r(p) = 1 / k_2$, where $k_{1}$ and $k_{2}$ are the principal curvatures at $p$.
+\item[c.] Show that the set $B = \{r \in R ^ {3}; h _ {r} \text {is a Morse function}\}$ is a dense set in $R^3$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-3, 24* — do Carmo, Exercise 3-3, 24}
+(Local Convexity and Curvature.) A surface $S \subset R ^ 3$ is locally convex at a point $p \in S$ if there exists a neighborhood $V \subset S$ of $p$ such that $V$ is contained in one of the closed half-spaces determined by $T_p(S)$ in $R ^ 3$. If, in addition, $V$ has only one common point with $T_p(S)$, then $S$ is called strictly locally convex at $p$.
+\begin{itemize}
+\item[a.] Prove that $S$ is strictly locally convex at $p$ if the principal curvatures of $S$ at $p$ are nonzero with the same sign (that is, the Gaussian curvature $K(p)$ satisfies $K(p) > 0$).
+\item[b.] Prove that if $S$ is locally convex at $p$, then the principal curvatures at $p$ do not have different signs (thus, $K(p) \geq 0$).
+\item[c.] To show that $K \geq 0$ does not imply local convexity, consider the surface $f(x,y) = x^{3}(1 + y^{2})$, defined in the open set $U = \{(x, y) \in R^2; y^2 < \frac{1}{2}\}$. Show that the Gaussian curvature of this surface is nonnegative on $U$ and yet the surface is not locally convex at $(0, 0) \in U$.
+\item[d.] The example of part c is also very special in the following local sense. Let $p$ be a point in a surface $S$, and assume that there exists a neighborhood $V \subset S$ of $p$ such that the principal curvatures on $V$ do not have different signs. Prove that $S$ is locally convex at $p$.
+\end{itemize}
+\end{exercise}
+
+% ==================== Section 3-4: Vector Fields ====================
+\section{Vector Fields on Surfaces}\label{sec:vector-fields}
+
+本节简要介绍曲面上的向量场（vector fields），这将在后续研究测地线时发挥重要作用。
+
+\begin{Definition}[向量场]\label{def:vector-field}
+曲面上的一个\textbf{\underline{向量场}}（vector field）$X$ 对每一点 $p \in S$ 赋予一个切向量 $X(p) \in T_pS$。若 $X(p)$ 随 $p$ 光滑变化，则称 $X$ 为光滑向量场。
+\end{Definition}
+
+向量场让我们可以在曲面上做微分运算。曲面上的协变导数（covariant derivative）$\nabla_X Y$ 测量了向量场 $Y$ 沿向量场 $X$ 方向的变化率。
+
+测地线（geodesic）是曲面上的一类特殊曲线，其切向量沿自身保持平行——也就是说，测地线是"直的"（没有加速度）。
+
+\begin{Definition}[测地线]\label{def:geodesic}
+曲线 $\gamma(t)$ 称为\textbf{\underline{测地线}}（geodesic），如果其切向量沿曲线平行，即
+\[
+\nabla_{\dot{\gamma}} \dot{\gamma} = 0.
+\tag{3-4-1}
+\]
+\end{Definition}
+
+测地线的概念是欧几里得空间中"直线"概念在弯曲曲面内蕴几何中的推广。在平面上，测地线就是直线；在球面上，测地线是大圆（great circles）。
+
+向量场和协变导数的概念将在 Chapter 4（测地线）中详细展开。
+
+\subsection*{3-4 节练习}
+
+\begin{exercise}{3-4, 1 — do Carmo, Exercise 3-4, 1}
+Prove that the differentiability of a vector field does not depend on the choice of a coordinate system.
+\end{exercise}
+
+\begin{exercise}{3-4, 2 — do Carmo, Exercise 3-4, 2}
+Prove that the vector field obtained on the torus by parametrizing all its meridians by arc length and taking their tangent vectors (Example 1) is differentiable.
+\end{exercise}
+
+\begin{exercise}{3-4, 3 — do Carmo, Exercise 3-4, 3}
+Prove that a vector field $w$ defined on a regular surface $S \subset R^3$ is differentiable if and only if it is differentiable as a map $w \colon S \to R^3$.
+\end{exercise}
+
+\begin{exercise}{3-4, 4 — do Carmo, Exercise 3-4, 4}
+Let $S$ be a surface and $\mathbf{x}\colon U\to S$ be a parametrization of $S$. Then $a (u, v) u ^ {\prime} + b (u, v) v ^ {\prime} = 0$, where $a$ and $b$ are differentiable functions, determines a field of directions $r$ on $\mathbf{x}(U)$, namely, the correspondence which assigns to each $\mathbf{x}(u,v)$ the straight line containing the vector $b\mathbf{x}_u - a\mathbf{x}_v$. Show that a necessary and sufficient condition for the existence of an orthogonal field $r'$ on $\mathbf{x}(U)$ is that both functions $E b - F a$ and $F b - G a$ are nowhere simultaneously zero (here $E$, $F$, and $G$ are the coefficients of the first fundamental form in $\mathbf{x}$) and that $r'$ is then determined by $(E b - F a) u ^ {\prime} + (F b - G a) v ^ {\prime} = 0$.
+\end{exercise}
+
+\begin{exercise}{3-4, 5 — do Carmo, Exercise 3-4, 5}
+Let $S$ be a surface and $\mathbf{x} \colon U \to S$ be a parametrization of $S$. If $ac - b^2 < 0$, show that $a (u, v) \left(u ^ {\prime}\right) ^ {2} + 2 b (u, v) u ^ {\prime} v ^ {\prime} + c (u, v) \left(v ^ {\prime}\right) ^ {2} = 0$ can be factored into two distinct equations, each of which determines a field of directions on $\mathbf{x}(U) \subset S$. Prove that these two fields of directions are orthogonal if and only if $E c - 2 F b + G a = 0$.
+\end{exercise}
+
+\begin{exercise}{3-4, 6* — do Carmo, Exercise 3-4, 6}
+A straight line $r$ meets the $z$ axis and moves in such a way that it makes a constant angle $\alpha \neq 0$ with the $z$ axis and each of its points describes a helix of pitch $c \neq 0$ about the $z$ axis. The figure described by $r$ is the trace of the parametrized surface
+\[
+\mathbf{x} (u, v) = (v \sin \alpha \cos u, v \sin \alpha \sin u, v \cos \alpha + c u).
+\]
+Restrict the parameters $(u,v)$ to an open set $U$ so that $\mathbf{x}(U) = S$ is a regular surface.
+\begin{itemize}
+\item[a.] Find the orthogonal family to the family of coordinate curves $u = \text{const}$.
+\item[b.] Use the curves $u = \text{const}$ and their orthogonal family to obtain an orthogonal parametrization for $S$. Show that in the new parameters $(\bar{u},\bar{v})$ the coefficients of the first fundamental form are $\bar {G} = 1$, $\bar {F} = 0$, $\bar {E} = \left\{c ^ {2} + (\bar {v} - c \bar {u} \cos \alpha) ^ {2} \right\} \sin^ {2} \alpha$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-4, 7 — do Carmo, Exercise 3-4, 7}
+Define the derivative $\mathbf{w}(\mathbf{f})$ of a differentiable function $f\colon U\subset \mathbf{S}\to \mathbf{R}$ relative to a vector field $\mathbf{w}$ in $\mathbf{U}$ by $\mathrm {w} (\mathrm {f}) (\mathrm {q}) = \left. \frac {\mathrm {d}}{d t} (\mathrm {f} \circ \alpha) \right| _ {\mathrm {t} = 0}$, where $\alpha \colon I \to S$ is a curve such that $\alpha(0) = q$, $\alpha'(0) = w(q)$. Prove that
+\begin{itemize}
+\item[a.] $w$ is differentiable in $U$ if and only if $w(f)$ is differentiable for all differentiable $f$ in $U$.
+\item[b.] Let $\lambda$ and $\mu$ be real numbers and $g\colon U\subset S\to R$ be a differentiable function on $U$; then $w (\lambda f + \mu f) = \lambda w (f) + \mu w (f)$ and $w (f g) = w (f) g + f w (g)$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-4, 8 — do Carmo, Exercise 3-4, 8}
+Show that if $w$ is a differentiable vector field on a surface $S$ and $w(p) \neq 0$ for some $p \in S$, then it is possible to parametrize a neighborhood of $p$ by $\mathbf{x}(u, v)$ in such a way that $\mathbf{x}_u = w$.
+\end{exercise}
+
+\begin{exercise}{3-4, 9* — do Carmo, Exercise 3-4, 9}
+\begin{itemize}
+\item[a.] Let $A \colon V \to W$ be a nonsingular linear map of vector spaces $V$ and $W$ of dimension 2 and endowed with inner products $\langle , \rangle$ and $(, )$, respectively. $A$ is a similitude if there exists a real number $\lambda \neq 0$ such that $(Av_1, Av_2) = \lambda \langle v_1, v_2 \rangle$ for all vectors $v_1, v_2 \in V$. Assume that $A$ is not a similitude and show that there exists a unique pair of orthonormal vectors $e_1$ and $e_2$ in $V$ such that $Ae_1, Ae_2$ are orthogonal in $W$.
+\item[b.] Use part a to prove Tissot's theorem: Let $\varphi \colon U_1 \subset S_1 \to S_2$ be a diffeomorphism from a neighborhood $U_1$ of a point $p$ of a surface $S_1$ into a surface $S_2$. Assume that the linear map $d\varphi$ is nowhere a similitude. Then it is possible to parametrize a neighborhood of $p$ in $S_1$ by an orthogonal parametrization $\mathbf{x}_1 \colon U \to S_1$ in such a way that $\varphi \circ \mathbf{x}_1 = \mathbf{x}_2 \colon U \to S_2$ is also an orthogonal parametrization in a neighborhood of $\varphi(p) \in S_2$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-4, 10* — do Carmo, Exercise 3-4, 10}
+Let $T$ be the torus of Example 6 of Sec. 2-2 and define a map $\varphi \colon R^2 \to T$ by $\varphi (u, v) = \left(\left(r \cos u + a\right) \cos v, \left(r \cos u + a\right) \sin v, r \sin u\right)$, where $u$ and $v$ are the Cartesian coordinates of $R^2$. Let $u = at$, $v = bt$ be a straight line in $R^2$, passing by $(0, 0) \in R^2$, and consider the curve in $T$ $\alpha(t) = \varphi(at, bt)$. Prove that
+\begin{itemize}
+\item[a.] $\varphi$ is a local diffeomorphism.
+\item[b.] The curve $\alpha(t)$ is a regular curve; $\alpha(t)$ is a closed curve if and only if $b / a$ is a rational number.
+\item[c.] If $b / a$ is irrational, the curve $\alpha(t)$ is dense in $T$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-4, 11 — do Carmo, Exercise 3-4, 11}
+Use the local uniqueness of trajectories of a vector field $w$ in $U \subset S$ to prove the following result. Given $p \in U$, there exists a unique trajectory $\alpha: I \to U$ of $w$, with $\alpha(0) = p$, which is maximal in the following sense: Any other trajectory $\beta: J \to U$, with $\beta(0) = p$, is the restriction of $\alpha$ to $J$.
+\end{exercise}
+
+\begin{exercise}{3-4, 12 — do Carmo, Exercise 3-4, 12}
+Prove that if $w$ is a differentiable vector field on a compact surface $S$ and $\alpha(t)$ is the maximal trajectory of $w$ with $\alpha(0) = p \in S$, then $\alpha(t)$ is defined for all $t \in R$.
+\end{exercise}
+
+\begin{exercise}{3-4, 13* — do Carmo, Exercise 3-4, 13}
+Construct a differentiable vector field on an open disk of the plane (which is not compact) such that a maximal trajectory $\alpha(t)$ is not defined for all $t \in R$ (this shows that the compactness condition of Exercise 12 is essential).
+\end{exercise}
+
+% ==================== Section 3-5: Ruled Surfaces and Minimal Surfaces ====================
+\section{Ruled Surfaces and Minimal Surfaces}\label{sec:ruled-minimal}
+
+本节简要介绍两类特殊曲面：直纹面（ruled surfaces）和极小曲面（minimal surfaces）。这些是曲面论中的经典研究对象。
+
+\subsection{Ruled Surfaces}\label{sec:ruled-surfaces}
+
+\begin{Definition}[直纹面 (Ruled surface)]\label{def:ruled-surface}
+由一条可动直线（母线）生成的曲面称为\textbf{\underline{直纹面}}（ruled surface）。具体地，若 $\alpha(t)$ 是一条空间曲线，$d(t)$ 是与 $\alpha(t)$ 正交的光滑单位向量场，则
+\[
+\mathbf{x}(t,v) = \alpha(t) + v\,d(t),\qquad t \in I,\; v \in \mathbb{R}
+\]
+参数化一张直纹面。
+\end{Definition}
+
+直纹面的经典例子包括：圆柱面（直母线绕一条固定轴旋转）、单叶双曲面（$\frac{x^2}{a^2} + \frac{y^2}{b^2} - \frac{z^2}{c^2} = 1$，可以通过两条直线族生成）。
+
+直纹面的几何特征：至少有一个主曲率为零。这意味着直纹面在母线方向上的法曲率恒为零——沿母线方向，曲面是"平直"的。
+
+\begin{Example}[圆柱面]\label{ex:cylinder-ruled}
+圆柱面 $x^2 + y^2 = 1$ 可以视为由所有平行于 $z$ 轴的直线（母线）绕 $z$ 轴旋转而成。圆柱面有一个零主曲率（沿母线方向）和一个非零主曲率（沿圆周方向）。
+\end{Example}
+
+可展曲面（developable surface）是一类特殊的直纹面，其 Gauss 曲率恒为零。平面、柱面、锥面都是可展曲面的例子。可展曲面可以在不拉伸、不撕裂的情况下平铺到平面上——这正是"可展"的含义。
+
+\begin{Example}[锥面]\label{ex:cone-ruled}
+锥面 $\frac{x^2}{a^2} + \frac{y^2}{b^2} = \frac{z^2}{c^2}$ 也是直纹面（从顶点出发的每条直线都是母线），且 $K \equiv 0$。
+\end{Example}
+
+Gauss 映射在直纹面上的行为有特别的几何意义——直纹面上一条母线的所有点对应球面上相同的法向量（因为母线上每一点的切平面都相同）。
+
+\subsection{Minimal Surfaces}\label{sec:minimal-surfaces}
+
+\begin{Definition}[极小曲面 (Minimal surface)]\label{def:minimal-surface}
+平均曲率恒为零的曲面称为\textbf{\underline{极小曲面}}（minimal surface）：
+\[
+H = \frac{\kappa_1 + \kappa_2}{2} \equiv 0.
+\tag{3-5-1}
+\]
+\end{Definition}
+
+极小曲面的名字来源于一个物理背景：如果将一根铁丝弯成一条封闭曲线，然后将其浸入肥皂水中，形成的肥皂膜（极小曲面）会使面积最小化——这是自然界的"能量最小化"原理。
+
+著名的极小曲面包括：
+\begin{itemize}
+    \item \textbf{Catenoid}（悬链面）：$x^2 + y^2 = \cosh^2 z$，第一个被发现的双连通极小曲面
+    \item \textbf{Henneberg surface}
+    \item \textbf{Enneper's surface}（见 \cref{ex:enp})
+    \item \textbf{Plateau 法则}：给定边界曲线，极小曲面是使该边界曲线所张成的面积最小的曲面
+\end{itemize}
+
+极小曲面有一个显著性质：如果 $H \equiv 0$，则（由 Codazzi-Mainardi 方程）有
+\[
+\langle dN_p(w_1), dN_p(w_2)\rangle = -K(p)\langle w_1, w_2\rangle.
+\tag{3-5-2}
+\]
+这说明 $|dN_p(v)| = \sqrt{-K(p)}$，即 Gauss 映射的微分由 Gauss 曲率完全决定。
+
+极小曲面是当代微分几何和复分析中的核心研究对象，其理论连接了微分几何、复分析和数学物理。
+
+\subsection*{3-5 节练习}
+
+\begin{exercise}{3-5, 1 — do Carmo, Exercise 3-5, 1}
+Show that the helicoid (cf. Example 3, Sec. 2-5) is a ruled surface, its line of striction is the $z$ axis, and its distribution parameter is constant.
+\end{exercise}
+
+\begin{exercise}{3-5, 2 — do Carmo, Exercise 3-5, 2}
+Show that on the hyperboloid of revolution $x^{2} + y^{2} - z^{2} = 1$, the parallel of least radius is the line of striction, the rulings meet it under a constant angle, and the distribution parameter is constant.
+\end{exercise}
+
+\begin{exercise}{3-5, 3 — do Carmo, Exercise 3-5, 3}
+Let $\alpha \colon I \to S \subset R^3$ be a curve on a regular surface $S$ and consider the ruled surface generated by the family $\{\alpha(t), N(t)\}$, where $N(t)$ is the normal to the surface at $\alpha(t)$. Prove that $\alpha(I) \subset S$ is a line of curvature in $S$ if and only if this ruled surface is developable.
+\end{exercise}
+
+\begin{exercise}{3-5, 4* — do Carmo, Exercise 3-5, 4}
+Assume that a noncylindrical ruled surface $\mathbf{x} (t, v) = \alpha (t) + v w (t)$, $| w | = 1$, is regular. Let $w(t_{1}), w(t_{2})$ be the directions of two rulings of $\mathbf{x}$ and let $\mathbf{x}(t_{1}, v_{1}), \mathbf{x}(t_{2}, v_{2})$ be the feet of the common perpendicular to these two rulings. As $t_{2} \to t_{1}$, these points tend to a point $\mathbf{x}(t_{1}, \bar{v})$. To determine $(t_{1}, \bar{v})$ prove the following:
+\begin{itemize}
+\item[a.] The unit vector of the common perpendicular converges to a unit vector tangent to the surface at $(t_1,\bar{v})$. Conclude that, at $(t_1,\bar{v})$ $\left\langle w ^ {\prime} \wedge w, N \right\rangle = 0$.
+\item[b.] $\bar{v} = -(\langle \alpha', w' \rangle / \langle w', w' \rangle)$. Thus, $(t_1,\bar{v})$ is the central point of the ruling through $t_1$, and this gives another interpretation of the line of striction (assumed nonsingular).
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 5* — do Carmo, Exercise 3-5, 5}
+A right conoid is a ruled surface whose rulings $L_{t}$ intersect perpendicularly at fixed axis $r$ which does not meet the directrix $\alpha \colon I \to R^3$.
+\begin{itemize}
+\item[a.] Find a parametrization for the right conoid and determine a condition that implies it to be noncylindrical.
+\item[b.] Given a noncylindrical right conoid, find the line of striction and the distribution parameter.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 6 — do Carmo, Exercise 3-5, 6}
+Let $\mathbf{x} (t, v) = \alpha (t) + v w (t)$ be a developable surface. Prove that at a regular point we have $\langle N _ {v}, \mathbf{x} _ {v} \rangle = \langle N _ {v}, \mathbf{x} _ {t} \rangle = 0$. Conclude that the tangent plane of a developable surface is constant along (the regular points of) a fixed ruling.
+\end{exercise}
+
+\begin{exercise}{3-5, 7 — do Carmo, Exercise 3-5, 7}
+Let $S$ be a regular surface and let $C \subset S$ be a regular curve on $S$, nowhere tangent to an asymptotic direction. Consider the envelope of the family of tangent planes of $S$ along $C$. Prove that the direction of the ruling that passes through a point $p \in C$ is conjugate to the tangent direction of $C$ at $p$.
+\end{exercise}
+
+\begin{exercise}{3-5, 8 — do Carmo, Exercise 3-5, 8}
+Show that if $C \subset S^2$ is a parallel of unit sphere $S^2$, then the envelope of tangent planes of $S^2$ along $C$ is either a cylinder, if $C$ is an equator, or a cone, if $C$ is not an equator.
+\end{exercise}
+
+\begin{exercise}{3-5, 9* — do Carmo, Exercise 3-5, 9}
+(Focal Surfaces.) Let $S$ be a regular surface without parabolic or umbilical points. Let $\mathbf{x} \colon U \to S$ be a parametrization of $S$ such that the coordinate curves are lines of curvature. The parametrized surfaces $\mathbf{y} (u, v) = \mathbf{x} (u, v) + \rho_ {1} N (u, v)$ and $\mathbf{z} (u, v) = \mathbf{x} (u, v) + \rho_ {2} N (u, v)$, where $\rho_{1} = 1 / k_{1}$, $\rho_{2} = 1 / k_{2}$, are called focal surfaces of $\mathbf{x}(U)$. Prove that
+\begin{itemize}
+\item[a.] If $(k_{1})_{u}$ and $(k_{2})_{v}$ are nowhere zero, then $\mathbf{y}$ and $\mathbf{z}$ are regular parametrized surfaces.
+\item[b.] At the regular points, the directions on a focal surface corresponding to the principal directions on $\mathbf{x}(U)$ are conjugate.
+\item[c.] A focal surface, say $\mathbf{y}$, can be constructed as follows: Consider the line of curvature $\mathbf{x}(u,\mathrm{const.})$ on $\mathbf{x}(U)$, and construct the developable surface generated by the normals of $\mathbf{x}(U)$ along the curve $\mathbf{x}(u,\mathrm{const.})$. The line of striction of such a developable lies on $\mathbf{y}(U)$, and as $\mathbf{x}(u,\mathrm{const.})$ describes $\mathbf{x}(U)$, this line describes $y(U)$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 10* — do Carmo, Exercise 3-5, 10}
+Example 4 can be generalized as follows. A one-parameter differentiable family of planes $\{\alpha(t), N(t)\}$ is a correspondence which assigns to each $t \in I$ a point $\alpha(t) \in R^3$ and a unit vector $N(t) \in R^3$ in such a way that both $\alpha$, and $N$ are differentiable maps. A family $\{\alpha(t), N(t)\}$, $t \in I$, is said to be a family of tangent planes if $\alpha'(t) \neq 0$, $N'(t) \neq 0$, and $\langle \alpha'(t), N(t) \rangle = 0$ for all $t \in I$.
+\begin{itemize}
+\item[a.] Give a proof that a differentiable one-parameter family of tangent planes $\{\alpha(t), N(t)\}$ determines a differentiable one-parameter family of lines $\{\alpha(t), (N \wedge N') / |N'|\}$ which generates a developable surface $\mathbf{x} (t, v) = \alpha (t) + v \frac {N \wedge N ^ {\prime}}{| N ^ {\prime} |}$.
+\item[b.] Prove that if $\alpha'(t) \wedge (N(t) \wedge N'(t)) \neq 0$ for all $t \in I$, then the envelope is regular in a neighborhood of $v = 0$, and the unit normal vector of $\mathbf{x}$ at $(t, 0)$ is $N(t)$.
+\item[c.] Let $\alpha = \alpha(s)$ be a curve in $R^3$ parametrized by arc length. Assume that the curvature $k(s)$ and the torsion $\tau(s)$ of $\alpha$ are nowhere zero. Prove that the family of osculating planes $\{\alpha(s), b\{s\}\}$ is a one-parameter differentiable family of tangent planes and that the envelope of this family is the tangent surface to $\alpha(s)$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 11* — do Carmo, Exercise 3-5, 11}
+Let $\mathbf{x} = \mathbf{x}(u, v)$ be a regular parametrized surface. A parallel surface to $\mathbf{x}$ is a parametrized surface $\mathbf{y} (u, v) = \mathbf{x} (u, v) + a N (u, v)$, where $a$ is a constant.
+\begin{itemize}
+\item[a.] Prove that $y_{u} \wedge y_{v} = (1 - 2Ha + Ka^{2})(\mathbf{x}_{u} \wedge \mathbf{x}_{v})$, where $K$ and $H$ are the Gaussian and mean curvatures of $\mathbf{x}$, respectively.
+\item[b.] Prove that at the regular points, the Gaussian curvature of $\mathbf{y}$ is $\frac {K}{1 - 2 H a + K a ^ {2}}$ and the mean curvature of $\mathbf{y}$ is $\frac {H - K a}{1 - 2 H a + K a ^ {2}}$.
+\item[c.] Let a surface $\mathbf{x}$ have constant mean curvature equal to $c \neq 0$ and consider the parallel surface to $\mathbf{x}$ at a distance $1/2c$. Prove that this parallel surface has constant Gaussian curvature equal to $4c^2$.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 12* — do Carmo, Exercise 3-5, 12}
+Prove that there are no compact (i.e., bounded and closed in $R^3$) minimal surfaces.
+\end{exercise}
+
+\begin{exercise}{3-5, 13* — do Carmo, Exercise 3-5, 13}
+\begin{itemize}
+\item[a.] Let $S$ be a regular surface without umbilical points. Prove that $S$ is a minimal surface if and only if the Gauss map $N \colon S \to S^2$ satisfies, for all $p \in S$ and all $w_1, w_2 \in T_p(S)$, $\langle d N _ {p} (w _ {1}), d N _ {p} (w _ {2}) \rangle_ {N (p)} = \lambda (p) \langle w _ {1}, w _ {2} \rangle_ {p}$, where $\lambda(p) \neq 0$ is a number which depends only on $p$.
+\item[b.] Let $\mathbf{x}$: $U\to S^2$ be a parametrization of the unit sphere $S^2$ by stereographic projection. Consider a neighborhood $V$ of a point $p$ of the minimal surface $S$ in part a such that $N\colon S\to S^2$ restricted to $V$ is a diffeomorphism. Prove that the parametrization $y = N^{-1}\circ \mathbf{x}$: $U\rightarrow S$ is isothermal.
+\end{itemize}
+\end{exercise}
+
+\begin{exercise}{3-5, 14* — do Carmo, Exercise 3-5, 14}
+When two differentiable functions $f, g \colon U \subset R^2 \to R$ satisfy the Cauchy-Riemann equations $\frac {\partial f}{\partial u} = \frac {\partial g}{\partial v}$, $\frac {\partial f}{\partial v} = - \frac {\partial g}{\partial u}$, they are easily seen to be harmonic; in this situation, $f$ and $g$ are said to be harmonic conjugate. Let $\mathbf{x}$ and $\mathbf{y}$ be isothermal parametrizations of minimal surfaces such that their component functions are pairwise harmonic conjugate; then $\mathbf{x}$ and $\mathbf{y}$ are called conjugate minimal surfaces. Prove that
+\begin{itemize}
+\item[a.] The helicoid and the catenoid are conjugate minimal surfaces.
+\item[b.] Given two conjugate minimal surfaces, $\mathbf{x}$ and $\mathbf{y}$, the surface $\mathbf{z} = (\cos t) \mathbf{x} + (\sin t) \mathbf{y}$ is again minimal for all $t \in R$.
+\item[c.] All surfaces of the one-parameter family have the same fundamental form: $E = \langle \mathbf{x}_u, \mathbf{x}_u \rangle = \langle \mathbf{y}_v, \mathbf{y}_v \rangle$, $F = 0$, $G = \langle \mathbf{x}_v, \mathbf{x}_v \rangle = \langle \mathbf{y}_u, \mathbf{y}_u \rangle$.
+\end{itemize}
+\end{exercise}
+
+% ==================== Appendix: Detailed Derivations ====================
+\section*{附录：详细推导}\label{sec:ch3-derivations}
+
+\subsection*{球面的第二基本形式推导}\label{sec:ch3-sphere-derivation}
+
+考虑单位球面在地理坐标下的参数化：
+\[
+\mathbf{x}(\theta,\varphi) = (\sin\theta\cos\varphi,\; \sin\theta\sin\varphi,\; \cos\theta).
+\]
+
+\textbf{步骤 1：计算一阶偏导数}
+\[
+\mathbf{x}_\theta = (\cos\theta\cos\varphi,\; \cos\theta\sin\varphi,\; -\sin\theta),\quad
+\mathbf{x}_\varphi = (-\sin\theta\sin\varphi,\; \sin\theta\cos\varphi,\; 0).
+\]
+
+\textbf{步骤 2：计算单位法向量}
+\[
+\mathbf{x}_\theta \times \mathbf{x}_\varphi = (\sin^2\theta\cos\varphi,\; \sin^2\theta\sin\varphi,\; \sin\theta\cos\theta).
+\]
+取模长 $\|\mathbf{x}_\theta \times \mathbf{x}_\varphi\| = \sin\theta$，得
+\[
+N = (\sin\theta\cos\varphi,\; \sin\theta\sin\varphi,\; \cos\theta).
+\tag{A3-1}
+\]
+
+注意这里 $N = \mathbf{x}$——球面上每一点的法向量恰好等于该点的位置向量。
+
+\textbf{步骤 3：计算二阶偏导数}
+\[
+\mathbf{x}_{\theta\theta} = (-\sin\theta\cos\varphi,\; -\sin\theta\sin\varphi,\; -\cos\theta),\quad
+\mathbf{x}_{\theta\varphi} = (-\cos\theta\sin\varphi,\; \cos\theta\cos\varphi,\; 0),\quad
+\mathbf{x}_{\varphi\varphi} = (-\sin\theta\cos\varphi,\; -\sin\theta\sin\varphi,\; 0).
+\]
+
+\textbf{步骤 4：计算第二基本形式系数}
+\[
+\begin{aligned}
+L &= \langle \mathbf{x}_{\theta\theta}, N \rangle
+   = (-\sin\theta\cos\varphi)(\sin\theta\cos\varphi) + (-\sin\theta\sin\varphi)(\sin\theta\sin\varphi) + (-\cos\theta)(\cos\theta) \\
+  &= -\sin^2\theta - \cos^2\theta = -1,
+\end{aligned}
+\]
+\[
+M = \langle \mathbf{x}_{\theta\varphi}, N \rangle = 0,\qquad
+N_{\text{coeff}} = \langle \mathbf{x}_{\varphi\varphi}, N \rangle = -\sin^2\theta.
+\tag{A3-2}
+\]
+
+\textbf{结论}：球面的第二基本形式系数为 $L = -1,\; M = 0,\; N_{\text{coeff}} = -\sin^2\theta$。结合第一基本形式 $E = 1,\; F = 0,\; G = \sin^2\theta$，可得 $S_p = I$（恒等变换），因此 $\kappa_1 = \kappa_2 = 1$。
+
+注意在很多教材中，球面的 Weingarten 映射定义为 $S_p = -dN_p$，此时 $dN_p(v) = -v$，$S_p(v) = v$（恒等变换），与我们的定义一致。但在法曲率计算 $\kappa_n = \langle S_p(v), v \rangle$ 中，法曲率为正值。这与球面"向法向量方向弯曲"的直觉一致。
+
+\subsection*{旋转抛物面的第二基本形式推导}\label{sec:ch3-paraboloid-derivation}
+
+考虑旋转抛物面 $z = x^2 + y^2$，参数化为
+\[
+\mathbf{x}(u,v) = (u, v, u^2+v^2).
+\]
+
+\textbf{步骤 1：一阶偏导数}
+\[
+\mathbf{x}_u = (1, 0, 2u),\quad \mathbf{x}_v = (0, 1, 2v).
+\]
+
+\textbf{步骤 2：单位法向量}
+\[
+\mathbf{x}_u \times \mathbf{x}_v = (-2u, -2v, 1),\quad \|\mathbf{x}_u \times \mathbf{x}_v\| = \sqrt{1+4u^2+4v^2}.
+\]
+\[
+N = \frac{(-2u, -2v, 1)}{\sqrt{1+4u^2+4v^2}}.
+\tag{A3-3}
+\]
+
+\textbf{步骤 3：二阶偏导数}
+\[
+\mathbf{x}_{uu} = (0, 0, 2),\quad \mathbf{x}_{uv} = (0, 0, 0),\quad \mathbf{x}_{vv} = (0, 0, 2).
+\]
+
+\textbf{步骤 4：第二基本形式系数}
+\[
+L = \langle \mathbf{x}_{uu}, N \rangle = \frac{2}{\sqrt{1+4u^2+4v^2}},\quad
+M = \langle \mathbf{x}_{uv}, N \rangle = 0,\quad
+N_{\text{coeff}} = \langle \mathbf{x}_{vv}, N \rangle = \frac{2}{\sqrt{1+4u^2+4v^2}}.
+\tag{A3-4}
+\]
+
+在原点 $(0,0)$ 处，$L = N_{\text{coeff}} = 2$，$M = 0$。
+
+此时第一基本形式为 $E = 1,\; F = 0,\; G = 1$，因此
+\[
+S_p = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}^{-1} \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} = \begin{pmatrix} 2 & 0 \\ 0 & 2 \end{pmatrix} = 2I.
+\]
+所以 $\kappa_1 = \kappa_2 = 2$，$K = 4 > 0$（椭圆点），$H = 2$。
+
+旋转抛物面在原点的 Dupin 指示线是一个椭圆，因为 $K > 0$，所有方向的法曲率同号。
+
+\subsection*{Christoffel 符号与 Codazzi-Mainardi 方程}\label{sec:ch3-christoffel}
+
+Christoffel 符号 $\Gamma_{ij}^k$ 由第一基本形式的系数定义为：
+\[
+\Gamma_{ij}^k = \frac{1}{2}\sum_{m=1}^{2} g^{km}\left(\frac{\partial g_{im}}{\partial j} + \frac{\partial g_{jm}}{\partial i} - \frac{\partial g_{ij}}{\partial m}\right),
+\tag{A3-5}
+\]
+其中 $(g_{ij}) = \begin{pmatrix} E & F \\ F & G \end{pmatrix}$，$(g^{ij})$ 是其逆矩阵。
+
+Codazzi-Mainardi 方程的直观含义是：第二基本形式的"协变导数"必须对称。具体形式为：
+\[
+\frac{\partial L}{\partial v} - \frac{\partial M}{\partial u} = L\Gamma_{12}^1 + M(\Gamma_{12}^2 - \Gamma_{11}^1) - N_{\text{coeff}}\Gamma_{11}^2,
+\]
+\[
+\frac{\partial N_{\text{coeff}}}{\partial u} - \frac{\partial M}{\partial v} = L\Gamma_{22}^1 + M(\Gamma_{22}^2 - \Gamma_{21}^1) - N_{\text{coeff}}\Gamma_{21}^2.
+\tag{A3-6}
+\]
+
+这些方程的深层含义是：第一基本形式和第二基本形式不是独立的——它们必须协调一致，才能描述一个真实嵌入 $\mathbb{R}^3$ 的曲面。这种协调性正是可积性条件的本质。
