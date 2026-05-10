@@ -1388,7 +1388,35 @@ rm -f "$WRAPPER"
 - 写章节文件时就规划好 preamble（standalone 方式）
 - 或者保持无 preamble，直接 include 到主文件编译
 
-**最后更新**: 2026-04-28
+**最后更新**: 2026-05-10
+
+---
+
+## L725: Bayesian Ch9 写作教训：\mid vs | 条件记号是硬规则
+
+**日期**: 2026-05-10
+**来源**: Bayesian Chapter 9 (Decision Analysis) 主笔写作
+**累计次数**: 1 次
+
+**写作内容**:
+- 决策分析章节，涵盖效用/损失函数、三种损失函数与最优估计、预验分析、层次决策与经验贝叶斯
+
+**做得好的地方**:
+1. **Stein 动机优先风格**：以"推断是描述性的，决策是规范性的"开场
+2. **三种损失函数三定理结构**：清晰对照平方损失（后验均值）、绝对损失（后验中位数）、0-1 损失（后验众数）
+3. **历史人物扩展**：Wald（极小极大）、Savage（主观期望效用公理化）、Raiffa/Schlaifer（实用化）各有具体贡献描述
+4. **与前章的有机联系**：\S 9.1 末尾增加了"积分即决策"的洞察，连接 Ch3 的边际后验分布
+5. **经验贝叶斯具体例子**：正态均值层次 shrinkage 公式配直观解释
+
+**发现的问题（Reviewer Round 1 捕获）**:
+1. **HIGH: `\mid` vs `|` 条件记号**：初稿中大量使用 `|` 作为条件记号（如 `p(\theta|y)`），reviewer 指出项目规范要求用 `\mid`（`p(\theta\mid y)`）。这是 writing-guide.md 中的硬规则。
+2. **MEDIUM: Exercise label 语法**：`\begin{Exercise}{\ref{exr:ch9-1} 标题}` 将 `\ref{}` 放在了 title 参数内——应将 `\label{exr:ch9-1}` 放在 exercise body 内独立一行。
+3. **MEDIUM: 损失矩阵权重**：`0.5` 作为裸数字不够清晰，应加 `0.5 \cdot L_{\text{conservative}}`。
+
+**防止措施**:
+- 写完初稿后，用 `grep -n '| y)\| | \theta)' chapter*.tex` 检查所有条件记号
+- Exercise 环境：label 放 body 内，title 参数只含文字
+- 矩阵元素中涉及权重的数值用 `\cdot` 或 `\times` 明确乘法关系
 
 ---
 
