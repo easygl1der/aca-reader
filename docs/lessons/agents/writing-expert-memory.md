@@ -1420,6 +1420,38 @@ rm -f "$WRAPPER"
 
 ---
 
+## L726: Bayesian Ch21 写作教训：Example 标题中禁止使用未定义的 \cref
+
+**日期**: 2026-05-10
+**来源**: Bayesian Chapter 21 (Gaussian Process Models) 主笔写作
+**累计次数**: 1 次
+
+**错误描述**:
+初稿中写 `\begin{Example}[\cref{ex:gp-birthday-model} 的验证]`，但 `ex:gp-birthday-model` 这个 label 在正文中从未定义，导致悬空引用。
+
+**正确做法**:
+- Example 标题中如果引用定理/定义，应确保对应的 `\label` 已存在
+- 如果没有对应的独立定理/定义，直接用文字描述作为 Example 标题
+
+**做得好的地方**:
+1. **Stein 动机优先**：开篇从基函数模型的局限自然引入 GP 的解决思路
+2. **历史脉络完整**：Kolmogorov → O'Hagan(1978) → Neal(1997) → Rasmussen & Williams(2006)
+3. **有机联系充分**：明确指出 GP 与 Ch19-20 的递进关系、与 PCA 的深层联系
+4. **Reviewer 评审质量高**：ch3-writer-2f 捕获了悬空引用和 3 处表述清晰度问题
+
+**Reviewer 捕获的 4 个问题**:
+1. 悬空引用：`\cref{ex:gp-birthday-model}` → 改为 `[生日数据的验证]`
+2. Remark 解释不清晰：补充"即数据带来的信息"和"核函数局部相关性结构"
+3. 21.5 过渡突兀：新增过渡句
+4. 诱导点直觉缺失：补充稀疏近似的核心思想描述
+
+**防止措施**:
+- 写 Example 时，标题中只使用已定义的 label 或纯文字
+- 用 `grep -n 'cref{' chapter*.tex` 检查所有引用是否已定义
+- 发送初稿给 reviewer 前，自检一遍所有 `\cref{}` 引用
+
+---
+
 ## L724: Chapter 21 (Instrumental Variable) 写作教训
 
 **日期**: 2026-04-28
