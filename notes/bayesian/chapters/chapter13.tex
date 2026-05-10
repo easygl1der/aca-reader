@@ -445,7 +445,13 @@ EP 的一个关键挑战是\textbf{数值稳定性}：在删除和包含因子�
 \end{Exercise}
 
 \begin{Exercise}{变分贝叶斯的 KL 散度}\label{ex:vb-kl}
-证明变分贝叶斯中，坐标上升算法（即交替更新各变分因子）保证 $\text{KL}(q\|p)$ 单调下降。（提示：利用 \cref{eq:variational-update} 中的最优 $q_j^*$ 形式，以及 KL 散度的非负性。）
+证明变分贝叶斯中，坐标上升算法（即交替更新各变分因子）保证 $\text{KL}(q\|p)$ 单调下降。
+
+\textbf{提示}：设当前变分分布为 $q^{(t)}(\theta) = \prod_j q_j^{(t)}(\theta_j)$，更新因子 $q_k$ 至 $q_k^{(t+1)}$（其余因子保持不变）。分两步证明：
+\begin{enumerate}
+\item 利用 KL 散度的定义展开 $\text{KL}(q^{(t+1)}\|p) - \text{KL}(q^{(t)}\|p)$；
+\item 代入 $q_k^{(t+1)}$ 的最优形式 \cref{eq:variational-update}，利用 Jensen 不等式说明每步更新必使 KL 散度下降。
+\end{enumerate}
 \end{Exercise}
 
 \begin{Exercise}{拉普拉斯近似}\label{ex:laplace-approx}
