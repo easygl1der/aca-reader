@@ -138,6 +138,65 @@ p(\lambda \mid \mathbf{y}) \propto p(\mathbf{y} \mid \lambda) p(\lambda).
 \end{Example}
 \footnote{等效核在边界点处行为的详细分析，包括 Mercer 定理和特征分解，见附录 \cref{sec:derivation-equivalent-kernel-boundary}。}
 
+\subsection{基函数的构造：B-样条递推公式}\label{sec:b-spline-construction}
+
+B-样条基函数是样条计算的核心工具。本节给出 de Boor 递推公式的完整描述。
+
+设结点序列 $\xi_1 < \cdots < \xi_K$ 分布在 $[a, b]$，扩展结点为 $\xi_0 = \xi_{-1} = \cdots = a$ 和 $\xi_{K+1} = \xi_{K+2} = \cdots = b$。B-样条基函数 $B_{i,k}(x)$（次数为 $k-1$）由 de Boor 递推公式定义：
+\begin{align}
+B_{i,1}(x) &= \begin{cases} 1 & \xi_i \leq x < \xi_{i+1}, \\ 0 & \text{otherwise}, \end{cases} \label{eq:de-boor-base} \\
+B_{i,k}(x) &= \frac{x - \xi_i}{\xi_{i+k-1} - \xi_i} B_{i,k-1}(x) + \frac{\xi_{i+k} - x}{\xi_{i+k} - \xi_{i+1}} B_{i+1,k-1}(x). \label{eq:de-boor-recursion}
+\end{align}
+
+\textbf{局部支撑性}：每个 $B_{i,k}$ 仅在区间 $[\xi_i, \xi_{i+k}]$ 上非零，这意味着改变一个结点只影响 $k$ 个相邻基函数，使得计算高效且系数的几何解释直观。
+
+\textbf{单位分解性}：在每个内点区间 $[\xi_j, \xi_{j+1}]$ 上，恰好有 $k$ 个 $k-1$ 次 B-样条非零，且它们的和为 1：$\sum_{i=j-k+1}^{j} B_{i,k}(x) = 1$ for $x \in [\xi_j, \xi_{j+1}]$。
+
+\textbf{例子（$k=4$，三次 B-样条）}：对于结点 $\xi_1 < \xi_2 < \xi_3$，第一个三次 B-样条 $B_{1,4}(x)$ 在 $[\xi_0, \xi_4]$ 上有定义，在 $[\xi_0, \xi_1]$ 和 $[\xi_3, \xi_4]$ 上分别为三次多项式，在 $[\xi_1, \xi_3]$ 上为四次多项式的组合。
+
+样条函数 $f(x) = \sum_i \beta_i B_{i,k}(x)$ 在每个区间 $[\xi_j, \xi_{j+1}]$ 上是 $k-1$ 次多项式，且在整个 $[a, b]$ 上有 $k-2$ 阶连续导数——这正是样条"光滑拼接"的几何意义。
+
+\section{径向基函数}\label{sec:radial-basis-functions}
+
+\textbf{径向基函数（Radial Basis Functions, RBF）}提供了另一种重要的基函数构造方法。与样条基于多项式展开不同，RBF 的基函数是关于某个中心点的径向函数：
+\begin{equation}
+f(x) = \sum_{i=1}^{m} c_i \phi(\|x - c_i\|),
+\label{eq:rbf-expansion}
+\end{equation}
+其中 $\phi: [0, \infty) \to \mathbb{R}$ 是\textbf{径向基函数}，$c_1, \ldots, c_m$ 是\textbf{中心点（centers）}，$\|\cdot\|$ 是欧氏距离。
+
+RBF 方法的核心思想是：将多元函数分解为一系列以数据点为中心的局部径向函数的叠加。这种构造在空间维度上没有限制——无论是低维还是高维空间，RBF 都适用。
+
+\textbf{常用径向基函数}包括：
+
+\begin{enumerate}
+\item \textbf{高斯径向基函数（Gaussian RBF）}：
+\begin{equation}
+\phi(r) = \exp(-\gamma r^2),\quad \gamma > 0.
+\label{eq:gaussian-rbf}
+\end{equation}
+高斯 RBF 是正定的，其核矩阵始终是正定的。这使得高斯 RBF 在理论上和计算上都易于处理。
+
+\item \textbf{多谐波样条（Polyharmonic splines）}：
+\begin{equation}
+\phi(r) = \begin{cases} r^k, & k = 1, 3, 5, \ldots, \\ r^k \log r, & k = 2, 4, 6, \ldots. \end{cases}
+\label{eq:polyharmonic-spline}
+\end{equation}
+多谐波样条在插值问题中特别有用——当中心点互异时，插值矩阵是非奇异的。
+\end{enumerate}
+
+\textbf{高斯 RBF 的贝叶斯推断}等价于在函数空间上施加高斯过程先验。设中心点为 $c_1, \ldots, c_m$，则 $f(x) \sim \mathrm{GP}(0, K)$，其中核函数 $K(x, x') = \sum_i \tau_i^2 \phi_\gamma(\|x - c_i\|) \phi_\gamma(\|x' - c_i\|)$。从这一点看，RBF 是高斯过程的离散近似——这将在下一章（\cref{sec:basis-functions-outlook}）中详细展开。
+
+\begin{Example}[高斯 RBF 回归]\label{ex:rbf-regression}
+考虑对二维函数 $f(x_1, x_2) = \sin(x_1) \cos(x_2)$ 在网格点上加噪声观测的数据拟合高斯 RBF 模型。
+
+设中心点为 $c_1, \ldots, c_m$，均匀分布在 $[0, 2\pi] \times [0, 2\pi]$ 上。模型为 $y_i = \sum_{j=1}^{m} c_j \exp(-\gamma \|x_i - c_j\|^2) + \epsilon_i$。
+
+参数 $\gamma$ 控制基函数的宽度——$\gamma$ 越小，基函数越宽，模型越光滑；$\gamma$ 越大，基函数越窄，模型越灵活。$\gamma$ 和系数 $c_j$ 可以通过边际似然或交叉验证联合估计。
+\end{Example}
+
+RBF 方法的主要优势在于其\textbf{维数无关性}——即使在高维空间中，只要选择合适的中心点，RBF 也能有效逼近复杂函数。然而，当数据点很多时，RBF 的计算成本为 $O(n^2)$（核矩阵的构造和求逆），这限制了其在大规模数据中的应用。
+
 \section{Sobolev 空间与函数空间视角}\label{sec:sobolev-spaces}
 
 从更一般的角度看，样条函数属于一类特殊的函数空间——\textbf{Sobolev 空间}。Sobolev 空间 $W_2^k([0, 1])$ 定义为所有 $k$ 阶导数平方可积的函数构成的空间：
