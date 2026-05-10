@@ -222,11 +222,6 @@ p_j = \frac{\exp(f_j)}{\sum_{k} \exp(f_k)}.
 
 当 $n$ 达到数万甚至更多时，精确高斯过程变得不可行。稀疏近似方法的核心思想是用 $m$ 个代表性诱导点（inducing points）来近似完整协方差矩阵，从而将 $O(n^3)$ 降为 $O(n m^2)$。具体而言，我们引入诱导输入点 $Z = \{z_j\}_{j=1}^m$ 和对应的函数值 $u_j = f(z_j)$，然后通过 $p(f_* | y) \approx \int p(f_* | u) q(u | y) \, du$ 来近似后验预测。\footnote{稀疏高斯过程近似的详细推导见附录 \cref{sec:sparse-gp-derivation}。}
 
-\begin{enumerate}
-  \item \textbf{策略近似（Subset of Variables）}：仅使用 $m \ll n$ 个随机选取的训练点
-  \item \textbf{诱导点近似（Inducing Points）}：引入独立的诱导输入点 $Z = \{z_j\}$ 和诱导输出 $u_j = f(z_j)$，然后用 $p(f_* | y) \approx \int p(f_* | u) q(u | y) \, du$ 近似
-\end{enumerate}
-
 代表性方法包括 FITC（Fully Independent Training Conditional）、PITC（Partially Independent Training Conditional）和 Nystr\"om 近似。
 
 \subsection{梯度优化与超参数估计}
