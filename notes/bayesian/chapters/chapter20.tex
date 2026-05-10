@@ -65,9 +65,9 @@ y_i = \sum_{j=1}^{J} h_j(x_i) \beta_j + \epsilon_i,\quad \epsilon_i \sim \mathrm
 \boldsymbol{\beta} \sim \mathrm{N}(0, \sigma^2 \Sigma_\beta),
 \label{eq:spline-g-prior}
 \end{equation}
-其中 $\Sigma_\beta$ 是先验协方差矩阵，反映了函数的光滑性先验。
+其中 $\Sigma_\beta$ 是先验协方差矩阵，反映了函数的光滑性先验。当 $\Sigma_\beta = \tau^2 P^{-1}$ 时（即 $\Sigma_\beta^{-1} = \tau^{-2} P$），后验均值中的惩罚项 $\Sigma_\beta^{-1}$ 恰好对应二阶导数惩罚 $\int |f''(x)|^2\, dx$——这建立了光滑性先验与惩罚泛函之间的对应关系。
 
-具体而言，若使用截断幂基函数 \eqref{eq:truncated-power-basis}--\eqref{eq:knot-basis}，一个自然的光滑性先验是对高阶导数施加惩罚——这等价于在二阶导数的平方上积分。具体而言，样条的光滑性可以用
+具体而言，若使用截断幂基函数 \eqref{eq:truncated-power-basis}--\eqref{eq:knot-basis}，样条的光滑性可以用
 \begin{equation}
 \int |f''(x)|^2\, dx = \boldsymbol{\beta}^{\mathsf{T}} P \boldsymbol{\beta}
 \label{eq:spline-roughness-penalty}
