@@ -250,7 +250,7 @@ GEM（广义 EM）算法放松了 M 步的要求——只需\textbf{增加} $Q$ 
 
 E 步中，需求 $E_{\sigma^2|\mu^{\text{old}}, y}[(\sigma^2)^{-1}]$。给定 $\mu$ 时，$\sigma^2|\mu, y \sim \text{Inv-}\chi^2(n, s_{\text{old}}^2)$，其中 $s_{\text{old}}^2 = \frac{1}{n}\sum_i (y_i - \mu^{\text{old}})^2$。于是 $E[(\sigma^2)^{-1}] = n / s_{\text{old}}^2$。
 
-代入 \cref{eq:normal-approx} 中的 Q 函数，再做 M 步最大化，可得
+将 \cref{eq:normal-joint-log} 中的 $E_{\sigma^2|\mu^{\text{old}}, y}[(\sigma^2)^{-1}]$ 替换为 $n/s_{\text{old}}^2$，得 Q 函数的表达式。该 Q 函数关于 $\mu$ 是二次的（具有正态对数核的形式），直接对 $\mu$ 求导并令其为零，得 M 步更新公式：
 \[
 \mu^{\text{new}} = \frac{\frac{1}{\tau_0^2}\mu_0 + n\frac{\bar{y}}{s_{\text{old}}^2}}{\frac{1}{\tau_0^2} + \frac{n}{s_{\text{old}}^2}}.
 \label{eq:mu-new}
