@@ -228,13 +228,15 @@ y_i \mid \beta \sim \text{Bernoulli}(\pi_i), \quad \text{logit}(\pi_i) = x_i^T\b
 
 逻辑回归的后验分布 $p(\beta | y) \propto \exp(\ell(\beta)) \times p(\beta)$ 不再有解析形式。似然函数关于 $\beta$ 不是二次的，因此无法通过解析积分得到边际后验分布。
 
-这标志着一个重要的计算转折点：我们必须借助第 10-12 章介绍的模拟方法来处理这类非共轭模型。常用的策略包括：
+这标志着一个重要的计算转折点：我们必须借助第 10-12 章介绍的模拟方法来处理这类非共轭模型。常用的策略及其适用场景如下：
 
 \begin{enumerate}
-  \item \textbf{Metropolis 算法}：使用对称提议分布（如正态提议）在后验分布上生成马尔科夫链。
-  \item \textbf{Hamiltonian 蒙特卡洛}：利用梯度信息构造更高效的提议机制，特别适合高维参数空间。
-  \item \textbf{拉普拉斯近似}：用正态分布逼近后验模式附近的后验密度，结合重要性抽样或粒子滤波器。
+  \item \textbf{Metropolis 算法}：使用对称提议分布（如正态提议）在后验分布上生成马尔科夫链。\textbf{适用场景}：低维参数空间（$p < 20$）；优点是简单通用，缺点是收敛较慢。
+  \item \textbf{Hamiltonian 蒙特卡洛}：利用梯度信息 $\nabla_\beta \log p(\beta|y)$ 构造更高效的提议机制，特别适合高维参数空间。\textbf{适用场景}：高维参数空间（$p \geq 20$）；优点是效率远高于随机游走 Metropolis，缺点是需要计算梯度且调参较敏感。
+  \item \textbf{拉普拉斯近似}：用正态分布 $\text{Normal}(\hat{\beta}, \Sigma)$ 逼近后验模式 $\hat{\beta}$ 附近的后验密度，结合重要性抽样或粒子滤波器。\textbf{适用场景}：快速原型探索；优点是计算极快，缺点是仅在模式附近精确，对多峰或高度非正态的后验分布效果较差。
 \end{enumerate}
+
+在实际应用中，通常先尝试拉普拉斯近似获得初始值，再用 HMC 或 Metropolis 进行精确采样。当参数维度特别高时（如 $p > 1000$），还需结合稀疏先验（如 horseshoe 先验）使用变分推断等近似方法。
 
 \section{稳健回归}
 
