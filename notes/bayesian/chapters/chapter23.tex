@@ -114,10 +114,11 @@ G | \mathbf{x} \sim \DP\!\left(\alpha + n, \frac{\alpha}{\alpha + n} G_0 + \frac
 
 预测分布也有简洁形式。设新观测为 $\tilde{x}$，则其后验预测分布为：\footnote{推导见附录 \cref{sec:dp-predictive-derivation}}
 \[
-p(\tilde{x} | \mathbf{x}) = \frac{\alpha}{\alpha + n} \, G_0(\tilde{x}) + \frac{1}{\alpha + n} \sum_{i=1}^n \delta_{x_i}(\tilde{x}).
+p(\tilde{x} | \mathbf{x}) = \frac{\alpha}{\alpha + n} \, G_0(\tilde{x}) + \sum_{k=1}^{K_n} \frac{n_k}{\alpha + n} \, \delta_{\theta_k}(\tilde{x}),
 \]
+其中 $K_n$ 是有效聚类个数，$n_k$ 是第 $k$ 个聚类中的点数，$\theta_k$ 是对应的聚类参数。
 
-也就是说，新数据点有概率 $\alpha/(\alpha+n)$ 来自基分布 $G_0$（产生一个新atom），有概率 $n_k/(\alpha+n)$ 与已有数据点 $x_i$ 相同（与同一 cluster 的数据共享）。这正是 CRP 的 predictive probability。
+也就是说，新数据点有概率 $\alpha/(\alpha+n)$ 来自基分布 $G_0$（产生一个新聚类），有概率 $n_k/(\alpha+n)$ 落在第 $k$ 个已有聚类中（与该聚类的数据共享参数 $\theta_k$）。这正是 CRP 的 predictive probability。
 
 \section{DP 混合模型}
 
