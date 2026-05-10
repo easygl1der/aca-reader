@@ -195,7 +195,7 @@ g-先验的一个重要性质是后验均值可以在最小二乘估计 $\hat{\b
 \label{eq:ridge-prior}
 \end{equation}
 
-另一种思路是从变量选择的角度出发，使用 spike-and-slab 先验或 horseshoe 先验，将大多数回归系数推向零，同时允许少数重要变量保留非零系数。
+另一种思路是从变量选择的角度出发，使用 spike-and-slab 先验或 horseshoe 先验，将大多数回归系数推向零，同时允许少数重要变量保留非零系数。horseshoe 先验将每个系数 $\beta_j$ 表示为分层结构 $\beta_j = \lambda_j \tau \cdot \xi_j$，其中 $\lambda_j \sim \text{Cauchy}^+(0,1)$（局部正则化参数，控制单个系数的收缩程度），$\tau \sim \text{Cauchy}^+(0,1)$（全局正则化参数，控制整体的收缩强度），$\xi_j \sim \text{Normal}(0,1)$。这种结构使得大多数 $\lambda_j$ 接近零（从而 $\beta_j$ 被推向零），但允许少数 $\lambda_j$ 较大（从而对应的 $\beta_j$ 保留非零值），实现了数据自适应的稀疏估计。
 
 \section{逻辑回归}
 
