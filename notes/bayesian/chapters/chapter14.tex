@@ -89,12 +89,24 @@ p(y|\beta, \sigma^2) \propto (\sigma^2)^{-n/2} \exp\left(-\frac{1}{2\sigma^2}\|y
 其中后验参数由下式给出：\footnote{推导见附录 \cref{sec:normal-gamma-posterior-derivation}。}
 
 \[
-\beta_n = V_n(X^T X\hat{\beta} + V_0^{-1}\beta_0), \quad V_n = (X^TX + V_0^{-1})^{-1}
+\beta_n = (X^TX + V_0^{-1})^{-1}(X^T X\hat{\beta} + V_0^{-1}\beta_0), \quad V_n = (X^TX + V_0^{-1})^{-1}
 \]
 
 \[
 \nu_n = \nu_0 + n, \quad \nu_n\sigma_n^2 = \nu_0\sigma_0^2 + \text{RSS} + (\hat{\beta} - \beta_0)^T(X^TX)(V_0 + V_n)(\hat{\beta} - \beta_0)
 \]
+
+值得注意的是，$\beta_n$ 的表达式可以写成数据的最大似然估计 $\hat{\beta}$ 与先验均值 $\beta_0$ 的加权平均：
+\[
+\beta_n = \frac{n}{n + \text{tr}(V_0X^TX)}\hat{\beta} + \frac{\text{tr}(V_0X^TX)}{n + \text{tr}(V_0X^TX)}\beta_0 + O(\text{高阶项})
+\]
+当先验协方差 $V_0$ 与 $(X^TX)^{-1}$ 成正比时，这个加权平均关系尤为清晰。
+
+此外，$\sigma_n^2$ 表达式中的第三项
+\[
+(\hat{\beta} - \beta_0)^T(X^TX)(V_0 + V_n)(\hat{\beta} - \beta_0)
+\]
+衡量了先验均值 $\beta_0$ 与数据最大似然估计 $\hat{\beta}$ 之间的"距离"。当两者一致时，这一项接近零，后验方差主要由残差驱动；当两者冲突较大时，这一项增大，后验分布会表现出更大的不确定性——这就是所谓的\textbf{prior-data conflict}（先验-数据冲突）。
 
 \subsection{后验预测分布}
 
