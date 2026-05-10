@@ -103,13 +103,13 @@ F \sim \DP(\alpha, G_0).
 
 假设基分布 $G_0$ 是某个参数 $\phi$ 的分布，即 $x_i | \phi \sim p(x | \phi)$，且 $\phi \sim G_0$。那么后验有如下形式：\footnote{推导见附录 \cref{sec:dp-posterior-derivation}}
 \[
-G | \mathbf{x} \sim \DP\!\left(\alpha + n, \frac{\alpha}{\alpha + n} G_0 + \frac{1}{\alpha + n} \sum_{i=1}^n \delta_{x_i}\right).
+G | \mathbf{x} \sim \DP\!\left(\alpha + n, \frac{\alpha}{\alpha + n} G_0 + \frac{n}{\alpha + n} \cdot \frac{1}{n}\sum_{i=1}^n \delta_{x_i}\right).
 \]
 
 这一结果表明：后验等价于在先验 $G_0$ 的基础上"添加"了经验分布的 contribution。具体而言：
 \begin{itemize}
   \item 有效样本量从 $\alpha$ 增加到 $\alpha + n$；
-  \item 后验基分布是 $G_0$ 与经验分布 $\frac{1}{n}\sum_i \delta_{x_i}$ 的加权平均，权重分别为 $\alpha/n$ 和 $n/n$ 的某种调整。
+  \item 后验基分布是 $G_0$ 与经验分布 $\frac{1}{n}\sum_i \delta_{x_i}$ 的加权平均，权重分别为 $\frac{\alpha}{\alpha+n}$ 和 $\frac{n}{\alpha+n}$。
 \end{itemize}
 
 预测分布也有简洁形式。设新观测为 $\tilde{x}$，则其后验预测分布为：\footnote{推导见附录 \cref{sec:dp-predictive-derivation}}
