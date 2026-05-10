@@ -161,7 +161,9 @@ p(\theta|y) \approx N(\theta | \hat{\theta}, V_\theta), \quad V_\theta = [-L''(\
 
 \subsection{拉普拉斯方法}\label{sec:laplace-method}
 
-\textbf{拉普拉斯方法}是逼近形式为 $h(\theta)p(\theta|y)$ 的积分的解析工具，其中 $p(\theta|y)$ 是后验密度（已归一化），$h(\theta)$ 是某个光滑函数。其核心思想是用 $p(\theta|y)$ 的众数处的正态近似来代替 $p$ 本身：
+\textbf{拉普拉斯方法}是逼近形式为 $\int h(\theta)p(\theta|y)\,d\theta$ 的积分的解析工具。在实际统计计算中，我们经常需要计算后验均值 $\mathbb{E}(h(\theta)|y)$ 或后验矩——这些本质上都是上述形式的积分。当 $h(\theta)$ 平滑且后验分布近似正态时，拉普拉斯方法提供了高效的近似。
+
+其核心思想是：用 $p(\theta|y)$ 在其众数处的正态近似来代替 $p$ 本身。具体地，对 $u(\theta) = \log(h(\theta)p(\theta|y))$ 在其众数 $\theta_0$ 处做二次展开：
 
 \[
 \int h(\theta)p(\theta|y)\,d\theta \approx h(\theta_0)p(\theta_0|y)(2\pi)^{d/2} | -u''(\theta_0) |^{-1/2},
