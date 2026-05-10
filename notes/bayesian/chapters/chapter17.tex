@@ -121,7 +121,7 @@ p(\theta \mid \varphi, y) \propto p(\theta \mid \varphi) \, p(y \mid \theta, \va
 \textbf{使用重要性重采样的计算}。尽管我们已经完成了马尔可夫链模拟，我们简要讨论如何应用重要性重采样来近似 $\nu = 4$ 的后验分布。首先，我们从 $p_0(\theta, \mu, \tau \mid y)$（正态模型下的后验分布）中抽取 5000 个 $(\theta, \mu, \tau)$ 的抽取值。接下来，我们计算每个抽取值的重要性比率：\footnote{推导见附录 \cref{sec:importance-ratio-derivation}}
 \[
 \frac{p(\theta, \mu, \tau \mid \nu, y)}{p_0(\theta, \mu, \tau \mid y)} = \frac{p(\mu, \tau \mid \nu) \, p(\theta \mid \mu, \tau, \nu) \, p(y \mid \theta, \mu, \tau, \nu)}{p_0(\mu, \tau) \, p_0(\theta \mid \mu, \tau) \, p_0(y \mid \theta, \mu, \tau)} \propto \prod_{j=1}^8 \frac{t_\nu(\theta_j \mid \mu, \tau^2)}{\mathrm{N}(\theta_j \mid \mu, \tau^2)}.
-\tag{17.5}
+\label{eq:importance-ratio}
 \]
 
 然后我们使用重要性重采样，从 5000 个抽取值中无放回地抽取 500 个 $(\theta, \mu, \tau)$ 的子样本。这种近似对于评估稳健性可能已足够，但重要性比率对数的长尾分布（未显示）确实表明使用重要性重采样获得准确推断存在严重问题。
