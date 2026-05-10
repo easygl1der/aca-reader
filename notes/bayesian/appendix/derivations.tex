@@ -735,6 +735,328 @@ p(\theta) \propto \theta^{(1/2)-1}(1-\theta)^{(1/2)-1}
 \textbf{结论 2}：后验预测方差 = \textbf{模型方差} + \textbf{参数后验方差}。这体现了贝叶斯推断的核心：预测的不确定性来自两个方面——（1）模型本身的随机性（$\sigma^2$），以及（2）参数估计的不确定性（$\tau_1^2$）。
 
 % ================================================
+% Chapter 11 推导：马尔可夫链模拟基础
+% =============================================
+
+\section{拒绝抽样的正确性证明}\label{sec:derivation-rejection-sampling}
+
+\textbf{背景（Background）}：
+拒绝抽样通过随机接受机制从目标分布中抽取样本。我们需要证明被接受的样本确实服从目标分布 $p(\theta)$。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $p(\theta)$：目标（未归一化）分布
+  \item $g(\theta)$：提议分布
+  \item $M$：覆盖常数，满足 $p(\theta) \leq M \cdot g(\theta)$
+  \item $\theta^*$：候选样本
+  \item $u^*$：从 $\mathrm{Uniform}(0,1)$ 抽取的随机数
+\end{itemize}
+
+\textbf{目标（Goal）}：
+证明被接受的样本 $\theta_{\text{accept}}$ 服从目标分布 $p(\theta)$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{步骤 1}：写出接受的联合概率
+\[
+\mathbb{P}(\text{接受} \cap \theta^* \in d\theta)
+= \mathbb{P}(\theta^* \in d\theta) \cdot \mathbb{P}(\text{接受} | \theta^*)
+= g(\theta^*) d\theta \cdot \frac{p(\theta^*)}{M g(\theta^*)}
+= \frac{p(\theta^*)}{M} d\theta
+\tag*{接受联合概率}
+\]
+
+\textbf{步骤 2}：计算总接受概率（归一化常数）
+\[
+\mathbb{P}(\text{接受}) = \int \frac{p(\theta^*)}{M} d\theta = \frac{1}{M}
+\tag*{总接受概率}
+\]
+
+\textbf{步骤 3}：计算接受样本的条件分布
+\[
+\mathbb{P}(\theta_{\text{accept}} \in d\theta | \text{接受})
+= \frac{\mathbb{P}(\text{接受} \cap \theta^* \in d\theta)}{\mathbb{P}(\text{接受})}
+= \frac{p(\theta^*)/M}{1/M} d\theta = p(\theta^*) d\theta
+\tag*{条件分布 = 目标分布}
+\]
+
+\textbf{结论}：被接受的样本的条件分布正是目标分布 $p(\theta)$。证明完毕。
+
+\clearpage
+
+\subsection{拒绝抽样期望接受率推导}\label{sec:derivation-rejection-acceptance}
+
+\textbf{背景（Background）}：
+拒绝抽样的期望接受率是衡量算法效率的关键指标。
+
+\textbf{目标（Goal）}：
+推导期望接受率的公式。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{步骤 1}：期望接受率定义为
+\[
+\text{accept rate} = \int \mathbb{P}(\text{接受} | \theta) \cdot g(\theta) \, d\theta
+\tag*{期望定义}
+\]
+
+\textbf{步骤 2}：代入接受概率
+\[
+\mathbb{P}(\text{接受} | \theta) = \min\!\left(1, \frac{p(\theta)}{M g(\theta)}\right)
+\tag*{接受概率}
+\]
+
+\textbf{步骤 3}：于是
+\[
+\text{accept rate} = \int \min\!\left(\frac{p(\theta)}{M g(\theta)}, 1\right) \cdot g(\theta) \, d\theta
+= \frac{1}{M} \int \min\!\bigl(p(\theta), M g(\theta)\bigr) \, d\theta
+\tag*{积分结果}
+\]
+
+\textbf{步骤 4}：当覆盖条件 $M g(\theta) \geq p(\theta)$ 对所有 $\theta$ 成立时
+\[
+\text{accept rate} = \frac{1}{M} \int p(\theta) \, d\theta = \frac{1}{M}
+\tag*{简化为 $1/M$}
+\]
+
+\textbf{结论}：期望接受率与 $M$ 成反比，选择尽可能小的 $M$ 可提高接受率。
+
+\clearpage
+
+\subsection{细致平衡条件推导}\label{sec:derivation-detailed-balance}
+
+\textbf{背景（Background）}：
+细致平衡是构造满足特定平稳分布的马尔可夫链的关键条件。
+
+\textbf{目标（Goal）}：
+证明如果转移核 $P$ 满足细致平衡，则其平稳分布就是 $\pi$。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{步骤 1}：写出细致平衡条件
+\[
+P(\theta' | \theta) \cdot \pi(\theta) = P(\theta | \theta') \cdot \pi(\theta')
+\tag*{细致平衡}
+\]
+
+\textbf{步骤 2}：验证 $\pi$ 是平稳分布
+\[
+\int P(\theta' | \theta) \cdot \pi(\theta) \, d\theta
+= \int P(\theta | \theta') \cdot \pi(\theta') \, d\theta
+= \pi(\theta') \int P(\theta | \theta') \, d\theta
+= \pi(\theta') \cdot 1
+= \pi(\theta')
+\tag*{平稳分布验证}
+\]
+
+其中第三步用到 $\int P(\theta | \theta') d\theta = 1$（转移核的归一化性）。
+
+\textbf{结论}：细致平衡是平稳分布的充分条件，但不是必要条件。
+
+\clearpage
+
+\subsection{Metropolis 算法细致平衡证明}\label{sec:derivation-metropolis}
+
+\textbf{背景（Background）}：
+Metropolis 算法的提议分布是对称的，我们需要证明其满足细致平衡。
+
+\textbf{目标（Goal）}：
+证明 Metropolis 算法的转移核以目标分布 $p(\theta)$ 为平稳分布。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{步骤 1}：Metropolis 转移核
+\[
+P(\theta' | \theta) = q(\theta' | \theta) \cdot \min\!\left(1, \frac{p(\theta')}{p(\theta)}\right)
+\]
+其中 $q(\theta' | \theta) = q(\theta | \theta')$（对称提议分布）。
+
+\textbf{步骤 2}：验证细致平衡
+\[
+P(\theta' | \theta) \cdot p(\theta)
+= q(\theta' | \theta) \cdot \min(1, \frac{p(\theta')}{p(\theta)}) \cdot p(\theta)
+\]
+
+分两种情况讨论：
+
+\textbf{情况 1}：$p(\theta') \geq p(\theta)$
+\[
+\text{右边} = q(\theta' | \theta) \cdot 1 \cdot p(\theta)
+= q(\theta' | \theta) \cdot p(\theta')
+\]
+
+\textbf{情况 2}：$p(\theta') < p(\theta)$
+\[
+\text{右边} = q(\theta' | \theta) \cdot \frac{p(\theta')}{p(\theta)} \cdot p(\theta)
+= q(\theta' | \theta) \cdot p(\theta')
+\]
+
+由于 $q(\theta' | \theta) = q(\theta | \theta')$，两种情况都满足
+\[
+P(\theta' | \theta) \cdot p(\theta) = P(\theta | \theta') \cdot p(\theta')
+\tag*{细致平衡成立}
+\]
+
+\textbf{结论}：Metropolis 算法的平稳分布正是目标分布 $p(\theta)$。证明完毕。
+
+\clearpage
+
+\subsection{Gibbs 抽样接受率推导}\label{sec:derivation-gibbs-acceptance}
+
+\textbf{背景（Background）}：
+Gibbs 抽样是 Metropolis-Hastings 的特例，其接受率恒为 1。我们来推导这个结论。
+
+\textbf{参数定义（Parameter Definitions）}：
+\begin{itemize}
+  \item $\theta = (\theta_1, \ldots, \theta_d)$：完整参数向量
+  \item $\theta_{-j} = (\theta_1, \ldots, \theta_{j-1}, \theta_{j+1}, \ldots, \theta_d)$：除 $\theta_j$ 外的所有参数
+  \item $p^*(\theta)$：未归一化的目标分布
+  \item $q(\theta_j' | \theta_{-j}) = p(\theta_j' | \theta_{-j}, y)$：提议分布（条件分布）
+\end{itemize}
+
+\textbf{目标（Goal）}：
+证明 Gibbs 抽样的接受率为 1。
+
+\textbf{推导步骤（Derivation Steps）}：
+
+\textbf{步骤 1}：写出 MH 接受比
+\[
+r = \frac{p^*(\theta_j', \theta_{-j})}{p^*(\theta_j, \theta_{-j})}
+\cdot \frac{q(\theta_j | \theta_{-j})}{q(\theta_j' | \theta_{-j})}
+\tag*{MH 接受比}
+\]
+
+\textbf{步骤 2}：代入 Gibbs 的提议分布
+\[
+q(\theta_j | \theta_{-j}) = p(\theta_j | \theta_{-j}, y)
+\]
+\[
+q(\theta_j' | \theta_{-j}) = p(\theta_j' | \theta_{-j}, y)
+\tag*{提议分布 = 条件分布}
+\]
+
+\textbf{步骤 3}：利用链式法则分解联合分布
+\[
+p^*(\theta_j', \theta_{-j}) = p^*(\theta_{-j}) \cdot p^*(\theta_j' | \theta_{-j})
+\]
+\[
+p^*(\theta_j, \theta_{-j}) = p^*(\theta_{-j}) \cdot p^*(\theta_j | \theta_{-j})
+\tag*{链式法则}
+\]
+
+\textbf{步骤 4}：代入接受比
+\[
+r = \frac{p^*(\theta_{-j}) \cdot p^*(\theta_j' | \theta_{-j})}{p^*(\theta_{-j}) \cdot p^*(\theta_j | \theta_{-j})}
+\cdot \frac{p(\theta_j | \theta_{-j}, y)}{p(\theta_j' | \theta_{-j}, y)}
+= \frac{p^*(\theta_j' | \theta_{-j})}{p^*(\theta_j | \theta_{-j})}
+\cdot \frac{p(\theta_j | \theta_{-j}, y)}{p(\theta_j' | \theta_{-j}, y)}
+\tag*{代入}
+\]
+
+\textbf{步骤 5}：注意 $p^*(\theta_j | \theta_{-j}, y) \propto p(\theta_j | \theta_{-j}, y)$，因为 $p^*(\theta_{-j})$ 不依赖于 $\theta_j$。于是两个因子互为倒数，
+\[
+r = 1
+\tag*{接受率为 1}
+\]
+
+\textbf{结论}：Gibbs 抽样的提议分布恰好是条件分布，因此接受率恒为 1，无需拒绝。
+
+\clearpage
+
+\subsection{分层模型条件分布推导}\label{sec:derivation-hierarchical-conditionals}
+
+\textbf{背景（Background）}：
+在分层模型 \cref{eq:hierarchical-model} 中，我们需要推导各个参数的条件后验分布。
+
+\textbf{模型回顾}：
+\[
+y_j | \theta_j \sim \mathrm{N}(\theta_j, \sigma^2), \quad \theta_j | \mu, \tau \sim \mathrm{N}(\mu, \tau^2)
+\]
+其中 $\sigma^2$ 已知。
+
+\textbf{目标（Goal）}：
+推导 $p(\theta_j | \mu, \tau, y)$、$p(\mu | \theta, \tau, y)$ 和 $p(\tau | \theta, \mu, y)$。
+
+\clearpage
+
+\subsubsection*{$p(\theta_j | \mu, \tau, y)$ 推导}
+
+\textbf{步骤 1}：写出条件分布的核
+\[
+p(\theta_j | \mu, \tau, y) \propto p(y_j | \theta_j) \cdot p(\theta_j | \mu, \tau)
+\propto \exp\!\left(-\frac{(y_j - \theta_j)^2}{2\sigma^2}\right)
+\cdot \exp\!\left(-\frac{(\theta_j - \mu)^2}{2\tau^2}\right)
+\tag*{核}
+\]
+
+\textbf{步骤 2}：合并指数
+\[
+= \exp\!\left(-\frac{(y_j - \theta_j)^2}{2\sigma^2} - \frac{(\theta_j - \mu)^2}{2\tau^2}\right)
+\tag*{合并}
+\]
+
+\textbf{步骤 3}：配方得到正态分布形式
+\[
+= \exp\!\left(-\frac{1}{2}\left[\frac{1}{\sigma^2} + \frac{1}{\tau^2}\right]
+\left(\theta_j - \frac{y_j/\sigma^2 + \mu/\tau^2}{1/\sigma^2 + 1/\tau^2}\right)^2\right)
+\tag*{配方}
+\]
+
+因此
+\[
+\theta_j | \mu, \tau, y \sim \mathrm{N}\!\left(\frac{y_j/\sigma^2 + \mu/\tau^2}{1/\sigma^2 + 1/\tau^2},
+\left(\frac{1}{\sigma^2} + \frac{1}{\tau^2}\right)^{-1}\right)
+\tag*{条件后验}
+\]
+
+\clearpage
+
+\subsubsection*{$p(\mu | \theta, \tau, y)$ 推导}
+
+\textbf{步骤 1}：$\mu$ 的条件分布（似然部分只依赖于 $\theta_j$，与 $\mu$ 通过 $\theta_j | \mu, \tau$ 连接）
+\[
+p(\mu | \theta, \tau) \propto p(\theta | \mu, \tau) = \prod_{j=1}^J \exp\!\left(-\frac{(\theta_j - \mu)^2}{2\tau^2}\right)
+\propto \exp\!\left(-\frac{\sum_j (\theta_j - \mu)^2}{2\tau^2}\right)
+\tag*{先验部分}
+\]
+
+\textbf{步骤 2}：展开平方
+\[
+\sum_j (\theta_j - \mu)^2 = \sum_j (\theta_j - \bar{\theta} + \bar{\theta} - \mu)^2
+= \sum_j (\theta_j - \bar{\theta})^2 + J(\bar{\theta} - \mu)^2
+\tag*{平方展开}
+\]
+
+\textbf{步骤 3}：识别为正态核
+\[
+p(\mu | \theta, \tau) \propto \exp\!\left(-\frac{J(\bar{\theta} - \mu)^2}{2\tau^2}\right)
+\tag*{正态核}
+\]
+
+因此
+\[
+\mu | \theta, \tau \sim \mathrm{N}\!\left(\bar{\theta}, \frac{\tau^2}{J}\right)
+\tag*{条件后验}
+\]
+
+其中 $\bar{\theta} = \frac{1}{J}\sum_j \theta_j$。
+
+\clearpage
+
+\subsubsection*{$p(\tau | \theta, \mu, y)$ 的非标准形式}
+
+\textbf{说明}：
+\[
+p(\tau | \theta, \mu, y) \propto p(\theta | \mu, \tau) \cdot p(\tau)
+= \prod_{j=1}^J \frac{1}{\tau} \exp\!\left(-\frac{(\theta_j - \mu)^2}{2\tau^2}\right) \cdot p(\tau)
+\tag*{非标准形式}
+\]
+
+这个分布不是标准形式（不是常见的正态、Gamma 等分布），因此需要使用 Metropolis-Hastings 步骤来抽样。
+
+\textbf{结论}：在 Gibbs 抽样框架下，对 $\tau$ 需要使用 MH 步骤，这正是"混合 MCMC"的典型例子。
+
+% ================================================
 % 问答与注解
 % ================================================
 \input{appendix/qa}
