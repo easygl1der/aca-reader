@@ -7,11 +7,14 @@
 \section{本章导论}
 \label{sec:ch15-intro}
 
-在第七章和第十二章中，我们已经掌握了贝叶斯推断的基本框架，并学会了使用马尔科夫链蒙特卡洛（MCMC）方法处理复杂的后验分布。当数据具有分组结构时——例如，来自多所学校的学生成绩、多次临床试验的患者反应、或不同工厂的生产质量指标——我们需要一种更精细的工具来同时捕捉组内相关性和组间异质性。
+% Stein 风格开场：历史问题引入
+在 1970 年代的美国教育研究中，一个看似简单的问题引发了长达数十年的方法论争论：如何科学地评估不同学校的"教育质量"？研究者们手中有 $J$ 所学校的标准化考试成绩，但每所学校的样本量都很小，直接用学校平均成绩排名会面临严重的抽样误差。有人主张将所有学校视为同一总体，取平均值；有人坚持每所学校独立估计，互不干扰。
 
-分层线性模型（Hierarchical Linear Models, HLM）正是为解决这个问题而诞生的统计框架。它允许我们在不同层次上对数据进行建模：个体层次的变异和组层次的变异自然地被纳入统一的概率模型中。从历史上看，分层线性模型的发展源于教育研究（中学术的"学校效应"问题）、生物统计（生长曲线分析）和社会学（邻里效应研究），并在 1980 年代由 Bryk, Raudenbush 等人系统化为一套完整的统计方法论。
+这场争论的实质是统计学中一个永恒的张力：\textbf{在合并信息与保持特异性之间，我们应当如何取舍？}
 
-本章我们将学习如何将分层思想与线性回归结合，建立分层线性模型；如何用贝叶斯方法进行推断；以及如何从矩阵形式理解模型的本质。我们将看到，分层模型不仅是处理分组数据的工具，更是一种在"合并信息"与"保持特异性"之间寻求平衡的哲学。
+这个问题引导我们发展出了一套完整的统计框架——分层线性模型（Hierarchical Linear Models, HLM）。从历史上看，分层模型的思想萌芽于 1950 年代 Sheps (1959) 的医学研究，在 1970-80 年代由 Efron、Morris 以及教育统计学家 Bryk, Raudenbush 等人系统化为一套完整的理论，并在贝叶斯框架下获得了最自然、最优雅的表达。
+
+本章我们将学习如何将分层思想与线性回归结合，建立分层线性模型；如何用贝叶斯方法进行推断；以及如何从矩阵形式理解模型的本质。
 
 \section{从分组数据到分层模型}
 \label{sec:grouped-to-hierarchical}
@@ -19,16 +22,16 @@
 \subsection{传统方法的困境}
 \label{sec:traditional-dilemma}
 
-考虑一个经典问题：估计 $J$ 所学校的培训效果。每所学校 $j$ 报告了一个效果估计 $y_j$ 及其标准误 $\sigma_j$。一个 naive 的做法是简单地将所有 $y_j$ 取平均作为总体效果估计。但这种方法忽略了一个关键事实：不同学校之间本身就可能存在系统性差异。
+考虑一个经典问题：估计 $J$ 所学校的培训效果。每所学校 $j$ 报告了一个效果估计 $y_j$ 及其标准误 $\sigma_j$。一个 naive 的做法是简单地将所有 $y_j$ 取平均作为总体效果估计。但稍微思考一下就会发现，这种做法存在根本性缺陷：它假设所有学校的真实效果 $\theta_j$ 完全相同，即 $\theta_1 = \theta_2 = \cdots = \theta_J$。这在现实中几乎不可能成立。
 
-另一方面，如果我们分别为每所学校估计效果，就完全忽略了数据可以"相互学习"这一事实。例如，学校 3 的估计精度很低（$\sigma_3$ 很大），但其他学校的数据可以帮助我们改进对它的估计。
+另一方面，如果我们分别为每所学校估计效果，就完全忽略了数据可以"相互学习"这一事实。例如，学校 3 的估计精度很低（$\sigma_3$ 很大），但其他学校的数据可以帮助我们改进对它的估计——如果我们知道学校间的变异不大的话。
 
 这就是分层模型要解决的核心问题：如何在保持组特异性估计的同时，充分利用数据的层次结构进行信息共享。
 
 \subsection{两层次模型框架}
 \label{sec:two-level-framework}
 
-一般的两层次线性模型可以写为：
+分层模型的核心思想是将 $\theta_j$ 本身视为从一个公共分布中抽取的样本。一般的两层次线性模型可以写为：
 
 \begin{enumerate}
   \item \textbf{第一层（组内模型）}：$y_{ij} = \mathbf{x}_{ij}^\top \boldsymbol{\beta}_j + \epsilon_{ij}$，其中 $\epsilon_{ij} \sim \mathrm{N}(0, \sigma^2)$
@@ -91,7 +94,7 @@ y_{ij} = \mathbf{x}_{ij}^\top \mathbf{A}_j \boldsymbol{\gamma} + \mathbf{x}_{ij}
 整个数据的似然函数为：
 
 \[
-p(\mathbf{y} \mid \boldsymbol{\gamma}, \sigma^2, \boldsymbol{\Sigma}) = \prod_{j=1}^J \mathrm{N}(\mathbf{y}_j \mid \mathbf{X}_j\boldsymbol{\gamma}, \sigma^2 \mathbf{I}_{n_j} + \mathbf{Z}_j \boldsymbol{\Sigma} \mathbf{Z}_j^\top)
+p(\mathbf{y} \mid \boldsymbol{\gamma}, \sigma^2, \boldsymbol{\Sigma}) = \prod_{j=1}^J \mathrm{N}\left(\mathbf{y}_j \mid \mathbf{X}_j\boldsymbol{\gamma}, \sigma^2 \mathbf{I}_{n_j} + \mathbf{Z}_j \boldsymbol{\Sigma} \mathbf{Z}_j^\top\right)
 \]
 
 \section{后验推断}
@@ -109,7 +112,7 @@ p(\boldsymbol{\gamma}, \mathbf{u}, \sigma^2, \boldsymbol{\Sigma} \mid \mathbf{y}
 为方便 MCMC 抽样，我们使用 Data augmentation 技术，引入隐变量 $\mathbf{u}$。完全数据模型为：
 
 \[
-\mathbf{y}_j \mid \mathbf{u}_j, \boldsymbol{\gamma}, \sigma^2 \sim \mathrm{N}(\mathbf{X}_j\boldsymbol{\gamma} + \mathbf{Z}_j\mathbf{u}_j, \sigma^2 \mathbf{I}_{n_j})
+\mathbf{y}_j \mid \mathbf{u}_j, \boldsymbol{\gamma}, \sigma^2 \sim \mathrm{N}\left(\mathbf{X}_j\boldsymbol{\gamma} + \mathbf{Z}_j\mathbf{u}_j, \sigma^2 \mathbf{I}_{n_j}\right)
 \]
 \[
 \mathbf{u}_j \mid \boldsymbol{\Sigma} \sim \mathrm{N}(\mathbf{0}, \boldsymbol{\Sigma})
@@ -124,10 +127,10 @@ p(\boldsymbol{\gamma}, \mathbf{u}, \sigma^2, \boldsymbol{\Sigma} \mid \mathbf{y}
 \mathbf{u}_j \mid \mathbf{y}, \boldsymbol{\gamma}, \sigma^2, \boldsymbol{\Sigma} \sim \mathrm{N}(\boldsymbol{\mu}_{u_j}, \boldsymbol{\Sigma}_{u_j})
 \]
 \[
-\sigma^2 \mid \mathbf{y}, \boldsymbol{\gamma}, \mathbf{u}, \boldsymbol{\Sigma} \sim \text{Inverse-}\chi^2(\nu_n, \sigma_n^2)
+\sigma^2 \mid \mathbf{y}, \boldsymbol{\gamma}, \mathbf{u}, \boldsymbol{\Sigma} \sim \text{Inv-}\chi^2(\nu_n, \sigma_n^2)
 \]
 
-其中后验均值和方差的具体形式依赖于数据的分组结构。\footnote{完全条件分布的详细推导见附录 \cref{sec:appendix-hlm-conditional}。}
+其中后验均值和方差依赖于数据的分组结构：当组内样本量大时，后验均值更依赖组内数据；当组内样本量小时，后验均值更依赖先验（总体效应）。\footnote{完全条件分布的详细推导见附录 \cref{sec:appendix-hlm-conditional}。}
 
 \subsection{分层先验的构建}
 \label{sec:hierarchical-prior}
@@ -135,7 +138,7 @@ p(\boldsymbol{\gamma}, \mathbf{u}, \sigma^2, \boldsymbol{\Sigma} \mid \mathbf{y}
 对超参数 $\boldsymbol{\Sigma}$ 的先验选择是分层模型的关键。几种常见选择：
 
 \begin{enumerate}
-  \item \textbf{逆 Wishart 先验}：$\boldsymbol{\Sigma} \sim \inverse-Wishart(\nu_0, \boldsymbol{\Sigma}_0)$
+  \item \textbf{逆 Wishart 先验}：$\boldsymbol{\Sigma} \sim \text{Inv-Wishart}(\nu_0, \boldsymbol{\Sigma}_0)$
   \item \textbf{独立逆 Gamma 先验}：对方差分量独立建模
   \item \textbf{弱信息先验}：使用半参数或数据驱动的先验
 \end{enumerate}
@@ -162,7 +165,7 @@ p(\boldsymbol{\gamma}, \mathbf{u}, \sigma^2, \boldsymbol{\Sigma} \mid \mathbf{y}
 \boldsymbol{\beta}_{j*} \mid \mathbf{y} \sim \mathrm{N}(\boldsymbol{\mu}_{\beta_{j*}}, \boldsymbol{\Sigma}_{\beta_{j*}})
 \]
 
-其中后验均值是总体效应 $\boldsymbol{\gamma}$ 的后验均值和组特异偏差 $\mathbf{u}_j$ 的后验均值的加权组合。\footnote{组均值预测的详细推导见附录 \cref{sec:appendix-hlm-prediction}。}
+其中后验均值是总体效应 $\boldsymbol{\gamma}$ 的后验均值和组特异偏差 $\mathbf{u}_j$ 的后验均值的加权组合。当新组与已有组相似时，预测更依赖总体效应；当新组特征独特时，预测更依赖组内信息。\footnote{组均值预测的详细推导见附录 \cref{sec:appendix-hlm-prediction}。}
 
 \subsection{新观测预测}
 \label{sec:new-observation-prediction}
@@ -170,7 +173,7 @@ p(\boldsymbol{\gamma}, \mathbf{u}, \sigma^2, \boldsymbol{\Sigma} \mid \mathbf{y}
 对于新组 $j*$ 的新观测 $y_{new}$，预测分布为：
 
 \[
-y_{new} \mid \mathbf{y} \sim \mathrm{N}(\mathbf{x}_{new}^\top \boldsymbol{\mu}_{\beta_{j*}}, \sigma^2 + \mathbf{x}_{new}^\top \boldsymbol{\Sigma}_{\beta_{j*}} \mathbf{x}_{new})
+y_{new} \mid \mathbf{y} \sim \mathrm{N}\left(\mathbf{x}_{new}^\top \boldsymbol{\mu}_{\beta_{j*}}, \sigma^2 + \mathbf{x}_{new}^\top \boldsymbol{\Sigma}_{\beta_{j*}} \mathbf{x}_{new}\right)
 \]
 
 注意预测方差包括两部分：观测误差方差 $\sigma^2$ 和参数不确定性方差 $\mathbf{x}_{new}^\top \boldsymbol{\Sigma}_{\beta_{j*}} \mathbf{x}_{new}$。
@@ -195,10 +198,10 @@ y_{ij} = \mu + u_j + \epsilon_{ij}
 
 ICC 衡量了总变异中有多大比例来自组间变异。
 
-\subsection{边缘化与 EM 算法}
-\label{sec:marginalization-em}
+\subsection{频率派与贝叶斯视角的差异}
+\label{sec:frequentist-bayesian-variance}
 
-对随机效应 $\mathbf{u}$ 进行边缘化后，似然函数涉及高维积分。使用 EM 算法可以方便地估计方差分量。
+对随机效应 $\mathbf{u}$ 进行边缘化后，似然函数涉及高维积分。使用 EM 算法可以方便地估计方差分量（频率派方法）。
 
 E 步：计算随机效应的后验均值和协方差
 \[
@@ -212,8 +215,12 @@ M 步：更新参数估计
 
 方差分量的更新涉及更复杂的估计方程。\footnote{EM 算法对方差分量的更新公式见附录 \cref{sec:appendix-em-variance}。}
 
+\begin{Remark}
+在贝叶斯视角下，方差分量估计的"偏差"问题自然消失：我们对 $\sigma_u^2$ 指定先验，后验分布的平均值即为估计，无需像频率派那样讨论有偏/无偏问题。这是贝叶斯方法在分层模型中的一个重要优势。
+\end{Remark}
+
 \section{相关作业干预示例}
-\label{sec:example- coaching}
+\label{sec:example-coaching}
 
 考虑一个经典的教育研究问题：估计 $J = 8$ 所学校的培训效果。
 
@@ -238,6 +245,8 @@ M 步：更新参数估计
 \hline
 \end{tabular}
 \end{center}
+
+观察数据，一个自然的问题是：学校 1（28.4）和学校 8（33.1）的估计远高于其他学校，这是真实差异还是抽样误差？如果我们假设所有学校效果相同（固定效应模型），学校 1 和 8 可能被过度拉伸；如果我们假设每所学校完全独立，学校 3（-4.4）这样的大负值可能只是噪声。
 
 \subsection{模型设定}
 \label{sec:coaching-model}
@@ -266,6 +275,20 @@ y_j \mid \theta_j \sim \mathrm{N}(\theta_j, \sigma_j^2)
 \end{Remark}
 
 这个例子展示了分层模型的核心优势：它提供了在\textbf{合并信息}和\textbf{保持特异性}之间的自然权衡。
+
+\section{习题}
+\label{sec:chapter15-exercises}
+
+\begin{Exercise}{\ref{exr:15-1} 分层模型的收缩性质}
+\label{exr:15-1}
+考虑简化的方差分量模型 $y_j \sim \mathrm{N}(\theta_j, \sigma_j^2)$，$\theta_j \sim \mathrm{N}(\mu, \tau^2)$，其中 $\sigma_j^2$ 已知。
+
+\begin{enumerate}
+  \item 证明 $\theta_j$ 的后验均值为 $\widehat{\theta}_j = \frac{\frac{\mu}{\tau^2} + \frac{y_j}{\sigma_j^2}}{\frac{1}{\tau^2} + \frac{1}{\sigma_j^2}}$。
+  \item 解释收缩因子 $\frac{1/\sigma_j^2}{1/\tau^2 + 1/\sigma_j^2}$ 的含义：当 $\tau \to 0$ 和 $\tau \to \infty$ 时分别发生什么？
+  \item 如果有两所学校，A 学校的 $\sigma_A = 10$，B 学校的 $\sigma_B = 1$，在 $\tau = 5$ 的情况下，哪所学校会被收缩得更厉害？为什么？
+\end{enumerate}
+\end{Exercise}
 
 \section{稳健推断}
 \label{sec:robust-inference}
@@ -310,7 +333,7 @@ y_j \mid \theta_j \sim \mathrm{N}(\theta_j, \sigma_j^2)
   \item \textbf{矩阵形式}：将分层模型表达为 $\mathbf{y} = \mathbf{X}\boldsymbol{\gamma} + \mathbf{Z}\mathbf{u} + \boldsymbol{\epsilon}$
   \item \textbf{后验推断}：利用完全条件分布进行 MCMC 抽样
   \item \textbf{预测}：提供组均值和新观测的预测分布
-  \item \textbf{方差分量}：通过 ICC 等指标量化组间变异的重要性
+  \item \textbf{方差分量}：通过 ICC 等指标量化组间变异的重要性，理解贝叶斯与频率派视角的差异
   \item \textbf{稳健推断}：使用 Student-$t$ 误差或污染正态模型处理异常值
 \end{enumerate}
 
