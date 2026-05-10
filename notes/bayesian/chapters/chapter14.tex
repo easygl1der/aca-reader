@@ -298,9 +298,15 @@ y_i = x_i^T\beta + \epsilon_i, \quad \epsilon_i \sim \text{Student-t}(\nu, 0, \s
 验证 Jeffreys' 先验 \cref{eq:jeffreys-prior-regression} 可以分解为 $p(\beta | \sigma^2) \propto (\sigma^2)^{-p/2}$ 和 $p(\sigma^2) \propto (\sigma^2)^{-1}$ 两部分的乘积。
 \end{Exercise}
 
-\begin{Exercise}{\ref{exr:ch14-3} 逻辑回归的后验预测}
+\begin{Exercise}{\ref{exr:ch14-3} 逻辑回归的 Metropolis 算法实现}
 \label{exr:ch14-3}
-描述如何使用 Metropolis 算法从逻辑回归模型的后验分布 $p(\beta | y)$ 中抽取样本，并说明如何利用这些样本计算后验预测分布 $\Pr(\tilde{y} = 1 | y)$。
+给定先验 $p(\beta) \propto 1$（平坦先验）和数据集：$(x_i, y_i)$ 中 $y_i \in \{0,1\}$，$n=50$。描述使用 Metropolis 算法从后验分布 $p(\beta | y)$ 中抽取样本的完整步骤，包括：
+\begin{enumerate}
+  \item 提议分布的选择（例如 $\text{Normal}(\beta^{\text{cur}}, \Sigma)$），如何确定提议协方差 $\Sigma$？
+  \item 接受率 $\alpha = \min\{1, p(\beta^{\text{prop}}|y)/p(\beta^{\text{cur}}|y)\}$ 的计算，其中 $p(\beta|y) \propto \exp(\ell(\beta))$，$\ell(\beta)$ 如 \cref{eq:logistic-likelihood}。
+  \item 如何丢弃 burn-in 样本并验证链的收敛性。
+  \item 给定新预测变量 $x_{\text{new}}$，写出 $\Pr(\tilde{y}=1|y)$ 的蒙特卡洛估计公式，并说明如何用收集的样本计算该估计。
+\end{enumerate}
 \end{Exercise}
 
 \begin{Exercise}{\ref{exr:ch14-4} t 分布误差的层次表示}
