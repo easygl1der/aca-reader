@@ -124,6 +124,36 @@ x = C\cos v\cos u,\; y = C\cos v\sin u,\; z = \psi(v),\quad 0<u<2\pi,\; |v|<\sin
 \begin{exercise}{5-2, 1 — do Carmo, Exercise 5-2, 1}
 设 $S \subset \mathbb{R}^3$ 是紧致正则曲面，固定点 $p_0 \notin S$，定义 $d(q) = \frac{1}{2}|q-p_0|^2$，$q\in S$。由于 $S$ 紧致，存在 $q_0 \in S$ 使得 $d(q_0) \geq d(q)$ 对所有 $q \in S$ 成立。证明 $q_0$ 是 $S$ 的椭圆点（这给出了引理 \ref{elliptic-point} 的另一证明）。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 函数 $d(q) = \frac{1}{2}|q-p_0|^2$ 测量 $S$ 到 $p_0$ 的距离平方。在 $q_0$ 处取最大值时，$S$ 局部位于以 $p_0$ 为中心的某球面外部（类似于引理 \ref{elliptic-point} 的几何论证），从而 $q_0$ 处的法截曲率均为正，即 $q_0$ 为椭圆点。
+
+\textbf{解答}: 设 $q_0 \in S$ 使得 $d(q_0) \geq d(q)$ 对所有 $q \in S$ 成立。令 $N(q)$ 为 $S$ 在 $q$ 处的单位法向量，取指向 $p_0$ 方向为正向。则
+\[
+d(q) = \frac{1}{2}\langle q-p_0,\, q-p_0\rangle,\qquad
+\nabla d(q) = q - p_0.
+\]
+由条件，$q_0$ 是 $d|_S$ 的临界点，即
+\[
+\langle q_0-p_0,\, w\rangle = 0\quad\forall\, w\in T_{q_0}(S).
+\]
+故 $q_0-p_0$ 与 $T_{q_0}(S)$ 垂直，即 $q_0-p_0 = \pm |q_0-p_0|\,N(q_0)$。于是
+\[
+d(q_0) = \frac{1}{2}|q_0-p_0|^2 = \frac{1}{2}R^2,
+\]
+其中 $R = |q_0-p_0|$。由极值条件知 $S$ 含于半径为 $R$ 的球面 $\Sigma$ 的内部。更精确地，对任意切向量 $w \in T_{q_0}(S)$，有 $|w|=1$，考虑二阶导数
+\[
+\frac{\partial^2 d}{\partial w^2}(q_0) = \langle w,w\rangle = 1 > 0.
+\]
+但更关键的是，沿法方向的二阶信息：由 $d(q) = \frac{1}{2}|q-p_0|^2$ 在 $q_0$ 处的 Hessian（限制在 $T_{q_0}(S)$ 上）为
+\[
+\operatorname{Hess}_S d(q_0)(w,w) = |w|^2 - \langle q_0-p_0,\, w\rangle\langle N(q_0),\, w\rangle - \langle q_0-p_0,\, N(q_0)\rangle\langle w,w\rangle.
+\]
+由于 $q_0-p_0$ 与 $T_{q_0}(S)$ 垂直，第二项为零。取 $w$ 为 $T_{q_0}(S)$ 任意单位向量，由极值性质得 $|w|^2 - R^2 k_i \geq 0$，其中 $k_i$ 为法曲率。从而 $k_i \leq 1/R^2$，但因为 $S$ 在 $\Sigma$ 外部，应有 $k_i > 0$。更重要的是，$q_0$ 处的 Gauss 映照行为：$S$ 和 $\Sigma$ 在 $q_0$ 处相切，$S$ 的任一法截曲率均等于或大于 $\Sigma$ 的对应法截曲率（由距离函数的上确界性），故
+\[
+K_S(q_0) \geq K_\Sigma(q_0) = \frac{1}{R^2}\cdot\frac{1}{R^2} = \frac{1}{R^4} > 0,
+\]
+即 $q_0$ 为椭圆点。\qed
+\end{solution}
 
 \begin{exercise}{5-2, 2 — do Carmo, Exercise 5-2, 2}
 设 $S \subset \mathbb{R}^3$ 是 $K>0$ 且无脐点的正则曲面。证明：$S$ 上不存在使 $H$ 最大而 $K$ 最小的点。
