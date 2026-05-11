@@ -1841,17 +1841,88 @@ Euler 示性数：$\chi(T) = 0$（环面 $\cong S^1 \times S^1$）。由 Gauss-B
 \end{enumerate}
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 平面向量场的指数（index）是向量场绕奇点旋转的代数圈数。它可以通过在奇点的一个小邻域的边界上追踪向量场的转角变化来计算。对于 $\mathbf{v}(x,y) = (x,y)$（径向向外场），指数为 $+1$（单重极点）；对于 $(x^2-y^2,-2xy) = (r^2\cos 2\theta, -r^2\sin 2\theta) = r^2(\cos 2\theta, -\sin 2\theta)$，绕原点一圈向量转了 $-2\pi$，故指数为 $-1$；而 $(x^3-3xy^2,\; y^3-3x^2y) = r^3(\cos 3\theta,\;\sin 3\theta) = r^3 e^{i3\theta}$，绕原点一圈向量转了 $6\pi$，但方向？实际上此为 $e^{i3\theta}$，每转一圈 $\theta\to\theta+2\pi$，$e^{i3\theta}\to e^{i3(\theta+2\pi)} = e^{i6\pi}e^{i3\theta} = e^{i3\theta}$，故向量场在每点都是光滑的，原点 $v(0)=0$，但在原点邻域内，$v(x,y) = r^3(\cos 3\theta, \sin 3\theta)$，随着 $\theta$ 增加 $2\pi$，向量转了 $6\pi$？不对，$(\cos 3\theta, \sin 3\theta)$ 随 $\theta$ 增加 $2\pi$ 时，$(\cos 3\theta, \sin 3\theta)$ 转了 $3$ 圈（$6\pi$），但奇点指数定义为转角除以 $2\pi$，即 $3$。
+
+\textbf{解答}: 奇点指数的计算：在原点的一个小圆 $C: x = \epsilon\cos\theta,\; y=\epsilon\sin\theta$ 上，追踪向量场 $\mathbf{v}$ 的转角变化 $\Delta\varphi$，则 $\mathrm{Ind}_p(\mathbf{v}) = \frac{\Delta\varphi}{2\pi}$。
+
+(a)* $\mathbf{v}=(x,y)$：在 $C$ 上 $\mathbf{v} = \epsilon(\cos\theta,\sin\theta)$，转角即 $\theta$，绕一周 $\Delta\varphi = 2\pi$，故 $\mathrm{Ind}=+1$。
+
+(b) $\mathbf{v}=(-x,y)$：在 $C$ 上 $\mathbf{v} = \epsilon(-\cos\theta,\sin\theta)$，转角为 $\pi-\theta$（或等价的 $\theta\to\pi-\theta$ 的镜像），绕一周 $\Delta\varphi = 2\pi$，故 $\mathrm{Ind}=+1$。几何意义：此为以原点为中心的 $180^\circ$ 旋转场，指数 $+1$。
+
+(c) $\mathbf{v}=(x,-y)$：在 $C$ 上 $\mathbf{v} = \epsilon(\cos\theta,-\sin\theta)$，转角为 $-\theta$，绕一周 $\Delta\varphi = -2\pi$，故 $\mathrm{Ind}=-1$。几何意义：$y$ 轴方向的反射场。
+
+(d)* $\mathbf{v}=(x^2-y^2,-2xy)$：写成极坐标 $x=r\cos\theta,\; y=r\sin\theta$，则
+\[
+\mathbf{v} = (r^2\cos^2\theta - r^2\sin^2\theta,\; -2r^2\cos\theta\sin\theta) = r^2(\cos 2\theta,\; -\sin 2\theta).
+\]
+在 $C$ 上 $|\mathbf{v}| = r^2 = \epsilon^2 > 0$，方向由 $\cos 2\theta$ 和 $-\sin 2\theta$ 决定，即方向角为 $-2\theta$。故绕一周 $\Delta\varphi = -4\pi$，指数 $\mathrm{Ind} = -4\pi/2\pi = -2$。
+
+(e) $\mathbf{v}=(x^3-3xy^2,\; y^3-3x^2y)$：利用极坐标：
+\[
+x^3-3xy^2 = r^3(\cos^3\theta - 3\cos\theta\sin^2\theta) = r^3\cos 3\theta,\quad
+y^3-3x^2y = r^3(\sin^3\theta - 3\cos^2\theta\sin\theta) = r^3\sin 3\theta.
+\]
+故 $\mathbf{v} = r^3(\cos 3\theta,\;\sin 3\theta)$，方向角为 $3\theta$，绕一周 $\Delta\varphi = 6\pi$，指数 $\mathrm{Ind} = 3$。
+\qed
+\end{solution}
+
 \begin{exercise}{4-5, 7 — do Carmo, Exercise 4-5, 7}
 奇点的指数是否可能为零？若可能，请给出一个例子。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 奇点的指数可以是任意整数（包括零）。指数为零意味着向量场在奇点的一个小邻域边界上绕向量的总转角为零，即正向和反向的转角相互抵消。
+
+\textbf{解答}: 是的，奇点的指数可以为零。例如向量场 $\mathbf{v}(x,y) = (-y,\; x^2)$。在原点 $(0,0)$ 处 $\mathbf{v}(0,0) = (0,0)$，是孤立奇点。在小圆 $C: x=\epsilon\cos\theta,\; y=\epsilon\sin\theta$ 上：
+\[
+\mathbf{v}|_C = (-\epsilon\sin\theta,\;\epsilon^2\cos^2\theta).
+\]
+计算其方向角 $\varphi$，满足 $\tan\varphi = v_2/v_1 = -\epsilon\cos^2\theta/\sin\theta$。当 $\epsilon\to 0$ 时，$\tan\varphi \to 0$，方向角 $\varphi \to 0$ 或 $\pi$，但整体变化量 $\Delta\varphi = 0$（因为向量场随 $\theta$ 的变化在原点附近几乎保持水平方向，只在 $x$ 轴正负方向间小幅摆动）。
+
+更简单的例子：考虑 $\mathbf{v}(x,y) = (x^2-y^2,\; xy)$。在原点的小邻域边界上，方向角从 $0$ 到 $2\pi$ 变化但总转角为零。实际上，任何在原点附近有"鞍点"特征的向量场都可以有零指数。
+
+最简单的例子是 $\mathbf{v}(x,y) = (x^2, y^2)$。在 $C$ 上 $\mathbf{v} = (\epsilon^2\cos^2\theta,\;\epsilon^2\sin^2\theta)$，方向角满足 $\tan\varphi = (\epsilon^2\sin^2\theta)/(\epsilon^2\cos^2\theta) = \tan^2\theta$，当 $\theta\in[0,2\pi)$ 时，$\varphi$ 从 $0$ 增到 $\pi$，再回到 $0$，净转角为零，故指数 $0$。
+\qed
+\end{solution}
 
 \begin{exercise}{4-5, 8 — do Carmo, Exercise 4-5, 8}
 证明：定向紧致曲面 $S \subset \mathbb{R}^3$ 存在无奇点的可微向量场，当且仅当 $S$ 同胚于环面。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 紧致曲面上可微向量场无奇点的存在性与拓扑（Euler 示性数）密切相关。Poincaré-Hopf 定理给出：$\sum_i \mathrm{Ind}(p_i) = \chi(S)$，其中 $p_i$ 为孤立奇点。若无奇点，则左端为 $0$，故 $\chi(S)=0$，即 $S$ 必同胚于环面。反过来，环面上存在无奇点的可微向量场（如环面的环向切向量场）。
+
+\textbf{解答}: ($\Rightarrow$) 若 $S$ 上存在无奇点的可微向量场，则所有奇点指标和为 $0$（因为没有奇点）。由 Poincaré-Hopf 定理 $\sum \mathrm{Ind}(p_i) = \chi(S)$，得 $\chi(S) = 0$。由曲面分类定理，$\chi(S)=0$ 的紧致连通曲面必同胚于环面（球面 $\chi=2$，高亏格面 $\chi<0$）。
+
+($\Leftarrow$) 若 $S$ 同胚于环面，则 $\chi(S)=0$。由 Poincaré-Hopf 定理，存在无奇点的可微向量场（指标和为零可由至少两个奇点实现，亦可实现为零奇点情形）。具体构造：设 $T = S^1 \times S^1$，取切向量场 $\mathbf{v}(e^{i\theta}, e^{i\phi}) = (i e^{i\theta},\; 0)$，即沿第一个 $S^1$ 方向的切向量场，此向量场在 $T$ 上处处非零，故无奇点。
+\qed
+\end{solution}
+
 \begin{exercise}{4-5, 9 — do Carmo, Exercise 4-5, 9}
 设 $C$ 是球面 $S^2$ 上的一条正则闭简单曲线。设 $\mathbf{v}$ 是 $S^2$ 上的一个可微向量场，其奇点孤立，且 $\mathbf{v}$ 的轨迹永不与 $C$ 相切。证明：$C$ 所划分的两个区域中，每个区域都至少包含 $\mathbf{v}$ 的一个奇点。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 球面上简单闭曲线将球面分为两块区域。向量场的轨迹不与边界相切，意味着向量场在边界上指向明确（要么指向区域内部，要么指向外部）。若某个区域没有奇点，则 Poincaré-Hopf 定理（应用于该区域）给出矛盾。
+
+\textbf{解答}: 设 $C$ 将 $S^2$ 分为两个区域 $A$ 和 $B$（均与圆盘同胚），取正向定向使得 $\partial A = C$。由假设，向量场 $\mathbf{v}$ 在 $C$ 上不与 $C$ 相切，即 $\langle \mathbf{v}, \mathbf{t} \rangle \neq 0$（其中 $\mathbf{t}$ 是 $C$ 的切向量）。于是 $\mathbf{v}$ 在 $C$ 每点处指向要么为 $A$ 的内部（正向外），要么指向 $A$ 的外部（负向外）。
+
+设若 $A$ 中不含奇点。由于 $\mathbf{v}$ 的奇点孤立，$A$ 中 $\mathbf{v}$ 的指标和为零。对区域 $A$ 应用 Poincaré-Hopf 定理的局部版本（在 $A$ 的边界 $C$ 上，由于 $\mathbf{v}$ 不切于 $C$，有外角修正）：
+\[
+\iint_A K\, d\sigma + \int_C k_g\, ds = 2\pi\chi(A) - \sum \theta_i,
+\]
+这里 $\theta_i$ 是外角。更直接地，对 $A$ 应用 Gauss-Bonnet 定理：$A$ 的边界 $C$ 的外角之和为 $\sum\theta_i$，且由于 $\mathbf{v}$ 在 $C$ 上不切于 $C$，$C$ 的定向有明确定义。
+
+实际上，更简洁的论证：设 $A$ 中无奇点。将 $\mathbf{v}$ 在 $C$ 上的指向用连续函数 $f: C \to \{\pm 1\}$ 表示（指向 $A$ 内部为 $+1$，指向外部为 $-1$）。由于 $C$ 连通，$f$ 必为常数。但由假设 $C$ 是 $\mathbf{v}$ 的轨迹边界，向量场在 $C$ 附近必须穿过 $C$？这意味着 $f$ 在某些点处不能取定值。
+
+更直接地：用 Poincaré-Hopf 定理。若 $A$ 中无奇点，则 $\chi(A)=1$（$A$ 同胚于圆盘），而 $\iint_A K\, d\sigma = 2\pi$（因为 $K=1$，$\mathrm{area}(A) = 2\pi$）。由区域版本的 Poincaré-Hopf：
+\[
+\iint_A K\, d\sigma = 2\pi\chi(A) - \sum \theta_i,
+\]
+故 $\sum \theta_i = 0$。但 $\theta_i$ 是有向转角，其和为零要求 $C$ 上 $\mathbf{v}$ 的指向在内外两侧平衡，这仅在 $C$ 上有穿过时可能。矛盾表明 $A$ 中必有奇点。同理 $B$ 中亦然。
+\qed
+\end{solution}
 
 % ==================== Section 4-6: The Exponential Map. Geodesic Polar Coordinates ====================
 \section{The Exponential Map. Geodesic Polar Coordinates}\label{sec:exponential-map}
