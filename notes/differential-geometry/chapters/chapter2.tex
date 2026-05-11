@@ -1231,8 +1231,59 @@ Show that the normals to a parametrized surface given by
 \[
 \mathbf{x}(u, v) = (f(u) \cos v, f(u) \sin v, g(u)), \quad f(u) \neq 0, g' \neq 0,
 \]
-all pass through the $z$ axis.
+all pass through the $z$ axis.\end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：这类曲面是由旋转曲线 $(f(u), g(u))$ 绕 $z$ 轴旋转生成的。其法向量应该始终指向（或背向）$z$ 轴，因为旋转对称性保证了法向量在 $xy$ 平面内的投影必经过原点。
+
+\textbf{证明}：计算偏导数
+\[
+\mathbf{x}_u = (f'(u)\cos v,\; f'(u)\sin v,\; g'(u)), \quad \mathbf{x}_v = (-f(u)\sin v,\; f(u)\cos v,\; 0).
+\]
+叉乘为
+\[
+\mathbf{x}_u \times \mathbf{x}_v = (-f(u)g'(u)\cos v,\; -f(u)g'(u)\sin v,\; f(u)f'(u)).
+\]
+因此法向量为
+\[
+N = \frac{(-g'(u)\cos v,\; -g'(u)\sin v,\; f'(u))}{\sqrt{g'(u)^2 + f'(u)^2}} \cdot f(u).
+\]
+注意到法向量的 $x$ 和 $y$ 分量满足关系：$\frac{N_x}{N_y} = \frac{\cos v}{\sin v}$，即 $N_x \sin v = N_y \cos v$。这表明法向量在 $xy$ 平面上的投影经过原点（$z$ 轴）。
+
+从参数化方程看，任一点 $\mathbf{x}(u,v)$ 的法向量可写为
+\[
+N(u,v) = (-g'(u)\cos v,\; -g'(u)\sin v,\; f'(u)) \cdot \frac{f(u)}{\sqrt{g'(u)^2 + f'(u)^2}}.
+\]
+法向量所在直线经过点 $(0,0,0)$（$z$ 轴），因为它的方向向量与原点的连线方向一致。验证：原点到法线的向量与法向量平行，故所有法线都经过 $z$ 轴。
+\end{solution}
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：方程 $x^2 + y^2 + z^2 = ax$ 可以写成 $(x - a/2)^2 + y^2 + z^2 = (a/2)^2$，这是以 $(a/2, 0, 0)$ 为球心、$a/2$ 为半径的球面。其他两个方程类似。因此每个方程都定义了一个球面。
+
+\textbf{证明}：
+\begin{enumerate}
+    \item \textbf{正则性}：将方程 $F(x,y,z) = x^2 + y^2 + z^2 - ax = 0$ 视为 $F^{-1}(0)$。计算梯度
+    \[
+    \nabla F = (2x - a,\; 2y,\; 2z).
+    \]
+    在曲面上，$\nabla F = 0$ 当且仅当 $2x = a$，$y = 0$，$z = 0$。代入原方程得 $(a/2)^2 = a(a/2)$，即 $a^2/4 = a^2/2$，矛盾。因此梯度在曲面上处处非零，每个方程都定义正则曲面。
+
+    \item \textbf{正交性}：考虑两个曲面 $S_1: x^2+y^2+z^2=ax$ 和 $S_2: x^2+y^2+z^2=by$。在交点处，两个曲面的法向量分别为
+    \[
+    N_1 = (2x-a,\; 2y,\; 2z),\quad N_2 = (2x,\; 2y-b,\; 2z).
+    \]
+    它们的点积为
+    \[
+    N_1 \cdot N_2 = (2x-a)\cdot 2x + 2y\cdot(2y-b) + 2z\cdot 2z = 4(x^2+y^2+z^2) - 2ax - 2by.
+    \]
+    在 $S_1$ 上 $x^2+y^2+z^2 = ax$，在 $S_2$ 上 $x^2+y^2+z^2 = by$，但我们需要在同一点同时满足两个方程。若交点同时满足两个曲面方程，则 $ax = by = x^2+y^2+z^2$，代入得
+    \[
+    N_1 \cdot N_2 = 4ax - 2ax - 2by = 2ax - 2by = 0.
+    \]
+    因此两曲面正交。类似可证其他两对正交。
+\end{enumerate}
+\end{solution}
 
 \begin{exercise}{2-3, 12* — do Carmo, Exercise 2-3, 12}
 Show that each of the equations $(a, b, c \neq 0)$
