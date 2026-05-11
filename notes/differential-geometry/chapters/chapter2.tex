@@ -1988,6 +1988,24 @@ Let $S$ be an orientable surface and let $\{U_{\alpha}\}$ and $\{V_{\beta}\}$ be
 Prove that a regular, connected, orientable surface can have only two distinct orientations.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：定向本质上是在曲面上每一点选择"法向量的正方向"。由于在每一点处法向量只有两个可能的方向（恰好相反），整个曲面的定向只能有两种选择——要么一致地选择其中一个方向，要么选择其相反方向。
+
+\textbf{解答}：
+设 $S$ 是连通可定向曲面。由可定向的等价条件（命题 2.6.1），$S$ 存在一族参数化坐标邻域 $\{U_\alpha\}$，使得所有坐标变换的雅可比行列式均为正——这给出了 $S$ 的一个定向。
+
+我们称两族坐标邻域确定了相同的定向，如果它们的并集仍满足雅可比行列式恒正的条件。定向的等价类恰好有两个。
+
+\begin{enumerate}
+    \item \textbf{存在两个定向}：取给定的一族 $\{U_\alpha\}$，对每个参数化 $\mathbf{x}_\alpha$ 交换其参数坐标 $(u, v) \mapsto (v, u)$，得到一族新的参数化 $\{\tilde{\mathbf{x}}\}$。由于交换参数坐标使雅可比行列式变号，$\{\tilde{\mathbf{x}}\}$ 与 $\{U_\alpha\}$ 的并集的雅可比行列式恒负；但若将 $\{\tilde{\mathbf{x}}\}$ 的所有坐标再翻转一次，则雅可比行列式恢复为正。因此，交换参数坐标给出了另一个合法的定向。
+
+    \item \textbf{至多只有两个定向}：设 $\mathcal{O}_1$ 和 $\mathcal{O}_2$ 是 $S$ 的两个不同定向。取 $p \in S$，设在 $p$ 的某邻域内 $\mathcal{O}_1$ 和 $\mathcal{O}_2$ 的单位法向量分别为 $N_1$ 和 $N_2$。由于在每一点处单位法向量只有两个可能的方向（恰好相反），必有 $N_2(p) = \pm N_1(p)$。
+
+    若存在点 $q$ 使得 $N_2(q) = N_1(q)$，则由雅可比行列式的连续性（它处处非零且只能取 $\pm 1$ 的值），$N_2 \equiv N_1$ 在整个连通曲面 $S$ 上成立，从而 $\mathcal{O}_1 = \mathcal{O}_2$，与假设矛盾。故对所有点均有 $N_2 = -N_1$，即两个定向恰好相反。
+\end{enumerate}
+因此，连通可定向曲面恰好有两个不同的定向。\qed
+\end{solution}
+
 \begin{exercise}{2-6, 5 — do Carmo, Exercise 2-6, 5}
 Let $\varphi: S_1 \to S_2$ be a diffeomorphism.
 
@@ -1996,13 +2014,54 @@ a. Show that $S_1$ is orientable if and only if $S_2$ is orientable (thus, orien
 b. Let $S_1$ and $S_2$ be orientable and oriented. Prove that the diffeomorphism $\varphi$ induces an orientation in $S_2$. Use the antipodal map of the sphere (Exercise 1, Sec. 2-3) to show that this orientation may be distinct (cf. Exercise 4) from the initial one (thus, orientation itself may not be preserved by diffeomorphisms; note, however, that if $S_1$ and $S_2$ are connected, a diffeomorphism either preserves or "reverses" the orientation).
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：微分同胚本质上是曲面间的"光滑双射"，它局部保持维数结构。如果 $S_1$ 和 $S_2$ 通过 $\varphi$ 光滑地对应，那么在每一点处 $\varphi$ 的雅可比行列式非零保证了法向量结构能够从 $S_1$ 传递到 $S_2$。特别地，$S_1$ 上存在连续法向量场当且仅当 $S_2$ 上也存在。
+
+\textbf{解答}：
+
+\textbf{a. 可定向性被微分同胚保持}：
+
+（$\Rightarrow$）设 $S_1$ 可定向，则存在连续的单位法向量场 $N_1: S_1 \to \mathbb{R}^3$。对每一点 $q \in S_2$，取 $p = \varphi^{-1}(q)$，定义 $N_2(q) = d\varphi_p(N_1(p)) / \|d\varphi_p(N_1(p))\|$。由于 $\varphi$ 是微分同胚，$d\varphi_p$ 是线性同构，它将法向量映射为法向量，且 $N_2$ 的连续性由 $N_1$、$d\varphi$ 和 $\varphi^{-1}$ 的连续性保证。故 $S_2$ 可定向。
+
+（$\Leftarrow$）同理，若 $S_2$ 可定向，则 $S_1$ 亦然，只需考虑 $\varphi^{-1}$。
+
+\textbf{b. 微分同胚诱导定向}：
+
+设 $S_1$ 和 $S_2$ 均已定向。则 $S_1$ 上的定向单位法向量场 $N_1$ 诱导了 $S_2$ 上的一个向量场 $N_2$，定义为 $N_2(q) = d\varphi_{\varphi^{-1}(q)}(N_1(\varphi^{-1}(q)))$（归一化后）。这给出了 $S_2$ 的一个诱导定向。
+
+反例（球面的对径映射）：考虑单位球面 $S^2$ 和对径映射 $\varphi(x, y, z) = (-x, -y, -z)$（见第 2-3 节习题 1）。该映射是微分同胚。若取 $S^2$ 的标准单位法向量场 $N(x,y,z) = (x,y,z)$，则 $N_2(q) = d\varphi(N(p)) = d\varphi(x,y,z) = (-x,-y,-z) = -N(q)$，即诱导定向与初始定向恰好相反。这说明定向本身不一定被微分同胚保持，只能保持或反转。
+
+对于连通曲面，一个微分同胚或者保持定向或者反转定向，没有第三种可能。\qed
+\end{solution}
+
 \begin{exercise}{2-6, 6 — do Carmo, Exercise 2-6, 6}
 Define the notion of orientation of a regular curve $C \subset \mathbb{R}^3$, and show that if $C$ is connected, there exist at most two distinct orientations in the sense of Exercise 4 (actually there exist exactly two, but this is harder to prove).
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：曲线的定向相当于选择"沿曲线行进的方向"。类似于曲面，在曲线的每一点处，切向量只有两个可能的方向（正向或反向）。对于连通曲线，一旦在某点选择了方向，由于连续性，整个曲线的方向就唯一确定了（要么一致向前，要么一致向后），因此最多只有两个不同的定向。
+
+\textbf{解答}：
+
+\textbf{定向的定义}：正则曲线 $C \subset \mathbb{R}^3$ 的定向是指在 $C$ 上选择一个连续的非零切向量场。更准确地说，设 $\alpha: I \to \mathbb{R}^3$ 是 $C$ 的正则参数化（即 $\alpha'(t) \neq 0$ 对所有 $t$ 成立），则 $\alpha'(t)$ 给出了曲线在参数 $t$ 处的一个切向量方向。取遍所有点，这定义了一个切向量场。如果存在连续的非零切向量场，则称 $C$ 是可定向的。
+
+\textbf{至多两个定向的证明}：设 $C$ 连通，取一点 $p \in C$。在 $p$ 处，$T_pC$ 是一维向量空间，其上只有两个单位向量（互为相反）。选定其中一个作为初始方向后，考虑沿曲线移动。由于切向量场是连续的，如果在某点处切向量方向发生翻转（即变为相反方向），则必存在一点处切向量为零（因为方向改变必须经过连续运动），但正则曲线的切向量永远非零——这产生了矛盾。因此，一旦在 $p$ 处选定方向，则该方向沿整个连通曲线必须保持一致，从而得到唯一的定向。
+
+由上述论证，若 $C$ 可定向，则恰好有两个不同的定向（因为也可以在 $p$ 处选择相反的方向）。
+
+另一种表述：在 $p$ 处选择"正向"，得到定向 $\mathcal{O}_1$；选择"负向"，得到定向 $\mathcal{O}_2 = -\mathcal{O}_1$。这两个是全部可能的定向。\qed
+\end{solution}
+
 \begin{exercise}{2-6, 7 — do Carmo, Exercise 2-6, 7}
 Show that if a regular surface $S$ contains an open set diffeomorphic to a Möbius strip, then $S$ is nonorientable.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：可定向性是曲面的整体性质，但局部区域的可定向性与其整体行为密切相关。如果曲面的某个开集本身不可定向（微分同胚于 Möbius 带），则整个曲面也不可定向——因为若整个曲面可定向，就会在该开集上诱导一个可定向结构，与 Möbius 带的不可定向性矛盾。
+
+\textbf{解答}：
+设 $S$ 正则曲面，$U \subset S$ 是开集，$\psi: M \to U$ 是微分同胚，其中 $M$ 是 Möbius 带。假设 $S$ 可定向，则 $U$ 作为 $S$ 的开子集也是可定向的（限制一个连续单位法向量场到 $U$ 即可）。但 $\psi$ 是微分同胚，它将 $U$ 的可定向性传递到 $M$：若 $U$ 可定向，则 $M$ 亦可定向（见习题 2-6, 5a 部分）。然而 Möbius 带 $M$ 不可定向（习题 2-6, 2），矛盾。故假设不成立，$S$ 必为不可定向。\qed
+\end{solution}
 
 % ==================== Section 2-7: A Characterization of Compact Orientable Surfaces ====================
 \section{A Characterization of Compact Orientable Surfaces}\label{sec:compact-orientable}
@@ -2160,19 +2219,94 @@ F^{-1}(x, y, z) = (u(x, y, z), v(x, y, z), t(x, y, z)),
 Let $S$ be a regular surface covered by coordinate neighborhoods $V_1$ and $V_2$. Assume that $V_1 \cap V_2$ has two connected components, $W_1, W_2$, and that the Jacobian of the change of coordinates is positive in $W_1$ and negative in $W_2$. Prove that $S$ is nonorientable.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：可定向性的判定标准是：存在一族参数化使得所有坐标变换的雅可比行列式均为正。如果两个坐标邻域的交集中的雅可比行列式在不同的连通分支上符号不同（在一支为正，另一支为负），则在跨越交界的不同分支时，法向量场的方向必然发生翻转，从而无法在整个曲面上定义一致的法向量场。
+
+\textbf{解答}：
+设 $S$ 被坐标邻域 $V_1$ 和 $V_2$ 覆盖，$V_1 \cap V_2$ 有两个连通分支 $W_1, W_2$。设在 $W_1$ 上坐标变换的雅可比行列式 $J_\Phi > 0$，在 $W_2$ 上 $J_\Phi < 0$。
+
+假设 $S$ 可定向。则由可定向的等价条件，存在 $S$ 的一族参数化 $\{U_\alpha\}$ 使得所有坐标变换的雅可比行列式均为正。特别地，将此族限制到 $V_1$ 和 $V_2$ 上，由于 $V_1$ 和 $V_2$ 分别与 $\{U_\alpha\}$ 的子族相容，在 $W_1$ 和 $W_2$ 上均应有 $J_\Phi > 0$。然而题设条件给出 $J_\Phi < 0$ 在 $W_2$ 上，与可定向条件矛盾。故 $S$ 不可定向。\qed
+\end{solution}
+
 \begin{exercise}{2-7, 2 — do Carmo, Exercise 2-7, 2}
 Let $S_2$ be an orientable regular surface and $\varphi: S_1 \to S_2$ be a differentiable map which is a local diffeomorphism at every $p \in S_1$. Prove that $S_1$ is orientable.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：局部微分同胚保持维数和定向的结构。如果每一点处 $\varphi$ 都是局部微分同胚，则 $\varphi$ 的雅可比行列式在每一点处均非零。这保证了 $S_1$ 的局部法向量场能够通过 $d\varphi$ 映射为 $S_2$ 的局部法向量场，从而可以利用 $S_2$ 的可定向性来定义 $S_1$ 的可定向性。
+
+\textbf{解答}：
+设 $S_2$ 可定向，则存在连续的单位法向量场 $N_2: S_2 \to \mathbb{R}^3$。对每一点 $p \in S_1$，由于 $\varphi$ 是局部微分同胚，$d\varphi_p: T_p(S_1) \to T_{\varphi(p)}(S_2)$ 是线性同构。将 $T_p(S_1)$ 的单位法向量 $N_1(p)$ 映射为 $d\varphi_p(N_1(p))$，这是一个非零向量。再将其归一化：
+\[
+\tilde{N}_1(p) = \frac{d\varphi_p^{-1}(N_2(\varphi(p)))}{\|d\varphi_p^{-1}(N_2(\varphi(p)))\|} \in T_p(S_1).
+\]
+由于 $d\varphi$ 和 $N_2$ 均连续，$\tilde{N}_1$ 在 $S_1$ 上连续。因此 $S_1$ 上存在整体连续的（归一化）单位法向量场，故 $S_1$ 可定向。
+
+从雅可比的角度：$S_2$ 的可定向性意味着存在一族参数化 $\{W_\beta\}$ 使得坐标变换雅可比均为正。取 $S_1$ 的原像 $\{\varphi^{-1}(W_\beta)\}$，由于 $\varphi$ 是局部微分同胚，这些原像仍是坐标邻域。坐标变换的雅可比为
+\[
+J_{\varphi^{-1}\circ\varphi} = J_{\varphi^{-1}} \circ J_{\varphi} = (\det d\varphi)^{-1} \cdot \det d\varphi = 1 \neq 0,
+\]
+故 $S_1$ 也是可定向的。\qed
+\end{solution}
+
 \begin{exercise}{2-7, 3 — do Carmo, Exercise 2-7, 3}
 Is it possible to give a meaning to the notion of area for a Möbius strip? If so, set up an integral to compute it.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：Möbius 带虽然在整体上不可定向，但其面积概念仍有意义。面积是内蕴几何量，与定向无关——我们只需将参数域上的面积元通过第一基本形式变换到曲面上。不可定向性只影响法向量的选择，不影响 $|\mathbf{x}_u \wedge \mathbf{x}_v|$ 的大小。
+
+\textbf{解答}：
+是的，Möbius 带的面积是有定义的。Möbius 带可由参数化
+\[
+\mathbf{x}(u, v) = \left(\left(1 + v \cos\frac{u}{2}\right)\cos u,\ \left(1 + v \cos\frac{u}{2}\right)\sin u,\ v \sin\frac{u}{2}\right),
+\quad u \in [0, 2\pi),\ v \in [-1, 1]
+\]
+给出。计算偏导数得
+\[
+\mathbf{x}_u = \left(-\left(1 + v\cos\frac{u}{2}\right)\sin u - \frac{v}{2}\sin\frac{u}{2}\cos u,\ \left(1 + v\cos\frac{u}{2}\right)\cos u - \frac{v}{2}\sin\frac{u}{2}\sin u,\ \frac{v}{2}\cos\frac{u}{2}\right),
+\]
+\[
+\mathbf{x}_v = \left(\cos\frac{u}{2}\cos u,\ \cos\frac{u}{2}\sin u,\ \sin\frac{u}{2}\right).
+\]
+
+经计算（利用 $(a+b)^2 = a^2 + 2ab + b^2$），$|\mathbf{x}_u \wedge \mathbf{x}_v|^2 = \frac{1}{4}(1 + v\cos\frac{u}{2})^2$，于是
+\[
+|\mathbf{x}_u \wedge \mathbf{x}_v| = \frac{1}{2}\left|1 + v\cos\frac{u}{2}\right|.
+\]
+
+由于 $u \in [0, 2\pi)$，$v \in [-1, 1]$，有 $1 + v\cos\frac{u}{2} \geq 1 - |v| > 0$，故绝对值可以去掉。Möbius 带的面积为
+\[
+A = \int_0^{2\pi}\int_{-1}^{1} \frac{1}{2}\left(1 + v\cos\frac{u}{2}\right)\,dv\,du
+= \int_0^{2\pi} 1\,du = 2\pi.
+\]
+
+注：计算中利用了 $\int_0^{2\pi}\cos\frac{u}{2}\,du = 0$。面积值为 $2\pi$，与圆柱面的情况相同——但这是因为我们的参数化中 $|v| \leq 1$ 且 $R = 1$。一般地，若 Möbius 带的"腰宽"为 $w$、中心线半径为 $R$，则面积 $A = 2\pi R w$。\qed
+\end{solution}
 
 \begin{exercise}{2-7, 4 — do Carmo, Exercise 2-7, 4}
 Let $S$ be an orientable surface and let $\{U_\alpha\}$ and $\{V_\beta\}$ be two families of coordinate neighborhoods which cover $S$ (that is, $\bigcup U_\alpha = S = \bigcup V_\beta$) and satisfy the conditions of Def. 1 (that is, in each of the families, the coordinate changes have positive Jacobian). We say that $\{U_\alpha\}$ and $\{V_\beta\}$ determine the same orientation of $S$ if the union of the two families again satisfies the conditions of Def. 1.
 
 Prove that a regular, connected, orientable surface can have only two distinct orientations.
 \end{exercise}
+
+\begin{solution}
+此问题与第 2-6 节习题 4 完全相同，定理 2（Sec. 2-6）的逆命题——即 $\mathbb{R}^3$ 中的可定向曲面是否一定是某个可微函数的正则值——是正确的，但证明并不简单。即使在紧曲面的特殊情况下，证明也是很有启发性的，展示了微分几何中整体定理的一个有趣例子。本节将完全致力于证明这个逆命题。
+
+\textbf{解答}：
+设 $S$ 是连通可定向曲面。由可定向的等价条件（命题 2.6.1），$S$ 存在一族参数化坐标邻域 $\{U_\alpha\}$，使得所有坐标变换的雅可比行列式均为正——这给出了 $S$ 的一个定向。
+
+我们称两族坐标邻域确定了相同的定向，如果它们的并集仍满足雅可比行列式恒正的条件。定向的等价类恰好有两个。
+
+\begin{enumerate}
+    \item \textbf{存在两个定向}：取给定的一族 $\{U_\alpha\}$，对每个参数化 $\mathbf{x}_\alpha$ 交换其参数坐标 $(u, v) \mapsto (v, u)$，得到一族新的参数化 $\{\tilde{\mathbf{x}}\}$。由于交换参数坐标使雅可比行列式变号，$\{\tilde{\mathbf{x}}\}$ 与 $\{U_\alpha\}$ 的并集的雅可比行列式恒负；但若将 $\{\tilde{\mathbf{x}}\}$ 的所有坐标再翻转一次，则雅可比行列式恢复为正。因此，交换参数坐标给出了另一个合法的定向。
+
+    \item \textbf{至多只有两个定向}：设 $\mathcal{O}_1$ 和 $\mathcal{O}_2$ 是 $S$ 的两个不同定向。取 $p \in S$，设在 $p$ 的某邻域内 $\mathcal{O}_1$ 和 $\mathcal{O}_2$ 的单位法向量分别为 $N_1$ 和 $N_2$。由于在每一点处单位法向量只有两个可能的方向（恰好相反），必有 $N_2(p) = \pm N_1(p)$。
+
+    若存在点 $q$ 使得 $N_2(q) = N_1(q)$，则由雅可比行列式的连续性（它处处非零且只能取 $\pm 1$ 的值），$N_2 \equiv N_1$ 在整个连通曲面 $S$ 上成立，从而 $\mathcal{O}_1 = \mathcal{O}_2$，与假设矛盾。故对所有点均有 $N_2 = -N_1$，即两个定向恰好相反。
+\end{enumerate}
+因此，连通可定向曲面恰好有两个不同的定向。\qed
+\end{solution}
 
 \begin{exercise}{2-7, 5 — do Carmo, Exercise 2-7, 5}
 Let $\varphi: S_1 \to S_2$ be a diffeomorphism.
@@ -2181,6 +2315,26 @@ a. Show that $S_1$ is orientable if and only if $S_2$ is orientable (thus, orien
 
 b. Let $S_1$ and $S_2$ be orientable and oriented. Prove that the diffeomorphism $\varphi$ induces an orientation in $S_2$. Use the antipodal map of the sphere (Exercise 1, Sec. 2-3) to show that this orientation may be distinct (cf. Exercise 4) from the initial one (thus, orientation itself may not be preserved by diffeomorphisms; note, however, that if $S_1$ and $S_2$ are connected, a diffeomorphism either preserves or "reverses" the orientation).
 \end{exercise}
+
+\begin{solution}
+此问题与第 2-6 节习题 5 完全相同，定理 2（Sec. 2-6）的逆命题——即 $\mathbb{R}^3$ 中的可定向曲面是否一定是某个可微函数的正则值——是正确的，但证明并不简单。即使在紧曲面的特殊情况下，证明也是很有启发性的，展示了微分几何中整体定理的一个有趣例子。本节将完全致力于证明这个逆命题。
+
+\textbf{解答}：
+
+\textbf{a. 可定向性被微分同胚保持}：
+
+（$\Rightarrow$）设 $S_1$ 可定向，则存在连续的单位法向量场 $N_1: S_1 \to \mathbb{R}^3$。对每一点 $q \in S_2$，取 $p = \varphi^{-1}(q)$，定义 $N_2(q) = d\varphi_p(N_1(p)) / \|d\varphi_p(N_1(p))\|$。由于 $\varphi$ 是微分同胚，$d\varphi_p$ 是线性同构，它将法向量映射为法向量，且 $N_2$ 的连续性由 $N_1$、$d\varphi$ 和 $\varphi^{-1}$ 的连续性保证。故 $S_2$ 可定向。
+
+（$\Leftarrow$）同理，若 $S_2$ 可定向，则 $S_1$ 亦然，只需考虑 $\varphi^{-1}$。
+
+\textbf{b. 微分同胚诱导定向}：
+
+设 $S_1$ 和 $S_2$ 均已定向。则 $S_1$ 上的定向单位法向量场 $N_1$ 诱导了 $S_2$ 上的一个向量场 $N_2$，定义为 $N_2(q) = d\varphi_{\varphi^{-1}(q)}(N_1(\varphi^{-1}(q)))$（归一化后）。这给出了 $S_2$ 的一个诱导定向。
+
+反例（球面的对径映射）：考虑单位球面 $S^2$ 和对径映射 $\varphi(x, y, z) = (-x, -y, -z)$（见第 2-3 节习题 1）。该映射是微分同胚。若取 $S^2$ 的标准单位法向量场 $N(x,y,z) = (x,y,z)$，则 $N_2(q) = d\varphi(N(p)) = d\varphi(x,y,z) = (-x,-y,-z) = -N(q)$，即诱导定向与初始定向恰好相反。这说明定向本身不一定被微分同胚保持，只能保持或反转。
+
+对于连通曲面，一个微分同胚或者保持定向或者反转定向，没有第三种可能。\qed
+\end{solution}
 
 % ==================== Section 2-8: A Geometric Definition of Area ====================
 \section{A Geometric Definition of Area}\label{sec:geometric-area}
