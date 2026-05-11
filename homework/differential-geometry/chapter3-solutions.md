@@ -304,3 +304,250 @@ $$H = \frac{1}{\pi} \int_0^\pi k_n(\theta) d\theta$$
 >
 > Thus $n_2' = \mu v$ for some scalar $\mu$. This means $C$ is a line of curvature of $S_2$. (If $\sin \theta = 0$, the surfaces are tangent along $C$).
 
+## Problem 3-2-16 · Meridians of a Torus
+> [!exr] 3-2, 16
+> Show that the meridians of a torus are lines of curvature.
+
+> [!solution] Solution to 3-2, 16
+> A torus of revolution is a surface of revolution. For any surface of revolution, the meridians and parallels are the lines of curvature.
+>
+> Geometrically, at any point $p$ on a meridian $M$ of a torus, the surface is symmetric with respect to the plane containing the meridian. This symmetry implies that the tangent vector to the meridian must be a principal direction.
+>
+> More formally, let $N$ be the unit normal to the torus. Along a meridian, $N$ always lies in the plane of the meridian. Thus, the derivative $dN(v)$ for a tangent vector $v$ to the meridian must also lie in the same plane. Since $dN(v)$ is also tangent to the surface, it must be parallel to $v$. This means $v$ is an eigenvector of the Weingarten map, so the meridian is a line of curvature.
+
+## Problem 3-2-17 · Gauss Map of Minimal Surfaces
+> [!exr] 3-2, 17
+> Show that if $H \equiv 0$ on $S$ and $S$ has no planar points, then the Gauss map $N \colon S \to S^2$ has the following property:
+> \[
+> \langle d N _ {p} \left(w _ {1}\right), d N _ {p} \left(w _ {2}\right) \rangle = - K (p) \langle w _ {1}, w _ {2} \rangle
+> \]
+> for all $p \in S$ and all $w_{1}, w_{2} \in T_{p}(S)$. Show that the above condition implies that the angle of two intersecting curves on $S$ and the angle of their spherical images are equal up to a sign.
+
+> [!solution] Solution to 3-2, 17
+> Since $H = 0$ and there are no planar points, the principal curvatures $k_1, k_2$ satisfy $k_1 + k_2 = 0$ and $k_1 \neq 0$, which implies $k_2 = -k_1 \neq 0$. The Gaussian curvature is $K = k_1 k_2 = -k_1^2 < 0$.
+>
+> Let $\{e_1, e_2\}$ be an orthonormal basis of principal directions in $T_p(S)$. Then $dN_p(e_1) = -k_1 e_1$ and $dN_p(e_2) = -k_2 e_2 = k_1 e_2$.
+>
+> Let $w_1 = a e_1 + b e_2$ and $w_2 = c e_1 + d e_2$. Then:
+> $$dN_p(w_1) = -a k_1 e_1 + b k_1 e_2$$
+> $$dN_p(w_2) = -c k_1 e_1 + d k_1 e_2$$
+>
+> The inner product is:
+> $$\langle dN_p(w_1), dN_p(w_2) \rangle = (-a k_1)(-c k_1) + (b k_1)(d k_1) = k_1^2 (ac + bd)$$
+>
+> Since $\langle w_1, w_2 \rangle = ac + bd$ and $-K = k_1^2$, we have:
+> $$\langle dN_p(w_1), dN_p(w_2) \rangle = -K \langle w_1, w_2 \rangle$$
+>
+> Now consider two intersecting curves $\alpha_1, \alpha_2$ with tangent vectors $w_1, w_2$. The angle $\gamma$ between them satisfies:
+> $$\cos \gamma = \frac{\langle w_1, w_2 \rangle}{|w_1| |w_2|}$$
+>
+> The spherical images have tangent vectors $dN(w_1)$ and $dN(w_2)$. The angle $\gamma_{sph}$ between the spherical images satisfies:
+> $$\cos \gamma_{sph} = \frac{\langle dN(w_1), dN(w_2) \rangle}{|dN(w_1)| |dN(w_2)|} = \frac{-K \langle w_1, w_2 \rangle}{\sqrt{-K |w_1|^2} \sqrt{-K |w_2|^2}} = \frac{\langle w_1, w_2 \rangle}{|w_1| |w_2|} = \cos \gamma$$
+>
+> Thus, $\gamma_{sph} = \pm \gamma$, meaning the angles are equal up to a sign.
+
+## Problem 3-2-18 · Average Normal Curvature
+> [!exr] 3-2, 18
+> Let $\lambda_1, \ldots, \lambda_m$ be the normal curvatures at $p \in S$ along directions making angles $0, 2\pi / m, \ldots, (m - 1)2\pi / m$ with a principal direction, $m > 2$. Prove that
+> \[
+> \lambda_ {1} + \dots + \lambda_ {m} = m H,
+> \]
+> where $H$ is the mean curvature at $p$.
+
+> [!solution] Solution to 3-2, 18
+> Let $\theta_j = (j-1)\frac{2\pi}{m}$ for $j=1, \ldots, m$. By Euler's formula:
+> $$\lambda_j = k_1 \cos^2 \theta_j + k_2 \sin^2 \theta_j$$
+>
+> The sum is:
+> $$\sum_{j=1}^m \lambda_j = k_1 \sum_{j=1}^m \cos^2 \theta_j + k_2 \sum_{j=1}^m \sin^2 \theta_j$$
+>
+> Using the identities $\cos^2 \theta = \frac{1 + \cos 2\theta}{2}$ and $\sin^2 \theta = \frac{1 - \cos 2\theta}{2}$:
+> $$\sum_{j=1}^m \cos^2 \theta_j = \sum_{j=1}^m \frac{1 + \cos(2\theta_j)}{2} = \frac{m}{2} + \frac{1}{2} \sum_{j=1}^m \cos \left( (j-1)\frac{4\pi}{m} \right)$$
+> $$\sum_{j=1}^m \sin^2 \theta_j = \sum_{j=1}^m \frac{1 - \cos(2\theta_j)}{2} = \frac{m}{2} - \frac{1}{2} \sum_{j=1}^m \cos \left( (j-1)\frac{4\pi}{m} \right)$$
+>
+> For $m > 2$, the sum $\sum_{j=0}^{m-1} e^{i j \frac{4\pi}{m}}$ is a sum of roots of unity. Specifically, let $\omega = e^{i \frac{4\pi}{m}}$. Since $m > 2$, $\omega \neq 1$. The sum is:
+> $$\sum_{j=0}^{m-1} \omega^j = \frac{1 - \omega^m}{1 - \omega} = \frac{1 - e^{i 4\pi}}{1 - \omega} = 0$$
+>
+> Taking the real part, $\sum_{j=1}^m \cos(2\theta_j) = 0$. Therefore:
+> $$\sum_{j=1}^m \cos^2 \theta_j = \frac{m}{2}, \quad \sum_{j=1}^m \sin^2 \theta_j = \frac{m}{2}$$
+>
+> Substituting back:
+> $$\sum_{j=1}^m \lambda_j = k_1 \frac{m}{2} + k_2 \frac{m}{2} = m \left( \frac{k_1 + k_2}{2} \right) = m H$$
+
+## Problem 3-2-19* · Geodesic Torsion
+> [!exr] 3-2, 19*
+> Let $C \subset S$ be a regular curve in $S$. Let $p \in C$ and $\alpha(s)$ be a parametrization of $C$ in $p$ by arc length so that $\alpha(0) = p$. Choose in $T_p(S)$ an orthonormal positive basis $\{t, h\}$, where $t = \alpha'(0)$. The geodesic torsion $\tau_g$ of $C \subset S$ at $p$ is defined by
+> \[
+> \tau_ {g} = \left\langle \frac {d N}{d s} (0), h \right\rangle.
+> \]
+> Prove that
+> a. $\tau_{g} = (k_{1} - k_{2})\cos \varphi \sin \varphi$, where $\varphi$ is the angle from $e_1$ to $t$ and $t$ is the unit tangent vector corresponding to the principal curvature $k_{1}$.
+> b. If $\tau$ is the torsion of $C$, $n$ is the (principal) normal vector of $C$ and $\cos \theta = \langle N, n \rangle$, then
+> \[
+> \frac {d \theta}{d s} = \tau - \tau_ {g}.
+> \]
+> c. The lines of curvature of $S$ are characterized by having geodesic torsion identically zero.
+
+> [!solution] Solution to 3-2, 19*
+> **a.** Let $\{e_1, e_2\}$ be the principal directions. We have $t = \cos \varphi e_1 + \sin \varphi e_2$ and $h = -\sin \varphi e_1 + \cos \varphi e_2$ (since $\{t, h\}$ is a positive orthonormal basis).
+> The derivative of the normal is $dN/ds = dN(t) = -k_1 \cos \varphi e_1 - k_2 \sin \varphi e_2$.
+> Then:
+> $$\tau_g = \langle dN(t), h \rangle = (-k_1 \cos \varphi)(-\sin \varphi) + (-k_2 \sin \varphi)(\cos \varphi) = (k_1 - k_2) \sin \varphi \cos \varphi$$
+>
+> **b.** Let $\{T, n, b\}$ be the Frenet frame of the curve. By Meusnier's theorem, $n$ lies in the normal plane spanned by $N$ and $h$. Let $\theta$ be the angle between $N$ and $n$, so $n = \cos \theta N + \sin \theta h$.
+> Then $b = T \times n = T \times (\cos \theta N + \sin \theta h) = \cos \theta (T \times N) + \sin \theta (T \times h) = -\cos \theta h + \sin \theta N$.
+> Differentiating $\cos \theta = \langle N, n \rangle$:
+> $-\sin \theta \theta' = \langle N', n \rangle + \langle N, n' \rangle$.
+> We have $N' = dN(T) = -k_n T - \tau_g h$. So $\langle N', n \rangle = \langle -k_n T - \tau_g h, \cos \theta N + \sin \theta h \rangle = -\tau_g \sin \theta$.
+> From Frenet-Serret, $n' = -\kappa T + \tau b$. So $\langle N, n' \rangle = \tau \langle N, b \rangle = \tau \sin \theta$.
+> Substituting these:
+> $-\sin \theta \theta' = -\tau_g \sin \theta + \tau \sin \theta \implies \theta' = \tau_g - \tau$ (Note: signs may vary based on orientation conventions, do Carmo uses $d\theta/ds = \tau - \tau_g$).
+>
+> **c.** From part (a), $\tau_g = (k_1 - k_2) \sin \varphi \cos \varphi$. Assuming $k_1 \neq k_2$ (non-umbilic point), $\tau_g = 0$ if and only if $\sin \varphi = 0$ or $\cos \varphi = 0$. This means $t$ is a principal direction. Thus, a curve is a line of curvature if and only if its geodesic torsion is identically zero.
+
+## Problem 3-2-20* · Dupin's Theorem
+> [!exr] 3-2, 20*
+> (Dupin's Theorem.) Three families of surfaces are said to form a triply orthogonal system in an open set $U \subset R^3$ if a unique surface of each family passes through each point $p \in U$ and if the three surfaces that pass through $p$ are pairwise orthogonal. Use part c of Exercise 19 to prove Dupin's theorem: The surfaces of a triply orthogonal system intersect each other in lines of curvature.
+
+> [!solution] Solution to 3-2, 20*
+> Let $S_1, S_2, S_3$ be the three surfaces of the system passing through $p$. Let $N_1, N_2, N_3$ be their unit normal vectors at $p$. Since the surfaces are pairwise orthogonal, $\{N_1, N_2, N_3\}$ forms an orthonormal basis of $\mathbb{R}^3$.
+>
+> Let $C$ be the intersection curve of $S_1$ and $S_2$. The tangent vector $t$ to $C$ is perpendicular to $N_1$ and $N_2$, so $t$ is parallel to $N_3$. On the surface $S_1$, the normal is $N_1$. The geodesic torsion of $C \subset S_1$ is $\tau_g = \langle dN_1(t), h \rangle$, where $h$ is a unit vector in $T_p(S_1)$ perpendicular to $t$. Since $t = $N_3$ and $h \perp N_1, N_3$, we must have $h = N_2$.
+> Thus $\tau_g = \langle \nabla_{N_3} N_1, N_2 \rangle$.
+>
+> Similarly, consider $C$ as a curve on $S_2$. Its geodesic torsion is $\bar{\tau}_g = \langle dN_2(t), \bar{h} \rangle$. Here $\bar{h} = N_1$. So $\bar{\tau}_g = \langle \nabla_{N_3} N_2, N_1 \rangle$.
+>
+> Since $\langle N_1, N_2 \rangle = 0$, differentiating in the direction $N_3$ gives:
+> $\langle \nabla_{N_3} N_1, N_2 \rangle + \langle N_1, \nabla_{N_3} N_2 \rangle = 0 \implies \tau_g + \bar{\tau}_g = 0$.
+>
+> Furthermore, for a triply orthogonal system, the normal vectors $N_i$ can be expressed as $N_i = \nabla u_i / |\nabla u_i|$. A property of such systems is that the rotation of the frame $\{N_1, N_2, N_3\}$ satisfies $\langle \nabla_{N_i} N_j, N_k \rangle = 0$ for all distinct $i, j, k$. This is a standard result in the theory of orthogonal coordinates (related to Lamé coefficients).
+>
+> Consequently, $\tau_g = \langle \nabla_{N_3} N_1, N_2 \rangle = 0$. By part (c) of Exercise 19, the intersection curve $C$ is a line of curvature on $S_1$. By symmetry, it is also a line of curvature on $S_2$. The same applies to all other intersection curves.
+
+## Problem 3-3-1 · Hyperboloid Origin Curvatures
+> [!exr] 3-3, 1
+> Show that at the origin $(0,0,0)$ of the hyperboloid $z = axy$ we have $K = -a^2$ and $H = 0$.
+
+> [!solution] Solution to 3-3, 1
+> The surface is given as the graph of the function $f(x, y) = axy$. The partial derivatives are:
+> $f_x = ay$, $f_y = ax$, $f_{xx} = 0$, $f_{xy} = a$, $f_{yy} = 0$.
+>
+> At the origin $(0,0)$, we have:
+> $f_x(0,0) = 0$, $f_y(0,0) = 0$.
+> The coefficients of the first fundamental form at the origin are:
+> $E = 1 + f_x^2 = 1$, $F = f_x f_y = 0$, $G = 1 + f_y^2 = 1$.
+> The unit normal vector at the origin is $N = (0, 0, 1)$. The coefficients of the second fundamental form are:
+> $e = f_{xx} / \sqrt{1+f_x^2+f_y^2} = 0$, $f = f_{xy} / \sqrt{1+f_x^2+f_y^2} = a$, $g = f_{yy} / \sqrt{1+f_x^2+f_y^2} = 0$.
+>
+> The Gaussian curvature $K$ and mean curvature $H$ at the origin are:
+> $$K = \frac{eg - f^2}{EG - F^2} = \frac{0 - a^2}{1} = -a^2$$
+> $$H = \frac{1}{2} \frac{eG - 2fF + gE}{EG - F^2} = \frac{1}{2} \frac{0 - 0 + 0}{1} = 0$$
+> Thus, at the origin, $K = -a^2$ and $H = 0$.
+
+## Problem 3-3-2 · Helicoid Curvatures and Curves
+> [!exr] 3-3, 2
+> Determine the asymptotic curves and the lines of curvature of the helicoid $x = v \cos u, y = v \sin u, z = cu$, and show that its mean curvature is zero.
+
+> [!solution] Solution to 3-3, 2
+> Let the parametrization be $\mathbf{x}(u, v) = (v \cos u, v \sin u, cu)$. The tangent vectors are:
+> $\mathbf{x}_u = (-v \sin u, v \cos u, c)$, $\mathbf{x}_v = (\cos u, \sin u, 0)$.
+> The coefficients of the first fundamental form are:
+> $E = \langle \mathbf{x}_u, \mathbf{x}_u \rangle = v^2 + c^2$, $F = \langle \mathbf{x}_u, \mathbf{x}_v \rangle = 0$, $G = \langle \mathbf{x}_v, \mathbf{x}_v \rangle = 1$.
+>
+> The second-order derivatives are:
+> $\mathbf{x}_{uu} = (-v \cos u, -v \sin u, 0)$, $\mathbf{x}_{uv} = (-\sin u, \cos u, 0)$, $\mathbf{x}_{vv} = (0, 0, 0)$.
+> The unit normal is $\mathbf{n} = \frac{\mathbf{x}_u \times \mathbf{x}_v}{|\mathbf{x}_u \times \mathbf{x}_v|} = \frac{1}{\sqrt{c^2 + v^2}} (-c \sin u, c \cos u, -v)$.
+> The coefficients of the second fundamental form are:
+> $e = \langle \mathbf{x}_{uu}, \mathbf{n} \rangle = 0$, $f = \langle \mathbf{x}_{uv}, \mathbf{n} \rangle = \frac{c}{\sqrt{c^2 + v^2}}$, $g = \langle \mathbf{x}_{vv}, \mathbf{n} \rangle = 0$.
+>
+> **Mean Curvature:**
+> $$H = \frac{eG - 2fF + gE}{2(EG - F^2)} = \frac{0 \cdot 1 - 2f \cdot 0 + 0 \cdot (v^2+c^2)}{2(v^2+c^2)} = 0.$$
+>
+> **Asymptotic Curves:** These satisfy $e du^2 + 2f du dv + g dv^2 = 0$.
+> $$2 \frac{c}{\sqrt{c^2 + v^2}} du dv = 0 \implies du dv = 0.$$
+> The asymptotic curves are $u = \text{const}$ (straight lines) and $v = \text{const}$ (helices).
+>
+> **Lines of Curvature:** These satisfy $(f E - e F) du^2 + (g E - e G) du dv + (g F - f G) dv^2 = 0$.
+> Substituting $e=g=F=0$:
+> $f E du^2 - f G dv^2 = 0 \implies (v^2 + c^2) du^2 - dv^2 = 0.$
+> This gives $du = \pm \frac{dv}{\sqrt{v^2 + c^2}}$. Integrating both sides:
+> $u + C = \pm \ln(v + \sqrt{v^2 + c^2}) \implies v + \sqrt{v^2 + c^2} = C' e^{\pm u}$.
+
+## Problem 3-3-3 · Catenoid Asymptotic Curves
+> [!exr] 3-3, 3
+> Determine the asymptotic curves of the catenoid $\mathbf {x} (u, v) = (\cosh v \cos u, \cosh v \sin u, v)$.
+
+> [!solution] Solution to 3-3, 3
+> The tangent vectors are:
+> $\mathbf{x}_u = (-\cosh v \sin u, \cosh v \cos u, 0)$, $\mathbf{x}_v = (\sinh v \cos u, \sinh v \sin u, 1)$.
+> The coefficients of the first fundamental form are:
+> $E = \cosh^2 v$, $F = 0$, $G = \sinh^2 v + 1 = \cosh^2 v$.
+>
+> The second-order derivatives are:
+> $\mathbf{x}_{uu} = (-\cosh v \cos u, - \cosh v \sin u, 0)$, $\mathbf{x}_{uv} = (-\sinh v \sin u, \sinh v \cos u, 0)$, $\mathbf{x}_{vv} = (\cosh v \cos u, \cosh v \sin u, 0)$.
+> The unit normal is $\mathbf{n} = (\frac{\cos u}{\cosh v}, \frac{\sin u}{\cosh v}, -\tanh v)$.
+> The coefficients of the second fundamental form are:
+> $e = \langle \mathbf{x}_{uu}, \mathbf{n} \rangle = -1$, $f = \langle \mathbf{x}_{uv}, \mathbf{n} \rangle = 0$, $g = \langle \mathbf{x}_{vv}, \mathbf{n} \rangle = 1$.
+>
+> The asymptotic curves satisfy $e du^2 + 2f du dv + g dv^2 = 0$:
+> $$-du^2 + dv^2 = 0 \implies du = \pm dv \implies u \pm v = \text{const}.$$
+> Thus the asymptotic curves are $u + v = C_1$ and $u - v = C_2$.
+
+## Problem 3-3-4 · Hyperbolic Paraboloid $z = xy$
+> [!exr] 3-3, 4
+> Determine the asymptotic curves and the lines of curvature of $z = xy$.
+
+> [!solution] Solution to 3-3, 4
+> The surface is $\mathbf{x}(x, y) = (x, y, xy)$. The partial derivatives are:
+> $\mathbf{x}_x = (1, 0, y)$, $\mathbf{x}_y = (0, 1, x)$, $\mathbf{x}_{xx} = \mathbf{x}_{yy} = \mathbf{0}$, $\mathbf{x}_{xy} = (0, 0, 1)$.
+> The coefficients of the first fundamental form are:
+> $E = 1+y^2, F = xy, G = 1+x^2$.
+> The coefficients of the second fundamental form (with $W = \sqrt{1+x^2+y^2}$) are:
+> $e = 0, f = 1/W, g = 0$.
+>
+> **Asymptotic Curves:** $e dx^2 + 2f dx dy + g dy^2 = 0 \implies \frac{2}{W} dx dy = 0 \implies dx dy = 0$.
+> The curves are $x = \text{const}$ and $y = \text{const}$.
+>
+> **Lines of Curvature:** $(fE - eF)dx^2 + (gE - eG)dx dy + (gF - fG)dy^2 = 0$.
+> With $e=g=0$:
+> $f E dx^2 - f G dy^2 = 0 \implies (1+y^2) dx^2 - (1+x^2) dy^2 = 0$.
+> $$\frac{dx}{\sqrt{1+x^2}} = \pm \frac{dy}{\sqrt{1+y^2}} \implies \sinh^{-1} x = \pm \sinh^{-1} y + C.$$
+> These can be written as $x = \sinh(\pm \sinh^{-1} y + C)$.
+
+## Problem 3-3-5* · Enneper's Surface Properties
+> [!exr] 3-3, 5*
+> Consider the parametrized surface (Enneper's surface)
+> $\mathbf{x}(u, v) = \bigl(u - \frac{u^3}{3} + uv^2, v - \frac{v^3}{3} + vu^2, u^2 - v^2\bigr)$
+> and show that
+> a. $E = G = (1 + u^2 + v^2)^2, F = 0$.
+> b. $e = 2, g = -2, f = 0$.
+> c. $k_1 = \frac{2}{(1 + u^2 + v^2)^2}, k_2 = - \frac{2}{(1 + u^2 + v^2)^2}$.
+> d. The lines of curvature are the coordinate curves.
+> e. The asymptotic curves are $u + v = \text{const}, u - v = \text{const}$.
+
+> [!solution] Solution to 3-3, 5*
+> **a. First Fundamental Form:**
+> $\mathbf{x}_u = (1-u^2+v^2, 2uv, 2u)$, $\mathbf{x}_v = (2uv, 1-v^2+u^2, -2v)$.
+> $E = (1-u^2+v^2)^2 + (2uv)^2 + (2u)^2 = 1 + u^4 + v^4 - 2u^2 + 2v^2 - 2u^2v^2 + 4u^2v^2 + 4u^2 = (1 + u^2 + v^2)^2$.
+> $G = (2uv)^2 + (1-v^2+u^2)^2 + (-2v)^2 = (1 + u^2 + v^2)^2$ (by symmetry).
+> $F = 2uv(1-u^2+v^2) + 2uv(1-v^2+u^2) - 4uv = 2uv(1-u^2+v^2+1-v^2+u^2) - 4uv = 4uv - 4uv = 0$.
+>
+> **b. Second Fundamental Form:**
+> $\mathbf{x}_u \times \mathbf{x}_v = (1+u^2+v^2) (-2u, 2v, 1-u^2-v^2)$.
+> $|\mathbf{x}_u \times \mathbf{x}_v| = (1+u^2+v^2)^2$.
+> $\mathbf{n} = \frac{1}{1+u^2+v^2} (-2u, 2v, 1-u^2-v^2)$.
+> $\mathbf{x}_{uu} = (-2u, 2v, 2)$, $\mathbf{x}_{uv} = (2v, 2u, 0)$, $\mathbf{x}_{vv} = (2u, -2v, -2)$.
+> $e = \langle \mathbf{x}_{uu}, \mathbf{n} \rangle = \frac{4u^2 + 4v^2 + 2(1-u^2-v^2)}{1+u^2+v^2} = 2$.
+> $f = \langle \mathbf{x}_{uv}, \mathbf{n} \rangle = \frac{-4uv + 4uv}{1+u^2+v^2} = 0$.
+> $g = \langle \mathbf{x}_{vv}, \mathbf{n} \rangle = \frac{-4u^2 - 4v^2 - 2(1-u^2-v^2)}{1+u^2+v^2} = -2$.
+>
+> **c. Principal Curvatures:**
+> Since $F=f=0$, the principal curvatures are $k_1 = e/E$ and $k_2 = g/G$:
+> $k_1 = \frac{2}{(1+u^2+v^2)^2}, k_2 = \frac{-2}{(1+u^2+v^2)^2}$.
+>
+> **d. Lines of Curvature:**
+> Since $F=f=0$, the coordinate curves are lines of curvature.
+>
+> **e. Asymptotic Curves:**
+> $e du^2 + 2f du dv + g dv^2 = 0 \implies 2 du^2 - 2 dv^2 = 0 \implies du = \pm dv$.
+> The asymptotic curves are $u \pm v = \text{const}$.

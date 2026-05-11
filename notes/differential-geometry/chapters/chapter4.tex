@@ -1,0 +1,1329 @@
+\chapter{The Intrinsic Geometry of Surfaces}\label{chap:intrinsic-geometry}
+
+% ==================== Section 4-1: Introduction ====================
+\section{Introduction}\label{sec:intro-ch4}
+
+\textbf{Why intrinsic geometry?} 在第 2 章中，我们引入了曲面的第一基本形式，并展示了如何利用它来计算曲面 $S$ 上的简单度量概念（长度、角度、面积等）。重要的是，这些计算可以"不离开曲面"地完成——一旦已知第一基本形式，我们就可以进行所有这些度量。这意味着这些概念是\textbf{内蕴}于曲面 $S$ 的。
+
+然而，第一基本形式的几何并不止于这些简单概念。正如我们将在本章中看到的，曲面的许多重要局部性质只能通过第一基本形式来表达。研究这类性质的学科称为\textbf{曲面的内蕴几何}（intrinsic geometry of surfaces）。本章专门讨论内蕴几何。
+
+\textbf{The main theme.} 第 3 章的性质是通过研究切平面在一点邻域中的变化得到的。现在，我们要类比曲线理论，为曲面上的每一点配置一个三面体（类似于曲线的 Frenet 标架），并研究其向量的导数。
+
+\textbf{Organization of this chapter.} 本章组织如下。4-2 节定义等距（isometry）的概念，精确刻画两个曲面具有"相同"第一基本形式的含义。4-3 节证明著名的 Gauss 公式，将 Gaussian 曲率 $K$ 表示为第一基本形式系数的函数——这意味着 $K$ 是内蕴概念，一个非常惊人的事实。4-4 节开始系统研究内蕴几何，通过共变导数（covariant derivative）这一概念来统一处理。4-5 节讨论局部和整体的 Gauss-Bonnet 定理。4-6 节定义指数映射并引入法坐标和测地极坐标。4-7 节补充关于测地线的若干精细性质（初读可略过）。
+
+\begin{Remark}
+第 3 章的性质依赖于曲面在空间中的位置（第二基本形式），而本章的核心发现是：许多几何量实际上只依赖于第一基本形式——即曲面的内蕴结构。这一转变是微分几何发展史上的里程碑。
+\end{Remark}
+
+% ==================== Section 4-2: Isometries; Conformal Maps ====================
+\section{Isometries; Conformal Maps}\label{sec:isometries}
+
+\textbf{When do two surfaces have the same intrinsic geometry?} 圆柱面与平面是一个引人深思的例子。尽管圆柱面和平面是不同的曲面，但它们的第一个基本形式是"相等"的（在我们所考虑的坐标邻域中）。这意味着，就内蕴度量问题（长度、角度、面积）而言，平面和圆柱面在局部具有相同的行为。这一观察促使我们精确刻画：什么是两个正则曲面具有"相同"第一基本形式？
+
+\begin{Definition}[等距]\label{def:isometry}
+设 $S$ 和 $\bar{S}$ 是正则曲面。一个双射 $\varphi: S \to \bar{S}$ 是\textbf{等距映射}（isometry），如果对所有 $p \in S$ 和所有 $w_1, w_2 \in T_p(S)$，都有
+\[
+\langle w_1, w_2 \rangle_p = \langle d\varphi_p(w_1), d\varphi_p(w_2) \rangle_{\varphi(p)}.
+\]
+此时称 $S$ 和 $\bar{S}$ 是\textbf{等距的}（isometric）。
+\end{Definition}
+
+换句话说，等距映射 $\varphi$ 的微分 $d\varphi$ 保持内积。由此可知 $d\varphi$ 是等距映射，因此
+\[
+I_p(w) = \langle w, w \rangle_p = \langle d\varphi_p(w), d\varphi_p(w) \rangle_{\varphi(p)} = I_{\varphi(p)}(d\varphi_p(w))
+\]
+对所有 $w \in T_p(S)$ 成立。反之，若双射 $\varphi$ 保持第一基本形式，即
+\[
+I_p(w) = I_{\varphi(p)}(d\varphi_p(w))\quad \forall w \in T_p(S),
+\]
+则由极化恒等式可推出 $\varphi$ 是等距映射。
+
+\begin{Definition}[局部等距]\label{def:local-isometry}
+设 $V \subset S$ 是 $p \in S$ 的一个邻域。映射 $\varphi: V \to \bar{S}$ 称为在 $p$ 处的\textbf{局部等距映射}（local isometry at $p$），如果存在 $\varphi(p) \in \bar{S}$ 的邻域 $\bar{V}$，使得 $\varphi: V \to \bar{V}$ 是等距映射。如果对每个 $p \in S$ 都存在到 $\bar{S}$ 的局部等距映射，则称 $S$\textbf{局部等距于} $\bar{S}$。
+\end{Definition}
+
+显然，若 $\varphi: S \to \bar{S}$ 是双射且在每点均为局部等距，则 $\varphi$ 是（整体）等距。然而，两个曲面可能局部等距但整体不等距——圆柱面与平面就是如此：圆柱面去掉一条母线后可以展开到平面上，但整体来看，圆柱面与平面不同胚（圆柱面有洞），因此不存在整体等距。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-1. 平面中的简单闭曲线可以收缩到一点]{\label{fig:fig4-1a}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/0925e7f3e745e48c60981d7f3f1a5ba33e8da090624192f9883f94b6cf4a2946.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.50\textwidth}
+\centering
+\subfloat[Figure 4-1. 圆柱面上的平行圆不能收缩到一点]{\label{fig:fig4-1b}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/eb8fd2f5d3c9703ed52411c1947234bf3148fd4f3ad861dc4a587f6e27408b95.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Proposition}[局部等距的坐标判据]\label{prop:local-isometry-criterion}
+设 $\mathbf{x}: U \to S$ 和 $\bar{\mathbf{x}}: U \to \bar{S}$ 是参数化，使得在 $U$ 中 $E = \bar{E}$，$F = \bar{F}$，$G = \bar{G}$。则映射 $\varphi = \bar{\mathbf{x}} \circ \mathbf{x}^{-1}: \mathbf{x}(U) \to \bar{S}$ 是局部等距。
+\end{Proposition}
+
+\begin{Example}[圆柱面局部等距于平面]\label{ex:cylinder-plane}
+教材 Figure 4-2（见 \cref{fig:fig4-2}）所示。圆柱面 $x^2 + y^2 = 1$ 在参数化 $\bar{\mathbf{x}}(u,v) = (\cos u, \sin u, v)$ 下的第一基本形式系数为 $E = 1$，$F = 0$，$G = 1$——与平面标准参数化 $\mathbf{x}(u,v) = (u, v, 0)$ 相同。因此映射 $\varphi = \mathbf{x} \circ \bar{\mathbf{x}}^{-1}$ 是局部等距。
+
+直观上，这一等距可以通过"展开"圆柱面来实现——沿母线剪开圆柱面，即可平铺到平面上。
+\end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-2. 圆柱面与平面的局部等距]{\label{fig:fig4-2}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6d09c1f73799a1765ba3870a22533b29be5b19a9e928f37f61a24454797080ab.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Example}[悬链面局部等距于螺旋面]\label{ex:catenoid-helicoid}
+旋转面中的悬链面（catenoid）
+\[
+\mathbf{x}(u,v) = (a\cosh v \cos u,\; a\cosh v \sin u,\; a v),\quad 0<u<2\pi,\; -\infty<v<\infty
+\]
+与螺旋面（helicoid）
+\[
+\bar{\mathbf{x}}(u,v) = (a\sinh v \cos u,\; a\sinh v \sin u,\; a u)
+\]
+在变换 $\bar{u} = u$，$\bar{v} = a\sinh v$ 下具有相同的第一基本形式系数 $E = a^2\cosh^2 v$，$F = 0$，$G = a^2\cosh^2 v$。由 \cref{prop:local-isometry-criterion}，两者局部等距（教材 Figure 4-3（见 \cref{fig:fig4-3}））。
+
+等距映射的几何意义：将螺旋面的一圈（$0<u<2\pi$）映射为去掉一条经线的悬链面（教材 Figure 4-4（见 \cref{fig:fig4-4}））。
+\end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-3. 悬链面 (catenoid)]{\label{fig:fig4-3}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/df02fc7c86adc79f0710e7cfb54a79bfd51089a5aab6d7212b55a44ac5540b86.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.30\textwidth}
+\centering
+\subfloat[Phase 1]{\label{fig:fig4-4a}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/0c9126aaaab80458de8a29ab28f95a6cd3c35eb26225e3537983ef88e5561b7b.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.30\textwidth}
+\centering
+\subfloat[Phase 2]{\label{fig:fig4-4b}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/93adfc01151d3f8e1199513189b1f8823b28df157a02bddc460f9ef97910a25c.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.30\textwidth}
+\centering
+\subfloat[Phase 3]{\label{fig:fig4-4c}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/31289f879dd8952044287c20b4479d2aa010f20763f0321462454ee4a9f59efe.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.22\textwidth}
+\centering
+\subfloat[Phase 4]{\label{fig:fig4-4d}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/34e6749e1a9c51a59379f4fabdcfe2404882e9baad2697b9d9d4fd5d0c189223.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.22\textwidth}
+\centering
+\subfloat[Phase 5]{\label{fig:fig4-4e}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/b4bb3a909c3982a5964c77dfa56e6387f836635e91a493a77d20731329ba5530.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.22\textwidth}
+\centering
+\subfloat[Phase 6]{\label{fig:fig4-4f}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/9ae8400b9fe61dd40174b9aa36f0499be69823ba206362fccda45ea9f971809e.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.22\textwidth}
+\centering
+\subfloat[Phase 7]{\label{fig:fig4-4g}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/00e3d20dc468132380d7bee09fd6ba5f3151e7011afbdc6b72b7a6fd004f4131.jpg}}
+\end{minipage}
+\end{figure}
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-4. 螺旋面到悬链面的等距形变]{\label{fig:fig4-4}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6103c579eb6ce37b2e2c1443f0dea400a6ee319e2dd9952c67a5dd46f52822e0.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Example}[单叶锥面局部等距于平面]\label{ex:cone-plane}
+单叶锥面（去掉顶点）$z = k\sqrt{x^2+y^2}$ 局部等距于平面。其思想是：去掉一条母线的锥面可以"滚动"到平面的一片区域（教材 Figure 4-5（见 \cref{fig:fig4-5}））。
+
+锥面在极坐标下的参数化为
+\[
+f(\rho,\theta) = (\rho\sin\alpha\cos(\theta/\sin\alpha),\; \rho\sin\alpha\sin(\theta/\sin\alpha),\; \rho\cos\alpha),
+\]
+其中 $2\alpha$ 是锥顶角（$\cot\alpha = k$）。直接验证可得其在参数化下的第一基本形式系数为 $\bar{E}=1$，$\bar{F}=0$，$\bar{G}=\rho^2$，与平面极坐标参数化完全相同。故 $f$ 是局部等距。$\square$
+\end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-5. 锥面等距展开到平面]{\label{fig:fig4-5}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6103c579eb6ce37b2e2c1443f0dea400a6ee319e2dd9952c67a5dd46f52822e0.jpg}}
+\end{minipage}
+\end{figure}
+
+\textbf{Conformal maps.} 等距是度量等价的最强概念。在研究解析函数时，另一个重要概念是共形（保角）映射。
+
+\begin{Definition}[共形映射]\label{def:conformal-map}
+双射 $\varphi: S \to \bar{S}$ 称为\textbf{共形映射}（conformal map），如果对所有 $p \in S$ 和所有 $v_1, v_2 \in T_p(S)$，都有
+\[
+\langle d\varphi_p(v_1), d\varphi_p(v_2) \rangle = \lambda^2(p) \langle v_1, v_2 \rangle_p,
+\]
+其中 $\lambda^2$ 是 $S$ 上无处为零的可微函数。此时称 $S$ 和 $\bar{S}$ 是\textbf{共形的}（conformal）。
+\end{Definition}
+
+共形映射的几何意义：它保持角度（但不一定保持长度）。事实上，两曲线在 $\varphi$ 下的夹角不变。
+
+\begin{Theorem}[任何两个正则曲面局部共形]\labelthm:local-conformal}
+任意两个正则曲面局部共形。
+\end{Theorem}
+证明基于等温参数化（isothermal parametrization）的存在性——即可以将邻域参数化使得 $E = G = \lambda^2(u,v)$，$F = 0$。
+
+\begin{Remark}
+等距显然是共形映射的特例（$\lambda \equiv 1$）。等距 $\Rightarrow$ 保长 $\Rightarrow$ 保角；但反过来，共形映射不一定保长，因此两个曲面可能共形但不等距（如球面与平面通过球极投影共形）。
+\end{Remark}
+
+\begin{Remark}
+利用第一基本形式，我们可以引入曲面上两点之间的内蕴距离。设 $d(p,q)$ 为连接 $p$ 与 $q$ 的曲线上弧长的下确界。等距映射保持内蕴距离（教材 Figure 4-6（见 \cref{fig:fig4-6}））。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-6. 内蕴距离与欧氏距离的关系]{\label{fig:fig4-6}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/a584e96933f72f8c17d816019494436bb48803bb96af1ca63462e4969371d15f.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+Mercator 投影是球面到平面的共形映射的一个经典例子（见习题 16）。它将球面的经纬线映射为平面上的直线，且保持角度——这就是为什么 Mercator 地图上直线航线（等角航线）与真实最短航路不同。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-7. Mercator 投影保持角度]{\label{fig:fig4-7}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/9dcec652efd7169397af9557ffcd138676a5d6d302f972505dd992bd3565aa8b.jpg}}
+\end{minipage}
+\end{figure}
+
+\subsection*{4-2 节练习}
+
+\begin{exercise}{4-2, 1 — do Carmo, Exercise 4-2, 1}
+设 $F: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 由
+\[
+F(u,v) = (u\sin\alpha\cos v,\; u\sin\alpha\sin v,\; u\cos\alpha),\quad \alpha = \mathrm{const}
+\]
+给出。（a）证明 $F$ 是 $U$ 到顶角为 $2\alpha$ 的圆锥 $C$ 上的局部双射。（b）$F$ 是局部等距吗？
+\end{exercise}
+
+\begin{exercise}{4-2, 2 — do Carmo, Exercise 4-2, 2}
+证明：若 $\varphi: S \to \bar{S}$ 是等距，$\mathbf{x}: U \to S$ 是 $p \in S$ 处的参数化，则 $\bar{\mathbf{x}} = \varphi \circ \mathbf{x}$ 是 $\varphi(p)$ 处的参数化且 $E = \bar{E}$，$F = \bar{F}$，$G = \bar{G}$。
+\end{exercise}
+
+\begin{exercise}{4-2, 3* — do Carmo, Exercise 4-2, 3}
+证明：双射 $\varphi: S \to \bar{S}$ 是等距，当且仅当对 $S$ 中任意参数曲线，其弧长等于其在 $\varphi$ 下像曲线的弧长。
+\end{exercise}
+
+\begin{exercise}{4-2, 4 — do Carmo, Exercise 4-2, 4}
+利用球极投影（stereographic projection）证明球面局部共形于平面。
+\end{exercise}
+
+\begin{exercise}{4-2, 5 — do Carmo, Exercise 4-2, 5}
+设 $\alpha_1(s)$ 和 $\alpha_2(s)$ 是两条正则曲线（参数为弧长），曲率分别为 $k_1(s)$ 和 $k_2(s)$，且 $k_1(s) = k_2(s) \neq 0$。证明它们的切线面（tangent surface）是局部等距的。
+\end{exercise}
+
+\begin{exercise}{4-2, 6* — do Carmo, Exercise 4-2, 6}
+设 $\alpha: I \to \mathbb{R}^3$ 是 $k(t) \neq 0$ 的正则曲线，$\mathbf{x}(t,v)$ 为其切线面。证明：对每一点 $(t_0,v_0) \in I \times (\mathbb{R} - \{0\})$，存在邻域 $V$，使 $\mathbf{x}(V)$ 等距于平面中的一个开集。
+\end{exercise}
+
+\begin{exercise}{4-2, 7 — do Carmo, Exercise 4-2, 7}
+设 $V$ 和 $W$ 是带有内积的 $n$ 维向量空间，$F: V \to W$ 是线性映射。证明：$F$ 是线性等距当且仅当 $|F(v)| = |v|$ 对所有 $v \in V$ 成立。
+\end{exercise}
+
+\begin{exercise}{4-2, 8* — do Carmo, Exercise 4-2, 8}
+设 $G: \mathbb{R}^3 \to \mathbb{R}^3$ 是距离保持映射（$|G(p)-G(q)| = |p-q|$）。证明：存在 $p_0 \in \mathbb{R}^3$ 和线性等距 $F$，使 $G(p) = F(p) + p_0$。
+\end{exercise}
+
+\begin{exercise}{4-2, 9 — do Carmo, Exercise 4-2, 9}
+证明：等距的逆映射仍是等距；等距的复合仍是等距。因此曲面的等距构成一个群。
+\end{exercise}
+
+\begin{exercise}{4-2, 10 — do Carmo, Exercise 4-2, 10}
+证明：旋转曲面的旋转轴是等距变换。
+\end{exercise}
+
+\begin{exercise}{4-2, 11 — do Carmo, Exercise 4-2, 11}
+（a）设 $S \subset \mathbb{R}^3$ 是正则曲面，$F: \mathbb{R}^3 \to \mathbb{R}^3$ 是距离保持双射且 $F(S) \subset S$。证明 $F|_S$ 是 $S$ 的等距。（b）证明单位球面 $x^2+y^2+z^2=1$ 的等距群包含正交线性变换群。（c）给出等距 $\varphi: S_1 \to S_2$ 不能延拓为 $\mathbb{R}^3$ 到 $\mathbb{R}^3$ 的距离保持映射的例子。
+\end{exercise}
+
+\begin{exercise}{4-2, 12* — do Carmo, Exercise 4-2, 12}
+设 $C = \{(x,y,z) \in \mathbb{R}^3: x^2+y^2=1\}$ 是圆柱面。构造等距 $\varphi: C \to C$，使其恰好有两个不动点。
+\end{exercise}
+
+\begin{exercise}{4-2, 13 — do Carmo, Exercise 4-2, 13}
+设 $V$ 和 $W$ 是带有内积的 $n$ 维向量空间，$G: V \to W$ 是线性映射。证明：$G$ 是线性相似变换（即存在常数 $\lambda \neq 0$ 使 $\langle Gv_1, Gv_2 \rangle = \lambda^2 \langle v_1, v_2 \rangle$）当且仅当 $|G(v)| = \lambda|v|$ 对所有 $v$ 成立。
+\end{exercise}
+
+\begin{exercise}{4-2, 14 — do Carmo, Exercise 4-2, 14}
+证明：可微映射 $\varphi: S_1 \to S_2$ 是局部共形映射，当且仅当它保持角度。
+\end{exercise}
+
+\begin{exercise}{4-2, 15 — do Carmo, Exercise 4-2, 15}
+设 $\varphi: \mathbb{R}^2 \to \mathbb{R}^2$ 由 $\varphi(x,y) = (u(x,y), v(x,y))$ 给出，其中 $u,v$ 满足 Cauchy-Riemann 方程 $u_x = v_y$，$u_y = -v_x$。证明 $\varphi$ 是 $\mathbb{R}^2 - Q$（$Q = \{(x,y): u_x^2+u_y^2=0\}$）到 $\mathbb{R}^2$ 的局部共形映射。
+\end{exercise}
+
+\begin{exercise}{4-2, 16 — do Carmo, Exercise 4-2, 16}
+利用 $\log\tan(\theta/2) = u$，$\varphi = v$ 证明单位球面 $S^2$ 的Mercator投影对应参数化
+\[
+\mathbf{y}(u,v) = (\operatorname{sech}u\cos v,\; \operatorname{sech}u\sin v,\; \tanh u)
+\]
+在此参数化下，$E = G = \operatorname{sech}^2 u$，$F = 0$。
+\end{exercise}
+
+\begin{exercise}{4-2, 17* — do Carmo, Exercise 4-2, 17}
+考虑球面上由等角航线（loxodromes）构成的三角形。证明：这样的三角形的内角和为 $\pi$。
+\end{exercise}
+
+\begin{exercise}{4-2, 18 — do Carmo, Exercise 4-2, 18}
+设 $\varphi: S \to \bar{S}$ 是等积且共形的双射。证明 $\varphi$ 是等距。
+\end{exercise}
+
+\begin{exercise}{4-2, 19 — do Carmo, Exercise 4-2, 19}
+设单位球面 $S^2$ 和外接圆柱面 $C$ 之间的 Archimedes 投影（教材 Figure 4-7（见 \cref{fig:fig4-7}））定义为：过球面上每点 $p$ 作垂直于 $z$ 轴的直线，与该直线和 $z$ 轴的交点 $q$ 连线，延长后交圆柱面于一点 $\varphi(p)$。证明 $\varphi$ 是保面积的双射。
+\end{exercise}
+
+\begin{exercise}{4-2, 20 — do Carmo, Exercise 4-2, 20}
+设旋转面 $S$ 的参数化为 $\mathbf{x}(u,v) = (f(v)\cos u,\; f(v)\sin u,\; g(v))$。（a）证明 $\varphi(u,v) = (u, \int \frac{\sqrt{(f')^2+(g')^2}}{f}\, dv)$ 是局部双射。（b）利用（a）证明旋转面局部共形到平面，且在此共形映射下经纬线映为正交直线系。（c）证明 $\psi(u,v) = (u, \int f\sqrt{(f')^2+(g')^2}\, dv)$ 是局部双射。（d）证明对每点存在邻域 $V$ 和保面积映射 $V \to \mathbb{R}^2$。
+\end{exercise}
+
+% ==================== Section 4-3: The Gauss Theorem and the Equations of Compatibility ====================
+\section{The Gauss Theorem and the Equations of Compatibility}\label{sec:gauss-theorem}
+
+\textbf{From trihedron to Gauss formula.} 第 3 章的性质是通过研究切平面的变化得到的。现在我们要为曲面上每一点配置自然的三面体 $\{\mathbf{x}_u, \mathbf{x}_v, N\}$，并研究这些向量的导数。
+
+将 $\mathbf{x}_u, \mathbf{x}_v, N$ 的导数用基 $\{\mathbf{x}_u, \mathbf{x}_v, N\}$ 表达，得到
+\[
+\begin{aligned}
+\mathbf{x}_{uu} &= \Gamma_{11}^1 \mathbf{x}_u + \Gamma_{11}^2 \mathbf{x}_v + L_1 N,\\
+\mathbf{x}_{uv} &= \Gamma_{12}^1 \mathbf{x}_u + \Gamma_{12}^2 \mathbf{x}_v + L_2 N,\\
+\mathbf{x}_{vu} &= \Gamma_{21}^1 \mathbf{x}_u + \Gamma_{21}^2 \mathbf{x}_v + \bar{L}_2 N,\\
+\mathbf{x}_{vv} &= \Gamma_{22}^1 \mathbf{x}_u + \Gamma_{22}^2 \mathbf{x}_v + L_3 N,\\
+N_u &= a_{11}\mathbf{x}_u + a_{21}\mathbf{x}_v,\\
+N_v &= a_{12}\mathbf{x}_u + a_{22}\mathbf{x}_v,
+\end{aligned}
+\tag{1}
+\]
+其中系数 $\Gamma_{ij}^k$（$i,j,k=1,2$）称为曲面的\textbf{Christoffel 符号}（Christoffel symbols）。由于 $\mathbf{x}_{uv} = \mathbf{x}_{vu}$，有 $\Gamma_{12}^1 = \Gamma_{21}^1$ 和 $\Gamma_{12}^2 = \Gamma_{21}^2$，即 Christoffel 符号在下指标对称。
+
+将 (1) 的前四个式子与 $N$ 作内积，立即得到 $L_1 = e$，$L_2 = \bar{L}_2 = f$，$L_3 = g$，即第二基本形式的系数。
+
+将 (1) 与 $\mathbf{x}_u$ 和 $\mathbf{x}_v$ 作内积，得到求解 Christoffel 符号的线性方程组：
+\[
+\begin{cases}
+\Gamma_{11}^1 E + \Gamma_{11}^2 F = \langle \mathbf{x}_{uu}, \mathbf{x}_u \rangle = \frac{1}{2}E_u,\\
+\Gamma_{11}^1 F + \Gamma_{11}^2 G = \langle \mathbf{x}_{uu}, \mathbf{x}_v \rangle = F_u - \frac{1}{2}E_v,
+\end{cases}
+\quad \text{等.}
+\tag{2}
+\]
+
+由于每个方程组的行列式为 $EG-F^2 \neq 0$，Christoffel 符号可由第一基本形式的系数 $E,F,G$ 及其导数唯一确定。这引出一个重要推论：**用 Christoffel 符号表达的几何概念和性质在等距变换下不变**。
+
+\begin{Example}[旋转面的 Christoffel 符号]\label{ex:christoffel-revolution}
+对于旋转面 $\mathbf{x}(u,v) = (f(v)\cos u,\; f(v)\sin u,\; g(v))$，
+\[
+E = f(v)^2,\quad F = 0,\quad G = (f'(v))^2 + (g'(v))^2.
+\]
+由 (2) 可得：
+\[
+\Gamma_{11}^1 = 0,\quad \Gamma_{11}^2 = -\frac{ff'}{(f')^2+(g')^2},\quad
+\Gamma_{12}^1 = \frac{ff'}{f^2},\quad \Gamma_{12}^2 = 0,\quad
+\Gamma_{22}^1 = 0,\quad \Gamma_{22}^2 = \frac{f'f''+g'g''}{(f')^2+(g')^2}.
+\]
+\end{Example}
+
+\textbf{The Theorema Egregium.} 接下来考虑兼容性条件：
+\[
+(\mathbf{x}_{uu})_v - (\mathbf{x}_{uv})_u = 0,\quad
+(\mathbf{x}_{vv})_u - (\mathbf{x}_{vu})_v = 0,\quad
+N_{uv} - N_{vu} = 0.
+\tag{3}
+\]
+
+将 (1) 代入 (3)，由于 $\{\mathbf{x}_u, \mathbf{x}_v, N\}$ 线性无关，(3) 给出九个子方程。其中最重要的是从 $A_1 = 0$ 的 $\mathbf{x}_v$ 系数中得到的：
+\[
+(\Gamma_{12}^2)_u - (\Gamma_{11}^2)_v + \Gamma_{12}^1\Gamma_{11}^2 + \Gamma_{12}^2\Gamma_{12}^2 - \Gamma_{11}^1\Gamma_{22}^2 - \Gamma_{11}^1\Gamma_{12}^2 = -EK.
+\tag{5}
+\]
+
+由此我们得到 Gauss 的著名定理：
+
+\begin{Theorem}[Theorema Egregium (Gauss)]\labelthm:theorema-egregium}
+曲面的 Gaussian 曲率 $K$ 在局部等距下不变。
+\end{Theorem}
+
+即：若 $\varphi: V \subset S \to \bar{S}$ 是在 $p$ 处的局部等距，则 $K(q) = K(\varphi(q))$ 对所有 $q \in V$ 成立。
+
+这个定理的非凡之处在于：$K$ 的定义本质上使用了曲面在空间中的位置（第二基本形式），但它竟然只依赖于曲面的度量结构（第一基本形式）。这正是"内蕴几何"这一名称的来源。
+
+\textbf{The Mainardi-Codazzi equations.} 从 (3) 的其他方程中还得到两组重要关系——Mainardi-Codazzi 方程：
+\[
+\begin{aligned}
+e_v - f_u &= e\Gamma_{12}^1 + f(\Gamma_{12}^2 - \Gamma_{11}^1) - g\Gamma_{11}^2,\tag{6}\\
+f_v - g_u &= e\Gamma_{22}^1 + f(\Gamma_{22}^2 - \Gamma_{12}^1) - g\Gamma_{12}^2.\tag{6a}
+\end{aligned}
+\]
+
+Gauss 公式和 Mainardi-Codazzi 方程统称为曲面理论的\textbf{兼容性方程}（compatibility equations）。
+
+\textbf{Bonnet's theorem.} 一个自然的问题是：在第一和第二基本形式之间，除了已得到的兼容性方程外，是否还有进一步的关系？Bonnet 定理给出了一个完整答案：
+
+\begin{Theorem}[Bonnet]\labelthm:bonnet}
+设 $E,F,G,e,f,g$ 是开集 $V \subset \mathbb{R}^2$ 上满足 $E>0$，$G>0$，$EG-F^2>0$ 的可微函数，且这些函数形式上满足 Gauss 和 Mainardi-Codazzi 方程。则对每个 $q \in V$，存在邻域 $U \subset V$ 和双射 $\mathbf{x}: U \to \mathbf{x}(U) \subset \mathbb{R}^3$，使 $\mathbf{x}(U)$ 是以 $E,F,G$ 和 $e,f,g$ 为第一、第二基本形式系数的正则曲面。此外，若 $U$ 连通，且另一个 $\bar{\mathbf{x}}$ 满足同样条件，则存在一个平移 $T$ 和一个真线性正交变换 $\rho$，使 $\bar{\mathbf{x}} = T \circ \rho \circ \mathbf{x}$。
+\end{Theorem}
+
+简言之：第一和第二基本形式（在满足兼容性方程的条件下）局部决定了曲面——且在刚体运动意义下唯一。
+
+\begin{Remark}
+Gauss-Bonnet 定理（第 4-5 节）是本章的另一核心定理，但二者的性质不同：Theorema Egregium 表明 $K$ 是内蕴的；Bonnet 定理则表明唯一性。
+\end{Remark}
+
+\begin{Remark}
+当坐标系选为正交坐标（$F=0$）且取为主方向（$f=0$）时，Mainardi-Codazzi 方程简化为
+\[
+e_v = \frac{E_v}{2}\left(\frac{e}{E}+\frac{g}{G}\right),\quad
+g_u = \frac{G_u}{2}\left(\frac{e}{E}+\frac{g}{G}\right).
+\tag{7, 7a}
+\]
+\end{Remark}
+
+\subsection*{4-3 节练习}
+
+\begin{exercise}{4-3, 1 — do Carmo, Exercise 4-3, 1}
+设 $\mathbf{x}$ 是正交参数化（$F=0$），证明：
+\[
+K = -\frac{1}{2\sqrt{EG}}\left\{\left(\frac{E_v}{\sqrt{EG}}\right)_v + \left(\frac{G_u}{\sqrt{EG}}\right)_u\right\}.
+\]
+\end{exercise}
+
+\begin{exercise}{4-3, 2 — do Carmo, Exercise 4-3, 2}
+设 $\mathbf{x}$ 是等温参数化（$E=G=\lambda^2(u,v)$，$F=0$），证明：
+\[
+K = -\frac{1}{2\lambda}\Delta(\log\lambda),
+\]
+其中 $\Delta$ 是 Laplacian。进而，若 $E=G=(u^2+v^2+c)^{-2}$，$F=0$，则 $K=4c=\mathrm{const}$。
+\end{exercise}
+
+\begin{exercise}{4-3, 3 — do Carmo, Exercise 4-3, 3}
+验证以下两张曲面
+\[
+\mathbf{x}(u,v) = (u\cos v,\; u\sin v,\; \log u),\quad
+\bar{\mathbf{x}}(u,v) = (u\cos v,\; u\sin v,\; v)
+\]
+在对应点有相同的 Gaussian 曲率，但映射 $\bar{\mathbf{x}} \circ \mathbf{x}^{-1}$ 不是等距。这说明 Gauss 定理的"逆命题"不成立。
+\end{exercise}
+
+\begin{exercise}{4-3, 4 — do Carmo, Exercise 4-3, 4}
+证明：球面的任一邻域都不能等距映射到平面上。
+\end{exercise}
+
+\begin{exercise}{4-3, 5 — do Carmo, Exercise 4-3, 5}
+若坐标曲线形成 Tchebyshev 网（$E=G=1$，$F=\cos\theta$），证明 $K = -\theta_{uv}/\sin\theta$。
+\end{exercise}
+
+\begin{exercise}{4-3, 6 — do Carmo, Exercise 4-3, 6}
+证明：不存在满足 $E=G=1$，$F=0$ 和 $e=1$，$g=-1$，$f=0$ 的曲面 $\mathbf{x}(u,v)$。
+\end{exercise}
+
+\begin{exercise}{4-3, 7 — do Carmo, Exercise 4-3, 7}
+是否存在满足 $E=1$，$F=0$，$G=\cos^2 u$ 和 $e=\cos^2 u$，$f=0$，$g=1$ 的曲面？
+\end{exercise}
+
+\begin{exercise}{4-3, 8 — do Carmo, Exercise 4-3, 8}
+计算平面（a）直角坐标和（b）极坐标下的 Christoffel 符号，并用 Gauss 公式计算 $K$。
+\end{exercise}
+
+\begin{exercise}{4-3, 9 — do Carmo, Exercise 4-3, 9}
+说明以下曲面为何两两不局部等距：（a）球面；（b）圆柱面；（c）抛物面 $z=x^2-y^2$。
+\end{exercise}
+
+% ==================== Section 4-4: Parallel Transport. Geodesics. ====================
+\section{Parallel Transport. Geodesics.}\label{sec:parallel-transport}
+
+\textbf{The covariant derivative as intrinsic differentiation.} 现在我们开始系统研究内蕴几何。首先引入曲面上向量场的共变导数，它是平面向量微分在曲面情形下的推广。
+
+\begin{Definition}[共变导数]\label{def:covariant-derivative}
+设 $\mathbf{w}$ 是开集 $U \subset S$ 上的可微向量场，$p \in U$，$y \in T_p(S)$。取参数曲线 $\alpha: (-\epsilon,\epsilon) \to U$，$\alpha(0)=p$，$\alpha'(0)=y$，并设 $w(t)$ 是 $\mathbf{w}$ 限制在 $\alpha$ 上的向量场。将 $(dw/dt)(0)$ 法投影到 $T_p(S)$ 上得到的向量称为 $\mathbf{w}$ 在 $p$ 处沿 $y$ 的\textbf{共变导数}（covariant derivative），记为 $(Dw/dt)(0)$ 或 $(D_yw)(p)$（教材 Figure 4-8（见 \cref{fig:fig4-8}））。
+\end{Definition}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-8. 共变导数的几何意义]{\label{fig:fig4-8}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/a32e506ff2b166230093d24cd4de247d299f71e1ccc68eebbf2e35dc5fe64b2d.jpg}}
+\end{minipage}
+\end{figure}
+
+通过参数化 $\mathbf{x}(u,v)$ 中的分量表达，共变导数只依赖于向量 $(u',v') = y$，而不依赖于曲线 $\alpha$ 的选择。表达式为：
+\[
+\frac{Dw}{dt} = \left(a' + \Gamma_{11}^1 a u' + \Gamma_{12}^1 a v' + \Gamma_{12}^1 b u' + \Gamma_{22}^1 b v'\right)\mathbf{x}_u
++ \left(b' + \Gamma_{11}^2 a u' + \Gamma_{12}^2 a v' + \Gamma_{12}^2 b u' + \Gamma_{22}^2 b v'\right)\mathbf{x}_v.
+\tag{1}
+\]
+
+特别地，当 $S$ 是平面时（取 $E=G=1$，$F=0$），Christoffel 符号均为零，共变导数退化为平面上向量通常的导数。因此共变导数是平面向量微分在曲面情形下的自然推广。
+
+\begin{Definition}[平行向量场]\label{def:parallel-field}
+设 $\mathbf{w}$ 是沿曲线 $\alpha: I \to S$ 的可微向量场。若 $D\mathbf{w}/dt = 0$ 对所有 $t \in I$ 成立，则称 $\mathbf{w}$ 是\textbf{平行向量场}（parallel field along $\alpha$）。
+\end{Definition}
+
+\begin{Proposition}[平行场的保角性]\label{prop:parallel-preserves-angle}
+沿曲线 $\alpha$ 的两个平行向量场 $\mathbf{w}$ 和 $\mathbf{v}$ 的内积 $\langle \mathbf{w}(t), \mathbf{v}(t) \rangle$ 为常数。特别地，$|\mathbf{w}(t)|$ 和 $|\mathbf{v}(t)|$ 为常数，$\mathbf{w}(t)$ 与 $\mathbf{v}(t)$ 之间的夹角也为常数。
+\end{Proposition}
+
+\begin{Proposition}[平行运输的存在唯一性]\label{prop:parallel-transport}
+设 $\alpha: I \to S$ 是参数曲线，$w_0 \in T_{\alpha(t_0)}(S)$，$t_0 \in I$。则存在唯一的沿 $\alpha$ 的平行向量场 $\mathbf{w}(t)$，使 $\mathbf{w}(t_0) = w_0$。
+\end{Proposition}
+
+\begin{Definition}[平行运输]\label{def:parallel-transport}
+设 $\alpha: I \to S$ 是参数曲线，$w_0 \in T_{\alpha(t_0)}(S)$。将 $w_0$ 沿 $\alpha$ 平行移动得到的向量场 $\mathbf{w}(t)$ 在 $t_1$ 处的值 $\mathbf{w}(t_1)$ 称为 $w_0$ 沿 $\alpha$ 在 $t_1$ 处的\textbf{平行运输}（parallel transport）。
+\end{Definition}
+
+平行运输的一个重要性质：若两曲面沿曲线 $\alpha$ 相切，则沿 $\alpha$ 的平行运输在两张曲面上相同。
+
+\begin{Example}[球面上的平行运输]\label{ex:parallel-sphere}
+单位球面 $S^2$ 上，纬线（平行圆）的切向量场若沿该纬线平移，则保持与纬线的夹角为常数（教材 Figure 4-11（见 \cref{fig:fig4-11}））。
+
+具体地，设 $C$ 是余纬度为 $\varphi$ 的纬线，$w_0$ 是 $C$ 上某点处的单位切向量。沿 $C$ 平行运输一周后，向量相对于初始位置的转角为 $2\pi - \theta$（其中 $\theta$ 是中心角）。
+\end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[Figure 4-9. 曲线上的切向量场]{\label{fig:fig4-9}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/58f013cc939f2f2be40e76a2123ccfee464e975b78b8ca5f24ae6d144405cdc9.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-10. 平面上的平行向量场]{\label{fig:fig4-10}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/3958b81e2e6b6026c3b6fa030678d6147aa26191c953a00e6118e0fa1cc14c82.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.50\textwidth}
+\centering
+\subfloat[Figure 4-11. 球面上的平行场]{\label{fig:fig4-11}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/7018de7d6cf0f188f91024eb14310c5a27e92fe83d6f94abce16bfd2e79c5b13.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[Figure 4-12. 纬线上平行运输的几何构造]{\label{fig:fig4-12}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/52affde3eb1685ac8decd2bf0d621e9fae252c5ce15c16c7bb119ff2908cb49d.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-13. 圆锥展开后的平行运输]{\label{fig:fig4-13}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/7109502d0af63724e52fcde73cd54979936029dd6a250f7030f946fa9afa0e43.jpg}}
+\end{minipage}
+\end{figure}
+
+\textbf{Geodesics.} 在平面上，切向量场平行的曲线正是直线。测地线是这一性质在曲面情形下的推广。
+
+\begin{Definition}[测地线]\label{def:geodesic}
+非平凡参数曲线 $\gamma: I \to S$ 称为在 $t \in I$ 处是\textbf{测地的}（geodesic at $t$），如果其切向量场 $\gamma'(t)$ 沿 $\gamma$ 在 $t$ 处平行，即
+\[
+\frac{D\gamma'(t)}{dt} = 0.
+\]
+若 $\gamma$ 对所有 $t \in I$ 均为测地的，则称其为\textbf{参数化测地线}（parametrized geodesic）。
+\end{Definition}
+
+由 \cref{prop:parallel-preserves-angle}，参数化测地线有 $| \gamma'(t) | = \mathrm{const} = c \neq 0$，因此可以取弧长 $s = ct$ 作为参数——即参数 $t$ 与弧长成正比。
+
+从外蕴角度看，曲线 $C \subset S$（$k \neq 0$）是测地线，当且仅当其每点处的主法向量与曲面法向量平行——也就是说，曲线"尽可能直"。
+
+\begin{Example}[球面的大圆是测地线]\label{ex:great-circles}
+球面 $S^2$ 的大圆由过球心的平面与球面的交线得到。由于大圆是圆心在球心的圆，其主法向量指向圆心，从而与球面法向量一致。因此大圆是测地线。
+\end{Example}
+
+\begin{Example}[圆柱面上的测地线]\label{ex:cylinder-geodesics}
+正圆柱面 $x^2+y^2=1$ 的测地线包括：母线（直线）和正交于轴的圆。具体地，圆柱面参数化 $\mathbf{x}(u,v) = (\cos u, \sin u, v)$ 下的测地线由方程组给出（教材 Figure 4-15（见 \cref{fig:fig4-15}））。除了直线和圆之外，螺旋线也是圆柱面的测地线——这是因为圆柱面去掉一条母线后等距于平面，而平面上两点之间的最短路径是直线，在圆柱面上对应的就是螺旋线。
+\end{Example}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-15. 圆柱面上的测地线：圆、螺旋线和母线]{\label{fig:fig4-15}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/8323f6615eba636857dda49d36c4c46af03766f13b7e6676e92675cdd47f30c2.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[Figure 4-16. 圆柱面上连接两点的无穷多条测地线]{\label{fig:fig4-16}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/7694cd790d84ea64dcbd613e30c8500ba9c0b49e6536e2fa626f8ed0e3efc2a1.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Proposition}[测地线的存在唯一性]\label{prop:geodesic-existence}
+给定 $p \in S$ 和非零向量 $w \in T_p(S)$，存在 $\epsilon > 0$ 和唯一的参数化测地线 $\gamma: (-\epsilon, \epsilon) \to S$，使 $\gamma(0) = p$，$\gamma'(0) = w$。
+\end{Proposition}
+
+在正交参数化下，测地线的方程为：
+\[
+\begin{cases}
+u'' + \Gamma_{11}^1 (u')^2 + 2\Gamma_{12}^1 u'v' + \Gamma_{22}^1 (v')^2 = 0,\\[2pt]
+v'' + \Gamma_{11}^2 (u')^2 + 2\Gamma_{12}^2 u'v' + \Gamma_{22}^2 (v')^2 = 0.
+\end{cases}
+\tag{4}
+\]
+
+\textbf{Geodesic curvature.} 平面上曲线的曲率描述其偏离直线的程度。测地曲率是这一概念在曲面情形下的推广。
+
+\begin{Definition}[测地曲率]\label{def:geodesic-curvature}
+设 $C$ 是定向曲面 $S$ 上的有向正则曲线，$\alpha(s)$ 是以弧长为参数的邻域参数化。$C$ 在 $p$ 处的\textbf{测地曲率}（geodesic curvature）为代数值 $[D\alpha'(s)/ds] = k_g \alpha'(s)$。
+\end{Definition}
+
+测地线的特征是测地曲率为零（$k_g = 0$）。
+
+Liouville 公式给出了正交参数化下测地曲率的表达式（教材 Figure 4-17 和 Figure 4-18（见 \cref{fig:fig4-17,fig:fig4-18}））：
+
+\begin{Proposition}[Liouville 公式]\label{prop:liouville}
+设 $\mathbf{x}(u,v)$ 是 $S$ 的正交参数化（$F=0$），$\alpha(s)$ 是有向正则曲线 $C$ 的弧长参数化，$\varphi(s)$ 是 $\mathbf{x}_u$ 与 $\alpha'(s)$ 之间的有向角。则
+\[
+k_g = (k_g)_1 \cos\varphi + (k_g)_2 \sin\varphi + \frac{d\varphi}{ds},
+\tag{*}
+\]
+其中 $(k_g)_1$ 和 $(k_g)_2$ 分别是坐标曲线 $v=\mathrm{const}$ 和 $u=\mathrm{const}$ 的测地曲率。
+\end{Proposition}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-17. 曲率分解 $k^2 = k_g^2 + k_n^2$]{\label{fig:fig4-17}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/f780bbd0905f1b1ff42460a1a48ea18d1b6f029b834695ae102ada481fe1bef4.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-18. 球面上纬线的测地曲率]{\label{fig:fig4-18}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6f369dfbf71de0885d0b4e3e5ea8c5179445092355b59bec0f01940e31eda3b1.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+测地曲率 $k_g$ 在以下情形下变号：改变曲线 $C$ 或曲面 $S$ 的定向。这与 $K$（由行列式定义）不同——$K$ 的符号与曲面定向无关。
+\end{Remark}
+
+\textbf{Clairaut's relation.} 对于旋转面上的测地线，有一个重要的几何关系。设旋转面 $S$ 由 $(f(v)\cos u,\; f(v)\sin u,\; g(v))$ 参数化，则由 (4) 的第一个方程可得
+\[
+f^2 u' = \mathrm{const} = c.
+\tag{**}
+\]
+设 $\theta$ 是测地线与纬线之间的夹角，则由第一基本形式可得
+\[
+\cos\theta = |fu'| = \frac{|c|}{f}.
+\]
+于是得到 Clairaut 关系：
+\[
+r\cos\theta = \mathrm{const} = |c|,
+\]
+其中 $r = f$ 是纬线半径。直观上：测地线到轴的距离与夹角余弦的乘积为常数（教材 Figure 4-19（见 \cref{fig:fig4-19}））。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-19. Clairaut 关系：旋转面上测地线的几何约束]{\label{fig:fig4-19}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/bddaed62c0b6d28517e5ef538040464f3b623c4e2b10d084ae2ad82c9ad885ea.jpg}}
+\end{minipage}
+\end{figure}
+
+Clairaut 关系的一个应用：抛物面 $z=x^2+y^2$ 上的非子午线测地线必与所有子午线相交，从而无限次自交（教材 Figure 4-20（见 \cref{fig:fig4-20}））。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-20. 抛物面上测地线的自交现象]{\label{fig:fig4-20}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/9e8baf69971bdd20fbb97b03d9f9aa9ea0f562dcd33d692943ac15331035db86.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+与平面不同，曲面上两点之间可能有多条测地线（如圆柱面上同一点的不同螺旋线可以连接同一条纬线上的两点）。
+\end{Remark}
+
+\begin{Remark}
+球面上每点每方向唯一确定一条大圆（测地线），但经过延伸后，较长的大圆弧不是连接两点的最短路径。
+\end{Remark}
+
+\begin{Remark}
+教材 Figure 4-21（见 \cref{fig:fig4-21}）展示了球面上平行圆上平行运输一圈后的角度变化。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-21. 球面上平行圆绕一圈后的角度变化]{\label{fig:fig4-21}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/810751630caccdbfbf1bea5762bf7dfb4a3ee7cf7d972163b1b3b3c4c86d80ab.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+教材 Figure 4-22（见 \cref{fig:fig4-22}）展示了单叶双曲面上一条特殊测地线趋近于赤道平行的有趣行为。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-22. 单叶双曲面上测地线趋近于赤道]{\label{fig:fig4-22}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/254492eaf279a277aa50d663f514ffe71e1e0c24277de28a838e56cbe078ed0c.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+测地线的另一个有趣应用是关于直线面（ruled surface）的：若 $\alpha(s)$ 是挠率非零的曲线，$\mathbf{x}(s,v) = \alpha(s) + vb(s)$（其中 $b$ 是 $\alpha$ 的副法向量），则 $\mathbf{x}$ 是正则曲面，且 $\alpha$ 是该曲面上的测地线（教材习题 17）。
+\end{Remark}
+
+\begin{Remark}
+教材 Figure 4-14（见 \cref{fig:fig4-14}）展示了沿一般曲线 $C$ 的平行运输的几何构造：通过沿 $C$ 的切平面族的包络面来实现。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-14. 沿曲线 C 的平行运输构造]{\label{fig:fig4-14}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/cc21bcdb163bffebf68dbaae3c27f43c6b235a2f4b662a3aa56a256b1d3a950d.jpg}}
+\end{minipage}
+\end{figure}
+
+\subsection*{4-4 节练习}
+
+\begin{exercise}{4-4, 1 — do Carmo, Exercise 4-4, 1}
+（a）证明：若曲线 $C \subset S$ 既是曲率线（line of curvature）又是测地线，则 $C$ 是平面曲线。（b）证明：若（非直线的）测地线是平面曲线，则它是曲率线。（c）给出一个是平面曲线和曲率线但不是测地线的例子。
+\end{exercise}
+
+\begin{exercise}{4-4, 2 — do Carmo, Exercise 4-4, 2}
+证明：曲线 $C \subset S$ 既是渐近曲线又是测地线，当且仅当 $C$ 是直线段。
+\end{exercise}
+
+\begin{exercise}{4-4, 3 — do Carmo, Exercise 4-4, 3}
+不使用 \cref{prop:geodesic-existence}，证明平面上唯一的测地线是直线。
+\end{exercise}
+
+\begin{exercise}{4-4, 4 — do Carmo, Exercise 4-4, 4}
+设 $v$ 和 $w$ 是沿曲线 $\alpha: I \to S$ 的向量场。证明：
+\[
+\frac{d}{dt}\langle v(t), w(t) \rangle = \left\langle \frac{Dv}{dt}, w(t) \right\rangle + \left\langle v(t), \frac{Dw}{dt} \right\rangle.
+\]
+\end{exercise}
+
+\begin{exercise}{4-4, 5 — do Carmo, Exercise 4-4, 5}
+考虑环面 $\mathbf{x}(u,v) = ((r\cos u+a)\cos v,\; (r\cos u+a)\sin v,\; r\sin u)$（$a>r>0$）。设纬线 $u=0$（最大纬线）、$u=\pi$（最小纬线）和 $u=\pi/2$（上半纬线）。判断哪些纬线是：（a）测地线；（b）渐近曲线；（c）曲率线。
+\end{exercise}
+
+\begin{exercise}{4-4, 6* — do Carmo, Exercise 4-4, 6}
+计算环面上 $u=\pi/2$ 纬线的测地曲率绝对值。
+\end{exercise}
+
+\begin{exercise}{4-4, 7 — do Carmo, Exercise 4-4, 7}
+用与 $x$ 轴成角 $\theta$ 的平面截圆柱面 $x^2+y^2=1$。（a）证明截线是椭圆。（b）计算椭圆在主轴处相对于圆柱面的测地曲率绝对值。
+\end{exercise}
+
+\begin{exercise}{4-4, 8* — do Carmo, Exercise 4-4, 8}
+证明：若连通曲面上所有测地线都是平面曲线，则该曲面包含于一张平面或一个球面中。
+\end{exercise}
+
+\begin{exercise}{4-4, 9* — do Carmo, Exercise 4-4, 9}
+考虑球面上从北极出发的两条子午线，在两子午线夹角 $\varphi$ 处，将切向量沿两条子午线分别平行运输到交点 $p_2$。计算两条平行运输结果之间的夹角（教材 Figure 4-21（见 \cref{fig:fig4-21}））。
+\end{exercise}
+
+\begin{exercise}{4-4, 10* — do Carmo, Exercise 4-4, 10}
+证明：有向曲线 $C \subset S$ 在 $p$ 处的测地曲率，等于将 $C$ 沿法向量方向投影到切平面 $T_p(S)$ 后所得平面曲线的曲率。
+\end{exercise}
+
+\begin{exercise}{4-4, 11 — do Carmo, Exercise 4-4, 11}
+陈述并证明：代数值共变导数在保向等距下不变。
+\end{exercise}
+
+\begin{exercise}{4-4, 12* — do Carmo, Exercise 4-4, 12}
+设曲面 $S$ 允许两组可微的正交测地线族。证明 $S$ 的 Gaussian 曲率为零。
+\end{exercise}
+
+\begin{exercise}{4-4, 13* — do Carmo, Exercise 4-4, 13}
+设 $V$ 是 $p$ 的连通邻域，任意两点之间的平行运输与路径无关。证明 $V$ 的 Gaussian 曲率为零。
+\end{exercise}
+
+\begin{exercise}{4-4, 14 — do Carmo, Exercise 4-4, 14}
+设 $S$ 是定向曲面，$\alpha: I \to S$ 是以弧长为参数的正则曲线。在 $p=\alpha(s)$ 处考虑 Darboux 三棱形 $T(s)=\alpha'(s)$、$N(s)$（曲面法向量）和 $V(s)=N(s)\wedge T(s)$。建立类似 Frenet 公式的 Darboux 公式，并说明系数：（a）$c$ 是测地挠率（geodesic torsion）；（b）$b$ 是法曲率；（c）$a$ 是测地曲率。
+\end{exercise}
+
+\begin{exercise}{4-4, 15 — do Carmo, Exercise 4-4, 15}
+在单位球面 $S^2$ 上，北极 $p_0$ 和赤道上两点 $q,r$（夹角 $\theta$），将切于子午线 $p_0q$ 的单位向量沿闭合路径（$p_0q$、赤道 $qr$、$rp_0$）平行运输一圈。求最终向量与初始向量的夹角（教材 Figure 4-21（见 \cref{fig:fig4-21}））。
+\end{exercise}
+
+\begin{exercise}{4-4, 16* — do Carmo, Exercise 4-4, 16}
+设 $p$ 是抛物点邻域（所有点均为抛物点）的点。证明过 $p$ 的唯一渐近曲线是直线段。
+\end{exercise}
+
+\begin{exercise}{4-4, 17 — do Carmo, Exercise 4-4, 17}
+设 $\alpha: I \to \mathbb{R}^3$ 是 $k\neq 0$ 的正则曲线，$\mathbf{x}(s,v) = \alpha(s)+vb(s)$ 是其切线面（$b$ 为副法向量）。证明当 $\epsilon$ 充分小时，$\mathbf{x}(I\times(-\epsilon,\epsilon))$ 是正则曲面，且 $\alpha(I)$ 是该曲面上的测地线。
+\end{exercise}
+
+\begin{exercise}{4-4, 18* — do Carmo, Exercise 4-4, 18}
+考虑双叶双曲面 $x^2+y^2-z^2=1$ 上半部（$z>0$）一点 $p$ 处的测地线，使其与过 $p$ 的纬线夹角 $\theta$ 满足 $\cos\theta=1/r$（$r$ 为到 $z$ 轴距离）。证明：沿递减纬线方向，测地线渐近趋近于赤道 $x^2+y^2=1$（教材 Figure 4-22（见 \cref{fig:fig4-22}））。
+\end{exercise}
+
+\begin{exercise}{4-4, 19* — do Carmo, Exercise 4-4, 19}
+证明：当测地线方程（4）用弧长参数表示时，除坐标曲线外，第二个方程可由第一个推出。
+\end{exercise}
+
+\begin{exercise}{4-4, 20 — do Carmo, Exercise 4-4, 20}
+对环面 $\mathbf{x}(u,v) = ((r\cos u+a)\cos v,\; (r\cos u+a)\sin v,\; r\sin u)$ 证明：（a）若测地线切于 $u=\pi/2$ 纬线，则完全包含在 $-\pi/2 \leqslant u \leqslant \pi/2$ 区域；（b）若测地线与 $u=0$ 纬线交角 $\theta$ 满足 $\cos\theta < (a-r)/(a+r)$，则必与 $u=\pi$ 纬线相交。
+\end{exercise}
+
+\begin{exercise}{4-4, 21 — do Carmo, Exercise 4-4, 21}
+Liouville 曲面是第一基本形式可写为 $E=G=U(u)+V(v)$，$F=0$ 的曲面。（a）证明 Liouville 曲面的测地线可通过积分得到 $\int \frac{du}{\sqrt{U-c}} = \pm \int \frac{dv}{\sqrt{V+c}} + c_1$。（b）证明：若 $\theta$ 是测地线与 $v=\mathrm{const}$ 曲线的夹角，则 $U\sin^2\theta - V\cos^2\theta = \mathrm{const}$（Clairaut 关系的推广）。
+\end{exercise}
+
+\begin{exercise}{4-4, 22 — do Carmo, Exercise 4-4, 22}
+设 $S^2$ 是单位球面，$p \in S^2$。对任意分段正则闭合曲线 $\alpha: [0,l] \to S^2$，$\alpha(0)=\alpha(l)=p$，平行运输映射 $P_\alpha: T_p(S^2) \to T_p(S^2)$ 是一个线性等距。证明：$T_p(S^2)$ 的每个旋转都可以表示为某个 $\alpha$ 的平行运输映射。
+\end{exercise}
+
+\begin{exercise}{4-4, 23 — do Carmo, Exercise 4-4, 23}
+证明单位球面 $S^2$ 的等距恰好是 $\mathbb{R}^3$ 中线性正交变换在 $S^2$ 上的限制。
+\end{exercise}
+
+% ==================== Section 4-5: The Gauss-Bonnet Theorem and Its Applications ====================
+\section{The Gauss-Bonnet Theorem and Its Applications}\label{sec:gauss-bonnet}
+
+\textbf{The crown jewel of surface theory.} Gauss-Bonnet 定理是曲面微分几何中最深刻的定理。它建立了曲面的拓扑（通过 Euler 示性数）与曲率（通过积分）之间的基本联系。
+
+我们先从局部版本开始。
+
+\textbf{Geodesic triangles.} 首先考虑测地三角形（三角形三边均为测地线弧）。Gauss 的原始版本为：
+
+\[
+\sum_{i=1}^3 \varphi_i - \pi = \iint_T K\, d\sigma,
+\tag{1}
+\]
+其中 $\varphi_i$ 是内角，$T$ 是三角形区域（教材 Figure 4-23（见 \cref{fig:fig4-23}））。
+
+直观含义：
+\begin{itemize}
+\item $K \equiv 0$（平面）时，$\sum\varphi_i = \pi$——Thales 定理的推广。
+\item $K \equiv 1$（单位球面）时，$\sum\varphi_i - \pi = \mathrm{area}(T) > 0$——球面上测地三角形内角和大于 $\pi$。
+\item $K \equiv -1$（伪球面）时，$\sum\varphi_i < \pi$——双曲几何的开端（教材 Figure 4-24（见 \cref{fig:fig4-24}））。
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[Figure 4-23. 球面上的测地三角形]{\label{fig:fig4-23}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/7f17a66799fbba53c988fe3de929e1c81e7e2d8ac32746b6a23a4f32b55cf802.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.50\textwidth}
+\centering
+\subfloat[Figure 4-24. 不同曲率曲面上的测地三角形内角和]{\label{fig:fig4-24a}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/e9e8f241c48b4fe66fd41816cf53fa20108e0888ae882ff02d856598209a91a6.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[$K\equiv -1,\; \sum\varphi_i < \pi$]{\label{fig:fig4-24b}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6ff282221ad4338e008ce434e211a533767de832b7c2c8f811ad3e3b04447d26.jpg}}
+\end{minipage}
+\end{figure}
+
+\textbf{Local Gauss-Bonnet theorem.} 现在给出局部 Gauss-Bonnet 定理的完整陈述。首先需要一些定义。
+
+\begin{Definition}[简单闭分段正则曲线]\label{def:simple-closed-piecewise}
+映射 $\alpha: [0,l] \to S$ 称为\textbf{简单闭分段正则参数曲线}，如果：
+\begin{enumerate}
+\item $\alpha(0) = \alpha(l)$；
+\item $t_1 \neq t_2$（$t_1,t_2 \in [0,l)$）时 $\alpha(t_1) \neq \alpha(t_2)$；
+\item 存在分划 $0 = t_0 < t_1 < \dots < t_k < t_{k+1} = l$，使 $\alpha$ 在每个 $(t_i, t_{i+1})$ 上是正则曲线。
+\end{enumerate}
+\end{Definition}
+
+点 $\alpha(t_i)$ 称为 $\alpha$ 的\textbf{顶点}（vertices），$\alpha([t_i,t_{i+1}])$ 称为 $\alpha$ 的\textbf{正则弧}（regular arcs）。
+
+\begin{Definition}[外角]\label{def:external-angle}
+设 $S$ 定向，$|\theta_i|$（$0 \leq |\theta_i| < \pi$）是从 $\alpha'(t_i-0)$ 到 $\alpha'(t_i+0)$ 的最小转角的有向值。若非尖点（$|\theta_i| \neq \pi$），则 $\theta_i$ 的符号由定向决定。若 $|\theta_i| = \pi$（尖点），则 $\theta_i = \pm\pi$，由曲线在尖点处的两侧方向决定（教材 Figure 4-25 和 Figure 4-26（见 \cref{fig:fig4-25,fig:fig4-26}））。
+\end{Definition}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-25. 外角的定义]{\label{fig:fig4-25}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/692e99bb5f3b4a1db58e8a343b95ecc8bf19d1e5a2901bc6a7b8e1a069f285d3.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-26. 尖点处外角的符号]{\label{fig:fig4-26}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/eebe4d082414c2dc89923824b12008640d791e9d08af11a826d687e8e1363825.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Theorem}[Turning Tangents 定理]\labelthm:turning-tangents}
+设 $\alpha$ 是如上定义的分段正则闭曲线，$\varphi_i$ 是从固定方向到第 $i$ 段弧切向量的转角函数。则
+\[
+\sum_{i=0}^k \left(\varphi_i(t_{i+1}) - \varphi_i(t_i)\right) + \sum_{i=0}^k \theta_i = \pm 2\pi,
+\]
+其中符号取决于 $\alpha$ 的定向。
+\end{Theorem}
+
+\begin{Definition}[正向边界]\label{def:positive-orientation}
+设 $R \subset S$ 是简单区域（与圆盘同胚），$\partial R = \alpha(I)$ 是其边界。若沿 $\alpha$ 正向行走并使头指向 $N$ 时，区域 $R$ 总在左侧，则称 $\alpha$ 是\textbf{正向定向}的（教材 Figure 4-27（见 \cref{fig:fig4-27}））。
+\end{Definition}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-27. 正向定向的边界曲线]{\label{fig:fig4-27}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/2888e12eef0e0124556067081fa4cf88b516d79283e4052cde21bcf2d374e4e5.jpg}}
+\end{minipage}
+\end{figure}
+
+现在可以陈述局部 Gauss-Bonnet 定理。
+
+\begin{Theorem}[Gauss-Bonnet 定理（局部版本）]\labelthm:gauss-bonnet-local}
+设 $\mathbf{x}: U \to S$ 是等温参数化（$F=0$，$E=G=\lambda^2$），$R \subset \mathbf{x}(U)$ 是有界简单区域，$\alpha: I \to S$ 是 $\partial R = \alpha(I)$ 的正向弧长参数化，$\alpha(s_0),\dots,\alpha(s_k)$ 和 $\theta_0,\dots,\theta_k$ 分别是其顶点和外角。则
+\[
+\sum_{i=0}^k \int_{s_i}^{s_{i+1}} k_g(s)\, ds + \iint_R K\, d\sigma + \sum_{i=0}^k \theta_i = 2\pi,
+\tag{1}
+\]
+其中 $k_g$ 是正则弧的测地曲率，$K$ 是 $S$ 的 Gaussian 曲率。
+\end{Theorem}
+
+\begin{Remark}
+当 $R$ 是测地三角形时，$k_g = 0$ 在每条边上，且外角 $\theta_i = \pi - \varphi_i$（$\varphi_i$ 为内角），于是 (1) 化为 $\sum \varphi_i - \pi = \iint_T K\, d\sigma$——Gauss 的原始版本。
+\end{Remark}
+
+\textbf{Global Gauss-Bonnet theorem.} 为了得到整体版本，我们需要拓扑概念。
+
+设 $S$ 是紧致定向曲面，$R_1, \dots, R_n$ 是将 $S$ 分割为若干简单区域的测地多边形。令 $\chi(S) = \sum_{i=1}^n v_i - e + f$ 为 $S$ 的 Euler 示性数（其中 $v_i$ 是顶点数，$e$ 是边数，$f=n$ 是面数）。
+
+\begin{Theorem}[Gauss-Bonnet 定理（整体版本）]\labelthm:gauss-bonnet-global}
+设 $S$ 是紧致定向曲面。则
+\[
+\iint_S K\, d\sigma = 2\pi\chi(S).
+\]
+\end{Theorem}
+
+\begin{Corollary}[紧致曲面总曲率的拓扑约束]\label{cor:total-curvature}
+\[
+\iint_S K\, d\sigma = 2\pi\chi(S) = 2\pi(2-2g - b),
+\]
+其中 $g$ 是亏格（genus），$b$ 是边界分支数。特别地：
+\begin{itemize}
+\item 若 $K > 0$ 在某开集上，则该区域对 Euler 示性数贡献正数；
+\item 若 $K \leq 0$ 在整个 $S$ 上，则 $\chi(S) \leq 0$，从而 $g \geq 1$ 或 $b \geq 2$。
+\end{itemize}
+\end{Corollary}
+
+Gauss-Bonnet 定理的一个直接推论是著名的 Poincaré-Hopf 定理的特殊情形：
+
+\begin{Corollary}[曲率积分与 Euler 示性数]\label{cor:curvature-euler}
+紧致曲面的总曲率仅由其拓扑决定，与具体形状无关。例如，环面（$g=1$，$b=0$）的 $\chi = 0$，无论其如何嵌入 $\mathbb{R}^3$，总满足 $\iint K\, d\sigma = 0$。
+\end{Corollary}
+
+\begin{Remark}
+Gauss-Bonnet 定理是微分几何与拓扑学之间的第一座桥梁。它的深远影响在于：局部定义的曲率（通过微分）通过积分与整体拓扑（Euler 示性数）建立了等价关系。这一思想在现代几何中无处不在——Gauss-Bonnet 定理是 Atiyah-Singer 指标定理的特殊情形。
+\end{Remark}
+
+% ==================== Section 4-6: The Exponential Map. Geodesic Polar Coordinates ====================
+\section{The Exponential Map. Geodesic Polar Coordinates}\label{sec:exponential-map}
+
+\textbf{The exponential map.} 测地线的存在唯一性（\cref{prop:geodesic-existence}）允许我们定义指数映射。
+
+设 $p \in S$，$v \in T_p(S)$，$v \neq 0$。令 $\gamma(t, v)$ 是在初始条件 $\gamma(0, v) = p$，$\gamma'(0, v) = v$ 下的测地线。则由缩放性质 $\gamma(t, \lambda v) = \gamma(\lambda t, v)$（对 $\lambda > 0$）。若 $\gamma(1, v)$ 有定义，定义
+\[
+\exp_p(v) = \gamma(1, v),\quad \exp_p(0) = p.
+\]
+几何意义：从 $p$ 出发沿方向 $v$ 测地线前进 $|v|$ 长度后到达的点（教材 Figure 4-36（见 \cref{fig:fig4-36}））。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-36. 指数映射的几何意义]{\label{fig:fig4-36}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/a98f5b7b8916e917cbc316f27fed0231040d571f23ff9940c9a7e4fd546993e3.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-37. 锥面上指数映射未定义的方向]{\label{fig:fig4-37}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/ae7d6d0ef5c558f02468167b1960fee311ed7bcc47c28652c3800c62aa372f2c.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Proposition}[指数映射的可微性]\label{prop:exp-differentiable}
+给定 $p \in S$，存在 $\epsilon > 0$，使 $\exp_p$ 在 $T_p(S)$ 的以原点为中心、半径 $\epsilon$ 的开圆盘 $B_\epsilon$ 上有定义且可微。
+\end{Proposition}
+
+\begin{Proposition}[指数映射是局部微分同胚]\label{prop:exp-diffeomorphism}
+$\exp_p: B_\epsilon \subset T_p(S) \to S$ 在原点的某邻域 $U$ 上是微分同胚。
+\end{Proposition}
+
+由此，我们可以引入两种重要的局部坐标系：
+
+\textbf{1. 法坐标（Normal coordinates）：} 在 $T_p(S)$ 中取两个正交单位向量 $e_1, e_2$，则 $q = \exp_p(ue_1 + ve_2)$ 的坐标为 $(u,v)$。在法坐标系中，$p$ 处 $E=G=1$，$F=0$。
+
+\textbf{2. 测地极坐标（Geodesic polar coordinates）：} 在 $T_p(S)$ 中取极坐标 $(\rho, \theta)$，则 $q = \exp_p(\rho e(\theta))$ 的坐标为 $(\rho, \theta)$（教材 Figure 4-38（见 \cref{fig:fig4-38}））。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-38. 测地极坐标的几何构造]{\label{fig:fig4-38}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/c1f83b6aeebd47f99b1fdd9d223b9ad5cae1c0dbd835e2cf1c1c7be75f19c4ab.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Proposition}[测地极坐标的基本性质]\label{prop:polar-coords}
+设 $\mathbf{x}(\rho,\theta)$ 是测地极坐标。则第一基本形式满足：
+\[
+E = 1,\quad F = 0,\quad \lim_{\rho\to 0} G = 0,\quad \lim_{\rho\to 0} (\sqrt{G})_\rho = 1.
+\]
+\end{Proposition}
+
+由 $E=1$ 和 $F=0$ 可知，$\rho$ 曲线（$\theta = \mathrm{const}$）是单位速度测地线（径向测地线），而 $\theta$ 曲线（$\rho = \mathrm{const}$）是测地圆。
+
+\textbf{Gauss lemma.} $F=0$ 的几何意义是：在法邻域中，测地圆与径向测地线正交——这就是 Gauss 引理（教材 Figure 4-39（见 \cref{fig:fig4-39a,fig:fig4-39b}））。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[$K < 0$：测地线相互远离]{\label{fig:fig4-39a}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/cba1cd8428f148ac5582b50fa8494b4ef92e8eb422b6893a54d4fca06aad5fcd.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[$K > 0$：测地线先远离后靠近]{\label{fig:fig4-39b}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/092f5c023f3f6a18afa0e4dbcdae0f5cefdb264a29093a65961a882e169438dd.jpg}}
+\end{minipage}
+\end{figure}
+
+\textbf{Geodesic circles and Gaussian curvature.} 在测地极坐标中，Gaussian 曲率可写为
+\[
+K = -\frac{(\sqrt{G})_{\rho\rho}}{\sqrt{G}}.
+\tag{2}
+\]
+
+当 $K$ 为常数时，可解此微分方程得到 $G$ 的显式形式，进而得到 Minding 定理：
+
+\begin{Theorem}[Minding 定理]\labelthm:minding}
+任意具有相同常数 Gaussian 曲率的正则曲面局部等距。更精确地：设 $S_1, S_2$ 有相同常数曲率 $K$，取 $p_1 \in S_1$，$p_2 \in S_2$ 和规范正交基 $\{e_1,e_2\} \subset T_{p_1}(S_1)$，$\{f_1,f_2\} \subset T_{p_2}(S_2)$，则存在邻域 $V_1 \subset S_1$，$V_2 \subset S_2$ 和等距 $\psi: V_1 \to V_2$，使 $d\psi(e_1) = f_1$，$d\psi(e_2) = f_2$。
+\end{Theorem}
+
+\begin{Remark}
+Minding 定理给出了常数曲率曲面的完全分类：
+\[
+K = 0 \implies E=1,\; F=0,\; G=\rho^2\quad (\text{平面});
+\]
+\[
+K > 0 \implies E=1,\; F=0,\; G=\frac{1}{K}\sin^2(\sqrt{K}\rho)\quad (\text{球面});
+\]
+\[
+K < 0 \implies E=1,\; F=0,\; G=-\frac{1}{K}\sinh^2(\sqrt{-K}\rho)\quad (\text{双曲平面}).
+\]
+\end{Remark}
+
+\textbf{Geodesic circles and the interpretation of $K$.} 测地极坐标还给出了 $K$ 的一个内蕴解释。设 $S_r(p)$ 是中心 $p$、半径 $r$ 的测地圆，$L(r)$ 是其周长，$A(r)$ 是其内部区域面积。由 (2) 可得：
+\[
+L(r) = 2\pi r - \frac{\pi}{3}r^3 K(p) + O(r^4),\quad
+A(r) = \pi r^2 - \frac{\pi}{12}r^4 K(p) + O(r^5).
+\]
+
+由此得到 $K(p)$ 的内蕴公式：
+\[
+K(p) = \lim_{r\to 0} \frac{3}{\pi}\frac{2\pi r - L(r)}{r^3}
+= \lim_{r\to 0} \frac{12}{\pi}\frac{\pi r^2 - A(r)}{r^4}.
+\]
+
+\begin{Remark}
+测地极坐标还展示了 $K$ 的几何意义：当 $K>0$ 时，附近的两条测地线会先相互远离（由于 $(\sqrt{G})_{\rho\rho}<0$），然后在一定距离后可能重新靠近——就像球面上的经线在赤道附近的行为。当 $K<0$ 时，测地线始终相互远离。
+\end{Remark}
+
+\textbf{Local minimality of geodesics.} 测地线的最重要性质之一是局部最短性。
+
+\begin{Proposition}[测地线的局部最短性]\label{prop:geodesic-minimal}
+设 $p \in S$。则存在 $p$ 的邻域 $W \subset S$，使对任意以弧长为参数的测地线 $\gamma: [0,t_1] \to W$，$\gamma(0)=p$，$\gamma(t_1)=q$，以及连接 $p$ 到 $q$ 的任意正则曲线 $\alpha: [0,t_1] \to S$，有
+\[
+l_\gamma \leqslant l_\alpha,
+\]
+且等号成立当且仅当 $\alpha$ 与 $\gamma$ 的迹重合。
+\end{Proposition}
+
+\begin{Remark}
+整体而言，测地线未必是最短路径。例如球面上非对径的两点可以用两条不同的大圆弧连接，只有较短的那条是测地线（最短路径）。
+\end{Remark}
+
+\begin{Remark}
+反过来，若正则曲线在其任意两点之间都是最短的，则该曲线必是测地线。
+\end{Remark}
+
+\begin{Remark}
+教材 Figure 4-41 和 Figure 4-42（见 \cref{fig:fig4-41,fig:fig4-42}）给出了测地线局部最小性的几何证明。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.55\textwidth}
+\centering
+\subfloat[Figure 4-41. 测地线局部最小性的证明]{\label{fig:fig4-41}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/2d148c5c997da95c0669294ecf9faf84556da48c4192c29f02a6144b604a84bb.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.40\textwidth}
+\centering
+\subfloat[Figure 4-42. 曲线部分在外部的情形]{\label{fig:fig4-42}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/d9e3ff872927b7feb01294cbe6e5c08ddcf4ef9ccbee57b142e7b75b7f10eae5.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+教材 Figure 4-43 和 Figure 4-44（见 \cref{fig:fig4-43,fig:fig4-44}）说明了若测地线与纬线渐近相切（教材习题 18 的几何背景）。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-43. 测地线切于测地圆时的分析]{\label{fig:fig4-43}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/e180fe8d849d5d8b9037e9ce7d4965ad8caac59beae239e3f2f09b70a44febfd.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-44. 矛盾的几何说明]{\label{fig:fig4-44}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/16674197d2b59528bc5866ab4e9717be8755c8de9be5732f7762c4df3e11e452.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+教材 Figure 4-45、Figure 4-46 和 Figure 4-47（见 \cref{fig:fig4-45,fig:fig4-46,fig:fig4-47}）说明了凸邻域的存在性证明中的关键思想。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.30\textwidth}
+\centering
+\subfloat[Figure 4-45. 测地线切于测地圆]{\label{fig:fig4-45}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/74506ac300acf299a356330fab42824e0ba2f45f3265d70ac8170a64bebf1b3c.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.35\textwidth}
+\centering
+\subfloat[Figure 4-46. 函数 $F(t,q,v)$ 的构造]{\label{fig:fig4-46}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/075c0ddf9fb9c3e337238f1a61d12966d9f0c9b41d46eacfa522f20d756e44d5.jpg}}
+\end{minipage}
+\hfill
+\begin{minipage}{0.30\textwidth}
+\centering
+\subfloat[Figure 4-47. 正交条件的几何解释]{\label{fig:fig4-47}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/642942cc09317d6ccf6c658baf4bb0cb5965335af43d510d1cb0d26cc5fb8a34.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.45\textwidth}
+\centering
+\subfloat[Figure 4-47 续]{\label{fig:fig4-47b}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/3783731d31570fdd3737fb16afa8b2739713cd146c275d97978605d80db132c4.jpg}}
+\end{minipage}
+\end{figure}
+
+\begin{Remark}
+教材 Figure 4-40（见 \cref{fig:fig4-40}）说明了球面上从极点出发的两条测地线在赤道附近的行为。
+\end{Remark}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.60\textwidth}
+\centering
+\subfloat[Figure 4-40. 球面上测地线在赤道附近的行为]{\label{fig:fig4-40}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/2675cb8f374c3451bc6486d4c5c6f96a69b3995c525cba656162fb4c8ab56270.jpg}}
+\end{minipage}
+\end{figure}
+
+\subsection*{4-6 节练习}
+
+\begin{exercise}{4-6, 1 — do Carmo, Exercise 4-6, 1}
+证明：常曲率曲面上的测地圆有常数测地曲率。
+\end{exercise}
+
+\begin{exercise}{4-6, 2 — do Carmo, Exercise 4-6, 2}
+证明：测地极坐标（$E=1$，$F=0$）下测地线方程为
+\[
+\rho'' - \frac{1}{2}G_\rho(\theta')^2 = 0,\quad
+\theta'' + \frac{G_\rho}{G}\rho'\theta' + \frac{1}{2}\frac{G_\theta}{G}(\theta')^2 = 0.
+\]
+\end{exercise}
+
+\begin{exercise}{4-6, 3 — do Carmo, Exercise 4-6, 3}
+设 $p \in S$，$S_r(p)$ 是半径为 $r$ 的测地圆，$A$ 是其内部面积。证明：
+\[
+K(p) = \lim_{r\to 0} \frac{12}{\pi}\frac{\pi r^2 - A}{r^4}.
+\]
+\end{exercise}
+
+\begin{exercise}{4-6, 4 — do Carmo, Exercise 4-6, 4}
+证明：在以 $p$ 为中心的法坐标系中，所有 Christoffel 符号在 $p$ 处为零。
+\end{exercise}
+
+\begin{exercise}{4-6, 5 — do Carmo, Exercise 4-6, 5}
+下列每对曲面之间是否存在局部等距？（a）环面与圆锥；（b）圆锥与球面；（c）圆锥与圆柱面。
+\end{exercise}
+
+\begin{exercise}{4-6, 6 — do Carmo, Exercise 4-6, 6}
+设 $S_r(p)$ 是 $p$ 的测地圆（充分小以含于法邻域）。设 $C$ 是 $S_r(p)$ 上两点 $r,s$ 之间的弧。证明：当 $K>0$ 时，$l(\exp_p^{-1}(C)) > l(C)$；当 $K<0$ 时，$l(\exp_p^{-1}(C)) < l(C)$。
+\end{exercise}
+
+\begin{exercise}{4-6, 7 — do Carmo, Exercise 4-6, 7}
+设 $(\rho,\theta)$ 是测地极坐标，$\gamma(\rho(s),\theta(s))$ 是与 $\theta=\mathrm{const}$ 曲线交角 $\varphi(s)$ 的测地线。证明：
+\[
+\frac{d\varphi}{ds} + (\sqrt{G})_\rho \frac{d\theta}{ds} = 0.
+\]
+\end{exercise}
+
+\begin{exercise}{4-6, 8* — do Carmo, Exercise 4-6, 8}
+不用 Gauss-Bonnet 定理，直接证明：充分小的测地三角形 $T$ 满足 $\iint_T K\, dA = (\sum \alpha_i) - \pi$，其中 $\alpha_i$ 是内角。
+\end{exercise}
+
+\begin{exercise}{4-6, 9 — do Carmo, Exercise 4-6, 9}
+设 $S_r(p)$ 是中心 $p$、半径 $r$ 的测地圆，$L$ 是周长，$A$ 是内部面积。证明：
+\[
+4\pi A - L^2 = \pi^2 r^4 K(p) + R,\quad \lim_{r\to 0} \frac{R}{r^4} = 0.
+\]
+因此 $K(p)>0$（或 $<0$）时，对充分小 $r$，$4\pi A - L^2 > 0$（或 $<0$）。
+\end{exercise}
+
+\begin{exercise}{4-6, 10 — do Carmo, Exercise 4-6, 10}
+设 $\varphi, \psi: S \to S$ 是等距映射，且存在 $p \in S$ 使 $\varphi(p) = \psi(p)$ 且 $d\varphi_p = d\psi_p$。证明 $\varphi = \psi$。
+\end{exercise}
+
+\begin{exercise}{4-6, 11 — do Carmo, Exercise 4-6, 11}
+（a）证明：既是共形又是测地映射的 $\varphi: S_1 \to S_2$ 必是相似变换。（b）证明单位球面下半部到平面 $z=-1$ 的中心投影是测地映射。（c）证明常曲率曲面在其每点处局部存在到平面的测地映射（Beltrami 定理）。
+\end{exercise}
+
+\begin{exercise}{4-6, 12* — do Carmo, Exercise 4-6, 12}
+设 $S$ 是常曲率 $K$ 的正则曲面。（a）写出测地线的方程。（b）证明常曲率曲面的测地映射可积。（c）利用（a）（b）证明 Beltrami 定理：若 $S$ 在每点处局部允许到平面的测地映射，则 $S$ 具有常数曲率。
+\end{exercise}
+
+\begin{exercise}{4-6, 13 — do Carmo, Exercise 4-6, 13}
+设 $p \in S$，对每条分段正则闭合曲线 $\alpha: [0,l] \to S$，$\alpha(0)=\alpha(l)=p$，平行运输映射 $P_\alpha: T_p(S) \to T_p(S)$ 是线性等距。定义 $H_p(S) = \{P_\alpha\}$ 为所有此类等距的集合。（a）证明 $H_p(S)$ 构成一个群（称为 $S$ 在 $p$ 处的\textbf{和乐群}，holonomy group）。（b）证明 $K\equiv 0$ 时，$H_p(S)$ 仅含恒等映射。（c）证明连通曲面上不同点的和乐群同构。（d）证明球面的和乐群同构于 $SO(2)$。
+\end{exercise}
+
+% ==================== Section 4-7: Further Properties of Geodesics; Convex Neighborhoods ====================
+\section{Further Properties of Geodesics; Convex Neighborhoods}\label{sec:further-geodesics}
+
+\textbf{Dependence on initial conditions.} 本节补充测地线理论的若干精细结果，可以看作是第 4-4 和 4-6 节材料的深化。
+
+测地线方程（4）是二阶常微分方程组，可化为 $R^4$ 中的向量场。存在性、唯一性及对初值的光滑依赖性由标准 ODE 理论保证（Theorem 1）。
+
+\begin{Theorem}[测地线的可微依赖]\labelthm:geodesic-dependence}
+给定 $p \in S$，存在 $\epsilon_1, \epsilon_2 > 0$ 和可微映射
+\[
+\gamma: (-\epsilon_2, \epsilon_2) \times B_{\epsilon_1} \to S,
+\]
+使对 $v \in B_{\epsilon_1}$，$v \neq 0$，曲线 $t \mapsto \gamma(t,v)$ 是满足 $\gamma(0,v)=p$，$\gamma'(0,v)=v$ 的测地线，且 $\gamma(t,0) = p$。
+\end{Theorem}
+
+\textbf{Normal neighborhoods.} 由 \cref{prop:exp-diffeomorphism}，$p$ 的法邻域 $V = \exp_p(U)$ 中每点 $q$ 到 $p$ 的径向测地线是唯一的。更进一步：
+
+\begin{Proposition}[统一法邻域]\label{prop:uniform-normal}
+给定 $p \in S$，存在 $p$ 的邻域 $W$ 和 $\delta > 0$，使对每个 $q \in W$，$\exp_q$ 在 $B_\delta(0) \subset T_q(S)$ 上是微分同胚，且 $\exp_q(B_\delta(0)) \supset W$。即 $W$ 是其所有点的法邻域。
+\end{Proposition}
+
+换言之，$W$ 中任意两点 $q_1, q_2$ 之间存在唯一的长度小于 $\delta$ 的测地线连接，且该测地线在 $W$ 中。
+
+\textbf{Convex neighborhoods.} 一个自然的问题是：上述唯一测地线是否完全包含在 $W$ 中？若对 $W$ 中任意两点，其唯一最短测地线均含于 $W$，则称 $W$ 为凸邻域。
+
+\begin{Proposition}[凸邻域的存在性]\label{prop:convex-neighborhood}
+每点 $p \in S$ 都存在凸邻域 $B_c(p)$，即任意两点 $q_1, q_2 \in B_c(p)$ 在 $B_c(p)$ 中有唯一最短测地线连接。
+\end{Proposition}
+
+\begin{Remark}
+凸邻域的构造基于以下事实：存在 $\epsilon > 0$，使半径小于 $\epsilon$ 的测地圆具有"向外凸"的性质——任何切于该圆的测地线在该切点附近都位于圆外（\cref{prop:convex-neighborhood} 的关键引理）。
+\end{Remark}
+
+\textbf{Broken geodesics and shortest paths.} 我们现在可以证明：若分段正则曲线在其每段子弧上参数与弧长成正比，且在任意两点之间都是最短的，则该曲线必是测地线（因此是光滑的）。
+
+\begin{Proposition}[最短路径必光滑]\label{prop:shortest-implies-geodesic}
+设 $\alpha: I \to S$ 是分段正则曲线，其每段上的参数与弧长成正比。若对任意两点，其在 $\alpha$ 上的弧长不超过任何连接这两点的正则曲线的弧长，则 $\alpha$ 是测地线；特别地，$\alpha$ 在每点正则。
+\end{Proposition}
+
+这一命题的几何意义：若曲线局部是最短的，它不可能有"折角"——折角处可以进一步缩短。
+
+\begin{Remark}
+旋转面上的测地线不能渐近于非测地线的纬线（习题 18 的内容）。这是凸邻域理论的一个应用：如果一条测地线切于一条纬线，由于局部唯一性，它必须与该纬线重合。
+\end{Remark}
+
+\begin{Remark}
+本节的全部结论都只依赖于第一基本形式——它们是纯粹的内蕴几何定理。特别是，测地线的存在唯一性、局部最短性和凸邻域的存在性都是内蕴性质。
+\end{Remark}
+
+\begin{Remark}
+和乐群（holonomy group）是内蕴几何中的重要不变量。它由平行运输沿所有闭合曲线得到的线性等距构成。对于 $K\equiv 0$ 的曲面，和乐群仅含恒等映射（因为平行运输与路径无关）；对于球面，和乐群同构于 $SO(2)$——这与球面上平行运输一周后的角度变化相对应。
+\end{Remark}
+
+\begin{Remark}
+ Beltrami 定理（Minding 定理的逆命题）：若曲面 $S$ 在每点处局部允许到平面的测地映射，则 $S$ 具有常数曲率。这与 Minding 定理一起表明：常曲率曲面局部等距于平面（$K=0$）、球面（$K>0$）或双曲平面（$K<0$）之一。
+\end{Remark}
+
+\begin{Remark}
+教材 Figure 4-43 和 Figure 4-44 说明了为什么测地线不能与一条非测地线的纬线渐近相切：若如此，将得到两个不同的长度小于 $\delta$ 的测地线连接同两点，与唯一性矛盾。
+\end{Remark}
+
+\begin{Remark}
+本节还涉及一个重要的概念：Fermi 坐标（geodesic coordinates / Fermi coordinates）。给定一条正则曲线 $\alpha: I \to S$，沿法方向构造坐标：$\mathbf{x}(s,t) = \exp_{\alpha(s)}(t v(s))$，其中 $v(s)$ 是沿 $\alpha$ 的单位法向量场。在此坐标系中，$F=0$，$E=1$，且当 $\alpha$ 是测地线时还有 $G(0,s)=1$，$G_s(0,s)=0$。Fermi 坐标是研究曲线邻域几何的基本工具。
+\end{Remark}
+
+\begin{Remark}
+另一个相关概念是能量（energy）：$E(\alpha) = \int_a^b |\alpha'(t)|^2\, dt$。由 Cauchy-Schwarz 不等式，$l(\alpha)^2 \leq (b-a)E(\alpha)$，等号成立当且仅当 $t$ 与弧长成正比。可以证明：最短测地线同时也是能量极小者。这一事实在变分法中非常重要——测地线是长度（和能量）泛函的临界点。
+\end{Remark}
+
+\begin{Remark}
+测地线的变分：设 $\gamma$ 是连接 $p,q$ 的测地线，$\gamma(v,t)$ 是保持端点固定的一个变分，则能量泛函 $E(t)$ 在 $t=0$ 处的导数为零——这给出了测地线的变分特征。这一性质是黎曼几何中"测地线是局部最短路径"这一事实的变分表述。
+\end{Remark}
+
+\subsection*{4-7 节练习}
+
+\begin{exercise}{4-7, 1* — do Carmo, Exercise 4-7, 1}
+设 $y$ 和 $w$ 是开集 $U \subset S$ 上的可微向量场，$p \in U$，$\alpha: I \to U$ 是 $\alpha(0)=p$，$\alpha'(0)=y$ 的曲线。记 $P_{\alpha,t}: T_{\alpha(0)}(S) \to T_{\alpha(t)}(S)$ 为沿 $\alpha$ 从 $0$ 到 $t$ 的平行运输。证明：
+\[
+(D_y w)(p) = \left.\frac{d}{dt}\left(P_{\alpha,t}^{-1}(w(\alpha(t)))\right)\right|_{t=0}.
+\]
+（即共变导数可由平行运输导出。）
+\end{exercise}
+
+\begin{exercise}{4-7, 2 — do Carmo, Exercise 4-7, 2}
+证明共变导数满足以下性质（其中 $v,w,y$ 为可微向量场，$f: S \to \mathbb{R}$ 为可微函数）：
+\begin{enumerate}
+\item $D_y(\lambda v + \mu w) = \lambda D_y v + \mu D_y w$；
+\item $D_{\lambda y + \mu v} w = \lambda D_y w + \mu D_v w$；
+\item $D_y(fv) = y(f)v + f D_y v$；$D_{fy} v = f D_y v$；
+\item $y(\langle v,w \rangle) = \langle D_y v, w \rangle + \langle v, D_y w \rangle$；
+\item $D_{\mathbf{x}_v} \mathbf{x}_u = D_{\mathbf{x}_u} \mathbf{x}_v$（其中 $\mathbf{x}(u,v)$ 是 $S$ 的参数化）。
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}{4-7, 3* — do Carmo, Exercise 4-7, 3}
+设 $\alpha: I = [0,l] \to S$ 是正则曲线，$v(t)$ 是沿 $\alpha$ 的单位法向量场（$\langle \alpha'(t), v(t) \rangle = 0$）。考虑 $\mathbf{x}(s,t) = \exp_{\alpha(t)}(s v(t))$。（a）证明 $\mathbf{x}$ 在 $I$ 邻域中可微且 $d\mathbf{x}$ 非奇异。（b）证明存在 $\epsilon > 0$ 使 $\mathbf{x}$ 在 $|s| < \epsilon$ 的矩形上为单射。（c）证明在上述开集中 $\mathbf{x}$ 是 $S$ 的参数化，且在此坐标系（Fermi 坐标）中 $F=0$，$E=1$；若 $\alpha$ 是弧长参数的测地线，则还有 $G(0,t)=1$，$G_s(0,t)=0$。（d）建立 Gauss 引理在 Fermi 坐标中的类似命题：如此构造的坐标曲线 $s=\mathrm{const}$（即 $t \mapsto \mathbf{x}(s,t)$）正交于测地线 $\theta=\mathrm{const}$。
+\end{exercise}
+
+\begin{exercise}{4-7, 4 — do Carmo, Exercise 4-7, 4}
+曲线 $\alpha: [a,b] \to S$ 的\textbf{能量}定义为 $E(\alpha) = \int_a^b |\alpha'(t)|^2\, dt$。（a）证明 $l(\alpha)^2 \leq (b-a)E(\alpha)$，等号成立当且仅当 $t$ 与弧长成正比。（b）由（a）推出：若 $\gamma$ 是连接 $p,q$ 的最短测地线，则对任意连接 $p,q$ 的曲线 $\alpha$，有 $E(\gamma) \leq E(\alpha)$，等号成立当且仅当 $\alpha$ 是该最短测地线。
+\end{exercise}
+
+\begin{exercise}{4-7, 5* — do Carmo, Exercise 4-7, 5}
+设 $\gamma: [0,l] \to S$ 是以弧长为参数的最简测地线。取 Fermi 坐标 $(u,v)$ 满足 $u=0$ 对应 $\gamma$。设 $\gamma(v,t)$ 是保持端点 $p=\gamma(0)$、$q=\gamma(l)$ 固定的变分。证明能量 $E(t) = \int_0^l |\partial\gamma/\partial v|^2\, dv$ 在 $t=0$ 处取得极小值（提示：计算 $E'(0)=0$ 并利用 $E''(0) \geq 0$ 的几何意义）。
+\end{exercise}
+
+% ==================== Chapter 4 Exercises Summary ====================
+\section*{第 4 章习题汇总}
+
+\begin{enumerate}
+\item \textbf{4-2 节练习}：等距与共形映射（20 题）
+\item \textbf{4-3 节练习}：Gauss 定理与兼容性方程（9 题）
+\item \textbf{4-4 节练习}：平行运输与测地线（23 题）
+\item \textbf{4-5 节练习}：Gauss-Bonnet 定理（详见第 4-5 节）
+\item \textbf{4-6 节练习}：指数映射与测地极坐标（13 题）
+\item \textbf{4-7 节练习}：测地线进一步性质与凸邻域（5 题）
+\end{enumerate}
+
+\end{document}
