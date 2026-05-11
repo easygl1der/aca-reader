@@ -539,20 +539,19 @@ is of class $C^1$ but not of class $C^2$. Draw a sketch of the curve and its tan
 \end{enumerate}
 \end{exercise}
 
-\b
-
 \begin{solution}
-\textbf{直观理解}：弱切线只要求从固定点到动点连线的极限位置存在；强切线则要求任意两点连线的极限位置存在。$\alpha(t) = (t^3, t^2)$ 在 $t=0$ 处的弱切线存在（$y$ 轴），但强切线不存在。
+\textbf{直观理解}：弱切线只要求从固定点到动点连线的极限位置存在；强切线则要求任意两点连线的极限位置存在，两者概念不同。
 
 \textbf{解答}：
 
-\textbf{（a）}：对 $\alpha(t) = (t^3, t^2)$，从 $\alpha(0)$ 到 $\alpha(h)$ 的割线斜率为 $\frac{h^2}{h^3} = \frac{1}{h} \to \infty$（$h \to 0$），故弱切线趋向 $y$ 轴。但对强切线，$\alpha(h)$ 与 $\alpha(k)$ 之间的斜率为 $\frac{k^2 - h^2}{k^3 - h^3} = \frac{k+h}{k^2 + kh + h^2}$，该值依赖于 $h/k$ 的比值，故无唯一极限位置。
+\textbf{（a）}：对 $\alpha(t) = (t^3, t^2)$，从 $\alpha(0)$ 到 $\alpha(h)$ 的割线斜率为 $\frac{h^2}{h^3} = \frac{1}{h} \to \infty$（$h \to 0$），故弱切线趋向 $y$ 轴（竖直方向）。但对强切线，$\alpha(h)$ 与 $\alpha(k)$ 之间的斜率为 $\frac{k^2 - h^2}{k^3 - h^3} = \frac{k+h}{k^2 + kh + h^2}$，该值依赖于 $h/k$ 的比值，故无唯一极限位置。因此 $\alpha$ 有弱切线但无强切线。
 
-\textbf{（b）}：若 $\alpha$ 在 $t_0$ 处 $C^1$ 且正则，则 $\alpha'(t_0) \neq 0$ 为切线方向。由连续性，当 $h, k \to 0$ 时，$\alpha(t_0+h)$ 与 $\alpha(t_0+k)$ 的连线方向趋近 $\alpha'(t_0)$，故强切线存在。
+\textbf{（b）}：若 $\alpha$ 在 $t_0$ 处 $C^1$ 且正则，则 $\alpha'(t_0) \neq 0$ 为切线方向。由中值定理的向量形式，$\dfrac{\alpha(t_0+h)-\alpha(t_0+k)}{h-k} \to \alpha'(t_0)$（$h,k\to 0$），这正是强切线存在的证明。
 
 \textbf{（c）}：曲线 $\alpha(t) = (t^2, t^2)$（$t \geq 0$）和 $\alpha(t) = (t^2, -t^2)$（$t \leq 0$）在 $t=0$ 处 $C^1$（左右导数均为 $(0,0)$），但 $C^2$ 不成立（左右二阶导数不同）。$\square$
 \end{solution}
-egin{exercise}{1-3, 8* — do Carmo, Exercise 1-3, 8}
+
+\begin{exercise}{1-3, 8* — do Carmo, Exercise 1-3, 8}
 Let $\alpha: I \to \mathbb{R}^3$ be a differentiable curve and let $[a, b] \subset I$ be a closed interval. For every partition
 \[
 a = t_0 < t_1 < \dots < t_n = b
@@ -1136,16 +1135,7 @@ Show that the torsion $\tau$ of $\alpha$ is given by
 \]
 \end{exercise}
 
-\b
-
-\begin{solution}
-由挠率的标准公式 $\tau = \frac{\det(\alpha', \alpha'', \alpha''')}{k^2}$，利用叉积的混合积性质 $\det(\alpha', \alpha'', \alpha''') = (\alpha'\times\alpha'')\cdot\alpha'''$，以及 $k^2 = |\alpha'\times\alpha''|^2$（当 $|\alpha'|=1$ 时），整理可得
-\[
-\tau(s) = -\frac{(\alpha'(s)\times\alpha''(s))\cdot\alpha'''(s)}{|k(s)|^2}.
-\]
-$\square$
-\end{solution}
-egin{exercise}{1-5, 3 — do Carmo, Exercise 1-5, 3}
+\begin{exercise}{1-5, 3 — do Carmo, Exercise 1-5, 3}
 Assume that $\alpha(I) \subset \mathbb{R}^2$ (i.e., $\alpha$ is a plane curve) and give $k$ a sign. Transport the vectors $t(s)$ parallel to themselves so that the origins of $t(s)$ agree with the origin of $\mathbb{R}^2$; the end points of $t(s)$ then describe a parametrized curve $s \to t(s)$ called the indicatrix of tangents of $\alpha$. Let $\theta(s)$ be the angle from $e_1$ to $t(s)$ in the orientation of $\mathbb{R}^2$. Prove:
 \begin{enumerate}
 \item[a.] The indicatrix of tangents is a regular parametrized curve.
@@ -1242,22 +1232,7 @@ is called the \textbf{evolute} of $\alpha$ (渐伸线，教材 Figure 1-17（见
 \end{enumerate}
 \end{exercise}
 
-\b
-
-\begin{solution}
-\textbf{直观理解}：渐伸线（evolute）的切线恰好是原曲线的法线。
-
-\textbf{解答}：
-
-\textbf{（a）}：设 $\beta(t) = \alpha(t) + \frac{1}{k(t)}n(t)$ 为 $\alpha$ 的渐伸线。计算
-\[
-\beta'(t) = \alpha'(t) + \left(\frac{1}{k(t)}n(t)\right)' = t + \left(-\frac{k'}{k^2}n + \frac{1}{k}(-kt + \tau b)\right) = -\frac{k'}{k^2}n + \frac{\tau}{k}b.
-\]
-由于 $t$ 与 $n,b$ 正交，$\beta'(t)$ 与 $t$ 垂直，即 $\beta$ 的切线平行于 $\alpha$ 的法线。
-
-\textbf{（b）}：当 $t_2 \to t_1$ 时，过 $\alpha(t_1)$ 和 $\alpha(t_2)$ 的法线交点趋近于 $\beta(t_1)$，即渐伸线上的点。$\square$
-\end{solution}
-egin{exercise}{1-5, 8 — do Carmo, Exercise 1-5, 8}
+\begin{exercise}{1-5, 8 — do Carmo, Exercise 1-5, 8}
 The trace of the parametrized curve (arbitrary parameter)
 \[
 \alpha(t) = (t, \cosh t), \quad t \in \mathbb{R},
@@ -1275,25 +1250,7 @@ k(t) = \frac{1}{\cosh^2 t}.
 \end{enumerate}
 \end{exercise}
 
-\b
-
-\begin{solution}
-\textbf{直观理解}：悬链线 $\alpha(t) = (t, \cosh t)$ 的曲率随 $|t|$ 增大而减小。
-
-\textbf{解答}：
-
-\textbf{（a）}：对 $\alpha(t) = (t, \cosh t)$，有 $\alpha'(t) = (1, \sinh t)$，$\alpha''(t) = (0, \cosh t)$。代入平面曲线曲率公式
-\[
-k(t) = \frac{x'y'' - x''y'}{((x')^2 + (y')^2)^{3/2}} = \frac{\cosh t}{(\cosh^2 t)^{3/2}} = \frac{1}{\cosh^2 t}.
-\]
-
-\textbf{（b）}：渐伸线 $\beta(t) = \alpha(t) + \frac{1}{k(t)}n(t)$。由 $t = (1, \sinh t)/\sqrt{1+\sinh^2 t}$，取单位法向量 $n = (-\tanh t, \sech t)$，得
-\[
-\beta(t) = (t, \cosh t) + \cosh^2 t \cdot (-\tanh t, \sech t) = (t - \sinh t\cosh t, 2\cosh t).
-\]
-$\square$
-\end{solution}
-egin{exercise}{1-5, 9 — do Carmo, Exercise 1-5, 9}
+\begin{exercise}{1-5, 9 — do Carmo, Exercise 1-5, 9}
 Given a differentiable function $k(s)$, $s \in I$, show that the parametrized plane curve having $k(s) = k$ as curvature is given by
 \[
 \alpha(s) = \left(\int \cos\theta(s) ds + a, \int \sin\theta(s) ds + b\right),
@@ -1355,22 +1312,7 @@ k(\theta) = \frac{2(\rho')^2 - \rho\rho'' + \rho^2}{\{(\rho')^2 + \rho^2\}^{3/2}
 \end{enumerate}
 \end{exercise}
 
-\b
-
-\begin{solution}
-\textbf{直观理解}：极坐标曲线可写为参数式 $(\rho\cos\theta, \rho\sin\theta)$，弧长和曲率由参数化直接计算。
-
-\textbf{解答}：
-
-\textbf{（a）}：极坐标曲线 $\alpha(\theta) = (\rho\cos\theta, \rho\sin\theta)$，则 $|\alpha'(\theta)|^2 = \rho^2 + (\rho')^2$，故弧长 $s = \int_a^b \sqrt{\rho^2 + (\rho')^2}\, d\theta$。
-
-\textbf{（b）}：计算 $\alpha'$ 与 $\alpha''$，代入曲率公式 $k = |\alpha'\times\alpha''|/|\alpha'|^3$ 可得
-\[
-k(\theta) = \frac{2(\rho')^2 - \rho\rho'' + \rho^2}{\{(\rho')^2 + \rho^2\}^{3/2}}.
-\]
-$\square$
-\end{solution}
-egin{exercise}{1-5, 12* — do Carmo, Exercise 1-5, 12}
+\begin{exercise}{1-5, 12* — do Carmo, Exercise 1-5, 12}
 Let $\alpha: I \to \mathbb{R}^3$ be a regular parametrized curve (not necessarily by arc length) and let $\beta: J \to \mathbb{R}^3$ be a reparametrization of $\alpha(I)$ by the arc length $s = s(t)$, measured from $t_0 \in I$. Let $t = t(s)$ be the inverse function of $s$ and set $d\alpha/dt = \alpha'$, $d^2\alpha/dt^2 = \alpha''$, etc. Prove:
 \begin{enumerate}
 \item[a.] $dt/ds = 1/|\alpha'|$, $d^2t/ds^2 = -(\alpha' \cdot \alpha'' / |\alpha'|^4)$.
@@ -1401,18 +1343,7 @@ R^2 + (R')^2 T^2 = \mathrm{const.},
 where $R = 1/k$, $T = 1/\tau$, and $R'$ is the derivative of $R$ relative to $s$.
 \end{exercise}
 
-\b
-
-\begin{solution}
-\textbf{直观理解}：曲线落在球面上的条件可以用曲率半径 $R=1/k$ 和挠率半径 $T=1/\tau$ 的关系来描述。
-
-\textbf{证明}：设曲线 $\alpha(s)$ 在球心为 $c$、半径为 $R_0$ 的球面上，即 $|\alpha(s)-c|=R_0$。对该式求导得 $(\alpha-c)\cdot t=0$，再求导得 $1+(\alpha-c)\cdot n'=0$，即 $(\alpha-c)\cdot n=-1$。利用 Frenet-Serret 公式和 $\tau\neq 0$ 的条件，可推出
-\[
-R^2 + (R')^2 T^2 = \mathrm{const.}
-\]
-反之，若该条件成立，可构造球心 $c = \alpha + R\mathbf{n} + R R' T\mathbf{b}$，验证 $c$ 为常数，从而 $\alpha$ 落在球面上。$\square$
-\end{solution}
-egin{exercise}{1-5, 14 — do Carmo, Exercise 1-5, 14}
+\begin{exercise}{1-5, 14 — do Carmo, Exercise 1-5, 14}
 Let $\alpha: (a, b) \to \mathbb{R}^2$ be a regular parametrized plane curve. Assume that there exists $t_0$, $a < t_0 < b$, such that the distance $|\alpha(t)|$ from the origin to the trace of $\alpha$ will be a maximum at $t_0$. Prove that the curvature $k$ of $\alpha$ at $t_0$ satisfies $|k(t_0)| \geq 1/|\alpha(t_0)|$.
 \end{exercise}
 
@@ -1426,12 +1357,7 @@ Let $\alpha: (a, b) \to \mathbb{R}^2$ be a regular parametrized plane curve. Ass
 Show that the knowledge of the vector function $b = b(s)$ (binormal vector) of a curve $\alpha$, with nonzero torsion everywhere, determines the curvature $k(s)$ and the absolute value of the torsion $\tau(s)$ of $\alpha$.
 \end{exercise}
 
-\b
-
-\begin{solution}
-由 $\mathbf{b}' = -\tau\mathbf{n}$（Frenet-Serret 公式），得 $|\mathbf{b}'| = |\tau|$。因此若已知 $\mathbf{b}(s)$，则 $\tau = -|\mathbf{b}'|$。而 $k = |\mathbf{t}'| = |(\mathbf{b}\times\mathbf{t})'|$，由 $\mathbf{b}$ 及其导数可确定。故 $\mathbf{b}$ 完全决定了 $k$ 和 $|\tau|$。$\square$
-\end{solution}
-egin{exercise}{1-5, 16* — do Carmo, Exercise 1-5, 16}
+\begin{exercise}{1-5, 16* — do Carmo, Exercise 1-5, 16}
 Show that the knowledge of the vector function $n = n(s)$ (normal vector) of a curve $\alpha$, with nonzero torsion everywhere, determines the curvature $k(s)$ and the torsion $\tau(s)$ of $\alpha$.
 \end{exercise}
 
@@ -1463,22 +1389,7 @@ where $c^2 = a^2 + b^2$, is a helix, and that $k/\tau = a/b$.
 \end{enumerate}
 \end{exercise}
 
-\b
-
-\begin{solution}
-\textbf{直观理解}：螺旋线的切线与固定方向保持恒定夹角，曲率和挠率之比为常数。
-
-\textbf{解答}：
-
-\textbf{（a）}：设切线与固定方向 $v$ 的夹角为 $\theta$（常数），即 $t\cdot v = \cos\theta$。求导得 $k\mathbf{n}\cdot v = 0$，故 $\mathbf{n}\cdot v = 0$。再求导，利用 $\mathbf{n}' = -k\mathbf{t} + \tau\mathbf{b}$，得 $\tau\mathbf{b}\cdot v = 0$（若 $\tau\neq 0$）。于是 $k/\tau$ 与 $v$ 的方向无关，即 $k/\tau = \mathrm{const}$。
-
-\textbf{（b）}：由 $\mathbf{n}\cdot v = 0$，$n(s)$ 始终与固定方向 $v$ 垂直，即 $n(s)$ 平行于一个固定平面（与 $v$ 垂直的平面）。
-
-\textbf{（c）}：类似地，$\mathbf{b}\cdot v$ 与切线夹角同为常数。
-
-\textbf{（d）}：对给定曲线直接计算可得 $k/\tau = a/b$，为常数，故为螺旋线。$\square$
-\end{solution}
-egin{exercise}{1-5, 18* — do Carmo, Exercise 1-5, 18}
+\begin{exercise}{1-5, 18* — do Carmo, Exercise 1-5, 18}
 Let $\alpha: I \to \mathbb{R}^3$ be a parametrized regular curve (not necessarily by arc length) with $k(t) \neq 0$, $\tau(t) \neq 0$, $t \in I$. The curve $\alpha$ is called a \textbf{Bertrand curve} if there exists a curve $\bar{\alpha}: I \to \mathbb{R}^3$ such that the normal lines of $\alpha$ and $\bar{\alpha}$ at $t \in I$ are equal. In this case, $\bar{\alpha}$ is called a \textbf{Bertrand mate} of $\alpha$, and we can write
 \[
 \bar{\alpha}(t) = \alpha(t) + r n(t).
@@ -1495,20 +1406,7 @@ where $A, B$ are nonzero constants and $k$ and $\tau$ are the curvature and tors
 \end{enumerate}
 \end{exercise}
 
-% 
-
-\begin{solution}
-\textbf{直观理解}：Bertrand 曲线存在一条伴侣曲线 $\bar{\alpha}$，两者的法线在对应点重合。
-
-\textbf{解答}：
-
-\textbf{（a）}：由 $\bar{\alpha}(t) = \alpha(t) + r n(t)$，对 $t$ 求导得 $\bar{\alpha}' = t + r(-kt + \tau b) = (1-rk)t + r\tau b$。要求 $\bar{\alpha}' \parallel n$，需 $r\tau = 0$。由 $\tau\neq 0$ 得 $r = 0$，矛盾？更严谨的做法是直接对法线条件 $(\bar{\alpha}-\alpha)\parallel n$ 求导，可证 $r$ 为常数。
-
-\textbf{（b）}：由 $\bar{\alpha}' \parallel n$ 的条件可得 $r$ 为常数。反之，若存在常数 $A, B$ 使得 $Ak + B\tau = 1$，则可构造 $\bar{\alpha} = \alpha + Ak\, n$，验证其为 $\alpha$ 的 Bertrand mate。
-
-\textbf{（c）}：若 $\alpha$ 有多于一个 Bertrand mate，则 $\alpha$ 必为圆柱螺旋线；反之，圆柱螺旋线有无穷多个 Bertrand mate。$\square$
-\end{solution}
-==================== Section 1-6: The Local Canonical Form ====================
+% ==================== Section 1-6: The Local Canonical Form ====================
 \section{The Local Canonical Form}\label{sec:local-canonical-form-ch1}
 
 本节研究曲线在一点附近的局部形状。
