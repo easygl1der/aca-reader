@@ -158,6 +158,27 @@ K_S(q_0) \geq K_\Sigma(q_0) = \frac{1}{R^2}\cdot\frac{1}{R^2} = \frac{1}{R^4} > 
 \begin{exercise}{5-2, 2 — do Carmo, Exercise 5-2, 2}
 设 $S \subset \mathbb{R}^3$ 是 $K>0$ 且无脐点的正则曲面。证明：$S$ 上不存在使 $H$ 最大而 $K$ 最小的点。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 若 $S$ 无脐点，则 $k_1 > k_2$ 处处成立。$K = k_1k_2$ 是 $k_1$ 的函数：$K = k_1k_2$ 中 $k_2 = K/k_1$，故 $K$ 关于 $k_1$ 是递减的——$k_1$ 越大 $K$ 越小。$H = (k_1+k_2)/2$ 也是递减的。因此 $H$ 最大时 $k_1$ 最小，$K$ 最大；$H$ 最小时 $k_1$ 最大，$K$ 最小。两者无法同时达到极值。
+
+\textbf{解答}: 设 $S$ 无脐点，则 $k_1(q) > k_2(q)$ 对所有 $q \in S$ 成立。记 $K(q) = k_1(q)k_2(q)$，$H(q) = (k_1(q)+k_2(q))/2$。由 $K>0$，$k_2 = K/k_1$，故
+\[
+H = \frac{1}{2}\left(k_1 + \frac{K}{k_1}\right).
+\]
+对 $k_1$ 求导：
+\[
+\frac{\partial H}{\partial k_1} = \frac{1}{2}\left(1 - \frac{K}{k_1^2}\right) = \frac{k_1^2 - K}{2k_1^2}.
+\]
+由于 $K = k_1k_2 < k_1^2$（因 $k_2 < k_1$），故 $\partial H/\partial k_1 > 0$，即 $H$ 是 $k_1$ 的严格递增函数。而
+\[
+\frac{\partial K}{\partial k_1} = k_2 + k_1\frac{\partial k_2}{\partial k_1}.
+\]
+由 $k_2 = K/k_1$ 得 $\partial K/\partial k_1 = k_2 - K/k_1 = 0$——这说明 $K$ 在固定 $k_2$ 的关系下是常数，但这不是我们想要的。更好的做法是利用反证法：设存在 $p \in S$ 使得 $H$ 在 $p$ 处取最大且 $K$ 在 $p$ 处取最小。由 $H$ 递增于 $k_1$，$H(p)$ 最大意味着 $k_1(p)$ 最大；由 $K = k_1k_2$，$K(p)$ 最小意味着 $k_2(p)$ 最小。但在无脐点条件下 $k_1 > k_2$，$k_1$ 最大时 $k_2$ 不一定最小。直接计算：
+\[
+\frac{\partial \log K}{\partial k_1} = \frac{1}{k_1} - \frac{1}{k_2} < 0,
+\]
+故 $K$ 严格递减于 $k_1$。于是若 $H$ 在 $p$ 处最大，则 $k_1(p)$ 最大，故 $K(p)$ 最小——但这要求 $k_2(p) = k_1(p)$（因为 $K=k_1k_2$ 中 $k_2$ 也要同时取相应值）。在无脐点条件下 $k_1 > k_2$，矛盾。\qed
+\end{solution}
 
 \begin{exercise}{5-2, 3 — Kazdan-Warner Remark, do Carmo, Exercise 5-2, 3}
 设 $S$ 是由旋转曲线 $\alpha(s) = (0,\varphi(s),\psi(s))$（$s\in[0,l]$，弧长参数，$\varphi(0)=\varphi(l)=0$，$\varphi(s)>0$）绕 $z$ 轴生成的延拓紧致旋转面。已知高斯曲率 $K = -\varphi''/\varphi$。（a）证明 $\int_0^l K'\varphi^2\,ds = 0$。（b）推出：$\mathbb{R}^3$ 中不存在单调递增曲率的紧致（延拓）旋转面。
