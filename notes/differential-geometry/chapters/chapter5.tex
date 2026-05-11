@@ -520,6 +520,35 @@ Hopf-Rinow 定理是完备曲面之所以比不可延展曲面更适合微分几
 \begin{exercise}{5-3, 11* — Osserman 引理, do Carmo, Exercise 5-3, 11}
 设 $\mathbf{x}: D_1 \to \mathbb{R}^3$ 是单位圆盘上的等温参数化极小曲面（$H=0$）。假设其单位法向量去掉了一个球面邻域（即存在 $\epsilon>0$ 和单位向量 $w$ 使 $|\langle \mathbf{x}_u,w\rangle|/|\mathbf{x}_u| \geq \epsilon$ 和 $|\langle \mathbf{x}_v,w\rangle|/|\mathbf{x}_v| \geq \epsilon$）。证明 $\mathbf{x}(D_1)$ 不是完备曲面（这是 Osserman 定理的关键步骤，见第 3-5 节末尾）。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Osserman 引理证明：若极小曲面的法向量场去掉了一个球面邻域，则它不是完备的。关键思想是构造一个到复平面的解析映射 $\theta$，其逆映射 $\theta^{-1}$ 在某点处无法全纯延拓，从而沿某一方向的弧长有界。
+
+\textbf{解答}: (a) 设 $\mathbf{x}: D_1 \to \mathbb{R}^3$ 是等温参数化极小曲面。等温参数条件给出第一基本形式 $E=G=\lambda^2$，$F=0$。极小性条件 $\mathbf{x}_{uu}+\mathbf{x}_{vv}=0$ 等价于平均曲率 $H=0$。定义 $\varphi(\zeta) = \langle \mathbf{x}_u,\, w\rangle + i\langle \mathbf{x}_v,\, w\rangle$，计算
+\[
+\varphi_{\bar{\zeta}} = \frac{1}{4}\left[(\mathbf{x}_{uu}+\mathbf{x}_{vv})\cdot w - i(\mathbf{x}_{uu}+\mathbf{x}_{vv})\cdot w\right] = 0,
+\]
+故 $\varphi$ 在 $D_1$ 上全纯（解析）。
+
+(b) 定义 $\theta(\zeta) = \int_0^\zeta \varphi(\zeta)\,d\zeta$。由 (a)，$\theta$ 解析，$\theta(0)=0$。条件 $(*)$ 给出 $|\varphi(\zeta)| \geq \epsilon|\mathbf{x}_u| \geq \epsilon\lambda$（因为等温参数下 $|\mathbf{x}_u|=|\mathbf{x}_v|=\lambda$，且 $|\langle\mathbf{x}_u,w\rangle| \geq \epsilon|\mathbf{x}_u|$），于是 $\theta'(\zeta) = \varphi(\zeta) \neq 0$，$\theta$ 局部单叶。设 $\theta^{-1}$ 为局部逆映射。若 $\theta^{-1}$ 可全纯延拓至整个 $\mathbb{C}$，则 $\theta^{-1}$ 为有界全纯函数（因 $|\theta^{-1}(\eta)| \leq R$），由 Liouville 定理 $\theta^{-1}$ 为常数，矛盾。故 $\theta^{-1}$ 在某点 $\eta_0$，$|\eta_0|=R$ 处无法延拓。
+
+(c) 设 $L = \{t\eta_0: 0\leq t\leq 1\}$，$\alpha = \theta^{-1}(L)$。计算弧长：
+\[
+|\mathbf{x}_s| = \lambda\sqrt{u_s^2+v_s^2},\quad d\zeta^2 = (du)^2+(dv)^2.
+\]
+由等温条件 $|\mathbf{x}_u|=|\mathbf{x}_v|=\lambda$，有 $|\mathbf{x}_s|^2 = \lambda^2((u_s)^2+(v_s)^2)$。由 $(*)$，
+\[
+|\langle\mathbf{x}_u,w\rangle|^2 + |\langle\mathbf{x}_v,w\rangle|^2 \geq \epsilon^2|\mathbf{x}_u|^2 = \epsilon^2\lambda^2.
+\]
+注意到 $|\varphi|^2 = |\langle\mathbf{x}_u,w\rangle|^2 + |\langle\mathbf{x}_v,w\rangle|^2 \geq \epsilon^2\lambda^2$，于是
+\[
+l = \int_\alpha |\mathbf{x}_s|\,ds = \int_\alpha \lambda\sqrt{u_s^2+v_s^2}\,|d\zeta|
+= \int_\alpha \sqrt{\langle\mathbf{x}_u,\mathbf{x}_u\rangle u_s^2 + \cdots}\,|d\zeta|
+\leq \frac{1}{\epsilon}\int_\alpha |\varphi|\,|d\zeta|
+= \frac{1}{\epsilon}\int_0^R |\varphi(\theta^{-1}(\eta))|\,|d\eta|
+= \frac{R}{\epsilon} < \infty.
+\]
+有界弧长 $\Rightarrow$ 存在有界发散曲线 $\mathbf{x}(\alpha)$ $\xRightarrow{\text{Exercise 7}}$ $\mathbf{x}(D)$ 不完备。\qed
+\end{solution}
 
 % ==================== Section 5-4: First and Second Variations of Arc Length; Bonnet's Theorem ====================
 \section{First and Second Variations of Arc Length; Bonnet's Theorem}\label{sec:bonnet-theorem}
