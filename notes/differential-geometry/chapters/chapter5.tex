@@ -690,6 +690,19 @@ Bonnet 定理的逆命题是否成立？即：若 $S$ 紧致且直径 $\rho \leq
 \begin{exercise}{5-4, 3 — do Carmo, Exercise 5-4, 3}
 （a）推导不假设变分是真变分时的第一变分公式。（b）设 $S$ 完备，$\gamma(s)$，$s\in\mathbb{R}$ 是 $S$ 上的测地线，$d(s) = d(\gamma(s),p)$ 是到固定点 $p$ 的距离。证明存在点 $s_0$ 使 $d(s_0) \leq d(s)$ 对所有 $s$ 成立，且连接 $p$ 与 $\gamma(s_0)$ 的测地线垂直于 $\gamma$（见 \cref{fig:fig5-14}）。（c）进一步假设 $S$ 与平面同胚且 $K \leq 0$，证明上述 $s_0$（从而上述垂线）是唯一的。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: (a) 非真变分的第一变分多了边界项——因为端点不固定，弧长泛函的临界点条件中需要考虑端点的变化。(b) 距离函数 $d(s) = d(\gamma(s),p)$ 在整个实直线上有下界（因为 $\gamma$ 是测地线，$d(s)$ 必在某处取到最小值），这由完备曲面上函数的连续性和紧性论证。(c) 若额外假设 $S$ 与平面同胚且 $K \leq 0$，则测地线附近无共轭点，垂直条件唯一。
+
+\textbf{解答}: (a) 设 $h: [0,l]\times(-\epsilon,\epsilon)\to S$ 是一般变分（端点可变）。由第一变分公式的推导过程（见第 5-4 节引理 2 的证明），去掉"真"条件后得到的公式为
+\[
+L'(0) = -\int_0^l \langle A(s), V(s)\rangle\,ds + \langle\frac{\partial h}{\partial s}(l,0),\, \frac{\partial h}{\partial t}(l,0)\rangle - \langle\frac{\partial h}{\partial s}(0,0),\, \frac{\partial h}{\partial t}(0,0)\rangle.
+\]
+当 $h$ 为真时（即 $V(0)=V(l)=0$），后两项为零；非真情况下，这两项就是端点的贡献。
+
+(b) 设 $S$ 完备，$\gamma: \mathbb{R}\to S$ 为测地线，$p \in S$，$d(s) = d(\gamma(s),p)$。由第 5-3 节命题 4，$d$ 连续。由于 $S$ 完备且非紧（若紧则 $d$ 在紧集上取最小值；若非紧，则 $d(s) \to \infty$ 当 $|s|\to\infty$，在 $[-R,R]$ 上取最小值），故 $d$ 在某 $s_0$ 处取全局最小值。设 $\Gamma$ 是连接 $p$ 与 $\gamma(s_0)$ 的最小测地线（Hopf-Rinow 定理保证存在）。由第一变分公式，若 $\Gamma$ 与 $\gamma$ 不正交，则存在变分使 $\Gamma$ 缩短，与最小性矛盾。设 $V$ 为 $\Gamma$ 相对 $\gamma$ 的变分场，$V(s_0)\neq 0$。由第一变分公式的极值性质，$0 = L'(0) = -\int \langle A,V\rangle$，而 $A=0$（$\Gamma$ 也是测地线），这不足以得出正交。更直接的几何论证：若 $\Gamma$ 与 $\gamma(s_0)$ 在 $s_0$ 处不正交，则沿 $\gamma$ 存在使 $d(s)$ 下降的方向，与 $s_0$ 的最小性矛盾。
+
+(c) 进一步设 $S$ 与平面同胚且 $K \leq 0$。此时，$\exp_p: T_p(S)\to S$ 是局部微分同胚（由第 5-5 节，无共轭点），且由于 $S$ 同胚于 $\mathbb{R}^2$，$\exp_p$ 是单射（若 $\exp_p(v_1) = \exp_p(v_2)$，则存在从 $p$ 出发的两条相同终点的测地线，由唯一性 $v_1=v_2$）。于是 $s_0$ 唯一（因为从 $p$ 到 $\gamma(s)$ 的最短测地线唯一）。\qed
+\end{solution}
 
 \begin{exercise}{5-4, 4*（变分学）— do Carmo, Exercise 5-4, 4}
 设 $y=y(x)$，$x\in[x_1,x_2]$ 是平面曲线，变分 $y(x,t)$ 满足 $y(x,0)=y(x)$，$y(x_1,t)=y(x_1)$，$y(x_2,t)=y(x_2)$。考虑积分 $I(t) = \int_{x_1}^{x_2}F(x,y(x,t),y'(x,t))\,dx$。（a）证明：若 $y(x)$ 是 $I(t)$ 的临界点（$dI/dt=0$），则 $\int_{x_1}^{x_2}\eta(F_y - \frac{d}{dx}F_{y'})\,dx = 0$ 对所有满足 $\eta(x_1)=\eta(x_2)=0$ 的 $\eta$ 成立（变分法基本引理）。（b）推出 Euler-Lagrange 方程 $F_y - \frac{d}{dx}F_{y'} = 0$。（c）若 $F$ 不显含 $x$（即 $F=F(y,y')$），证明首次积分 $y'F_{y'} - F = \mathrm{const}$。
