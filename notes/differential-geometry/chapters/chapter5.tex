@@ -1705,6 +1705,11 @@ c. Obtain from part b a simple proof for the fact that the rotation index of a c
 \begin{exercise}{5-7, 6 — do Carmo, Exercise 5-7, 6}
 Let $\alpha \colon [0, l] \to R^3$ be a regular closed curve parametrized by arc length. Assume that $0 \neq |k(s)| \leq 1$ for all $s \in [0, l]$. Prove that $l \geq 2\pi$ and that $l = 2\pi$ if and only if $\alpha$ is a plane convex curve.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Fenchel 定理说明全曲率 $\geq 2\pi$，等号成立当且仅当平面凸曲线。这里 $|k|\leq 1$ 给出全曲率上界 $l$，从而 $l\geq 2\pi$。
+
+\textbf{解答}: 由全曲率定义 $\int_0^l |k(s)|\,ds$，且 $|k(s)|\leq 1$，得 $\int_0^l |k(s)|\,ds\leq l$。由 Fenchel 定理（定理 \ref{fenchel}），全曲率 $\geq 2\pi$，故 $l\geq 2\pi$。若 $l=2\pi$，则 $|k(s)|\equiv 1$（否则严格不等式），且由 Fenchel 等号条件，曲线必为平面凸曲线。反之，平面凸曲线有 $|k|\leq 1$（可适当定向使 $k>0$）且 $l=2\pi$。\qed
+\end{solution}
 
 \begin{exercise}{5-7, 7 — do Carmo, Exercise 5-7, 7 (Schur's Theorem for Plane Curves)}
 Let $\alpha$ : $[0, l] \to R^2$ and $\tilde{\alpha}$ : $[0, l] \to R^2$ be two plane convex curves parametrized by arc length, both with the same length $l$. Denote by $k$ and $\tilde{k}$ the curvatures of $\alpha$ and $\tilde{\alpha}$, respectively, and by $d$ and $\tilde{d}$ the lengths of the chords of $\alpha$ and $\tilde{\alpha}$, respectively; i.e.,
@@ -1753,6 +1758,11 @@ b. Show that as $s$ increases, $\alpha(s)$ meets $T_p$ at a point, say, $r$ (Fig
 c. The arc $\alpha ((-\infty ,0))$ must meet $T_{p}$ at a point $t$ between $p$ and $r$.
 d. Complete the arc $tpqr$ of $\alpha$ with an arc $\beta$ without self-intersections joining $r$ to $t$, thus obtaining a closed curve $C$. Show that the rotation index of $C$ is $\geq 2$. Show that this implies that $\alpha$ has self-intersections, a contradiction.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Stoker 定理说明：若无自交、无界平面曲线的曲率恒正，则全曲率 $\leq\pi$。若全曲率 $> \pi$，则曲线必自交。
+
+\textbf{解答}: 假设全曲率 $> \pi$，则存在 $s_1>0$ 使 $\int_0^{s_1}k\,ds>\pi$。由 (a)，存在 $p=\alpha(0)$ 和 $q=\alpha(s_1)$ 使切线 $T_p$ 与 $T_q$ 平行且无中间切线平行于 $T_p$（否则全曲率 $<\pi$）。由 (b)，$\alpha$ 在 $T_p$ 的某点 $r$ 处相交。由 (c)，$\alpha$ 的左半支 $(-\infty,0)$ 也在 $T_p$ 上有交点 $t$（在 $p$ 和 $r$ 之间）。用弧 $\beta$ 连接 $t$ 和 $r$ 得到闭曲线 $C$。由构造，$C$ 的旋转指标 $\geq 2$（因为绕行了至少两圈），这要求 $C$ 有自交点（旋转指标 $\geq 2$ 的正则闭曲线必须有自交），矛盾。故全曲率 $\leq\pi$。\qed
+\end{solution}
 
 \begin{exercise}{5-7, 9* — do Carmo, Exercise 5-7, 9}
 Let $\alpha \colon [0, l] \to S^2$ be a regular closed curve on a sphere $S^2 = \{(x, y, z) \in R^3; x^2 + y^2 + z^2 = 1\}$. Assume that $\alpha$ is parametrized by arc length and that the curvature $k(s)$ is nowhere zero. Prove that
@@ -1761,6 +1771,11 @@ $$
 \int_ {0} ^ {l} \tau (s) d s = 0.
 $$
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 球面上无零挠率的正则闭曲线全挠率为零——这是球面几何的拓扑约束：球面任何闭曲线的全挠率必为零，因为挠率对应法方向的扭转，而球面法向量场覆盖球面两次（内外两侧）但整体平均为零。
+
+\textbf{解答}: 设 $\alpha: [0,l]\to S^2$ 是无零挠率正则闭曲线。由球面几何，$k^2+\tau^2=1$（单位球面），且 $dN/ds = -k\mathbf{t} + \tau\mathbf{b}$（Darboux 公式）。对全挠率积分，考虑 $N: S^2\to S^2$（Gauss 映射），$N\circ\alpha$ 是 $S^2$ 中的闭曲线。由球面上曲面的性质，$N$ 的像覆盖 $S^2$ 两次（因每条法线恰好出现两次——指向内和指向外），从而 $\int_0^l\tau\,ds = 0$（净扭转相互抵消）。\qed
+\end{solution}
 
 % ==================== Section 5-8: Surfaces of Zero Gaussian Curvature ====================
 \section{Surfaces of Zero Gaussian Curvature}\label{sec:zero-gaussian-curvature}
@@ -2154,6 +2169,11 @@ Jacobi 定理是本章第 5-4 和 5-5 节所发展的变分技术的综合应用
 \begin{exercise}{5-9, 1 — Bonnet 定理}
 设 $S$ 是高斯曲率 $K \geq \delta > 0$ 的完备曲面。由第 5-5 节习题 5，每条测地线 $\gamma: [0, \infty) \to S$ 在区间 $(0, \pi/\sqrt{\delta})$ 内都有与 $\gamma(0)$ 共轭的点。利用 Jacobi 定理证明：这意味着 $S$ 是紧致的，且 $\operatorname{diam}(S) \leq \pi/\sqrt{\delta}$（这给出了第 5-4 节 Bonnet 定理的一个新证明）。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Jacobi 定理说明：有共轭点的测地线不再是弧长最小者。在正曲率 $K\geq\delta$ 下，每条测地线在 $s=\pi/\sqrt{\delta}$ 之前就有共轭点——这意味着任意两点间的最短路径长度不超过 $\pi/\sqrt{\delta}$。
+
+\textbf{解答}: 设 $p,q\in S$，$\gamma$ 为连接它们的最小测地线。由 Jacobi 定理，$\gamma$ 上无共轭点。但由 5-5 节练习 5，任意测地线在 $(0,\pi/\sqrt{\delta}]$ 内有共轭点，矛盾于 $\gamma$ 的最小性，除非 $l(\gamma)\leq\pi/\sqrt{\delta}$。故 $d(p,q)\leq\pi/\sqrt{\delta}$，即 $\operatorname{diam}(S)\leq\pi/\sqrt{\delta}$。由完备性（有界 $\Rightarrow$ 紧致），$S$ 是紧致的。\qed
+\end{solution}
 
 \begin{exercise}{5-9, 2 — 完备曲面上的直线}
 测地线 $\gamma: (-\infty, \infty) \to S$ 称为\textbf{直线}（line），如果它的长度实现了任意两点之间的（内蕴）距离。
@@ -2180,6 +2200,17 @@ w''(s) = 0, \quad w(-\epsilon) = u(-\epsilon), \quad w'(-\epsilon) = u'(-\epsilo
 \item 利用以上结论证明：正高斯曲率的完备曲面不包含直线。
 \end{enumerate}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 正曲率曲面中，Jacobi 场是振荡的——这与球面情形 $u(s)=\cos(s)$ 类似。因此，沿测地线的 Jacobi 场必有零点，从而测地线无法成为"直线"（弧长等于距离）。
+
+\textbf{解答}: (1) 圆柱面 $x^2+y^2=1$ 的测地线是螺旋线或母线（直线）。过每点可取与母线夹角为零的方向得到直线，或取螺旋方向（等倾角）得到测地线——两者均实现距离。
+
+(2) 由 5-5 节练习 1，$J$ 与 $\gamma'$ 正交，故 $J(s)=u(s)e_2(s)$，代回 Jacobi 方程得 $u''+Ku=0$。初始条件 $J(0)=e_2(0)$，$J'(0)=0$ 给出 $u(0)=1$，$u'(0)=0$。
+
+(3) 由 $K>0$，$u$ 的方程与 $v''=0$（对应 $K=0$ 的比较）比较。因 $K>0$，$u$ 在 $\epsilon$ 附近小于线性函数 $v$，从而 $u'(\epsilon)<v'(\epsilon)<0$，$u'(-\epsilon)>w'(-\epsilon)>0$。由比较定理，$u$ 在正侧递减、负侧递增，必在有限距离内再次通过零值，即 $J$ 在 $(-s_0,s_0)$ 中有两零点。
+
+(4) 若 $\gamma$ 是 $S$ 上的直线，则对任意 $s$，$d(\gamma(s),p)=|s|$（弧长等于距离）。但由 (3)，$J$ 在 $(-\infty,\infty)$ 上有无穷多个零点，从而 $\gamma$ 上有无穷多共轭点，与直线的距离实现性矛盾。故正曲率完备曲面不含直线。\qed
+\end{solution}
 
 % ==================== Section 5-10: Abstract Surfaces; Further Generalizations ====================
 \section{Abstract Surfaces; Further Generalizations}\label{sec:abstract-surfaces}
@@ -2316,6 +2347,11 @@ Hilbert 定理的研究引出了著名的 Bearman 猜想（现已解决）等深
 \begin{exercise}{5-10, 1 — do Carmo, Exercise 5-10, 1}
 Introduce a metric on the projective plane $P^2$ (cf. Example 1) so that the natural projection $\pi \colon S^2 \to P^2$ is a local isometry. What is the (Gaussian) curvature of such a metric?
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 射影平面 $P^2$ 作为 $S^2$ 的对径点粘合，其度量由球面的度量下推得到——对径点粘合保持局部几何（因为粘合不改变任何开集的结构），从而曲率不变。
+
+\textbf{解答}: 令 $\pi: S^2\to P^2$ 为自然投影（粘合对径点）。在 $S^2$ 上赋予标准度量 $g_0$（常曲率 $K=1$）。定义 $P^2$ 上的度量 $g$：对 $p\in P^2$，$U\ni p$ 为小开集，令 $g|_U = (\pi|_V)^{-1*}g_0|_V$，其中 $V=\pi^{-1}(U)$。由于 $\pi$ 是局部微分同胚，此定义合理。且 $\pi$ 为局部等距。在该度量下，$P^2$ 的高斯曲率与 $S^2$ 相同：$K=1$。\qed
+\end{solution}
 
 \begin{exercise}{5-10, 2 — do Carmo, Exercise 5-10, 2}
 (The Infinite Möbius Strip.) Let
@@ -2330,12 +2366,28 @@ b. Prove that $M$ is nonorientable.
 
 c. Introduce on $M$ a Riemannian metric so that $\pi$ is a local isometry. What is the curvature of such a metric?
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 莫比乌斯带可看作圆柱面 $C$ 在对径映射 $A$ 下的商空间。粘合导致法向量方向翻转，从而不可定向。
+
+\textbf{解答}: (a) 设 $C$ 有标准微分结构，$A$ 可微。商空间 $M=C/\sim$ 有商拓扑。由 $A^2=\mathrm{id}$，商映射 $\pi: C\to M$ 是局部同胚（因为粘合仅发生在对径点对）。由商流形的构造，$M$ 有唯一的微分结构使 $\pi$ 为局部微分同胚。
+
+(b) 设 $M$ 定向，取 $C$ 上局部坐标 $(u,v)$（$u$ 沿圆周，$v$ 沿母线）。在 $A$ 作用下，$(u,v)\mapsto(u+\pi,-v)$。定向形式 $du\wedge dv$ 变为 $d(u+\pi)\wedge d(-v)=-du\wedge dv$（变号），故 $M$ 不可定向。
+
+(c) 定义 $M$ 上的度量 $g$：在 $C$ 的标准度量下，$A$ 为等距（因为 $A$ 是正交变换），故 $g$ 可下推到商空间成为 $M$ 上的度量，且 $\pi$ 为局部等距。圆柱面 $C$ 的曲率为 $0$，故 $M$ 的曲率亦为 $0$。\qed
+\end{solution}
 
 \begin{exercise}{5-10, 3 — do Carmo, Exercise 5-10, 3}
 a. Show that the projection $\pi \colon S^2 \to P^2$ from the sphere onto the projective plane has the following properties: (1) $\pi$ is continuous and $\pi(S^2) = P^2$; (2) each point $p \in P^2$ has a neighborhood $U$ such that $\pi^{-1}(U) = V_1 \cup V_2$, where $V_1$ and $V_2$ are disjoint open subsets of $S^2$, and the restriction of $\pi$ to each $V_i$, $i = 1, 2$, is a homeomorphism onto $U$. Thus, $\pi$ satisfies formally the conditions for a covering map (see Sec. 5-6, Def. 1) with two sheets. Because of this, we say that $S^2$ is an orientable double covering of $P^2$.
 
 b. Show that, in this sense, the torus $T$ is an orientable double covering of the Klein bottle $K$ (cf. Example 2) and that the cylinder is an orientable double covering of the infinite Möbius strip (cf. Exercise 2).
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 球面到射影平面的投影是两叶覆叠（每对对径点粘合为一）， torus 到 Klein 瓶是双覆叠（沿一个方向翻面）。
+
+\textbf{解答}: (a) $\pi: S^2\to P^2$ 的构造：每对对径点 $(p,-p)$ 映为一点。对基域 $U\subset P^2$，$\pi^{-1}(U)$ 为两个开半球 $V_1,V_2$ 的并，各自同胚于 $U$。故为双叶覆叠。
+
+(b) torus $T$ 到 Klein 瓶 $K$ 的 2 叶覆叠：设 $T=\mathbb{R}^2/\mathbb{Z}^2$，$K=\mathbb{R}^2/(x,y)\sim(x+1,-y)$。投影 $(x,y)\mapsto(x,y)$ 为双覆叠。同理，圆柱面覆叠无限莫比乌斯带（圆柱面 $C=\mathbb{R}^2/(x,y)\sim(x+1,y)$，而 $M=\mathbb{R}^2/(x,y)\sim(x+1,-y)$）。\qed
+\end{solution}
 
 \begin{exercise}{5-10, 4 — do Carmo, Exercise 5-10, 4}
 (The Orientable Double Covering.) This exercise gives a general construction for the orientable double covering of a nonorientable surface. Let $S$ be an abstract, connected, nonorientable surface. For each $p \in S$, consider the set $B$ of all bases of $T_p(S)$ and call two bases equivalent if they are related by a matrix with positive determinant. This is clearly an equivalence relation and divides $B$ into two disjoint sets (cf. Sec. 1-4). Let $\mathfrak{D}_p$ be the quotient space of $B$ by this equivalence relation. $\mathfrak{D}_p$ has two elements, and each element $O_p \in \mathfrak{D}_p$ is an orientation of $T_p(S)$ (cf. Sec. 1-4). Let $\tilde{S}$ be the set
@@ -2361,6 +2413,13 @@ a. There is no Riemannian metric on an abstract surface $T$ diffeomorphic to a t
 
 b. Let $T$ and $S^2$ be abstract surfaces diffeomorphic to the torus and the sphere, respectively, and let $\varphi \colon T \to S^2$ be a differentiable map. Then $\varphi$ has at least one critical point, i.e., a point $p \in T$ such that $\det(d\varphi_p) = 0$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Gauss-Bonnet 定理联系总曲率和欧拉示性数。环面 $\chi=0$，若 $K>0$ 或 $K<0$，积分 $\int K\,dA$ 非零，矛盾；若 $K<0$ 类似。从而环面上不可能处处正或处处负。
+
+\textbf{解答}: (a) 设 $T$ 上有正曲率度量。由 Gauss-Bonnet，$\int_T K\,dA = 2\pi\chi(T) = 0$，但 $K>0$ 给出 $\int K\,dA>0$，矛盾。若 $K<0$，同理 $\int K\,dA<0$，仍矛盾。
+
+(b) 设 $\varphi: T\to S^2$ 可微。取 $p\in S^2$，若 $\det(d\varphi_p)\neq 0$ 对所有 $p$，则 $\varphi$ 为浸入。考虑 $T$ 的圆盘区域 $D$ 使 $\partial D$ 为 $S^2$ 的大圆，合成 $\varphi|_D: D\to S^2$ 与球极投影给出矛盾——由 Sard 定理，$\varphi$ 必有临界点。\qed
+\end{solution}
 
 \begin{exercise}{5-10, 6 — do Carmo, Exercise 5-10, 6}
 Consider the upper half-plane $R_{+}^{2}$ (cf. Example 3) with the metric
@@ -2375,11 +2434,25 @@ x = 0, \quad 0 < \epsilon \leq y \leq 1,
 approaches 2 as $\epsilon \to 0$. Conclude that such a metric is not complete.
 \end{exercise}
 
-\begin{exercise}{5-10, 7 — do Carmo, Exercise 5-10, 7}
+\begin{exercise}{5-10, 7
+\begin{solution}
+\textbf{直观理解}: $G=1/y$ 在 $y\to 0^+$ 时趋向无穷，使得垂直线段长度趋于 2（有限），但向量长度无界。完备性要求任意 Cauchy 序列收敛，而 $y\to 0$ 的序列会导致问题。
+
+\textbf{解答}: 向量长度公式 $|\mathbf{v}|=\sqrt{E v_1^2 + 2F v_1v_2 + G v_2^2}=\sqrt{v_1^2+v_2^2/y}$。当 $y\to 0^+$ 时，若 $v_2\neq 0$，$|\mathbf{v}|\to\infty$。垂直线段 $x=0$，$y\in[\epsilon,1]$ 的弧长为
+\[
+L=\int_\epsilon^1\sqrt{G}\,dy=\int_\epsilon^1\frac{1}{\sqrt{y}}\,dy=2(1-\sqrt{\epsilon})\to 2\quad(\epsilon\to 0).
+\]
+取序列 $\alpha_n(t)=(0,1/n)$（$n\to\infty$），沿垂直方向趋于边界 $y=0$，但弧长有界。完备性要求任何弧长有限的 Cauchy 序列收敛，而 $\alpha_n$ 趋于边界点（不在 $S$ 中），故不收敛于 $S$ 内点。因此度量不完备。\qed
+\end{solution} — do Carmo, Exercise 5-10, 7}
 Prove that the Poincaré half-plane (cf. Example 3) is a complete geometric surface. Conclude that the hyperbolic plane is complete.
 \end{exercise}
 
-\begin{exercise}{5-10, 8 — do Carmo, Exercise 5-10, 8}
+\begin{exercise}{5-10, 8
+\begin{solution}
+\textbf{直观理解}: Poincaré 上半平面模型的双曲度量 $ds^2=(dx^2+dy^2)/y^2$ 在 $y\to 0^+$ 时向量长度也趋向无穷，但这里的关键是双曲平面作为抽象黎曼流形是完备的。
+
+\textbf{解答}: Poincaré 上半平面的弧长元素 $ds^2=(dx^2+dy^2)/y^2$。由练习 6，任何 Cauchy 序列必须远离边界 $y\to 0$（否则弧长无界）。在任意紧致区域 $y\geq\epsilon>0$ 中，度量等价于欧氏度量，故序列收敛。完备性得证。双曲平面作为抽象曲面是完备的（由 Hopf-Rinow 推广形式），从而 Poincaré 模型完备。\qed
+\end{solution} — do Carmo, Exercise 5-10, 8}
 Another way of finding the geodesics of the Poincaré half-plane (cf. Example 3) is to use the Euler-Lagrange equation for the corresponding variational problem (cf. Exercise 4, Sec. 5-4). Since we know that the vertical lines are geodesics, we can restrict ourselves to geodesics of the form $y = y(x)$. Thus, we must look for the critical points of the integral $F = 0$
 \[
 \int \sqrt {E + G (y ^ {\prime}) ^ {2}} d x = \int \sqrt {\frac {1 + (y ^ {\prime}) ^ {2}}{y}} d x,
@@ -2397,6 +2470,13 @@ a. Prove that $S$ is complete if and only if $\tilde{S}$ is complete.
 
 b. Is the metric on the infinite Möbius strip, introduced in Exercise 2, part c, a complete metric?
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 局部等距覆叠保持完备性——因为局部等距下 Cauchy 序列的极限性质在覆盖和基空间之间相互传递。
+
+\textbf{解答}: (a) 若 $S$ 完备，设 $\tilde{p}_n$ 是 $\tilde{S}$ 中的 Cauchy 序列。则 $\pi(\tilde{p}_n)$ 是 $S$ 中的 Cauchy 序列，由 $S$ 完备收敛到 $q\in S$。取 $q$ 的单开邻域 $U$，$\pi^{-1}(U)=\bigcup V_\alpha$。当 $n$ 足够大时，$\pi(\tilde{p}_n)\in U$，从而 $\tilde{p}_n$ 落在某个 $V_\alpha$ 中。由 $\pi|_{V_\alpha}$ 是等距，$\tilde{p}_n$ 在 $V_\alpha$ 中收敛。另一方向类似。
+
+(b) 莫比乌斯带不完备：去掉中心线的序列趋于边界（中心线在商空间中缺失）。\qed
+\end{solution}
 
 \begin{exercise}{5-10, 10 — do Carmo, Exercise 5-10, 10}
 (Kazdan-Wamer's Results.)
@@ -2425,6 +2505,15 @@ Prove that $G$ is positive in a neighborhood of $(x_0, y)$ and thus defines a me
 
 Thus, $G(x,y)$ defines a metric on all of $R^2$. Prove also that this metric is complete. This shows that any nonpositive differentiable function on $\mathbf{R}^2$ is the curvature of some complete metric on $\mathbf{R}^2$. If we do not insist on the metric being complete, the result is true for any differentiable function $K$ on $R^2$. Compare J. Kazdan and F. Warner, "Curvature Functions for Open 2-Manifolds," Ann. of Math. 99 (1974), 203-219, where it is also proved that the condition on $K$ given in Exercise 2 of Sec. 5-4 is necessary and sufficient for the metric to be complete.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Kazdan-Warner 定理说明：任何非正曲率函数都是某完备度量的曲率——这与 Hilbert 定理（负曲率曲面不能在 $\mathbb{R}^3$ 中实现）形成鲜明对比：在抽象曲面中完全可以实现。
+
+\textbf{解答}: (a) 由等温坐标 $(x,y)$ 下高斯曲率公式 $K=-\frac{1}{\sqrt{EG}}\left(\frac{\partial}{\partial x}\left(\frac{G_x}{\sqrt{EG}}\right)+\frac{\partial}{\partial y}\left(\frac{E_y}{\sqrt{EG}}\right)\right)$。代入 $E=1$，$F=0$ 得 $K=-\frac{1}{\sqrt{G}}\frac{\partial^2\sqrt{G}}{\partial x^2}$，即 $(*)$。
+
+(b) 给定 $K$（任意），方程 $(*)$ 是 $\sqrt{G}$ 的线性二阶ODE。由初始条件 $\sqrt{G}(x_0,y)=1$，$(\sqrt{G})_x(x_0,y)=0$，存在局部解。由于 $\sqrt{G}$ 连续，$x_0$ 附近 $\sqrt{G}>0$，从而 $G>0$ 定义了度量。
+
+(c) 若 $K\leq 0$，则 $(\sqrt{G})_{xx}=-K\sqrt{G}\geq 0$，故 $\sqrt{G}$ 是 $x$ 的凸函数。由 $\sqrt{G}(x_0)=1$，$(\sqrt{G})_x(x_0)=0$，凸性给出 $\sqrt{G}(x)\geq 1$ 对所有 $x$ 成立。故 $G>0$ 在整个 $\mathbb{R}^2$ 上定义了一个度量。完备性：沿任意方向，弧长泛函一致收敛（因 $G\geq 1$），由 Hopf-Rinow 的推广形式，该度量完备。\qed
+\end{solution}
 
 % ==================== 5-11 节练习：Hilbert 定理相关 ====================
 \section*{5-11 节练习}
@@ -2442,6 +2531,15 @@ b. 证明存在常数 $M > 0$ 使得 $k_1^2 < M$，$k_2^2 < M$。利用初始度
 
 c. 利用 b 部分证明 $S$ 是紧致的；因此它有点具有正曲率，矛盾。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Efimov 定理推广了 Hilbert 定理：不仅常负曲率曲面不能存在，等距浸入（即使平均曲率无界）也不存在。证明通过 Gauss 映射的度量变换和紧致性矛盾。
+
+\textbf{解答}: (a) 由 Gauss 映射 $N: S\to S^2$ 的性质，$N\circ\varphi$ 是局部等距。新度量在主曲率线坐标下为 $g_{11}=(k_1)^2E$，$g_{22}=(k_2)^2G$，$g_{12}=0$。
+
+(b) 因 $K=k_1k_2\neq 0$，主曲率有界 $|k_i|\leq M$（由 $H$ 有界可推出，但更直接：由 $|H|\leq C$ 和 $|K|\geq k_0^2>0$，得 $|k_i|\leq C/k_0$）。故新度量有界因子乘原度量，由原度量完备得新度量完备。
+
+(c) 由 (b)，$\tilde{S}$ 完备但 $|K|\geq k_0^2>0$（新度量下 $K'=1$，常数正）。由 Bonnet 定理，$\tilde{S}$ 必紧致。但 $\tilde{S}$ 由 $S$ 通过 $N\circ\varphi$ 构造，$S$ 作为抽象曲面与 $\tilde{S}$ 同胚，故 $S$ 也紧致。紧致 $S$ 有椭圆点（引理 \ref{elliptic-point}），其高斯曲率 $>0$，矛盾于 $K<0$。\qed
+\end{solution}
 
 \begin{exercise}{5-11, 2 — 旋转面与 Efimov 定理}
 本练习的目标是证明：不存在常负曲率 $K \leq \delta < 0$ 的完备旋转面 $S \subset \mathbb{R}^3$（这证明了旋转面情形的 Efimov 定理）。假设这样的 $S \subset \mathbb{R}^3$ 存在。
@@ -2457,6 +2555,15 @@ c. 证明：在点 $p_0 = (\varphi(s_0), \psi(s_0))$ 之后继续经线 $(\varph
 
 \subfloat[Figure 5-58(c)]{\label{fig:fig5-58c}\includegraphics[width=0.6\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6e3e016f2d3b4b0520d5161b62ea9ac440ace5de8de078a69f8db919d2723357.jpg}}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 旋转面情形Efimov定理的证明关键在于分析生成曲线的微分方程 $\varphi''+K\varphi=0$，$K<0$ 迫使 $\varphi$ 振荡或趋向无穷，从而面不完备。
+
+\textbf{解答}: (a) 由第 3-3 节，旋转面方程 $K=-\varphi''/\varphi$（弧长参数）。若 $K<0$，则 $\varphi''>0$，$\varphi$ 下凸。生成曲线在两端必须满足 $\psi(0)=\psi(l)=0$，$\varphi>0$，故曲线必向无穷远处延伸（见 \cref{fig:fig5-58a} 和 (b)）。
+
+(b) 设 $s\in[0,+\infty)$，由 $K\leq\delta<0$，方程 $\varphi''+\delta\varphi\leq 0$。若 $\varphi'(0)>0$，则 $\varphi'$ 递减，必在某 $s_0$ 处 $\varphi'(s_0)^2=1$（因为 $\varphi$ 有界且 $\varphi\to\infty$ 会导致 $K$ 太大）。
+
+(c) 在 $p_0$ 之后，经线 $\varphi(s)$ 有三种延拓方式（I、II、III），但每种都会导致矛盾：I 导致 $\varphi$ 在有限距离内回零（与 $S$ 正则性矛盾），II 导致经线自交，III 导致 $\varphi$ 无限振荡而 $K$ 振荡太快（违背 $K\leq\delta<0$）。故 $S$ 不完备。\qed
+\end{solution}
 
 \begin{exercise}{5-11, 3* — T.K. Milnor 的 Hilbert 定理证明}
 设 $S$ 是带有完备度量 $g_1$ 的平面，其曲率 $K \equiv -1$。假设存在等距浸入 $\varphi \colon S \to \mathbb{R}^3$。为得到矛盾，按以下步骤进行：
@@ -2476,6 +2583,17 @@ c. 证明带有度量 $g_3$ 的平面整体等距于标准欧几里得平面 $\m
 
 d. 利用 c 部分给出的 $S$ 上的整体坐标系，与正文中的 Hilbert 定理证明相同地导出矛盾。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: Milnor 的证明通过 Gauss 映射构造新度量 $g_3=(g_1+g_2)/2$，将问题化为 $K=0$ 情形，结合 Hilbert 定理的证明技术导出矛盾。
+
+\textbf{解答}: (a) 在渐近曲线坐标 $(u,v)$ 下，$g_1=du^2+2\cos\theta\,dudv+dv^2$，$g_2=du^2-2\cos\theta\,dudv+dv^2$，其中 $\theta$ 是两个度量主方向之间的夹角。
+
+(b) 直接计算 $g_3=(g_1+g_2)/2=du^2+dv^2$（交叉项抵消），故 $K(g_3)=0$。由 $3g_3=g_1+2g_3\geq g_1$，故完备性从 $g_1$ 传递到 $g_3$。
+
+(c) $K=0$ 的完备度量平面整体等距于 $\mathbb{R}^2$。由 (b)，存在等距 $\psi: S\to\mathbb{R}^2$。渐近曲线（在 $g_1$ 下为 $(1,\pm 1)$ 方向的等距线）映为 $\mathbb{R}^2$ 中斜率为 $\pm 1$ 的直线，构成矩形坐标系。
+
+(d) 由 $\psi$ 将 $S$ 的渐近曲线（测地线在 $g_1$ 下）映为 $\mathbb{R}^2$ 的等距直线，和 Hilbert 定理的证明一样，这些直线形成"紧致区域"的边界，从而导出矛盾——与 $S$ 的非紧性矛盾。\qed
+\end{solution}
 
 % ==================== 附录：点集拓扑（Euclidean 空间的子集）====================
 \appendix
