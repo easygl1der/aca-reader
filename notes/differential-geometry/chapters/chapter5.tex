@@ -505,6 +505,17 @@ Hopf-Rinow 定理是完备曲面之所以比不可延展曲面更适合微分几
 \begin{exercise}{5-3, 10* — do Carmo, Exercise 5-3, 10}
 设 $S \subset \mathbb{R}^3$ 是完备曲面，固定单位向量 $v$，高度函数 $h(p) = \langle p,v\rangle$。设 $\alpha(t)$ 是 $\mathrm{grad}\,h$ 的轨迹。证明：（a）$|\mathrm{grad}\,h(p)| \leq 1$；（b）$\alpha(t)$ 对所有 $t \in \mathbb{R}$ 有定义。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 高度函数 $h(p) = \langle p,v\rangle$ 是沿法方向的分量函数。$\mathrm{grad}\,h$ 是 $h$ 的最速上升方向。由于 $S \subset \mathbb{R}^3$，$h$ 的梯度必在 $S$ 的切平面内，且长度不超过 $1$（因为 $|p| \geq h(p)$）。轨迹 $\alpha$ 沿梯度流线运动，由于梯度的模有界，$\alpha$ 不会在有限时间内爆炸。
+
+\textbf{解答}: (a) 由定义，$\langle \mathrm{grad}\,h(p),\, w\rangle = dh_p(w) = \langle p,\, w\rangle$ 对所有 $w \in T_p(S)$ 成立（因为 $dh_p(w) = d\langle p,v\rangle(w) = \langle w,v\rangle$）。取正交于 $T_p(S)$ 的向量 $w$ 的分量为零，故 $\mathrm{grad}\,h(p)$ 垂直于 $v$ 在法方向的分量。实际上，由于 $v$ 是单位向量，$|dh_p| = |v|^T| \leq |v| = 1$，故 $|\mathrm{grad}\,h(p)| \leq 1$。等号成立当且仅当 $v$ 平行于 $N(p)$。
+
+(b) 设 $\alpha(t)$ 是 $\mathrm{grad}\,h$ 的轨迹，$\alpha'(t) = \mathrm{grad}\,h(\alpha(t))$。由 (a)，$|\alpha'(t)| \leq 1$，故
+\[
+|\alpha(t) - \alpha(0)| \leq \int_0^t |\alpha'(s)|\,ds \leq t.
+\]
+若 $S$ 完备，则 $\alpha$ 可以延拓。更重要的是，由常微分方程理论，$|\alpha'(t)| \leq 1$ 意味着 $\alpha$ 在 $\mathbb{R}$ 上有解（因为向量场的增长被线性函数控制）。具体地，设 $h$ 定义在整个 $\mathbb{R}^3$ 上，$\mathrm{grad}\,h$ 为 Lipschitz 向量场（Lipschitz 常数为 $1$），由 ODE 存在性定理，$\alpha(t)$ 对所有 $t\in\mathbb{R}$ 有定义。由于 $S$ 是正则曲面，$\mathrm{grad}\,h$ 切于 $S$，故 $\alpha(t) \in S$ 对所有 $t$ 成立。\qed
+\end{solution}
 
 \begin{exercise}{5-3, 11* — Osserman 引理, do Carmo, Exercise 5-3, 11}
 设 $\mathbf{x}: D_1 \to \mathbb{R}^3$ 是单位圆盘上的等温参数化极小曲面（$H=0$）。假设其单位法向量去掉了一个球面邻域（即存在 $\epsilon>0$ 和单位向量 $w$ 使 $|\langle \mathbf{x}_u,w\rangle|/|\mathbf{x}_u| \geq \epsilon$ 和 $|\langle \mathbf{x}_v,w\rangle|/|\mathbf{x}_v| \geq \epsilon$）。证明 $\mathbf{x}(D_1)$ 不是完备曲面（这是 Osserman 定理的关键步骤，见第 3-5 节末尾）。
