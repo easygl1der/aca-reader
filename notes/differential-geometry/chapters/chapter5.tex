@@ -424,6 +424,17 @@ Hopf-Rinow 定理是完备曲面之所以比不可延展曲面更适合微分几
 \begin{exercise}{5-3, 3 — do Carmo, Exercise 5-3, 3}
 设 $S$ 是例 \ref{ex:cone-nonextendable} 中的单叶锥面。利用第 4-2 节例 3 的等距证明：任意两点 $p,q \in S$ 均可由 $S$ 上的一条最小测地线连接（见 \cref{fig:fig5-11}）。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 单叶锥面沿一条母线剪开后可等距展开为平面上的一个扇形区域（见第 4-2 节例 3）。在平面上，任意两点之间的直线段即为最短测地线，将其卷回锥面即得到锥面上的最短测地线。
+
+\textbf{解答}: 设 $S$ 是单叶锥面（去掉顶点），由第 4-2 节例 3，存在从锥面去掉一条母线得到的开集 $S\setminus\gamma$ 到平面扇形 $W=\{(r,\theta):0<r<\infty,\ \alpha_0<\theta<\alpha_1\}$（其中 $\alpha_1-\alpha_0=2\pi\sin\beta<2\pi$）的等距映射 $\varphi:S\setminus\gamma\to W$。对任意 $p,q\in S$，分两种情况：
+
+(1) 若 $p,q$ 都不在母线 $\gamma$ 上，则 $\varphi(p),\varphi(q)\in W$，而 $W$ 是平面上凸区域，故存在唯一直线段 $\overline{\varphi(p)\varphi(q)}\subset W$。像曲线 $\varphi^{-1}(\overline{\varphi(p)\varphi(q)})$ 即为连接 $p,q$ 的最短测地线。
+
+(2) 若 $p$ 或 $q$ 在母线 $\gamma$ 上，不妨设 $p\in\gamma$。由于 $\gamma$ 是正则曲线（去掉顶点），可在 $\gamma$ 附近取小弧段构造新的开集 $S\setminus\gamma_1$，其中 $\gamma_1$ 是另一条母线，使 $p$ 不在 $\gamma_1$ 上。重复上述过程，仍可在锥面上找到连接 $p,q$ 的最短测地线。
+
+关键在于：锥面本身是完备的（去掉顶点后仍是完备的度量空间），而等距映射 $\varphi$ 将弧长距离保持不变，故 $S$ 上任意两点间的最短测地线必在 $S\setminus\gamma$ 的某个等距展开图中表现为平面直线段。由扇形的凸性，这样的直线段唯一，故最短测地线存在且唯一（若两点均不在母线上）。\qed
+\end{solution}
 
 \begin{figure}[H]
 \centering
@@ -501,6 +512,17 @@ Hopf-Rinow 定理是完备曲面之所以比不可延展曲面更适合微分几
 \begin{exercise}{5-3, 9* — do Carmo, Exercise 5-3, 9}
 设 $S_1 \subset \mathbb{R}^3$ 是完备曲面，$S_2 \subset \mathbb{R}^3$ 是任意两点均可由唯一测地线连接的单连通曲面。设 $\varphi: S_1 \to S_2$ 是局部等距。证明 $\varphi$ 是整体等距。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: $S_1$ 的完备性保证 Cauchy 序列收敛，$S_2$ 的单连通性与唯一测地线条件结合 Hadamard 定理给出 $S_2\cong\mathbb{R}^2$ 的拓扑结构。局部等距 $\varphi$ 保持测地线，故 $\varphi$ 将 $S_1$ 的完备性传递到 $S_2$，而 $S_2$ 的 Hadamard 结构使任意两点间的测地线唯一且整体最短，从而 $\varphi$ 将弧长距离 $d_1$ 等距映射到 $d_2$，是整体等距。
+
+\textbf{解答}: 由 Hadamard 定理（\,5-6 节定理 2），$S_2$ 单连通且 $K\leq0$ 完备，故 $\exp_{q}:T_{q}(S_2)\to S_2$ 对所有 $q\in S_2$ 为覆盖映射。由于 $S_2$ 上任意两点间的测地线唯一，$\exp_q$ 必为单射，故 $\exp_q$ 为全局微分同胚，即 $S_2$ 微分同胚于 $\mathbb{R}^2$。
+
+设 $\\_l$ 是 $S_1$ 上的弧长距离。取 $p\in S_1$，令 $q=\varphi(p)$。对 $S_1$ 上任意分段光滑曲线 $\\_\alpha$，局部等距条件 $|\varphi\circ\alpha'(t)|_{S_2}=|\alpha'(t)|_{S_1}$ 蕴含 $L\_{S_2}(\varphi\circ\alpha)=L\_{S_1}(\alpha)$。故 $\varphi$ 保持弧长：$d\_2(\varphi(p),\varphi(q))=d\_1(p,q)$。
+
+下证 $\varphi$ 是满射。取任意 $r\in S_2$，由 $S_2\cong\mathbb{R}^2$，存在从 $q$ 到 $r$ 的测地线 $\gamma$。设 $\tilde{\gamma}$ 是 $T\_{p}(S_1)$ 中满足 $d\exp\_{p}(\tilde{\gamma}(0))=\\_\gamma'(0)$ 的曲线。由于 $\varphi$ 是局部等距且保持指数映射：$\varphi(\exp\_p(\tilde{\gamma}(t)))=\exp\_{q}(\tilde{\gamma}(t))$，沿 $\tilde{\gamma}$ 积分得 $\varphi$ 的像覆盖整个 $S_2$。
+
+最后，由 $d\_2(\varphi(p\_1),\varphi(p\_2))=d\_1(p\_1,p\_2)$ 对所有 $p\_1,p\_2\in S_1$ 成立，$\varphi$ 为等距双射，故为整体等距。\qed
+\end{solution}
 
 \begin{exercise}{5-3, 10* — do Carmo, Exercise 5-3, 10}
 设 $S \subset \mathbb{R}^3$ 是完备曲面，固定单位向量 $v$，高度函数 $h(p) = \langle p,v\rangle$。设 $\alpha(t)$ 是 $\mathrm{grad}\,h$ 的轨迹。证明：（a）$|\mathrm{grad}\,h(p)| \leq 1$；（b）$\alpha(t)$ 对所有 $t \in \mathbb{R}$ 有定义。
