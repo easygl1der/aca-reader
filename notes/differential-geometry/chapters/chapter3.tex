@@ -1518,14 +1518,53 @@ $\bar{H} = \frac{1}{2}\frac{\bar{e}\bar{G} - 2\bar{f}\bar{F} + \bar{g}\bar{E}}{\
 Consider the surface obtained by rotating the curve $y = x^3$, $-1 < x < 1$, about the line $x = 1$. Show that the points obtained by rotation of the origin $(0,0)$ of the curve are planar points of the surface.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：将曲线 $y = x^3$ 绕直线 $x = 1$ 旋转，在 $x = 1$ 处作旋转轴。点 $(0,0)$ 绕该轴旋转生成一个圆，其上每一点都是旋转面的"脐点"，且为平面点（$K = 0$）。
+
+\textbf{解答}：将旋转轴取为 $z$ 轴，曲线 $y = x^3$ 绕 $x = 1$ 旋转相当于将曲线平移，使轴线为 $x = 1$。参数化旋转面：以 $x$ 轴上的点 $(1+t, 0, 0)$ 为基线，沿旋转方向取角参数 $\theta$，则
+\[
+\mathbf{x}(t,\theta) = (1 + t + t^3\cos\theta,\; t^3\sin\theta,\; 0).
+\]
+
+在 $(t=0,\theta)$ 处（对应旋转的原点 $(0,0)$），计算第一、第二基本形式。在 $t = 0$ 处，有
+\[
+\mathbf{x}_t = (1,0,0),\quad \mathbf{x}_\theta = (0,0,0),
+\]
+这说明 $t = 0$ 对应的"纬线"退化为一个点。实际上，当 $t = 0$ 时 $\mathbf{x}(0,\theta) = (1,0,0)$，原点 $(0,0)$ 旋转生成的是点 $(1,0,0)$，而非一圈点——这是因为旋转轴 $x = 1$ 经过了点 $(1,0,0)$。
+
+重新理解题目：旋转曲线 $y = x^3$（$x \in (-1,1)$）绕 $x = 1$ 轴线旋转，曲线上的点 $(x, x^3, 0)$ 到轴线 $x = 1$ 的距离为 $|x-1|$，故旋转面参数化为
+\[
+\mathbf{x}(x,\theta) = (1 + (x-1)\cos\theta,\; (x-1)\sin\theta,\; x^3),\quad x \in (-1,1),\ \theta \in [0,2\pi).
+\]
+
+在原点 $x = 0$ 对应的圆上，$x = 0$，即旋转面上 $x = 0$ 的纬圆。计算在该圆上的高斯曲率。
+
+直接计算：在 $x = 0$ 附近，旋转面的几何可知，原点旋转生成的纬圆恰好由曲线的拐点 $x = 0$ 旋转而成。该点处曲线的二阶导数为零（$y = x^3$ 的二阶导数 $y'' = 6x$，在 $x = 0$ 处为零），因此旋转面上沿该圆的主曲率之一为零，即 $K = 0$，这些点是平面点（planar points）。
+\end{solution}
+
 \begin{exercise}{3-3, 15 — do Carmo, Exercise 3-3, 15}
 Give an example of a surface which has an isolated parabolic point $p$ (that is, no other parabolic point is contained in some neighborhood of $p$).
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：旋转曲线 $y = x^3$ 绕 $x = 1$ 旋转，原点 $(0,0)$ 旋转生成一圈点。需证明这些点是平点（planar points），即高斯曲率 $K = 0$。
+\textbf{直观理解}：抛物点是 $K = 0$ 的点。若要构造孤立抛物点，需要构造一个曲面，使得在除某点 $p$ 外的邻域内 $K \neq 0$，而在 $p$ 处 $K = 0$。
 
-\textbf{解答}：参数化旋转面并计算第二基本形式。在原点附近，曲线 $y = x^3$ 的曲率相关量满足特定条件，使得旋转所得曲面在该点处 $K = 0$。
+\textbf{解答}：考虑曲面 $z = x^4 + y^4$（或更一般的 $z = x^{2n} + y^{2n}$，$n \geq 2$）。
+
+参数化 $\mathbf{x}(u,v) = (u, v, u^4 + v^4)$。计算第一基本形式：
+\[
+E = 1 + 16u^6,\quad F = 16u^3v^3,\quad G = 1 + 16v^6.
+\]
+第二基本形式：
+\[
+e = 12u^2,\quad f = 0,\quad g = 12v^2.
+\]
+高斯曲率：
+\[
+K = \frac{eg - f^2}{EG - F^2} = \frac{144u^2v^2 - 0}{(1+16u^6)(1+16v^6) - 256u^6v^6}.
+\]
+
+在原点 $(0,0)$ 处，$K = 0$（抛物点）。对于任意 $(u,v) \neq (0,0)$，有 $u^2v^2 > 0$，故 $K > 0$（椭圆点）。因此原点是孤立的抛物点。
 \end{solution}
 
 \begin{exercise}{3-3, 16 — do Carmo, Exercise 3-3, 16}
