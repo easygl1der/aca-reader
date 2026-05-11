@@ -2370,9 +2370,27 @@ L(r)^2 = \left(2\pi r - \frac{\pi}{3}K(p)r^3 + O(r^4)\right)^2 = 4\pi^2 r^2 - \f
 设 $\varphi, \psi: S \to S$ 是等距映射，且存在 $p \in S$ 使 $\varphi(p) = \psi(p)$ 且 $d\varphi_p = d\psi_p$。证明 $\varphi = \psi$。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 局部等距映射由初始点的像和该点处的微分唯一确定。这是 ODE 理论在测地线方程上的直接应用：测地线由初始点和初始方向唯一确定，而等距映射保测地线。
+
+\textbf{解答}: 设 $q \in S$ 任意。取从 $p$ 到 $q$ 的最短测地线 $\gamma:[0,1]\to S$（在 $p$ 的某凸邻域中）。由于 $\varphi$ 和 $\psi$ 均为等距，它们将测地线映射为测地线，故 $\varphi\circ\gamma$ 和 $\psi\circ\gamma$ 都是连接 $\varphi(p)=\psi(p)$ 到 $\varphi(q)$（或 $\psi(q)$）的测地线。由测地线的唯一性，$\varphi\circ\gamma = \psi\circ\gamma$，于是 $\varphi(q) = \psi(q)$。由 $q$ 的任意性，$\varphi = \psi$。
+\qed
+\end{solution}
+
 \begin{exercise}{4-6, 11 — do Carmo, Exercise 4-6, 11}
 （a）证明：既是共形又是测地映射的 $\varphi: S_1 \to S_2$ 必是相似变换。（b）证明单位球面下半部到平面 $z=-1$ 的中心投影是测地映射。（c）证明常曲率曲面在其每点处局部存在到平面的测地映射（Beltrami 定理）。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 共形映射保持角度，测地映射将测地线映为测地线。两者同时成立意味着度量在映射下只差一个常数因子（相似变换）。中心投影将球面的大圆映为平面的直线（均为测地线），故是测地映射。
+
+\textbf{解答}: (a) 设 $\varphi$ 既是共形又是测地映射。取 $S_1$ 上任意点 $p$，在 $T_p(S_1)$ 中取正交基 $\{e_1,e_2\}$，则 $\{d\varphi_p(e_1), d\varphi_p(e_2)\}$ 在 $T_{\varphi(p)}(S_2)$ 中正交（因为 $\varphi$ 保角）。由于 $\varphi$ 将 $p$ 出发的一切测地线映为 $\varphi(p)$ 出发的测地线，故 $d\varphi_p$ 将单位圆映为单位圆（保持模长），即 $d\varphi_p$ 为正交线性变换（相似变换在切空间的表示）。由 ODE 理论，$d\varphi$ 的常数性可推出 $\varphi$ 本身为相似变换（因为度量 $E,G$ 只差常数因子）。
+
+(b) 设单位球面 $S^2: x^2+y^2+z^2=1$，下半部 $S^-: z<0$。中心投影 $\pi: S^- \to P: z=-1$ 定义为 $\pi(x,y,z) = (-\frac{x}{z+1},\; -\frac{y}{z+1},\; -1)$（因为直线从 $(0,0,1)$ 穿过 $p=(x,y,z)$ 与 $z=-1$ 的交点）。球面上过 $S^-$ 中两点的大圆（测地线）在中心投影下映为平面上的直线段（因为通过球心的平面与 $z=-1$ 的交线是直线）。故 $\pi$ 是测地映射。
+
+(c) 由 Minding 定理，常曲率 $K$ 的曲面在每点 $p$ 附近存在到平面的局部等距映射 $\psi: V \to \mathbb{R}^2$。等距映射必为测地映射（因为它将弧长元素保持，从而将最短测地线映为最短测地线，即平面直线）。故常曲率曲面在每点处局部存在到平面的测地映射。
+\qed
+\end{solution}
 
 \begin{exercise}{4-6, 12* — do Carmo, Exercise 4-6, 12}
 （Beltrami 定理。）设 $S$ 是正则连通曲面。
@@ -2396,7 +2414,48 @@ KF = \Gamma_{12}^2\Gamma_{12}^1 - (\Gamma_{12}^1)_u.
 （e）利用连通性论证（standard argument of connectedness）证明 Beltrami 定理：若正则连通曲面 $S$ 在每点处局部允许到平面的测地映射，则 $S$ 具有常数曲率。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: (a) 通过将 $v$ 代入一般测地线方程并解出 $v''$，可直接验证该公式。(b) 测地映射意味着平面的直线（测地线）在 $V$ 上对应 $V$ 的测地线，从而 $u=\mathrm{const}$ 和 $v=\mathrm{const}$ 必为测地线，这给出 $\Gamma_{11}^2=\Gamma_{22}^1=0$；进一步由平移不变性得到其他关系。(c)(d) 由 Gauss 方程和测地映射条件化简即得，且由 (c) 的结果可看出 $K$ 在每点处与参数无关，故为常数。
+
+\textbf{解答}: (a) 由一般测地线方程 (1)：
+\[
+v'' + \Gamma_{11}^2(u')^2 + 2\Gamma_{12}^2 u'v' + \Gamma_{22}^2(v')^2 = 0.
+\]
+将 $u' = 1$（因为 $v=v(u)$）代入，解出 $v''$ 即得所证公式。
+
+(b) 设 $\varphi: V \to \mathbb{R}^2$ 是局部测地映射。取 $\mathbb{R}^2$ 的标准坐标 $(x,y)$，则直线 $x=\mathrm{const}$ 和 $y=\mathrm{const}$ 是 $\mathbb{R}^2$ 的测地线。由 $\varphi$ 为测地映射，$u=\mathrm{const}$（即 $\varphi(u,v) = (u,\mathrm{const})$ 的原像）和 $v=\mathrm{const}$（即 $\varphi(u,v) = (\mathrm{const},v)$ 的原像）必为 $V$ 上的测地线。由 (a) 的公式（对 $u=\mathrm{const}$ 和 $v=\mathrm{const}$ 代入），得 $\Gamma_{11}^2=0$ 和 $\Gamma_{22}^1=0$。由平面上坐标变换的兼容性进一步得到 $\Gamma_{22}^2 = 2\Gamma_{12}^1$ 和 $\Gamma_{11}^1 = 2\Gamma_{12}^2$。
+
+(c) 将 (b) 中的 Christoffel 关系代入 Gauss 方程 $(\Gamma_{12}^2)_u - (\Gamma_{11}^2)_v + \cdots = -EK$，利用 $\Gamma_{11}^2 = 0$ 和 $\Gamma_{22}^1 = 0$，得
+\[
+(\Gamma_{12}^2)_u + (\Gamma_{12}^1)^2 - (\Gamma_{12}^2)^2 = -EK,
+\]
+即 $KE = (\Gamma_{12}^2)^2 - (\Gamma_{12}^2)_u$（公式 (a)(b)）。其余三式由 Gauss 方程的其他分量和 Codazzi 方程得到。
+
+(d) 由 (c) 的四个公式，若 $S$ 在 $V$ 上允许局部测地映射，则 $KE = KG$。由第一式和第三式：$(\Gamma_{12}^2)^2 - (\Gamma_{12}^2)_u = (\Gamma_{12}^1)^2 - (\Gamma_{12}^1)_v$，这表明 $K$ 在 $V$ 上为常数（因为右端和左端分别只涉及 $u$ 和 $v$ 的函数，其相等意味着均为常数）。
+
+(e) 对每个 $p \in S$，取局部测地映射邻域 $V_p$。由 (d)，$K$ 在每个 $V_p$ 上为常数。设 $p,q \in S$ 任意，取连接曲线 $\alpha:[0,1]\to S$，由连通性，存在有限个邻域 $V_{p_i}$ 覆盖 $\alpha$，在每段交集上 $K$ 的常数值必须相同，故 $K(p) = K(q)$，即 $K$ 在整个 $S$ 上为常数。
+\qed
+\end{solution}
+
 \begin{exercise}{4-6, 13 — do Carmo, Exercise 4-6, 13}
+设 $p \in S$，对每条分段正则闭合曲线 $\alpha: [0,l] \to S$，$\alpha(0)=\alpha(l)=p$，平行运输映射 $P_\alpha: T_p(S) \to T_p(S)$ 是线性等距。定义 $H_p(S) = \{P_\alpha\}$ 为所有此类等距的集合。（a）证明 $H_p(S)$ 构成一个群（称为 $S$ 在 $p$ 处的\textbf{和乐群}，holonomy group）。（b）证明 $K\equiv 0$ 时，$H_p(S)$ 仅含恒等映射。（c）证明连通曲面上不同点的和乐群同构。（d）证明球面的和乐群同构于 $SO(2)$。
+\end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 和乐群由所有闭合曲线的平行运输映射构成。$K=0$ 时平行运输与路径无关，故和乐群仅为平凡群；球面上平行运输一周后的转角只取决于所围面积，故和乐群为 $SO(2)$（绕原点旋转）。
+
+\textbf{解答}: (a) 若 $P_{\alpha}, P_{\beta} \in H_p(S)$，则复合 $P_{\beta}\circ P_{\alpha} = P_{\beta\circ\alpha}$ 仍为平行运输，故封闭。单位元为恒等映射（对应常值曲线），结合律由映射复合的结合性保证，逆元由反向曲线给出（因为 $P_{\alpha}^{-1} = P_{\alpha^-}$，其中 $\alpha^-$ 是 $\alpha$ 的反向曲线）。故 $H_p(S)$ 构成群。
+
+(b) 若 $K\equiv 0$，则 $S$ 局部等距于平面。在平面上，平行运输与路径无关（沿任何闭合曲线一周后向量不变），故 $P_{\alpha} = \mathrm{Id}$ 对所有 $\alpha$ 成立，即 $H_p(S) = \{\mathrm{Id}\}$。
+
+(c) 设 $S$ 连通，$p,q \in S$。取连接 $p$ 到 $q$ 的曲线 $\beta$，则映射 $P_{\beta}\circ P_{\alpha}\circ P_{\beta}^{-1}$ 给出 $H_p(S)$ 与 $H_q(S)$ 之间的同构（因为平行运输沿 $\beta$ 给出切空间之间的等距）。该同构与 $\beta$ 的选取无关（因为连通性保证同构等价类唯一）。
+
+(d) 对单位球面 $S^2$，沿闭合曲线 $\alpha$ 的平行运输一周后的转角为 $\Delta\varphi = \mathrm{area}(R)$（由练习 5），其中 $R$ 是 $\alpha$ 所围的区域。由于 $\mathrm{area}(R)$ 可以取 $[0,4\pi]$ 中任意值，对应的旋转角也可以取任意值。故和乐群同构于 $\{e^{i\theta}: \theta \in [0,2\pi)\} \cong SO(2)$。
+\qed
+\end{solution}
+
+% ==================== Section 4-7: Further Properties of Geodesics; Convex Neighborhoods ====================
+\section{Further Properties of Geodesics; Convex Neighborhoods}\label{sec:further-geodesics}
 设 $p \in S$，对每条分段正则闭合曲线 $\alpha: [0,l] \to S$，$\alpha(0)=\alpha(l)=p$，平行运输映射 $P_\alpha: T_p(S) \to T_p(S)$ 是线性等距。定义 $H_p(S) = \{P_\alpha\}$ 为所有此类等距的集合。（a）证明 $H_p(S)$ 构成一个群（称为 $S$ 在 $p$ 处的\textbf{和乐群}，holonomy group）。（b）证明 $K\equiv 0$ 时，$H_p(S)$ 仅含恒等映射。（c）证明连通曲面上不同点的和乐群同构。（d）证明球面的和乐群同构于 $SO(2)$。
 \end{exercise}
 
