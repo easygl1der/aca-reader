@@ -137,6 +137,159 @@ V = \{(\theta, \varphi); 0 < \theta < \pi,\; 0 < \varphi < 2\pi\},
 \end{minipage}
 \end{figure}
 
+从上述例子可以看到，直接通过定义判断一个集合是否为正则曲面可能相当繁琐。在给出更多例子之前，我们将介绍两个命题来简化这项工作。命题 1 揭示了正则曲面与函数图像之间的关系。命题 2 利用逆函数定理，将正则曲面与形如 $f(x,y,z) = \text{常数}$ 的集合联系起来。
+
+\begin{Proposition}[函数图像是正则曲面]\label{prop:graph-of-function}
+设 $f: U \to \mathbb{R}$ 是定义在 $\mathbb{R}^2$ 中开集 $U$ 上的可微函数，则 $f$ 的图像，即 $\mathbb{R}^3$ 中由 $(x, y, f(x,y))$（$(x,y) \in U$）给出的子集，是正则曲面。
+\end{Proposition}
+
+\begin{Proof}
+只需证明映射 $\mathbf{x}: U \to \mathbb{R}^3$，定义为
+\[
+\mathbf{x}(u,v) = (u, v, f(u,v)),
+\]
+是图形的一个参数化，其坐标邻域覆盖图形上的每一点。条件 1 显然满足，条件 3 也不难验证，因为 $\partial(x,y)/\partial(u,v) \equiv 1$。最后，图形上的每一点 $(x,y,z)$ 都是 $\mathbf{x}$ 在唯一点 $(u,v) = (x,y) \in U$ 下的像。因此 $\mathbf{x}$ 是单射，且由于 $\mathbf{x}^{-1}$ 是 $\mathbb{R}^3$ 到 $xy$ 平面的（连续）投影在图形上的限制，$\mathbf{x}^{-1}$ 是连续的。\qed
+\end{Proof}
+
+在给出命题 2 之前，我们需要一个定义。
+
+\begin{Definition}[临界点与正则值]\label{def:critical-regular-value}
+设 $F: U \subset \mathbb{R}^n \to \mathbb{R}^m$ 是定义在 $\mathbb{R}^n$ 开集 $U$ 上的可微映射。我们称 $p \in U$ 为 $F$ 的\textbf{临界点}（critical point），如果微分 $dF_p: \mathbb{R}^n \to \mathbb{R}^m$ 不是满射。临界点的像 $F(p) \in \mathbb{R}^m$ 称为\textbf{临界值}（critical value）。$\mathbb{R}^m$ 中不是临界值的点称为\textbf{正则值}（regular value）。
+\end{Definition}
+
+这个术语来自于 $f: U \subset \mathbb{R} \to \mathbb{R}$ 是一元函数这一特殊情形。点 $x_0 \in U$ 是临界点当且仅当 $f'(x_0) = 0$，即微分 $df_{x_0}$ 将 $\mathbb{R}$ 中的所有向量映射到零向量。注意，任何不在 $f(U)$ 中的点 $a$ 显然都是 $f$ 的正则值。
+
+如果 $f: U \subset \mathbb{R}^3 \to \mathbb{R}$ 是可微函数，则 $df_p$ 作用在向量 $(1,0,0)$ 上得到曲线
+\[
+x \longrightarrow f(x, y_0, z_0)
+\]
+在 $f(p)$ 处的切向量。由此可得
+\[
+df_p(1,0,0) = \frac{\partial f}{\partial x}(x_0, y_0, z_0) = f_x,
+\]
+类似地有
+\[
+df_p(0,1,0) = f_y,\quad df_p(0,0,1) = f_z.
+\]
+于是 $df_p$ 在基 $(1,0,0), (0,1,0), (0,0,1)$ 下的矩阵为
+\[
+df_p = (f_x, f_y, f_z).
+\]
+在这种情形下，$df_p$ 不是满射等价于在 $p$ 处 $f_x = f_y = f_z = 0$。因此，对于 $f: U \subset \mathbb{R}^3 \to \mathbb{R}$，$a \in f(U)$ 是 $f$ 的正则值当且仅当 $f_x, f_y, f_z$ 在逆像
+\[
+f^{-1}(a) = \{(x,y,z) \in U; f(x,y,z) = a\}
+\]
+中任何点上不同时为零。
+
+\begin{Proposition}[正则值原像是正则曲面]\label{prop:regular-value-surface}
+设 $f: U \subset \mathbb{R}^3 \to \mathbb{R}$ 是可微函数，$a \in f(U)$ 是 $f$ 的正则值，则 $f^{-1}(a)$ 是 $\mathbb{R}^3$ 中的正则曲面。
+\end{Proposition}
+
+\begin{Proof}
+设 $p = (x_0, y_0, z_0) \in f^{-1}(a)$。由于 $a$ 是 $f$ 的正则值，通过重新标记坐标轴，我们可以假设在 $p$ 处 $f_z \neq 0$。定义映射 $F: U \subset \mathbb{R}^3 \to \mathbb{R}^3$ 为
+\[
+F(x,y,z) = (x, y, f(x,y,z)),
+\]
+并用 $(u,v,t)$ 表示 $F$ 取值于 $\mathbb{R}^3$ 中一点的坐标。$F$ 在 $p$ 处的微分为
+\[
+dF_p = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ f_x & f_y & f_z \end{pmatrix},
+\]
+因此
+\[
+\det(dF_p) = f_z \neq 0.
+\]
+因此我们可以应用逆函数定理，它保证存在 $p$ 的邻域 $V$ 和 $F(p)$ 的邻域 $W$，使得 $F: V \to W$ 是可逆的，且逆映射 $F^{-1}: W \to V$ 是可微的。由此可得 $F^{-1}$ 的坐标函数，即函数
+\[
+x = u,\quad y = v,\quad z = g(u,v,t),\quad (u,v,t) \in W,
+\]
+都是可微的。特别地，$z = g(u,v,a) = h(x,y)$ 是定义在 $V$ 到 $xy$ 平面投影上的可微函数。由于
+\[
+F(f^{-1}(a) \cap V) = W \cap \{(u,v,t); t = a\},
+\]
+我们得到 $h$ 的图像是 $f^{-1}(a) \cap V$。由命题 1，$f^{-1}(a) \cap V$ 是 $p$ 的一个坐标邻域。因此 $f^{-1}(a)$ 上每一点都能被坐标邻域覆盖，故 $f^{-1}(a)$ 是正则曲面。\qed
+\end{Proof}
+
+\begin{Remark}
+证明的关键在于利用逆函数定理"解出 $z$"，即从方程 $f(x,y,z) = a$ 中解出 $z$。这可以在 $p$ 的邻域中完成，因为 $f_z(p) \neq 0$。这一事实是一般隐函数定理的特殊情形，隐函数定理可由逆函数定理推出，事实上与逆函数定理等价。
+\end{Remark}
+
+\begin{Example}[椭球面]\label{ex:ellipsoid}
+椭球面
+\[
+\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1
+\]
+是正则曲面。实际上，它是 $f^{-1}(0)$，其中
+\[
+f(x,y,z) = \frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} - 1
+\]
+是可微函数，0 是 $f$ 的正则值。这是因为偏导数 $f_x = 2x/a^2$，$f_y = 2y/b^2$，$f_z = 2z/c^2$ 仅在点 $(0,0,0)$ 处同时为零，而该点不在 $f^{-1}(0)$ 中。当 $a = b = c = 1$ 时，椭球面退化为球面，因此球面是椭球面的特殊情形。
+\end{Example}
+
+到目前为止给出的正则曲面例子都是 $\mathbb{R}^3$ 的连通子集。如果 $\mathbb{R}^3$ 中任意两点都可以由完全位于 $S$ 中的连续曲线连接，则称曲面 $S \subset \mathbb{R}^3$ 是连通的。在正则曲面的定义中，我们对曲面的连通性没有限制，下面的例子表明由命题 2 给出的正则曲面可能不是连通的。
+
+\begin{Example}[双叶双曲面不是连通曲面]\label{ex:hyperboloid-two-sheets}
+双叶双曲面 $-x^2 - y^2 + z^2 = 1$ 是正则曲面，因为它可以写成 $S = f^{-1}(0)$，其中 0 是 $f(x,y,z) = -x^2 - y^2 + z^2 - 1$ 的正则值。注意曲面 $S$ 不是连通的：给定分别在两叶（$z > 0$ 和 $z < 0$）上的两点，不存在完全位于曲面上的连续曲线 $\alpha(t) = (x(t), y(t), z(t))$ 将它们连接起来；否则 $z$ 改变符号，对某个 $t_0$ 有 $z(t_0) = 0$，这意味着 $\alpha(t_0) \notin S$。
+\end{Example}
+
+顺便指出，例 3 的论证方法可用于证明我们后面会反复使用的连通曲面的一个性质。如果 $\mathrm{f}: \mathrm{S} \subset \mathrm{R}^3 \to \mathrm{R}$ 是定义在连通曲面 $\mathrm{S}$ 上的非零连续函数，则 $\mathrm{f}$ 在 $\mathrm{S}$ 上不变号。
+
+为证明这一点，我们使用介值定理（第二章附录，命题 4）。设 $f(p) > 0$ 且 $f(q) < 0$。由于 $S$ 是连通的，存在连续曲线 $\alpha: [a,b] \to S$ 使得 $\alpha(a) = p$，$\alpha(b) = q$。将介值定理应用于连续函数 $f \circ \alpha: [a,b] \to \mathbb{R}$，我们发现存在 $c \in (a,b)$ 使得 $f \circ \alpha(c) = 0$；即 $f$ 在 $\alpha(c)$ 处为零，矛盾。
+
+\begin{Example}[环面的参数化]\label{ex:torus-param}
+环面 $T$ 是由半径为 $r$ 的圆 $S^1$ 绕圆所在平面内且与圆心距离为 $a > r$ 的直线旋转生成的"曲面"（见 \cref{fig:fig2-9}，教材 Figure 2-9）。
+
+设 $S^1$ 是 $yz$ 平面中圆心为 $(0, a, 0)$ 的圆，则 $S^1$ 由 $(y-a)^2 + z^2 = r^2$ 给出。绕 $z$ 轴旋转此圆得到的图形 $T$ 上的点满足方程
+\[
+z^2 = r^2 - (\sqrt{x^2+y^2} - a)^2.
+\]
+因此 $T$ 是函数
+\[
+f(x,y,z) = z^2 + (\sqrt{x^2+y^2} - a)^2
+\]
+取 $r^2$ 时的逆像。该函数在 $(x,y) \neq (0,0)$ 时可微，且由于
+\[
+\frac{\partial f}{\partial z} = 2z,\quad \frac{\partial f}{\partial y} = \frac{2y(\sqrt{x^2+y^2} - a)}{\sqrt{x^2+y^2}},\quad \frac{\partial f}{\partial x} = \frac{2x(\sqrt{x^2+y^2} - a)}{\sqrt{x^2+y^2}},
+\]
+$r^2$ 是 $f$ 的正则值。故环面 $T$ 是正则曲面。
+
+环面的参数化可以写成
+\[
+\mathbf{x}(u,v) = ((r\cos u + a)\cos v,\; (r\cos u + a)\sin v,\; r\sin u),
+\]
+其中 $0 < u, v < 2\pi$（见 \cref{fig:fig2-9}，教材 Figure 2-9）。
+\end{Example}
+
+命题 1 表明可微函数的图像是正则曲面。下面的命题给出了其局部逆命题：任何正则曲面局部都是某个可微函数的图像。
+
+\begin{Proposition}[局部图形表示]\label{prop:local-graph}
+设 $S \subset \mathbb{R}^3$ 是正则曲面，$p \in S$。则存在 $p$ 在 $S$ 中的邻域 $V$，使得 $V$ 是某个可微函数的图像，该函数具有以下三种形式之一：
+\[
+z = f(x,y),\quad y = g(x,z),\quad x = h(y,z).
+\]
+\end{Proposition}
+
+\begin{Proof}
+设 $\mathbf{x}: U \subset \mathbb{R}^2 \to S$ 是 $p$ 点邻域的参数化，写成 $\mathbf{x}(u,v) = (x(u,v), y(u,v), z(u,v))$，$(u,v) \in U$。由定义 1 的条件 3，三个雅可比行列式
+\[
+\frac{\partial(x,y)}{\partial(u,v)},\quad \frac{\partial(y,z)}{\partial(u,v)},\quad \frac{\partial(z,x)}{\partial(u,v)}
+\]
+中有一个在 $\mathbf{x}^{-1}(p) = q$ 处不为零。
+
+假设 $\partial(x,y)/\partial(u,v)(q) \neq 0$，考虑映射 $\pi \circ \mathbf{x}: U \to \mathbb{R}^2$，其中 $\pi$ 是投影 $\pi(x,y,z) = (x,y)$。则 $\pi \circ \mathbf{x}(u,v) = (x(u,v), y(u,v))$，且由于 $\partial(x,y)/\partial(u,v)(q) \neq 0$，我们可以应用逆函数定理，保证存在 $q$ 的邻域 $V_1$ 和 $\pi \circ \mathbf{x}(q)$ 的邻域 $V_2$，使得 $\pi \circ \mathbf{x}$ 将 $V_1$ 微分同胚地映射到 $V_2$。由此可得，限制在 $\mathbf{x}(V_1) = V$ 上，$\pi$ 是单射，且存在可微的逆映射 $(\pi \circ \mathbf{x})^{-1}: V_2 \to V_1$。由于 $\mathbf{x}$ 是同胚，$V$ 是 $p$ 在 $S$ 中的邻域。现在，将 $(\pi \circ \mathbf{x})^{-1}: (x,y) \to (u(x,y), v(x,y))$ 与函数 $(u,v) \to z(u,v)$ 合成，我们得到 $V$ 是可微函数 $z = z(u(x,y), v(x,y)) = f(x,y)$ 的图像。其他两种情形同理可证。\qed
+\end{Proof}
+
+下一个命题说明：如果我们已经知道 $S$ 是正则曲面，且有一个候选参数化 $\mathbf{x}$，在满足其他条件时，不需要验证 $\mathbf{x}^{-1}$ 是否连续。这个注记在例 1 中使用过。
+
+\begin{Proposition}[单射保证逆连续]\label{prop:inverse-continuous}
+设 $p \in S$ 是正则曲面 $S$ 的一点，$\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 是满足 $p \in \mathbf{x}(U) \subset S$ 的映射，使得定义 1 中的条件 1 和 3 成立。假设 $\mathbf{x}$ 是单射，则 $\mathbf{x}^{-1}$ 是连续的。
+\end{Proof}
+
+\begin{Proof}
+我们以与命题 3 证明类似的方式进行。写成 $\mathbf{x}(u,v) = (x(u,v), y(u,v), z(u,v))$，$(u,v) \in U$，设 $q \in U$。由条件 1 和 3，通过交换坐标轴，我们可以假设 $\partial(x,y)/\partial(u,v)(q) \neq 0$。设 $\pi: \mathbb{R}^3 \to \mathbb{R}^2$ 是投影 $\pi(x,y,z) = (x,y)$。由逆函数定理，我们得到 $q$ 在 $U$ 中的邻域 $V_1$ 和 $\pi \circ \mathbf{x}(q)$ 在 $\mathbb{R}^2$ 中的邻域 $V_2$，使得 $\pi \circ \mathbf{x}$ 将 $V_1$ 微分同胚地映射到 $V_2$。
+
+假设 $\mathbf{x}$ 是双射。则限制在 $\mathbf{x}(V_1)$ 上，$\mathbf{x}^{-1} = (\pi \circ \mathbf{x})^{-1} \circ \pi$。因此 $\mathbf{x}^{-1}$ 作为连续映射的合成是连续的。\qed
+\end{Proof}
+
 \begin{Proposition}[垂直投影判断法]\label{prop:graph-criterion}
 设 $S \subset \mathbb{R}^3$。如果对每一点 $p \in S$，存在 $p$ 的邻域 $V$ 使得 $V \cap S$ 是以下三种形式之一：
 \[
