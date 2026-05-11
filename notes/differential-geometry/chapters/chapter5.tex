@@ -638,6 +638,128 @@ $Bonnet$ 定理的直径估计是最优的：单位球面 $K\equiv 1$，$\rho = 
 条件 $K \geq \delta > 0$ 不能弱化为 $K>0$。抛物面 $z=x^2+y^2$ 有 $K>0$ 且完备，但非紧致——因为 $K$ 随距离增大趋于零。
 \end{Remark}
 
+\begin{exercise}{5-5, 1 — do Carmo, Exercise 5-5, 1}
+（a）设 $\gamma: [0,l] \to S$ 是弧长参数测地线，$J(s)$ 是沿 $\gamma$ 的 Jacobi 场满足 $J(0)=0$，$\langle J'(0),\gamma'(0)\rangle = 0$。证明 $\langle J(s),\gamma'(s)\rangle = 0$ 对所有 $s$ 成立。（b）进一步设 $|J'(0)|=1$，取 $\{e_1(s),e_2(s)\}$ 为沿 $\gamma$ 的平行正交基，$e_1(0)=\gamma'(0)$，$e_2(0)=J'(0)$。证明 $J(s)=u(s)e_2(s)$，其中 $u(s)$ 满足 $u''+K(s)u=0$，$u(0)=0$，$u'(0)=1$。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: (a) 部分的结论说明与测地线方向正交的 Jacobi 场始终保持正交——这是 Jacobi 方程的直接推论，因为混合项 $\langle DJ/ds, \gamma'\rangle$ 的导数在正交初始条件下恒为零。(b) 部分说明在此正交基下，Jacobi 场简化为一个标量二阶 ODE 的解。
+
+\textbf{解答}: (a) 沿 $\gamma$ 有 Jacobi 方程 $\frac{D^2J}{ds^2}+KJ=0$，其中 $K$ 是高斯曲率。对 $\langle J(s),\gamma'(s)\rangle$ 求导：
+\[
+\frac{d}{ds}\langle J,\gamma'\rangle = \langle \frac{DJ}{ds},\gamma'\rangle + \langle J,\frac{D\gamma'}{ds}\rangle = \langle \frac{DJ}{ds},\gamma'\rangle,
+\]
+因为 $\gamma$ 是测地线，$\frac{D\gamma'}{ds}=0$。再求导得
+\[
+\frac{d^2}{ds^2}\langle J,\gamma'\rangle = \langle \frac{D^2J}{ds^2},\gamma'\rangle = -K\langle J,\gamma'\rangle.
+\]
+令 $f(s)=\langle J(s),\gamma'(s)\rangle$，则 $f''+K(s)f=0$，$f(0)=0$（因 $J(0)=0$），且
+\[
+f'(0)=\langle J'(0),\gamma'(0)\rangle = 0
+\]
+由题设。ODE 解的唯一性给出 $f(s)\equiv 0$，故 $\langle J(s),\gamma'(s)\rangle=0$。
+
+(b) 设 $\{e_1(s),e_2(s)\}$ 是沿 $\gamma$ 的平行正交基，$e_1(0)=\gamma'(0)$，$e_2(0)=J'(0)$。将 $J(s)$ 在此基下展开为 $J(s)=a(s)e_1(s)+b(s)e_2(s)$。由 (a) 的结果 $\langle J,\gamma'\rangle=0$ 及 $e_1(s)=\gamma'(s)$，得 $a(s)\equiv 0$，故 $J(s)=b(s)e_2(s)$。代回 Jacobi 方程，由 $e_2(s)$ 的平行性可推出标量方程 $b''+K(s)b=0$。由 $J(0)=0$ 得 $b(0)=0$，由 $|J'(0)|=1$ 和 $e_2(0)=J'(0)$ 得 $b'(0)=1$。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 2 — do Carmo, Exercise 5-5, 2}
+证明：抛物面 $z=x^2+y^2$ 上从原点 $p=(0,0,0)$ 出发的任意测地线均无共轭点。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 抛物面 $z=x^2+y^2$ 有 $K>0$ 但趋于零（远处非常平坦），这意味着 Jacobi 场增长但不会在有限距离内归零——类似于平面情形 $(K=0)$ 但有轻微弯曲。
+
+\textbf{解答}: 抛物面 $z=x^2+y^2$ 的第一基本形式为 $E=G=1+4(x^2+y^2)$，$F=0$，高斯曲率为
+\[
+K = \frac{4}{(1+4r^2)^2},\qquad r^2=x^2+y^2.
+\]
+从原点出发的测地线（弧长参数化）满足 Jacobi 方程 $u''+K(s)u=0$（见练习 1）。由于 $K(s)>0$ 且 $K(s)\to 0$ 当 $s\to\infty$ 时，方程的解 $u(s)$ 满足 $u''\leq 0$ 当 $K$ 很小时——$u(s)$ 不会振荡，而是在正初始条件下单调递增（利用比较定理）。具体地，考虑 $v(s)$ 满足 $v''=0$，$v(0)=0$，$v'(0)=1$（即 $v(s)=s$）。由于 $K>0$，比较定理（练习 3）给出 $u(s)\geq v(s)=s>0$，从而 $u$ 无零点。故从 $p$ 出发的任意测地线上无共轭点。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 3*（比较定理）— do Carmo, Exercise 5-5, 3}
+设 $S$ 和 $\tilde{S}$ 是完备曲面，$p\in S$，$\tilde{p}\in\tilde{S}$，$i: T_p(S) \to T_{\tilde{p}}(\tilde{S})$ 是线性等距。设 $\gamma: [0,\infty) \to S$ 是测地线，$J(s)$ 是沿 $\gamma$ 的 Jacobi 场满足 $J(0)=0$，$\langle J'(0),\gamma'(0)\rangle=0$，$|J'(0)|=1$。（a）证明：$J(s)=v(s)e_2(s)$，$\tilde{J}(s)=u(s)\tilde{e}_2(s)$，其中 $v$ 和 $u$ 分别满足 $v''+K(s)v=0$，$v(0)=0$，$v'(0)=1$ 和 $u''+\tilde{K}(s)u=0$，$u(0)=0$，$u'(0)=1$。（b）（第一比较定理）假设 $K(s)\leq \tilde{K}(s)$，$s\in[0,\infty)$，证明：若 $\tilde{\gamma}$ 的首个共轭点出现在 $s=a$，则 $\gamma$ 的首个共轭点不早于 $s=a$。（c）（第二比较定理）在同样假设下，证明 $|J(s)| \geq |\tilde{J}(s)|$ 对所有 $s\in[0,a)$ 成立。（d）证明：在 (c) 中，等号恒成立当且仅当 $K(s)=\tilde{K}(s)$。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 比较定理是 Jacobi 场理论的核心工具：更大曲率使共轭点更早出现且 Jacobi 场模更小（正曲率"聚拢"测地线）。这是 Jacobi 场在分析学上的 Sturm 型比较定理。
+
+\textbf{解答}: (a) 由练习 1，$\langle J(s),\gamma'(s)\rangle\equiv 0$，故 $J(s)=v(s)e_2(s)$，$v$ 满足 $v''+K(s)v=0$，$v(0)=0$，$v'(0)=|J'(0)|=1$。同理 $\tilde{J}(s)=u(s)\tilde{e}_2(s)$。
+
+(b) 设 $a$ 是 $\tilde{J}$ 的首个零点（首个共轭点）。取 $s_0\in(0,a)$，考察 $\tilde{v}(s)=u(s)$ 和 $v(s)$ 在 $s\in[0,s_0]$ 上的比较。因 $u(s)>0$ 在 $(0,a)$ 上，$K\leq\tilde{K}$，由 Sturm 比较定理（练习 6），$v(s)$ 在 $[0,s_0]$ 上无零点。由于 $s_0<a$ 任意，故 $\gamma$ 的首个共轭点不早于 $a$。
+
+(c) 由 Gauss 引理，$|J(s)|=|v(s)|$，$|\tilde{J}(s)|=|u(s)|$。由 (b) 的比较定理证明过程知：在 $K\leq\tilde{K}$ 时，$v(s)\geq u(s)$（两者均为正）。故 $|J(s)|\geq|\tilde{J}(s)|$。
+
+(d) 若 $K(s)=\tilde{K}(s)$，则 $v$ 与 $u$ 满足相同初始条件的同一方程，故 $v\equiv u$，等号恒成立。反之，若 $|J(s)|=|\tilde{J}(s)|$ 对所有 $s$ 成立，则 $v\equiv u$，代入方程得 $K\equiv\tilde{K}$。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 4 — do Carmo, Exercise 5-5, 4}
+设 $S$ 是高斯曲率 $K \leq K_0$（$K_0>0$ 常数）的完备曲面。利用第一比较定理，证明：任意测地线 $\gamma: [0, \infty) \to S$ 在区间 $(0,\pi/\sqrt{K_0}]$ 内无共轭点。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 常曲率 $K=K_0$ 球面中，测地线（大圆）在 $s=\pi/\sqrt{K_0}$ 处恰好出现首个共轭点（对径点）。若实际曲面 $S$ 的曲率 $K\leq K_0$，则共轭点只能更晚（不能更早）。
+
+\textbf{解答}: 设 $\tilde{S}$ 是截面曲率为常数 $K_0$ 的模型曲面（球面或双曲平面）。由第一比较定理（练习 3(b)），若 $\tilde{S}$ 的测地线在 $s=\pi/\sqrt{K_0}$ 处有共轭点，则 $S$ 的任意测地线在该区间内无共轭点。直接验证：在常数曲率 $K_0$ 曲面上，$u''+K_0u=0$，$u(0)=0$，$u'(0)=1$ 的解为 $u(s)=\frac{1}{\sqrt{K_0}}\sin(\sqrt{K_0}s)$，其首个零点在 $s=\pi/\sqrt{K_0}$。故 $S$ 的任意测地线在 $(0,\pi/\sqrt{K_0})$ 内无共轭点。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 5 — do Carmo, Exercise 5-5, 5}
+设 $S$ 是高斯曲率 $K \geq K_1 > 0$ 的完备曲面。证明：任意测地线 $\gamma: [0, \infty) \to S$ 在区间 $(0,\pi/\sqrt{K_1}]$ 内必有共轭点。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 与练习 4 相反：若曲率有正下界 $K_1$，则测地线在更短距离内就会聚——正曲率"聚拢"测地线的效果更强。
+
+\textbf{解答}: 设 $u$ 是 $u''+K_1u=0$，$u(0)=0$，$u'(0)=1$ 的解，即 $u(s)=\frac{1}{\sqrt{K_1}}\sin(\sqrt{K_1}s)$，其在 $s=\pi/\sqrt{K_1}$ 处有零点。因 $K(s)\geq K_1$，由第二比较定理（练习 3(c)，注意方向反转），$J$ 的模 $|J(s)|\leq u(s)$（在同一初始条件下）。故 $J$ 的零点不晚于 $s=\pi/\sqrt{K_1}$，即任意测地线在 $(0,\pi/\sqrt{K_1}]$ 内必有共轭点。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 6*（Sturm 振荡定理）— do Carmo, Exercise 5-5, 6}
+设 $S$ 完备，$\gamma: [0, \infty) \to S$ 是测地线，$J(s)$ 是沿 $\gamma$ 的 Jacobi 场满足 $J(0)=J(s_0)=0$，$s_0\in(0,\infty)$，且 $J(s)\neq 0$ 对 $s\in(0,s_0)$。设 $K(s)\leq L(s)$，其中 $L$ 是 $[0,\infty)$ 上的可微函数。证明：微分方程 $u''+L(s)u=0$ 的每个解在区间 $(0,s_0]$ 上必有零点。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Sturm 振荡定理是 ODE 的经典结果：若 $u$ 是 $u''+Lu=0$ 的解而 $v$ 是 $v''+Kv=0$ 的解（$K\leq L$），且 $v$ 在 $s_0$ 处有零点，则 $u$ 也在 $s_0$ 之前变号。这里 $J$ 扮演 $v$ 的角色。
+
+\textbf{解答}: 设 $v(s)=|J(s)|$。由 Jacobi 方程和 $K\leq L$，可证 $v''+Lv\leq 0$（实际上 $v''+Kv=0$，故 $v''+Lv = -L_v + Lv \leq Kv + Lv \leq 0$ 当 $v>0$）。取 $u$ 为 $u''+Lu=0$ 的任一解，令 $w=u/v$（在 $s=0$ 和 $s=s_0$ 附近有定义），则 $w$ 满足 $(vw')'=w(v''+Lu)\leq 0$，从而 $(vw')$ 在 $[0,s_0]$ 上单调递减。由 $v(0)=0$，$v(s_0)=0$，对 $(vw')$ 在 $[0,s_0]$ 上积分得
+\[
+0 = (vw')|_{s_0} - (vw')|_{0} = -\int_0^{s_0}(vw')'\,ds \geq 0.
+\]
+由 $u(0)=0$，$u$ 在 $s_0$ 附近非零可知 $w$ 有界，但 $(vw')$ 递减且两端均为零意味着 $u$ 必须在 $(0,s_0)$ 内有零点。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 7*（Kneser 共轭点判据）— do Carmo, Exercise 5-5, 7}
+设 $\gamma: [0, \infty) \to S$ 是完备曲面 $S$ 上的测地线，$\gamma(0)=p$，$K(s)$ 是沿 $\gamma$ 的高斯曲率。假设 $\int_t^\infty K(s)\,ds \leq \frac{1}{4(t+1)}$ 对所有 $t\geq 0$ 成立（积分收敛且有界）。（a）定义 $w(t) = \int_t^\infty K(s)\,ds + \frac{1}{4(t+1)}$，证明 $w'(t)+w(t)^2 \leq -K(t)$。（b）设 $w'(t)+w(t)^2 = -L(t)$（故 $L(t)\geq K(t)$），定义 $v(t) = \exp(\int_0^t w(s)\,ds)$。证明 $v''(t)+L(t)v(t)=0$，$v(0)=1$，$v'(0)=0$。（c）由 Sturm 振荡定理证明：若上述不等式成立，则 $\gamma$ 上无点与 $p$ 共轭。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Kneser 判据通过构造辅助函数 $w$ 给出了曲率积分条件下的共轭点判定——本质上是把 Sturm 振荡定理的条件写成曲率的积分不等式。
+
+\textbf{解答}: (a) 直接计算：
+\[
+w'(t) = -\!K(t) - \frac{1}{4(t+1)^2},\qquad
+w(t)^2 = \left(\int_t^\infty K + \frac{1}{4(t+1)}\right)^2 \geq \frac{1}{4(t+1)^2},
+\]
+故 $w'(t)+w(t)^2 \leq -K(t)$。
+
+(b) 计算 $v(t)$ 的导数：
+\[
+v'(t)=w(t)v(t),\qquad v''(t)=(w'(t)+w(t)^2)v(t)=-L(t)v(t).
+\]
+且 $v(0)=\exp(0)=1$，$v'(0)=w(0)\cdot 1=0$。
+
+(c) 由 (b) 知 $v$ 满足 $v''+Lv=0$，$v(0)=1$，$v'(0)=0$，$L(t)\geq K(t)$。比较方程 $u''+Ku=0$（对应 Jacobi 场的标量方程）由 Sturm 比较定理，$v$ 恒为正（无零点），故 $K$ 条件下的 Jacobi 场无零点，即 $\gamma$ 上无点与 $p$ 共轭。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 8* — do Carmo, Exercise 5-5, 8}
+设 $\gamma: [0,l] \to S$ 是完备曲面 $S$ 上的测地线，$\gamma(l)$ 与 $\gamma(0)$ 不共轭。设 $w_0 \in T_{\gamma(0)}(S)$，$w_1 \in T_{\gamma(l)}(S)$。证明：存在唯一的沿 $\gamma$ 的 Jacobi 场 $J(s)$ 满足 $J(0)=w_0$，$J(l)=w_1$。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Jacobi 方程是线性二阶 ODE，4 维解空间由初始条件 $(J(0),J'(0))$ 张成。两个线性边界条件（$J(0)=w_0$，$J(l)=w_1$）一般唯一确定一个解——但 $\gamma(l)$ 与 $\gamma(0)$ 不共轭保证了线性映射 $(J(0),J'(0))\mapsto (J(0),J(l))$ 是同构。
+
+\textbf{解答}: Jacobi 方程 $\frac{D^2J}{ds^2}+KJ=0$ 是线性常微分方程组。取沿 $\gamma$ 的平行正交基 $\{e_1(s),e_2(s)\}$（$e_1(0)=\gamma'(0)$），则 $J(s)=a(s)e_1(s)+b(s)e_2(s)$，其中 $b$ 满足 $b''+K(s)b=0$，而 $a$ 满足 $a''+K(s)a=0$。将边界条件投影到基上得到 $a(0),a(l),b(0),b(l)$ 的线性方程组。该方程组有唯一解当且仅当对应齐次方程（$w_0=w_1=0$）仅有平凡解——而齐次方程的解正是与端点共轭条件相对应的 Jacobi 场。由题设 $\gamma(l)$ 与 $\gamma(0)$ 不共轭，故仅有平凡解，从而非齐次问题有唯一解。\qed
+\end{solution}
+
+\begin{exercise}{5-5, 9 — do Carmo, Exercise 5-5, 9}
+设 $J(s)$ 是沿测地线 $\gamma: [0,l] \to S$ 的 Jacobi 场，满足 $\langle J(0),\gamma'(0)\rangle = 0$ 且 $J'(0)=0$。证明 $\langle J(s),\gamma'(s)\rangle = 0$ 对所有 $s$ 成立。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 这与练习 1(a) 完全类似，但初始条件更强：不仅 $J(0)$ 与 $\gamma'(0)$ 正交，且 $J'(0)$ 也与 $\gamma'(0)$ 正交（因为 $J'(0)=0$）。
+
+\textbf{解答}: 令 $f(s)=\langle J(s),\gamma'(s)\rangle$。与练习 1(a) 同样推导得 $f''+K(s)f=0$。初始条件给出 $f(0)=0$ 和 $f'(0)=\langle J'(0),\gamma'(0)\rangle=0$。由 ODE 解的唯一性，$f(s)\equiv 0$，即 $\langle J(s),\gamma'(s)\rangle=0$。\qed
+\end{solution}
+
 \begin{Remark}
 Bonnet 定理的第一个证明见于 O. Bonnet (1850, 1851)。Hopf-Rinow 定理之后的表述中，无需 $K$ 有正下界，只需 $K$ 不要太快趋于零（见 E. Calabi (1967), R. Schneider (1972)）。
 \end{Remark}
