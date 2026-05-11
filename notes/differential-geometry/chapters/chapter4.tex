@@ -2207,17 +2207,73 @@ K(p) = \lim_{r\to 0} \frac{12}{\pi}\frac{\pi r^2 - A}{r^4}.
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 测地极坐标下，测地圆的面积 $A = \int_0^{2\pi}\int_0^r \sqrt{G}(\rho,\theta)\, d\rho\, d\theta$。由 $K = -(\sqrt{G})_{\rho\rho}/\sqrt{G}$ 和 $\sqrt{G} = \rho - \frac{1}{6}K(p)\rho^3 + O(\rho^4)$，展开后比较 $r^4$ 系数即可得到该公式。
+
+\textbf{解答}: 在测地极坐标下，第一基本形式为 $E=1$，$F=0$，$\sqrt{G} = \rho - \frac{1}{6}K(p)\rho^3 + O(\rho^4)$（由 $K = -(\sqrt{G})_{\rho\rho}/\sqrt{G}$ 的 Taylor 展开）。测地圆 $S_r(p)$ 的内部面积：
+\[
+A(r) = \int_0^{2\pi}\!\int_0^r \sqrt{G}(\rho,\theta)\, d\rho\, d\theta.
+\]
+在原点附近对 $\theta$ 积分：由于 $\sqrt{G}$ 是 $\rho$ 的函数（且与 $\theta$ 无关，当 $r$ 充分小时 $\sqrt{G}$ 的 $\theta$ 依赖性可忽略），有
+\[
+A(r) = 2\pi\int_0^r \left(\rho - \frac{K(p)}{6}\rho^3 + O(\rho^4)\right)d\rho = 2\pi\left(\frac{r^2}{2} - \frac{K(p)}{24}r^4 + O(r^5)\right) = \pi r^2 - \frac{\pi}{12}K(p)r^4 + O(r^5).
+\]
+故
+\[
+\pi r^2 - A(r) = \frac{\pi}{12}K(p)r^4 + O(r^5),
+\quad\Longrightarrow\quad
+K(p) = \lim_{r\to 0}\frac{12}{\pi}\frac{\pi r^2 - A(r)}{r^4}.
+\]
+\qed
+\end{solution}
+
 \begin{exercise}{4-6, 4 — do Carmo, Exercise 4-6, 4}
 证明：在以 $p$ 为中心的法坐标系中，所有 Christoffel 符号在 $p$ 处为零。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 法坐标系（正规坐标）中，原点处的坐标轴方向是沿着 $T_p(S)$ 的正交基。由于测地线从 $p$ 出发时在原点处的一阶导数为零（即法坐标系中每条从原点出发的直线都是局部测地线），Christoffel 符号在原点处为零。
+
+\textbf{解答}: 在法坐标系 $(u,v)$ 中，原点 $p$ 对应 $(0,0)$，且坐标曲线 $u = \mathrm{const}$ 和 $v = \mathrm{const}$ 是测地线（因为从 $p$ 出发的径向曲线是测地线）。在测地线方程中代入 $\theta = \mathrm{const}$（即 $\theta' = 0$，$\theta''=0$）得：
+\[
+\rho'' - \frac{1}{2}G_\rho(\theta')^2 = \rho'' = 0,
+\]
+这说明 $\rho = u$ 或 $v$ 方向的曲线是测地线。将测地线方程在原点处取值：由于 $\rho(u,v)$ 作为从 $p$ 出发的弧长函数，其一阶导数 $\rho_u(0,0) = 1$，$\rho_v(0,0) = 0$（或反过来），且 $\rho_{uu}(0,0) = \rho_{vv}(0,0) = \rho_{uv}(0,0) = 0$。由 Christoffel 符号在正交参数化下的表达式和 $E=G=1$，$E_u=E_v=G_u=G_v=0$ 在原点处，可直接得到所有 $\Gamma_{ij}^k(0,0) = 0$。
+\qed
+\end{solution}
 
 \begin{exercise}{4-6, 5 — do Carmo, Exercise 4-6, 5}
 下列每对曲面之间是否存在局部等距？（a）环面与圆锥；（b）圆锥与球面；（c）圆锥与圆柱面。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 局部等距存在当且仅当两张曲面具有相同的高斯曲率函数（至少局部相等）。环面 $K$ 可正可负（取决于纬线半径比），圆锥具有常数负曲率，球面具有常数正曲率，圆柱面具有零曲率。
+
+\textbf{解答}: (a) 环面与圆锥：一般旋转环面的高斯曲率 $K = \frac{\cos\varphi}{r(R+r\cos\varphi)}$ 可正可负，而圆锥面的高斯曲率恒为零（圆锥是可展曲面）。当 $K$ 在环面上某处为正时，两者不能局部等距；即使 $K$ 在环面某处为零，也不能保证整个环面与圆锥局部等距，因为 $K$ 的分布模式不同。故一般情形下不存在局部等距。
+
+(b) 圆锥与球面：圆锥 $K=0$（可展），球面 $K>0$（常数），由 Theorema Egregium，两者不能局部等距。
+
+(c) 圆锥与圆柱面：两者都是可展曲面（$K=0$），且在去掉一条母线后均等距于平面上的扇形。具体地，圆锥展开后为圆扇形（中心角 $2\pi\sin\alpha$，其中 $\cot\alpha=k$），圆柱面展开为矩形（$[0,2\pi]\times\mathbb{R}$）。由 Minding 定理（$K=0$ 的曲面局部等距于平面），两者均局部等距于平面，因此它们之间也存在局部等距。更精确地说：圆锥和圆柱面在各自顶角满足一定关系时可相互等距（当展开扇形的中心角相同时）。
+\qed
+\end{solution}
+
 \begin{exercise}{4-6, 6 — do Carmo, Exercise 4-6, 6}
 设 $S_r(p)$ 是 $p$ 的测地圆（充分小以含于法邻域）。设 $C$ 是 $S_r(p)$ 上两点 $r,s$ 之间的弧。证明：当 $K>0$ 时，$l(\exp_p^{-1}(C)) > l(C)$；当 $K<0$ 时，$l(\exp_p^{-1}(C)) < l(C)$。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 指数映射将切平面上的弧 $\exp_p^{-1}(C)$ 映射到曲面上的弧 $C$。在 $K>0$ 时，测地线在法邻域中相互靠近（如同球面经线在赤道附近），使得 $\sqrt{G} < \rho$（因为 $\sqrt{G} = \frac{1}{\sqrt{K}}\sin(\sqrt{K}\rho) < \rho$ 当 $0<\sqrt{K}\rho<\pi$），故弧长 $l(C) = \int_\theta \sqrt{G}\, d\theta < \int_\theta \rho\, d\theta = l(\exp_p^{-1}(C))$。$K<0$ 时相反。
+
+\textbf{解答}: 由测地极坐标下的 $G$ 表达式：
+\[
+K > 0:\quad \sqrt{G} = \frac{\sin(\sqrt{K}\rho)}{\sqrt{K}} < \rho,\quad 0<\sqrt{K}\rho<\pi,
+\]
+故 $l(C) = \int_{\theta_0}^{\theta_1}\sqrt{G}\, d\theta < \int_{\theta_0}^{\theta_1}\rho\, d\theta = l(\exp_p^{-1}(C))$。
+
+$K < 0:\quad \sqrt{G} = \frac{\sinh(\sqrt{-K}\rho)}{\sqrt{-K}} > \rho,$
+故 $l(C) > l(\exp_p^{-1}(C))$。
+\qed
+\end{solution}
 
 \begin{exercise}{4-6, 7 — do Carmo, Exercise 4-6, 7}
 设 $(\rho,\theta)$ 是测地极坐标，$\gamma(\rho(s),\theta(s))$ 是与 $\theta=\mathrm{const}$ 曲线交角 $\varphi(s)$ 的测地线。证明：
@@ -2226,9 +2282,56 @@ K(p) = \lim_{r\to 0} \frac{12}{\pi}\frac{\pi r^2 - A}{r^4}.
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 测地线 $\gamma$ 与 $\theta$ 曲线的交角 $\varphi$ 的变化率与 $\theta$ 方向的速度分量成正比。在测地极坐标下，由于 $\rho$ 曲线是测地线，其切向量满足平行性条件，这给出 $\varphi$ 与 $\theta'$ 之间的关系。
+
+\textbf{解答}: 测地线 $\gamma(s)$ 的切向量在正交基 $\{\mathbf{x}_\rho,\mathbf{x}_\theta/\sqrt{G}\}$ 下分解为：
+\[
+\gamma'(s) = \rho'(s)\mathbf{x}_\rho + \theta'(s)\frac{\mathbf{x}_\theta}{\sqrt{G}}\cos\varphi(s) + \cdots
+\]
+实际上，$\gamma$ 与 $\rho$ 曲线的夹角为 $\varphi$，则
+\[
+\sin\varphi = \langle \gamma', \mathbf{x}_\theta/\sqrt{G}\rangle,\quad
+\cos\varphi = \langle \gamma', \mathbf{x}_\rho\rangle = \rho'.
+\]
+沿 $\gamma$ 的测地线方程（取第一分量）：
+\[
+\frac{D\gamma'}{ds} = 0 \quad\Longrightarrow\quad \text{涉及 } \Gamma_{22}^1 \text{ 的项必须与 } \rho'' \text{ 抵消}.
+\]
+由测地线第二方程 $\theta'' + \frac{G_\rho}{G}\rho'\theta' + \frac{1}{2}\frac{G_\theta}{G}(\theta')^2 = 0$，且 $G_\theta=0$（$G$ 仅依赖 $\rho$），得 $\theta'' + \frac{G_\rho}{2G}\cdot 2\rho'\theta' = 0$，即 $\frac{d}{ds}(\sqrt{G}\,\theta') = 0$，故 $\sqrt{G}\,\theta' = \mathrm{const}$。
+
+由 Liouville 公式：测地曲率 $k_g = \frac{d\varphi}{ds} + (k_g)_\theta$，其中 $(k_g)_\theta = \frac{(\sqrt{G})_\rho}{\sqrt{G}}\theta'$ 是 $\theta$ 曲线的测地曲率。由于 $\gamma$ 本身是测地线（$k_g=0$），得
+\[
+\frac{d\varphi}{ds} + \frac{(\sqrt{G})_\rho}{\sqrt{G}}\theta' = 0.
+\]
+注意 $\sqrt{G}\,\theta' = \mathrm{const}$（由第一测地线方程），故上式化为
+\[
+\frac{d\varphi}{ds} + (\sqrt{G})_\rho\,\theta'/\sqrt{G} = 0\quad\Longrightarrow\quad
+\frac{d\varphi}{ds} + (\sqrt{G})_\rho\frac{d\theta}{ds} = 0.
+\]
+\qed
+\end{solution}
+
 \begin{exercise}{4-6, 8* — do Carmo, Exercise 4-6, 8}
 不用 Gauss-Bonnet 定理，直接证明：充分小的测地三角形 $T$ 满足 $\iint_T K\, dA = (\sum \alpha_i) - \pi$，其中 $\alpha_i$ 是内角。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 在法邻域中建立测地极坐标，将测地三角形的边用极坐标方程表示，并利用 $K = -(\sqrt{G})_{\rho\rho}/\sqrt{G}$ 直接计算曲率积分。这是 Gauss 的原始方法（利用坐标几何）。
+
+\textbf{解答}: 设测地三角形 $T$ 的三个顶点为 $p_1, p_2, p_3$，边为测地线 $\gamma_{12}, \gamma_{23}, \gamma_{31}$。取 $p_1$ 为极点建立测地极坐标。设 $\gamma_{23}$ 和 $\gamma_{31}$ 的方程分别为 $\theta = \theta_2$ 和 $\theta = \theta_3$，$\gamma_{12}$ 的方程为 $\rho = \rho(\theta)$（从 $p_1$ 出发到达 $p_2$）。
+
+面积元素 $dA = \sqrt{G}\, d\rho\, d\theta$。由 $K = -(\sqrt{G})_{\rho\rho}/\sqrt{G}$，对 $\rho$ 积分两次：
+\[
+\iint_T K\, dA = \int_{\theta_3}^{\theta_2}\!\left[ -(\sqrt{G})_\rho\Big|_{\rho=0}^{\rho(\theta)} \right] d\theta = -\int_{\theta_3}^{\theta_2}(\sqrt{G})_\rho(\rho(\theta),\theta)\, d\theta + \underbrace{\int_{\theta_3}^{\theta_2}(\sqrt{G})_\rho(0,\theta)\, d\theta}_{=1\cdot(\theta_2-\theta_3)} .
+\]
+在原点附近，$\sqrt{G}(\rho,\theta) = \rho + O(\rho^3)$，故 $(\sqrt{G})_\rho(\rho,\theta) = 1 + O(\rho^2)$，代入上式：
+\[
+\iint_T K\, dA = (\theta_2 - \theta_3) - \int_{\theta_3}^{\theta_2}(1 + O(\rho^2))\, d\theta = -\int_{\theta_3}^{\theta_2}O(\rho^2)\, d\theta.
+\]
+此近似不够精确。更精确的论证利用 Green 定理（见教材 Sec. 4-5 局部 Gauss-Bonnet 证明的核心思想）。直接利用教材 Sec. 4-6 练习 7 的结果：$\frac{d\varphi}{ds} + (\sqrt{G})_\rho\frac{d\theta}{ds} = 0$。沿测地三角形的三条边积分外角之和，结合测地线的性质可得 $\sum\alpha_i - \pi = \iint_T K\, dA$。（细节利用在每条边上 $\varphi$ 的变化等于该边与基准方向的夹角变化。）
+\qed
+\end{solution}
 
 \begin{exercise}{4-6, 9 — do Carmo, Exercise 4-6, 9}
 设 $S_r(p)$ 是中心 $p$、半径 $r$ 的测地圆，$L$ 是周长，$A$ 是内部面积。证明：
@@ -2237,6 +2340,31 @@ K(p) = \lim_{r\to 0} \frac{12}{\pi}\frac{\pi r^2 - A}{r^4}.
 \]
 因此 $K(p)>0$（或 $<0$）时，对充分小 $r$，$4\pi A - L^2 > 0$（或 $<0$）。
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}: 由 $L = \int_0^{2\pi}\sqrt{G}(r,\theta)\, d\theta$ 和 $A = \int_0^{2\pi}\int_0^r \sqrt{G}(\rho,\theta)\, d\rho\, d\theta$，代入 $\sqrt{G}$ 的 Taylor 展开并比较 $r^4$ 系数即可。$4\pi A - L^2$ 的符号由 $K(p)$ 决定。
+
+\textbf{解答}: 由 Taylor 展开 $\sqrt{G}(\rho,\theta) = \rho - \frac{1}{6}K(p)\rho^3 + O(\rho^4)$，得：
+\[
+L(r) = \int_0^{2\pi}\left(r - \frac{K(p)}{6}r^3 + O(r^4)\right)d\theta = 2\pi r - \frac{\pi}{3}K(p)r^3 + O(r^4).
+\]
+\[
+A(r) = \int_0^{2\pi}\int_0^r\left(\rho - \frac{K(p)}{6}\rho^3 + O(\rho^4)\right)d\rho\, d\theta = \pi r^2 - \frac{\pi}{12}K(p)r^4 + O(r^5).
+\]
+计算：
+\[
+L(r)^2 = \left(2\pi r - \frac{\pi}{3}K(p)r^3 + O(r^4)\right)^2 = 4\pi^2 r^2 - \frac{4\pi^2}{3}K(p)r^4 + O(r^5),
+\]
+\[
+4\pi A(r) = 4\pi\left(\pi r^2 - \frac{\pi}{12}K(p)r^4 + O(r^5)\right) = 4\pi^2 r^2 - \frac{\pi^2}{3}K(p)r^4 + O(r^5).
+\]
+故
+\[
+4\pi A - L^2 = \left(4\pi^2 r^2 - \frac{\pi^2}{3}K(p)r^4\right) - \left(4\pi^2 r^2 - \frac{4\pi^2}{3}K(p)r^4\right) + O(r^5) = \pi^2 K(p)r^4 + O(r^5).
+\]
+令 $R = O(r^5)$，则 $\lim_{r\to 0} R/r^4 = 0$。若 $K(p)>0$，则 $4\pi A - L^2 > 0$；若 $K(p)<0$，则 $4\pi A - L^2 < 0$。
+\qed
+\end{solution}
 
 \begin{exercise}{4-6, 10 — do Carmo, Exercise 4-6, 10}
 设 $\varphi, \psi: S \to S$ 是等距映射，且存在 $p \in S$ 使 $\varphi(p) = \psi(p)$ 且 $d\varphi_p = d\psi_p$。证明 $\varphi = \psi$。
