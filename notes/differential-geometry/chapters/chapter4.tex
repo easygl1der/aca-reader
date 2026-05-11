@@ -2564,6 +2564,29 @@ v'' + \Gamma_{11}^2(u')^2 + 2\Gamma_{12}^2 u'v' + \Gamma_{22}^2(v')^2 = 0.
 \end{enumerate}
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 这五条性质是共变导数的定义公理，分别对应线性性（性质1、2）、导子性（性质3）、保度规性（性质4）和对称性（性质5）。性质4由平行运输是等距保证，性质5由 Christoffel 符号的对称性 $\Gamma_{ij}^k = \Gamma_{ji}^k$ 保证。
+
+\textbf{解答}: 1. 由共变导数的定义直接得出（作用在向量场上是线性的）。
+
+2. 由共变导数对方向的线性性：在点 $p$ 处，$D_{\lambda y+\mu v}w(p) = \lambda D_y w(p) + \mu D_v w(p)$。
+
+3. 由导子性质（Leibniz 规则的变体）：
+\[
+D_y(fv) = \lim_{t\to 0}\frac{f(\alpha(t))P_t^{-1}(v(\alpha(t))) - f(p)v(p)}{t} = y(f)v + f D_yv,
+\]
+其中用到 $P_t^{-1}$ 的线性性。$D_{fy}v = f D_yv$ 由定义直接得出（因为 $fy$ 在 $p$ 处的方向导数作用为 $f(p)y$，而 $f$ 在 $p$ 处为零时 $D_{fy}v=0$）。
+
+4. 设 $P_t$ 是沿曲线 $\alpha$ 的平行运输，则 $\langle P_t(v), P_t(w)\rangle = \langle v,w\rangle$（平行运输保内积）。对 $t$ 求导并在 $t=0$ 处取值为零：
+\[
+0 = \frac{d}{dt}\langle P_t(v), P_t(w)\rangle\Big|_{t=0} = \langle D_yv, w\rangle + \langle v, D_yw\rangle.
+\]
+加上 $y(\langle v,w\rangle) = \frac{d}{dt}\langle v,w\rangle$ 在 $t=0$ 处的值，即得等式。
+
+5. 由 Christoffel 符号的对称性 $\Gamma_{ij}^k = \Gamma_{ji}^k$，以及 $D_{\mathbf{x}_v}\mathbf{x}_u = u''$ 相关项，可知 $D_{\mathbf{x}_v}\mathbf{x}_u = D_{\mathbf{x}_u}\mathbf{x}_v$。
+\qed
+\end{solution}
+
 \begin{exercise}{4-7, 3* — do Carmo, Exercise 4-7, 3}
 设 $\alpha: I = [0,l] \to S$ 是正则曲线，$v(t)$ 是沿 $\alpha$ 的单位法向量场（$\langle \alpha'(t), v(t) \rangle = 0$）。考虑 $\mathbf{x}(s,t) = \exp_{\alpha(t)}(s v(t))$。（a）证明 $\mathbf{x}$ 在 $I$ 邻域中可微且 $d\mathbf{x}$ 非奇异。（b）证明存在 $\epsilon > 0$ 使 $\mathbf{x}$ 在 $|s| < \epsilon$ 的矩形上为单射。（c）证明在上述开集中 $\mathbf{x}$ 是 $S$ 的参数化，且在此坐标系（Fermi 坐标）中 $F=0$，$E=1$；若 $\alpha$ 是弧长参数的测地线，则还有 $G(0,t)=1$，$G_s(0,t)=0$。（d）建立 Gauss 引理在 Fermi 坐标中的类似命题：如此构造的坐标曲线 $s=\mathrm{const}$（即 $t \mapsto \mathbf{x}(s,t)$）正交于测地线 $\theta=\mathrm{const}$。
 \end{exercise}
