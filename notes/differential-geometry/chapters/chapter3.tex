@@ -1544,27 +1544,33 @@ Consider the surface obtained by rotating the curve $y = x^3$, $-1 < x < 1$, abo
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：将曲线 $y = x^3$ 绕直线 $x = 1$ 旋转，在 $x = 1$ 处作旋转轴。点 $(0,0)$ 绕该轴旋转生成一个圆，其上每一点都是旋转面的"脐点"，且为平面点（$K = 0$）。
+\textbf{直观理解}：将曲线 $y=x^3$（$x\in(-1,1)$）绕直线 $x=1$ 旋转，在曲线的拐点 $(0,0)$ 处旋转生成的纬圆恰好由该拐点旋转而成。由于拐点的二阶导数为零，旋转面上沿该圆的一个主曲率为零，即这些点为平面点（$K=0$）。
 
-\textbf{解答}：将旋转轴取为 $z$ 轴，曲线 $y = x^3$ 绕 $x = 1$ 旋转相当于将曲线平移，使轴线为 $x = 1$。参数化旋转面：以 $x$ 轴上的点 $(1+t, 0, 0)$ 为基线，沿旋转方向取角参数 $\theta$，则
+\textbf{解答}：设旋转轴为 $z$ 轴（平移后的轴），曲线 $y=x^3$ 上的点 $(s, s^3, 0)$ 到轴线 $x=1$ 的距离为 $|s-1|$，故旋转面参数化为
 \[
-\mathbf{x}(t,\theta) = (1 + t + t^3\cos\theta,\; t^3\sin\theta,\; 0).
+\mathbf{x}(s,\theta)=\bigl(1+(s-1)\cos\theta,\;(s-1)\sin\theta,\;s^3\bigr),\quad s\in(-1,1),\;\theta\in[0,2\pi).
 \]
-
-在 $(t=0,\theta)$ 处（对应旋转的原点 $(0,0)$），计算第一、第二基本形式。在 $t = 0$ 处，有
+令 $a(s)=s-1$，则 $a(0)=-1$，$a'(s)=1$。计算偏导数：
 \[
-\mathbf{x}_t = (1,0,0),\quad \mathbf{x}_\theta = (0,0,0),
+\begin{aligned}
+\mathbf{x}_s &= (1+\cos\theta,\;\sin\theta,\;3s^2),\\
+\mathbf{x}_\theta &= (-(s-1)\sin\theta,\;(s-1)\cos\theta,\;0).
+\end{aligned}
 \]
-这说明 $t = 0$ 对应的"纬线"退化为一个点。实际上，当 $t = 0$ 时 $\mathbf{x}(0,\theta) = (1,0,0)$，原点 $(0,0)$ 旋转生成的是点 $(1,0,0)$，而非一圈点——这是因为旋转轴 $x = 1$ 经过了点 $(1,0,0)$。
+于是 $F=0$，$EG=((1+\cos\theta)^2+\sin^2\theta+(3s^2)^2)(s-1)^2$。在 $s=0$ 处，$a=-1$，$EG-\!F^2=4$，故 $E=4$，$G=1$，$EG-F^2=4$。
 
-重新理解题目：旋转曲线 $y = x^3$（$x \in (-1,1)$）绕 $x = 1$ 轴线旋转，曲线上的点 $(x, x^3, 0)$ 到轴线 $x = 1$ 的距离为 $|x-1|$，故旋转面参数化为
+计算第二基本形式系数。在 $s=0$ 处，
 \[
-\mathbf{x}(x,\theta) = (1 + (x-1)\cos\theta,\; (x-1)\sin\theta,\; x^3),\quad x \in (-1,1),\ \theta \in [0,2\pi).
+\mathbf{x}_{ss}=(0,0,0),\quad \mathbf{x}_{s\theta}=(0,0,0),\quad \mathbf{x}_{\theta\theta}=(1,0,0),
 \]
+法向量 $\mathbf{N}=(-1,0,0)$，于是
+\[
+e=\langle\mathbf{x}_{ss},\mathbf{N}\rangle=0,\quad f=\langle\mathbf{x}_{s\theta},\mathbf{N}\rangle=0,\quad g=\langle\mathbf{x}_{\theta\theta},\mathbf{N}\rangle=-1.
+\]
+故 $K=\frac{eg-f^2}{EG-F^2}=\frac{0-0}{4}=0$，即 $s=0$ 处所有点均为平面点。
 
-在原点 $x = 0$ 对应的圆上，$x = 0$，即旋转面上 $x = 0$ 的纬圆。计算在该圆上的高斯曲率。
-
-直接计算：在 $x = 0$ 附近，旋转面的几何可知，原点旋转生成的纬圆恰好由曲线的拐点 $x = 0$ 旋转而成。该点处曲线的二阶导数为零（$y = x^3$ 的二阶导数 $y'' = 6x$，在 $x = 0$ 处为零），因此旋转面上沿该圆的主曲率之一为零，即 $K = 0$，这些点是平面点（planar points）。
+\text{这些点恰好是曲线 $y=x^3$ 的拐点 $(0,0)$ 绕轴线 $x=1$ 旋转一周所生成的纬圆。}
+\qed
 \end{solution}
 
 \begin{exercise}{3-3, 15 — do Carmo, Exercise 3-3, 15}
