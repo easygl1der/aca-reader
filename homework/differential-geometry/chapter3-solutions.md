@@ -139,7 +139,7 @@ $$H = \frac{1}{\pi} \int_0^\pi k_n(\theta) d\theta$$
 > **a. Paraboloid of revolution $z = x^2 + y^2$:**
 > Let $f(x, y, z) = x^2 + y^2 - z = 0$. The gradient is $\nabla f = (2x, 2y, -1)$. The upward unit normal is:
 > $$N(x, y) = \frac{(-2x, -2y, 1)}{\sqrt{4x^2 + 4y^2 + 1}}$$
-> Let $r^2 = x^2 + y^2$. The $z$-component of $N$ is $N_z = 1/\sqrt{4r^2 + 1}$. As $r$ varies from $0$ to $\infty$, $N_z$ varies from $1$ to $0$ (exclusive of 0). Since the surface is a surface of revolution, the image of the Gauss map covers all directions with $0 < N_z \leq 1$. This corresponds to the **open northern hemisphere** of $S^2$ plus the north pole $(0,0,1)$.
+> Let $r^2 = x^2 + y^2$. The $z$-component of $N$ is $N_z = 1/\sqrt{4r^2 + 1}$. As $r$ varies from $0$ to $\infty$, $N_z$ varies from $1$ to $0$ (exclusive of 0). Since the surface is a surface of revolution, the image of the Gauss map covers all directions with $0 < $N_z \leq 1$. This corresponds to the **open northern hemisphere** of $S^2$ plus the north pole $(0,0,1)$.
 >
 > **b. Hyperboloid of revolution $x^2 + y^2 - z^2 = 1$:**
 > Let $f(x, y, z) = x^2 + y^2 - z^2 - 1 = 0$. The gradient is $\nabla f = (2x, 2y, -2z)$. The unit normal is:
@@ -412,7 +412,7 @@ $$H = \frac{1}{\pi} \int_0^\pi k_n(\theta) d\theta$$
 > [!solution] Solution to 3-2, 20*
 > Let $S_1, S_2, S_3$ be the three surfaces of the system passing through $p$. Let $N_1, N_2, N_3$ be their unit normal vectors at $p$. Since the surfaces are pairwise orthogonal, $\{N_1, N_2, N_3\}$ forms an orthonormal basis of $\mathbb{R}^3$.
 >
-> Let $C$ be the intersection curve of $S_1$ and $S_2$. The tangent vector $t$ to $C$ is perpendicular to $N_1$ and $N_2$, so $t$ is parallel to $N_3$. On the surface $S_1$, the normal is $N_1$. The geodesic torsion of $C \subset S_1$ is $\tau_g = \langle dN_1(t), h \rangle$, where $h$ is a unit vector in $T_p(S_1)$ perpendicular to $t$. Since $t = $N_3$ and $h \perp N_1, N_3$, we must have $h = N_2$.
+> Let $C$ be the intersection curve of $S_1$ and $S_2$. The tangent vector $t$ to $C$ is perpendicular to $N_1$ and $N_2$, so $t$ is parallel to $N_3$. On the surface $S_1$, the normal is $N_1$. The geodesic torsion of $C \subset S_1$ is $\tau_g = \langle dN_1(t), h \rangle$, where $h$ is a unit vector in $T_p(S_1)$ perpendicular to $t$. Since $t = $N_3$ and $h \perp $N_1, N_3$, we must have $h = N_2$.
 > Thus $\tau_g = \langle \nabla_{N_3} N_1, N_2 \rangle$.
 >
 > Similarly, consider $C$ as a curve on $S_2$. Its geodesic torsion is $\bar{\tau}_g = \langle dN_2(t), \bar{h} \rangle$. Here $\bar{h} = N_1$. So $\bar{\tau}_g = \langle \nabla_{N_3} N_2, N_1 \rangle$.
@@ -551,3 +551,122 @@ $$H = \frac{1}{\pi} \int_0^\pi k_n(\theta) d\theta$$
 > **e. Asymptotic Curves:**
 > $e du^2 + 2f du dv + g dv^2 = 0 \implies 2 du^2 - 2 dv^2 = 0 \implies du = \pm dv$.
 > The asymptotic curves are $u \pm v = \text{const}$.
+
+## Problem 3-3-6* · The Pseudosphere
+> [!exr] 3-3, 6*
+> (A Surface with $K \equiv -1$; the Pseudosphere.)
+> a. Determine an equation for the plane curve $C$, which is such that the segment of the tangent line between the point of tangency and some line $r$ in the plane, which does not meet the curve, is constantly equal to 1 (this curve is called the tractrix).
+> b. Rotate the tractrix $C$ about the line $r$; determine if the "surface" of revolution thus obtained (the pseudosphere) is regular and find out a parametrization in a neighborhood of a regular point.
+> c. Show that the Gaussian curvature of any regular point of the pseudosphere is $-1$.
+
+> [!solution] Solution to 3-3, 6*
+> **a.** Let the line $r$ be the $z$-axis in the $xz$-plane. Let the curve $C$ be $(\varphi(v), \psi(v))$ with $\varphi(v) > 0$. The tangent line at a point $P = (\varphi, \psi)$ is $L(\lambda) = (\varphi, \psi) + \lambda (\varphi', \psi')$.
+> The intersection with the $z$-axis (where $x=0$) occurs at $\varphi + \lambda \varphi' = 0 \implies \lambda = -\varphi / \varphi'$.
+> The intersection point is $(0, \psi - \varphi \psi' / \varphi')$.
+> The length of the segment between $P$ and the $z$-axis is 1, so:
+> $$1^2 = (\varphi - 0)^2 + \left( \psi - \left( \psi - \frac{\varphi \psi'}{\varphi'} \right) \right)^2 = \varphi^2 + \left( \frac{\varphi \psi'}{\varphi'} \right)^2 = \frac{\varphi^2 ((\varphi')^2 + (\psi')^2)}{(\varphi')^2}$$
+> Assuming $v$ is the arc-length parameter, $(\varphi')^2 + (\psi')^2 = 1$, we get:
+> $1 = \frac{\varphi^2}{(\varphi')^2} \implies (\varphi')^2 = \varphi^2$.
+> Since $\varphi$ must decrease as we move along the curve to keep the tangent segment on the $z$-axis, we choose $\varphi' = -\varphi$. Integrating gives $\varphi(v) = e^{-v}$ (taking $\varphi(0) = 1$).
+> Then $(\psi')^2 = 1 - (\varphi')^2 = 1 - e^{-2v}$, so $\psi(v) = \int_0^v \sqrt{1 - e^{-2t}} dt$.
+> In Cartesian coordinates $(x, z)$, since $x = e^{-v} \implies v = -\ln x$, we have $dx/dv = -e^{-v} = -x$, so $dz/dx = \frac{\psi'}{\varphi'} = \frac{\sqrt{1-x^2}}{-x}$.
+> Integrating gives the equation of the tractrix: $z = \int \frac{\sqrt{1-x^2}}{-x} dx = \cosh^{-1}(1/x) - \sqrt{1-x^2}$.
+>
+> **b.** Rotating the tractrix about the $z$-axis gives the pseudosphere:
+> $$\mathbf{x}(u, v) = (e^{-v} \cos u, e^{-v} \sin u, \psi(v))$$
+> The partial derivatives are $\mathbf{x}_u = (-e^{-v} \sin u, e^{-v} \cos u, 0)$ and $\mathbf{x}_v = (-e^{-v} \cos u, -e^{-v} \sin u, \sqrt{1-e^{-2v}})$.
+> The surface is regular where $\mathbf{x}_u \times \mathbf{x}_v \neq \mathbf{0}$.
+> $|\mathbf{x}_u \times \mathbf{x}_v| = |e^{-v}| \sqrt{(-e^{-v})^2 + (\psi')^2} = e^{-v} \sqrt{e^{-2v} + 1 - e^{-2v}} = e^{-v}$.
+> Since $e^{-v} \neq 0$, the surface is regular for all $v \in (0, \infty)$. At $v=0$, $\psi'(0)=0$, and there is a singular circle (a cusp in the profile).
+>
+> **c.** For a surface of revolution with $E=1$ (arc-length parameter), $F=0$, and $G=\varphi^2$, the Gaussian curvature is $K = -\frac{\varphi''}{\varphi}$.
+> Here $\varphi(v) = e^{-v}$, so $\varphi'(v) = -e^{-v}$ and $\varphi''(v) = e^{-v}$.
+> $$K = -\frac{e^{-v}}{e^{-v}} = -1.$$
+> Thus the Gaussian curvature is constantly $-1$ at all regular points.
+
+## Problem 3-3-7* · Constant Curvature Surfaces of Revolution
+> [!exr] 3-3, 7*
+> (Surfaces of Revolution with Constant Curvature.) $(\varphi(v) \cos u, \varphi(v) \sin u, \psi(v))$, $\varphi \neq 0$ is given as a surface of revolution with constant Gaussian curvature $K$. To determine the functions $\varphi$ and $\psi$, choose the parameter $v$ in such a way that $(\varphi')^2 + (\psi')^2 = 1$. Show that
+> a. $\varphi$ satisfies $\varphi'' + K\varphi = 0$ and $\psi$ is given by $\psi = \int \sqrt{1 - (\varphi')^2} dv$.
+> b. All surfaces of revolution with $K=1$ which intersect perpendicularly the plane $xOy$ are given by $\varphi(v) = C \cos v$, $\psi(v) = \int_0^v \sqrt{1 - C^2 \sin^2 v} dv$.
+> c. All surfaces of revolution with $K=-1$ may be given by one of three types involving $\cosh, \sinh, \exp$.
+> d. Type 3 in part c is the pseudosphere.
+> e. $K=0$ gives cylinders, cones, and planes.
+
+> [!solution] Solution to 3-3, 7*
+> **a.** With $(\varphi')^2 + (\psi')^2 = 1$, the first fundamental form coefficients are $E = (\varphi')^2 + (\psi')^2 = 1$, $F = 0$, $G = \varphi^2$.
+> The Gaussian curvature of such a surface is given by the formula $K = -\frac{\varphi''}{\varphi}$.
+> Thus $\varphi$ satisfies the linear second-order differential equation $\varphi'' + K\varphi = 0$.
+> From the condition $(\varphi')^2 + (\psi')^2 = 1$, we have $(\psi')^2 = 1 - (\varphi')^2$, so $\psi(v) = \int \sqrt{1 - (\varphi'(v))^2} dv$.
+>
+> **b.** For $K=1$, the equation is $\varphi'' + \varphi = 0$, so $\varphi(v) = A \cos v + B \sin v$.
+> The surface intersects $xOy$ perpendicularly if at $v=0$ the profile curve is perpendicular to $xOy$, which for a surface of revolution means $\varphi'(0)=0$ and we can set $\psi(0)=0$.
+> Thus $B = 0$ and $\varphi(v) = C \cos v$.
+> $\psi(v) = \int_0^v \sqrt{1 - (-C \sin v)^2} dv = \int_0^v \sqrt{1 - C^2 \sin^2 v} dv$.
+> - If $C=1$, we get the sphere $\varphi = \cos v, \psi = \sin v$.
+> - If $C < 1$, the surface is a "barrel" shape.
+> - If $C > 1$, the surface is a "bulge" shape defined only for $|v| \leq \arcsin(1/C)$.
+>
+> **c.** For $K=-1$, the equation is $\varphi'' - \varphi = 0$. The general solution is $\varphi(v) = A \cosh v + B \sinh v$.
+> 1. $\varphi(v) = C \cosh v$. Then $\varphi' = C \sinh v$. $\psi = \int \sqrt{1 - C^2 \sinh^2 v} dv$. (Hyperbolic type)
+> 2. $\varphi(v) = C \sinh v$. Then $\varphi' = C \cosh v$. $\psi = \int \sqrt{1 - C^2 \cosh^2 v} dv$. (Elliptic type)
+> 3. $\varphi(v) = C e^v$. Then $\varphi' = C e^v$. $\psi = \int \sqrt{1 - C^2 e^{2v}} dv$. (Parabolic type)
+>
+> **d.** For type 3, if we take $C=1$, we get $\varphi = e^v$ and $\psi' = \sqrt{1 - e^{2v}}$. This corresponds to the tractrix used for the pseudosphere in Exercise 6.
+>
+> **e.** For $K=0$, $\varphi'' = 0 \implies \varphi(v) = av + b$.
+> - If $a=0$, $\varphi = b$ (const), $\psi = v$. This is a cylinder.
+> - If $a=1$, $\varphi = v+b, \psi = \text{const}$. This is a plane.
+> - If $0 < a < 1$, $\varphi = av+b, \psi = \sqrt{1-a^2} v$. This is a cone.
+
+## Problem 3-3-8* · Contact of Order $\geq 2$ of Surfaces
+> [!exr] 3-3, 8*
+> Prove various properties of contact of order $\geq 2$ between surfaces, including its invariance under diffeomorphisms and the fact that it implies equal Gaussian and mean curvatures.
+
+> [!solution] Solution to 3-3, 8*
+> **a.** The partial derivatives of $f \circ \mathbf{x}$ at $(0,0)$ are determined by the partial derivatives of $f$ at $p$ and the partial derivatives of $\mathbf{x}$ at $(0,0)$. For example, $(f \circ \mathbf{x})_u = \nabla f \cdot \mathbf{x}_u$ and $(f \circ \mathbf{x})_{uu} = \mathbf{x}_u^T H_f \mathbf{x}_u + \nabla f \cdot \mathbf{x}_{uu}$. Since the derivatives of $\mathbf{x}$ and $\bar{\mathbf{x}}$ up to order 2 match at $p$, the derivatives of $f \circ \mathbf{x}$ and $f \circ \bar{\mathbf{x}}$ also match.
+>
+> **b.** Let $p = (0,0,0)$ and the $xy$ plane be the tangent plane. Then $\mathbf{x}(x,y) = (x, y, f(x,y))$ and $\bar{\mathbf{x}}(x,y) = (x, y, \bar{f}(x,y))$.
+> The condition $\mathbf{x}_u = \bar{\mathbf{x}}_u$ etc. at $(0,0)$ implies $f_x = \bar{f}_x$, $f_y = \bar{f}_y$, $f_{xx} = \bar{f}_{xx}$, $f_{xy} = \bar{f}_{xy}$, $f_{yy} = \bar{f}_{yy}$ at $(0,0)$. Thus $(f - \bar{f})$ and its derivatives up to order 2 vanish at $(0,0)$.
+>
+> **c.** The second-order Taylor expansion of $z = f(x,y)$ at $(0,0)$ is $z = \frac{1}{2}(x^2 f_{xx} + 2xy f_{xy} + y^2 f_{yy})$. This paraboloid has the same value and first and second derivatives as $S$ at $p$.
+>
+> **e.** Gaussian and mean curvatures at $p$ depend only on the first and second fundamental form coefficients, which in turn depend only on the first and second partial derivatives of the surface parametrization. Since these derivatives match for $S$ and $\bar{S}$, their $K$ and $H$ must be equal.
+>
+> **g.** Let the normal line be $(x, y) = (r \cos \theta, r \sin \theta)$. The distance $d$ between surfaces is $|f(x,y) - \bar{f}(x,y)|$. Since the difference function has vanishing derivatives up to order 2, its Taylor series starts with terms of order 3. Thus $d = O(r^3)$, which implies $\lim_{r \to 0} d/r^2 = 0$.
+
+## Problem 3-3-9 · Contact of Curves
+> [!exr] 3-3, 9
+> Define contact of order $\geq n$ for regular curves and prove its invariance by diffeomorphisms and that order $\geq 1$ means tangency.
+
+> [!solution] Solution to 3-3, 9
+> **Definition:** Two regular curves $\alpha$ and $\beta$ have contact of order $\geq n$ at $p = \alpha(0) = \beta(0)$ if there exist parametrizations (possibly after reparametrization) such that $\alpha^{(k)}(0) = \beta^{(k)}(0)$ for all $1 \leq k \leq n$.
+>
+> **a. Invariance:** Let $\Phi$ be a diffeomorphism. The derivatives of $\Phi \circ \alpha$ at 0 are $(\Phi \circ \alpha)' = d\Phi(\alpha')$, $(\Phi \circ \alpha)'' = d^2\Phi(\alpha', \alpha') + d\Phi(\alpha'')$, and so on. Since each derivative $(\Phi \circ \alpha)^{(k)}$ is a function of $\alpha, \alpha', \dots, \alpha^{(k)}$, if $\alpha$ and $\beta$ match up to order $n$, then $\Phi \circ \alpha$ and $\Phi \circ \beta$ will also match up to order $n$.
+>
+> **b. Order $\geq 1$:** By definition, $\alpha'(0) = \beta'(0)$. This means the curves have a common tangent vector at $p$, which is the definition of tangency.
+
+## Problem 3-3-10* · Contact of Curves and Surfaces
+> [!exr] 3-3, 10*
+> (Contact of Curves and Surfaces.)
+> a. If $f(x,y,z) = 0$ represents $S$ and $\alpha(t)$ represents $C$, show contact order $\geq n$ iff $f(\alpha(t))$ and its derivatives up to $n$ vanish at $t=0$.
+> b. Contact order $\geq 2$ with a plane implies it is the osculating plane.
+> c. Contact order $\geq 3$ with a sphere implies it is the osculating sphere.
+
+> [!solution] Solution to 3-3, 10*
+> **a.** Let $g(t) = f(\alpha(t))$. Contact order $\geq n$ means there exists a curve $\bar{C} \subset S$ such that $\alpha^{(k)}(0) = \bar{C}^{(k)}(0)$ for $k \leq n$. Since $\bar{C} \subset S$, $f(\bar{C}(t)) \equiv 0$. Differentiating this gives $0 = \frac{d^k}{dt^k} f(\bar{C}(t))|_{t=0}$, which is a polynomial in the derivatives of $f$ and $\bar{C}$. Since $\alpha$ and $\bar{C}$ have same derivatives at $0$, $\frac{d^k}{dt^k} f(\alpha(t))|_{t=0} = 0$.
+>
+> **b.** Let the plane be $\langle \mathbf{x} - p, \mathbf{v} \rangle = 0$. Contact order $\geq 2$ implies $\langle \alpha(0) - p, \mathbf{v} \rangle = 0$, $\langle \alpha'(0), \mathbf{v} \rangle = 0$, and $\langle \alpha''(0), \mathbf{v} \rangle = 0$. This means the plane contains the tangent vector $T$ and the acceleration vector $\alpha''$. Thus it is the osculating plane (spanned by $T$ and $n$).
+>
+> **c.** Let the sphere be $|\mathbf{x} - \mathbf{c}|^2 - R^2 = 0$. Let $g(s) = \langle \alpha(s) - \mathbf{c}, \alpha(s) - \mathbf{c} \rangle - R^2$.
+> 1. $g(0) = 0 \implies |\alpha(0) - \mathbf{c}|^2 = R^2$.
+> 2. $g'(0) = 2 \langle \alpha', \alpha - \mathbf{c} \rangle = 0 \implies (\mathbf{c} - \alpha) \perp T$.
+> 3. $g''(0) = 2 \langle \alpha'', \alpha - \mathbf{c} \rangle + 2 \langle \alpha', \alpha' \rangle = 2 (\langle k n, \alpha - \mathbf{c} \rangle + 1) = 0 \implies \langle \mathbf{c} - \alpha, n \rangle = 1/k = \rho$.
+> 4. $g'''(0) = 2 \langle \alpha''', \alpha - \mathbf{c} \rangle + 6 \langle \alpha'', \alpha' \rangle = 0$.
+> Since $\alpha' = T, \alpha'' = k n$, we have $\alpha''' = k' n + k n' = k' n + k (-k T + \tau b)$.
+> $0 = \langle -k^2 T + k' n + k \tau b, \alpha - \mathbf{c} \rangle + 3 \langle k n, T \rangle$.
+> $-k^2 \cdot 0 + k' \langle n, \alpha - \mathbf{c} \rangle + k \tau \langle b, \alpha - \mathbf{c} \rangle + 0 = 0$.
+> $k' (-\rho) + k \tau \langle \alpha - \mathbf{c}, b \rangle = 0 \implies \langle \mathbf{c} - \alpha, b \rangle = \frac{k' \rho}{k \tau} = \frac{k'}{k^2 \tau}$.
+> Thus the center $\mathbf{c}$ is:
+> $$\mathbf{c} = \alpha + \rho n + \frac{k'}{k^2 \tau} b.$$
+> This is the center of the osculating sphere.
