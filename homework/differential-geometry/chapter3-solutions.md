@@ -226,14 +226,14 @@ $$H = \frac{1}{\pi} \int_0^\pi k_n(\theta) d\theta$$
 > This is exactly the condition for directions $(x_0, y_0)$ and $(X, Y)$ to be conjugate with respect to the second fundamental form $II_p(v, w) = k_1 v_1 w_1 + k_2 v_2 w_2$. Thus, the direction of the tangent line is the conjugate direction $r'$.
 
 ## Problem 3-2-13* · Theorem of Beltrami-Enneper
-> [!exr] 3-2, 13
+> [!exr] 3-2, 13*
 > (Theorem of Beltrami-Enneper.) Prove that the absolute value of the torsion $\tau$ at a point of an asymptotic curve, whose curvature is nowhere zero, is given by
 > \[
 > | \tau | = \sqrt {- K},
 > \]
 > where $K$ is the Gaussian curvature of the surface at the given point.
 
-> [!solution] Solution to 3-2, 13
+> [!solution] Solution to 3-2, 13*
 > Let $\alpha(s)$ be an asymptotic curve on $S$. By definition, the normal curvature is zero: $k_n = \langle \alpha'', N \rangle = 0$, where $N$ is the surface normal. Since the curvature $k = |\alpha''| \neq 0$, the principal normal $n = \alpha''/k$ of the curve must be tangent to the surface ($n \perp N$).
 >
 > Consider the Frenet frame $\{T, n, b\}$ of the curve. Since both $T = \alpha'$ and $n$ are tangent to $S$ and are orthogonal unit vectors, they form an orthonormal basis for $T_p(S)$. The binormal $b = T \times n$ must then be the surface normal, i.e., $N = \pm b$.
