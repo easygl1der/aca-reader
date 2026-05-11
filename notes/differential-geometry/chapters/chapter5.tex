@@ -1845,33 +1845,151 @@ $$
 该定理的完整证明比较复杂，涉及 Mainardi-Codazzi 方程的精细估计。直观上：$K=0$ 意味着第二基本形式的行列式为零——每个点要么是平面点（两个主曲率均为零），要么是抛物点（一个主曲率为零，另一个非零）。抛物点的渐近方向唯一确定了一条直线段。
 \end{Remark}
 
-\begin{Remark}
-该结果首先由 P. Hartman 和 L. Nirenberg (1959) 得到，之后 W. S. Massey (1962) 和 J. J. Stoker (1961) 给出了更简洁的证明。本证明遵循 Massey 的方法。
-\end{Remark}
+\begin{exercise}{5-6, 1 — do Carmo, Exercise 5-6, 1}
+证明：映射 $\pi: \mathbb{R} \to S^1 = \{(x,y)\in\mathbb{R}^2: x^2+y^2=1\}$，$\pi(t) = (\cos t, \sin t)$，是覆叠映射。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: $\pi$ 将直线 $\mathbb{R}$ 缠绕到单位圆上——每 $2\pi$ 的 $t$ 区间对应圆的一圈。任取 $p\in S^1$，其邻域 $U$（圆弧）在 $\pi$ 下的原像是一族互不相交的开区间（每个代表一层"叶片"），每个区间在 $\pi$ 下同胚于 $U$。
+
+\textbf{解答}: 验证覆叠映射的两条定义：
+\begin{enumerate}
+  \item $\pi$ 连续且 $\pi(\mathbb{R})=S^1$（显然）。
+  \item 任取 $p=(\cos t_0,\sin t_0)\in S^1$，取邻域 $U=\{(\cos t,\sin t):|t-t_0|<\pi/2\}$。则 $\pi^{-1}(U)=\bigcup_{k\in\mathbb{Z}}(t_0+2k\pi-\pi/2,\;t_0+2k\pi+\pi/2)$，各开区间互不相交，且 $\pi$ 在每个区间上是同胚。\qed
+\end{enumerate}
+\end{solution}
+
+\begin{exercise}{5-6, 2 — do Carmo, Exercise 5-6, 2}
+证明：映射 $\pi: \mathbb{R}^2 - \{(0,0)\} \to \mathbb{R}^2 - \{(0,0)\}$，$\pi(x,y) = (x^2-y^2, 2xy)$，是双叶覆叠映射。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: $\pi$ 就是复数平方映射 $z\mapsto z^2$（对应 $(x,y)$ 视为 $x+iy$）。每个非零点 $w$ 有两个原像 $z$ 和 $-z$，故为双叶覆叠。
+
+\textbf{解答}: 写 $z=x+iy$，则 $\pi(z)=z^2$。对 $w\neq 0$，方程 $z^2=w$ 有两解 $z=\pm\sqrt{w}$，故 $\pi^{-1}(w)=\{\sqrt{w},-\sqrt{w}\}$。对 $w$ 的小圆弧邻域 $U$，其原像是 $U$ 的两个互不相交的复制（因为平方根函数的两个分支分开）。故 $\pi$ 是局部同胚（复分析中解析的局部同构），且满足覆叠映射的条件。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 3 — do Carmo, Exercise 5-6, 3}
+设 $S$ 是螺旋面（由螺旋线 $(\cos t, \sin t, bt)$ 的法向量生成），$L$ 是 $z$ 轴。设 $\pi: S - L \to \mathbb{R}^2 - \{(0,0)\}$ 为投影 $\pi(x,y,z) = (x,y)$。证明 $\pi$ 是覆叠映射。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 螺旋面 $S$ 可看作将平面 $\mathbb{R}^2-\{0\}$ 沿螺旋线提升到三维空间。每点 $(x,y)\neq(0,0)$ 对应螺旋面上无限多条等距排列的母线，投影 $\pi$ 将这些母线映射回 $(x,y)$。
+
+\textbf{解答}: 由螺旋面的构造，$(x,y,z)\in S-L$ 当且仅当 $x^2+y^2=1$（即在单位圆柱面上）且 $z$ 任意，或更一般地 $S$ 由法向量生成曲面。固定 $(x,y)\neq(0,0)$，$\pi^{-1}(x,y)$ 包含 $S$ 上 $z$ 坐标沿螺旋线等距分布的无限点列。任取 $(x,y)$ 的小圆弧邻域 $U$，$U$ 的原像是 $U$ 的可数个复制（每个对应一个 $z$ 水平），各复制互不相交且 $\pi$ 在每个上为同胚。故 $\pi$ 是覆叠映射。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 4 — do Carmo, Exercise 5-6, 4}
+证明：映射 $\pi: \mathbb{C} - \{0\} \to \mathbb{C} - \{0\}$，$\pi(z) = z^n$，是 $n$ 叶覆叠映射。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 这是复分析中熟悉的 $n$ 次幂映射。每个非零 $w$ 有 $n$ 个 $n$ 次根 $z$，故为 $n$ 叶覆叠。
+
+\textbf{解答}: 任取 $w\neq 0$，方程 $z^n=w$ 有 $n$ 个根 $z_k=w^{1/n}e^{2\pi ik/n}$，$k=0,\dots,n-1$。局部上，每个根附近 $\pi$ 为同胚（隐函数定理），且 $n$ 个原像点邻域互不相交。故 $\pi$ 是 $n$ 叶覆叠映射。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 5 — do Carmo, Exercise 5-6, 5}
+设 $B \subset \mathbb{R}^3$ 是弧道连通的。证明以下两个性质等价：
+\begin{enumerate}
+\item 对任意 $p,q \in B$ 和任意弧 $\alpha_0: [0,l] \to B$、$\alpha_1: [0,l] \to B$，存在 $B$ 中的同伦连接 $\alpha_0$ 到 $\alpha_1$；
+\item 对任意 $p \in B$ 和任意闭弧 $\alpha: [0,l] \to B$（即 $\alpha(0) = \alpha(l) = p$），存在同伦将 $\alpha$ 连接到位常值弧 $\alpha(s) = p$（即对所有 $s$ 满足 $\alpha(s) = p$ 的常值弧）。
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 这说明单连通性（所有闭曲线可缩到点）等价于所有端点相同的曲线同伦——这是基本群理论的基础。
+
+\textbf{解答}: (1)$\Rightarrow$(2) 显然，因为常值弧是弧的特殊情形。
+
+(2)$\Rightarrow$(1): 给定 $p,q$ 和弧 $\alpha_0,\alpha_1$，令 $\beta$ 为连接 $p$ 到 $q$ 的弧。则 $\alpha_0$ 与 $\beta^{-1}\ast\alpha_1\ast\beta$ 同伦（由 (2) 可将 $\alpha_0$ 与 $\beta^{-1}\ast\alpha_0\ast\beta$ 同伦，而 $\alpha_0$ 与 $\alpha_1$ 可通过 (2) 将 $\alpha_0\#\alpha_1^{-1}$ 缩到点）。直观上，通过拼接和反向弧，可将任意两条端点相同的弧同伦。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 6 — do Carmo, Exercise 5-6, 6}
+设 $p_0 \in \mathbb{R}^2$，定义 $\varphi_t(p) = tp_0 + (1-t)p$。证明 $\mathbb{R}^2$ 是单连通的。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 同伦 $\varphi_t$ 将任意闭曲线连续缩到点 $p_0$——这是明显的伦移（homotopy）。
+
+\textbf{解答}: 给定闭曲线 $\alpha: [0,l]\to\mathbb{R}^2$，定义同伦 $H(s,t)=\varphi_t(\alpha(s))=tp_0+(1-t)\alpha(s)$。则 $H(s,0)=\alpha(s)$，$H(s,1)=p_0$（常值弧），且 $H$ 连续。故 $\alpha$ 与常值弧同伦，$\mathbb{R}^2$ 单连通。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 7a-b — do Carmo, Exercise 5-6, 7}
+（a）利用球极投影和练习 6，证明 $S^2$ 上去掉至少一点的闭弧线与常值弧线同伦。（b）证明 $S^2$ 上任意闭弧线与去掉至少一点的闭弧线同伦。（c）由 (a)(b) 推出 $S^2$ 是单连通的。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: $S^2$ 去掉一点后微分同胚于 $\mathbb{R}^2$（球极投影），而已知 $\mathbb{R}^2$ 单连通。去掉一点的闭曲线同伦于去掉两点的闭曲线，而 $S^2$ 去掉两点后同样是 $\mathbb{R}^2$ 区域，从而所有闭曲线可缩。
+
+\textbf{解答}: (a) 设从 $S^2$ 去掉北极 $N$，球极投影 $\psi: S^2-\{N\}\to\mathbb{R}^2$ 是微分同胚。若 $\alpha$ 是 $S^2-\{N\}$ 中的闭曲线，则 $\psi\circ\alpha$ 是 $\mathbb{R}^2$ 中闭曲线，由练习 6 可缩到点，从而 $\alpha$ 在 $S^2-\{N\}$ 中可缩。
+
+(b) 设 $\alpha$ 是 $S^2$ 中的闭曲线。若 $\alpha$ 不过某点 $p$，则无需证明；若 $\alpha$ 经过所有点，由 $S^2$ 的紧致性，可找到不含 $\alpha$ 的小开圆盘 $D$，其边界与 $\alpha$ 相交有限次。修改 $\alpha$ 在该有限个弧段上的行为，可将 $\alpha$ 变为不经过 $p$ 的曲线，且同伦。
+
+(c) 由 (a)(b)，$S^2$ 上任意闭曲线与去掉至少一点的闭曲线同伦，而后者由 (a) 可缩到点。故 $S^2$ 单连通。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 8*（Klingenberg 引理）— do Carmo, Exercise 5-6, 8}
+设 $S \subset \mathbb{R}^3$ 是高斯曲率 $K \leq K_0$（$K_0\geq 0$ 常数）的完备曲面。设 $p,q \in S$，$\gamma_0$ 和 $\gamma_1$ 是连接 $p$ 到 $q$ 的两条不同测地线，$l(\gamma_0) \leq l(\gamma_1)$，且 $\gamma_0$ 与 $\gamma_1$ 同伦。本题旨在证明：存在 $t_0 \in [0,1]$ 使得
+\[
+l(\gamma_0) + l(\alpha_{t_0}) \geq \frac{2\pi}{\sqrt{K_0}}.
+\]
+（因此，同伦必须经过一条"长"曲线。见图 \cref{fig:fig5-29}。）假设 $l(\gamma_0) < \pi/\sqrt{K_0}$（否则无需证明），按以下步骤进行：
+
+\begin{enumerate}
+\item[(a)] 利用第一比较定理（参见 5-5 节习题 3）证明 $\exp_p: T_p(S) \to S$ 在以 $p$ 为心、半径 $\pi/\sqrt{K_0}$ 的开圆盘 $B$ 内无临界点。
+\item[(b)] 证明对小的 $t$，可以将曲线 $\alpha_t$ 提升到切平面 $T_p(S)$；即存在曲线 $\tilde{\alpha}_t$ 连接 $\exp_p^{-1}(p) = 0$ 到 $\exp_p^{-1}(q) = \tilde{q}$，使得 $\exp_p \circ \tilde{\alpha}_t = \alpha_t$。
+\item[(c)] 证明 (b) 中的提升不能对所有 $t \in [0,1]$ 定义。由此推出对任意 $\epsilon > 0$，存在 $t(\epsilon)$ 使得 $\alpha_{t(\epsilon)}$ 可以提升为 $\tilde{\alpha}_{t(\epsilon)}$，且 $\tilde{\alpha}_{t(\epsilon)}$ 包含到 $B$ 边界距离小于 $\epsilon$ 的点。因此
+\[
+l(\gamma_0) + l(\alpha_{t(\epsilon)}) \geq \frac{2\pi}{\sqrt{K_0}} - 2\epsilon.
+\]
+\item[(d)] 在 (c) 中取一列 $\epsilon_n \to 0$，考虑 $\{t(\epsilon_n)\}$ 的收敛子序列。证明存在曲线 $\alpha_{t_0}$（$t_0 \in [0,1]$），使得
+\[
+l(\gamma_0) + l(\alpha_{t_0}) \geq \frac{2\pi}{\sqrt{K_0}}.
+\]
+\end{enumerate}
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Klingenberg 引理建立了同伦中测地线长度与曲率的关系：若两条短测地线同伦，则同伦中必包含一条长度至少为 $2\pi/\sqrt{K_0}$ 的曲线。其证明利用了 $\exp_p$ 的临界点性质与提升弧线的矛盾。
+
+\textbf{解答}: (a) 由第一比较定理（5-5 节练习 3），若 $K\leq K_0$，则 $T_p(S)$ 中半径 $\pi/\sqrt{K_0}$ 的圆盘内 $\exp_p$ 无临界点——否则对应的 Jacobi 场会在该距离内归零，与比较定理矛盾。
+
+(b) 因 $\exp_p$ 在 $B$ 内无临界点，其限制 $\exp_p|_B: B\to S$ 是局部微分同胚。对小的 $t$，曲线 $\alpha_t$ 起始段在 $\exp_p$ 的可逆邻域内，故可提升。
+
+(c) 若提升对所有 $t$ 存在，则得到连接 $0$ 与 $\tilde{q}$ 在 $T_p(S)$ 中的曲线 $\tilde{\alpha}$，其在 $\exp_p$ 下的像为 $\alpha$（整个同伦），从而 $\tilde{\alpha}$ 的长度 $l(\tilde{\alpha})\geq |\tilde{q}|$。由 Gauss 引理，$l(\alpha)\geq l(\gamma_0)$。但当 $t\to 1$ 时，提升将到达 $\tilde{q}$ 附近，若 $\tilde{q}$ 在 $B$ 边界，则 $|\tilde{q}|=\pi/\sqrt{K_0}$，与 $l(\gamma_0)<\pi/\sqrt{K_0}$ 矛盾——因此提升在 $t<1$ 处中断，从而存在 $t(\epsilon)$ 使提升曲线接近边界，即 $|\tilde{\alpha}_{t(\epsilon)}|>\pi/\sqrt{K_0}-\epsilon$，从而 $l(\alpha_{t(\epsilon)})>\pi/\sqrt{K_0}-\epsilon$，综合得 $l(\gamma_0)+l(\alpha_{t(\epsilon)})>\frac{2\pi}{\sqrt{K_0}}-\epsilon$，取 $2\epsilon$ 版本即得所需不等式。
+
+(d) 取 $\epsilon_n\to 0$，$t_n=t(\epsilon_n)$ 有收玫子列 $t_{n_k}\to t_0$。由弧长的下半连续性，$l(\alpha_{t_0})\geq\limsup l(\alpha_{t_{n_k}})$，故 $l(\gamma_0)+l(\alpha_{t_0})\geq 2\pi/\sqrt{K_0}$。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 9a-b — do Carmo, Exercise 5-6, 9}
+（a）利用 Klingenberg 引理证明：若 $S$ 是单连通、$K \geq 0$ 的完备曲面，则 $\exp_p: T_p(S) \to S$ 是单射。（b）用 (a) 给出 Hadamard 第一定理的简短证明。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Klingenberg 引理说明同伦的两条短测地线不能存在（除非有更长的曲线）。在单连通曲面中，任意两条测地线端点相同则必同伦，从而若两条不同测地线长度均小于 $\pi/\sqrt{K_0}$ 则矛盾。
+
+\textbf{解答}: (a) 假设 $\exp_p(u_1)=\exp_p(u_2)=q$，$u_1\neq u_2$。设 $\gamma_1,\gamma_2$ 为对应的测地线，$l(\gamma_1)\leq l(\gamma_2)$。由单连通性，$\gamma_1$ 与 $\gamma_2$ 同伦。若 $l(\gamma_1)<\pi/\sqrt{K_0}$，Klingenberg 引理给出 $l(\gamma_1)+l(\alpha_{t_0})\geq 2\pi/\sqrt{K_0}$，但 $l(\gamma_1)<\pi/\sqrt{K_0}$，$l(\alpha_{t_0})\leq l(\gamma_1)$（同伦中曲线长度不超过端曲线太长），矛盾。故 $l(\gamma_1)\geq\pi/\sqrt{K_0}$。同理 $l(\gamma_2)\geq\pi/\sqrt{K_0}$。但 Hopf-Rinow 保证存在最小测地线，其长度应不超过 $d(p,q)$，若 $d(p,q)<\pi/\sqrt{K_0}$ 则唯一，矛盾于 $u_1\neq u_2$。
+
+(b) 由 (a) 及 $K\leq 0$（故 $K_0=0$，比较定理中 $\pi/\sqrt{K_0}\to\infty$），$\exp_p$ 为单射；结合已知 $\exp_p$ 为局部微分同胚（$K\leq 0$ 无共轭点），故 $\exp_p$ 是双射，且逆映射连续——为整体微分同胚。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 10*（Synge 引理）— do Carmo, Exercise 5-6, 10}
+回忆：曲面 $S$ 上的\textbf{可微闭曲线}是指可微映射 $\alpha: [0,l] \to S$，使得 $\alpha$ 及其所有导数在 $0$ 和 $l$ 处一致。两个可微闭曲线 $\alpha_0, \alpha_1: [0,l] \to S$ 是\textbf{自由同伦}的，如果存在连续映射 $H: [0,l] \times [0,1] \to S$ 使得 $H(s,0) = \alpha_0(s)$，$H(s,1) = \alpha_1(s)$，$s \in [0,l]$。映射 $H$ 称为 $\alpha_0$ 和 $\alpha_1$ 之间的\textbf{自由同伦}（端点不固定）。
+
+设 $S$ 定向且 $K>0$。证明：$S$ 上任意简单闭测地线与更短闭曲线自由同伦。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: Synge 引理是正曲率曲面上闭测地线稳定性的刻画：在 $K>0$ 时，测地线的"法向"方向存在变分使弧长严格减小，从而测地线不是长度极小曲线。
+
+\textbf{解答}: 设 $\gamma$ 是长度为 $l$ 的简单闭测地线。取沿 $\gamma$ 的平行单位法向量场 $n(s)$（由定向存在）。构造真正交变分 $h(s,t)=\exp_{\gamma(s)}(tn(s))$，$t\in(-\epsilon,\epsilon)$。弧长 $L(t)$ 满足 $L'(0)=0$（$\gamma$ 测地线），而
+\[
+L''(0)=\int_0^l\left(|D n/ds|^2-K\right)ds.
+\]
+由于 $n$ 平行，$|Dn/ds|=0$，而 $K>0$，故 $L''(0)<0$，故存在 $t\neq 0$ 足够小使 $L(t)<L(0)$。新曲线 $h(\cdot,t)$ 闭（因 $h(0,t)=h(l,t)$），且长度更短。\qed
+\end{solution}
+
+\begin{exercise}{5-6, 11 — do Carmo, Exercise 5-6, 11}
+设 $S$ 是单连通完备曲面，$p$ 是 $S$ 的极点（即从 $p$ 出发的任意测地线均无共轭点）。利用 Klingenberg 引理的技术证明：$\exp_p: T_p(S) \to S$ 是微分同胚。
+\end{exercise}
+\begin{solution}
+\textbf{直观理解}: 极点条件意味着 $\exp_p$ 无临界点（全局Jacobi 场无零点），从而 $\exp_p$ 为局部微分同胚且覆盖度数为 1。单连通性保证整体单射性。
+
+\textbf{解答}: 由极点定义，$\exp_p$ 在 $T_p(S)$ 上无临界点，故是局部微分同胚。若存在 $u_1\neq u_2$ 使 $\exp_p(u_1)=\exp_p(u_2)=q$，则 $\gamma_1,\gamma_2$ 是两条不同测地线且同伦（由单连通性），由 Klingenberg 引理（取 $K_0$ 为 $K$ 的上界），存在 $t_0$ 使 $l(\gamma_1)+l(\alpha_{t_0})\geq 2\pi/\sqrt{K_0}$。但极点条件（无共轭点）保证 $\pi/\sqrt{K_0}\to\infty$（对任意 $K_0$），从而 $l(\gamma_1)$ 可任意小，矛盾。故 $\exp_p$ 单射。双射+局部微分同胚=微分同胚。\qed
+\end{solution}
 
 \begin{Remark}
-定理 \ref{zero-curvature-surface} 的结论不能加强：存在非平面非圆柱面的完备 $K=0$ 曲面（如上例的构造）。要得到平面或圆柱面，$K \equiv 0$ 和完备性都是必要的。
-\end{Remark}
-
-\begin{Remark}
-该定理也是 Bonnet 定理（第 5-4 节）的推论的推论：当 $K \geq \delta > 0$ 时曲面紧致；当 $K \leq 0$ 时曲面有特殊拓扑；而 $K \equiv 0$ 则直接决定了曲面是平面或圆柱面。
-\end{Remark}
-
-\begin{Remark}
-该定理的几何意义：若一个曲面没有"内在弯曲"（$K=0$）且在所有方向上完备，则它只能是一片平面或一根管状曲面（圆柱面）。
-\end{Remark}
-
-\begin{Remark}
-历史上，这一结果来得很晚——直到 1959 年才被证明，而高斯曲率的概念早在十九世纪初就已经确立了。这说明了整体微分几何的困难程度：局部理论相对简单，但要理解曲面的整体行为需要更深厚的分析工具。
-\end{Remark}
-
-\begin{Remark}
-定理 \ref{zero-curvature-surface} 也是 Hadamard 定理（第 5-6 节）的类比：$K<0$ 的完备单连通曲面微分同胚于平面；$K\equiv 0$ 的完备曲面则平面或圆柱面。这些都是曲率条件决定整体拓扑的经典范例。
-\end{Remark}
-
-\begin{Remark}
-Massey 的证明思想后来被推广到更一般的情形（Stoker 的工作），成为整体曲面论中的重要技术。
-\end{Remark}
 
 \begin{Remark}
 圆柱面（$K=0$）与平面（也是 $K=0$）的一个重要区别：平面是单连通的，而圆柱面的基本群为 $\mathbb{Z}$。但两者都是 $K=0$ 的例子——这说明 $K$ 的信息不足以区分所有拓扑类型。
