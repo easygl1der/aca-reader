@@ -738,6 +738,43 @@ L'(0) = -\int_0^l \langle A(s), V(s)\rangle\,ds + \langle\frac{\partial h}{\part
 \begin{exercise}{5-4, 5*（变分学应用）— do Carmo, Exercise 5-4, 5}
 （a）（最小面积旋转面。）设 $S$ 是由曲线 $y=f(x)$，$x\in[x_1,x_2]$ 绕 $x$ 轴旋转得到的旋转面。证明：若 $S$ 在所有生成旋转面中面积最小，则 $y = \frac{1}{c}\cosh(cx+c_1)$（悬链面）。（b）（旋转面的测地线。）设 $\mathbf{x}(u,v) = (f(v)\cos u, f(v)\sin u, g(v))$。证明测地线（除子午线和平行线外）满足 Clairaut 关系。\footnote{ Clairaut 公式原文为 $u' = c/(f^2)\sqrt{(f'^2+g'^2)(f^2-c^2)}^{-1}\cdot\sqrt{\cdots}$，此处有省略。}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 最小面积旋转面问题等价于使泛函 $I = \int y\sqrt{1+(y')^2}\,dx$ 取极小值的 Euler-Lagrange 方程求解。首次积分给出 $y/\sqrt{1+(y')^2} = 1/c$，从而解出悬链线方程 $y = \frac{1}{c}\cosh(cx+c_1)$。旋转面的测地线满足 Clairaut 关系是旋转对称性的直接推论。
+
+\textbf{解答}: (a) 旋转面 $S$ 由 $y=f(x)$，$x\in[x_1,x_2]$ 绕 $x$ 轴旋转生成。其面积泛函为
+\[
+A(f) = 2\pi\int_{x_1}^{x_2} f(x)\sqrt{1+(f'(x))^2}\,dx.
+\]
+取 $F(y,y') = y\sqrt{1+(y')^2}$，则 Euler-Lagrange 方程给出
+\[
+F_y - \frac{d}{dx}F_{y'} = 0\quad\Longrightarrow\quad
+\sqrt{1+(y')^2} - \frac{d}{dx}\left(\frac{yy'}{\sqrt{1+(y')^2}}\right) = 0.
+\]
+简化得
+\[
+\frac{y}{\sqrt{1+(y')^2}} = c\quad(\text{const}),
+\]
+即 $y^2 = c^2(1+(y')^2)$，或 $y' = \pm\sqrt{y^2/c^2-1}$，积分得
+\[
+y = \frac{1}{c}\cosh(cx+c_1),\quad c_1=\text{const}.
+\]
+故最小面积旋转面是悬链面（catenoid）。
+
+(b) 旋转面 $S$ 的第一基本形式为 $E = f(v)^2$，$F=0$，$G = (f')^2+(g')^2 = 1$（取弧长参数 $v$）。测地线的弧长泛函为
+\[
+L = \int\sqrt{f(v)^2(u')^2 + 1}\,dv,\quad u' = \frac{du}{dv}.
+\]
+$F = f^2(u')^2$ 不显含 $u$，故有首次积分（由第 (c) 小问的公式）
+\[
+u'F_{u'} - F = \frac{f^2(u')^2}{\sqrt{f^2(u')^2+1}} - \sqrt{f^2(u')^2+1}
+= -\frac{1}{\sqrt{f^2(u')^2+1}} = c\quad(\text{const}),
+\]
+即
+\[
+f(v)^2 u' = \frac{c}{\sqrt{1-c^2/f(v)^2}} = c\sqrt{\frac{f(v)^2}{f(v)^2-c^2}}.
+\]
+这正是 Clairaut 关系的形式（$c$ 为 Clairaut 常数）。\qed
+\end{solution}
 
 % ==================== Section 5-5: Jacobi Fields and Conjugate Points ====================
 \section{Jacobi Fields and Conjugate Points}\label{sec:jacobi-conjugate}
