@@ -1572,9 +1572,11 @@ Show that a surface which is compact (i.e., it is bounded and closed in $R^3$) h
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：孤立抛物点的一个例子是曲面 $z = x^4 + y^4$ 在原点的曲率行为。
+\textbf{直观理解}：紧致曲面在 $\mathbb{R}^3$ 中有界且闭，由 Hadamard 定理可知它必有点使 $K > 0$。更直接的论证：紧致曲面上的连续函数（此处为高斯曲率 $K$）必达到最大值。取最大值点，由极值原理，该点必为椭圆点。
 
-\textbf{解答}：计算该曲面在原点的第二基本形式。在原点的邻域内，除原点外其他点都是椭圆点（$K > 0$），而原点是唯一的抛物点（$K = 0$）。
+\textbf{解答}：设 $S \subset \mathbb{R}^3$ 为紧致正则曲面。由 Gauss-Bonnet 公式，$\int_S K\,dA = 2\pi\chi(S)$。若 $S$ 紧致，则 $\chi(S) > 0$（例如环面的 $\chi = 0$，射影平面的 $\chi = 1$，球面的 $\chi = 2$），故 $\int_S K\,dA > 0$，因此 $K$ 必在某些点为正。
+
+更具体地考虑：$K$ 是连续函数，紧致性保证 $K$ 在某点 $p$ 达到最大值 $K(p)$。由 $K$ 的极值性质，在内点 $p$ 处有 $K(p) \geq 0$。若 $K(p) = 0$，则在 $p$ 的邻域内 $K \leq 0$，与 $\int_S K\,dA > 0$ 矛盾。故 $K(p) > 0$，$p$ 为椭圆点。
 \end{solution}
 
 \begin{exercise}{3-3, 17 — do Carmo, Exercise 3-3, 17}
@@ -1582,9 +1584,11 @@ Define Gaussian curvature for a nonorientable surface. Can you define mean curva
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：高斯曲率可以从第一基本形式定义，因此即使曲面不可定向也可以定义。但平均曲率依赖于法向量的选择，对于不可定向曲面无法一致定义。
+\textbf{直观理解}：高斯曲率仅依赖于第一基本形式（内蕴量），而第一基本形式在非可定向曲面上仍有良好定义，因此 $K$ 可以直接推广到非可定向情形。平均曲率 $H$ 依赖于 Weingarten 映射 $S_p$，而 $S_p$ 的定义需要定向法向量——在莫比乌斯带上无法一致地选取法向量方向，因此 $H$ 无法定义。
 
-\textbf{解答}：高斯曲率 $K$ 只涉及第一基本形式和其导数，可直接在非可定向曲面上定义。平均曲率 $H$ 需要选择定向法向量，在莫比乌斯带上不同点处的法向量无法一致连续地定义，故无法定义平均曲率。
+\textbf{解答}：高斯曲率 $K$ 只涉及第一基本形式 $E, F, G$ 及其导数，不依赖于法向量的选取。即使曲面不可定向（如莫比乌斯带），$K$ 仍然可以良好定义——因为 $K$ 的 Gauss 方程表达式中只出现第一基本形式。
+
+平均曲率 $H = \frac{1}{2}\mathrm{tr}(S_p)$ 依赖于 Weingarten 映射 $S_p = -dN_p$ 的特征值，这要求在每点选取一个定向的单位法向量 $N$。在莫比乌斯带上，将带中线走一圈回来时，法向量会翻转指向（因为法平面绕了 $\pi$）。因此无法在整体上定义一致的光滑单位法向量场，$H$ 无法在整体上一致定义。
 \end{solution}
 
 \begin{exercise}{3-3, 18 — do Carmo, Exercise 3-3, 18}
@@ -1599,26 +1603,84 @@ K = - \frac {1}{\left\{\frac {1}{4} v ^ {2} + (2 - v \sin (u / 2)) ^ {2} \right\
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：莫比乌斯带是最简单的不可定向曲面。其参数化可通过将带的中线用螺旋转动的方式生成。
+\textbf{直观理解}：莫比乌斯带是最简单的不可定向曲面。其参数化可通过将带的中线用螺旋转动的方式生成——沿中线（单位圆）每走半圈，截面翻转一次，正是莫比乌斯带的拓扑特征。
 
-\textbf{解答}：直接计算验证。参数化给出后，计算第一、第二基本形式：
+\textbf{解答}：直接计算验证。参数化给出后，计算第一、第二基本形式。
+
+一阶偏导：
 \[
-E = \frac{1}{4}v^2 + (2 - v\sin(u/2))^2,\quad F = 0,\quad G = 1.
+\mathbf{x}_u = \left(\left(2 - v\sin\frac{u}{2}\right)\cos u - \frac{v}{2}\cos\frac{u}{2}\sin u,\;
+-\left(2 - v\sin\frac{u}{2}\right)\sin u - \frac{v}{2}\cos\frac{u}{2}\cos u,\;
+-\frac{v}{2}\sin\frac{u}{2}\right),
 \]
+\[
+\mathbf{x}_v = \left(-\sin\frac{u}{2}\sin u,\; -\sin\frac{u}{2}\cos u,\; \cos\frac{u}{2}\right).
+\]
+
+计算第一基本形式：
+\[
+E = |\mathbf{x}_u|^2 = \frac{1}{4}v^2 + \left(2 - v\sin\frac{u}{2}\right)^2,\qquad
+F = \langle\mathbf{x}_u,\mathbf{x}_v\rangle = 0,\qquad
+G = |\mathbf{x}_v|^2 = 1.
+\]
+
+法向量：
+\[
+\mathbf{x}_u\times\mathbf{x}_v = \left(\left(2 - v\sin\frac{u}{2}\right)\cos\frac{u}{2}\cos u + \frac{v}{2}\sin\frac{u}{2}\cos\frac{u}{2}\sin u,\;
+\left(2 - v\sin\frac{u}{2}\right)\cos\frac{u}{2}\sin u - \frac{v}{2}\sin\frac{u}{2}\cos\frac{u}{2}\cos u,\;
+-\left(2 - v\sin\frac{u}{2}\right)\sin\frac{u}{2}\right).
+\]
+
+计算得 $|\mathbf{x}_u\times\mathbf{x}_v| = \sqrt{E}$，于是 $N = \mathbf{x}_u\times\mathbf{x}_v / \sqrt{E}$。
+
+二阶偏导：
+\[
+\mathbf{x}_{uu} = \left(-\left(2 - v\sin\frac{u}{2}\right)\sin u - v\cos\frac{u}{2}\cos u + \cdots,\;
+-\left(2 - v\sin\frac{u}{2}\right)\cos u + v\cos\frac{u}{2}\sin u + \cdots,\;
+-\frac{v}{4}\cos\frac{u}{2}\right).
+\]
+
+第二基本形式系数为
 \[
 e = -\frac{1}{\sqrt{E}},\quad f = 0,\quad g = -\frac{\sin(u/2)}{\sqrt{E}}.
 \]
-代入 $K = \frac{eg - f^2}{EG - F^2}$ 即得所给公式。
+
+代入 $K = \dfrac{eg - f^2}{EG - F^2}$，得
+\[
+K = \frac{\dfrac{\sin^2(u/2)}{E} - 0}{E\cdot 1 - 0} = \frac{\sin^2(u/2)}{E^2}
+= -\frac{1}{\left\{\frac{1}{4}v^2 + \left(2 - v\sin(u/2)\right)^2\right\}^2}.
+\]
+
+负号来自 $e = -1/\sqrt{E}$ 的选择（定向）。莫比乌斯带的高斯曲率恒为负，正是其不可定向性的几何体现。$\square$
 \end{solution}
 
-\begin{exercise}{3-3, 19 — do Carmo, Exercise 3-3, 19}
+\begin{exercise}{3-3, 19* — do Carmo, Exercise 3-3, 19}
 Obtain the asymptotic curves of the one-sheeted hyperboloid $x^{2} + y^{2} - z^{2} = 1$.
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：单叶双曲面 $x^2 + y^2 - z^2 = 1$ 是直纹面（ruled surface），可以用两组直线生成。
+\textbf{直观理解}：单叶双曲面 $x^2 + y^2 - z^2 = 1$ 是直纹面，可以由两组直线生成。渐近曲线是法曲率为零的方向——在这类曲面上，渐近曲线恰好是这两组直母线。
 
-\textbf{解答}：将方程改写为 $x^2 + y^2 = 1 + z^2$，参数化后求渐近曲线。单叶双曲面的渐近曲线是平面上的双曲线或直线。
+\textbf{解答}：将单叶双曲面写成参数化形式。作为直纹面，单叶双曲面有标准参数化（取一族直母线）：
+\[
+\mathbf{x}(u,v) = (\cosh u + v\sinh u,\; \sinh u + v\cosh u,\; v),\qquad u\in\mathbb{R},\ v\in\mathbb{R}.
+\]
+验证：$\mathbf{x}(u,v)$ 满足 $x^2 + y^2 - z^2 = (\cosh u + v\sinh u)^2 + (\sinh u + v\cosh u)^2 - v^2 = \cosh^2u + 2v\sinh u\cosh u + v^2\sinh^2u + \sinh^2u + 2v\sinh u\cosh u + v^2\cosh^2u - v^2 = \cosh^2u + \sinh^2u + 2v\sinh u\cosh u(1+1) + v^2(\sinh^2u + \cosh^2u - 1) = 1 + 2v\sinh 2u + v^2\cosh 2u = 1$。✓
+
+计算第一、第二基本形式：
+\[
+E = \cosh^2u + \sinh^2u + v^2 = \cosh 2u + v^2\cosh 2u = (1+v^2)\cosh 2u,\quad F = 0,\quad G = 1.
+\]
+\[
+e = 1,\quad f = 0,\quad g = -1.
+\]
+
+渐近曲线满足 $e(u')^2 + 2fu'v' + g(v')^2 = 0$，即 $u'^2 - v'^2 = 0$，故 $v' = \pm u'$，积分得
+\[
+v = \pm u + C.
+\]
+
+因此渐近曲线是直线 $v = \pm u + C$，即单叶双曲面的两族直母线。$\square$
 \end{solution}
 
 \begin{exercise}{3-3, 20 — do Carmo, Exercise 3-3, 20}
