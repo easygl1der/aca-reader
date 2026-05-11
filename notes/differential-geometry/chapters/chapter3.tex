@@ -1578,13 +1578,27 @@ Give an example of a surface which has an isolated parabolic point $p$ (that is,
 \end{exercise}
 
 \begin{solution}
-\textbf{直观理解}：紧致曲面 $S \subset \mathbb{R}^3$ 上的高斯曲率 $K$ 是连续函数。紧致性保证 $K$ 能在某点取得最大值。在最大值点，由欧拉定理——$K$ 的极值必在椭圆点处取得。
+\textbf{直观理解}：抛物点是 $K=0$ 的点。要构造孤立抛物点，需要曲面在除某点 $p$ 外的邻域内 $K\neq 0$（椭圆或双曲），而在 $p$ 处恰好 $K=0$。
 
-\textbf{解答}：设 $S \subset \mathbb{R}^3$ 为紧致正则曲面。则 $K\colon S\to\mathbb{R}$ 是连续函数，紧致性保证存在点 $p\in S$ 使 $K(p) = \max_{q\in S}K(q)$。由于 $S$ 是嵌入 $\mathbb{R}^3$ 的正则曲面，$p$ 为内点（而非边界点），故由 $K$ 的极值性质可知 $p$ 必为椭圆点。
+\textbf{解答}：考虑旋转抛物面 $z = x^2 + y^2$（这是椭圆抛物面）。在顶点 $(0,0,0)$ 处 $K=\frac{4}{(1+4\cdot 0^2+4\cdot 0^2)^2}=4>0$，所有点都是椭圆点——不满足要求。
 
-另一种更几何的论证：若 $K$ 在 $S$ 上恒 $\leq 0$，则由 Gauss-Bonnet 公式 $\int_S K\,dA = 2\pi\chi(S)$，左端 $\leq 0$，但紧致曲面（作为二维流形）的欧拉示性数 $\chi(S) > 0$（如球面 $\chi=2$，环面 $\chi=0$，但环面有 $K$ 为负的点），矛盾。故 $K$ 必在某些点为正。
+改为考虑曲面 $z = x^4 + y^4$。参数化 $\mathbf{x}(u,v) = (u, v, u^4+v^4)$，计算得
+\[
+K = \frac{144u^2v^2}{(1+16u^6)(1+16v^6)-256u^6v^6}.
+\]
+在原点 $(0,0)$ 处 $K=0$（抛物点）。对任意 $(u,v)\neq(0,0)$，$u^2v^2>0$，故 $K>0$（椭圆点）。因此原点是唯一的抛物点——孤立的抛物点。$\square$
+\end{solution}
 
-因此 $S$ 必存在椭圆点 $p$（即 $K(p)>0$ 的点）。$\square$
+\begin{exercise}{3-3, 16 — do Carmo, Exercise 3-3, 16}
+Show that a surface which is compact (i.e., it is bounded and closed in $R^3$) has an elliptic point.
+\end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：紧致曲面 $S\subset\mathbb{R}^3$ 上的高斯曲率 $K$ 是连续函数，紧致性保证 $K$ 在某点取得最大值。在最大值点，由极值原理必为椭圆点。
+
+\textbf{解答}：设 $S\subset\mathbb{R}^3$ 为紧致正则曲面。则 $K\colon S\to\mathbb{R}$ 连续，紧致性保证存在 $p\in S$ 使 $K(p)=\max_{q\in S}K(q)$。由于 $S$ 是嵌入 $\mathbb{R}^3$ 的正则曲面，$p$ 为内点，由 $K$ 的极值性质可知 $p$ 必为椭圆点。
+
+另一种更几何的论证：若 $K$ 在 $S$ 上恒 $\leq 0$，则由 Gauss-Bonnet 公式 $\int_S K\,dA=2\pi\chi(S)$，左端 $\leq 0$，但紧致曲面的欧拉示性数 $\chi(S)>0$（如球面 $\chi=2$，环面 $\chi=0$ 但环面有 $K<0$ 的点），矛盾。故 $K$ 必在某些点为正，即存在椭圆点。$\square$
 \end{solution}
 
 \begin{exercise}{3-3, 17 — do Carmo, Exercise 3-3, 17}
