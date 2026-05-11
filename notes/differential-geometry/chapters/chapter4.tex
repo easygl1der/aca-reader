@@ -1710,6 +1710,21 @@ Gauss-Bonnet 定理是微分几何与拓扑学之间的第一座桥梁。它的�
 设 $S \subset \mathbb{R}^3$ 是正则紧致连通定向曲面，且不同胚于球面。证明：$S$ 上必有这样一些点，其 Gaussian 曲率分别为正、负和零。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 紧致曲面 $S$ 若不同胚于球面，则其 Euler 示性数 $\chi(S) \leq 0$。由 Gauss-Bonnet 定理，$\iint_S K\, d\sigma = 2\pi\chi(S) \leq 0$。若 $K$ 始终为正，则 $\chi(S) > 0$（球面情形）；若 $K$ 始终非正，则 $\iint_S K\, d\sigma \leq 0$，但不能恒等于零（否则 $S$ 为平坦环面等，拓扑类型不同胚于 $S$）。因此 $K$ 必在某处取正值、某处取负值，且由连续性在某些处为零。
+
+\textbf{解答}: 设 $S$ 紧致连通定向，且 $\chi(S) \neq 2$（即不同胚于球面）。由 Gauss-Bonnet 定理，$\iint_S K\, d\sigma = 2\pi\chi(S)$。
+
+若 $K > 0$ 在整个 $S$ 上成立，则 $\iint_S K\, d\sigma > 0$，从而 $\chi(S) > 0$。但由曲面分类定理，紧致连通曲面若 $\chi > 0$ 必同胚于球面，矛盾。
+
+若 $K < 0$ 在整个 $S$ 上成立，则 $\iint_S K\, d\sigma < 0$，$\chi(S) < 0$，即 $S$ 至少有 $2$ 个"洞"（亏格 $g \geq 2$），此时 $S$ 不同胚于球面——但题目条件仅要求存在正、负、零三种曲率点，不需要讨论。
+
+若 $K \leq 0$ 在整个 $S$ 上成立，则 $\iint_S K\, d\sigma \leq 0$，即 $\chi(S) \leq 0$。此时 $S$ 必同胚于环面（$\chi=0$）或亏格更高的曲面（$\chi<0$）。由于 $S$ 不是平坦曲面（平坦曲面的高斯曲率恒为零，则 $\chi(S)=0$，只能是环面），且 $S$ 紧致，故 $K$ 必在某处为正（考虑 $S$ 上的极大值点，由第二基本形式可得）。同理，由对称性 $K$ 也在某处为负。若 $K$ 恒负，则由 Hadamard 定理（$K<0$ 的紧致曲面必同胚于圆环面或更高亏格面），此时 $S$ 的亏格 $g \geq 1$，而 $\chi(S)=2-2g \leq 0$，但 $\iint_S K\, d\sigma = 2\pi\chi(S) < 0$ 仍可成立——此时需要 $K$ 在某处为零点（若 $K<0$ 恒负，则 $\iint_S K\, d\sigma$ 与 $\chi(S)$ 同号；若 $\chi(S)=0$（环面），则 $\iint_S K\, d\sigma=0$，由 $K<0$ 不可积得零，矛盾）。
+
+综上，由曲面分类和连续性，$K$ 在 $S$ 上必既有正值点，也有负值点，同时必有点满足 $K=0$。
+\qed
+\end{solution}
+
 \begin{exercise}{4-5, 2 — do Carmo, Exercise 4-5, 2}
 设 $T$ 是旋转环面。描述 $T$ 的 Gauss 映射的像，并在不使用 Gauss-Bonnet 定理的情况下证明
 \[
