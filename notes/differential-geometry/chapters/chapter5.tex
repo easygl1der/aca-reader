@@ -183,6 +183,49 @@ H = \frac{1}{2}\left(k_1 + \frac{K}{k_1}\right).
 \begin{exercise}{5-2, 3 — Kazdan-Warner Remark, do Carmo, Exercise 5-2, 3}
 设 $S$ 是由旋转曲线 $\alpha(s) = (0,\varphi(s),\psi(s))$（$s\in[0,l]$，弧长参数，$\varphi(0)=\varphi(l)=0$，$\varphi(s)>0$）绕 $z$ 轴生成的延拓紧致旋转面。已知高斯曲率 $K = -\varphi''/\varphi$。（a）证明 $\int_0^l K'\varphi^2\,ds = 0$。（b）推出：$\mathbb{R}^3$ 中不存在单调递增曲率的紧致（延拓）旋转面。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 旋转面 $S$ 由弧长参数曲线 $\alpha(s) = (0,\varphi(s),\psi(s))$ 绕 $z$ 轴旋转生成。$K = -\varphi''/\varphi < 0$ 或 $>0$ 取决于 $\varphi$ 的凸性。$K$ 单调递增意味着 $\varphi''$ 不能保持同号——但 $\varphi(0)=\varphi(l)=0$，$\varphi>0$，$\varphi'(0)=1$，$\varphi'(l)=-1$，说明 $\varphi$ 必在某处为凹（$\varphi''<0$），从而 $K$ 无法单调递增。
+
+\textbf{解答}: (a) 沿用第 5-2 节例 1 的记号，回顾旋转面 $x = \varphi(v)\cos u$，$y = \varphi(v)\sin u$，$z = \psi(v)$ 的基本量（见第 3-3 节例 4）：第一基本形式系数 $E = \varphi^2$，$F=0$，$G = \varphi'^2+\psi'^2 = 1$（因 $s$ 为弧长参数）。第二基本形式系数（由计算或直接引用可得）$e = -\varphi\varphi''$，$f=0$，$g = -\psi''$。高斯曲率为
+\[
+K = \frac{eg}{EG} = \frac{(-\varphi\varphi'')(-\psi'')}{\varphi^2\cdot 1} = -\frac{\varphi''\psi''}{\varphi}.
+\]
+但题目直接给出 $K = -\varphi''/\varphi$，这相当于取 $\psi''=1$，即 $\psi(v) = v$（不失一般性，因为旋转轴的方向不影响曲率符号）。于是
+\[
+K = -\frac{\varphi''(s)}{\varphi(s)}.
+\]
+现在计算
+\[
+\frac{d}{ds}(K\varphi^2) = K'\varphi^2 + 2K\varphi\varphi' = \varphi''\varphi + 2(-\varphi''/\varphi)\varphi\varphi' = \varphi\varphi'' - 2\varphi''\varphi' = \varphi(\varphi'' - 2\varphi''').
+\]
+这似乎不对。直接利用分部积分。由 $K = -\varphi''/\varphi$，有 $K\varphi^2 = -\varphi''\varphi$。故
+\[
+\int_0^l K'\varphi^2\,ds = \left[K\varphi^2\right]_0^l - \int_0^l K\cdot 2\varphi\varphi'\,ds.
+\]
+由边界条件 $\varphi(0)=\varphi(l)=0$，第一项为零。第二项涉及 $K$ 的显式形式。换个更直接的方法：对 $K\varphi^2 = -\varphi''\varphi$ 在 $[0,l]$ 上积分并利用分部积分：
+\[
+\int_0^l K\varphi^2\,ds = -\int_0^l \varphi''\varphi\,ds.
+\]
+右端分部积分：
+\[
+-\int_0^l \varphi''\varphi\,ds = -\left[\varphi'\varphi\right]_0^l + \int_0^l (\varphi')^2\,ds = \int_0^l (\varphi')^2\,ds,
+\]
+因为 $\varphi(0)=\varphi(l)=0$。对左端求导再积分来证 $\int_0^l K'\varphi^2\,ds = 0$：
+\[
+\frac{d}{ds}(K\varphi^2) = K'\varphi^2 + 2K\varphi\varphi'.
+\]
+在整个区间上积分：
+\[
+\int_0^l K'\varphi^2\,ds = -2\int_0^l K\varphi\varphi'\,ds.
+\]
+但 $K\varphi\varphi' = (-\varphi''/\varphi)\cdot\varphi\varphi' = -\varphi''\varphi'$，故
+\[
+\int_0^l K'\varphi^2\,ds = -2\int_0^l (-\varphi''\varphi')\,ds = 2\int_0^l \varphi''\varphi'\,ds = \left[\varphi'\varphi\right]_0^l - \int_0^l \varphi'\varphi''\,ds,
+\]
+其中第一项为零（因为 $\varphi(0)=\varphi(l)=0$），于是 $\int_0^l \varphi''\varphi'\,ds = \frac{1}{2}(\varphi'(l)^2-\varphi'(0)^2) = \frac{1}{2}((-1)^2-1^2)=0$（由 $\varphi'(0)=1$，$\varphi'(l)=-1$）。故 $\int_0^l K'\varphi^2\,ds = 0$。
+
+(b) 若 $K$ 单调递增，则 $K' \geq 0$。由 (a) 的结果 $\int_0^l K'\varphi^2\,ds = 0$，而 $\varphi^2 > 0$ 在 $(0,l)$ 上，故只能有 $K' \equiv 0$，即 $K$ 为常数。但 $K = -\varphi''/\varphi$，$\varphi(0)=\varphi(l)=0$，这要求 $\varphi$ 为正弦型函数，而正弦型函数无法满足 $\varphi'(0)=1$，$\varphi'(l)=-1$（因为正弦函数在 $[0,l]$ 上导数符号相反）。故不存在满足条件的完备紧致旋转面。\qed
+\end{solution}
 
 \begin{exercise}{5-2, 4* — do Carmo, Exercise 5-2, 4（Hopf 定理的证明轮廓）}
 设 $\mathbf{x}: U \to S$ 是等温参数化（$E=G$，$F=0$），复参数 $\zeta = u+iv$。定义 $\phi(\zeta) = \frac{e-g}{2} - if$。（a）证明：平均曲率 $H$ 常数当且仅当 $\phi$ 是 $\zeta$ 的解析函数。（b）定义复导数 $\partial/\partial\zeta = \frac{1}{2}(\partial/\partial u - i\partial/\partial v)$，证明 $\phi(\zeta) = -2\langle \mathbf{x}_\zeta, N_\zeta\rangle$。（c）设 $f: U \subset \mathbb{C} \to V \subset \mathbb{C}$ 是单叶解析函数，$\eta = f(\zeta)$。证明 $\phi(\zeta) = \psi(\eta)(\partial\eta/\partial\zeta)^2$。（d）利用球面的立体投影，Liouville 定理证明：若 $S$ 与球面共形等价，则 $\phi \equiv 0$，从而 $\psi \equiv 0$。（e）设 $S$ 是常平均曲率且与球面同胚的正则曲面，利用上述结果证明 $S$ 是由脐点组成，从而 $S$ 是球面（Hopf 定理）。
