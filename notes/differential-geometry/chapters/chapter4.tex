@@ -704,6 +704,31 @@ is a local diffeomorphism.
 d. Use part c to prove that for each point $p$ of a surface of revolution $S$ there exists a neighborhood $V \subset S$ and a map $\bar{\theta} \colon V \to \mathbb{R}^2$ of $V$ into a plane that is area-preserving.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 旋转面局部共形于平面，类似于 Mercator 投影；面积保持映射则通过直接调整缩放因子实现。
+
+\textbf{解答}: a. 计算 $\varphi$ 的微分：
+\[
+d\varphi = \begin{pmatrix}1 & 0\\ 0 & \frac{\sqrt{(f')^2+(g')^2}}{f(v)}\end{pmatrix}.
+\]
+雅可比行列式为 $\det d\varphi = \frac{\sqrt{(f')^2+(g')^2}}{f(v)} > 0$（因为 $f(v)>0$），故 $\varphi$ 是局部微分同胚。
+
+b. 由 (a) 的参数化 $\bar{\mathbf{x}} = \mathbf{x}\circ\varphi^{-1}$，计算第一基本形式：
+\[
+\bar{E} = 1,\quad \bar{F} = 0,\quad \bar{G} = 1.
+\]
+因此 $\bar{\mathbf{x}}$ 是共形参数化，$u=\mathrm{const}$ 和 $w=\mathrm{const}$ 的坐标曲线分别对应纬线和经线，在平面上映为正交直线网格。
+
+c. 类似 (a)，$\psi$ 的雅可比行列式为 $f(v)\sqrt{(f')^2+(g')^2}>0$，故为局部微分同胚。
+
+d. 由 (c) 的参数化 $\bar{\mathbf{x}} = \mathbf{x}\circ\psi^{-1}$，面积微元为
+\[
+\sqrt{\bar{E}\bar{G}-\bar{F}^2}\,d\bar{u}\,d\bar{v} = f(v)\sqrt{(f')^2+(g')^2}\,dv\,du = \sqrt{EG-F^2}\,dudv,
+\]
+故 $\psi$ 恰好保持面积。对每点 $p\in S$，取其坐标邻域 $V$，$\bar{\theta} = \psi|_V$ 即为所求的等面积映射。
+\qed
+\end{solution}
+
 % ==================== Section 4-3: The Gauss Theorem and the Equations of Compatibility ====================
 \section{The Gauss Theorem and the Equations of Compatibility}\label{sec:gauss-theorem}
 
