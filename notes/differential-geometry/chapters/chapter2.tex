@@ -157,14 +157,6 @@ V = \{(\theta, \varphi); 0 < \theta < \pi,\; 0 < \varphi < 2\pi\},
 设 $F: U \subset \mathbb{R}^n \to \mathbb{R}^m$ 是定义在 $\mathbb{R}^n$ 开集 $U$ 上的可微映射。我们称 $p \in U$ 为 $F$ 的\textbf{临界点}（critical point），如果微分 $dF_p: \mathbb{R}^n \to \mathbb{R}^m$ 不是满射。临界点的像 $F(p) \in \mathbb{R}^m$ 称为\textbf{临界值}（critical value）。$\mathbb{R}^m$ 中不是临界值的点称为\textbf{正则值}（regular value）。
 \end{Definition}
 
-\begin{figure}[H]
-\centering
-\begin{minipage}{0.5\textwidth}
-\centering
-\subfloat[Figure 2-6. 临界点示意图]{\label{fig:fig2-6}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/4180a0c1d77cbaa3a44445df2510c73095f55b454ec13b87d8f976da460800cd.jpg}}
-\end{minipage}
-\end{figure}
-
 这个术语来自于 $f: U \subset \mathbb{R} \to \mathbb{R}$ 是一元函数这一特殊情形。点 $x_0 \in U$ 是临界点当且仅当 $f'(x_0) = 0$，即微分 $df_{x_0}$ 将 $\mathbb{R}$ 中的所有向量映射到零向量（见 \cref{fig:fig2-6}，教材 Figure 2-6）。注意，任何不在 $f(U)$ 中的点 $a$ 显然都是 $f$ 的正则值。
 
 如果 $f: U \subset \mathbb{R}^3 \to \mathbb{R}$ 是可微函数，则 $df_p$ 作用在向量 $(1,0,0)$ 上得到曲线
@@ -609,13 +601,165 @@ Is $S$ a regular surface?
 \end{exercise}
 
 \begin{solution}
-\textbf{解答}：
-该集合 \textbf{不是} 正则曲面。
+\textbf{解答}：该集合 $S$ \textbf{不是} 正则曲面。
 
-\textbf{原因}：
-字形 "8" 曲线 $C$ 在原点（或者交叉点）处发生自交。设自交点为 $(x_0, y_0)$。那么对于曲面 $S$，直线 $L = \{(x_0, y_0, z); z \in \mathbb{R}\}$ 是其自交线。
+\vspace{1ex}
+\textbf{证明}（使用正则曲面定义的三个条件）：
 
-对于 $L$ 上的任何一点 $p$，在其邻域内，$S$ 看起来像是两个平面的交叉。这意味着 $p$ 的任何邻域在拓扑上都不与 $\mathbb{R}^2$ 中的开盘同胚（在交叉点附近，集合不是局部平坦的）。正则曲面的定义要求每一点都存在一个同胚于开盘的邻域，而自交的存在破坏了这一性质。
+\vspace{1ex}
+\noindent\textbf{步骤 1：回忆正则曲面的定义。}
+
+根据 do Carmo 的定义（Definition 2-2-1），集合 $S \subset \mathbb{R}^3$ 是正则曲面，当且仅当对每一点 $q \in S$，存在 $q$ 的一个邻域 $V \subset \mathbb{R}^3$ 使得 $V \cap S$ 是 $\mathbb{R}^2$ 中某个开盘在光滑双射下的像，且该双射的逆映射连续。
+
+这三个条件的核心是：\textbf{每一点都必须存在一个与 $\mathbb{R}^2$ 中开盘同胚的邻域}。
+
+\vspace{1ex}
+\noindent\textbf{步骤 2：分析 figure ``8'' 曲线 $C$ 的几何结构。}
+
+设 figure ``8'' 曲线 $C$ 在 $xy$ 平面上的参数方程为
+\[
+C : \gamma(t) = (\sin t, \sin 2t), \quad t \in \mathbb{R},
+\]
+或者用隐式方程描述：
+\[
+C = \{(x, y) \in \mathbb{R}^2 ; y^2 = x^2 - x^4\}.
+\]
+
+曲线 $C$ 在原点 $(0, 0)$ 处有自交点。这是因为：
+\begin{itemize}
+\item 当 $t = 0$ 时，$\gamma(0) = (0, 0)$；
+\item 当 $t = \pi$ 时，$\gamma(\pi) = (0, 0)$；
+\item 当 $t = \frac{\pi}{2}$ 时，$\gamma(\frac{\pi}{2}) = (1, 0)$；
+\item 当 $t = \frac{3\pi}{2}$ 时，$\gamma(\frac{3\pi}{2}) = (-1, 0)$。
+\end{itemize}
+因此，曲线 $C$ 在原点附近形成一个交叉结构，类似于字母 ``8'' 的中心交叉点。
+
+\vspace{1ex}
+\noindent\textbf{步骤 3：确定 $S$ 的自交线。}
+
+由 $S$ 的定义
+\[
+S = \{(x, y, z) \in \mathbb{R}^3 ; (x, y) \in C\},
+\]
+即 $S$ 是将曲线 $C$ 沿 $z$ 轴方向平移得到的圆柱面。因此，$C$ 的自交点 $(0, 0)$ 对应于 $S$ 中的一条直线
+\[
+L = \{(0, 0, z) ; z \in \mathbb{R}\},
+\]
+这条直线 $L$ 是 $S$ 的\textbf{自交线}（self-intersection line）。在线 $L$ 上，每一点 $p = (0, 0, z_0)$ 实际上都是 $S$ 上两个不同点的"合并"——从 $C$ 的两支在 $z$ 方向延伸形成。
+
+\vspace{1ex}
+\noindent\textbf{步骤 4：取 $L$ 上一点 $p$，证明其任何邻域都不能同胚于 $\mathbb{R}^2$ 中的开盘。}
+
+这是证明的核心。我们使用拓扑论证。
+
+设 $p = (0, 0, 0) \in L \subset S$（一般性设 $z_0 = 0$，通过平移可得一般情形）。
+
+假设存在 $p$ 在 $S$ 中的邻域 $V$ 使得 $V$ 与 $\mathbb{R}^2$ 中的开盘同胚。则 $V$ 应该具有以下拓扑性质：
+\begin{enumerate}
+\item $V$ 是连通的（open set in a connected space is connected）；
+\item $V \setminus \{p\}$ 是连通的，或者是两个连通分支（取决于局部结构）。
+\end{enumerate}
+
+然而，实际的局部结构是：
+
+在 $p$ 点的任意小邻域内，$S$ 的形状如下：由于 $C$ 在 $(0, 0)$ 处有交叉，$S$ 在 $p$ 点附近由两叶（two sheets）组成，这两叶在 $p$ 点处交于直线 $L$。更精确地，$S$ 在 $p$ 点附近是两张光滑曲面（分别来自 $C$ 的两支沿 $z$ 方向的平移）的并集，这两张曲面仅在直线 $L$ 上相交。
+
+取 $p$ 的任意小邻域
+\[
+V_\varepsilon = \{(x, y, z) \in S ; x^2 + y^2 < \varepsilon^2, |z| < \varepsilon\},
+\]
+则 $V_\varepsilon \setminus \{p\}$ 有\textbf{四个}连通分支：
+\begin{itemize}
+\item 第一叶的上半部分：对应 $C$ 的第一支（从 $t=0$ 附近出发），$z > 0$；
+\item 第一叶的下半部分：对应 $C$ 的第一支，$z < 0$；
+\item 第二叶的上半部分：对应 $C$ 的第二支，$z > 0$；
+\item 第二叶的下半部分：对应 $C$ 的第二支，$z < 0$。
+\end{itemize}
+
+然而，$\mathbb{R}^2$ 中开盘挖去中心点后，所得集合只有\textbf{一个}连通分支（它是连通的）。由于同胚保持连通分支数，我们有
+\[
+\#\text{conn. comp.}(V_\varepsilon \setminus \{p\}) = 4 \neq 1 = \#\text{conn. comp.}(D^2 \setminus \{0\}),
+\]
+其中 $D^2$ 表示 $\mathbb{R}^2$ 中的单位开盘。
+
+因此，$V_\varepsilon$ 与开盘的同胚不可能成立。这与正则曲面的条件 1 矛盾。
+
+\vspace{1ex}
+\noindent\textbf{步骤 5：形式化地使用参数化方法验证条件 2 和条件 3 也失效。}
+
+正则曲面的定义还有另一个等价的表述（Theorem 2-2-2）：$S$ 是正则曲面当且仅当对每一点 $q \in S$，存在局部参数化 $\mathbf{x} : U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 使得
+\begin{itemize}
+\item $\mathbf{x}$ 是光滑的；
+\item $\mathbf{x}$ 是单射；
+\item 对所有 $u \in U$，雅可比矩阵 $d\mathbf{x}_u$ 的秩为 2（即偏导数 $\mathbf{x}_u$ 和 $\mathbf{x}_v$ 线性无关）。
+\end{itemize}
+
+在自交点 $p = (0, 0, 0)$ 处，假设存在这样的参数化 $\mathbf{x}$。则 $\mathbf{x}(u, v) = (x(u,v), y(u,v), z(u,v))$ 满足
+\[
+(x(u,v), y(u,v)) \in C, \quad \text{对所有 } (u,v) \in U.
+\]
+
+由于 $C$ 在 $(0,0)$ 处有自交，不存在 $(u,v)$ 的邻域使得 $(x(u,v), y(u,v))$ 在 $C$ 上画出单叶的曲线。换言之，任何光滑参数化在自交点附近都会"跨越"自交的两支，从而不能是单射——因为自交点的任何邻域在 $C$ 上都包含来自两支的点，而这些点无法在参数域中被分离。
+
+因此，\textbf{条件 2}（参数化的单射性）失败。
+
+即使我们尝试构造非单射的参数化，正则曲面的定义也要求参数化是单射的（局部是嵌入，而非浸入），因此无法通过参数化方法绕过上述拓扑矛盾。
+
+\vspace{1ex}
+\noindent\textbf{步骤 6：与光滑曲线情形对比。}
+
+为了对比，我们考虑如果 $C$ 是光滑曲线（如椭圆）的情形。设
+\[
+C_{\text{ellipse}} = \{(x, y) ; \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1\}, \quad a, b > 0.
+\]
+则对应的圆柱面
+\[
+S_{\text{ellipse}} = \{(x, y, z) ; (x, y) \in C_{\text{ellipse}}\}
+\]
+是正则曲面。这是因为椭圆是光滑曲线（没有自交点），其每一点处都有正则参数化。沿 $z$ 方向平移后，$S_{\text{ellipse}}$ 每一点处都满足正则曲面的三个条件。
+
+特别地，对 $S_{\text{ellipse}}$ 的任何点 $q$，我们可以构造局部参数化：
+\[
+\mathbf{x}(u, v) = (a \cos u, b \sin u, v), \quad (u, v) \in (0, 2\pi) \times \mathbb{R},
+\]
+其在像集中是双射的，偏导数
+\[
+\mathbf{x}_u = (-a \sin u, b \cos u, 0), \quad \mathbf{x}_v = (0, 0, 1)
+\]
+在任何点都线性无关（因为 $\mathbf{x}_v$ 指向 $z$ 方向，而 $\mathbf{x}_u$ 在 $xy$ 平面内）。
+
+这说明光滑基曲线的圆柱面是正则曲面，而有自交点的曲线（如 figure ``8''）的圆柱面不是。
+
+\vspace{1ex}
+\noindent\textbf{步骤 7：正则曲面与浸入曲面的区别。}
+
+需要特别强调的是，上述 $S$ 是一个\textbf{浸入曲面}（immersed surface），但不是\textbf{正则曲面}（regular surface）。
+
+具体而言，映射
+\[
+\mathbf{x} : \mathbb{R}^2 \to \mathbb{R}^3, \quad \mathbf{x}(t, s) = (\sin t, \sin 2t, s)
+\]
+是光滑的，且其雅可比矩阵
+\[
+d\mathbf{x}_{(t,s)} = \begin{pmatrix}
+\cos t & 0 \\
+2\cos 2t & 0 \\
+0 & 1
+\end{pmatrix}
+\]
+在除了 $t$ 满足 $\cos t = 0$ 且 $\cos 2t = 0$ 的点外，秩均为 2。然而，$\mathbf{x}$ 不是单射——不同的 $(t,s)$ 可以对应 $xy$ 平面上相同的点——并且 $\mathbf{x}$ 的像恰好是 $S$。
+
+这揭示了关键区别：
+\begin{itemize}
+\item \textbf{浸入}（immersion）：光滑映射 $f: M \to \mathbb{R}^3$，满足 $df_p$ 在每点为单射。浸入允许有自交。
+\item \textbf{嵌入}（embedding）：单射的浸入，且同胚于其像的空间。嵌入没有自交。
+\item \textbf{正则曲面}（regular surface）：等价于嵌入——局部是单射浸入，且像集局部同胚于 $\mathbb{R}^2$ 中的开盘。
+\end{itemize}
+
+因此，$S$ 是一个浸入曲面（通过上述参数化），但由于自交线的存在，它不是嵌入，从而也不是正则曲面。
+
+\vspace{1ex}
+\noindent\textbf{结论}：综合以上论证，$S$ 在自交线 $L$ 上的每一点都不满足正则曲面的定义，因此 $S$ 不是正则曲面。\qed
 \end{solution}
 
 \begin{exercise}{2-2, 11 — do Carmo, Exercise 2-2, 11}
@@ -694,16 +838,6 @@ $(\Leftarrow)$：反过来，若存在开集 $W \subset \mathbb{R}^3$（$p \in W
 \begin{exercise}{2-2, 14 — do Carmo, Exercise 2-2, 14}
 Let $A \subset S$ be a subset of a regular surface $S$. Prove that $A$ is itself a regular surface if and only if $A$ is open in $S$; that is, $A = U \cap S$, where $U$ is an open set in $\mathbb{R}^3$.
 \end{exercise}
-
-\begin{solution}
-\textbf{直观理解}：正则曲面局部是平直的（微分同胚于 $\mathbb{R}^2$ 的开集）。如果 $A$ 是 $S$ 的子集且本身也是正则曲面，那么 $A$ 的每一点附近都有一小块"平直的"邻域，这些邻域的并恰好是 $A$ 在 $S$ 中的内部，即 $A$ 是 $S$ 的开子集。反过来，$S$ 的任何开子集局部仍是 $S$ 的图像，因此仍是正则曲面。
-
-\textbf{证明}：
-
-$(\Rightarrow)$：设 $A$ 本身是正则曲面。对任意 $p \in A$，存在 $p$ 在 $A$ 中的参数化 $\mathbf{x}: U \to A$。由于 $\mathbf{x}$ 是 $U$ 到 $A \subset S$ 的可微映射，且 $d\mathbf{x}_q$ 在每点可逆，根据正则曲面的局部图形定理（教材命题），$A$ 在 $p$ 附近可以表示为某个可微函数 $z = f(x,y)$ 的图。这个图形同时也是 $S$ 在 $p$ 附近的一部分，因此存在 $\mathbb{R}^3$ 中的开集 $W$，使得 $A \cap W = S \cap W$。令 $U = W$，则 $A = U \cap S$。
-
-$(\Leftarrow)$：反过来，设 $A = U \cap S$，其中 $U$ 是 $\mathbb{R}^3$ 的开集。对任意 $p \in A$，由于 $U$ 是开集，$p$ 在 $\mathbb{R}^3$ 中有邻域 $W \subset U$。在 $p$ 附近，$S$ 可以用参数化 $\mathbf{x}: \tilde{U} \to S$ 描述。那么 $\mathbf{x}^{-1}(W \cap S)$ 是 $\tilde{U}$ 中的开集，从而 $W \cap S$ 可以作为正则曲面（它是 $S$ 的开子集，局部仍是 $\mathbb{R}^2$ 的可微像）。因此 $A$ 本身是正则曲面。
-\end{solution}
 
 \begin{exercise}{2-2, 15 — do Carmo, Exercise 2-2, 15}
 Let $C$ be a regular curve and let $\alpha: I \subset \mathbb{R} \to C$, $\beta: J \subset \mathbb{R} \to C$ be two parametrizations of $C$ in a neighborhood of $p \in \alpha(I) \cap \beta(J) = W$. Let
