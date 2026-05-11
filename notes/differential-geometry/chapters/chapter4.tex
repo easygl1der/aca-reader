@@ -1733,6 +1733,26 @@ Gauss-Bonnet 定理是微分几何与拓扑学之间的第一座桥梁。它的�
 计算 $T$ 的 Euler-Poincaré 示性数，并用 Gauss-Bonnet 定理验证上述结果。
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}: 旋转环面的 Gauss 映射将曲面上每点的法向量映射到单位球面上。由于环面同时有"外侧"（正高斯曲率区域）和"内侧"（负高斯曲率区域），其 Gauss 映射的像覆盖整个 $S^2$ 两次（正区一次，负区一次），两部分面积相等符号相反，故积分抵消为零。
+
+\textbf{解答}: 设旋转环面由 $( (R + r\cos\varphi)\cos\theta,\; (R+r\cos\varphi)\sin\theta,\; r\sin\varphi )$ 给出，其中 $R>r>0$，$\theta,\varphi \in [0,2\pi)$。
+
+Gauss 映射 $N: T \to S^2$。在环面上，外侧（靠近纬线最大值处）的法向量指向外，$K>0$；内侧（靠近纬线最小值处）的法向量指向内，$K<0$。直接计算得 $K = \frac{\cos\varphi}{r(R+r\cos\varphi)}$，于是 $K>0$ 当 $\cos\varphi>0$（外半环），$K<0$ 当 $\cos\varphi<0$（内半环），$K=0$ 当 $\varphi = \pm\frac{\pi}{2}$（赤道线）。
+
+Gauss 映射的像为整个球面 $S^2$（因为环面的法向量方向覆盖了所有方向）。由 $K = \cos\varphi/[r(R+r\cos\varphi)]$，得 $K\,d\sigma = \cos\varphi\, d\theta\, d\varphi$。故
+\[
+\iint_T K\, d\sigma = \int_0^{2\pi}\!\int_0^{2\pi} \frac{\cos\varphi}{r(R+r\cos\varphi)}\cdot r(R+r\cos\varphi)\, d\varphi\, d\theta = \int_0^{2\pi}\!\int_0^{2\pi} \cos\varphi\, d\varphi\, d\theta = 0.
+\]
+
+Euler 示性数：$\chi(T) = 0$（环面 $\cong S^1 \times S^1$）。由 Gauss-Bonnet 定理：
+\[
+\iint_T K\, d\sigma = 2\pi\chi(T) = 0,
+\]
+与直接计算结果一致。
+\qed
+\end{solution}
+
 \begin{exercise}{4-5, 3 — do Carmo, Exercise 4-5, 3}
 设 $S \subset \mathbb{R}^3$ 是正则紧致曲面，$K > 0$。设 $\Gamma \subset S$ 是 $S$ 上一条简单闭测地线，$A$ 和 $B$ 是以 $\Gamma$ 为公共边界的两个区域。设 $N: S \to S^2$ 是 $S$ 的 Gauss 映射。证明 $N(A)$ 和 $N(B)$ 有相同的面积。
 \end{exercise}
