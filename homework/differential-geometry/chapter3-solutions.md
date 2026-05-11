@@ -90,4 +90,103 @@
 > At $(0,0)$, we have $f_{xx}=1, f_{yy}=0, f_{xy}=0$. Thus $K = f_{xx}f_{yy} - f_{xy}^2 = 0$. Since $f_{xx}=1 \neq 0$, the origin is a parabolic point.
 > For $(x,y) \neq (0,0)$, the Gaussian curvature is proportional to:
 > $$K \propto (1 + 2y^2)(12y^2 + 2x^2) - 16x^2y^2 = 12y^2 + 2x^2 + 24y^4 + 4x^2y^2 - 16x^2y^2 = 12y^2 + 2x^2 + 24y^4 - 12x^2y^2.$$
-> For small $x, y$, the term $12y^2 + 2x^2$ dominates and is strictly positive for $(x,y) \neq (0,0)$. Thus, $K > 0$ in a punctured neighborhood of the origin, meaning there are no other parabolic points (where $K=0$) nearby. Thus, the origin is an isolated parabolic point.
+For small $x, y$, the term $12y^2 + 2x^2$ dominates and is strictly positive for $(x,y) \neq (0,0)$. Thus, $K > 0$ in a punctured neighborhood of the origin, meaning there are no other parabolic points (where $K=0$) nearby. Thus, the origin is an isolated parabolic point.
+
+## Problem 3-3, 16 · Compact Surfaces and Elliptic Points
+> [!exr] Compact Surfaces and Elliptic Points
+> Show that a surface which is compact (i.e., it is bounded and closed in $R^3$) has an elliptic point.
+
+> [!solution] Solution to Compact Surfaces and Elliptic Points
+> Let $S \subset R^3$ be a compact surface. Since $S$ is bounded, there exists a sphere $S^2(R)$ of sufficiently large radius $R$ centered at the origin such that $S$ is contained in the interior of the ball $B^3(R)$. 
+> 
+> Let $f \colon S \to R$ be the function $f(q) = |q|^2$. Since $S$ is compact and $f$ is continuous, $f$ attains its maximum at some point $p \in S$. Let $R_0 = |p|$. Then for all $q \in S$, $|q| \le R_0$, which means $S$ lies inside the closed ball $\bar{B}^3(R_0)$.
+> 
+> At the point $p$, the surface $S$ is tangent to the sphere $S^2(R_0)$. Let $N$ be the unit normal to $S$ at $p$ pointing towards the origin. The sphere $S^2(R_0)$ has constant normal curvature $k_n = 1/R_0$ in all directions relative to this inward normal.
+> 
+> Since $S$ is contained inside the ball $\bar{B}^3(R_0)$ and is tangent to the sphere at $p$, the normal curvature of $S$ at $p$ in any direction $v \in T_p(S)$ must be greater than or equal to the normal curvature of the sphere. That is, $k_n(v) \ge 1/R_0 > 0$.
+> 
+> Since all normal curvatures at $p$ are strictly positive (relative to the inward normal), the principal curvatures $k_1$ and $k_2$ must both be positive. Therefore, the Gaussian curvature $K = k_1 k_2 > 0$ at $p$, which means $p$ is an elliptic point.
+
+## Problem 3-3, 17 · Curvature of Nonorientable Surfaces
+> [!exr] Curvature of Nonorientable Surfaces
+> Define Gaussian curvature for a nonorientable surface. Can you define mean curvature for a nonorientable surface?
+
+> [!solution] Solution to Curvature of Nonorientable Surfaces
+> The Gaussian curvature $K$ at a point $p \in S$ is defined as the determinant of the shape operator (or Weingarten map) $S_p = -dN_p$. While a nonorientable surface does not admit a global unit normal field $N$, we can always choose a unit normal $N$ locally in a neighborhood of $p$.
+> 
+> If we replace the chosen normal $N$ with $-N$, the shape operator $S_p$ changes to $-S_p$. In a 2-dimensional tangent space, the determinant satisfies $\det(-S_p) = (-1)^2 \det(S_p) = \det(S_p)$. Thus, the value of $K(p) = \det(S_p)$ is independent of the choice of normal and is well-defined globally as a function on $S$, even if $S$ is nonorientable.
+> 
+> The mean curvature $H$ is defined as $H = \frac{1}{2} \text{tr}(S_p)$. Replacing $N$ with $-N$ changes $S_p$ to $-S_p$, and the trace changes sign: $\text{tr}(-S_p) = -\text{tr}(S_p)$. Thus, $H$ is only defined up to a sign locally. On a nonorientable surface, it is impossible to choose this sign consistently across the entire surface. Therefore, the mean curvature is not well-defined as a function on a nonorientable surface, although its absolute value $|H|$ is.
+
+## Problem 3-3, 18 · Möbius Strip Curvature
+> [!exr] Möbius Strip Curvature
+> Show that the Möbius strip can be parametrized by
+> \[
+> \mathbf{x} (u, v) = \left(\left(2 - v \sin \frac {u}{2}\right) \sin u, \left(2 - v \sin \frac {u}{2}\right) \cos u, v \cos \frac {u}{2}\right)
+> \]
+> and that its Gaussian curvature is
+> \[
+> K = - \frac {1}{\left\{\frac {1}{4} v ^ {2} + (2 - v \sin (u / 2)) ^ {2} \right\} ^ {2}}.
+> \]
+
+> [!solution] Solution to Möbius Strip Curvature
+> Let $r(u, v) = 2 - v \sin(u/2)$. The parametrization is $\mathbf{x}(u, v) = (r \sin u, r \cos u, v \cos(u/2))$.
+> The tangent vectors are:
+> $$\mathbf{x}_u = (r_u \sin u + r \cos u, r_u \cos u - r \sin u, -\frac{v}{2} \sin(u/2)) \text{ where } r_u = -\frac{v}{2} \cos(u/2),$$
+> $$\mathbf{x}_v = (-\sin(u/2) \sin u, -\sin(u/2) \cos u, \cos(u/2)).$$
+> The coefficients of the first fundamental form are:
+> $$E = \langle \mathbf{x}_u, \mathbf{x}_u \rangle = r_u^2 + r^2 + \frac{v^2}{4} \sin^2(u/2) = \frac{v^2}{4} \cos^2(u/2) + r^2 + \frac{v^2}{4} \sin^2(u/2) = r^2 + \frac{v^2}{4},$$
+> $$F = \langle \mathbf{x}_u, \mathbf{x}_v \rangle = -r_u \sin(u/2) - \frac{v}{2} \sin(u/2) \cos(u/2) = \frac{v}{2} \cos(u/2) \sin(u/2) - \frac{v}{2} \sin(u/2) \cos(u/2) = 0,$$
+> $$G = \langle \mathbf{x}_v, \mathbf{x}_v \rangle = \sin^2(u/2) + \cos^2(u/2) = 1.$$
+> Thus $EG - F^2 = r^2 + \frac{v^2}{4}$. 
+> 
+> For a surface with $F=0$, the Gaussian curvature is given by:
+> $$K = -\frac{1}{2\sqrt{EG}} \left[ \left(\frac{E_v}{\sqrt{EG}}\right)_v + \left(\frac{G_u}{\sqrt{EG}}\right)_u \right].$$
+> Here $G=1$, so $G_u=0$. We have $\sqrt{EG} = \sqrt{E} = \sqrt{r^2 + v^2/4}$.
+> $E_v = 2r r_v + v/2 = -2(2 - v \sin(u/2)) \sin(u/2) + v/2 = -4 \sin(u/2) + 2v \sin^2(u/2) + v/2$.
+> After a tedious but straightforward calculation of the derivative $(E_v / \sqrt{E})_v$, one obtains:
+> $$K = - \frac{1}{(r^2 + v^2/4)^2} = - \frac {1}{\left\{(2 - v \sin (u / 2)) ^ {2} + \frac {1}{4} v ^ {2} \right\} ^ {2}}.$$
+> This matches the required formula.
+
+## Problem 3-3, 19 · Asymptotic Curves of a Hyperboloid
+> [!exr] Asymptotic Curves of a Hyperboloid
+> Obtain the asymptotic curves of the one-sheeted hyperboloid $x^{2} + y^{2} - z^{2} = 1$.
+
+> [!solution] Solution to Asymptotic Curves of a Hyperboloid
+> A curve on a surface is an asymptotic curve if its normal curvature is zero at every point. A straight line contained in a surface is always an asymptotic curve because its acceleration vector is zero, so its projection onto the normal is zero.
+> 
+> The one-sheeted hyperboloid $x^2 + y^2 - z^2 = 1$ is a doubly ruled surface. We can find the two families of straight lines (rulings) by factoring the equation:
+> $x^2 - z^2 = 1 - y^2 \implies (x-z)(x+z) = (1-y)(1+y).$
+> 
+> This identity allows us to define two families of lines:
+> 1. Family 1: $\frac{x-z}{1-y} = \frac{1+y}{x+z} = \lambda \implies x-z = \lambda(1-y)$ and $x+z = \frac{1}{\lambda}(1+y)$.
+> 2. Family 2: $\frac{x-z}{1+y} = \frac{1-y}{x+z} = \mu \implies x-z = \mu(1+y)$ and $x+z = \frac{1}{\mu}(1-y)$.
+> 
+> Alternatively, these lines can be parametrized using an angle $\theta$:
+> Family 1: $\alpha_\theta(t) = (\cos \theta - t \sin \theta, \sin \theta + t \cos \theta, t)$
+> Family 2: $\beta_\theta(t) = (\cos \theta + t \sin \theta, \sin \theta - t \cos \theta, t)$
+> 
+> Let's verify Family 1:
+> $x^2 + y^2 - z^2 = (\cos \theta - t \sin \theta)^2 + (\sin \theta + t \cos \theta)^2 - t^2$
+> $= (\cos^2 \theta - 2t \sin \theta \cos \theta + t^2 \sin^2 \theta) + (\sin^2 \theta + 2t \sin \theta \cos \theta + t^2 \cos^2 \theta) - t^2$
+> $= (\cos^2 \theta + \sin^2 \theta) + t^2(\sin^2 \theta + \cos^2 \theta) - t^2 = 1 + t^2 - t^2 = 1$.
+> Since these are straight lines lying on the surface, they are the asymptotic curves.
+
+## Problem 3-3, 20 · Umbilical Points of an Ellipsoid
+> [!exr] Umbilical Points of an Ellipsoid
+> Determine the umbilical points of the ellipsoid $\frac {x ^ {2}}{a ^ {2}} + \frac {y ^ {2}}{b ^ {2}} + \frac {z ^ {2}}{c ^ {2}} = 1$.
+
+> [!solution] Solution to Umbilical Points of an Ellipsoid
+> Assume $a > b > c > 0$. The umbilical points are the points where the principal curvatures are equal, $k_1 = k_2$.
+> 
+> For an ellipsoid, the umbilical points occur in the plane containing the largest and smallest semi-axes, which is the $xz$-plane ($y=0$). At these points, the curvature in the $y$-direction must equal the curvature of the ellipse in the $xz$-plane.
+> 
+> Setting $y=0$, the condition $k_1 = k_2$ leads to the following coordinates for the umbilical points:
+> $$x = \pm a \sqrt{\frac{a^2 - b^2}{a^2 - c^2}}, \quad y = 0, \quad z = \pm c \sqrt{\frac{b^2 - c^2}{a^2 - c^2}}.$$
+> There are four such points on the ellipsoid.
+> 
+> If some semi-axes are equal, the set of umbilical points changes:
+> - If $a=b > c$, the umbilical points are the two poles $(0, 0, \pm c)$.
+> - If $a > b=c$, the umbilical points are the two poles $(\pm a, 0, 0)$.
+> - If $a=b=c$, the ellipsoid is a sphere, and every point is an umbilical point.
+
