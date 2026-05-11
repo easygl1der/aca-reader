@@ -773,98 +773,128 @@ Clairaut 关系的一个应用：抛物面 $z=x^2+y^2$ 上的非子午线测地�
 \subsection*{4-4 节练习}
 
 \begin{exercise}{4-4, 1 — do Carmo, Exercise 4-4, 1}
-（a）证明：若曲线 $C \subset S$ 既是曲率线（line of curvature）又是测地线，则 $C$ 是平面曲线。（b）证明：若（非直线的）测地线是平面曲线，则它是曲率线。（c）给出一个是平面曲线和曲率线但不是测地线的例子。
+Let $y$ and $w$ be differentiable vector fields on an open set $U \subset S$. Let $p \in S$ and let $\alpha \colon I \to U$ be a curve such that $\alpha(0) = p$, $\alpha'(0) = y$. Denote by $P_{\alpha, t} \colon T_{\alpha(0)}(S) \to T_{\alpha(t)}(S)$ the parallel transport along $\alpha$ from $\alpha(0)$ to $\alpha(t)$, $t \in I$. Prove that
+
+\[
+(D_y w)(p) = \frac{d}{dt}\left(P_{\alpha, t}^{-1}(w(\alpha(t)))\right)\Bigg|_{t=0},
+\]
+
+where the second member is the velocity vector of the curve $P_{\alpha, t}^{-1}(w(\alpha(t)))$ in $T_p(S)$ at $t = 0$. (Thus, the notion of covariant derivative can be derived from the notion of parallel transport.)
 \end{exercise}
 
 \begin{exercise}{4-4, 2 — do Carmo, Exercise 4-4, 2}
-证明：曲线 $C \subset S$ 既是渐近曲线又是测地线，当且仅当 $C$ 是直线段。
+a. Show that the covariant derivative has the following properties. Let $v$, $w$, and $y$ be differentiable vector fields in $U \subset S$, $f \colon U \to \mathbb{R}$ be a differentiable function in $S$, $y(f)$ be the derivative of $f$ in the direction of $y$ (cf. Exercise 7, Sec. 3-4), and $\lambda$, $\mu$ be real numbers. Then
+
+\begin{enumerate}
+\item $D_y(\lambda v + \mu w) = \lambda D_y(v) + \mu D_\gamma(w)$;
+\[
+D_{\lambda y + \mu v}(w) = \lambda D_y(w) + \mu D_v(w).
+\]
+\item $D_y(fv) = y(f)v + fD_y(v)$; $D_{fy}(v) = fD_y(v)$.
+\item $y(\langle v,w\rangle) = \langle D_yv,w\rangle +\langle v,D_yw\rangle$.
+\item $D_{\mathbf{x}_v}\mathbf{x}_u = D_{\mathbf{x}_u}\mathbf{x}_v$, where $\mathbf{x}(u,v)$ is a parametrization of $S$.
+\end{enumerate}
+
+$^{^*}$\textbf{b}. Show that property 3 is equivalent to the fact that the parallel transport along a given piecewise regular parametrized curve $\alpha \colon I \to S$ joining two points $p, q \in S$ is an isometry between $T_p(S)$ and $T_q(S)$. Show that property 4 is equivalent to the symmetry of the lower indices of the Christoffel symbols.
+
+$^{^*}$\textbf{c}. Let $\mathfrak{U}(U)$ be the space of (differentiable) vector fields in $U\subset S$ and let $D\colon \mathfrak{U}\times \mathfrak{U}\to \mathfrak{U}$ (where we denote $D(y,v) = D_y(v)$) be a map satisfying properties 1--4. Verify that $D_y(v)$ coincides with the covariant derivative of the text. (In general, a $D$ satisfying properties 1 and 2 is called a connection in $U$. The point of the exercise is to prove that on a surface with a given scalar product there exists a unique connection with the additional properties 3 and 4).
 \end{exercise}
 
 \begin{exercise}{4-4, 3 — do Carmo, Exercise 4-4, 3}
-不使用 \cref{prop:geodesic-existence}，证明平面上唯一的测地线是直线。
+Let $\alpha \colon I = [0, l] \to S$ be a simple, parametrized, regular curve. Consider a unit vector field $v(t)$ along $\alpha$, with $\langle \alpha'(t), v(t) \rangle = 0$ and a mapping $\mathbf{x} \colon \mathbb{R} \times I \to S$ given by
+
+\[
+\mathbf{x}(s, t) = \exp_{\alpha(t)}(s v(t)), \quad s \in \mathbb{R}, t \in I.
+\]
+
+a. Show that $\mathbf{x}$ is differentiable in a neighborhood of $I$ in $\mathbb{R}\times I$ and that $d\mathbf{x}$ is nonsingular in $(0,t), t\in I$.
+
+b. Show that there exists $\epsilon > 0$ such that $\mathbf{x}$ is one-to-one in the rectangle $t \in I$, $|s| < \epsilon$.
+
+c. Show that in the open set $t \in (0, l)$, $|s| < \epsilon$, $\mathbf{x}$ is a parametrization of $S$, the coordinate neighborhood of which contains $\alpha((0, l))$. The coordinates thus obtained are called geodesic coordinates (or Fermi's coordinates) of basis $\alpha$. Show that in such a system $F = 0$, $E = 1$. Moreover, if $\alpha$ is a geodesic parametrized by the arc length, $G(0, t) = 1$ and $G_s(0, t) = 0$.
+
+d. Establish the following analogue of the Gauss lemma (Remark 1 after Prop. 3, Sec. 4-6). Let $\alpha \colon I \to S$ be a regular parametrized curve and let $\gamma_t(s), t \in I$, be a family of geodesics parametrized by arc length $s$ and given by $\gamma_t(0) = \alpha(t)$, $\{\gamma_t'(0), \alpha'(t)\}$ is a positive orthogonal basis. Then, for a fixed $\bar{s}$, sufficiently small, the curve $t \to \gamma_t(\bar{s})$, $t \in I$, intersects all $\gamma_t$ orthogonally (such curves are called geodesic parallels).
 \end{exercise}
 
 \begin{exercise}{4-4, 4 — do Carmo, Exercise 4-4, 4}
-设 $v$ 和 $w$ 是沿曲线 $\alpha: I \to S$ 的向量场。证明：
+The energy $E$ of a curve $\alpha \colon [a, b] \to S$ is defined by
+
 \[
-\frac{d}{dt}\langle v(t), w(t) \rangle = \left\langle \frac{Dv}{dt}, w(t) \right\rangle + \left\langle v(t), \frac{Dw}{dt} \right\rangle.
+E(\alpha) = \int_a^b |\alpha'(t)|^2 \, dt.
 \]
+
+$^{^*}$\textbf{a}. Show that $(I(\alpha))^2 \leq (b - a)E(\alpha)$ and that equality holds if and only if $t$ is proportional to the arc length.
+
+b. Conclude from part a that if $\gamma \colon [a,b]\to S$ is a minimal geodesic with $\gamma(a) = p$, $\gamma(b) = q$, then for any curve $\alpha \colon [a,b]\to S$, joining $p$ to $q$, we have $E(\gamma) \leq E(\alpha)$ and equality holds if and only if $\alpha$ is a minimal geodesic.
 \end{exercise}
 
 \begin{exercise}{4-4, 5 — do Carmo, Exercise 4-4, 5}
-考虑环面 $\mathbf{x}(u,v) = ((r\cos u+a)\cos v,\; (r\cos u+a)\sin v,\; r\sin u)$（$a>r>0$）。设纬线 $u=0$（最大纬线）、$u=\pi$（最小纬线）和 $u=\pi/2$（上半纬线）。判断哪些纬线是：（a）测地线；（b）渐近曲线；（c）曲率线。
+Let $\gamma \colon [0,l] \to S$ be a simple geodesic, parametrized by arc length, and denote by $u$ and $v$ the Fermi coordinates in a neighborhood of $\gamma([0,l])$ which is given as $u = 0$ (cf. Exercise 3). Let $u = \gamma(v,t)$ be a family of curves depending on a parameter $t$, $-\epsilon < t < \epsilon$ such that $\gamma$ is differentiable and
+
+\[
+\gamma(0, t) = \gamma(0) = p, \quad \gamma(l, t) = \gamma(l) = q, \quad \gamma(v, 0) = \gamma(v) \equiv 0.
+\]
+
+Such a family is called a variation of $\gamma$ keeping the end points $p$ and $q$ fixed. Let $E(t)$ be the energy of the curve $\gamma(v, t)$ (cf. Exercise 4); that is,
+
+\[
+E(t) = \int_0^l \left(\frac{\partial \gamma}{\partial v}(v, t)\right)^2 \, dv.
+\]
+
+$^{^*}$\textbf{a}. Show that
+
+\[
+\begin{array}{l}
+E'(0) = 0, \\[4pt]
+\frac{1}{2} E''(0) = \int_0^l \left\{\left(\frac{d\eta}{dv}\right)^2 - K\eta^2\right\} dv,
+\end{array}
+\]
+
+where $\eta(v) = \partial\gamma/\partial t|_{t=0}$, $K = K(v)$ is the Gaussian curvature along $\gamma$, and denotes the derivative with respect to $t$ (the above formulas are called the first and second variations, respectively, of the energy of $\gamma$; a more complete treatment of these formulas, including the case where $\gamma$ is not simple, will be given in Sec. 5-4).
+
+b. Conclude from part a that if $K \leq 0$, then any simple geodesic $\gamma \colon [0, l] \to S$ is minimal relatively to the curves sufficiently close to $\gamma$ and joining $\gamma(0)$ to $\gamma(l)$.
 \end{exercise}
 
 \begin{exercise}{4-4, 6* — do Carmo, Exercise 4-4, 6}
-计算环面上 $u=\pi/2$ 纬线的测地曲率绝对值。
+Let $S$ be the cone $z = k\sqrt{x^2 + y^2}$, $k > 0$, $(x, y) \neq (0, 0)$, and let $V \subset \mathbb{R}^2$ be the open set of $\mathbb{R}^2$ given in polar coordinates by $0 < \rho < \infty$, $0 < \theta < 2\pi n \sin \beta$, where $\cot \alpha = k$ and $n$ is the largest integer such that $2\pi n \sin \beta < 2\pi$ (cf. Example 3, Sec. 4-2). Let $\varphi: V \to S$ be the map
+
+\[
+\varphi(\rho, \theta) = \left(\rho \sin \beta \cos \left(\frac{\theta}{\sin \beta}\right), \rho \sin \beta \sin \left(\frac{\theta}{\sin \beta}\right), \rho \cos \beta\right).
+\]
+
+a. Prove that $\varphi$ is a local isometry.
+
+b. Let $q \in S$. Assume that $\beta < \pi / 6$ and let $k$ be the largest integer such that $2\pi k \sin \beta < \pi$. Prove that there exist at least $k$ geodesics that leaving from $q$ return to $q$. Show that these geodesics are broken at $q$ and that, therefore, none of them is a closed geodesic (Fig. 4-49).
+
+$^{^*}$\textbf{c}. Under the conditions of part b, prove that there are exactly $k$ such geodesics.
 \end{exercise}
 
 \begin{exercise}{4-4, 7 — do Carmo, Exercise 4-4, 7}
-用与 $x$ 轴成角 $\theta$ 的平面截圆柱面 $x^2+y^2=1$。（a）证明截线是椭圆。（b）计算椭圆在主轴处相对于圆柱面的测地曲率绝对值。
+Let $\alpha: I \to \mathbb{R}^3$ be a parametrized regular curve. For each $t \in I$, let $P(t) \subset \mathbb{R}^3$ be a plane through $\alpha(t)$ which contains $\alpha'(t)$. When the unit normal vector $N(t)$ of $P(t)$ is a differentiable function of $t$ and $N'(t) \neq 0$, $t \in I$, we say that the map $t \to \{\alpha(t), N(t)\}$ is a differentiable family of tangent planes. Given such a family, we determine a parametrized surface (cf. Def. 2, Sec. 2-3) by
+
+\[
+\mathbf{x}(t, v) = \alpha(t) + v \frac{N(t) \wedge N'(t)}{|N'(t)|}.
+\]
+
+The parametrized surface $\mathbf{x}$ is called the envelope of the family $\{\alpha(t), N(t)\}$ (cf. Example 4, Sec. 3-5).
+
+a. Let $S$ be an oriented surface and let $\gamma \colon I \to S$ be a geodesic parametrized by arc length with $k(s) \neq 0$ and $\tau(s) \neq 0$, $s \in I$. Let $N(s)$ be the unit normal vector of $S$ along $\gamma$. Prove that the envelope of the family of tangent planes $\{\gamma(s), N(s)\}$ is regular in a neighborhood of $\gamma$, has Gaussian curvature $K \equiv 0$, and is tangent to $S$ along $\gamma$. (Thus, we have obtained a surface locally isometric to the plane which contains $\gamma$ as a geodesic.)
+
+b. Let $\alpha \colon I \to \mathbb{R}^3$ be a curve parametrized by arc length with $k(s) \neq 0$ and $\tau(s) \neq 0$, $s \in I$, and let $\{\alpha(s), n(s)\}$ be the family of its rectifying planes. Prove that the envelope of this family is regular in a neighborhood of $\alpha$, has Gaussian curvature $K = 0$, and contains $\alpha$ as a geodesic. (Thus, every curve is a geodesic in the envelope of its rectifying planes; since this envelope is locally isometric to the plane, this justifies the name rectifying plane.)
 \end{exercise}
 
 \begin{exercise}{4-4, 8* — do Carmo, Exercise 4-4, 8}
-证明：若连通曲面上所有测地线都是平面曲线，则该曲面包含于一张平面或一个球面中。
-\end{exercise}
+(Free Mobility of Small Geodesic Triangles.) Let $S$ be a surface of constant Gaussian curvature. Choose points $p_1, p_1' \in S$ and let $V, V'$ be convex neighborhoods of $p_1, p_1'$, respectively. Choose geodesic triangles $p_1, p_2, p_3$ in $V$ (geodesic means that the sides $\widehat{p_1p_2}, \widehat{p_2p_3}, \widehat{p_3p_1}$ are geodesic arcs) in $v$ and $p_1', p_2', p_3'$ in $V'$ in such a way that
 
-\begin{exercise}{4-4, 9* — do Carmo, Exercise 4-4, 9}
-考虑球面上从北极出发的两条子午线，在两子午线夹角 $\varphi$ 处，将切向量沿两条子午线分别平行运输到交点 $p_2$。计算两条平行运输结果之间的夹角（教材 Figure 4-21（见 \cref{fig:fig4-21}））。
-\end{exercise}
+\[
+\begin{array}{l}
+l(p_1, p_2) = l\left(p_1', p_2'\right), \\
+l(p_2, p_3) = l\left(p_2', p_3'\right), \\
+l(p_3, p_1) = l\left(p_3', p_1'\right)
+\end{array}
+\]
 
-\begin{exercise}{4-4, 10* — do Carmo, Exercise 4-4, 10}
-证明：有向曲线 $C \subset S$ 在 $p$ 处的测地曲率，等于将 $C$ 沿法向量方向投影到切平面 $T_p(S)$ 后所得平面曲线的曲率。
-\end{exercise}
-
-\begin{exercise}{4-4, 11 — do Carmo, Exercise 4-4, 11}
-陈述并证明：代数值共变导数在保向等距下不变。
-\end{exercise}
-
-\begin{exercise}{4-4, 12* — do Carmo, Exercise 4-4, 12}
-设曲面 $S$ 允许两组可微的正交测地线族。证明 $S$ 的 Gaussian 曲率为零。
-\end{exercise}
-
-\begin{exercise}{4-4, 13* — do Carmo, Exercise 4-4, 13}
-设 $V$ 是 $p$ 的连通邻域，任意两点之间的平行运输与路径无关。证明 $V$ 的 Gaussian 曲率为零。
-\end{exercise}
-
-\begin{exercise}{4-4, 14 — do Carmo, Exercise 4-4, 14}
-设 $S$ 是定向曲面，$\alpha: I \to S$ 是以弧长为参数的正则曲线。在 $p=\alpha(s)$ 处考虑 Darboux 三棱形 $T(s)=\alpha'(s)$、$N(s)$（曲面法向量）和 $V(s)=N(s)\wedge T(s)$。建立类似 Frenet 公式的 Darboux 公式，并说明系数：（a）$c$ 是测地挠率（geodesic torsion）；（b）$b$ 是法曲率；（c）$a$ 是测地曲率。
-\end{exercise}
-
-\begin{exercise}{4-4, 15 — do Carmo, Exercise 4-4, 15}
-在单位球面 $S^2$ 上，北极 $p_0$ 和赤道上两点 $q,r$（夹角 $\theta$），将切于子午线 $p_0q$ 的单位向量沿闭合路径（$p_0q$、赤道 $qr$、$rp_0$）平行运输一圈。求最终向量与初始向量的夹角（教材 Figure 4-21（见 \cref{fig:fig4-21}））。
-\end{exercise}
-
-\begin{exercise}{4-4, 16* — do Carmo, Exercise 4-4, 16}
-设 $p$ 是抛物点邻域（所有点均为抛物点）的点。证明过 $p$ 的唯一渐近曲线是直线段。
-\end{exercise}
-
-\begin{exercise}{4-4, 17 — do Carmo, Exercise 4-4, 17}
-设 $\alpha: I \to \mathbb{R}^3$ 是 $k\neq 0$ 的正则曲线，$\mathbf{x}(s,v) = \alpha(s)+vb(s)$ 是其切线面（$b$ 为副法向量）。证明当 $\epsilon$ 充分小时，$\mathbf{x}(I\times(-\epsilon,\epsilon))$ 是正则曲面，且 $\alpha(I)$ 是该曲面上的测地线。
-\end{exercise}
-
-\begin{exercise}{4-4, 18* — do Carmo, Exercise 4-4, 18}
-考虑双叶双曲面 $x^2+y^2-z^2=1$ 上半部（$z>0$）一点 $p$ 处的测地线，使其与过 $p$ 的纬线夹角 $\theta$ 满足 $\cos\theta=1/r$（$r$ 为到 $z$ 轴距离）。证明：沿递减纬线方向，测地线渐近趋近于赤道 $x^2+y^2=1$（教材 Figure 4-22（见 \cref{fig:fig4-22}））。
-\end{exercise}
-
-\begin{exercise}{4-4, 19* — do Carmo, Exercise 4-4, 19}
-证明：当测地线方程（4）用弧长参数表示时，除坐标曲线外，第二个方程可由第一个推出。
-\end{exercise}
-
-\begin{exercise}{4-4, 20 — do Carmo, Exercise 4-4, 20}
-对环面 $\mathbf{x}(u,v) = ((r\cos u+a)\cos v,\; (r\cos u+a)\sin v,\; r\sin u)$ 证明：（a）若测地线切于 $u=\pi/2$ 纬线，则完全包含在 $-\pi/2 \leqslant u \leqslant \pi/2$ 区域；（b）若测地线与 $u=0$ 纬线交角 $\theta$ 满足 $\cos\theta < (a-r)/(a+r)$，则必与 $u=\pi$ 纬线相交。
-\end{exercise}
-
-\begin{exercise}{4-4, 21 — do Carmo, Exercise 4-4, 21}
-Liouville 曲面是第一基本形式可写为 $E=G=U(u)+V(v)$，$F=0$ 的曲面。（a）证明 Liouville 曲面的测地线可通过积分得到 $\int \frac{du}{\sqrt{U-c}} = \pm \int \frac{dv}{\sqrt{V+c}} + c_1$。（b）证明：若 $\theta$ 是测地线与 $v=\mathrm{const}$ 曲线的夹角，则 $U\sin^2\theta - V\cos^2\theta = \mathrm{const}$（Clairaut 关系的推广）。
-\end{exercise}
-
-\begin{exercise}{4-4, 22 — do Carmo, Exercise 4-4, 22}
-设 $S^2$ 是单位球面，$p \in S^2$。对任意分段正则闭合曲线 $\alpha: [0,l] \to S^2$，$\alpha(0)=\alpha(l)=p$，平行运输映射 $P_\alpha: T_p(S^2) \to T_p(S^2)$ 是一个线性等距。证明：$T_p(S^2)$ 的每个旋转都可以表示为某个 $\alpha$ 的平行运输映射。
-\end{exercise}
-
-\begin{exercise}{4-4, 23 — do Carmo, Exercise 4-4, 23}
-证明单位球面 $S^2$ 的等距恰好是 $\mathbb{R}^3$ 中线性正交变换在 $S^2$ 上的限制。
+(here $l$ denotes the length of a geodesic arc). Show that there exists an isometry $\theta \colon V \to V'$ which maps the first triangle onto the second. (This is the local version, for surfaces of constant curvature, of the theorem of high school geometry that any two triangles in the plane with equal corresponding sides are congruent.)
 \end{exercise}
 
 % ==================== Section 4-5: The Gauss-Bonnet Theorem and Its Applications ====================
