@@ -99,7 +99,7 @@ For small $x, y$, the term $12y^2 + 2x^2$ dominates and is strictly positive for
 > [!solution] Solution to Compact Surfaces and Elliptic Points
 > Let $S \subset R^3$ be a compact surface. Since $S$ is bounded, there exists a sphere $S^2(R)$ of sufficiently large radius $R$ centered at the origin such that $S$ is contained in the interior of the ball $B^3(R)$. 
 > 
-> Let $f \colon S \to R$ be the function $f(q) = |q|^2$. Since $S$ is compact and $f$ is continuous, $f$ attains its maximum at some point $p \in S$. Let $R_0 = |p|$. Then for all $q \in S$, $|q| \le R_0$, which means $S$ lies inside the closed ball $\bar{B}^3(R_0)$.
+> Let $f \colon S \to R$ be the function $f(q) = |q|^2$. Since $S$ is compact and $f$ is continuous, $f$ attains its maximum at some point $p \in S$. Let $R_0 = |p|$. Then for all $q \in S$, $|q| \le $R_0$, which means $S$ lies inside the closed ball $\bar{B}^3(R_0)$.
 > 
 > At the point $p$, the surface $S$ is tangent to the sphere $S^2(R_0)$. Let $N$ be the unit normal to $S$ at $p$ pointing towards the origin. The sphere $S^2(R_0)$ has constant normal curvature $k_n = 1/R_0$ in all directions relative to this inward normal.
 > 
@@ -291,3 +291,80 @@ For small $x, y$, the term $12y^2 + 2x^2$ dominates and is strictly positive for
 > 2. $N'(s) = b'(s) = -\tau n(s) \neq 0$ (since $\tau \neq 0$).
 > 3. $\langle \alpha'(s), N(s) \rangle = \langle t(s), b(s) \rangle = 0$.
 > This is a family of tangent planes. The ruling direction is $w \propto N \wedge N' = b \wedge (-\tau n) = \tau t(s)$. The envelope is $\mathbf{x}(s, v) = \alpha(s) + v t(s)$, which is the tangent surface.
+
+## Problem 3-5, 11 · Parallel Surfaces
+> [!exr] Parallel Surfaces
+> Let $\mathbf{x} = \mathbf{x}(u, v)$ be a regular parametrized surface. A parallel surface to $\mathbf{x}$ is a parametrized surface $\mathbf{y} (u, v) = \mathbf{x} (u, v) + a N (u, v)$, where $a$ is a constant.
+> - a. Prove that $y_{u} \wedge y_{v} = (1 - 2Ha + Ka^{2})(\mathbf{x}_{u} \wedge \mathbf{x}_{v})$, where $K$ and $H$ are the Gaussian and mean curvatures of $\mathbf{x}$, respectively.
+> - b. Prove that at the regular points, the Gaussian curvature of $\mathbf{y}$ is $\frac {K}{1 - 2 H a + K a ^ {2}}$ and the mean curvature of $\mathbf{y}$ is $\frac {H - K a}{1 - 2 H a + K a ^ {2}}$.
+> - c. Let a surface $\mathbf{x}$ have constant mean curvature equal to $c \neq 0$ and consider the parallel surface to $\mathbf{x}$ at a distance $1/2c$. Prove that this parallel surface has constant Gaussian curvature equal to $4c^2$.
+
+> [!solution] Solution to Parallel Surfaces
+> **a.** Differentiating $\mathbf{y}(u, v) = \mathbf{x}(u, v) + a N(u, v)$ with respect to $u$ and $v$ gives:
+> $$\mathbf{y}_u = \mathbf{x}_u + a N_u, \quad \mathbf{y}_v = \mathbf{x}_v + a N_v.$$
+> Using the Weingarten equations $N_u = a_{11} \mathbf{x}_u + a_{21} \mathbf{x}_v$ and $N_v = a_{12} \mathbf{x}_u + a_{22} \mathbf{x}_v$, we have:
+> $$\mathbf{y}_u = (1 + a a_{11}) \mathbf{x}_u + a a_{21} \mathbf{x}_v, \quad \mathbf{y}_v = a a_{12} \mathbf{x}_u + (1 + a a_{22}) \mathbf{x}_v.$$
+> Then the cross product is:
+> $$\mathbf{y}_u \wedge \mathbf{y}_v = \left[ (1 + a a_{11})(1 + a a_{22}) - a^2 a_{12} a_{21} \right] (\mathbf{x}_u \wedge \mathbf{x}_v)$$
+> $$= \left[ 1 + a(a_{11} + a_{22}) + a^2(a_{11} a_{22} - a_{12} a_{21}) \right] (\mathbf{x}_u \wedge \mathbf{x}_v).$$
+> Recall that for the shape operator $S = -dN$, the trace is $2H$ and the determinant is $K$. Since $dN$ is represented by the matrix $(a_{ij})$, we have $\text{tr}(dN) = a_{11} + a_{22} = -2H$ and $\det(dN) = a_{11} a_{22} - a_{12} a_{21} = K$. Substituting these:
+> $$\mathbf{y}_u \wedge \mathbf{y}_v = (1 - 2Ha + Ka^2) (\mathbf{x}_u \wedge \mathbf{x}_v).$$
+>
+> **b.** The normal $N_y$ to the parallel surface is the same as the normal $N$ to the original surface (or its opposite). The shape operator $S_y$ of $\mathbf{y}$ is related to $S$ by $S_y = S (I - aS)^{-1}$. If $k_1, k_2$ are the principal curvatures of $\mathbf{x}$, the principal curvatures of $\mathbf{y}$ are $\bar{k}_i = \frac{k_i}{1 - ak_i}$.
+> The Gaussian curvature $K_y$ is:
+> $$K_y = \bar{k}_1 \bar{k}_2 = \frac{k_1 k_2}{(1 - ak_1)(1 - ak_2)} = \frac{K}{1 - a(k_1 + k_2) + a^2 k_1 k_2} = \frac{K}{1 - 2Ha + Ka^2}.$$
+> The mean curvature $H_y$ is:
+> $$H_y = \frac{1}{2}(\bar{k}_1 + \bar{k}_2) = \frac{1}{2} \left( \frac{k_1}{1 - ak_1} + \frac{k_2}{1 - ak_2} \right) = \frac{1}{2} \frac{k_1 + k_2 - 2ak_1 k_2}{1 - 2Ha + Ka^2} = \frac{H - Ka}{1 - 2Ha + Ka^2}.$$
+>
+> **c.** Given $H = c$ and $a = 1/2c$. The Gaussian curvature of the parallel surface is:
+> $$K_y = \frac{K}{1 - 2c(1/2c) + K(1/2c)^2} = \frac{K}{1 - 1 + K/4c^2} = \frac{K}{K/4c^2} = 4c^2.$$
+> This is a constant independent of the point on the surface.
+
+## Problem 3-5, 12 · No Compact Minimal Surfaces
+> [!exr] No Compact Minimal Surfaces
+> Prove that there are no compact (i.e., bounded and closed in $R^3$) minimal surfaces.
+
+> [!solution] Solution to No Compact Minimal Surfaces
+> A minimal surface is defined by having mean curvature $H = \frac{1}{2}(k_1 + k_2) = 0$ at all points. This implies $k_1 = -k_2$, and thus the Gaussian curvature $K = k_1 k_2 = -k_1^2 \le 0$ everywhere on a minimal surface.
+>
+> However, a well-known result (Exercise 3-3, 16) states that every compact surface in $R^3$ must have at least one elliptic point, where the Gaussian curvature $K$ is strictly positive.
+>
+> Since a minimal surface must have $K \le 0$ everywhere, it cannot contain any elliptic points. Therefore, a minimal surface in $R^3$ cannot be compact.
+
+## Problem 3-5, 13 · Gauss Map and Minimal Surfaces
+> [!exr] Gauss Map and Minimal Surfaces
+> - a. Let $S$ be a regular surface without umbilical points. Prove that $S$ is a minimal surface if and only if the Gauss map $N \colon S \to S^2$ satisfies, for all $p \in S$ and all $w_1, w_2 \in T_p(S)$, $\langle d N _ {p} (w _ {1}), d N _ {p} (w _ {2}) \rangle_ {N (p)} = \lambda (p) \langle w _ {1}, w _ {2} \rangle_ {p}$, where $\lambda(p) \neq 0$.
+> - b. Let $\mathbf{x}$: $U\to S^2$ be a parametrization of the unit sphere $S^2$ by stereographic projection. Consider a neighborhood $V$ of a point $p$ of the minimal surface $S$ in part a such that $N\colon S\to S^2$ restricted to $V$ is a diffeomorphism. Prove that the parametrization $y = N^{-1}\circ \mathbf{x}$: $U\rightarrow S$ is isothermal.
+
+> [!solution] Solution to Gauss Map and Minimal Surfaces
+> **a.** The condition $\langle dN_p(w_1), dN_p(w_2) \rangle = \lambda(p) \langle w_1, w_2 \rangle$ states that $dN_p$ is a similarity transformation (a homothety) on the tangent space. In a principal basis, $dN_p$ is represented by the matrix $\text{diag}(-k_1, -k_2)$. The condition implies:
+> $$k_1^2 = k_2^2 = \lambda(p).$$
+> This means $k_1 = \pm k_2$. If $k_1 = k_2$, the point is an umbilical point. Since $S$ has no umbilical points, we must have $k_1 = -k_2$, which is equivalent to $H = (k_1 + k_2)/2 = 0$. Thus, $S$ is a minimal surface.
+>
+> **b.** The stereographic projection $\mathbf{x} \colon U \to S^2$ is a conformal map. The condition in part (a) implies that the Gauss map $N \colon S \to S^2$ is a conformal map (since it preserves angles and scales all vectors by $\sqrt{\lambda(p)}$). Consequently, its inverse $N^{-1} \colon S^2 \to S$ is also conformal. 
+> The parametrization $y = N^{-1} \circ \mathbf{x}$ is the composition of two conformal maps, and is therefore itself conformal. A parametrization is conformal if and only if its first fundamental form satisfies $E = G$ and $F = 0$, which is the definition of an isothermal parametrization.
+
+## Problem 3-5, 14 · Conjugate Minimal Surfaces
+> [!exr] Conjugate Minimal Surfaces
+> Let $\mathbf{x}$ and $\mathbf{y}$ be isothermal parametrizations of minimal surfaces such that their component functions are pairwise harmonic conjugate; then $\mathbf{x}$ and $\mathbf{y}$ are called conjugate minimal surfaces. Prove that
+> - a. The helicoid and the catenoid are conjugate minimal surfaces.
+> - b. Given two conjugate minimal surfaces, $\mathbf{x}$ and $\mathbf{y}$, the surface $\mathbf{z} = (\cos t) \mathbf{x} + (\sin t) \mathbf{y}$ is again minimal for all $t \in R$.
+> - c. All surfaces of the one-parameter family have the same fundamental form: $E = \langle \mathbf{x}_u, \mathbf{x}_u \rangle = \langle \mathbf{y}_v, \mathbf{y}_v \rangle$, $F = 0$, $G = \langle \mathbf{x}_v, \mathbf{x}_v \rangle = \langle \mathbf{y}_u, \mathbf{y}_u \rangle$.
+
+> [!solution] Solution to Conjugate Minimal Surfaces
+> **a.** Let the catenoid be $\mathbf{x}(v, u) = (\cosh v \cos u, \cosh v \sin u, v)$ and the helicoid be $\mathbf{y}(v, u) = (\sinh v \sin u, -\sinh v \cos u, u)$.
+> Computing the derivatives:
+> $\mathbf{x}_v = (\sinh v \cos u, \sinh v \sin u, 1), \quad \mathbf{y}_u = (\sinh v \cos u, \sinh v \sin u, 1) \implies \mathbf{x}_v = \mathbf{y}_u.$
+> $\mathbf{x}_u = (-\cosh v \sin u, \cosh v \cos u, 0), \quad \mathbf{y}_v = (\cosh v \sin u, -\cosh v \cos u, 0) \implies \mathbf{x}_u = -\mathbf{y}_v.$
+> These are the Cauchy-Riemann equations for the pairs of components, showing they are conjugate.
+>
+> **b.** Since $\mathbf{x}$ and $\mathbf{y}$ are conjugate, they satisfy $\mathbf{x}_u = \mathbf{y}_v$ and $\mathbf{x}_v = -\mathbf{y}_u$. Then for $\mathbf{z} = (\cos t) \mathbf{x} + (\sin t) \mathbf{y}$:
+> $\mathbf{z}_u = \cos t \mathbf{x}_u + \sin t \mathbf{y}_u = \cos t \mathbf{x}_u - \sin t \mathbf{x}_v,$
+> $\mathbf{z}_v = \cos t \mathbf{x}_v + \sin t \mathbf{y}_v = \cos t \mathbf{x}_v + \sin t \mathbf{x}_u.$
+> Since $\mathbf{x}$ is isothermal ($|\mathbf{x}_u|^2 = |\mathbf{x}_v|^2$ and $\mathbf{x}_u \cdot \mathbf{x}_v = 0$), we find:
+> $|\mathbf{z}_u|^2 = \cos^2 t |\mathbf{x}_u|^2 + \sin^2 t |\mathbf{x}_v|^2 = |\mathbf{x}_u|^2,$
+> $|\mathbf{z}_v|^2 = \cos^2 t |\mathbf{x}_v|^2 + \sin^2 t |\mathbf{x}_u|^2 = |\mathbf{x}_u|^2,$
+> $\mathbf{z}_u \cdot \mathbf{z}_v = \cos t \sin t (|\mathbf{x}_u|^2 - |\mathbf{x}_v|^2) = 0.$
+> Thus $\mathbf{z}$ is isothermal. Furthermore, $\Delta \mathbf{z} = \cos t \Delta \mathbf{x} + \sin t \Delta \mathbf{y} = 0$ because components of $\mathbf{x}$ and $\mathbf{y}$ are harmonic. An isothermal harmonic parametrization defines a minimal surface.
+>
+> **c.** From part (b), we have $E = |\mathbf{z}_u|^2 = |\mathbf{x}_u|^2$ and $G = |\mathbf{z}_v|^2 = |\mathbf{x}_v|^2$. Since $\mathbf{x}$ is isothermal, $E = G = |\mathbf{x}_u|^2$. Also $F = \mathbf{z}_u \cdot \mathbf{z}_v = 0$. Since $\mathbf{x}_u = \mathbf{y}_v$ and $\mathbf{x}_v = -\mathbf{y}_u$, we have $|\mathbf{x}_u|^2 = |\mathbf{y}_v|^2$ and $|\mathbf{x}_v|^2 = |\mathbf{y}_u|^2$, confirming the requested formulas.
