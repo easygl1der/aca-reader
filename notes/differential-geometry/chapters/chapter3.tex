@@ -191,9 +191,57 @@ S_p = \begin{pmatrix} E & F \\ F & G \end{pmatrix}^{-1} \begin{pmatrix} L & M \\
 Show that at a hyperbolic point, the principal directions bisect the asymptotic directions.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：在双曲点处，Dupin 指标形是一对互相垂直的双曲线。其两条渐近线恰好平分两条主方向之间的四个直角。这是双曲点局部几何的标志性特征。
+
+\textbf{解答}：设 $p$ 为曲面 $S$ 的双曲点。取 $T_p(S)$ 中的正交基 $\{e_1, e_2\}$ 为主方向，对应主曲率 $k_1$ 和 $k_2$（$k_1 > 0 > k_2$）。则在任意单位方向 $u(\theta) = \cos\theta \, e_1 + \sin\theta \, e_2$ 上，法曲率为
+\[
+k_n(\theta) = k_1 \cos^2\theta + k_2 \sin^2\theta.
+\]
+
+渐近方向满足 $k_n(\theta) = 0$，即
+\[
+k_1 \cos^2\theta + k_2 \sin^2\theta = 0.
+\]
+
+解得
+\[
+\tan\theta = \pm \sqrt{-\frac{k_1}{k_2}}.
+\]
+
+设两个渐近方向与 $e_1$ 轴的夹角为 $\theta_1$ 和 $\theta_2$，则
+\[
+\tan\theta_1 = \sqrt{-\frac{k_2}{k_1}}, \quad \tan\theta_2 = -\sqrt{-\frac{k_2}{k_1}}.
+\]
+
+注意 $\tan(\theta_1 + \theta_2) = \dfrac{\tan\theta_1 + \tan\theta_2}{1 - \tan\theta_1\tan\theta_2} = 0$，故 $\theta_1 + \theta_2 = 0$ 或 $\pi$，即两个渐近方向关于 $e_1$ 对称。
+
+同理可知它们也关于 $e_2$ 对称。因此，渐近方向恰好平分主方向所确定的四个直角。$\square$
+\end{solution}
+
 \begin{exercise}{3-2, 2 — do Carmo, Exercise 3-2, 2}
 Show that if a surface is tangent to a plane along a curve, then the points of this curve are either parabolic or planar.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：若曲面沿一条曲线与平面相切，则该曲线的每一点处，曲面和平面共享同一个切平面。由于平面是平坦的（所有法曲率为零），曲面的法曲率在这条曲线上也必须处处为零——或者法曲率的极值方向是退化的（抛物点或平面点）。
+
+\textbf{解答}：设曲面 $S$ 与平面 $\Pi$ 沿正则曲线 $C$ 相切。沿 $C$ 上每一点 $p$，切平面 $T_p(S)$ 与 $\Pi$ 重合。设 $N$ 为 $S$ 的单位法向量，则沿 $C$ 有 $N$ 与 $\Pi$ 的法向量平行。
+
+任取 $C$ 的单位切向量 $v$，其在 $S$ 上的法曲率为
+\[
+k_n(p) = \langle II_p(v), v \rangle,
+\]
+其中 $II_p$ 是 $S$ 在 $p$ 处的第二基本形式。
+
+由于 $S$ 与 $\Pi$ 在 $p$ 处相切，$\Pi$ 的第二基本形式恒为零。这导致 $II_p(v) = 0$，从而 $k_n(p) = 0$ 对所有切方向成立。
+
+设 $k_1, k_2$ 为主曲率。Euler 公式给出
+\[
+k_n(\theta) = k_1 \cos^2\theta + k_2 \sin^2\theta.
+\]
+对所有 $\theta$ 均有 $k_n(\theta) = 0$ 意味着 $k_1 = k_2 = 0$（平面点），或 $k_1 = 0$ 且 $k_2 \neq 0$（抛物点）。故结论成立。$\square$
+\end{solution}
 
 \begin{exercise}{3-2, 3 — do Carmo, Exercise 3-2, 3}
 Let $C \subset S$ be a regular curve on a surface $S$ with Gaussian curvature $K > 0$. Show that the curvature $k$ of $C$ at $p$ satisfies
