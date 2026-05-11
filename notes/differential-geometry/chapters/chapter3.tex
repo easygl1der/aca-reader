@@ -586,6 +586,34 @@ k^2 \sin^2\theta = \lambda_1^2 + \lambda_2^2 - 2\lambda_1\lambda_2\cos\theta.
 (Theorem of Joachimstahl.) Suppose that $S_{1}$ and $S_{2}$ intersect along a regular curve $C$ and make an angle $\theta(p)$, $p \in C$. Assume that $C$ is a line of curvature of $S_{1}$. Prove that $\theta(p)$ is constant if and only if $C$ is a line of curvature of $S_{2}$.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：Joachimstahl 定理建立了曲面交线的曲率线性质与两曲面法向量夹角常数之间的关系。如果一条交线是 $S_1$ 的曲率线，那么当且仅当该交线也是 $S_2$ 的曲率线时，两曲面的法向量夹角才保持不变。
+
+\textbf{证明}：设 $t$ 为 $C$ 的单位切向量，$N_1, N_2$ 为两曲面的单位法向量。设 $\theta(p)$ 为 $N_1$ 与 $N_2$ 之间的有向角。
+
+由于 $C$ 是 $S_1$ 的曲率线，有
+\[
+dN_1(t) \parallel t,
+\]
+即 $dN_1(t) = -\lambda_1 t$，其中 $\lambda_1$ 为 $S_1$ 沿 $t$ 方向的法曲率。
+
+对 $\cos\theta = \langle N_1, N_2 \rangle$ 求导：
+\[
+-\sin\theta \, \frac{d\theta}{ds} = \langle dN_1(t), N_2 \rangle + \langle N_1, dN_2(t) \rangle.
+\]
+
+第一个内积 $\langle dN_1(t), N_2 \rangle = -\lambda_1 \langle t, N_2 \rangle = 0$（因为 $t \perp N_2$）。因此
+\[
+\sin\theta \, \frac{d\theta}{ds} = -\langle N_1, dN_2(t) \rangle.
+\]
+
+若 $C$ 也是 $S_2$ 的曲率线，则 $dN_2(t) \parallel t$，从而 $\langle N_1, dN_2(t) \rangle = 0$，故 $\dfrac{d\theta}{ds} = 0$，即 $\theta$ 为常数。
+
+反过来，若 $\theta$ 为常数，则 $\sin\theta \, \dfrac{d\theta}{ds} = 0$。若 $\sin\theta \neq 0$（即两曲面不正交），则 $\langle N_1, dN_2(t) \rangle = 0$。结合 $t \perp N_2$，可知 $dN_2(t) \parallel t$，故 $C$ 是 $S_2$ 的曲率线。
+
+若 $\sin\theta = 0$（两曲面法向量平行），则 $C$ 自动是 $S_2$ 的曲率线（因为两曲面在 $C$ 上有相同的法向量）。$\square$
+\end{solution}
+
 \begin{exercise}{3-2, 16 — do Carmo, Exercise 3-2, 16}
 Show that the meridians of a torus are lines of curvature.
 \end{exercise}
