@@ -1122,13 +1122,6 @@ N = \frac{\alpha''(t_0) \times \alpha'(t_0)}{|\alpha''(t_0) \times \alpha'(t_0)|
 Let $f: S \to \mathbb{R}$ be given by $f(p) = |p - p_0|^2$, where $p \in S$ and $p_0$ is a fixed point of $\mathbb{R}^3$ (see Example 1 of Sec. 2-3). Show that $df_p(w) = 2w \cdot (p - p_0)$, $w \in T_p(S)$.
 \end{exercise}
 
-\begin{exercise}{2-3, 8 — do Carmo, Exercise 2-3, 8}
-Prove that if $L: \mathbb{R}^3 \to \mathbb{R}^3$ is a linear map and $S \subset \mathbb{R}^3$ is a regular surface invariant under $L$, i.e., $L(S) \subset S$, then the restriction $L|_S$ is a differentiable map and
-\[
-dL_p(w) = L(w), \quad p \in S, w \in T_p(S).
-\]
-\end{exercise}
-
 \begin{solution}
 \textbf{直观理解}：$f(p) = |p - p_0|^2$ 是点 $p$ 到固定点 $p_0$ 的距离平方。沿着切方向 $w$ 的微分，描述了距离平方函数在 $p$ 点沿方向 $w$ 的变化率。
 
@@ -1141,6 +1134,27 @@ dL_p(w) = L(w), \quad p \in S, w \in T_p(S).
 \frac{d}{dt}\bigg|_{t=0} (f \circ \alpha)(t) = 2\alpha'(0) \cdot (\alpha(0) - p_0) = 2w \cdot (p - p_0).
 \]
 因此 $df_p(w) = 2w \cdot (p - p_0)$。
+\end{solution}
+
+\begin{exercise}{2-3, 8 — do Carmo, Exercise 2-3, 8}
+Prove that if $L: \mathbb{R}^3 \to \mathbb{R}^3$ is a linear map and $S \subset \mathbb{R}^3$ is a regular surface invariant under $L$, i.e., $L(S) \subset S$, then the restriction $L|_S$ is a differentiable map and
+\[
+dL_p(w) = L(w), \quad p \in S, w \in T_p(S).
+\]
+\end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：线性映射 $L$ 在整个 $\mathbb{R}^3$ 上是可微的，其限制在曲面 $S$ 上也应该是可微的，且其微分恰好是 $L$ 本身。
+
+\textbf{证明}：
+\begin{enumerate}
+    \item $L|_S$ 的可微性：$L$ 是 $\mathbb{R}^3$ 到自身的线性映射，故是光滑的。$L(S) \subset S$ 表明 $L$ 将曲面映射到自身，因此其限制 $L|_S: S \to S$ 是可微的。
+    \item 计算 $dL_p(w)$：取 $w \in T_pS$。由切向量的定义，存在可微曲线 $\alpha: (-\epsilon, \epsilon) \to S$ 使得 $\alpha(0) = p$，$\alpha'(0) = w$。则
+    \[
+    dL_p(w) = (L \circ \alpha)'(0) = L(\alpha'(0)) = L(w).
+    \]
+    这里用到了 $L$ 是线性映射，因此 $(L \circ \alpha)'(0) = L(\alpha'(0))$。
+\end{enumerate}
 \end{solution}
 
 \begin{exercise}{2-3, 9 — do Carmo, Exercise 2-3, 9}
