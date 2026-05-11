@@ -1326,6 +1326,34 @@ d(G \circ F)_p = dG_{F(p)} \circ dF_p.
 更一般地，如果 $F: S_1 \to S_2$ 是可微映射，则 $dF_p$ 将切向量从 $S_1$ 映射到 $S_2$。这使得我们可以在曲面之间"传输"几何信息。
 \end{Example}
 
+切平面还允许我们讨论两个相交曲面在交点处的夹角。
+
+给定正则曲面 $S$ 上的一点 $p$，存在两个与切平面 $T_p(S)$ 垂直的单位向量；每一个都称为 $p$ 处的单位法向量。通过 $p$ 且包含单位法向量的直线称为 $p$ 处的法线。两个相交曲面在交点 $p$ 处的夹角是它们在 $p$ 处的切平面（或法线）之间的夹角（见 \cref{fig:fig2-25}，教材 Figure 2-25）。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-25. 曲面夹角示意图]{\label{fig:fig2-25}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/73283c0809c89ebbaa359be7ff537942f4caf88e78bd5f37707c4f7e36b96ee4.jpg}}
+\end{minipage}
+\end{figure}
+
+通过固定 $p$ 处的参数化 $\mathbf{x}: U \subset \mathbb{R}^2 \to S$，我们可以用以下规则在每一点 $q \in \mathbf{x}(U)$ 处确定一个单位法向量
+\[
+N(q) = \frac{\mathbf{x}_u \wedge \mathbf{x}_v}{|\mathbf{x}_u \wedge \mathbf{x}_v|}(q).
+\]
+因此我们得到一个可微映射 $N: \mathbf{x}(U) \to \mathbb{R}^3$。我们后面（2-6 节和 3-1 节）将会看到，并非总能将这个映射可微地延拓到整个曲面 $S$。
+
+\textbf{关于可微性的一点说明。}正则曲面的定义要求参数化是 $C^\infty$ 类的，即它们具有所有阶的连续偏导数。对于微分几何中的问题，我们通常只需要一定阶数的偏导数的存在性和连续性，这个阶数因问题的性质而异（很少需要超过四阶导数）。
+
+例如，切平面的存在性和连续性仅依赖于一阶偏导数的存在性和连续性。因此，可能出现这样的情况：函数 $z = f(x,y)$ 的图像在每一点都存在切平面，但不足以满足正则曲面的定义（因为不够光滑）。下面的例子说明了这一点。
+
+\begin{Example}[存在切平面但非正则曲面的例子]\label{ex:tangent-plane-but-not-regular}
+考虑函数 $z = \sqrt[3]{(x^2 + y^2)^2}$ 的图像，它是将曲线 $z = x^{4/3}$ 绕 $z$ 轴旋转生成的。由于该曲线关于 $z$ 轴对称，且在原点处导数连续为零，因此 $z = \sqrt[3]{(x^2 + y^2)^2}$ 的图像在原点处以 $xy$ 平面为切平面。然而，该函数在原点处的二阶偏导数 $z_{xx}$ 不存在，因此该图像不是上面定义的正则曲面（见 2-2 节命题 3）。
+\end{Example}
+
+我们不打算深入讨论这类问题。定义中采用 $C^\infty$ 假设正是为了避免研究每个具体情形所需的可微性的最小条件。这些细节有其存在的价值，但它们可能会掩盖这里所讨论问题的几何本质。
+
 \subsection*{2-4 节练习}
 
 \begin{exercise}{2-4, 1 — do Carmo, Exercise 2-4, 1}
