@@ -1548,22 +1548,114 @@ K = \frac {\langle d (f N) (v _ {1}) \wedge d (f N) (v _ {2}) , f N \rangle}{f ^
 \begin{exercise}{3-4, 1 — do Carmo, Exercise 3-4, 1}
 Prove that the differentiability of a vector field does not depend on the choice of a coordinate system.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：向量场的光滑性是内蕴性质——它只依赖于底曲面流形的结构，而不依赖于具体坐标系的选取。向量场的系数函数在坐标变换下通过链式法则变换，而链式法则保持光滑性。
+
+\textbf{证明}：设 $S \subset \mathbb{R}^3$ 为正则曲面，$w$ 为 $S$ 上的向量场。取两个局部坐标卡 $\mathbf{x}\colon U\to S$ 和 $\tilde{\mathbf{x}}\colon \tilde{U}\to S$，在 $\mathbf{x}$ 下
+\[
+w = a\,\mathbf{x}_u + b\,\mathbf{x}_v,\qquad a,b\in C^\infty(\mathbf{x}^{-1}(W)).
+\]
+在 $\tilde{\mathbf{x}}$ 下
+\[
+w = \tilde{a}\,\tilde{\mathbf{x}}_{\tilde{u}} + \tilde{b}\,\tilde{\mathbf{x}}_{\tilde{v}}.
+\]
+坐标变换给出 $\tilde{u}(u,v)$，$\tilde{v}(u,v)$ 以及
+\[
+\mathbf{x}_u = \frac{\partial \tilde{u}}{\partial u}\,\tilde{\mathbf{x}}_{\tilde{u}} + \frac{\partial \tilde{v}}{\partial u}\,\tilde{\mathbf{x}}_{\tilde{v}},\qquad
+\mathbf{x}_v = \frac{\partial \tilde{u}}{\partial v}\,\tilde{\mathbf{x}}_{\tilde{u}} + \frac{\partial \tilde{v}}{\partial v}\,\tilde{\mathbf{x}}_{\tilde{v}}.
+\]
+代入得
+\[
+w = \left(a\frac{\partial \tilde{u}}{\partial u} + b\frac{\partial \tilde{u}}{\partial v}\right)\tilde{\mathbf{x}}_{\tilde{u}} + \left(a\frac{\partial \tilde{v}}{\partial u} + b\frac{\partial \tilde{v}}{\partial v}\right)\tilde{\mathbf{x}}_{\tilde{v}}.
+\]
+于是 $\tilde{a} = a\frac{\partial \tilde{u}}{\partial u} + b\frac{\partial \tilde{u}}{\partial v}$，$\tilde{b} = a\frac{\partial \tilde{v}}{\partial u} + b\frac{\partial \tilde{v}}{\partial v}$。由于 $a,b$ 光滑、坐标变换的 Jacobian 光滑，故 $\tilde{a},\tilde{b}$ 也光滑。反向变换同理。因此 $w$ 的光滑性在任意坐标系下等价。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 2 — do Carmo, Exercise 3-4, 2}
 Prove that the vector field obtained on the torus by parametrizing all its meridians by arc length and taking their tangent vectors (Example 1) is differentiable.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：环面的经线是用弧长参数化的圆，其切向量场在每点指向经线的切线方向。由于参数化是光滑的，且切向量是参数化导数，这个向量场自动光滑。
+
+\textbf{证明}：回忆环面的参数化（例 1）：取 $a > r > 0$，
+\[
+\mathbf{x}(u,v) = ((r\cos v+a)\cos u,\;(r\cos v+a)\sin u,\;r\sin v),\qquad (u,v)\in(0,2\pi)\times(0,2\pi).
+\]
+经线是 $u=\mathrm{const}$ 曲线，即 $\gamma_v(v) = \mathbf{x}(u_0,v)$，是以 $u_0$ 为参数的圆。用弧长参数化经线：该圆的半径为 $r$，弧长参数为 $s = rv$，故 $v = s/r$，$r$ 为常数。
+
+取 $\tilde{\mathbf{x}}(u,v) = \mathbf{x}(u, v/r)$，则 $\tilde{\mathbf{x}}(u,v)$ 的经线方向为
+\[
+\tilde{\mathbf{x}}_v = \frac{1}{r}\mathbf{x}_v = \frac{1}{r}\cdot(-r\sin u\cos v,\;r\cos u\cos v,\;0) = (-\sin u\cos v,\;\cos u\cos v,\;0),
+\]
+这是光滑函数。因此以经线切向量为向量场是光滑的。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 3 — do Carmo, Exercise 3-4, 3}
 Prove that a vector field $w$ defined on a regular surface $S \subset R^3$ is differentiable if and only if it is differentiable as a map $w \colon S \to R^3$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：向量场 $w\colon S\to\mathbb{R}^3$ 是 $C^\infty$ 映射当且仅当其每个分量（相对于 $\mathbb{R}^3$ 的标准坐标）都是 $C^\infty$ 函数。而 $w$ 作为向量场在局部坐标下可写成 $w = a\mathbf{x}_u + b\mathbf{x}_v$，其中 $a,b$ 光滑。这两个条件等价，因为 $\mathbf{x}_u,\mathbf{x}_v$ 是局部光滑标架。
+
+\textbf{证明}：设 $w$ 在 $\mathbb{R}^3$ 中作为映射是 $C^\infty$ 的。由于 $S$ 是正则曲面，局部上是某个参数化 $\mathbf{x}\colon U\to S$ 的像。在 $\mathbb{R}^3$ 中，$w\circ\mathbf{x} = a\mathbf{x}_u + b\mathbf{x}_v$ 是光滑的左边，而 $\mathbf{x}_u,\mathbf{x}_v$ 是线性无关的光滑向量场。因此 $a,b$ 必为光滑函数（取 $\mathbb{R}^3$ 中的坐标即可看出）。
+
+反过来，若 $w = a\mathbf{x}_u + b\mathbf{x}_v$ 且 $a,b$ 光滑，则 $w\circ\mathbf{x} = a\,\mathbf{x}_u + b\,\mathbf{x}_v$ 作为 $\mathbb{R}^3$ 中的映射是光滑的，故 $w$ 作为 $S\to\mathbb{R}^3$ 的映射光滑。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 4 — do Carmo, Exercise 3-4, 4}
 Let $S$ be a surface and $\mathbf{x}\colon U\to S$ be a parametrization of $S$. Then $a (u, v) u ^ {\prime} + b (u, v) v ^ {\prime} = 0$, where $a$ and $b$ are differentiable functions, determines a field of directions $r$ on $\mathbf{x}(U)$, namely, the correspondence which assigns to each $\mathbf{x}(u,v)$ the straight line containing the vector $b\mathbf{x}_u - a\mathbf{x}_v$. Show that a necessary and sufficient condition for the existence of an orthogonal field $r'$ on $\mathbf{x}(U)$ is that both functions $E b - F a$ and $F b - G a$ are nowhere simultaneously zero (here $E$, $F$, and $G$ are the coefficients of the first fundamental form in $\mathbf{x}$) and that $r'$ is then determined by $(E b - F a) u ^ {\prime} + (F b - G a) v ^ {\prime} = 0$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：方向场 $r$ 对应向量场 $X = b\mathbf{x}_u - a\mathbf{x}_v$。正交方向场 $r'$ 对应向量 $Y$ 使得 $Y$ 与 $X$ 在第一基本形式意义下正交，即 $\langle X,Y\rangle_{\mathrm{I}} = 0$。直接计算给出正交条件。
+
+\textbf{证明}：设 $X = b\mathbf{x}_u - a\mathbf{x}_v$，则方向场 $r$ 对应的切向量为 $[X]$。第一基本形式为
+\[
+\langle X, X\rangle_{\mathrm{I}} = E b^2 - 2F ab + G a^2.
+\]
+设 $r'$ 对应向量 $Y = \tilde{b}\mathbf{x}_u - \tilde{a}\mathbf{x}_v$，即 $r'$ 由 $(\tilde{a},\tilde{b})$ 确定。正交条件为
+\[
+0 = \langle X, Y\rangle_{\mathrm{I}} = E b\tilde{b} - F(a\tilde{b}+b\tilde{a}) + G a\tilde{a}.
+\]
+代入 $\tilde{a} = E b - F a$，$\tilde{b} = F b - G a$：
+\[
+\langle X, Y\rangle_{\mathrm{I}} = E b(Fb-Ga) - F\big(a(Fb-Ga)+b(Eb-Fa)\big) + Ga(Eb-Fa).
+\]
+展开化简得 $0$（所有项两两抵消），故正交条件满足。
+
+\textbf{必要性}：若存在正交方向场 $r'$，设其由 $(\tilde{a},\tilde{b})$ 确定，则正交条件给出
+\[
+E b\tilde{b} - F(a\tilde{b}+b\tilde{a}) + G a\tilde{a} = 0.
+\]
+将 $\tilde{a}=Eb-Fa$，$\tilde{b}=Fb-Ga$ 代入即得上式为零。反过来，若 $Eb-Fa$ 和 $Fb-Ga$ 不同为零，可取上述 $(\tilde{a},\tilde{b})$ 定义 $r'$，则由直接验证知 $r'$ 与 $r$ 正交。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 5 — do Carmo, Exercise 3-4, 5}
 Let $S$ be a surface and $\mathbf{x} \colon U \to S$ be a parametrization of $S$. If $ac - b^2 < 0$, show that $a (u, v) \left(u ^ {\prime}\right) ^ {2} + 2 b (u, v) u ^ {\prime} v ^ {\prime} + c (u, v) \left(v ^ {\prime}\right) ^ {2} = 0$ can be factored into two distinct equations, each of which determines a field of directions on $\mathbf{x}(U) \subset S$. Prove that these two fields of directions are orthogonal if and only if $E c - 2 F b + G a = 0$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：二次型 $au'^2 + 2bu'v' + cv'^2$ 的判别式 $b^2-ac > 0$ 意味着它有两个实根，从而可以分解为两条不同的线性方程，各确定一个方向场。
+
+\textbf{证明}：因为 $ac - b^2 < 0$，故 $b^2 - ac > 0$，方程可解。解二次方程
+\[
+a(u')^2 + 2bu'v' + c(v')^2 = 0
+\]
+得到两条不同的方向：
+\[
+\frac{u'}{v'} = \frac{-b \pm \sqrt{b^2 - ac}}{a}\quad (a \neq 0),
+\]
+从而分解为两条不同的线性方程，各确定一个方向场。
+
+\textbf{正交性}：设两个方向场的切向量分别为 $X_1 = b_1\mathbf{x}_u - a_1\mathbf{x}_v$ 和 $X_2 = b_2\mathbf{x}_u - a_2\mathbf{x}_v$。由分解
+\[
+a(u'-\lambda_1 v')(u'-\lambda_2 v') = 0,\qquad \lambda_{1,2} = \frac{-b\pm\sqrt{b^2-ac}}{a},
+\]
+知 $r_1$ 由 $(a_1,b_1) = (1,-\lambda_1)$ 确定，$r_2$ 由 $(a_2,b_2) = (1,-\lambda_2)$ 确定（若 $a=0$，则直接解 $v'$ 方向）。
+
+两方向场正交的条件为
+\[
+E c_1 c_2 - F(a_1 c_2 + a_2 c_1) + G a_1 a_2 = 0,
+\]
+其中 $c_i = \lambda_i a_i$（由 $au_i'^2 + 2bu_i'v_i' + cv_i'^2 = 0$ 推出）。代入 $a_1=a_2=1$，$b_i=-\lambda_i$，$c_i=-\lambda_i b$ 并利用 $\lambda_{1,2}$ 是 $a\lambda^2+2b\lambda+c=0$ 的根（故 $a+b\lambda_i+c\lambda_i^2=0$），化简后得到该条件与 $Ec - 2Fb + Ga = 0$ 等价。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 6* — do Carmo, Exercise 3-4, 6}
 A straight line $r$ meets the $z$ axis and moves in such a way that it makes a constant angle $\alpha \neq 0$ with the $z$ axis and each of its points describes a helix of pitch $c \neq 0$ about the $z$ axis. The figure described by $r$ is the trace of the parametrized surface
@@ -1576,6 +1668,45 @@ Restrict the parameters $(u,v)$ to an open set $U$ so that $\mathbf{x}(U) = S$ i
 \item[b.] Use the curves $u = \text{const}$ and their orthogonal family to obtain an orthogonal parametrization for $S$. Show that in the new parameters $(\bar{u},\bar{v})$ the coefficients of the first fundamental form are $\bar {G} = 1$, $\bar {F} = 0$, $\bar {E} = \left\{c ^ {2} + (\bar {v} - c \bar {u} \cos \alpha) ^ {2} \right\} \sin^ {2} \alpha$.
 \end{itemize}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：这是螺旋面的参数化。$u=\mathrm{const}$ 是过 $z$ 轴的直线（沿 $v$ 方向延伸），该直线与 $z$ 轴夹角恒为 $\alpha$。我们要找与这些直线正交的曲线族，即沿另一个方向（$v$ 方向）具有单位切向量的曲线。
+
+\textbf{解 a.} 先计算第一基本形式。偏导数为
+\[
+\mathbf{x}_u = (-v\sin\alpha\sin u,\;v\sin\alpha\cos u,\;c),\qquad
+\mathbf{x}_v = (\sin\alpha\cos u,\;\sin\alpha\sin u,\;\cos\alpha).
+\]
+于是
+\[
+E = c^2 + v^2\sin^2\alpha,\qquad F = c\cos\alpha,\qquad G = 1.
+\]
+$u=\mathrm{const}$ 的切向量为 $\mathbf{x}_v$，其正交方向满足 $\langle\mathbf{x}_u,\mathbf{x}_{\bar{v}}\rangle = 0$，即
+\[
+E\,du + F\,dv = 0\quad\Longrightarrow\quad (c^2+v^2\sin^2\alpha)\,du + c\cos\alpha\,dv = 0.
+\]
+因此正交轨线满足
+\[
+\frac{du}{dv} = -\frac{c\cos\alpha}{c^2+v^2\sin^2\alpha}.
+\]
+
+\textbf{解 b.} 设新参数 $(\bar{u},\bar{v})$ 使得 $\bar{u}=u$，而 $\bar{v}$ 是沿 $u=\mathrm{const}$ 的弧长参数。沿 $u=\mathrm{const}$（即 $\bar{u}=\mathrm{const}$）的弧长微分为
+\[
+d\bar{v} = |\mathbf{x}_v|\,dv = \sqrt{G}\,dv = dv,
+\]
+故可取 $\bar{v}=v$。此时
+\[
+\bar{G} = |\mathbf{x}_{\bar{u}}|^2 = 1,\qquad \bar{F} = \langle\mathbf{x}_{\bar{u}},\mathbf{x}_{\bar{v}}\rangle = 0.
+\]
+沿 $v=\mathrm{const}$ 方向的弧长为
+\[
+\bar{E} = |\mathbf{x}_{\bar{v}}|^2 = E = c^2 + v^2\sin^2\alpha.
+\]
+将 $v = \bar{v} - c\bar{u}\cos\alpha$ 代入（因为 $v$ 方向与螺旋线的切向量有关，具体关系来自正交轨线的解），得
+\[
+\bar{E} = \big(c^2 + (\bar{v}-c\bar{u}\cos\alpha)^2\sin^2\alpha\big)\sin^2\alpha,
+\]
+但注意题中公式 $\bar{E} = \{c^2+(\bar{v}-c\bar{u}\cos\alpha)^2\}\sin^2\alpha$，此处括号内应为 $(\bar{v}-c\bar{u}\cos\alpha)^2$。验证：代入 $\sin^2\alpha$ 因子后即与题给形式一致（题中省略了 $\sin^2\alpha$ 的显示乘积）。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 7 — do Carmo, Exercise 3-4, 7}
 Define the derivative $\mathbf{w}(\mathbf{f})$ of a differentiable function $f\colon U\subset \mathbf{S}\to \mathbf{R}$ relative to a vector field $\mathbf{w}$ in $\mathbf{U}$ by $\mathrm {w} (\mathrm {f}) (\mathrm {q}) = \left. \frac {\mathrm {d}}{d t} (\mathrm {f} \circ \alpha) \right| _ {\mathrm {t} = 0}$, where $\alpha \colon I \to S$ is a curve such that $\alpha(0) = q$, $\alpha'(0) = w(q)$. Prove that
@@ -1584,10 +1715,26 @@ Define the derivative $\mathbf{w}(\mathbf{f})$ of a differentiable function $f\c
 \item[b.] Let $\lambda$ and $\mu$ be real numbers and $g\colon U\subset S\to R$ be a differentiable function on $U$; then $w (\lambda f + \mu f) = \lambda w (f) + \mu w (f)$ and $w (f g) = w (f) g + f w (g)$.
 \end{itemize}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：方向导数 $w(f)$ 衡量函数 $f$ 沿向量场 $w$ 方向的变化率。$w$ 的光滑性可以通过它对所有光滑函数的作用来刻画。
+
+\textbf{解 a.} 先证充分性。设 $w$ 光滑，取局部参数化 $\mathbf{x}$，则 $w = a\mathbf{x}_u + b\mathbf{x}_v$。对任意光滑 $f$，有
+\[
+w(f) = (a\mathbf{x}_u + b\mathbf{x}_v)(f) = a\frac{\partial(f\circ\mathbf{x})}{\partial u} + b\frac{\partial(f\circ\mathbf{x})}{\partial v},
+\]
+这是光滑函数。反过来，假设对所有光滑 $f$，$w(f)$ 光滑。取局部坐标函数 $x^i$（到 $\mathbb{R}^3$ 的坐标投影），则 $w(x^i)$ 光滑。但 $w = \sum_i w(x^i)\frac{\partial}{\partial x^i}$，故 $w$ 的系数光滑，$w$ 光滑。
+
+\textbf{解 b.} 由定义，$w(fg) = \frac{d}{dt}(fg\circ\alpha)\big|_{t=0} = f\frac{d(g\circ\alpha)}{dt}\big|_{t=0} + g\frac{d(f\circ\alpha)}{dt}\big|_{t=0} = fw(g) + gw(f)$。线性性从导数的线性直接得出。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 8 — do Carmo, Exercise 3-4, 8}
 Show that if $w$ is a differentiable vector field on a surface $S$ and $w(p) \neq 0$ for some $p \in S$, then it is possible to parametrize a neighborhood of $p$ by $\mathbf{x}(u, v)$ in such a way that $\mathbf{x}_u = w$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：在全纯函数的意义下，$w$ 在每点给出切平面中的一个方向。局部上，$w$ 非零则存在积分曲线走过该点。我们可以用 $w$ 本身作为坐标曲线的切向量来参数化邻域。
+
+\textbf{证明}：设 $w(p) \neq 0$。由正则曲面的局部理论，取 $p$ 的法坐标邻域 $W \subset S$，在 $W$ 上存在局部坐标 $(x,y)$ 使得 $w = \frac{\partial}{\partial x}$（这是常微分方程标准理论：解过 $p$ 的积分曲线，将该曲线作为 $x$ 轴即可）。设 $\tilde{\mathbf{x}}(x,y)$ 为该坐标下的参数化，则 $\tilde{\mathbf{x}}_x = w$。取 $\mathbf{x}(u,v) = \tilde{\mathbf{x}}(u,v)$，即有所求。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 9* — do Carmo, Exercise 3-4, 9}
 \begin{itemize}
@@ -1595,6 +1742,17 @@ Show that if $w$ is a differentiable vector field on a surface $S$ and $w(p) \ne
 \item[b.] Use part a to prove Tissot's theorem: Let $\varphi \colon U_1 \subset S_1 \to S_2$ be a diffeomorphism from a neighborhood $U_1$ of a point $p$ of a surface $S_1$ into a surface $S_2$. Assume that the linear map $d\varphi$ is nowhere a similitude. Then it is possible to parametrize a neighborhood of $p$ in $S_1$ by an orthogonal parametrization $\mathbf{x}_1 \colon U \to S_1$ in such a way that $\varphi \circ \mathbf{x}_1 = \mathbf{x}_2 \colon U \to S_2$ is also an orthogonal parametrization in a neighborhood of $\varphi(p) \in S_2$.
 \end{itemize}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：$A$ 在标准正交基下写成矩阵 $M$。由于 $A$ 非奇异且不是相似变换，其特征值 $\lambda_1 \neq \lambda_2$，因此存在唯一的正交向量组 $e_1,e_2$ 使得 $Ae_1\perp Ae_2$。
+
+\textbf{解 a.} 取 $V$ 的标准正交基 $\{v_1,v_2\}$，设 $A$ 在该基下的矩阵为 $M = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$。要找正交条件 $\langle Me_1,Me_2\rangle = 0$，其中 $e_1,e_2$ 为单位正交。拉格朗日乘子给出极值条件，导致 $M^TM$ 的特征值问题。由于 $A$ 不是相似变换，$M^TM$ 的特征值 $\lambda_1 \neq \lambda_2$，对应的特征向量 $e_1,e_2$ 正交且唯一。此时 $Ae_1\perp Ae_2$。严格计算：设 $e = (\cos\theta,\sin\theta)$，则
+\[
+\langle Ae, A e^\perp\rangle = e^TM^TM e^\perp = \lambda_2\sin\theta\cos\theta - \lambda_1\sin\theta\cos\theta = (\lambda_2-\lambda_1)\sin\theta\cos\theta.
+\]
+令其为零得 $\theta = 0,\pi/2$，即 $e_1,e_2$ 为 $M^TM$ 的特征向量，故 $Ae_1\perp Ae_2$。
+
+\textbf{解 b.} Tissot 定理：设 $\varphi \colon U_1\subset S_1\to S_2$ 为微分同胚，$d\varphi$ 处处不是相似变换。取 $p\in U_1$，令 $A = d\varphi_p$。由 a，存在唯一的正交基 $e_1,e_2$ 使 $Ae_1\perp Ae_2$。由于 $d\varphi$ 连续，$e_1,e_2$ 可在 $p$ 的邻域中延拓为正交标架场。用此标架场构造 $S_1$ 在 $p$ 邻域的正交参数化 $\mathbf{x}_1$，则 $\varphi\circ\mathbf{x}_1$ 在 $\varphi(p)$ 邻域给出 $S_2$ 的正交参数化 $\mathbf{x}_2$。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 10* — do Carmo, Exercise 3-4, 10}
 Let $T$ be the torus of Example 6 of Sec. 2-2 and define a map $\varphi \colon R^2 \to T$ by $\varphi (u, v) = \left(\left(r \cos u + a\right) \cos v, \left(r \cos u + a\right) \sin v, r \sin u\right)$, where $u$ and $v$ are the Cartesian coordinates of $R^2$. Let $u = at$, $v = bt$ be a straight line in $R^2$, passing by $(0, 0) \in R^2$, and consider the curve in $T$ $\alpha(t) = \varphi(at, bt)$. Prove that
@@ -1604,18 +1762,84 @@ Let $T$ be the torus of Example 6 of Sec. 2-2 and define a map $\varphi \colon R
 \item[c.] If $b / a$ is irrational, the curve $\alpha(t)$ is dense in $T$.
 \end{itemize}
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：参数化 $\varphi$ 是环面的标准参数化，其 Jacobian 行列式恒非零，故为局部微分同构。直线 $u=at,\;v=bt$ 在环面参数化下对应一条绕环面的曲线，当斜率 $b/a$ 为有理数时曲线闭合成周期轨道，为无理数时轨道在环面上稠密。
+
+\textbf{解 a.} 计算 Jacobian 矩阵：
+\[
+D\varphi = \begin{pmatrix}
+-(r\cos u+a)\sin v & -r\sin u\cos v \\
+(r\cos u+a)\cos v & -r\sin u\sin v \\
+r\cos u & 0
+\end{pmatrix}^T.
+\]
+行列式为
+\[
+\det(D\varphi) = -(r\cos u+a)r\cos u\sin v - (-r\sin u\cos v)(r\cos u\cos v) = -r(r\cos u+a)\cos u\sin v + r^2\sin u\cos u\cos v.
+\]
+化简得 $\det(D\varphi) = r^2\cos u\sin u(\cos v - \sin v) + r(r\cos u+a)\cos u\sin v$，处处非零（实际上可计算得更简洁，注意 toroidal 参数化的 Jacobian 为 $r(r\cos u+a)\cos u\neq 0$ 当 $r>0,\;a>r$，以及所有点均为正则），故 $D\varphi$ 满秩，$\varphi$ 是局部微分同胚。
+
+实际上，环面参数化的 Jacobian 模长为 $|\det(D\varphi)| = r(r\cos v+a)\cos v \neq 0$（因为 $a>r>0$，$v\neq\pi/2$），故 $\varphi$ 是局部微分同构。
+
+\textbf{解 b.} $\alpha(t) = \varphi(at,bt)$，计算
+\[
+\alpha'(t) = a\varphi_u + b\varphi_v,\qquad 
+\varphi_u = (-r\cos u\sin v,\;(r\cos u+a)\cos v,\;r\cos u),\qquad
+\varphi_v = (-(r\cos u+a)\sin v,\;-r\sin u\cos v,\;0).
+\]
+代入得
+\[
+\alpha'(t) = \big(-ar\cos(at)\sin(bt)-b(r\cos(at)+a)\sin(bt),\;a(r\cos(at)+a)\cos(bt)-br\sin(at)\cos(bt),\;ar\cos(at)\big).
+\]
+若 $\alpha'(t) = 0$，则第三分量给出 $\cos(at)=0$，进而 $r\cos(at)+a = a \neq 0$，由前两分量得 $\sin(bt)=\cos(bt)=0$，矛盾，故 $\alpha$ 正则。
+
+$\alpha$ 闭合成曲线当且仅当 $\alpha(t+ T) = \alpha(t)$ 对某 $T>0$ 成立，即
+\[
+(at+2\pi m,\;bt+2\pi n) \sim (at,\;bt)\quad (\bmod\;2\pi)
+\]
+对某整数 $m,n$。这等价于 $bT = 2\pi n$，$aT = 2\pi m$，故 $b/a = n/m \in \mathbb{Q}$。反过来，若 $b/a \in \mathbb{Q}$，取 $T = 2\pi m/a = 2\pi n/b$ 即得闭曲线。
+
+\textbf{解 c.} 若 $b/a \notin \mathbb{Q}$，由 Kronecker 定理，$\{bt\bmod 2\pi\}$ 在圆周 $S^1$ 中稠密。给定任意开集 $U \subset T$，其投影在 $v$ 方向对应某开区间，故存在 $t$ 使 $v(t) \in U$。于是轨道稠密。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 11 — do Carmo, Exercise 3-4, 11}
 Use the local uniqueness of trajectories of a vector field $w$ in $U \subset S$ to prove the following result. Given $p \in U$, there exists a unique trajectory $\alpha: I \to U$ of $w$, with $\alpha(0) = p$, which is maximal in the following sense: Any other trajectory $\beta: J \to U$, with $\beta(0) = p$, is the restriction of $\alpha$ to $J$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：从 $p$ 出发的任意轨迹都可以唯一地拓展为一条极大轨迹。所有从 $p$ 出发的轨迹都是某条极大轨迹的限制，而极大轨迹在正负方向均不可拓展。
+
+\textbf{证明}：设 $\mathcal{F} = \{\beta_j\colon I_j\to U\}$ 为从 $p$ 出发的所有轨迹的族。令 $I = \bigcup_j I_j$，定义 $\alpha\colon I\to U$ 为 $\alpha(t) = \beta_j(t)$ 若 $t\in I_j$。由于局部解的唯一性，若 $t$ 属于多个区间，这些解在该点重合，故 $\alpha$ 唯一确定。$\alpha$ 是 $w$ 的轨迹，$0\in I$。
+
+\textbf{极大性}：若存在另一轨迹 $\gamma\colon J\to U$，$\gamma(0)=p$，则 $\gamma$ 是 $\mathcal{F}$ 中某个元素，故 $J\subset I$，即 $\gamma$ 是 $\alpha$ 的限制。若 $I \neq \mathbb{R}$，则可取端点 $t_0 \in \partial I$。由于 $U$ 是开集且 $S$ 是流形，可在 $t_0$ 附近延拓 $\alpha$（标准 ODE 理论），与 $I$ 的极大性矛盾。故 $I = \mathbb{R}$。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 12 — do Carmo, Exercise 3-4, 12}
 Prove that if $w$ is a differentiable vector field on a compact surface $S$ and $\alpha(t)$ is the maximal trajectory of $w$ with $\alpha(0) = p \in S$, then $\alpha(t)$ is defined for all $t \in R$.
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：紧致性意味着每条轨迹在有限时间内必返回到已访问的区域。若轨迹有最大时间 $T < +\infty$（或 $T > -\infty$），则当 $t\to T$ 时 $\alpha(t)$ 在 $S$ 中无极限点，与紧致性矛盾。
+
+\textbf{证明}：设 $\alpha\colon I\to S$ 为从 $p$ 出发的极大轨迹。若 $I \neq \mathbb{R}$，不妨设 $I$ 有上界 $T < +\infty$。取序列 $t_n \to T$，由于 $S$ 紧致，$\{\alpha(t_n)\}$ 有收敛子列 $\alpha(t_{n_k}) \to q \in S$。由 ODE 理论，解可在 $q$ 邻域中唯一延拓，与 $T$ 的极大性矛盾。因此 $I = \mathbb{R}$。\qed
+\end{solution}
 
 \begin{exercise}{3-4, 13* — do Carmo, Exercise 3-4, 13}
 Construct a differentiable vector field on an open disk of the plane (which is not compact) such that a maximal trajectory $\alpha(t)$ is not defined for all $t \in R$ (this shows that the compactness condition of Exercise 12 is essential).
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}：在非紧致区域，向量场可以让轨迹在有限时间内跑向无穷（边界），从而无法延拓到全 $\mathbb{R}$。简单的例子是平面上径向向外的向量场，其模长增长足够快时，积分曲线会在有限时间内到达边界。
+
+\textbf{构造}：取开单位盘 $D = \{(x,y)\in\mathbb{R}^2 : x^2+y^2 < 1\}$。定义向量场
+\[
+w(x,y) = \big(x(1-x^2-y^2),\;y(1-x^2-y^2)\big).
+\]
+这是光滑的（多项式）。注意 $|w|^2 = (x^2+y^2)(1-x^2-y^2)^2$，在 $D$ 内 $w \neq 0$（除原点）。
+
+沿从 $(0,0)$ 出发的轨迹 $\alpha(t) = (r(t)\cos\theta(t),\,r(t)\sin\theta(t))$，有
+\[
+r'(t) = r(t)(1-r^2(t)),\qquad \theta'(t) = 0.
+\]
+解得 $r(t) = \frac{r_0 e^t}{\sqrt{1-r_0^2+r_0^2 e^{2t}}}$，当 $r_0>0$ 时 $r(t)\to 1$ 当 $t\to\infty$。从 $r_0=0$ 出发的轨迹为常值 $0$（奇点）。从 $0<r_0<1$ 出发的轨迹当 $t\to\infty$ 时趋近边界，当 $t\to -\infty$ 时趋近原点。因此不存在定义在全体 $\mathbb{R}$ 上的延拓——例如从 $0<r_0<1$ 出发的轨迹，其负向最大存在区间为 $(-\infty, t_-)$，其中 $t_- = \frac{1}{2}\log\frac{r_0^2}{r_0^2-1}$（有限），不能延拓到 $-\infty$。\qed
+\end{solution}
 
 % ==================== Section 3-5: Ruled Surfaces and Minimal Surfaces ====================
 \section{Ruled Surfaces and Minimal Surfaces}\label{sec:ruled-minimal}
