@@ -230,6 +230,41 @@ K = -\frac{\varphi''(s)}{\varphi(s)}.
 \begin{exercise}{5-2, 4* — do Carmo, Exercise 5-2, 4（Hopf 定理的证明轮廓）}
 设 $\mathbf{x}: U \to S$ 是等温参数化（$E=G$，$F=0$），复参数 $\zeta = u+iv$。定义 $\phi(\zeta) = \frac{e-g}{2} - if$。（a）证明：平均曲率 $H$ 常数当且仅当 $\phi$ 是 $\zeta$ 的解析函数。（b）定义复导数 $\partial/\partial\zeta = \frac{1}{2}(\partial/\partial u - i\partial/\partial v)$，证明 $\phi(\zeta) = -2\langle \mathbf{x}_\zeta, N_\zeta\rangle$。（c）设 $f: U \subset \mathbb{C} \to V \subset \mathbb{C}$ 是单叶解析函数，$\eta = f(\zeta)$。证明 $\phi(\zeta) = \psi(\eta)(\partial\eta/\partial\zeta)^2$。（d）利用球面的立体投影，Liouville 定理证明：若 $S$ 与球面共形等价，则 $\phi \equiv 0$，从而 $\psi \equiv 0$。（e）设 $S$ 是常平均曲率且与球面同胚的正则曲面，利用上述结果证明 $S$ 是由脐点组成，从而 $S$ 是球面（Hopf 定理）。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 关键在于将 Mainardi-Codazzi 方程和等温参数条件综合起来得到复解析函数。复参数 $\zeta = u+iv$ 下，$(e-g)/2 - if$ 的解析性与平均曲率常数紧密相连，从而将曲面论方程转化为复分析问题。对球面（常数平均曲率），$\phi$ 在两叶等温参数下是双全纯函数，由 Liouville 定理只能为常数，进而 $\phi\equiv 0$，推出所有点为脐点。
+
+\textbf{解答}: (a) 等温参数化满足 $E=G=\lambda^2$，$F=0$，则
+\[
+\phi(u,v) = \frac{e-g}{2} - if.
+\]
+等温坐标下的 Mainardi-Codazzi 方程（见第 4-3 节）为
+\[
+\left(\frac{e-g}{2}\right)_u + f_v = \lambda^2 H_u,\qquad
+\left(\frac{e-g}{2}\right)_v - f_u = -\lambda^2 H_v.
+\]
+定义 $\phi = (e-g)/2 - if$，则上述方程可写成 Cauchy-Riemann 形式：
+\[
+\phi_u = \lambda^2 H_v,\qquad \phi_v = -\lambda^2 H_u.
+\]
+于是 $\phi$ 为解析函数的充要条件是 $H$ 常数。
+
+(b) 记 $\mathbf{x}_\zeta = \frac{1}{2}(\mathbf{x}_u - i\mathbf{x}_v)$，$N_\zeta = \frac{1}{2}(N_u - iN_v)$，直接计算得
+\[
+\phi(\zeta) = -2\langle \mathbf{x}_\zeta,\, N_\zeta\rangle.
+\]
+(涉及基本形式的计算，此处从略。)
+
+(c) 设 $f: U\to V$ 单叶解析，$\eta = f(\zeta)$，$f'(\zeta)\neq 0$。由链式法则，$\mathbf{y}_\eta = \mathbf{x}_\zeta / f'(\zeta)$，$N_\eta = N_\zeta / f'(\zeta)$，于是
+\[
+\psi(\eta) = -2\langle \mathbf{y}_\eta,\, N_\eta\rangle = -2\frac{\langle\mathbf{x}_\zeta,\, N_\zeta\rangle}{(f'(\zeta))^2}
+= \frac{\phi(\zeta)}{(f'(\zeta))^2},
+\]
+即在交集上 $\phi(\zeta) = \psi(\eta)(d\eta/d\zeta)^2$。
+
+(d) 对单位球面 $S^2$，用立体投影从两极 $N=(0,0,1)$ 和 $S=(0,0,-1)$ 覆盖，得两叶等温参数 $\zeta$ 和 $\eta$，在赤道邻域 $W$ 上满足 $\eta = 1/\zeta$。设存在解析函数 $\varphi(\zeta)$，$\psi(\eta)$ 使在 $W$ 上 $\phi = \varphi(\zeta)(d\eta/d\zeta)^2 = \varphi(\zeta)(-\zeta^{-2})^2 = \varphi(\zeta)\zeta^{-4}$ 且 $\psi = \psi(\eta)$。由 Liouville 定理（非常数解析函数不能在整个复平面有界），$\varphi(\zeta)\equiv 0$，从而 $\psi(\eta)\equiv 0$。
+
+(e) 对常平均曲率且与球面同胚的曲面 $S$，由一致化定理存在共形微分同胚 $\varphi: S\to S^2$。在参数 $\tilde{\zeta}$ 和 $\tilde{\eta}$ 下，$\phi(\tilde{\zeta})$ 和 $\psi(\tilde{\eta})$ 均为解析函数，满足关系 $(*)$。由 (d) 的结论 $\phi\equiv 0$，即 $(e-g)/2 - if \equiv 0$，故 $e=g$ 且 $f=0$，即所有点为脐点。由第 3-2 节命题 4，$S$ 是球面（Hopf 定理）。\qed
+\end{solution}
 
 % ==================== Section 5-3: Complete Surfaces. Theorem of Hopf-Rinow ====================
 \section{Complete Surfaces. Theorem of Hopf-Rinow}\label{sec:hopf-rinow}
