@@ -449,6 +449,19 @@ Hopf-Rinow 定理是完备曲面之所以比不可延展曲面更适合微分几
 \begin{exercise}{5-3, 5* — do Carmo, Exercise 5-3, 5}
 证明：$S$ 完备当且仅当 $S$ 上每个 Cauchy 序列都收敛到 $S$ 中一点。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 完备性等价于测地线可延拓，而 Cauchy 序列收敛是完备度量空间的特征性质。我们通过"指数映射"将两者联系起来。
+
+\textbf{解答}: 必要性：设 $S$ 完备。取 $S$ 上的 Cauchy 序列 $\{p_n\}$。由完备性定义，任意测地线可延拓。我们需要证明 $\{p_n\}$ 收敛于某点 $p \in S$。
+
+设 $r_n = d(p_1,p_n)$，取 $v_n \in T_{p_1}(S)$ 使 $p_n = \exp_{p_1}(r_n v_n)$，$|v_n|=1$。由于 $\{p_n\}$ 为 Cauchy 列，存在 $n_0$ 使 $n,m \geq n_0$ 时 $d(p_n,p_m) < \delta$。由指数映射的性质，在 $B_\delta(p_1)$ 内 $d(p_1,\cdot) = |\exp_{p_1}^{-1}(\cdot)|$，于是
+\[
+\|r_n v_n - r_m v_m\| \leq d(p_n,p_m) < \delta,
+\]
+这说明 $\{r_n v_n\}$ 是 $T_{p_1}(S)$ 中的 Cauchy 序列。$T_{p_1}(S) \cong \mathbb{R}^2$ 是完备的（作为有限维向量空间），故存在 $v \in T_{p_1}(S)$ 使 $r_n v_n \to v$。设 $r = |v|$，$q = \exp_{p_1}(v)$。由指数映射的连续性，$p_n \to q$，即 Cauchy 序列收敛。
+
+充分性：设 $S$ 上每个 Cauchy 序列均收敛。假设 $S$ 不完备，则存在从 $p$ 出发的测地线 $\gamma: [0,\epsilon)\to S$ 无法延拓至 $s=1$（这里可归一化 $l=1$）。取 $t_n \to 1$，$t_n < 1$，令 $p_n = \gamma(t_n)$。则 $\{p_n\}$ 为 Cauchy 序列（因为 $\gamma$ 是弧长参数，$d(p_n,p_m) = |t_n-t_m|\to 0$），按假设应收敛于某 $q \in S$。但 $\gamma$ 的极限点包含 $p_0 = \lim\gamma(t_n)$（由连续性），且 $\gamma$ 可延拓过 $t=1$，与假设矛盾。\qed
+\end{solution}
 
 \begin{exercise}{5-3, 6* — do Carmo, Exercise 5-3, 6}
 设 $S$ 上从 $p$ 发出的射线（ray）是指满足 $l(\gamma) = d(\gamma(0),\gamma(s))$ 对所有 $s\geq 0$ 成立的测地线 $\gamma: [0,\infty) \to S$。设 $S$ 是完备非紧曲面。证明：$S$ 包含从任意给定点 $p$ 发出的射线。
