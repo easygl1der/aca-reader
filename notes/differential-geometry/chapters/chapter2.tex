@@ -1725,6 +1725,26 @@ L_u(u_0,u_1;v) = \int_{u_0}^{u_1} \sqrt{E(u)}\, du
 \qed
 \end{solution}
 
+\begin{solution}
+\textbf{直观理解}：Tchebyshev net 的条件"任意四边形对边相等"等价于沿 $u$-曲线和 $v$-曲线的弧长只取决于端点坐标，与路径无关。这要求 $E$ 与 $v$ 无关、$G$ 与 $u$ 无关。
+
+\textbf{证明（必要性）}：设坐标曲线构成 Tchebyshev net。取 $(u_0,v_0)$ 和 $(u_1,v_1)$（$u_0 < u_1, v_0 < v_1$），考虑由参数线段围成的四边形。Tchebyshev net 条件要求
+\[
+\int_{u_0}^{u_1} \sqrt{E(u,v_0)}\, du = \int_{u_0}^{u_1} \sqrt{E(u,v_1)}\, du
+\quad \text{对所有 } u_0,u_1,v_0,v_1.
+\tag{1}
+\]
+
+将 (1) 对 $u_1$ 求导后令 $u_1 \to u_0$，得 $\sqrt{E(u_0,v_0)} = \sqrt{E(u_0,v_1)}$ 对所有 $v_0,v_1$。故 $E$ 与 $v$ 无关，即 $\partial E/\partial v = 0$。同理对 $v$-曲线分析得 $\partial G/\partial u = 0$。
+
+\textbf{证明（充分性）}：若 $\partial E/\partial v = 0$ 且 $\partial G/\partial u = 0$，则 $E = E(u)$ 仅依赖 $u$，$G = G(v)$ 仅依赖 $v$。此时
+\[
+L_u(u_0,u_1;v) = \int_{u_0}^{u_1} \sqrt{E(u)}\, du
+\]
+与 $v$ 无关，故上、下边相等；同理左、右边相等。故坐标曲线构成 Tchebyshev net。
+\qed
+\end{solution}
+
 \begin{exercise}{2-4, 8* — do Carmo, Exercise 2-4, 8}
 Prove that whenever the coordinate curves constitute a Tchebyshev net (see Exercise 7) it is possible to reparametrize the coordinate neighborhood in such a way that the new coefficients of the first fundamental form are
 \[
@@ -1732,6 +1752,31 @@ E = 1, \quad F = \cos \theta, \quad G = 1,
 \]
 where $\theta$ is the angle of the coordinate curves.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：Tchebyshev net 已有 $E = E(u)$、$G = G(v)$。我们希望找到参数变换使新的 Gauss 系数满足 $\bar{E} = \bar{G} = 1$ 且 $\bar{F} = \cos\bar{\theta}$，即把 $u$-曲线和 $v$-曲线都变成单位速度曲线。
+
+\textbf{解答}：由练习 7，已知 Tchebyshev net 条件给出 $E = E(u)$、$G = G(v)$。设当前参数化为 $\mathbf{x}(u,v)$。
+
+第一步：将 $u$-曲线规范化为弧长参数。令
+\[
+\bar{u}(u) = \int_{u_0}^u \sqrt{E(t)}\, dt,
+\]
+则沿 $u$-曲线的弧长为 $\bar{u}$，故新的 $u$-系数 $\bar{E} = 1$。
+
+第二步：同理对 $v$-曲线做弧长参数化。令
+\[
+\bar{v}(v) = \int_{v_0}^v \sqrt{G(t)}\, dt,
+\]
+则新的 $v$-系数 $\bar{G} = 1$。
+
+第三步：计算新的混合系数 $\bar{F}$。由第一基本形式的变换公式，且原 $F = 0$，参数变换相互独立，故
+\[
+\bar{F} = E(u) \cdot \bar{u}'_u \cdot \bar{v}'_v = E(u) \sqrt{G(v)}.
+\]
+令 $\cos\bar\theta = \sqrt{E(u)G(v)}$，即 $\bar\theta = \arccos(\sqrt{E(u)G(v)})$，则新系数满足 $E = G = 1$，$F = \cos\bar\theta$。
+\qed
+\end{solution}
 
 \begin{solution}
 \textbf{直观理解}：Tchebyshev net 已有 $E = E(u)$、$G = G(v)$。我们希望找到参数变换使新的 Gauss 系数满足 $\bar{E} = \bar{G} = 1$ 且 $\bar{F} = \cos\bar{\theta}$，即把 $u$-曲线和 $v$-曲线都变成单位速度曲线，且夹角为 $\bar\theta$。
@@ -1780,6 +1825,24 @@ E = E(v), \quad F = 0, \quad G = 1.
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：旋转面有自然的纬线（圆）和经线结构。沿纬线取常值速度，沿经线取弧长参数化，可以得到 $F = 0$、$G = 1$，而 $E$ 只依赖于 $v$（纬线半径）。
+
+\textbf{解答}：设旋转面由生成曲线 $C$（弧长参数 $s$）绕 $z$ 轴旋转而成。取标准参数化
+\[
+\mathbf{x}(s, \theta) = (f(s)\cos\theta,\; f(s)\sin\theta,\; g(s)),\quad f(s) > 0.
+\]
+计算得 $E = f'(s)^2 + g'(s)^2 = 1$，$F = 0$，$G = f(s)^2$。
+
+为得到 $G = 1$，对 $v$-参数做重新缩放。令 $v = \int_0^s f(t)\, dt$，则
+\[
+\frac{\partial\mathbf{x}}{\partial v} = \frac{\mathbf{x}_s}{f(s)},\quad
+\left\|\frac{\partial\mathbf{x}}{\partial v}\right\|^2 = \frac{1}{f(s)^2}\cdot 1 = 1,
+\]
+故新的 $G = 1$。而 $E$ 仅依赖于 $\theta$（记作 $v$），即 $E = E(v)$。因此旋转面总可以参数化满足 $E = E(v)$，$F = 0$，$G = 1$。
+\qed
+\end{solution}
+
 \begin{exercise}{2-4, 10 — do Carmo, Exercise 2-4, 10}
 Let $P = \{(x, y, z) \in \mathbb{R}^3; z = 0\}$ be the $xy$ plane and let $\mathbf{x}: U \to P$ be a parametrization of $P$ given by
 \[
@@ -1791,6 +1854,30 @@ U = \{(\rho, \theta) \in \mathbb{R}^2; \rho > 0, 0 < \theta < 2\pi\}.
 \]
 Compute the coefficients of the first fundamental form of $P$ in this parametrization.
 \end{exercise}
+
+\begin{solution}
+\textbf{解答}：对 $xy$ 平面取极坐标参数化 $\mathbf{x}(\rho, \theta) = (\rho\cos\theta, \rho\sin\theta, 0)$，其中 $\rho > 0$，$0 < \theta < 2\pi$。
+
+计算偏导数：
+\[
+\mathbf{x}_\rho = (\cos\theta, \sin\theta, 0),\quad
+\mathbf{x}_\theta = (-\rho\sin\theta, \rho\cos\theta, 0).
+\]
+
+计算第一基本形式系数：
+\begin{itemize}
+    \item $E = \mathbf{x}_\rho \cdot \mathbf{x}_\rho = \cos^2\theta + \sin^2\theta = 1$；
+    \item $F = \mathbf{x}_\rho \cdot \mathbf{x}_\theta = -\rho\cos\theta\sin\theta + \rho\sin\theta\cos\theta = 0$；
+    \item $G = \mathbf{x}_\theta \cdot \mathbf{x}_\theta = \rho^2\sin^2\theta + \rho^2\cos^2\theta = \rho^2$。
+\end{itemize}
+
+因此，$xy$ 平面在极坐标下的第一基本形式为：
+\[
+I = d\rho^2 + \rho^2\, d\theta^2.
+\]
+这正是极坐标下平面几何的度量形式。
+\qed
+\end{solution}
 
 \begin{exercise}{2-4, 11 — do Carmo, Exercise 2-4, 11}
 Let $S$ be a surface of revolution and $C$ its generating curve (cf. Example 4, Sec. 2-3). Let $s$ be the arc length of $C$ and denote by $\rho = \rho(s)$ the distance to the rotation axis of the point of $C$ corresponding to $s$.
@@ -1804,9 +1891,59 @@ where $l$ is the length of $C$.
 b. Apply part a to compute the area of a torus of revolution.
 \end{exercise}
 
+\begin{solution}
+a. \textbf{(Pappus 定理)} 设旋转面 $S$ 由生成曲线 $C$（弧长参数 $s \in [0,l]$）绕 $z$ 轴旋转而成。$C$ 上对应弧长 $s$ 的点到 $z$ 轴的距离为 $\rho(s)$。对 $C$ 的任一微元 $ds$，旋转后得到纬线圆，其面积为
+\[
+dA = (2\pi\rho(s))\, ds,
+\]
+因为该微元轨迹是一个半径为 $\rho(s)$、宽为 $ds$ 的"腰带"，其面积等于底乘高。将 $\rho = \rho(s)$ 代入并积分即得
+\[
+A = 2\pi \int_0^l \rho(s)\, ds.
+\]
+
+b. \textbf{环面的面积}：环面由半径为 $a$ 的圆（生成曲线）绕 $z$ 轴旋转而成。设生成曲线为
+\[
+C: \; (\rho(s), z(s)) = (a + r\cos s,\; r\sin s),\quad s \in [0, 2\pi],
+\]
+其中 $s$ 已是弧长参数（因为 $(\rho'(s), z'(s)) = (-r\sin s,\; r\cos s)$，模长为 $r$）。
+
+由 Pappus 定理，
+\[
+A = 2\pi \int_0^{2\pi} \rho(s)\, ds = 2\pi \int_0^{2\pi} (a + r\cos s)\, ds = 2\pi [as + r\sin s]_0^{2\pi} = 2\pi \cdot a \cdot 2\pi = 4\pi^2 ar.
+\]
+
+因此，环面的面积为 $4\pi^2 ar$。
+\qed
+\end{solution}
+
 \begin{exercise}{2-4, 12 — do Carmo, Exercise 2-4, 12}
 Show that the area of a regular tube of radius $r$ around a curve $\alpha$ (cf. Exercise 10, Sec. 2-4) is $2\pi r$ times the length of $\alpha$.
 \end{exercise}
+
+\begin{solution}
+设 $\alpha(s)$ 是单位速度曲线（弧长参数），其正则管状邻域（regular tube）半径为 $r$ 的管面 $T$ 定义为
+\[
+T = \{\alpha(s) + r(\cos\theta\, n(s) + \sin\theta\, b(s)) \;|\; s \in [0,l],\; \theta \in [0,2\pi]\},
+\]
+其中 $n(s)$ 和 $b(s)$ 分别是 $\alpha$ 的主法向量和副法向量。
+
+参数化 $T$ 为
+\[
+\mathbf{x}(s, \theta) = \alpha(s) + r(\cos\theta\, n(s) + \sin\theta\, b(s)).
+\]
+
+计算第一基本形式：利用 Frenet 公式和正交性，可得
+\[
+E = 1,\quad F = 0,\quad G = r^2.
+\]
+
+于是面积元 $d\sigma = \sqrt{EG - F^2}\, ds\, d\theta = r\, ds\, d\theta$，面积
+\[
+A = \int_0^{2\pi} \int_0^l r\, ds\, d\theta = 2\pi r \cdot l.
+\]
+即管面面积等于 $2\pi r$ 乘以曲线的长度。
+\qed
+\end{solution}
 
 \begin{exercise}{2-4, 13 — do Carmo, Exercise 2-4, 13}
 (Generalized Helicoids.) A natural generalization of both surfaces of revolution and helicoids is obtained as follows. Let a regular plane curve $C$, which does not meet an axis $E$ in the plane, be displaced in a rigid screw motion about $E$, that is, so that each point of $C$ describes a helix (or circle) with $E$ as axis. The set $S$ generated by the displacement of $C$ is called a generalized helicoid with axis $E$ and generator $C$. If the screw motion is a pure rotation about $E$, $S$ is a surface of revolution; if $C$ is a straight line perpendicular to $E$, $S$ is (a piece of) the standard helicoid (cf. Example 3).
@@ -1825,6 +1962,38 @@ is a parametrization of $S$. Conclude that $S$ is a regular surface.
 
 b. The coordinate lines of the above parametrization are orthogonal (i.e., $F = 0$) if and only if $\mathbf{x}(U)$ is either a surface of revolution or (a piece of) the standard helicoid.
 \end{exercise}
+
+\begin{solution}
+a. \textbf{参数化与正则性}：设 $E$ 为 $z$ 轴，$C$ 在 $yz$ 平面中由 $(f(s), g(s))$ 弧长参数化，$f(s) > 0$。令
+\[
+\mathbf{x}(s, u) = (f(s)\cos u,\; f(s)\sin u,\; g(s) + cu),\quad c = \mathrm{const.}
+\]
+这是因为 $C$ 上的点 $(0, f(s), g(s))$ 绕 $z$ 轴旋转角 $u$ 得到 $(f(s)\cos u, f(s)\sin u, g(s))$，再沿 $z$ 方向平移 $cu$ 即完成螺旋运动。
+
+检查正则性：偏导数
+\[
+\mathbf{x}_s = (f'(s)\cos u,\; f'(s)\sin u,\; g'(s)),\quad
+\mathbf{x}_u = (-f(s)\sin u,\; f(s)\cos u,\; c).
+\]
+由于 $f(s) > 0$ 且 $(f'(s), g'(s))$ 为单位向量（弧长参数化），有
+\[
+\mathbf{x}_s \times \mathbf{x}_u = (f(s)f'(s),\, -f(s)g'(s)\cos u - c f(s)\sin u,\, f(s)c\cos u - f(s)g'(s)\sin u) \neq 0,
+\]
+因为向量叉积的 $x$-分量为 $f(s)f'(s) \neq 0$（$f(s) > 0$）。故 $\mathbf{x}$ 是正则参数化，$S$ 是正则曲面。
+
+b. \textbf{正交条件}：计算
+\[
+F = \mathbf{x}_s \cdot \mathbf{x}_u = f(s)f'(s)(\cos^2 u + \sin^2 u) + c\, g'(s) = f(s)f'(s) + c\, g'(s).
+\]
+由于 $f'(s)^2 + g'(s)^2 = 1$（弧长参数化），$F = 0$ 当且仅当 $f(s)f'(s) + c\, g'(s) = 0$。
+
+若 $c = 0$，则 $f(s)f'(s) = 0$，而 $f(s) > 0$，故 $f'(s) = 0$，即 $f(s) = \mathrm{const}$，$C$ 是圆，此时 $S$ 为旋转面。
+
+若 $c \neq 0$，由 $f(s)f'(s) + c\, g'(s) = 0$ 和 $f'(s)^2 + g'(s)^2 = 1$，解得 $f'(s)^2(1 + f(s)^2/c^2) = 1$，这要求 $f(s)$ 为常数（因为右端为常数），此时 $C$ 为直线，$S$ 为标准螺旋面。
+
+故 $F = 0$ 当且仅当 $S$ 是旋转面（$c = 0$）或标准螺旋面（$f(s) = \mathrm{const}$，$c \neq 0$）。
+\qed
+\end{solution}
 
 \begin{exercise}{2-4, 14 — do Carmo, Exercise 2-4, 14}
 (Gradient on Surfaces.) The gradient of a differentiable function $f: S \to \mathbb{R}$ is a differentiable map $\operatorname{grad} f: S \to \mathbb{R}^3$ which assigns to each point $p \in S$ a vector $\operatorname{grad} f(p) \in T_p(S) \subset \mathbb{R}^3$ such that
@@ -1850,6 +2019,40 @@ b. If you let $p \in S$ be fixed and $v$ vary in the unit circle $|v| = 1$ in $T
 c. If $\operatorname{grad} f \neq 0$ at all points of the level curve $C = \{q \in S; f(q) = \mathrm{const.}\}$, then $C$ is a regular curve on $S$ and $\operatorname{grad} f$ is normal to $C$ at all points of $C$.
 \end{exercise}
 
+\begin{solution}
+a. \textbf{梯度公式}：设 $\operatorname{grad} f = a\, \mathbf{x}_u + b\, \mathbf{x}_v$。由定义，
+\[
+\langle \operatorname{grad} f, v\rangle = df(v)\quad \forall v \in T_pS.
+\]
+取 $v = \mathbf{x}_u$ 和 $v = \mathbf{x}_v$，得
+\[
+a\, E + b\, F = f_u,\quad a\, F + b\, G = f_v.
+\]
+解此线性方程组（系数矩阵为 $\begin{pmatrix}E & F\\ F & G\end{pmatrix}$，行列式为 $EG - F^2$），得
+\[
+a = \frac{f_u G - f_v F}{EG - F^2},\quad b = \frac{f_v E - f_u F}{EG - F^2}.
+\]
+故
+\[
+\operatorname{grad} f = \frac{f_u G - f_v F}{EG - F^2}\,\mathbf{x}_u + \frac{f_v E - f_u F}{EG - F^2}\,\mathbf{x}_v.
+\]
+
+特别地，取 $\mathbf{x}(x,y) = (x,y,0)$，则 $E = G = 1$，$F = 0$，$f_u = f_x$，$f_v = f_y$，故 $\operatorname{grad} f = f_x\, e_1 + f_y\, e_2$。
+
+b. \textbf{最大方向导数}：由 Cauchy-Schwarz 不等式，
+\[
+df_p(v) = \langle \operatorname{grad} f(p), v\rangle \leq \|\operatorname{grad} f(p)\| \cdot \|v\|.
+\]
+当 $|v| = 1$ 时，等号成立当且仅当 $v$ 与 $\operatorname{grad} f(p)$ 平行且同向，即 $v = \operatorname{grad} f / |\operatorname{grad} f|$。
+
+c. \textbf{等值曲线的法向量}：设 $C = \{q \in S; f(q) = c\}$。对 $C$ 上任意曲线 $\alpha(t)$，沿 $\alpha$ 有 $f(\alpha(t)) = c$，故 $df_{\alpha(t)}(\alpha'(t)) = 0$。由梯度定义，
+\[
+\langle \operatorname{grad} f(\alpha(t)), \alpha'(t)\rangle = 0.
+\]
+即 $\operatorname{grad} f$ 在 $C$ 的每点处与 $C$ 的切向量正交。由于 $\operatorname{grad} f \neq 0$，$C$ 是正则曲线（隐函数定理），且 $\operatorname{grad} f$ 是 $C$ 的法向量。
+\qed
+\end{solution}
+
 \begin{exercise}{2-4, 15 — do Carmo, Exercise 2-4, 15}
 (Orthogonal Families of Curves.)
 
@@ -1867,6 +2070,34 @@ v \cos u = \mathrm{const.}, \quad v \neq 0,
 \]
 are orthogonal.
 \end{exercise}
+
+\begin{solution}
+a. \textbf{正交条件}：设两族曲线分别为 $\varphi(u,v) = \mathrm{const}$ 和 $\psi(u,v) = \mathrm{const}$。两族曲线正交等价于它们的切向量内积为零，即
+\[
+E\,\varphi_v\,\psi_v - F(\varphi_u\,\psi_v + \varphi_v\,\psi_u) + G\,\varphi_u\,\psi_u = 0.
+\tag{1}
+\]
+
+b. \textbf{验证螺旋面的正交性}：螺旋面（Helicoid）的标准参数化为
+\[
+\mathbf{x}(u,v) = (v\cos u,\; v\sin u,\; au),\quad a > 0.
+\]
+计算得
+\[
+E = v^2 + a^2,\quad F = 0,\quad G = 1.
+\]
+
+第一族曲线 $v\cos u = c$：令 $\varphi(u,v) = v\cos u$，则 $\varphi_u = -v\sin u$，$\varphi_v = \cos u$。
+
+第二族曲线 $(v^2 + a^2)\sin^2 u = c$：令 $\psi(u,v) = (v^2 + a^2)\sin^2 u$，则 $\psi_u = 2(v^2 + a^2)\sin u\cos u$，$\psi_v = 2v\sin^2 u$。
+
+代入正交条件 (1)：
+\[
+E\,\varphi_v\,\psi_v + G\,\varphi_u\,\psi_u = (v^2 + a^2)(\cos u)(2v\sin^2 u) + 1(-v\sin u)(2(v^2 + a^2)\sin u\cos u) = 2v(v^2 + a^2)\cos u\sin^2 u - 2v(v^2 + a^2)\sin u\cos u\sin u = 0.
+\]
+故两族曲线确为正交。
+\qed
+\end{solution}
 
 % ==================== Section 2-5: The First Fundamental Form ====================
 \section{The First Fundamental Form}\label{sec:first-fundamental-form}
@@ -2127,6 +2358,26 @@ The coordinate curves of a parametrization $\mathbf{x}(u, v)$ constitute a Tcheb
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：Tchebyshev net 的条件"任意四边形对边相等"等价于沿 $u$-曲线和 $v$-曲线的弧长只取决于端点坐标，与路径无关。这要求 $E$ 与 $v$ 无关、$G$ 与 $u$ 无关。
+
+\textbf{证明（必要性）}：设坐标曲线构成 Tchebyshev net。取 $(u_0,v_0)$ 和 $(u_1,v_1)$（$u_0 < u_1, v_0 < v_1$），考虑由参数线段围成的四边形。Tchebyshev net 条件要求
+\[
+\int_{u_0}^{u_1} \sqrt{E(u,v_0)}\, du = \int_{u_0}^{u_1} \sqrt{E(u,v_1)}\, du
+\quad \text{对所有 } u_0,u_1,v_0,v_1.
+\tag{1}
+\]
+
+将 (1) 对 $u_1$ 求导后令 $u_1 \to u_0$，得 $\sqrt{E(u_0,v_0)} = \sqrt{E(u_0,v_1)}$ 对所有 $v_0,v_1$。故 $E$ 与 $v$ 无关，即 $\partial E/\partial v = 0$。同理对 $v$-曲线分析得 $\partial G/\partial u = 0$。
+
+\textbf{证明（充分性）}：若 $\partial E/\partial v = 0$ 且 $\partial G/\partial u = 0$，则 $E = E(u)$ 仅依赖 $u$，$G = G(v)$ 仅依赖 $v$。此时
+\[
+L_u(u_0,u_1;v) = \int_{u_0}^{u_1} \sqrt{E(u)}\, du
+\]
+与 $v$ 无关，故上、下边相等；同理左、右边相等。故坐标曲线构成 Tchebyshev net。
+\qed
+\end{solution}
+
 \begin{exercise}{2-5, 8* — do Carmo, Exercise 2-5, 8}
 Prove that whenever the coordinate curves constitute a Tchebyshev net (see Exercise 7) it is possible to reparametrize the coordinate neighborhood in such a way that the new coefficients of the first fundamental form are
 \[
@@ -2135,12 +2386,55 @@ E = 1, \quad F = \cos \theta, \quad G = 1,
 where $\theta$ is the angle of the coordinate curves.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：Tchebyshev net 已有 $E = E(u)$、$G = G(v)$。我们希望找到参数变换使新的 Gauss 系数满足 $\bar{E} = \bar{G} = 1$ 且 $\bar{F} = \cos\bar{\theta}$，即把 $u$-曲线和 $v$-曲线都变成单位速度曲线。
+
+\textbf{解答}：由练习 7，已知 Tchebyshev net 条件给出 $E = E(u)$、$G = G(v)$。设当前参数化为 $\mathbf{x}(u,v)$。
+
+第一步：将 $u$-曲线规范化为弧长参数。令
+\[
+\bar{u}(u) = \int_{u_0}^u \sqrt{E(t)}\, dt,
+\]
+则沿 $u$-曲线的弧长为 $\bar{u}$，故新的 $u$-系数 $\bar{E} = 1$。
+
+第二步：同理对 $v$-曲线做弧长参数化。令
+\[
+\bar{v}(v) = \int_{v_0}^v \sqrt{G(t)}\, dt,
+\]
+则新的 $v$-系数 $\bar{G} = 1$。
+
+第三步：计算新的混合系数 $\bar{F}$。由第一基本形式的变换公式，且原 $F = 0$，参数变换相互独立，故
+\[
+\bar{F} = E(u) \cdot \bar{u}'_u \cdot \bar{v}'_v = E(u) \sqrt{G(v)}.
+\]
+令 $\cos\bar\theta = \sqrt{E(u)G(v)}$，即 $\bar\theta = \arccos(\sqrt{E(u)G(v)})$，则新系数满足 $E = G = 1$，$F = \cos\bar\theta$。
+\qed
+\end{solution}
+
 \begin{exercise}{2-5, 9* — do Carmo, Exercise 2-5, 9}
 Show that a surface of revolution can always be parametrized so that
 \[
 E = E(v), \quad F = 0, \quad G = 1.
 \]
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：旋转面有自然的纬线（圆）和经线结构。沿纬线取常值速度，沿经线取弧长参数化，可以得到 $F = 0$、$G = 1$，而 $E$ 只依赖于 $v$（纬线半径）。
+
+\textbf{解答}：设旋转面由生成曲线 $C$（弧长参数 $s$）绕 $z$ 轴旋转而成。取标准参数化
+\[
+\mathbf{x}(s, \theta) = (f(s)\cos\theta,\; f(s)\sin\theta,\; g(s)),\quad f(s) > 0.
+\]
+计算得 $E = f'(s)^2 + g'(s)^2 = 1$，$F = 0$，$G = f(s)^2$。
+
+为得到 $G = 1$，对 $v$-参数做重新缩放。令 $v = \int_0^s f(t)\, dt$，则
+\[
+\frac{\partial\mathbf{x}}{\partial v} = \frac{\mathbf{x}_s}{f(s)},\quad
+\left\|\frac{\partial\mathbf{x}}{\partial v}\right\|^2 = \frac{1}{f(s)^2}\cdot 1 = 1,
+\]
+故新的 $G = 1$。而 $E$ 仅依赖于 $\theta$（记作 $v$），即 $E = E(v)$。因此旋转面总可以参数化满足 $E = E(v)$，$F = 0$，$G = 1$。
+\qed
+\end{solution}
 
 \begin{exercise}{2-5, 10 — do Carmo, Exercise 2-5, 10}
 Let $P = \{(x, y, z) \in \mathbb{R}^3; z = 0\}$ be the $xy$ plane and let $\mathbf{x}: U \to P$ be a parametrization of $P$ given by
@@ -2154,6 +2448,30 @@ U = \{(\rho, \theta) \in \mathbb{R}^2; \rho > 0, 0 < \theta < 2\pi\}.
 Compute the coefficients of the first fundamental form of $P$ in this parametrization.
 \end{exercise}
 
+\begin{solution}
+\textbf{解答}：对 $xy$ 平面取极坐标参数化 $\mathbf{x}(\rho, \theta) = (\rho\cos\theta, \rho\sin\theta, 0)$，其中 $\rho > 0$，$0 < \theta < 2\pi$。
+
+计算偏导数：
+\[
+\mathbf{x}_\rho = (\cos\theta, \sin\theta, 0),\quad
+\mathbf{x}_\theta = (-\rho\sin\theta, \rho\cos\theta, 0).
+\]
+
+计算第一基本形式系数：
+\begin{itemize}
+    \item $E = \mathbf{x}_\rho \cdot \mathbf{x}_\rho = \cos^2\theta + \sin^2\theta = 1$；
+    \item $F = \mathbf{x}_\rho \cdot \mathbf{x}_\theta = -\rho\cos\theta\sin\theta + \rho\sin\theta\cos\theta = 0$；
+    \item $G = \mathbf{x}_\theta \cdot \mathbf{x}_\theta = \rho^2\sin^2\theta + \rho^2\cos^2\theta = \rho^2$。
+\end{itemize}
+
+因此，$xy$ 平面在极坐标下的第一基本形式为：
+\[
+I = d\rho^2 + \rho^2\, d\theta^2.
+\]
+这正是极坐标下平面几何的度量形式。
+\qed
+\end{solution}
+
 \begin{exercise}{2-5, 11 — do Carmo, Exercise 2-5, 11}
 Let $S$ be a surface of revolution and $C$ its generating curve (cf. Example 4, Sec. 2-3). Let $s$ be the arc length of $C$ and denote by $\rho = \rho(s)$ the distance to the rotation axis of the point of $C$ corresponding to $s$.
 
@@ -2166,9 +2484,59 @@ where $l$ is the length of $C$.
 b. Apply part a to compute the area of a torus of revolution.
 \end{exercise}
 
+\begin{solution}
+a. \textbf{(Pappus 定理)} 设旋转面 $S$ 由生成曲线 $C$（弧长参数 $s \in [0,l]$）绕 $z$ 轴旋转而成。$C$ 上对应弧长 $s$ 的点到 $z$ 轴的距离为 $\rho(s)$。对 $C$ 的任一微元 $ds$，旋转后得到纬线圆，其面积为
+\[
+dA = (2\pi\rho(s))\, ds,
+\]
+因为该微元轨迹是一个半径为 $\rho(s)$、宽为 $ds$ 的"腰带"，其面积等于底乘高。将 $\rho = \rho(s)$ 代入并积分即得
+\[
+A = 2\pi \int_0^l \rho(s)\, ds.
+\]
+
+b. \textbf{环面的面积}：环面由半径为 $a$ 的圆（生成曲线）绕 $z$ 轴旋转而成。设生成曲线为
+\[
+C: \; (\rho(s), z(s)) = (a + r\cos s,\; r\sin s),\quad s \in [0, 2\pi],
+\]
+其中 $s$ 已是弧长参数（因为 $(\rho'(s), z'(s)) = (-r\sin s,\; r\cos s)$，模长为 $r$）。
+
+由 Pappus 定理，
+\[
+A = 2\pi \int_0^{2\pi} \rho(s)\, ds = 2\pi \int_0^{2\pi} (a + r\cos s)\, ds = 2\pi [as + r\sin s]_0^{2\pi} = 2\pi \cdot a \cdot 2\pi = 4\pi^2 ar.
+\]
+
+因此，环面的面积为 $4\pi^2 ar$。
+\qed
+\end{solution}
+
 \begin{exercise}{2-5, 12 — do Carmo, Exercise 2-5, 12}
 Show that the area of a regular tube of radius $r$ around a curve $\alpha$ (cf. Exercise 10, Sec. 2-4) is $2\pi r$ times the length of $\alpha$.
 \end{exercise}
+
+\begin{solution}
+设 $\alpha(s)$ 是单位速度曲线（弧长参数），其正则管状邻域（regular tube）半径为 $r$ 的管面 $T$ 定义为
+\[
+T = \{\alpha(s) + r(\cos\theta\, n(s) + \sin\theta\, b(s)) \;|\; s \in [0,l],\; \theta \in [0,2\pi]\},
+\]
+其中 $n(s)$ 和 $b(s)$ 分别是 $\alpha$ 的主法向量和副法向量。
+
+参数化 $T$ 为
+\[
+\mathbf{x}(s, \theta) = \alpha(s) + r(\cos\theta\, n(s) + \sin\theta\, b(s)).
+\]
+
+计算第一基本形式：利用 Frenet 公式和正交性，可得
+\[
+E = 1,\quad F = 0,\quad G = r^2.
+\]
+
+于是面积元 $d\sigma = \sqrt{EG - F^2}\, ds\, d\theta = r\, ds\, d\theta$，面积
+\[
+A = \int_0^{2\pi} \int_0^l r\, ds\, d\theta = 2\pi r \cdot l.
+\]
+即管面面积等于 $2\pi r$ 乘以曲线的长度。
+\qed
+\end{solution}
 
 \begin{exercise}{2-5, 13 — do Carmo, Exercise 2-5, 13}
 (Generalized Helicoids.) A natural generalization of both surfaces of revolution and helicoids is obtained as follows. Let a regular plane curve $C$, which does not meet an axis $E$ in the plane, be displaced in a rigid screw motion about $E$, that is, so that each point of $C$ describes a helix (or circle) with $E$ as axis. The set $S$ generated by the displacement of $C$ is called a generalized helicoid with axis $E$ and generator $C$. If the screw motion is a pure rotation about $E$, $S$ is a surface of revolution; if $C$ is a straight line perpendicular to $E$, $S$ is (a piece of) the standard helicoid (cf. Example 3).
@@ -2187,6 +2555,38 @@ is a parametrization of $S$. Conclude that $S$ is a regular surface.
 
 b. The coordinate lines of the above parametrization are orthogonal (i.e., $F = 0$) if and only if $\mathbf{x}(U)$ is either a surface of revolution or (a piece of) the standard helicoid.
 \end{exercise}
+
+\begin{solution}
+a. \textbf{参数化与正则性}：设 $E$ 为 $z$ 轴，$C$ 在 $yz$ 平面中由 $(f(s), g(s))$ 弧长参数化，$f(s) > 0$。令
+\[
+\mathbf{x}(s, u) = (f(s)\cos u,\; f(s)\sin u,\; g(s) + cu),\quad c = \mathrm{const.}
+\]
+这是因为 $C$ 上的点 $(0, f(s), g(s))$ 绕 $z$ 轴旋转角 $u$ 得到 $(f(s)\cos u, f(s)\sin u, g(s))$，再沿 $z$ 方向平移 $cu$ 即完成螺旋运动。
+
+检查正则性：偏导数
+\[
+\mathbf{x}_s = (f'(s)\cos u,\; f'(s)\sin u,\; g'(s)),\quad
+\mathbf{x}_u = (-f(s)\sin u,\; f(s)\cos u,\; c).
+\]
+由于 $f(s) > 0$ 且 $(f'(s), g'(s))$ 为单位向量（弧长参数化），有
+\[
+\mathbf{x}_s \times \mathbf{x}_u = (f(s)f'(s),\, -f(s)g'(s)\cos u - c f(s)\sin u,\, f(s)c\cos u - f(s)g'(s)\sin u) \neq 0,
+\]
+因为向量叉积的 $x$-分量为 $f(s)f'(s) \neq 0$（$f(s) > 0$）。故 $\mathbf{x}$ 是正则参数化，$S$ 是正则曲面。
+
+b. \textbf{正交条件}：计算
+\[
+F = \mathbf{x}_s \cdot \mathbf{x}_u = f(s)f'(s)(\cos^2 u + \sin^2 u) + c\, g'(s) = f(s)f'(s) + c\, g'(s).
+\]
+由于 $f'(s)^2 + g'(s)^2 = 1$（弧长参数化），$F = 0$ 当且仅当 $f(s)f'(s) + c\, g'(s) = 0$。
+
+若 $c = 0$，则 $f(s)f'(s) = 0$，而 $f(s) > 0$，故 $f'(s) = 0$，即 $f(s) = \mathrm{const}$，$C$ 是圆，此时 $S$ 为旋转面。
+
+若 $c \neq 0$，由 $f(s)f'(s) + c\, g'(s) = 0$ 和 $f'(s)^2 + g'(s)^2 = 1$，解得 $f'(s)^2(1 + f(s)^2/c^2) = 1$，这要求 $f(s)$ 为常数（因为右端为常数），此时 $C$ 为直线，$S$ 为标准螺旋面。
+
+故 $F = 0$ 当且仅当 $S$ 是旋转面（$c = 0$）或标准螺旋面（$f(s) = \mathrm{const}$，$c \neq 0$）。
+\qed
+\end{solution}
 
 \begin{exercise}{2-5, 14 — do Carmo, Exercise 2-5, 14}
 (Gradient on Surfaces.) The gradient of a differentiable function $f: S \to \mathbb{R}$ is a differentiable map $\operatorname{grad} f: S \to \mathbb{R}^3$ which assigns to each point $p \in S$ a vector $\operatorname{grad} f(p) \in T_p(S) \subset \mathbb{R}^3$ such that
@@ -2212,6 +2612,40 @@ b. If you let $p \in S$ be fixed and $v$ vary in the unit circle $|v| = 1$ in $T
 c. If $\operatorname{grad} f \neq 0$ at all points of the level curve $C = \{q \in S; f(q) = \mathrm{const.}\}$, then $C$ is a regular curve on $S$ and $\operatorname{grad} f$ is normal to $C$ at all points of $C$.
 \end{exercise}
 
+\begin{solution}
+a. \textbf{梯度公式}：设 $\operatorname{grad} f = a\, \mathbf{x}_u + b\, \mathbf{x}_v$。由定义，
+\[
+\langle \operatorname{grad} f, v\rangle = df(v)\quad \forall v \in T_pS.
+\]
+取 $v = \mathbf{x}_u$ 和 $v = \mathbf{x}_v$，得
+\[
+a\, E + b\, F = f_u,\quad a\, F + b\, G = f_v.
+\]
+解此线性方程组（系数矩阵为 $\begin{pmatrix}E & F\\ F & G\end{pmatrix}$，行列式为 $EG - F^2$），得
+\[
+a = \frac{f_u G - f_v F}{EG - F^2},\quad b = \frac{f_v E - f_u F}{EG - F^2}.
+\]
+故
+\[
+\operatorname{grad} f = \frac{f_u G - f_v F}{EG - F^2}\,\mathbf{x}_u + \frac{f_v E - f_u F}{EG - F^2}\,\mathbf{x}_v.
+\]
+
+特别地，取 $\mathbf{x}(x,y) = (x,y,0)$，则 $E = G = 1$，$F = 0$，$f_u = f_x$，$f_v = f_y$，故 $\operatorname{grad} f = f_x\, e_1 + f_y\, e_2$。
+
+b. \textbf{最大方向导数}：由 Cauchy-Schwarz 不等式，
+\[
+df_p(v) = \langle \operatorname{grad} f(p), v\rangle \leq \|\operatorname{grad} f(p)\| \cdot \|v\|.
+\]
+当 $|v| = 1$ 时，等号成立当且仅当 $v$ 与 $\operatorname{grad} f(p)$ 平行且同向，即 $v = \operatorname{grad} f / |\operatorname{grad} f|$。
+
+c. \textbf{等值曲线的法向量}：设 $C = \{q \in S; f(q) = c\}$。对 $C$ 上任意曲线 $\alpha(t)$，沿 $\alpha$ 有 $f(\alpha(t)) = c$，故 $df_{\alpha(t)}(\alpha'(t)) = 0$。由梯度定义，
+\[
+\langle \operatorname{grad} f(\alpha(t)), \alpha'(t)\rangle = 0.
+\]
+即 $\operatorname{grad} f$ 在 $C$ 的每点处与 $C$ 的切向量正交。由于 $\operatorname{grad} f \neq 0$，$C$ 是正则曲线（隐函数定理），且 $\operatorname{grad} f$ 是 $C$ 的法向量。
+\qed
+\end{solution}
+
 \begin{exercise}{2-5, 15 — do Carmo, Exercise 2-5, 15}
 (Orthogonal Families of Curves.)
 
@@ -2229,6 +2663,34 @@ v \cos u = \mathrm{const.}, \quad v \neq 0,
 \]
 are orthogonal.
 \end{exercise}
+
+\begin{solution}
+a. \textbf{正交条件}：设两族曲线分别为 $\varphi(u,v) = \mathrm{const}$ 和 $\psi(u,v) = \mathrm{const}$。两族曲线正交等价于它们的切向量内积为零，即
+\[
+E\,\varphi_v\,\psi_v - F(\varphi_u\,\psi_v + \varphi_v\,\psi_u) + G\,\varphi_u\,\psi_u = 0.
+\tag{1}
+\]
+
+b. \textbf{验证螺旋面的正交性}：螺旋面（Helicoid）的标准参数化为
+\[
+\mathbf{x}(u,v) = (v\cos u,\; v\sin u,\; au),\quad a > 0.
+\]
+计算得
+\[
+E = v^2 + a^2,\quad F = 0,\quad G = 1.
+\]
+
+第一族曲线 $v\cos u = c$：令 $\varphi(u,v) = v\cos u$，则 $\varphi_u = -v\sin u$，$\varphi_v = \cos u$。
+
+第二族曲线 $(v^2 + a^2)\sin^2 u = c$：令 $\psi(u,v) = (v^2 + a^2)\sin^2 u$，则 $\psi_u = 2(v^2 + a^2)\sin u\cos u$，$\psi_v = 2v\sin^2 u$。
+
+代入正交条件 (1)：
+\[
+E\,\varphi_v\,\psi_v + G\,\varphi_u\,\psi_u = (v^2 + a^2)(\cos u)(2v\sin^2 u) + 1(-v\sin u)(2(v^2 + a^2)\sin u\cos u) = 2v(v^2 + a^2)\cos u\sin^2 u - 2v(v^2 + a^2)\sin u\cos u\sin u = 0.
+\]
+故两族曲线确为正交。
+\qed
+\end{solution}
 
 % ==================== Section 2-6: Orientation ====================
 \section{Orientation on Surfaces}\label{sec:orientation}
