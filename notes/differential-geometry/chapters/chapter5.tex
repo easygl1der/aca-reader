@@ -707,6 +707,33 @@ L'(0) = -\int_0^l \langle A(s), V(s)\rangle\,ds + \langle\frac{\partial h}{\part
 \begin{exercise}{5-4, 4*（变分学）— do Carmo, Exercise 5-4, 4}
 设 $y=y(x)$，$x\in[x_1,x_2]$ 是平面曲线，变分 $y(x,t)$ 满足 $y(x,0)=y(x)$，$y(x_1,t)=y(x_1)$，$y(x_2,t)=y(x_2)$。考虑积分 $I(t) = \int_{x_1}^{x_2}F(x,y(x,t),y'(x,t))\,dx$。（a）证明：若 $y(x)$ 是 $I(t)$ 的临界点（$dI/dt=0$），则 $\int_{x_1}^{x_2}\eta(F_y - \frac{d}{dx}F_{y'})\,dx = 0$ 对所有满足 $\eta(x_1)=\eta(x_2)=0$ 的 $\eta$ 成立（变分法基本引理）。（b）推出 Euler-Lagrange 方程 $F_y - \frac{d}{dx}F_{y'} = 0$。（c）若 $F$ 不显含 $x$（即 $F=F(y,y')$），证明首次积分 $y'F_{y'} - F = \mathrm{const}$。
 \end{exercise}
+\begin{solution}
+\textbf{直观理解}: 变分法的核心是将"泛函的临界点"问题转化为"微分方程"问题。通过分部积分和基本引理（变分场在端点处为零），可得出 Euler-Lagrange 方程。当 $F$ 不显含 $x$ 时，存在守恒律（首次积分）。
+
+\textbf{解答}: (a) 设 $y=y(x)$ 是 $I(t)$ 的临界点，即 $dI/dt = 0$。直接计算
+\[
+\frac{dI}{dt} = \int_{x_1}^{x_2}\left(F_y\frac{\partial y}{\partial t} + F_{y'}\frac{\partial y'}{\partial t}\right)dx.
+\]
+记 $\eta(x) = (\partial y/\partial t)(x,0)$ 为变分向量场（满足 $\eta(x_1)=\eta(x_2)=0$）。对第二项做分部积分：
+\[
+\int_{x_1}^{x_2}F_{y'}\eta'\,dx = \left[F_{y'}\eta\right]_{x_1}^{x_2} - \int_{x_1}^{x_2}\frac{d}{dx}F_{y'}\cdot\eta\,dx
+= -\int_{x_1}^{x_2}\frac{d}{dx}F_{y'}\cdot\eta\,dx,
+\]
+因为 $\eta(x_1)=\eta(x_2)=0$。于是
+\[
+0 = \frac{dI}{dt}\bigg|_{t=0} = \int_{x_1}^{x_2}\eta\left(F_y - \frac{d}{dx}F_{y'}\right)dx.
+\]
+由变分法基本引理（$\eta$ 任意），得 $F_y - \frac{d}{dx}F_{y'} = 0$（对 $x\in[x_1,x_2]$）。
+
+(b) 即 Euler-Lagrange 方程。
+
+(c) 若 $F = F(y,y')$，则
+\[
+\frac{d}{dx}\left(y'F_{y'} - F\right) = y''F_{y'} + y'((F_y)y' + (F_{y'})y'') - (F_y y' + F_{y'}y'')
+= y''F_{y'} + y'F_y y' + F_{y'}y'' - F_y y' - F_{y'}y'' = 0,
+\]
+因为 $F_y = (d/dx)F_{y'}$（由 Euler-Lagrange 方程）。于是 $y'F_{y'} - F = \mathrm{const}$（首次积分）。\qed
+\end{solution}
 
 \begin{exercise}{5-4, 5*（变分学应用）— do Carmo, Exercise 5-4, 5}
 （a）（最小面积旋转面。）设 $S$ 是由曲线 $y=f(x)$，$x\in[x_1,x_2]$ 绕 $x$ 轴旋转得到的旋转面。证明：若 $S$ 在所有生成旋转面中面积最小，则 $y = \frac{1}{c}\cosh(cx+c_1)$（悬链面）。（b）（旋转面的测地线。）设 $\mathbf{x}(u,v) = (f(v)\cos u, f(v)\sin u, g(v))$。证明测地线（除子午线和平行线外）满足 Clairaut 关系。\footnote{ Clairaut 公式原文为 $u' = c/(f^2)\sqrt{(f'^2+g'^2)(f^2-c^2)}^{-1}\cdot\sqrt{\cdots}$，此处有省略。}
