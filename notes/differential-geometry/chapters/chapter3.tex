@@ -297,13 +297,61 @@ H = \frac {1}{\pi} \int_ {0} ^ {\pi} k _ {n} (\theta) d \theta,
 where $k_{n}(\theta)$ is the normal curvature at $p$ along a direction making an angle $\theta$ with a fixed direction.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：平均曲率是主曲率的算术平均 $\frac{k_1 + k_2}{2}$。法曲率随方向的变化是 $\theta$ 的周期函数，其平均值正好等于两个极值的平均值——这正是平均曲率的含义。
+
+\textbf{证明}：取主方向 $\{e_1, e_2\}$，则
+\[
+k_n(\theta) = k_1 \cos^2\theta + k_2 \sin^2\theta.
+\]
+
+计算积分：
+\[
+\frac{1}{\pi}\int_0^\pi k_n(\theta)\,d\theta = \frac{1}{\pi}\int_0^\pi (k_1 \cos^2\theta + k_2 \sin^2\theta)\,d\theta.
+\]
+
+利用 $\int_0^\pi \cos^2\theta\,d\theta = \int_0^\pi \sin^2\theta\,d\theta = \dfrac{\pi}{2}$，得
+\[
+\frac{1}{\pi}\int_0^\pi k_n(\theta)\,d\theta = \frac{1}{\pi}\left(k_1 \cdot \frac{\pi}{2} + k_2 \cdot \frac{\pi}{2}\right) = \frac{k_1 + k_2}{2} = H.
+\]
+$\square$
+\end{solution}
+
 \begin{exercise}{3-2, 6 — do Carmo, Exercise 3-2, 6}
 Show that the sum of the normal curvatures for any pair of orthogonal directions, at a point $p$, is constant.
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：在固定点处，任取正交方向 $u$ 和 $v$，它们的法曲率之和恒等于 $2H$（平均曲率的二倍），与方向的选取无关。
+
+\textbf{证明}：设 $u$ 与 $e_1$ 的夹角为 $\theta$，则 $v$ 与 $e_1$ 的夹角为 $\theta + \pi/2$。法曲率为
+\[
+k_n(u) = k_1 \cos^2\theta + k_2 \sin^2\theta,
+\]
+\[
+k_n(v) = k_1 \cos^2(\theta + \tfrac{\pi}{2}) + k_2 \sin^2(\theta + \tfrac{\pi}{2}) = k_1 \sin^2\theta + k_2 \cos^2\theta.
+\]
+
+二者相加：
+\[
+k_n(u) + k_n(v) = k_1(\cos^2\theta + \sin^2\theta) + k_2(\sin^2\theta + \cos^2\theta) = k_1 + k_2 = 2H.
+\]
+故结论成立。$\square$
+\end{solution}
+
 \begin{exercise}{3-2, 7 — do Carmo, Exercise 3-2, 7}
 Show that if the mean curvature is zero at a nonplanar point, then this point has two orthogonal asymptotic directions.
 \end{exercise}
+
+\begin{solution}
+\textbf{直观理解}：平均曲率 $H = 0$ 意味着 $k_1 = -k_2$。在椭圆点处（$K > 0$），$k_1$ 和 $k_2$ 同号，不可能有 $H = 0$。因此 $H = 0$ 的非平面点必为双曲点（$K < 0$），此时恰有两条渐近方向，且它们互相共轭——在正交基下，这两条渐近方向正好垂直。
+
+\textbf{证明}：设 $p$ 为非平面点且 $H(p) = 0$，即 $k_1 + k_2 = 0$，从而 $k_2 = -k_1$。由于 $p$ 非平面，$k_1 \neq 0$，故 $K = k_1 k_2 = -k_1^2 < 0$，$p$ 为双曲点。
+
+渐近方向满足 $k_n(\theta) = k_1 \cos^2\theta + k_2 \sin^2\theta = k_1(\cos^2\theta - \sin^2\theta) = k_1 \cos 2\theta = 0$，即 $\cos 2\theta = 0$，得 $\theta = \pi/4$ 或 $3\pi/4$。
+
+这两个渐近方向相差 $\pi/2$，故正交。$\square$
+\end{solution}
 
 \begin{exercise}{3-2, 8 — do Carmo, Exercise 3-2, 8}
 Describe the region of the unit sphere covered by the image of the Gauss map of the following surfaces:
