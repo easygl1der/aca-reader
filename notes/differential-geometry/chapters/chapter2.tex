@@ -864,6 +864,24 @@ b. The absolute value of the arc length of $C$ in $W$ does not depend on which p
 \]
 \end{exercise}
 
+\begin{solution}
+\textbf{直观理解}：同一曲线用不同参数描述时，参数变换 $h$ 必须是光滑且可逆的（微分同胚），否则无法保持曲线的正则性。弧长作为几何不变量，也不应依赖于参数化的选择。
+
+\textbf{证明}：
+
+a. 曲线 $C$ 作为 $\mathbb{R}^3$ 中的正则曲线，其切向量 $\alpha'(t) \neq 0$。设 $h = \alpha^{-1} \circ \beta$，则 $h(\tau) = \alpha^{-1}(\beta(\tau))$。由于 $\beta$ 和 $\alpha^{-1}$ 都是可微的（正则曲线的参数化是微分同胚），$h$ 是可微的。类似地，$h^{-1} = \beta^{-1} \circ \alpha$ 也是可微的。因此 $h$ 是微分同胚。
+
+b. 弧长公式：
+\[
+s_\alpha(t) = \int_{t_0}^{t} |\alpha'(t)|\, dt, \quad s_\beta(\tau) = \int_{\tau_0}^{\tau} |\beta'(\tau)|\, d\tau.
+\]
+由链式法则，$\alpha'(h(\tau)) \cdot h'(\tau) = \beta'(\tau)$，故 $|\beta'(\tau)| = |\alpha'(h(\tau))| \cdot |h'(\tau)|$。做变量替换 $t = h(\tau)$：
+\[
+\int_{\tau_0}^{\tau} |\beta'(\tau)|\, d\tau = \int_{\tau_0}^{\tau} |\alpha'(h(\tau))| \cdot |h'(\tau)|\, d\tau = \int_{h(\tau_0)}^{h(\tau)} |\alpha'(t)|\, dt.
+\]
+取 $t_0 = h(\tau_0)$，即得等式。
+\end{solution}
+
 \begin{exercise}{2-2, 16* — do Carmo, Exercise 2-2, 16}
 Let $\mathbb{R}^2 = \{(x, y, z) \in \mathbb{R}^3; z = -1\}$ be identified with the complex plane $\mathbb{C}$ by setting $(x, y, -1) = x + iy = \zeta \in \mathbb{C}$. Let $P: \mathbb{C} \to \mathbb{C}$ be the complex polynomial
 \[
