@@ -1032,6 +1032,192 @@ F(u,v,t) = (x(u,v), y(u,v), z(u,v) + t),\quad (u,v) \in U,\ t \in \mathbb{R}.
 \end{minipage}
 \end{figure}
 
+\begin{Remark}\label{rem:inverse-continuous-essential}
+命题 1 的证明本质性地利用了参数化逆映射 $\mathbf{x}^{-1}$ 连续这一事实。由于我们需要命题 1 来定义曲面上的可微函数（这是一个至关重要的概念），我们不能在正则曲面的定义中省略这一条件（见 2-2 节注记 1）。\qed
+\end{Remark}
+
+可微性的定义可以容易地推广到曲面之间的映射。设 $\varphi: V_1 \subset S_1 \to S_2$ 是正则曲面 $S_1$ 的开集 $V_1$ 到正则曲面 $S_2$ 的连续映射。如果给定参数化
+\[
+\mathbf{x}_1: U_1 \subset \mathbb{R}^2 \to S_1,\quad \mathbf{x}_2: U_2 \subset \mathbb{R}^2 \to S_2,
+\]
+满足 $p \in \mathbf{x}_1(U_1)$ 和 $\varphi(\mathbf{x}_1(U_1)) \subset \mathbf{x}_2(U_2)$，则映射
+\[
+\mathbf{x}_2^{-1} \circ \varphi \circ \mathbf{x}_1: U_1 \to U_2
+\]
+在 $q = \mathbf{x}_1^{-1}(p)$ 处可微（见 \cref{fig:differential-map-surfaces}，教材 Figure 2-16）。
+
+换句话说，如果用局部坐标表示为 $\varphi(u_1, v_1) = (\varphi_1(u_1, v_1), \varphi_2(u_1, v_1))$，则 $\varphi$ 是可微的当且仅当函数 $\varphi_1$ 和 $\varphi_2$ 具有所有阶的连续偏导数。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-16. 曲面之间映射的可微性]{\label{fig:differential-map-surfaces}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/1284a083c97e8f24b1ab752d5adee30b0ef55168fd261b52d35c16293cb5c4a1.jpg}}
+\end{minipage}
+\end{figure}
+
+我们应当指出，与可微性相关的自然等价概念是微分同胚的概念。两个正则曲面 $S_1$ 和 $S_2$ 称为\textbf{微分同胚}的，如果存在可微映射 $\varphi: S_1 \to S_2$ 使得 $\varphi^{-1}: S_2 \to S_1$ 也是可微的。这样的 $\varphi$ 称为从 $S_1$ 到 $S_2$ 的\textbf{微分同胚}。微分同胚的概念在正则曲面研究中的作用，与线性代数中同构的概念或在欧几里得几何中全等的概念相同。换句话说，从可微性的观点来看，两个微分同胚的曲面是不可区分的。
+
+\begin{Example}[参数化逆映射是可微的]\label{ex:parametrization-inverse-differentiable}
+如果 $\mathbf{x}: U \subset \mathbb{R}^2 \to S$ 是参数化，则 $\mathbf{x}^{-1}: \mathbf{x}(U) \to \mathbb{R}^2$ 是可微的。事实上，对任意 $p \in \mathbf{x}(U)$ 和任意在 $p$ 处的参数化 $\mathbf{y}: V \subset \mathbb{R}^2 \to S$，我们有 $\mathbf{x}^{-1} \circ \mathbf{y}: \mathbf{y}^{-1}(W) \to \mathbf{x}^{-1}(W)$ 是可微的，其中 $W = \mathbf{x}(U) \cap \mathbf{y}(V)$。这表明 $U$ 和 $\mathbf{x}(U)$ 是微分同胚的（即每个正则曲面局部微分同胚于平面），并印证了注记 \cref{rem:notational-abuse} 中的等同。\qed
+\end{Example}
+
+\begin{Example}[可微映射的限制]\label{ex:restriction-of-differentiable-map}
+设 $S_1$ 和 $S_2$ 是正则曲面。假设 $S_1 \subset V \subset \mathbb{R}^3$，其中 $V$ 是 $\mathbb{R}^3$ 的开集，且 $\varphi: V \to \mathbb{R}^3$ 是可微映射使得 $\varphi(S_1) \subset S_2$。则限制 $\varphi|_{S_1}: S_1 \to S_2$ 是可微映射。事实上，给定 $p \in S_1$ 和参数化 $\mathbf{x}_1: U_1 \to S_1$，$\mathbf{x}_2: U_2 \to S_2$，满足 $p \in \mathbf{x}_1(U_1)$ 和 $\varphi(\mathbf{x}_1(U_1)) \subset \mathbf{x}_2(U_2)$，映射
+\[
+\mathbf{x}_2^{-1} \circ \varphi \circ \mathbf{x}_1: U_1 \to U_2
+\]
+是可微的。以下是一般情况的几个特例：
+
+\begin{enumerate}
+\item 设 $S$ 相对于 $xy$ 平面对称，即如果 $(x,y,z) \in S$，则 $(x,y,-z) \in S$。则映射 $\sigma: S \to S$（将 $p \in S$ 映到其对称点）是可微的，因为它可以视为 $\sigma: \mathbb{R}^3 \to \mathbb{R}^3$，$\sigma(x,y,z) = (x,y,-z)$ 在 $S$ 上的限制。当然，这可以推广到相对于 $\mathbb{R}^3$ 中任何平面对称的曲面。
+\item 设 $R_{z,\theta}: \mathbb{R}^3 \to \mathbb{R}^3$ 是绕 $z$ 轴旋转角 $\theta$ 的旋转，$S \subset \mathbb{R}^3$ 是关于该旋转不变的正则曲面，即如果 $p \in S$，则 $R_{z,\theta}(p) \in S$。则限制 $R_{z,\theta}: S \to S$ 是可微映射。
+\item 设 $\varphi: \mathbb{R}^3 \to \mathbb{R}^3$ 由 $\varphi(x,y,z) = (xa, yb, zc)$ 给出，其中 $a, b, c$ 是非零实数。$\varphi$ 显然是可微的，且限制 $\varphi|_{S^2}$ 是从球面
+\[
+S^2 = \{(x,y,z) \in \mathbb{R}^3; x^2 + y^2 + z^2 = 1\}
+\]
+到椭球面
+\[
+\left\{(x,y,z) \in \mathbb{R}^3; \frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1\right\}
+\]
+的可微映射。
+\end{enumerate}
+\end{Example}
+
+\begin{Remark}[正则曲面的特征]\label{rem:regular-surface-characterization}
+由命题 1 可知（见例 2），参数化 $\mathbf{x}: U \subset \mathbb{R}^2 \to S$ 是从 $U$ 到 $\mathbf{x}(U)$ 的微分同胚。实际上，我们现在可以将正则曲面刻画为那些局部微分同胚于 $\mathbb{R}^2$ 的集合 $S \subset \mathbb{R}^3$；即对每个 $p \in S$，存在 $p$ 在 $S$ 中的邻域 $V$，$\mathbb{R}^2$ 中的开集 $U$，以及映射 $\mathbf{x}: U \to V$，它是微分同胚。这个简洁的刻画可以作为曲面研究的起点（见练习 13）。\qed
+\end{Remark}
+
+此时我们可以回到曲线理论，从本章的角度——即将曲线视为 $\mathbb{R}^3$ 的子集——来讨论。我们只提及一些基本点，详细内容留给读者。
+
+符号 $I$ 表示直线 $\mathbb{R}$ 的开区间。$\mathbb{R}^3$ 中的\textbf{正则曲线}是满足以下性质的集合 $C \subset \mathbb{R}^3$：对每一点 $p \in C$，存在 $\mathbb{R}^3$ 中 $p$ 的邻域 $V$ 和可微同胚
+\[
+\alpha: I \subset \mathbb{R} \to V \cap C,
+\]
+使得对每个 $t \in I$，微分 $d\alpha_t$ 是单射（见 \cref{fig:regular-curve}，教材 Figure 2-17）。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-17. 正则曲线]{\label{fig:regular-curve}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/a81951228be03ebc88639c0a83fe19be3438357dec75d3c9ad18b5916141162f.jpg}}
+\end{minipage}
+\end{figure}
+
+可以证明（练习 15），参数变换（如曲面情形一样）由微分同胚给出。从这个基本结果，可以确定通过参数化得到的某个性质何时独立于该参数化。这样的性质将是 $C$ 的局部性质。
+
+例如，可以证明（第一章中定义的）弧长独立于所选的参数化（练习 15），因此是集合 $C$ 的一个性质。由于总可以用弧长参数化局部参数化正则曲线 $C$，通过这种参数化确定的性质（曲率、挠率等）是 $C$ 的局部性质。这表明第一章中发展的曲线局部理论对正则曲线是成立的。
+
+有时，曲面是通过以特定方式移动某条正则曲线来定义的。如下例所示。
+
+\begin{Example}[旋转曲面]\label{ex:surfaces-of-revolution}
+设 $S \subset \mathbb{R}^3$ 是将由平面中一条正则连通曲线 $C$ 绕该平面中不与曲线相交的轴旋转而成的集合；我们取 $xz$ 平面为曲线所在平面，$z$ 轴为旋转轴。设
+\[
+x = f(v),\quad z = g(v),\quad a < v < b,\quad f(v) > 0,
+\]
+是 $C$ 的参数化，并用 $u$ 表示绕 $z$ 轴的旋转角。因此我们得到映射（见 \cref{fig:surface-of-revolution}，教材 Figure 2-18）
+\[
+\mathbf{x}(u,v) = (f(v)\cos u,\; f(v)\sin u,\; g(v))
+\]
+从开集 $U = \{(u,v) \in \mathbb{R}^2; 0 < u < 2\pi,\ a < v < b\}$ 到 $S$。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-18. 旋转曲面]{\label{fig:surface-of-revolution}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/470da8019ee0ab2762c266d4c5bc45595544c5ec5d13ff7e13cb6baf264889ac.jpg}}
+\end{minipage}
+\end{figure}
+
+我们将看到，$\mathbf{x}$ 满足定义正则曲面定义中参数化的条件。由于 $S$ 可以被类似的参数化完全覆盖，故 $S$ 是一个正则曲面，称为\textbf{旋转曲面}。曲线 $C$ 称为 $S$ 的\textbf{生成曲线}，$z$ 轴称为 $S$ 的旋转轴。$C$ 上的点画出的圆称为 $S$ 的\textbf{平行圆}，$C$ 在 $S$ 上的各个位置称为 $S$ 的\textbf{经线}。
+
+为证明 $\mathbf{x}$ 是 $S$ 的参数化，我们必须验证定义 2-2 中条件 1、2 和 3。条件 1 和 3 是直接的，留给读者。为证明 $\mathbf{x}$ 是同胚，我们首先证明 $\mathbf{x}$ 是单射。事实上，由于 $(f(v), g(v))$ 是 $C$ 的参数化，给定 $z$ 和 $x^2 + y^2 = (f(v))^2$，我们可以唯一确定 $v$。因此 $\mathbf{x}$ 是单射。
+
+再次由于 $(f(v), g(v))$ 是 $C$ 的参数化，$v$ 是 $z$ 和 $\sqrt{x^2 + y^2}$ 的连续函数，从而也是 $(x,y,z)$ 的连续函数。
+
+为证明 $\mathbf{x}^{-1}$ 连续，还需证明 $u$ 是 $(x,y,z)$ 的连续函数。为此，首先注意如果 $u \neq \pi$，由于 $f(v) \neq 0$，我们有
+\[
+\tan\frac{u}{2} = \frac{y}{x + \sqrt{x^2 + y^2}},
+\]
+从而
+\[
+u = 2\tan^{-1}\frac{y}{x + \sqrt{x^2 + y^2}}.
+\]
+因此，如果 $u \neq \pi$，$u$ 是 $(x,y,z)$ 的连续函数。同样，如果 $u$ 在 $\pi$ 附近的小区间内，我们有
+\[
+u = 2\cotan^{-1}\frac{y}{-x + \sqrt{x^2 + y^2}}.
+\]
+因此 $u$ 是 $(x,y,z)$ 的连续函数。这表明 $\mathbf{x}^{-1}$ 连续，验证完成。\qed
+\end{Example}
+
+\begin{Remark}[扩展旋转曲面]\label{rem:extended-surfaces-of-revolution}
+旋转曲面的定义有一个小问题。如果 $C \subset \mathbb{R}^2$ 是相对于 $\mathbb{R}^3$ 中轴 $r$ 对称的闭正则平面曲线，则旋转 $C$ 关于 $r$ 得到的曲面可以证明是正则的，也应称为旋转曲面（当 $C$ 是圆且 $r$ 包含 $C$ 的一条直径时，曲面是球面）。为了符合定义，我们需要排除其中的两个点，即 $r$ 与 $C$ 的交点。出于技术原因，我们希望保持之前的术语，称这样的曲面为\textbf{扩展旋转曲面}。\qed
+\end{Remark}
+
+现在对我们曲面的定义做一个总结。我们选择将（正则）曲面定义为 $\mathbb{R}^3$ 的子集。如果我们要考虑曲面的整体以及局部性质，这是正确的设置。读者可能会想，为什么我们不像曲线那样简单地定义曲面为参数化曲面。这是可以做到的，事实上经典微分几何文献中有相当一部分是这样处理的。只要考虑局部性质，不会造成严重问题。然而，基本的整体概念（如定向，将在 2-6 节和 3-1 节中处理）必须省略，或处理不当。
+
+无论如何，参数化曲面的概念有时是有用的，应该在这里介绍。
+
+\begin{Definition}[参数化曲面]\label{def:parametrized-surface}
+参数化曲面是开集 $\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 的可微映射 $\mathbf{x}$。集合 $\mathbf{x}(U) \subset \mathbb{R}^3$ 称为 $\mathbf{x}$ 的\textbf{迹}。如果对所有 $\mathbf{q} \in U$，微分 $d\mathbf{x}_{\mathbf{q}}: \mathbb{R}^2 \to \mathbb{R}^3$ 是单射（即向量 $\partial \mathbf{x}/\partial u$，$\partial \mathbf{x}/\partial v$ 对所有 $\mathbf{q} \in U$ 线性无关），则 $\mathbf{x}$ 是\textbf{正则的}。如果 $d\mathbf{x}_p$ 不是单射，则 $\mathbf{p} \in U$ 称为 $\mathbf{x}$ 的\textbf{奇点}。
+\end{Definition}
+
+注意，参数化曲面即使是正则的，其迹也可能有自交。
+
+\begin{Example}[曲线的切曲面]\label{ex:tangent-surface}
+设 $\alpha: I \to \mathbb{R}^3$ 是一条非平面的正则参数化曲线。定义
+\[
+\mathbf{x}(t,v) = \alpha(t) + v\alpha'(t),\quad (t,v) \in I \times \mathbb{R}.
+\]
+
+$\mathbf{x}$ 是称为 $\alpha$ 的\textbf{切曲面}的参数化曲面（见 \cref{fig:tangent-surface}，教材 Figure 2-19）。
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-19. 切曲面]{\label{fig:tangent-surface}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/decaa454685a59d11346b4a8fda8ea7b90d1ac79b810bb26166de924365d9059.jpg}}
+\end{minipage}
+\end{figure}
+
+现在假设 $\alpha$ 的曲率 $k(t)$，$t \in I$，对所有 $t \in I$ 非零，并将 $\mathbf{x}$ 的定义域限制到 $U = \{(t,v) \in I \times \mathbb{R}; v \neq 0\}$。则
+\[
+\frac{\partial \mathbf{x}}{\partial t} = \alpha'(t) + v\alpha''(t),\quad \frac{\partial \mathbf{x}}{\partial v} = \alpha'(t),
+\]
+且
+\[
+\frac{\partial \mathbf{x}}{\partial t} \wedge \frac{\partial \mathbf{x}}{\partial v} = v\alpha''(t) \wedge \alpha'(t) \neq 0,\quad (t,v) \in U,
+\]
+因为对所有 $t$，曲率
+\[
+k(t) = \frac{|\alpha''(t) \wedge \alpha'(t)|}{|\alpha'(t)|^3}
+\]
+非零。因此，限制 $\mathbf{x}: U \to \mathbb{R}^3$ 是正则参数化曲面，其迹由两块连通分支组成，公共边界是集合 $\alpha(I)$。\qed
+\end{Example}
+
+\begin{Proposition}[正则参数化曲面的局部性质]\label{prop:regular-parametrized-local}
+设 $\mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}^3$ 是正则参数化曲面，$\mathbf{q} \in U$。则存在 $\mathbb{R}^2$ 中 $\mathbf{q}$ 的邻域 $V$，使得 $\mathbf{x}(V) \subset \mathbb{R}^3$ 是正则曲面。
+\end{Proposition}
+
+\begin{Proof}
+这同样是逆函数定理的推论。写
+\[
+\mathbf{x}(u,v) = (x(u,v), y(u,v), z(u,v)).
+\]
+
+由正则性，我们可以假设 $(\partial(x,y)/\partial(u,v))(q) \neq 0$。定义映射 $F: U \times \mathbb{R} \to \mathbb{R}^3$ 为
+\[
+F(u,v,t) = (x(u,v), y(u,v), z(u,v) + t),\quad (u,v) \in U,\ t \in \mathbb{R}.
+\]
+
+则
+\[
+\det(dF_q) = \frac{\partial(x,y)}{\partial(u,v)}(q) \neq 0.
+\]
+
+由逆函数定理，存在 $q$ 的邻域 $W_1$ 和 $F(q)$ 的邻域 $W_2$，使得 $F: W_1 \to W_2$ 是微分同胚。设 $V = W_1 \cap U$，注意限制 $F|_V = \mathbf{x}|_V$。因此 $\mathbf{x}(V)$ 微分同胚于 $V$，从而是正则曲面。\qed
+\end{Proof}
+
 \subsection*{2-3 节练习}
 
 \begin{exercise}{2-3, 1 — do Carmo, Exercise 2-3, 1}
