@@ -975,6 +975,41 @@ f \circ \mathbf{x}: U \subset \mathbb{R}^2 \to \mathbb{R}
 
 \textbf{Connection with Chapter 1.} 注意到如果 $\alpha: I \to S$ 是曲面 $S$ 上的可微曲线，则作为 $\mathbb{R}^3$ 中的曲线，$\alpha$ 也是可微的（因为包含映射 $i: S \hookrightarrow \mathbb{R}^3$ 是嵌入）。
 
+\begin{Proof}[命题 1 的完整证明]
+$h = \mathbf{x}^{-1} \circ \mathbf{y}$ 是同胚，因为它是由同胚合成的（见第二章附录，命题 3）。我们不能通过类似的方法得出 $h$ 是可微的，因为 $\mathbf{x}^{-1}$ 定义在 $S$ 的一个开子集上，而我们还不知道什么是 $S$ 上的可微函数。
+
+我们按以下方式处理。设 $r \in \mathbf{y}^{-1}(W)$，令 $q = h(r)$。由于 $\mathbf{x}(u,v) = (x(u,v), y(u,v), z(u,v))$ 是一个参数化，通过重新命名坐标轴，我们可以假设
+\[
+\frac{\partial(x,y)}{\partial(u,v)}(q) \neq 0.
+\]
+
+我们将 $\mathbf{x}$ 延拓为映射 $F: U \times \mathbb{R} \to \mathbb{R}^3$，定义为
+\[
+F(u,v,t) = (x(u,v), y(u,v), z(u,v) + t),\quad (u,v) \in U,\ t \in \mathbb{R}.
+\]
+
+从几何上看，$F$ 将 $U$ 上的"垂直柱面" $C$ 映射到 $\mathbf{x}(U)$ 上的"垂直柱面"，它将高度为 $t$ 的每个截面映射到曲面 $\mathbf{x}(u,v) + t e_3$ 上，其中 $e_3$ 是 $z$ 轴的单位向量（见 \cref{fig:fig2-14}，教材 Figure 2-14）。
+
+显然 $F$ 是可微的，且限制 $F|_{U \times \{0\}} = \mathbf{x}$。计算微分 $dF_q$ 的行列式，我们得到
+\[
+\left| \begin{array}{c c c} \frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} & 0 \\ \frac{\partial y}{\partial u} & \frac{\partial y}{\partial v} & 0 \\ \frac{\partial z}{\partial u} & \frac{\partial z}{\partial v} & 1 \end{array} \right| = \frac{\partial(x,y)}{\partial(u,v)}(q) \neq 0.
+\]
+
+因此我们可以应用逆函数定理，它保证存在 $\mathbb{R}^3$ 中 $\mathbf{x}(q)$ 的邻域 $M$，使得 $F^{-1}$ 存在且在 $M$ 中可微。
+
+由 $\mathbf{y}$ 的连续性，存在 $V$ 中 $r$ 的邻域 $N$ 使得 $\mathbf{y}(N) \subset M$（第二章附录，命题 2）。注意，限制在 $N$ 上，$h|_N = F^{-1} \circ \mathbf{y}|_N$ 是可微映射的合成。因此，我们可以应用映射的链式法则（第二章附录，命题 8），并得出 $h$ 在 $r$ 处可微。由于 $r$ 是任意的，$h$ 在 $\mathbf{y}^{-1}(W)$ 上可微。
+
+同样的论证可以应用于证明 $h^{-1}$ 是可微的，因此 $h$ 是微分同胚。\qed
+\end{Proof}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Figure 2-14. 坐标变换 $h = \mathbf{x}^{-1} \circ \mathbf{y}$]{\label{fig:fig2-14}\includegraphics[width=\textwidth]{../../../PDFs/differential-geometry/transcript/Do Carmo - Differential Geometry of Curves and Surfaces/hybrid_ocr/images/6b071b89b1c8f8efed96bc723c518ff131fc1d9b2fb6cb3dc861c0c031b5181b.jpg}}
+\end{minipage}
+\end{figure}
+
 \subsection*{2-3 节练习}
 
 \begin{exercise}{2-3, 1 — do Carmo, Exercise 2-3, 1}
