@@ -54,6 +54,28 @@ may be of help.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Using the first identity with $a = W(t_j^n)$ and $b = W(t_{j+1}^n)$, we have
+\begin{align*}
+\sum_{j=0}^{n-1} W(t_j^n)(W(t_{j+1}^n) - W(t_j^n)) &= \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n)^2 - W(t_j^n)^2) - \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n) - W(t_j^n))^2 \\
+&= \frac{1}{2} (W(T)^2 - W(0)^2) - \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n) - W(t_j^n))^2 \\
+&= \frac{1}{2} W(T)^2 - \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n) - W(t_j^n))^2.
+\end{align*}
+The second term is half the quadratic variation of the Wiener process on $[0, T]$. As $n \to \infty$, this sum converges to $T$ in $L^2$. Therefore,
+\begin{equation*}
+\lim_{n \to \infty} \sum_{j=0}^{n-1} W(t_j^n)(W(t_{j+1}^n) - W(t_j^n)) = \frac{1}{2} W(T)^2 - \frac{1}{2} T.
+\end{equation*}
+Similarly, using the second identity,
+\begin{align*}
+\sum_{j=0}^{n-1} W(t_{j+1}^n)(W(t_{j+1}^n) - W(t_j^n)) &= \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n)^2 - W(t_j^n)^2) + \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n) - W(t_j^n))^2 \\
+&= \frac{1}{2} W(T)^2 + \frac{1}{2} \sum_{j=0}^{n-1} (W(t_{j+1}^n) - W(t_j^n))^2,
+\end{align*}
+which converges in $L^2$ to
+\begin{equation*}
+\lim_{n \to \infty} \sum_{j=0}^{n-1} W(t_{j+1}^n)(W(t_{j+1}^n) - W(t_j^n)) = \frac{1}{2} W(T)^2 + \frac{1}{2} T.
+\end{equation*}
+\end{Solution}
+
 The ambiguity resulting from different choices of the intermediate points $s_j$ in each subinterval $[t_j, t_{j+1}]$ can be removed by insisting that the approximations of the integrand should consist only of processes adapted to the underlying filtration $\mathcal{F}_t$. This amounts to taking $s_j = t_j$ for each $j$. The choice is motivated by the interpretation of $\mathcal{F}_t$: the value of the approximation at $t$ may depend only on what has happened up to time $t$, but not on any future events.
 
 \begin{Definition}
@@ -158,6 +180,30 @@ Try to adapt the proof of Proposition \ref{prop:7.1}. Use a common partition $0 
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Let $f(t) = \sum_{j=0}^{n-1} \eta_j \mathbf{1}_{[t_j, t_{j+1})}(t)$ and $g(t) = \sum_{j=0}^{n-1} \zeta_j \mathbf{1}_{[t_j, t_{j+1})}(t)$ be two random step processes represented with respect to a common partition $0 = t_0 < t_1 < \cdots < t_n$. Then
+\begin{equation*}
+I(f) = \sum_{j=0}^{n-1} \eta_j \Delta_j W, \quad I(g) = \sum_{k=0}^{n-1} \zeta_k \Delta_k W.
+\end{equation*}
+Their product is
+\begin{equation*}
+I(f)I(g) = \sum_{j=0}^{n-1} \sum_{k=0}^{n-1} \eta_j \zeta_k \Delta_j W \Delta_k W = \sum_{j=0}^{n-1} \eta_j \zeta_j (\Delta_j W)^2 + \sum_{j \neq k} \eta_j \zeta_k \Delta_j W \Delta_k W.
+\end{equation*}
+Taking the expectation, for the diagonal terms ($j=k$), we have
+\begin{equation*}
+\mathbb{E}(\eta_j \zeta_j (\Delta_j W)^2) = \mathbb{E}(\eta_j \zeta_j) \mathbb{E}((\Delta_j W)^2) = \mathbb{E}(\eta_j \zeta_j) \Delta_j t,
+\end{equation*}
+since $\eta_j \zeta_j$ is $\mathcal{F}_{t_j}$-measurable and $(\Delta_j W)^2$ is independent of $\mathcal{F}_{t_j}$.
+For the off-diagonal terms, assume without loss of generality that $k < j$. Then $\eta_j \zeta_k \Delta_k W$ is $\mathcal{F}_{t_j}$-measurable and $\Delta_j W$ is independent of $\mathcal{F}_{t_j}$ with $\mathbb{E}(\Delta_j W) = 0$. Thus,
+\begin{equation*}
+\mathbb{E}(\eta_j \zeta_k \Delta_j W \Delta_k W) = \mathbb{E}(\eta_j \zeta_k \Delta_k W) \mathbb{E}(\Delta_j W) = 0.
+\end{equation*}
+Summing these up, we get
+\begin{equation*}
+\mathbb{E}(I(f)I(g)) = \sum_{j=0}^{n-1} \mathbb{E}(\eta_j \zeta_j) \Delta_j t = \mathbb{E}\left( \int_0^\infty \sum_{j=0}^{n-1} \eta_j \zeta_j \mathbf{1}_{[t_j, t_{j+1})}(t) \, dt \right) = \mathbb{E}\left( \int_0^\infty f(t)g(t) \, dt \right).
+\end{equation*}
+\end{Solution}
+
 \begin{Exercise}
 \label{ex:7.3}
 Show that $I: M_{\mathrm{step}}^2 \to L^2$ is a linear map, i.e. for any $f, g \in M_{\mathrm{step}}^2$ and any $\alpha, \beta \in \mathbb{R}$
@@ -170,6 +216,21 @@ I(\alpha f + \beta g) = \alpha I(f) + \beta I(g).
 As in Exercise \ref{ex:7.2}, use a common partition $0 = t_0 < t_1 < \cdots < t_n$ in which to represent both $f$ and $g$ in the form \eqref{eq:randomStepProcess}.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+Let $f(t) = \sum_{j=0}^{n-1} \eta_j \mathbf{1}_{[t_j, t_{j+1})}(t)$ and $g(t) = \sum_{j=0}^{n-1} \zeta_j \mathbf{1}_{[t_j, t_{j+1})}(t)$ be two random step processes using a common partition $0 = t_0 < t_1 < \cdots < t_n$. The linear combination $\alpha f + \beta g$ is also a random step process given by
+\begin{equation*}
+(\alpha f + \beta g)(t) = \sum_{j=0}^{n-1} (\alpha \eta_j + \beta \zeta_j) \mathbf{1}_{[t_j, t_{j+1})}(t).
+\end{equation*}
+By Definition \ref{def:7.2}, the stochastic integral of $\alpha f + \beta g$ is
+\begin{align*}
+I(\alpha f + \beta g) &= \sum_{j=0}^{n-1} (\alpha \eta_j + \beta \zeta_j) (W(t_{j+1}) - W(t_j)) \\
+&= \alpha \sum_{j=0}^{n-1} \eta_j (W(t_{j+1}) - W(t_j)) + \beta \sum_{j=0}^{n-1} \zeta_j (W(t_{j+1}) - W(t_j)) \\
+&= \alpha I(f) + \beta I(g).
+\end{align*}
+This confirms that $I: M_{\mathrm{step}}^2 \to L^2$ is a linear map.
+\end{Solution}
+
 
 The stochastic integral $I(f)$ has been defined for any random step process $f \in M_{\mathrm{step}}^2$. The next stage is to extend $I$ to a larger class of processes by approximation. This larger class can be defined as follows.
 
@@ -281,6 +342,23 @@ Write the left-hand side in terms of $\mathbb{E}\left(|I(f) + I(g)|^2\right)$ an
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Using the polarization identity for the inner product on $L^2$, we have
+\begin{equation*}
+\mathbb{E}(I(f)I(g)) = \frac{1}{4} \left( \mathbb{E}|I(f) + I(g)|^2 - \mathbb{E}|I(f) - I(g)|^2 \right).
+\end{equation*}
+By the linearity of the stochastic integral (which extends from step processes to $M^2$ by the approximation definition), $I(f) \pm I(g) = I(f \pm g)$. Applying the Itô isometry \eqref{eq:ItoIsometry} to $I(f+g)$ and $I(f-g)$, we get
+\begin{align*}
+\mathbb{E}(I(f)I(g)) &= \frac{1}{4} \left( \mathbb{E}\left(\int_0^\infty |f(t) + g(t)|^2 \, dt\right) - \mathbb{E}\left(\int_0^\infty |f(t) - g(t)|^2 \, dt\right) \right) \\
+&= \frac{1}{4} \mathbb{E} \left( \int_0^\infty (|f(t) + g(t)|^2 - |f(t) - g(t)|^2) \, dt \right).
+\end{align*}
+Since $|f(t) + g(t)|^2 - |f(t) - g(t)|^2 = 4f(t)g(t)$, the expression simplifies to
+\begin{equation*}
+\mathbb{E}(I(f)I(g)) = \mathbb{E}\left( \int_0^\infty f(t)g(t) \, dt \right),
+\end{equation*}
+as required.
+\end{Solution}
+
 Having defined the Itô stochastic integral from $0$ to $\infty$, we are now in a position to consider stochastic integrals over any finite time interval $[0, T]$.
 
 \begin{Definition}
@@ -321,6 +399,31 @@ is a martingale.
 The stochastic integral of a random step process $f$ is given by the sum \eqref{eq:stochasticIntegral}. What is the conditional expectation of the $j$-th term of this sum given $\mathcal{F}_s$ if $s < t_j$? What is it when $s \geq t_j$?
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+A random step process $f$ has the form $f(t) = \sum_{j=0}^{n-1} \eta_j \mathbf{1}_{[t_j, t_{j+1})}(t)$. For any $t > 0$, $\mathbf{1}_{[0, t)}f$ is also a random step process, so $f \in M_t^2$.
+To show that $I_t(f)$ is a martingale, let $s < t$. We need to show $\mathbb{E}(I_t(f) \mid \mathcal{F}_s) = I_s(f)$.
+The stochastic integral $I_t(f)$ can be written as
+\begin{equation*}
+I_t(f) = \sum_{j=0}^{n-1} \eta_j (W(t_{j+1} \wedge t) - W(t_j \wedge t)).
+\end{equation*}
+Consider a single term $X_j(t) = \eta_j (W(t_{j+1} \wedge t) - W(t_j \wedge t))$.
+If $s \geq t_{j+1}$, then $W(t_{j+1} \wedge t) - W(t_j \wedge t)$ is $\mathcal{F}_{t_{j+1}}$-measurable and thus $\mathcal{F}_s$-measurable. Also $\eta_j$ is $\mathcal{F}_{t_j} \subset \mathcal{F}_s$ measurable. So $\mathbb{E}(X_j(t) \mid \mathcal{F}_s) = X_j(t) = X_j(s)$.
+If $s \leq t_j$, then $\eta_j$ is $\mathcal{F}_{t_j}$-measurable and $W(t_{j+1} \wedge t) - W(t_j \wedge t)$ is independent of $\mathcal{F}_{t_j}$.
+\begin{align*}
+\mathbb{E}(X_j(t) \mid \mathcal{F}_s) &= \mathbb{E}(\mathbb{E}(X_j(t) \mid \mathcal{F}_{t_j}) \mid \mathcal{F}_s) \\
+&= \mathbb{E}(\eta_j \mathbb{E}(W(t_{j+1} \wedge t) - W(t_j \wedge t) \mid \mathcal{F}_{t_j}) \mid \mathcal{F}_s) \\
+&= \mathbb{E}(\eta_j \cdot 0 \mid \mathcal{F}_s) = 0.
+\end{align*}
+Since $X_j(s) = 0$ for $s \leq t_j$, we have $\mathbb{E}(X_j(t) \mid \mathcal{F}_s) = X_j(s)$.
+If $t_j < s < t_{j+1}$, then
+\begin{align*}
+\mathbb{E}(X_j(t) \mid \mathcal{F}_s) &= \mathbb{E}(\eta_j (W(t_{j+1} \wedge t) - W(t_j)) \mid \mathcal{F}_s) \\
+&= \eta_j \mathbb{E}(W(t_{j+1} \wedge t) - W(s) + W(s) - W(t_j) \mid \mathcal{F}_s) \\
+&= \eta_j (0 + W(s) - W(t_j)) = X_j(s).
+\end{align*}
+In all cases $\mathbb{E}(X_j(t) \mid \mathcal{F}_s) = X_j(s)$. Summing over $j$, we obtain $\mathbb{E}(I_t(f) \mid \mathcal{F}_s) = I_s(f)$.
+\end{Solution}
 
 The processes for which the stochastic integral exists have been defined as those that can be approximated by random step processes. However, it is not always easy to check whether or not such an approximation exists. For practical purposes it is important to have a straightforward sufficient condition for a process to have a stochastic integral. In calculus there is a well-known result of this kind: the Riemann integral exists for any continuous function. Here is a theorem of this kind for the Itô integral.
 
@@ -434,6 +537,14 @@ Apply part (2) of Theorem \ref{th:7.1}.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+The Wiener process $W(t)$ is adapted to the filtration $\mathcal{F}_t$ and has a.s. continuous paths. To apply Theorem \ref{th:7.1}(2), we check the integrability condition:
+\begin{equation*}
+\mathbb{E}\left(\int_0^T |W(t)|^2 \, dt\right) = \int_0^T \mathbb{E}(W(t)^2) \, dt = \int_0^T t \, dt = \frac{1}{2} T^2 < \infty.
+\end{equation*}
+Thus, $W \in M_T^2$ for each $T > 0$.
+\end{Solution}
+
 \begin{Exercise}
 \label{ex:7.7}
 Show that $W(t)^2$ belongs to $M_T^2$ for each $T > 0$.
@@ -442,6 +553,15 @@ Show that $W(t)^2$ belongs to $M_T^2$ for each $T > 0$.
 Once again, apply part (2) of Theorem \ref{th:7.1}.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+The process $W(t)^2$ is adapted to $\mathcal{F}_t$ and has a.s. continuous paths. We check the integrability condition:
+\begin{equation*}
+\mathbb{E}\left(\int_0^T |W(t)^2|^2 \, dt\right) = \int_0^T \mathbb{E}(W(t)^4) \, dt = \int_0^T 3t^2 \, dt = T^3 < \infty.
+\end{equation*}
+Here we used the fact that for a Gaussian random variable $W(t) \sim N(0, t)$, the fourth moment is $\mathbb{E}(W(t)^4) = 3(\mathbb{E}(W(t)^2))^2 = 3t^2$.
+Thus, $W^2 \in M_T^2$ for each $T > 0$.
+\end{Solution}
 
 The next theorem, which we shall state without proof, provides a characterization of $M^2$ and $M_T^2$, i.e. a necessary and sufficient condition for a stochastic process $f$ to belong to $M^2$ or $M_T^2$. It involves the notion of a progressively measurable process.
 
@@ -493,6 +613,19 @@ It is convenient to use a partition of the interval $[0, T]$ into $n$ equal part
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Let $0 = t_0^n < t_1^n < \cdots < t_n^n = T$ be a partition of $[0, T]$ into $n$ equal parts. Consider the random step processes $f_n(t) = \sum_{j=0}^{n-1} W(t_j^n) \mathbf{1}_{[t_j^n, t_{j+1}^n)}(t)$. As $n \to \infty$, $f_n$ approximates $W$ in $M_T^2$ because $W$ has continuous paths and is square integrable.
+The stochastic integral of $f_n$ is
+\begin{equation*}
+I(f_n) = \sum_{j=0}^{n-1} W(t_j^n)(W(t_{j+1}^n) - W(t_j^n)).
+\end{equation*}
+From Exercise \ref{ex:7.1}, we know that the $L^2$ limit of this sum is
+\begin{equation*}
+\lim_{n \to \infty} I(f_n) = \frac{1}{2} W(T)^2 - \frac{1}{2} T.
+\end{equation*}
+By Definition \ref{def:7.4}, this limit is the Itô stochastic integral $\int_0^T W(t) \, dW(t)$.
+\end{Solution}
+
 \begin{Exercise}
 \label{ex:7.9}
 Verify the equality
@@ -511,6 +644,23 @@ c(b - a) = (db - ca) - b(d - c).
 \end{equation}
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+Let $t_j = \frac{jT}{n}$ for $j = 0, \ldots, n$. Approximate the integrand $f(t) = t$ by the random step process $f_n(t) = \sum_{j=0}^{n-1} t_j \mathbf{1}_{[t_j, t_{j+1})}(t)$. The stochastic integral is
+\begin{equation*}
+I(f_n) = \sum_{j=0}^{n-1} t_j (W(t_{j+1}) - W(t_j)).
+\end{equation*}
+Using the identity $c(b - a) = (db - ca) - b(d - c)$ with $c = t_j, d = t_{j+1}, a = W(t_j), b = W(t_{j+1})$, we get
+\begin{align*}
+I(f_n) &= \sum_{j=0}^{n-1} [ (t_{j+1} W(t_{j+1}) - t_j W(t_j)) - W(t_{j+1})(t_{j+1} - t_j) ] \\
+&= (t_n W(t_n) - t_0 W(t_0)) - \sum_{j=0}^{n-1} W(t_{j+1}) \Delta_j t \\
+&= T W(T) - \sum_{j=0}^{n-1} W(t_{j+1}) \Delta_j t.
+\end{align*}
+As $n \to \infty$, the sum $\sum_{j=0}^{n-1} W(t_{j+1}) \Delta_j t$ converges pathwise (and in $L^2$) to the Riemann integral $\int_0^T W(t) \, dt$ because the paths of $W(t)$ are continuous. Thus,
+\begin{equation*}
+\int_0^T t \, dW(t) = T W(T) - \int_0^T W(t) \, dt.
+\end{equation*}
+\end{Solution}
 
 \begin{Exercise}
 \label{ex:7.10}
@@ -536,6 +686,25 @@ can be applied to transform the sums approximating the stochastic integral. You 
 \end{equation}
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+In Exercise \ref{ex:7.7} we showed that $W^2 \in M_T^2$. Let $t_j = \frac{jT}{n}$ and $a = W(t_j), b = W(t_{j+1})$. The approximating sum is
+\begin{align*}
+I(f_n) &= \sum_{j=0}^{n-1} W(t_j)^2 (W(t_{j+1}) - W(t_j)) \\
+&= \sum_{j=0}^{n-1} \left[ \frac{1}{3}(W(t_{j+1})^3 - W(t_j)^3) - W(t_j)(W(t_{j+1}) - W(t_j))^2 - \frac{1}{3}(W(t_{j+1}) - W(t_j))^3 \right] \\
+&= \frac{1}{3} W(T)^3 - \sum_{j=0}^{n-1} W(t_j) (\Delta_j W)^2 - \frac{1}{3} \sum_{j=0}^{n-1} (\Delta_j W)^3.
+\end{align*}
+As $n \to \infty$, $\sum (\Delta_j W)^3 \to 0$ in $L^2$ (and a.s. for a subsequence). For the middle term, we compare it to the Riemann integral $\int_0^T W(t) \, dt \approx \sum W(t_j) \Delta_j t$:
+\begin{align*}
+\mathbb{E} \left| \sum W(t_j) (\Delta_j W)^2 - \sum W(t_j) \Delta_j t \right|^2 &= \sum \mathbb{E} [ W(t_j)^2 ((\Delta_j W)^2 - \Delta_j t)^2 ] \\
+&= \sum \mathbb{E}(W(t_j)^2) \mathbb{E}((\Delta_j W)^2 - \Delta_j t)^2 \\
+&= \sum t_j \cdot 2 (\Delta_j t)^2 = 2 \frac{T^2}{n^2} \sum \frac{jT}{n} \to 0.
+\end{align*}
+Thus $\sum W(t_j) (\Delta_j W)^2 \to \int_0^T W(t) \, dt$ in $L^2$. Combining these results, we obtain
+\begin{equation*}
+\int_0^T W(t)^2 \, dW(t) = \frac{1}{3} W(T)^3 - \int_0^T W(t) \, dt.
+\end{equation*}
+\end{Solution}
 
 \section{Properties of the Stochastic Integral}
 \label{sec:StochasticIntegralProperties}
@@ -698,6 +867,17 @@ By Theorem \ref{th:7.4}, $\xi(t)$ can be identified with an adapted modification
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+From Exercise \ref{ex:7.8}, we have $\xi(t) = \frac{1}{2} W(t)^2 - \frac{1}{2} t$. This process is adapted and has a.s. continuous paths. We check the integrability condition \eqref{eq:thm7_1_cond2}:
+\begin{align*}
+\mathbb{E} \int_0^T |\xi(t)|^2 \, dt &= \int_0^T \mathbb{E} \left( \frac{1}{2} W(t)^2 - \frac{1}{2} t \right)^2 \, dt \\
+&= \frac{1}{4} \int_0^T \mathbb{E} (W(t)^4 - 2 t W(t)^2 + t^2) \, dt \\
+&= \frac{1}{4} \int_0^T (3t^2 - 2t^2 + t^2) \, dt \\
+&= \frac{1}{4} \int_0^T 2t^2 \, dt = \frac{1}{2} \cdot \frac{1}{3} T^3 = \frac{1}{6} T^3 < \infty.
+\end{align*}
+By Theorem \ref{th:7.1}, $\xi \in M_T^2$ for any $T \geq 0$.
+\end{Solution}
+
 \section{Stochastic Differential and Itô Formula}
 \label{sec:ItoFormula}
 
@@ -796,6 +976,21 @@ Refer to Exercise \ref{ex:7.10}.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+From Exercise \ref{ex:7.10}, we have the equality
+\begin{equation*}
+\int_0^T W(t)^2 \, dW(t) = \frac{1}{3} W(T)^3 - \int_0^T W(t) \, dt,
+\end{equation*}
+which can be rewritten as
+\begin{equation*}
+W(T)^3 = 3 \int_0^T W(t) \, dt + 3 \int_0^T W(t)^2 \, dW(t).
+\end{equation*}
+This matches the form of an Itô process in \eqref{eq:ItoProcess} with $a(t) = 3W(t)$ and $b(t) = 3W(t)^2$. $a(t)$ is adapted and continuous, so it belongs to $\mathcal{L}_T^1$. $b(t)$ belongs to $M_T^2$ as shown in Exercise \ref{ex:7.7}. Thus, $W(t)^3$ is an Itô process with stochastic differential
+\begin{equation*}
+d(W(t)^3) = 3W(t) \, dt + 3W(t)^2 \, dW(t).
+\end{equation*}
+\end{Solution}
+
 \begin{Exercise}
 \label{ex:7.13}
 Show that $tW(t)$ is an Itô process and find a formula for the stochastic differential $d(tW(t))$.
@@ -804,6 +999,21 @@ Show that $tW(t)$ is an Itô process and find a formula for the stochastic diffe
 Use Exercise \ref{ex:7.9}.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+From Exercise \ref{ex:7.9}, we have
+\begin{equation*}
+\int_0^T t \, dW(t) = T W(T) - \int_0^T W(t) \, dt,
+\end{equation*}
+which can be rewritten as
+\begin{equation*}
+T W(T) = \int_0^T W(t) \, dt + \int_0^T t \, dW(t).
+\end{equation*}
+This is in the form of an Itô process with $a(t) = W(t)$ and $b(t) = t$. $a(t)$ is adapted and continuous, so $a \in \mathcal{L}_T^1$. $b(t)$ is deterministic and square-integrable on $[0, T]$, so $b \in M_T^2$. Thus, $tW(t)$ is an Itô process and its stochastic differential is
+\begin{equation*}
+d(tW(t)) = W(t) \, dt + t \, dW(t).
+\end{equation*}
+\end{Solution}
 
 The above examples and exercises are particular cases of an extremely important general formula for transforming stochastic differentials established by Itô. To begin with, we shall state and prove a simplified version of the formula, followed by the general theorem. The proof of the simplified version captures the essential ingredients of the somewhat tedious general argument, which will be omitted. In fact, many of the essential ingredients of the proof are already present in the examples and exercises considered above.
 
@@ -1036,6 +1246,22 @@ Use the Itô formula with $F(t, x) = e^x e^{-t/2}$.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Let $F(t, x) = e^x e^{-t/2}$. The partial derivatives are
+\begin{align*}
+F_t'(t, x) &= -\frac{1}{2} e^x e^{-t/2} = -\frac{1}{2} F(t, x), \\
+F_x'(t, x) &= e^x e^{-t/2} = F(t, x), \\
+F_{xx}''(t, x) &= e^x e^{-t/2} = F(t, x).
+\end{align*}
+Applying the simplified Itô formula \eqref{eq:ItoDifferentialSimplified} with $W(t)$ as the process:
+\begin{align*}
+dX(t) = dF(t, W(t)) &= \left( F_t'(t, W(t)) + \frac{1}{2} F_{xx}''(t, W(t)) \right) dt + F_x'(t, W(t)) \, dW(t) \\
+&= \left( -\frac{1}{2} X(t) + \frac{1}{2} X(t) \right) dt + X(t) \, dW(t) \\
+&= X(t) \, dW(t).
+\end{align*}
+This shows that $X(t)$ is an Itô process (since $X(t)$ is adapted, continuous, and $X(t) \in M_T^2$ due to the finiteness of exponential moments of Gaussian variables) and satisfies the given stochastic differential equation.
+\end{Solution}
+
 As compared with the simplified version just proved, in the general Itô formula below $W(t)$ will be replaced by an arbitrary Itô process $\xi(t)$ such that
 
 \begin{equation}
@@ -1091,6 +1317,23 @@ This is a direct application of the Itô formula, but be careful with the assump
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Let $F(t, x) = x^n$. The partial derivatives are
+\begin{equation*}
+F_t' = 0, \quad F_x' = n x^{n-1}, \quad F_{xx}'' = n(n-1) x^{n-2}.
+\end{equation*}
+Applying the simplified Itô formula \eqref{eq:ItoDifferentialSimplified}:
+\begin{align*}
+d(W(t)^n) &= \left( 0 + \frac{1}{2} n(n-1) W(t)^{n-2} \right) dt + n W(t)^{n-1} \, dW(t) \\
+&= \frac{n(n-1)}{2} W(t)^{n-2} \, dt + n W(t)^{n-1} \, dW(t).
+\end{align*}
+To ensure $n W(t)^{n-1} \in M_T^2$, we check the integrability condition:
+\begin{equation*}
+\mathbb{E} \int_0^T |n W(t)^{n-1}|^2 \, dt = n^2 \int_0^T \mathbb{E}(W(t)^{2n-2}) \, dt.
+\end{equation*}
+Since $W(t)$ is Gaussian, its moments of all orders are finite. Specifically, $\mathbb{E}(W(t)^{2k}) = \frac{(2k)!}{2^k k!} t^k$. Thus the integral is finite, and $W(t)^n$ is a valid Itô process.
+\end{Solution}
+
 \begin{Exercise}[Ornstein-Uhlenbeck process]
 \label{ex:7.16}
 Suppose that $\alpha > 0$ and $\sigma \in \mathbb{R}$ are fixed. Define $Y(t), t \geq 0$ to be an adapted modification of the Itô integral
@@ -1109,6 +1352,21 @@ dY(t) = -\alpha Y(t) \, dt + \sigma \, dW(t).
 $Y(t) = F(t, \xi(t))$ with $\xi(t) = \sigma \int_0^t e^{\alpha s} \, dW(s)$ and $F(t, x) = e^{-\alpha t} x$.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+Let $\xi(t) = \sigma \int_0^t e^{\alpha s} \, dW(s)$. Then $\xi(t)$ is an Itô process with $d\xi(t) = 0 \, dt + \sigma e^{\alpha t} \, dW(t)$, so $a(t) = 0$ and $b(t) = \sigma e^{\alpha t}$.
+Let $F(t, x) = e^{-\alpha t} x$. The partial derivatives are
+\begin{equation*}
+F_t' = -\alpha e^{-\alpha t} x = -\alpha F, \quad F_x' = e^{-\alpha t}, \quad F_{xx}'' = 0.
+\end{equation*}
+Using the general Itô formula \eqref{eq:ItoFormulaGeneral} for $Y(t) = F(t, \xi(t))$:
+\begin{align*}
+dY(t) &= \left( F_t' + F_x' a + \frac{1}{2} F_{xx}'' b^2 \right) dt + F_x' b \, dW(t) \\
+&= \left( -\alpha e^{-\alpha t} \xi(t) + e^{-\alpha t} \cdot 0 + 0 \right) dt + e^{-\alpha t} (\sigma e^{\alpha t}) \, dW(t) \\
+&= -\alpha Y(t) \, dt + \sigma \, dW(t).
+\end{align*}
+This confirms that $Y(t)$ satisfies the given stochastic differential equation.
+\end{Solution}
 
 \section{Stochastic Differential Equations}
 \label{sec:StochasticDifferentialEquations}
@@ -1277,9 +1535,31 @@ dX(t) = -\alpha X(t) \, dt + \sigma \, dW(t)
 with initial condition $X(0) = x_0$, where $x_0$ is an arbitrary real number. Show that the solution is unique.
 
 \begin{hint}
-Use the substitution $Y(t) = e^{at} X(t)$.
+Use the substitution $Y(t) = e^{\alpha t} X(t)$.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+Let $Y(t) = e^{\alpha t} X(t)$. By the general Itô formula with $F(t, x) = e^{\alpha t} x$:
+\begin{align*}
+dY(t) &= \left( \alpha e^{\alpha t} X(t) + e^{\alpha t} (-\alpha X(t)) + 0 \right) dt + e^{\alpha t} \sigma \, dW(t) \\
+&= \sigma e^{\alpha t} \, dW(t).
+\end{align*}
+Integrating from $0$ to $t$:
+\begin{equation*}
+Y(t) - Y(0) = \sigma \int_0^t e^{\alpha s} \, dW(s).
+\end{equation*}
+Since $Y(0) = e^0 X(0) = x_0$, we have
+\begin{equation*}
+e^{\alpha t} X(t) = x_0 + \sigma \int_0^t e^{\alpha s} \, dW(s),
+\end{equation*}
+which gives the solution
+\begin{equation*}
+X(t) = x_0 e^{-\alpha t} + \sigma e^{-\alpha t} \int_0^t e^{\alpha s} \, dW(s).
+\end{equation*}
+Uniqueness follows from Theorem \ref{th:7.7} because the coefficients $f(x) = -\alpha x$ and $g(x) = \sigma$ are Lipschitz continuous ($|f(x) - f(y)| = \alpha |x - y|$ and $|g(x) - g(y)| = 0$).
+\end{Solution}
+
 
 A linear stochastic differential equation has the general form
 
@@ -1317,6 +1597,29 @@ The variables can be separated:
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+The ordinary differential equation can be written as
+\begin{equation*}
+\frac{dx(t)}{dt} = (a + b w'(t)) x(t).
+\end{equation*}
+Separating variables, we have
+\begin{equation*}
+\int \frac{dx}{x} = \int (a + b w'(t)) dt.
+\end{equation*}
+Integrating from $0$ to $t$:
+\begin{equation*}
+\ln |x(t)| - \ln |x(0)| = at + b(w(t) - w(0)).
+\end{equation*}
+Given $w(0) = 0$ and $x(0) = x_0$, this simplifies to
+\begin{equation*}
+\ln \left| \frac{x(t)}{x_0} \right| = at + bw(t),
+\end{equation*}
+which implies
+\begin{equation*}
+x(t) = x_0 e^{at + bw(t)}.
+\end{equation*}
+\end{Solution}
+
 By analogy with the deterministic solution \eqref{eq:ODE_solution}, let us consider a process defined by
 
 \begin{equation}
@@ -1342,6 +1645,22 @@ Use the Itô formula with $F(t, x) = e^{at + bx}$.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+Let $F(t, x) = X_0 e^{at + bx}$. The partial derivatives are
+\begin{align*}
+F_t' &= a X_0 e^{at + bx} = a F, \\
+F_x' &= b X_0 e^{at + bx} = b F, \\
+F_{xx}'' &= b^2 X_0 e^{at + bx} = b^2 F.
+\end{align*}
+Applying the simplified Itô formula \eqref{eq:ItoDifferentialSimplified} for $X(t) = F(t, W(t))$:
+\begin{align*}
+dX(t) &= \left( F_t' + \frac{1}{2} F_{xx}'' \right) dt + F_x' \, dW(t) \\
+&= \left( a X(t) + \frac{1}{2} b^2 X(t) \right) dt + b X(t) \, dW(t) \\
+&= \left( a + \frac{b^2}{2} \right) X(t) \, dt + b X(t) \, dW(t).
+\end{align*}
+The initial condition is $X(0) = X_0 e^{a \cdot 0 + b W(0)} = X_0$. This verifies that $X(t)$ is a solution to the given SDE.
+\end{Solution}
+
 \begin{Exercise}
 \label{ex:7.20}
 Show that the linear stochastic differential equation
@@ -1361,6 +1680,20 @@ Apply the result of Exercise \ref{ex:7.19} with suitably redefined constants.
 \end{hint}
 \end{Exercise}
 
+\begin{Solution}
+We want to find a solution for $dX(t) = a X(t) \, dt + b X(t) \, dW(t)$.
+According to Exercise \ref{ex:7.19}, the process $X(t) = X_0 e^{\tilde{a} t + b W(t)}$ satisfies
+\begin{equation*}
+dX(t) = \left( \tilde{a} + \frac{b^2}{2} \right) X(t) \, dt + b X(t) \, dW(t).
+\end{equation*}
+To match the given equation, we set $a = \tilde{a} + \frac{b^2}{2}$, which gives $\tilde{a} = a - \frac{b^2}{2}$.
+Substituting this $\tilde{a}$ into the expression for $X(t)$:
+\begin{equation*}
+X(t) = X_0 e^{\left( a - \frac{b^2}{2} \right) t + b W(t)}.
+\end{equation*}
+Uniqueness follows from Theorem \ref{th:7.7} because the coefficients $f(x) = ax$ and $g(x) = bx$ are Lipschitz continuous ($|ax - ay| = |a| |x - y|$ and $|bx - by| = |b| |x - y|$).
+\end{Solution}
+
 Having solved the general linear stochastic differential equation \eqref{eq:linear_SDE}, let us consider an example of a non-linear stochastic differential equation. Once again, we begin with a deterministic problem.
 
 \begin{Exercise}
@@ -1377,6 +1710,29 @@ with initial condition $x(0) = x_0$.
 The variables in this differential equation can be separated.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+The ordinary differential equation can be written as
+\begin{equation*}
+\frac{dx(t)}{dt} = \sqrt{1 + x(t)^2} (1 + w'(t)).
+\end{equation*}
+Separating variables, we have
+\begin{equation*}
+\int \frac{dx}{\sqrt{1 + x^2}} = \int (1 + w'(t)) dt.
+\end{equation*}
+Integrating from $0$ to $t$:
+\begin{equation*}
+\left[ \sinh^{-1} z \right]_{x_0}^{x(t)} = \left[ s + w(s) \right]_0^t.
+\end{equation*}
+Since $w(0) = 0$, this gives
+\begin{equation*}
+\sinh^{-1} x(t) - \sinh^{-1} x_0 = t + w(t).
+\end{equation*}
+Let $C = \sinh^{-1} x_0$. Then $\sinh^{-1} x(t) = C + t + w(t)$, which implies
+\begin{equation*}
+x(t) = \sinh(C + t + w(t)).
+\end{equation*}
+\end{Solution}
 
 \begin{Exercise}
 \label{ex:7.22}
@@ -1398,6 +1754,26 @@ with initial condition $X(0) = X_0$.
 Use the Itô formula with $F(t, x) = \sinh(t + x)$.
 \end{hint}
 \end{Exercise}
+
+\begin{Solution}
+Let $F(t, x) = \sinh(C + t + x)$. The partial derivatives are
+\begin{align*}
+F_t'(t, x) &= \cosh(C + t + x), \\
+F_x'(t, x) &= \cosh(C + t + x), \\
+F_{xx}''(t, x) &= \sinh(C + t + x) = F(t, x).
+\end{align*}
+Applying the simplified Itô formula \eqref{eq:ItoDifferentialSimplified} to $X(t) = F(t, W(t))$:
+\begin{align*}
+dX(t) &= \left( F_t' + \frac{1}{2} F_{xx}'' \right) dt + F_x' \, dW(t) \\
+&= \left( \cosh(C + t + W(t)) + \frac{1}{2} \sinh(C + t + W(t)) \right) dt + \cosh(C + t + W(t)) \, dW(t).
+\end{align*}
+Since $X(t) = \sinh(C + t + W(t))$, we have $\sqrt{1 + X(t)^2} = \sqrt{1 + \sinh^2(C + t + W(t))} = \cosh(C + t + W(t))$.
+Substituting these into the expression for $dX(t)$, we obtain
+\begin{equation*}
+dX(t) = \left( \sqrt{1 + X(t)^2} + \frac{1}{2} X(t) \right) dt + \sqrt{1 + X(t)^2} \, dW(t).
+\end{equation*}
+The initial condition is $X(0) = \sinh(C + 0 + W(0)) = \sinh(C) = \sinh(\sinh^{-1} X_0) = X_0$. This verifies that $X(t)$ is a solution to the given SDE.
+\end{Solution}
 
 We shall conclude this chapter with an example of a stochastic differential equation which does not satisfy the assumptions of Theorem \ref{th:7.7}. It turns out that the solution may fail to exist for all times $t \geq 0$. This is a familiar phenomenon in ordinary differential equations. However, stochastic differential equations add a new effect, which does not even make sense in the deterministic case: the maximum time of existence of the solution, called the \textbf{explosion time} may be a (non-constant) random variable, in fact a stopping time.
 
@@ -1431,9 +1807,4 @@ This is the explosion time of $X(t)$. Observe that
 
 Strictly speaking, the Itô formula stated in Theorem \ref{th:7.6} does not cover this case, since $F(t, x) = \frac{1}{1-x}$ has a singularity at $x = 1$. Definition \ref{def:7.9} does not apply either, as it requires the solution $X(t)$ to be defined for all $t \geq 0$. Suitable extensions of the Itô formula and the definition of a solution are required to study stochastic differential equations involving explosions. However, to prevent an explosion of this book, we have to refer the interested reader to a further course in stochastic analysis.
 \end{Example}
-
-\section{Solutions}
-\label{sec:Chapter7Solutions}
-
-% Solutions to exercises will be added here.
 
