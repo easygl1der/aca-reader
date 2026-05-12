@@ -2492,9 +2492,73 @@ WLS 回归 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$，权重 $w_i = w_i^+ + w_i^-$。
 \textbf{结论}：Hajek 估计量严格等于 WLS 回归中 $Z_i$ 的系数。$\square$
 
 % ========================================================
+% CHAPTER 15 APPENDIX
+% ========================================================
+\section{第十五章附录}\label{sec:appendix-15-ai-theory}\label{sec:appendix-15-matching-variance}\label{sec:appendix-15-bias-correction}\label{sec:appendix-15-dr-proof}\label{sec:appendix-15-dr-att-proof}
+
+\textbf{背景}：本章附录提供第 \ref{ch:15} 章中关键结果的详细推导。
+
+\subsection{AI 标准设置的详细推导}
+
+\textbf{Abadie--Imbens (AI) 标准设置}：设 $J_i$ 为与单元 $i$ 匹配的对照单元集合的下标。在贪婪匹配（greedy matching）下，$J_i$ 通常包含与 $i$ 有最小卡方距离的单元。偏差项定义为：
+\[
+\mathrm{bias}(\hat\tau_i) = \mathbb{E}\bigl\{ Y_i(1) - Y_{J_i}(0) \mid X_i \bigr\} - \tau_i .
+\]
+
+该偏差来源于不精确匹配——即匹配的对照单元与治疗单元在协变量上存在残余差异。在理论上，当匹配质量趋于完美时（$X_i \approx X_{J_i}$），偏差项趋于零。
+
+详细推导见正文，此处从略。
+
+\subsection{匹配方差的推导}
+
+在 AI 框架下，匹配估计量的方差包括两个部分：
+\begin{enumerate}
+  \item \textbf{有限样本方差}：由配对间的随机变异引起
+  \item \textbf{偏差校正项}：$\hat\psi_i$ 用于修正由不精确匹配引起的系统性偏倚
+\end{enumerate}
+
+当匹配质量较高（卡方距离较小）时，偏差校正项可以忽略，此时方差主要由配对间变异决定。
+
+详细推导见正文，此处从略。
+
+\subsection{双稳健估计量的证明}
+
+第 \ref{ch:15} 章中的双稳健估计量结合了匹配和结局回归的优点。在倾向得分模型正确或结局模型正确（任一）时，双稳健估计量是相合的。
+
+具体证明利用了逆概率加权与回归调整的互补性：当倾向得分模型正确时，逆概率加权部分提供无偏估计，回归调整部分提供效率提升；当结局模型正确时，回归调整提供无偏估计，倾向得分加权提供稳健性保证。
+
+详细推导见正文，此处从略。
+
+% ========================================================
+% CHAPTER 22 APPENDIX
+% ========================================================
+\section{第二十二章附录}\label{sec:appendix-22-asymptotic-variance}\label{sec:appendix-22-cace-proof}\label{sec:appendix-22-far-ci}\label{sec:appendix-22-itt-identification}\label{sec:appendix-22-jobs-analysis}\label{sec:appendix-22-monotonicity-implication}\label{sec:appendix-22-tau-d-decomposition}\label{sec:appendix-22-tau-y-decomposition}\label{sec:appendix-22-wald-delta-method}
+
+\textbf{背景}：本章附录提供第 \ref{ch:22} 章中关键结果的详细推导。
+
+\subsection{CACE 的识别与分解}
+
+在单调性假设下，CACE 的识别依赖于以下分解：
+\[
+\tau_Y = \tau_Y^{\mathrm{always}} + \tau_Y^{\mathrm{complier}} + \tau_Y^{\mathrm{never}} .
+\]
+
+类似地，
+\[
+\tau_D = \tau_D^{\mathrm{complier}} + \tau_D^{\mathrm{defier}} .
+\]
+
+由单调性，$\Pr(\text{defier}) = 0$，因此 $\tau_D = \tau_D^{\mathrm{complier}}$。从而
+\[
+\mathrm{CACE} = \frac{\tau_Y^{\mathrm{complier}}}{\tau_D^{\mathrm{complier}}} .
+\]
+
+详细推导见正文，此处从略。
+
+% ========================================================
 % CHAPTER 29 APPENDIX
 % ========================================================
-\section{附录：定理29.1的证明}\label{sec:derivation-thm-29.1}
+\section{附录：定理29.1的证明}\label{sec:derivation-thm-29.1}\label{sec:cace-application}\label{sec:proof-bk-formulas}\label{sec:proof-mediation}
 
 \textbf{定理 \ref{thrm:29.1} 证明}。由塔性质，
 \[
