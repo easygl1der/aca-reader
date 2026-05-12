@@ -276,6 +276,42 @@ Z \perp\!\!\!\perp \{D(1), D(0), Y(1), Y(0)\} \mid X,
 
 \textbf{关键洞见}：对于二元结局 $Y$，我们知道 $\tau_Y \in [-1, 1]$，但 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$ 可能远超出这个范围。
 
+图 \ref{fig:21-weak-iv-hist} 展示了在不同 $\pi_c$（complier 比例）下 $\hat{\tau}_c$ 的模拟分布。当 $\pi_c = 0.5$ 时（强 IV），分布接近正态；但当 $\pi_c = 0.2$ 或 $\pi_c = 0.1$ 时（弱 IV），分布严重偏态，有明显的异常值超出 $[-1, 1]$ 范围。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth]{R/figures/ch21-weak-iv-hist.pdf}
+  \caption{弱工具变量模拟：不同 $\pi_c$（complier 比例）下 Wald 估计量 $\hat{\tau}_c$ 的分布。上行无协变量调整；下行有协变量调整（Lin, 2013）。}
+  \label{fig:21-weak-iv-hist}
+\end{figure}
+
+上述模拟由以下 R 代码实现：
+
+\begin{lstlisting}[language=R]
+set.seed(12345)
+n = 200; nsim = 500
+
+simulate_weak_IV = function(pi_c) {
+    replicate(nsim, {
+        Z = rbinom(n, 1, 0.5)
+        U_c = rbinom(n, 1, pi_c)  # complier indicator
+        D = Z * U_c  # monotonicity: D(0)=0 always
+        Y = rnorm(n, mean = 0.5 * D, sd = 1)
+        tau_D = mean(D[Z == 1]) - mean(D[Z == 0])
+        tau_Y = mean(Y[Z == 1]) - mean(Y[Z == 0])
+        tau_c_hat = tau_Y / tau_D
+        tau_c_hat
+    })
+}
+
+pi_c_list = c(0.5, 0.2, 0.1)
+layout(matrix(1:6, 2, 3, byrow = TRUE))
+for (pi_c in pi_c_list) {
+    hist(simulate_weak_IV(pi_c), main = bquote(pi[c] == .(pi_c)),
+         xlim = c(-5, 5), freq = FALSE)
+}
+\end{lstlisting}
+
 \subsection{对弱 IV 稳健的推断方法}
 
 当存在弱 IV 时，一个稳健的方法是使用 \textbf{Fieller-Anderson-Rubin（FAR）置信集}。\footnote{问：FAR 置信集的基本思想是什么？见附录 \cref{sec:qa-far-confidence-set}。}
