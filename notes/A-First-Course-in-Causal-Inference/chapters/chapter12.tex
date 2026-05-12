@@ -177,8 +177,34 @@ B = E\left\{\frac{Z\{\mu_1(X, \beta_1) - Y\}}{e(X)}\right\},
 证明若 $e(X, \alpha) = e(X)$ 或 $\mu_1(X, \beta_1) = \mu_1(X)$ 之一成立，则 $\tilde\mu_1^{\mathrm{dr}2} = \mu_1$。给出估计 $\mu_0$ 的类似公式，并给出基于这些公式的 $\tau$ 的双重稳健估计量的样本 analog。\citep[参见][式 (12.7)]{Ding:2023}
 \end{Exercise}
 
-\begin{Exercise}{DR 估计量的方差}\label{exr:12-3}
-证明 \cref{eq:12-dr-reg-aug} 和 \cref{eq:12-dr-ipw-aug} 的等价性。\citep[参见][式 (12.9)]{Ding:2023}
+\begin{Exercise}{偏差界不等式证明}\label{exr:12-3}
+证明双重稳健估计量的偏差界。假设倾向得分模型和结果模型分别有偏差 $|e(X) - e(X, \alpha)| \leq \delta_e$ 和 $|\mu_1(X) - \mu_1(X, \beta_1)| \leq \delta_\mu$，且 $0 < e(X, \alpha) < 1$。证明：
+\[
+|\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\}| \leq \frac{\delta_e}{1-\delta_e} \cdot \delta_\mu + \text{higher-order terms}.
+\]
+讨论这个偏差界对双重稳健估计量设计的启示。
+\end{Exercise}
+
+\begin{Exercise}{LaLonde 数据分析}\label{exr:12-4}
+使用 LaLonde 数据集（\texttt{cps1re74.csv}）比较不同因果推断方法的表现。\footnote{数据来源：\url{https://www.nber.org/programs/projects/ferri/programs-and-data.htm}，或使用 R 包 \texttt{causalweight} 中的 \texttt{LaLonde} 数据集。}
+\begin{enumerate}
+  \item 读取数据并熟悉变量：\texttt{treat}（治疗指示变量）、\texttt{age}、\texttt{education}、\texttt{married}、\texttt{nodegree}、\texttt{re74}、\texttt{re75}、\texttt{re78}（结果变量）；
+  \item 使用倾向得分分层（$K = 5, 10$）估计 ATT，并与已知的实验基准（\$1794）比较；
+  \item 使用双重稳健估计量重新估计 ATT，讨论其表现与倾向得分分层估计量的差异；
+  \item 对倾向得分进行截断（截断水平为 $0.1$ 和 $0.05$），分析截断对估计结果的影响；
+  \item 进行敏感性分析：使用不同的倾向得分模型（logistic 回归 vs. 机器学习模型），讨论结果的变化。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{Karolinska 教育干预数据分析}\label{exr:12-5}
+使用瑞典教育数据集（\texttt{karolinska.txt}）分析教育年限对收入的因果效应。\footnote{数据来源：斯德哥尔摩大学因果推断课程，数据文件位于课程主页。}
+\begin{enumerate}
+  \item 读取数据并熟悉变量结构：教育年限、性别、父母教育水平、家庭背景等协变量；
+  \item 拟合倾向得分模型，使用逆概率加权估计量估计平均因果效应；
+  \item 使用双重稳健估计量重新估计，比较与 IPW 估计量的差异；
+  \item 检验协变量平衡：报告治疗组和对照组在各协变量上的均值差异，讨论重叠条件是否满足；
+  \item 讨论外推风险：如果某些单元的倾向得分接近 0 或 1，估算由此带来的潜在偏差。
+\end{enumerate}
 \end{Exercise}
 
 % ============================================================

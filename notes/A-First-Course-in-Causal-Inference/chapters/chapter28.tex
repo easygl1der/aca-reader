@@ -1,0 +1,242 @@
+\chapter{受控直接效应}
+\label{chapter::controlled-direct-effect}
+
+\section{引言：另一种处理中介变量的视角}
+
+第 27 章中介分析框架依赖于嵌套潜在结果，本质上，某些嵌套潜在结果在任何物理实验中都是不可观测的。如果我们坚持第 27.2.2 节回顾的波普尔科学哲学，那么我们只能定义可以用某些实验观测的量来表达的因果参数。本章讨论因果推断中处理中介变量的另一种观点。在这种观点下，我们只能定义直接效应，而无法定义间接效应。
+
+\section{受控直接效应的定义}
+\label{sec::cde-definition}
+
+我们将 $Z$ 和 $M$ 视为两个可以人为干预的处理因素，并定义潜在结果 $Y(z,m)$，其中 $z=0,1$ 且 $m\in\mathcal{M}$。基于这些潜在结果，我们定义受控直接效应（CDE）如下。
+
+\begin{Definition}[受控直接效应（CDE）]
+\label{def::cde}
+定义
+\begin{equation}
+\label{eq::cde}
+\mathrm{CDE}(m) = E\{Y(1,m) - Y(0,m)\}.
+\end{equation}
+\end{Definition}
+
+根据定义，$\mathrm{CDE}(m)$ 是在中介变量固定为 $m$ 的条件下，处理的平均因果效应。参数 $\mathrm{CDE}(m)$ 可以捕捉在中介为 $m$ 时处理对结果的直接效应。然而，这种表述无法捕捉间接效应。特别地，参数 $E\{Y(z,1)-Y(z,0)\}$ 只衡量了在处理固定为 $z$ 时中介对结果的影响，这不是间接效应的一个有意义的定义。
+
+\section{识别与估计}
+\label{sec::cde-identification}
+
+为了识别 $\mathrm{CDE}(m)$，我们需要以下假设，要求在给定 $X$ 的条件下 $Z$ 和 $M$ 是联合随机的。
+
+\begin{Assumption}[序贯 ignorability]
+\label{assume::sequential-ignorability}
+序贯 ignorability 要求
+\begin{equation}
+Z \bot Y(z,m) \mid X, \quad M \bot Y(z,m) \mid (Z,X),
+\end{equation}
+或者等价地（见习题 27.2），
+\begin{equation}
+(Z,M) \bot Y(z,m) \mid X.
+\end{equation}
+\end{Assumption}
+
+我们重点讨论 $Z$ 为二元、$M$ 也为二元的情形。从数学上看，我们可以将这个问题视为一个具有四个处理水平
+\begin{equation}
+(z,m)\in\{(0,0),(0,1),(1,0),(1,1)\}
+\end{equation}
+的观察性研究。
+
+下面将二元处理情形的结论推广到具有多个处理水平的观察性研究，识别
+\begin{equation}
+\mu_{zm}=E\{Y(z,m)\}
+\end{equation}
+的outcome regression、IPW 和 doubly robust 估计量。
+
+定义
+\begin{equation}
+\label{eq::conditional-outcome-mean}
+\mu_{zm}(x) = E(Y\mid Z=z, M=m, X=x)
+\end{equation}
+为给定处理、中介和协变量时的结果条件均值。定义
+\begin{equation}
+\label{eq::generalized-propensity}
+e_{zm}(x) = \pr(Z=z, M=m\mid X=x)
+= \pr(Z=z\mid X=x)\pr(M=m\mid Z=z, X=x)
+\end{equation}
+为给定协变量时 $Z$ 和 $M$ 联合取值的概率。
+
+\begin{Theorem}[受控直接效应的识别]
+\label{thm::cde-identification}
+在假设 \ref{assume::sequential-ignorability} 下，我们有
+\begin{equation}
+\label{eq::cde-identification-reg}
+\mu_{zm} = E\{\mu_{zm}(X)\} = E\left\{\frac{I(Z=z, M=m)Y}{e_{zm}(X)}\right\}.
+\end{equation}
+
+Moreover, based on the working models $e_{zm}(X,\alpha)$ and $\mu_{zm}(X,\beta)$ for $e_{zm}(X)$ and $\mu_{zm}(X)$, respectively, we have the doubly robust formula
+\begin{equation}
+\label{eq::cde-identification-dr}
+\mu_{zm}^{\mathrm{dr}} = E\{\mu_{zm}(X,\beta)\} + E\left[\frac{I(Z=z, M=m)\{Y - \mu_{zm}(X,\beta)\}}{e_{zm}(X,\alpha)}\right],
+\end{equation}
+which equals $\mu_{zm}$ if either $e_{zm}(X,\alpha) = e_{zm}(X)$ or $\mu_{zm}(X,\beta) = \mu_{zm}(X)$.
+\end{Theorem}
+
+\begin{Proof}
+定理 \ref{thm::cde-identification} 的证明与标准无混淆观察性研究的证明类似。详见正文或补充材料。
+\end{Proof}
+
+根据结果均值模型，我们可以获得 $\hat{\mu}_{zm}(x)$；根据处理模型，我们可以获得 $\hat{e}_z(x)$；根据中介变量模型，我们可以获得 $\hat{e}_m(z,x)$。我们可以通过以下估计量来估计 $\mu_{zm}$：
+
+\begin{itemize}
+\item \textbf{结果回归法（outcome regression）}：
+\begin{equation}
+\hat{\mu}_{zm}^{\mathrm{reg}} = n^{-1}\sum_{i=1}^{n}\hat{\mu}_{zm}(X_i).
+\end{equation}
+\item \textbf{IPW 估计量（Horvitz-Thompson）}：
+\begin{equation}
+\hat{\mu}_{zm}^{\mathrm{ht}} = n^{-1}\sum_{i=1}^{n}\frac{I(Z_i=z, M_i=m)Y_i}{\hat{e}_z(X_i)\hat{e}_m(z,X_i)}.
+\end{equation}
+\item \textbf{IPW 估计量（ Hajek 型）}：
+\begin{equation}
+\hat{\mu}_{zm}^{\mathrm{haj}} = \frac{\sum_{i=1}^{n}\frac{I(Z_i=z, M_i=m)Y_i}{\hat{e}_z(X_i)\hat{e}_m(z,X_i)}}{\sum_{i=1}^{n}\frac{I(Z_i=z, M_i=m)}{\hat{e}_z(X_i)\hat{e}_m(z,X_i)}}.
+\end{equation}
+\item \textbf{增强 IPW / 双重稳健估计量（augmented IPW）}：
+\begin{equation}
+\hat{\mu}_{zm}^{\mathrm{dr}} = \hat{\mu}_{zm}^{\mathrm{reg}} + n^{-1}\sum_{i=1}^{n}\frac{I(Z_i=z, M_i=m)\{Y_i - \hat{\mu}_{zm}(X_i)\}}{\hat{e}_z(X_i)\hat{e}_m(z,X_i)}.
+\end{equation}
+\end{itemize}
+
+然后我们可以通过 $\hat{\mu}_{1m}^{*} - \hat{\mu}_{0m}^{*}$（其中 $*=\mathrm{reg,ht,haj,dr}$）来估计 $\mathrm{CDE}(m)$，并使用 Bootstrap 来近似标准误。
+
+如果我们愿意假设线性结果模型，受控直接效应简化为处理的系数。见下例。
+
+\begin{Example}[线性结果模型下的 CDE]
+\label{ex::cde-linear}
+在假设 \ref{assume::sequential-ignorability} 下，假设线性结果模型
+\begin{equation}
+E(Y\mid Z,M,X) = \theta_0 + \theta_1 Z + \theta_2 M + \theta_4^{\mathrm{T}}X,
+\end{equation}
+我们可以证明 $\mathrm{CDE}(m)=\theta_1$（对所有 $m$ 均成立），这与 Baron-Kenny 方法中的自然直接效应一致。详见习题 \ref{exercise::cde-linear-model}。
+\end{Example}
+
+\section{讨论：中介变量因果框架的比较}
+\label{sec::cde-discussion}
+
+受控直接效应的表述不涉及嵌套潜在结果或先验 counterfactual 潜在结果，其识别也不需要跨世界 counterfactual 独立性假设。参数 $\mathrm{CDE}(m)$ 可以捕捉在中介为 $m$ 时处理对结果的直接效应。然而，这种表述无法捕捉间接效应。表 \ref{tab::mediation-frameworks} 总结了中介变量的因果框架。
+
+\begin{table}[H]
+\centering
+\caption{中介变量的因果框架比较}
+\label{tab::mediation-frameworks}
+\begin{tabular}{cccc}
+\toprule
+章节 & 框架 & 直接效应 & 间接效应 \\
+\midrule
+26 & 主体分层（principal stratification） & $\tau(1,1),\;\tau(0,0)$ & $\ ?$ \\
+27 & 中介分析（mediation analysis） & NDE & NIE \\
+28 & 受控直接效应（controlled direct effect） & $\mathrm{CDE}(m)$ & $\ ?$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+中介分析框架可以将总效应分解为自然直接效应和自然间接效应，但它需要嵌套潜在结果和跨世界独立性。主体分层框架和受控直接效应框架无法定义间接效应，但它们不涉及嵌套潜在结果和跨世界独立性。此外，主体分层框架并不一定要求 $M$ 位于处理到结果的因果通路上。然而，其识别和估计涉及混合分布的分离，这是一个非平凡的统计任务。
+
+\section{多值处理的推广}
+\label{sec::multi-valued-treatment}
+
+定理 \ref{thm::cde-identification} 是具有多个处理水平无混淆观察性研究结论的特殊情形（Imai and Van Dyk, 2004; Cattaneo, 2010）。
+
+考虑一个具有多值处理 $Z\in\{1,\ldots,K\}$、协变量 $X$ 和结果 $Y$ 的观察性研究。单元 $i$ 有 $K$ 个潜在结果 $Y_i(1),\ldots,Y_i(K)$ 对应于 $K$ 个处理水平。一般地，我们可以基于潜在结果的对比定义因果效应：
+\begin{equation}
+\tau_C = \sum_{k=1}^{K} C_k\,E\{Y(k)\},
+\end{equation}
+其中 $\sum_{k=1}^{K}C_k=0$。成对比较的标准选择为
+\begin{equation}
+\tau_{k,k'} = E\{Y(k)-Y(k')\}.
+\end{equation}
+
+因此，关键是利用下述 ignorability 和 overlap 假设，基于 $(Z_i,X_i,Y_i)_{i=1}^{n}$ 的独立同分布数据，在无混淆假设下识别和估计潜在结果的均值 $\mu_k=E\{Y(k)\}$。
+
+\begin{Assumption}[多值处理的 ignorability]
+\label{assume::multi-valued-ignorability}
+$Z \bot \{Y(1),\ldots,Y(K)\} \mid X$ 且 $\pr(Z=k\mid X)>0$ 对 $k=1,\ldots,K$ 均成立。
+\end{Assumption}
+
+定义广义倾向得分
+\begin{equation}
+e_k(X) = \pr(Z=k\mid X)
+\end{equation}
+和条件结果均值
+\begin{equation}
+\mu_k(X) = E(Y\mid Z=k,X)
+\end{equation}
+对 $k=1,\ldots,K$。
+
+\begin{Theorem}[多值处理的识别]
+\label{thm::multi-valued-identification}
+在假设 \ref{assume::multi-valued-ignorability} 下，我们有
+\begin{equation}
+\mu_k = E\{\mu_k(X)\} = E\left\{\frac{I(Z=k)Y}{e_k(X)}\right\}.
+\end{equation}
+
+Moreover, based on the working models $e_k(X,\alpha)$ and $\mu_k(X,\beta)$ for $e_k(X)$ and $\mu_k(X)$, respectively, we have the doubly robust formula
+\begin{equation}
+\mu_k^{\mathrm{dr}} = E\{\mu_k(X,\beta)\} + E\left[\frac{I(Z=k)\{Y-\mu_k(X,\beta)\}}{e_k(X,\alpha)}\right],
+\end{equation}
+which equals $\mu_k$ if either $e_k(X,\alpha)=e_k(X)$ or $\mu_k(X,\beta)=\mu_k(X)$.
+\end{Theorem}
+
+\begin{Remark}
+定理 \ref{thm::cde-identification} 是定理 \ref{thm::multi-valued-identification} 的特殊情形，如果我们将定理 \ref{thm::cde-identification} 中的 $(Z,M)$ 视为具有四个水平的一个处理。$\mathrm{CDE}(m)$ 是 $\tau_C$ 的特殊情形。
+\end{Remark}
+
+\section{本章小结}
+\label{sec::cde-summary}
+
+本章介绍了受控直接效应的定义、识别和估计方法。
+
+\begin{enumerate}
+\item 受控直接效应 $\mathrm{CDE}(m)=E\{Y(1,m)-Y(0,m)\}$ 定义了在中介变量固定为 $m$ 时处理的因果效应。
+\item 在序贯 ignorability 假设下，$\mathrm{CDE}(m)$ 可以通过结果回归、IPW 或双重稳健估计量进行识别和估计。
+\item 在线性结果模型下，$\mathrm{CDE}(m)$ 等于处理系数 $\theta_1$。
+\item 受控直接效应框架避免了嵌套潜在结果和跨世界独立性假设，但无法定义间接效应。
+\item 受控直接效应是多值处理识别理论的特殊情形。
+\end{enumerate}
+
+\section{习题}
+\label{sec::cde-exercises}
+
+\begin{Exercise}
+\label{exercise::cde-and-nde}
+证明：在跨世界独立性 $Y(z,m)\perp M(z')\mid X$（对所有 $z,z',m$ 成立）下，条件受控直接效应 $\mathrm{CDE}(m\mid x)=E\{Y(1,m)-Y(0,m)\mid X=x\}$ 与条件自然直接效应 $\mathrm{NDE}(x)=E\{Y(1,M_0)-Y(0,M_0)\mid X=x\}$ 有如下关系：
+\[
+\mathrm{NDE}(x) = \sum_m \mathrm{CDE}(m\mid x)\,\Pr(M_0=m\mid X=x),
+\]
+其中 $M$ 离散。若无跨世界独立性，这个关系一般还成立吗？
+\end{Exercise}
+
+\begin{Exercise}
+\label{exercise::multi-valued-treatment}
+证明定理 \ref{thm::multi-valued-identification}。
+\end{Exercise}
+
+\begin{Exercise}
+\label{exercise::cde-linear-model}
+证明：在假设 \ref{assume::sequential-ignorability} 下，
+\begin{enumerate}
+\item 若 $E(Y\mid Z,M,X) = \theta_0+\theta_1 Z+\theta_2 M+\theta_4^{\mathrm{T}}X$，则 $\mathrm{CDE}(m)=\theta_1$（对所有 $m$）；
+\item 若 $E(Y\mid Z,M,X) = \theta_0+\theta_1 Z+\theta_2 M+\theta_3 ZM+\theta_4^{\top}X$，则 $\mathrm{CDE}(m)=\theta_1+\theta_3 m$。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+\label{exercise::cde-logistic}
+对于二元结果，在假设 \ref{assume::sequential-ignorability} 下，证明：
+若 $\mathrm{logit}\{\pr(Y=1\mid Z,M,X)\} = \theta_0+\theta_1 Z+\theta_2 M+\theta_4^{\mathrm{T}}X$，则
+\[
+\mathrm{CDE}(m) = E\Big\{\mathrm{expit}(\theta_0+\theta_1+\theta_2 m+\theta_4^{\top}X) - \mathrm{expit}(\theta_0+\theta_2 m+\theta_4^{\top}X)\Big\}.
+\]
+若模型包含交互项 $ZM$，则 $\mathrm{CDE}(m)$ 形式如何变化？
+\end{Exercise}
+
+\section{推荐阅读}
+
+Nguyen et al. (2021) 对第 27 章和第 28 章的主题提供了友好的综述。
