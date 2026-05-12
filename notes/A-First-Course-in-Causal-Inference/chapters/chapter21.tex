@@ -185,6 +185,37 @@ Y_i(1) = Y_i(0) \quad \text{当} \quad U_i = a \text{ 或 } U_i = n.
 
 \cref{eq:21-wald-estimator} 被称为\textbf{Wald 估计量}或\textbf{IV 估计量}。
 
+以下 R 函数实现了 Wald 估计量及其标准误差的计算：
+
+\begin{lstlisting}[language=R]
+## Wald IV 估计量
+IV_Wald = function(Z, D, Y) {
+    tau_D = mean(D[Z == 1]) - mean(D[Z == 0])
+    tau_Y = mean(Y[Z == 1]) - mean(Y[Z == 0])
+    CACE = tau_Y / tau_D
+    return(c(tau_D, tau_Y, CACE))
+}
+
+## Delta 法计算标准误差
+IV_Wald_OTA = function(Z, D, Y) {
+    est = IV_Wald(Z, D, Y)
+    AdjustedY = Y - D * est[3]
+    VarAdj = var(AdjustedY[Z == 1]) / sum(Z) +
+             var(AdjustedY[Z == 0]) / sum(1 - Z)
+    return(c(est[3], sqrt(VarAdj) / abs(est[1])))
+}
+
+## Bootstrap 法计算标准误差
+IV_Wald.bootstrap = function(Z, D, Y, n.boot = 200) {
+    est = IV_Wald(Z, D, Y)
+    CACEboot = replicate(n.boot, {
+        id.boot = sample(1:length(Z), replace = TRUE)
+        IV_Wald(Z[id.boot], D[id.boot], Y[id.boot])[3]
+    })
+    return(c(est[3], sd(CACEboot)))
+}
+\end{lstlisting}
+
 \textbf{方差估计}：\footnote{推导见附录 \cref{sec:appendix-21-wald-variance}}
 在 $\tau_c \neq 0$ 的常规情况下，可以使用
 \[
