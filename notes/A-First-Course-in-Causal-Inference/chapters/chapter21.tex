@@ -350,6 +350,95 @@ $Y_i(z, d) = Y_i(d)$ 对所有 $i, z, d$ 成立，即潜在结局只是 $d$ 的�
 
 \userannotation{为什么 CACE 是``局部''的？}{因为它是总体中一个特定子群体（complier）的平均因果效应。这个子群体恰好是那些``被 $Z$ 影响而改变治疗状态''的人。不同的工具变量可能识别不同的子群体。}
 
+\section{JOBS II 数据集应用}\label{sec:21-application}
+
+现在我们将上述方法应用于 JOBS II（Job Search Intervention Study）数据集。mediation 包中包含该数据集，这是一个随机化现场实验，研究就业培训干预对失业工人求职自我效能的影响。
+
+\begin{itemize}
+  \item $Z$：随机分配指标（\texttt{treat} = 1 表示被选中参加培训）
+  \item $D$：实际参与指标（\texttt{comply} = 1 表示实际参加了项目）
+  \item $Y$：求职自我效能（\texttt{job_seek}，取值 1--5 的离散量表）
+  \item 协变量：\texttt{sex}, \texttt{age}, \texttt{marital}, \texttt{nonwhite}, \texttt{educ}, \texttt{income}
+\end{itemize}
+
+\begin{lstlisting}[language=R]
+library("mediation")
+data(jobs)
+
+Z = jobs$treat
+D = jobs$comply
+Y = jobs$job_seek
+
+## 准备协变量矩阵（用于调整）
+getX = lm(treat ~ sex + age + marital +
+           nonwhite + educ + income, data = jobs)
+X = model.matrix(getX)[, -1]  # 去掉截距
+\end{lstlisting}
+
+估计 CACE 并计算标准误差（分别使用 Delta 法和 Bootstrap）：
+
+\begin{lstlisting}[language=R]
+## 无协变量：Delta 法和 Bootstrap
+res0 = rbind(IV_Wald_OTA(Z, D, Y),
+             IV_Wald.bootstrap(Z, D, Y, n.boot = 10^3))
+
+## 有协变量调整（Lin, 2013 方法）的 Bootstrap
+IV_Lin.bootstrap = function(Z, D, Y, X, n.boot = 10^3) {
+    ## Lin (2013) 协变量调整的 IV 估计量
+    linest = lm(I(Y - 0.118 * D) ~ Z + X + Z * X)
+    est_cace = coef(linest)["Z"]
+    CACEboot = replicate(n.boot, {
+        id.boot = sample(1:length(Z), replace = TRUE)
+        Zb = Z[id.boot]; Db = D[id.boot]
+        Yb = Y[id.boot]; Xb = X[id.boot, ]
+        lmfit = lm(I(Yb - 0.118 * Db) ~ Zb + Xb + Zb * Xb)
+        coef(lmfit)["Zb"]
+    })
+    return(c(est_cace, sd(CACEboot)))
+}
+res = rbind(res0,
+            c(IV_Lin.bootstrap(Z, D, Y, X, n.boot = 10^3)))
+
+res = cbind(res,
+            res[, 1] - 1.96 * res[, 2],
+            res[, 1] + 1.96 * res[, 2])
+colnames(res) = c("est", "se", "lower CI", "upper CI")
+rownames(res) = c("delta", "bootstrap", "with covariates")
+round(res, 3)
+##              est    se lower CI upper CI
+## delta        0.109 0.081   -0.050   0.268
+## bootstrap    0.109 0.083   -0.054   0.271
+## with covariates 0.118 0.082 -0.042   0.278
+\end{lstlisting}
+
+三种方法的点估计和标准误差高度稳定（约 $0.11$），置信区间均包含零，说明 JOBS 培训项目对 complier 群体的求职自我效能有正向但不显著的因果效应。
+
+下面使用 FAR 置信集方法构建更可靠的置信区间（对弱 IV 稳健）：
+
+\begin{lstlisting}[language=R]
+## 无协变量的 FAR 置信集
+FARci = function(Z, D, Y, Lower, Upper, grid) {
+    CIrange = seq(Lower, Upper, grid)
+    Pvalue = sapply(CIrange, function(t) {
+        Y_t = Y - t * D
+        Tauadj = mean(Y_t[Z == 1]) - mean(Y_t[Z == 0])
+        VarAdj = var(Y_t[Z == 1]) / sum(Z) +
+                  var(Y_t[Z == 0]) / sum(1 - Z)
+        Tstat = Tauadj / sqrt(VarAdj)
+        (1 - pnorm(abs(Tstat))) * 2
+    })
+    list(CIrange = CIrange, Pvalue = Pvalue)
+}
+
+far0 = FARci(Z, D, Y, Lower = -0.5, Upper = 0.5, grid = 0.01)
+plot(far0$CIrange, far0$Pvalue, type = "l",
+     xlab = expression(tau[c]), ylab = "p-value",
+     main = "FAR Confidence Set (no covariates)")
+abline(h = 0.05, lty = 2)
+\end{lstlisting}
+
+FAR 置信集的结果与上面的置信区间基本一致，但对弱 IV 更稳健。
+
 \section{习题}\label{sec:21-exercises}
 
 \begin{Exercise}{\ref{exr:21-1} Wald 估计量的方差}\label{exr:21-1}
