@@ -230,23 +230,75 @@ Y(z) \bot Z \mid X \quad (z = 0, 1).
 
 \section{练习}\label{sec:10-exercises}
 
+\begin{Exercise}{简单恒等式}\label{exr:10-1}
+证明 $\tau = \Pr(Z = 1)\tau_{\mathrm{T}} + \Pr(Z = 0)\tau_{\mathrm{C}}$，其中
+\[
+\tau = \mathbb{E}\{Y(1) - Y(0)\}, \quad
+\tau_{\mathrm{T}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 1\}, \quad
+\tau_{\mathrm{C}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 0\}.
+\]
+\textit{提示：使用全概率公式和条件期望的定义。}
+\end{Exercise}
+
+\begin{Exercise}{非参数识别 DCE 和 QCE}\label{exr:10-2}
+在 \cref{ass:ignorability} 下，证明离散因果效应（DCE）和量子因果效应（QCE）的非参数识别公式：
+\[
+\mathrm{DCE}(x) = \mathbb{E}(Y \mid Z = 1, X = x) - \mathbb{E}(Y \mid Z = 0, X = x),
+\]
+\[
+\mathrm{QCE} = \mathbb{E}\{\mathrm{DCE}(X)\}.
+\]
+这些量与 \cref{eq:10-id-formula} 中的 $\tau$ 有何关系？
+\end{Exercise}
+
+\begin{Exercise}{完全交互逻辑斯谛模型}\label{exr:10-3}
+假设二值结果 $Y$ 服从以下完全交互逻辑斯谛模型：
+\[
+\mathbb{E}(Y \mid Z, X) = \frac{e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{zx}^{\top} X Z}}{1 + e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{zx}^{\top} X Z}}.
+\]
 \begin{enumerate}
-  \item \textbf{简单恒等式}：证明 $\tau = \Pr(Z = 1)\tau_{\mathrm{T}} + \Pr(Z = 0)\tau_{\mathrm{C}}$。
-
-  \item \textbf{不可识别性的可塑性}：考虑以下数据生成过程：
-  \[
-  Y(1) = g_1(X, V_1), \quad Y(0) = g_0(X, V_0), \quad Z = \mathbb{I}\{g(X, V) \geq 0\},
-  \]
-  其中 $(V_1, V_0) \bot V$。解释为什么在这种情况下不可识别性假设成立。如果将 $V$ 替换为未观测的混杂因素 $U$，结果会如何变化？
-
-  \item \textbf{完全交互逻辑斯谛模型}：假设二值结果 $Y$ 服从以下逻辑斯谛模型：
-  \[
-  \mathbb{E}(Y \mid Z, X) = \frac{e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{xz}^{\top} X Z}}{1 + e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{xz}^{\top} X Z}}.
-  \]
-  推导平均因果效应 $\tau$ 的估计量。
-
-  \item \textbf{模型敏感性实验}：使用模拟数据，比较在线性模型正确和错误设定下，结果回归估计量的表现。讨论模型偏误对估计的影响。
+  \item 推导给定 $X = x$ 时的条件因果效应 $\tau(x)$；
+  \item 推导总体平均因果效应 $\tau = \mathbb{E}\{\tau(X)\}$ 的估计量；
+  \item 当 $\beta_{zx} = 0$ 时，结果退化为 \cref{eq:10-logistic-model}，验证此时 $\tau$ 的估计量与 \cref{sec:10-binary-outcome} 中的公式一致。
 \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{NHANES 同型半胱氨酸数据分析}\label{exr:10-4}
+使用 NHANES 2005-2006 数据（见 \cref{sec:10-smoking}），研究每日吸烟对同型半胱氨酸（homocysteine）水平的因果效应。
+\begin{enumerate}
+  \item 拟合结果回归模型 $\mathbb{E}(Y \mid Z, X)$，协变量包括性别（female）、年龄类别（age3）、教育水平（ed3）、BMI 类别（bmi3）和收入水平（pov2）；
+  \item 使用线性模型和逻辑斯谛模型分别进行分析，比较结果；
+  \item 对模型设定进行敏感性分析：分别使用不同的协变量子集，讨论结果的变化；
+  \item 报告点估计和 95\% 置信区间，并解释结果的实质含义。
+\end{enumerate}
+数据来源：\url{https://www.cdc.gov/nchs/nhanes/}
+\end{Exercise}
+
+\begin{Exercise}{不可识别性与强不可识别性}\label{exr:10-5}
+考虑以下数据生成过程：
+\[
+Y(1) = g_1(X, V_1), \quad Y(0) = g_0(X, V_0), \quad Z = \mathbb{I}\{h(X, U) \geq 0\},
+\]
+其中 $(V_1, V_0) \independent U$，且 $U$ 与 $(V_1, V_0)$ 可能相关。
+\begin{enumerate}
+  \item 证明：在这种情况下，不可识别性假设 $Y(z) \bot Z \mid X$ 一般不成立；
+  \item 如果进一步假设 $U \independent (V_1, V_0)$，不可识别性假设是否成立？请给出严格证明；
+  \item 构造一个具体例子，说明当存在未观测混杂因素时，即使 $X$ 包含多个协变量，不可识别性假设也可能违背；
+  \item 讨论强不可识别性 $\{Y(1), Y(0)\} \bot Z \mid X$ 与不可识别性 $Y(z) \bot Z \mid X$ 的区别。
+\end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}{推荐阅读}\label{exr:10-6}
+阅读以下文献，并撰写一页摘要（每篇约 200 字）：
+\begin{enumerate}
+  \item \citet{Rubin:1978} — 不可识别性假设的奠基性论文；
+  \item \citet{Rosenbaum:1983} — 倾向得分理论的核心工作；
+  \item \citet{Leamer:1978} — 对实证研究中模型依赖性的经典批评；
+  \item \citet{Hernan:2020} — g-formula 的系统介绍与现代视角；
+  \item \citet{Lin:2013} — 随机实验中协变量调整的理论分析。
+\end{enumerate}
+在摘要中，特别关注每篇论文的核心贡献及其对后续研究的影响。
+\end{Exercise}
 
 \section{推荐阅读}\label{sec:10-reading}
 
