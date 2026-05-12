@@ -14,7 +14,32 @@
 
 \section{倾向得分的定义与降维性质}\label{sec:11-propensity-score}
 
-\subsection{倾向得分的定义}
+\subsection{倾向得分的一般定义}\label{sec:11-general-ps}
+
+在潜在结果框架下，治疗分配机制可以通过更一般的形式刻画。\textbf{一般倾向得分}定义为：
+\[
+e(X, Y(1), Y(0)) = \Pr\{Z = 1 \mid X, Y(1), Y(0)\}.
+\tag{11.1}
+\]
+
+这个定义刻画了给定单元的全部潜在结果后，其接受治疗的概率。在因果推断的识别理论中，我们关心的核心问题是：在什么条件下，我们可以从观测数据 $(X_i, Z_i, Y_i)$ 中一致地估计因果效应？
+
+\textbf{强不可识别性（Strong Ignorability）}假设提供了答案。\footnote{强不可识别性的正式定义见 \cref{ass:ignorability}。} 在强不可识别性下，潜在结果与治疗分配条件独立：
+\[
+\{Y(1), Y(0)\} \independent Z \mid X.
+\]
+此时，$\Pr\{Z = 1 \mid X, Y(1), Y(0)\} = \Pr\{Z = 1 \mid X\}$，因此一般倾向得分退化为：
+
+\[
+e(X) = \Pr(Z = 1 \mid X),
+\tag{11.2}
+\]
+
+即给定协变量 $X$ 时接受治疗的概率。这正是 \citet{RosenbaumRubin:1983} 提出的\textbf{倾向得分（propensity score）}的标准定义。
+
+\textbf{直观理解}：强不可识别性假设确保了协变量 $X$ 完全捕获了治疗分配与潜在结果之间的关联——换句话说，$X$ 包含了所有混杂因素。此时，治疗分配在给定 $X$ 后与潜在结果无关，因此倾向得分只依赖于 $X$，而不依赖于 $Y(1)$ 和 $Y(0)$。
+
+\subsection{倾向得分的标准定义}
 
 在观测性研究中，治疗分配机制 $\Pr(Z=1 \mid X)$ 刻画了给定协变量 $X$ 时单元接受治疗的概率。\citet{RosenbaumRubin:1983} 将这一条件概率定义为\textbf{倾向得分（propensity score）}：
 
