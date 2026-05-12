@@ -47,7 +47,7 @@ In earlier chapters we have seen various stochastic processes, in particular, ma
 \begin{Definition}[Exponential Distribution]
 \label{def:exponential-distribution}
 We say that a random variable $\eta$ has the exponential distribution of rate $\lambda > 0$ if
-\begin{equation}
+\begin{align}
 P\{\eta > t\} = e^{-\lambda t}
 \label{eq:exponential-tail}
 \end{equation}
@@ -74,10 +74,8 @@ Compute the expectation and variance of a random variable having the exponential
 \label{ex:exponential-functional-equation}
 Show that a random variable $\eta$ with exponential distribution satisfies
 \begin{equation}
-P\{\eta > t + s\} = P\{\eta > t\} P\{\eta > s\}
-\tag{6.1}
-\label{eq:exponential-functional-equation}
-\end{equation}
+P\{\eta > t + s\} = P\{\eta > t\} P\{\eta > s\} \tag{6.1}
+\end{align}
 for any $s, t \geq 0$.
 
 \noindent\textbf{Hint:} When the probabilities are replaced by exponents, the equality should become obvious.
@@ -86,11 +84,9 @@ for any $s, t \geq 0$.
 \begin{Exercise}
 \label{ex:lack-of-memory-equivalent}
 Show that the equality in Exercise~\ref{ex:exponential-functional-equation} is equivalent to
-\begin{equation}
-P\{\eta > t + s \mid \eta > s\} = P\{\eta > t\}
-\tag{6.2}
-\label{eq:lack-of-memory}
-\end{equation}
+\begin{align}
+P\{\eta > t + s \mid \eta > s\} = P\{\eta > t\} \tag{6.2}
+\end{align}
 for any $s, t \geq 0$.
 
 \noindent\textbf{Hint:} Recall how to compute conditional probability. Observe that $\eta > s + t$ implies $\eta > s$.
@@ -121,7 +117,7 @@ which can be thought of as the time of the $n$-th emission (the $n$-th call). We
 \begin{Definition}[Poisson Process]
 \label{def:poisson-process}
 We say that $N(t)$, where $t \geq 0$, is a Poisson process if
-\begin{equation}
+\begin{align}
 N(t) = \max\{n: t \geq \xi_n\}.
 \label{eq:poisson-process-definition}
 \end{equation}
@@ -177,18 +173,13 @@ It suffices to compute the probability of this event for any $n$ because
 \begin{equation}
 \begin{aligned}
 P\{N(t) = n\} &= P\{N(t) < n + 1\} - P\{N(t) < n\} \\
-&= P\{\xi_{n+1} > t\} - P\{\xi_n > t\}.
-\tag{6.3}
-\label{eq:poisson-probability-difference}
-\end{aligned}
-\end{equation}
+&= P\{\xi_{n+1} > t\} - P\{\xi_n > t\}. \tag{6.3}
+\end{align}
 
 We shall prove by induction on $n$ that
-\begin{equation}
-P\{\xi_n > t\} = e^{-\lambda t} \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!}.
-\tag{6.4}
-\label{eq:xi-n-tail-probability}
-\end{equation}
+\begin{align}
+P\{\xi_n > t\} = e^{-\lambda t} \sum_{k=0}^{n-1} \frac{(\lambda t)^k}{k!}. \tag{6.4}
+\end{align}
 
 For $n = 1$:
 \[
@@ -196,7 +187,7 @@ P\{\xi_1 > t\} = P\{\eta_1 > t\} = e^{-\lambda t}.
 \]
 
 Next, suppose that \cref{eq:xi-n-tail-probability} holds for some $n$. Then, expressing $\xi_{n+1}$ as the sum of the independent random variables $\xi_n$ and $\eta_{n+1}$, we compute
-\begin{equation}
+\begin{align}
 \begin{aligned}
 P\{\xi_{n+1} > t\} &= P\{\xi_n + \eta_{n+1} > t\} \\
 &= P\{\eta_{n+1} > t\} + P\{\xi_n > t - \eta_{n+1}, t \geq \eta_{n+1} > 0\} \\
@@ -490,10 +481,8 @@ P\{W(t_1) \in A_1, \ldots, W(t_n) \in A_n\}
 \]
 where
 \begin{equation}
-p(t, x, y) = \frac{1}{\sqrt{2\pi t}} e^{-\frac{(x-y)^2}{2t}}
-\tag{6.5}
-\label{eq:transition-density}
-\end{equation}
+p(t, x, y) = \frac{1}{\sqrt{2\pi t}} e^{-\frac{(x-y)^2}{2t}} \tag{6.5}
+\end{align}
 defined for any $x, y \in \mathbb{R}$ and $t > 0$ is called the transition density.
 \end{enumerate}
 \end{Definition}
@@ -588,7 +577,7 @@ f_{W(s), W(t)}(x, y) = p(s, 0, x) p(t - s, x, y).
 \]
 
 Hence, for any Borel set $A$
-\begin{equation}
+\begin{align}
 \begin{aligned}
 P\{W(t) - W(s) \in A\} &= \int_{\{(x,y): y-x \in A\}} p(s, 0, x) p(t - s, x, y) \, dx \, dy \\
 &= \int_{-\infty}^{+\infty} p(s, 0, x) \left(\int_{\{y: y-x \in A\}} p(t - s, x, y) \, dy\right) dx \\
@@ -820,19 +809,15 @@ The inequality proved in this section is necessary to study the properties of st
 \label{thm:doob-maximal-l2}
 For any $t > 0$
 \begin{equation}
-E\left(\max_{s \leq t} |W(s)|^2\right) \leq 4 E|W(t)|^2.
-\tag{6.6}
-\label{eq:doob-maximal}
-\end{equation}
+E\left(\max_{s \leq t} |W(s)|^2\right) \leq 4 E|W(t)|^2. \tag{6.6}
+\end{align}
 \end{Theorem}
 
 \beginproof
 For $t > 0$ and $n \in \mathbb{N}$ we define
-\begin{equation}
-M_k^n = \left|W\left(\frac{kt}{2^n}\right)\right|, \quad 0 \leq k \leq 2^n.
-\tag{6.7}
-\label{eq:m-kn-definition}
-\end{equation}
+\begin{align}
+M_k^n = \left|W\left(\frac{kt}{2^n}\right)\right|, \quad 0 \leq k \leq 2^n. \tag{6.7}
+\end{align}
 
 Then, by Jensen's inequality, $M_k^n, k = 0, \ldots, 2^n$ is a non-negative square integrable submartingale with respect to the filtration $\mathcal{F}_k^n = \mathcal{F}_{\frac{k+1}{2^n}}$, so by \crefythm{thm:doob-maximal-inequality-discrete}
 \[
@@ -906,7 +891,7 @@ Either side of this equality can be transformed using the joint density of $W(t)
 \addcontentsline{toc}{subsection}{Solution 6.1}
 
 Suppose that $\eta$ is a random variable with exponential distribution of rate $\lambda$. The distribution function of $\eta$ is
-\begin{equation}
+\begin{align}
 F(t) = P\{\eta \leq t\} = 1 - P\{\eta > t\} = \begin{cases}
 0 & \text{if } t < 0, \\
 1 - e^{-\lambda t} & \text{if } t \geq 0.
@@ -1302,10 +1287,8 @@ E(N(1)) = E(N(2) - N(1)) = E(N(3) - N(2)) = \cdots = \lambda.
 
 By the strong law of large numbers
 \begin{equation}
-\lim_{n \to \infty} \frac{N(n)}{n} = \lambda \quad \text{a.s.}
-\tag{6.8}
-\label{eq:slln-poisson}
-\end{equation}
+\lim_{n \to \infty} \frac{N(n)}{n} = \lambda \quad \text{a.s.} \tag{6.8}
+\end{align}
 
 Now, if $n \leq t \leq n+1$, then $N(n) \leq N(t) \leq N(n+1)$ and
 \[
