@@ -2196,6 +2196,43 @@ round(strat.res, 3)
 其中 $\nabla \tau(\beta)$ 是 $\tau$ 关于 $\beta = (\beta_0, \beta_z, \beta_x^\top)^\top$ 的梯度。
 
 % ========================================================
+% CHAPTER 11 APPENDIX
+% ========================================================
+\section{第十一章 HT 估计量缺乏位置不变性}\label{sec:appendix-11-ht-location}
+
+\subsection*{Proposition 11.1（HT 估计量缺乏位置不变性）}
+\label{prop:11-ht-location}
+\textbf{HT 估计量不具有位置不变性}。具体而言，如果我们将潜在结果从 $Y$ 平移为 $Y + c$（其中 $c$ 为任意常数），则 HT 估计量不再等于真实的平均因果效应 $\tau$，而是偏移了一个与常数 $c$ 和权重相关的量。
+
+\textbf{证明}：设原始观测结果为 $Y_i$，平移后的结果为 $\tilde Y_i = Y_i + c$。定义 HT 估计量：
+\[
+\hat\tau_{\text{HT}} = \frac{1}{n}\sum_{i=1}^n\left\{ \frac{Z_i Y_i}{e(X_i)} - \frac{(1-Z_i)Y_i}{1-e(X_i)} \right\}.
+\]
+
+对 $\tilde Y_i$ 重新计算 HT 估计量：
+\[
+\begin{aligned}
+\tilde\tau_{\text{HT}}
+&= \frac{1}{n}\sum_{i=1}^n\left\{ \frac{Z_i(Y_i + c)}{e(X_i)} - \frac{(1-Z_i)(Y_i + c)}{1-e(X_i)} \right\} \\
+&= \hat\tau_{\text{HT}} + \frac{c}{n}\sum_{i=1}^n\left\{ \frac{Z_i}{e(X_i)} - \frac{1-Z_i}{1-e(X_i)} \right\} \\
+&= \hat\tau_{\text{HT}} + c\left(\hat{\mathbf{1}}_T^{-1} \cdot \hat{\mathbf{1}}_T - \hat{\mathbf{1}}_C^{-1} \cdot \hat{\mathbf{1}}_C \right) \\
+&= \hat\tau_{\text{HT}}.
+\end{aligned}
+\]
+
+等等，上述推导使用了标准化权重 $\hat{\mathbf{1}}_T$ 和 $\hat{\mathbf{1}}_C$。对于原始（未标准化的）HT 估计量，我们有：
+\[
+\tilde{\hat\tau}_{\text{HT}}
+= \hat\tau_{\text{HT}} + \frac{c}{n}\sum_{i=1}^n\left\{ \frac{Z_i}{e(X_i)} - \frac{1-Z_i}{1-e(X_i)} \right\}.
+\]
+
+在强重叠条件下，这个和式一般不等于零。\textbf{关键观察}：即使我们使用标准化后的 HT 估计量（\cref{eq:11-ipw-estimator}），位置不变性也不成立——因为标准化权重 $\hat{\mathbf{1}}_T^{-1}$ 和 $\hat{\mathbf{1}}_C^{-1}$ 依赖于 $c$。
+
+\textbf{推论}：这个性质说明 HT 估计量对结果的度量单位敏感。相比之下，目标-population 估计量（如归一化 Hajek 估计量）具有更好的稳定性。这一缺陷是我们在实践中更倾向于使用标准化 IPW 估计量或双重稳健估计量的原因之一。\qed
+
+\textbf{实践启示}：在使用 HT 估计量时，研究者应当注意结果的度量方式。例如，如果将收入从"美元"转换为"千美元"，HT 估计量会发生变化，而标准化后的估计量则保持不变。
+
+% ========================================================
 % CHAPTER 14 APPENDIX
 % ========================================================
 \section{定理 14.2 的证明：WLS 双重稳健估计量}\label{sec:appendix-thm-14-2-proof}
