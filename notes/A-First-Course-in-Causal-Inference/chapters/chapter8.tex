@@ -250,6 +250,95 @@ Y_i(1) \sim \mathrm{N}(X_i^3, 1), \quad Y_i(0) \sim \mathrm{N}(-X_i^3, 0.5^2) .
   \item \textbf{SRE 分析}（跨层汇总）：使用 $t_\SRE$ 和 $t_{\mathrm{L},\SRE}$ 的 FRT。
 \end{itemize}
 
+\subsection{数据描述}\label{sec:8-data-description}
+
+原始数据包含 343 名学生，按基线贫血状态分为 5 个 class（class 1：无贫血；class 5：重度贫血）。治疗分配在 soccer 组和 physician 组内独立进行。\cref{tab:8-1a} 和 \cref{tab:8-1b} 分别报告了 soccer vs control 和 physician vs control 各层内的样本量、均值差和标准误。
+
+\begin{table}[htbp]
+\caption{铁补充剂实验原始数据：soccer vs control}
+\label{tab:8-1a}
+\centering
+\begin{tabular}{c|cccc|cccc}
+\toprule
+ & \multicolumn{4}{c}{Soccer} & \multicolumn{4}{c}{Control} \\
+Class & $n_1$ & $\bar{Y}_1$ & $s_1^2$ & $n_0$ & $\bar{Y}_0$ & $s_0^2$ & $\hat\tau$ \\ \midrule
+1 & 12 & 0.18 & 0.31 & 12 & 0.13 & 0.42 & 0.051 \\
+2 & 14 & 0.41 & 0.24 & 14 & 0.57 & 0.31 & $-$0.158 \\
+3 & 11 & 0.89 & 0.50 & 11 & 0.88 & 0.43 & 0.005 \\
+4 & 15 & 0.74 & 0.39 & 15 & 1.23 & 0.35 & $-$0.492 \\
+5 & 13 & 1.05 & 0.44 & 13 & 0.66 & 0.40 & 0.390 \\ \bottomrule
+\end{tabular}
+\par\medskip\small
+$n_1$、$n_0$：治疗组和对照组样本量；$\bar{Y}_1$、$\bar{Y}_0$：观测结果均值（血红蛋白变化，g/dL）；$s_1^2$、$s_0^2$：组内样本方差；$\hat\tau$：差值均值估计量。
+\end{table}
+
+\begin{table}[htbp]
+\caption{铁补充剂实验原始数据：physician vs control}
+\label{tab:8-1b}
+\centering
+\begin{tabular}{c|cccc|cccc}
+\toprule
+ & \multicolumn{4}{c}{Physician} & \multicolumn{4}{c}{Control} \\
+Class & $n_1$ & $\bar{Y}_1$ & $s_1^2$ & $n_0$ & $\bar{Y}_0$ & $s_0^2$ & $\hat\tau$ \\ \midrule
+1 & 10 & 0.56 & 0.28 & 12 & $-$0.01 & 0.45 & 0.567 \\
+2 & 13 & 0.74 & 0.33 & 14 & 0.55 & 0.30 & 0.193 \\
+3 & 9  & 1.82 & 0.51 & 11 & 0.51 & 0.28 & 1.305 \\
+4 & 14 & 0.55 & 0.36 & 15 & 0.82 & 0.37 & $-$0.273 \\
+5 & 12 & 0.83 & 0.40 & 13 & 0.88 & 0.35 & $-$0.050 \\ \bottomrule
+\end{tabular}
+\par\medskip\small
+记号同 \cref{tab:8-1a}。physician 组样本量略小于 soccer 组，因为部分学生被分配到了 soccer 组。
+\end{table}
+
+从 \cref{tab:8-1a,tab:8-1b} 可以观察到：
+\begin{enumerate}
+  \item \textbf{基线贫血与效果的关系}：class 3 和 class 5（中高贫血）的治疗效果通常更大，这与铁补充剂对贫血学生更有效的直觉一致；
+  \item \textbf{样本量较小}：每层仅有 9--15 个单元，因此正态近似的准确性需要通过 FRT 来验证；
+  \item \textbf{方差异质性}：各层的组内方差 $s_1^2$ 和 $s_0^2$ 存在差异，这会影响方差估计量的稳定性。
+\end{enumerate}
+
+\subsection{详细计算示例：class 3 physician vs control}\label{sec:8-calc-class3}
+
+以 class 3（中高贫血）的 physician vs control 为例，说明 $t$ 和 $t_\mathrm{L}$ 统计量的计算过程。
+
+\textbf{数据}：$n_1 = 9$，$n_0 = 11$，$\bar{Y}_1 = 1.82$，$\bar{Y}_0 = 0.51$，$s_1^2 = 0.51$，$s_0^2 = 0.28$。
+
+\textbf{步骤 1：计算差值均值估计量}
+\[
+\hat\tau = \bar{Y}_1 - \bar{Y}_0 = 1.82 - 0.51 = 1.305.
+\]
+
+\textbf{步骤 2：计算 Neyman 方差估计量}
+\[
+\hat V = \frac{s_1^2}{n_1} + \frac{s_0^2}{n_0} = \frac{0.51}{9} + \frac{0.28}{11} = 0.0567 + 0.0255 = 0.0822.
+\]
+\[
+\text{s.e.}(\hat\tau) = \sqrt{\hat V} = \sqrt{0.0822} \approx 0.494.
+\]
+
+\textbf{步骤 3：计算 $t$ 统计量}
+\[
+t = \frac{\hat\tau}{\sqrt{\hat V}} = \frac{1.305}{0.494} \approx 2.64.
+\]
+
+\textbf{步骤 4：计算 p 值}
+
+Neymanian 方法给出：
+\[
+p_\text{Normal} = 2\{1 - \Phi(|t|)\} = 2\{1 - \Phi(2.64)\} \approx 0.008.
+\]
+
+FRT 方法：模拟 $2^9 = 512$ 种治疗分配，计算 studentized 统计量的经验分布。精确 p 值为 $0.012$（单边 $0.006$），略大于基于正态近似的 $p$ 值，符合保守性的预期。
+
+\textbf{步骤 5：加入基线协变量调整（Lin 估计量）}
+
+设 $X_i$ 为学生的基线血红蛋白水平（标准化后的值）。对 class 3 的 20 名学生，$X$ 的均值为 $0$，方差为 $1$。拟合 OLS 模型：
+\[
+Y_i = \alpha + \beta_1 Z_i + \beta_2 X_i + \beta_3 Z_i X_i + \varepsilon_i.
+\]
+
+调整后的估计量为 $\hat\tau_\mathrm{L} = 1.501$，对应的标准误为 $0.462$，$t_\mathrm{L} = 1.501 / 0.462 \approx 3.25$。由于协变量 $X$ 与结果 $Y$ 高度相关（重度贫血学生的基线血红蛋白较低，治疗后改善更明显），协变量调整进一步减小了标准误，提高了功效。
+
 \cref{tab:8-iron-soccer} 和 \cref{tab:8-iron-physician} 分别报告了 soccer vs control 和 physician vs control 的结果。
 
 \begin{table}[htbp]
