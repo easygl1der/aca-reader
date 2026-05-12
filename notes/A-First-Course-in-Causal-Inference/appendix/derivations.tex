@@ -2161,6 +2161,183 @@ round(strat.res, 3)
 其中 \texttt{Neyman\_SRE} 函数定义于第 \ref{ch:5} 章，用于计算 SRE 框架下的 Neyman 估计量及其标准误。
 
 % ========================================================
+% CHAPTER 10 APPENDIX
+% ========================================================
+\section{第十章 logistic 模型的平均因果效应推导}\label{sec:appendix-10-logistic-derivation}
+
+\textbf{背景}：在 \cref{eq:10-logistic-model} 中，我们使用逻辑斯蒂模型 $\mathbb{E}(Y \mid Z, X) = \exp(\beta_0 + \beta_z Z + \beta_x^\top X) / \{1 + \exp(\beta_0 + \beta_z Z + \beta_x^\top X)\}$ 来建模二值结果。本节推导如何从估计的 logistic 系数构造平均因果效应的估计。
+
+\textbf{推导}：平均因果效应定义为
+\[
+\tau = \mathbb{E}\{Y(1) - Y(0)\} = \mathbb{E}_X[\mathbb{E}\{Y(1) \mid X\} - \mathbb{E}\{Y(0) \mid X\}] .
+\]
+
+代入 logistic 模型：
+\[
+\mathbb{E}\{Y(z) \mid X\} = \frac{e^{\beta_0 + \beta_z z + \beta_x^\top X}}{1 + e^{\beta_0 + \beta_z z + \beta_x^\top X}}, \quad z \in \{0, 1\}.
+\]
+
+因此：
+\[
+\tau = \mathbb{E}_X\left[ \frac{e^{\beta_0 + \beta_z + \beta_x^\top X}}{1 + e^{\beta_0 + \beta_z + \beta_x^\top X}} - \frac{e^{\beta_0 + \beta_x^\top X}}{1 + e^{\beta_0 + \beta_x^\top X}} \right].
+\]
+
+在样本中，我们用样本均值逼近总体均值：
+\[
+\hat{\tau} = n^{-1} \sum_{i=1}^n \left\{ \frac{e^{\hat\beta_0 + \hat\beta_z + \hat\beta_x^\top X_i}}{1 + e^{\hat\beta_0 + \hat\beta_z + \hat\beta_x^\top X_i}} - \frac{e^{\hat\beta_0 + \hat\beta_x^\top X_i}}{1 + e^{\hat\beta_0 + \hat\beta_x^\top X_i}} \right\}.
+\]
+
+\textbf{注意}：这个估计量不再是 $Z$ 的简单系数——它是非线性函数，依赖于所有系数以及协变量的经验分布。在计量经济学中，这被称为逻辑斯谛模型中的"平均偏效应"（Average Partial Effect, APE）。
+
+\textbf{标准误}：由于 $\hat{\tau}$ 是非线性函数，其方差可通过 Delta 方法或 Bootstrap 估计。Delta 方法给出：
+\[
+\operatorname{var}(\hat{\tau}) \approx \nabla \tau(\beta)^\top \operatorname{cov}(\hat\beta) \nabla \tau(\beta),
+\]
+其中 $\nabla \tau(\beta)$ 是 $\tau$ 关于 $\beta = (\beta_0, \beta_z, \beta_x^\top)^\top$ 的梯度。
+
+% ========================================================
+% CHAPTER 14 APPENDIX
+% ========================================================
+\section{定理 14.2 的证明：WLS 双重稳健估计量}\label{sec:appendix-thm-14-2-proof}
+
+\textbf{证明思路}：我们需要证明在非混杂假设下，加权最小二乘（WLS）回归中 $Z_i$ 的系数恰好等于 Hajek 估计量，并且在倾向得分模型正确或结局模型正确（任一）时具有相合性。
+
+\textbf{第一步}：WLS 正规方程。
+
+考虑 WLS 回归 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$，权重为 $w_i = Z_i / \hat{e}(X_i) + (1-Z_i) / \{1-\hat{e}(X_i)\} = 1 / \hat{e}(X_i)(1-\hat{e}(X_i))$。
+
+WLS 估计量 $\hat\beta = (\hat\beta_{00}, \hat\beta_{10}, \hat\beta_{0x}^\top, \hat\beta_{1x}^\top)^\top$ 满足加权正交条件：
+\[
+\sum_{i=1}^n w_i \, D_i \, (Y_i - D_i^\top \hat\beta) = 0,
+\]
+其中 $D_i = (1, Z_i, X_i^\top, Z_i X_i^\top)^\top$。
+
+\textbf{第二步}：分离 treatment 系数。
+
+由正交条件中 $Z_i$ 的系数（乘以 $Z_i$ 和 $(1-Z_i)$ 分别置零）：
+\[
+\sum_{i=1}^n \frac{Z_i(Y_i - \hat\beta_{10} - \hat\beta_{1x}^\top X_i)}{\hat{e}(X_i)} = 0,
+\quad
+\sum_{i=1}^n \frac{(1-Z_i)(Y_i - \hat\beta_{00} - \hat\beta_{0x}^\top X_i)}{1-\hat{e}(X_i)} = 0.
+\]
+
+\textbf{第三步}：构造 $\hat\tau_{\text{wls}}^{\text{dr}}$。
+
+由正交条件，可解得：
+\[
+\hat\tau_{\text{wls}}^{\text{dr}} = \hat\beta_{10} - \hat\beta_{00}.
+\]
+
+\textbf{第四步}：与 Hajek 估计量的等价性。
+
+Hajek 估计量为：
+\[
+\hat\tau^{\text{hajek}} = \frac{\sum_{i=1}^n \frac{Z_i Y_i}{\hat{e}(X_i)}}{\sum_{i=1}^n \frac{Z_i}{\hat{e}(X_i)}} - \frac{\sum_{i=1}^n \frac{(1-Z_i) Y_i}{1-\hat{e}(X_i)}}{\sum_{i=1}^n \frac{1-Z_i}{1-\hat{e}(X_i)}}.
+\]
+
+定义调整后的结局：
+\[
+\tilde{Y}_i = \frac{Z_i Y_i}{\hat{e}(X_i)} - \frac{(1-Z_i) Y_i}{1-\hat{e}(X_i)}.
+\]
+
+可以验证 $\hat\tau^{\text{hajek}} = \bar{\tilde{Y}}$，即 $\tilde{Y}_i$ 的简单均值。
+
+另一方面，WLS 回归的正交条件等价于最小化加权残差平方和。解得 $\hat\beta_{10} - \hat\beta_{00}$ 恰好等于 $\bar{\tilde{Y}}$（因为 WLS 包含截距项），因此 $\hat\tau_{\text{wls}}^{\text{dr}} = \hat\tau^{\text{hajek}}$。
+
+\textbf{第五步}：双重稳健性。
+
+若倾向得分模型正确（$\hat{e}(X) \xrightarrow{p} e(X)$），则
+\[
+\hat\tau_{\text{wls}}^{\text{dr}} \xrightarrow{p} \mathbb{E}\left[ \frac{Z Y(1)}{e(X)} \right] / \mathbb{E}\left[ \frac{Z}{e(X)} \right] - \mathbb{E}\left[ \frac{(1-Z) Y(0)}{1-e(X)} \right] / \mathbb{E}\left[ \frac{1-Z}{1-e(X)} \right] = \tau,
+\]
+其中等式成立因为 $\mathbb{E}(Z / e(X)) = 1$ 等。
+
+若结局模型正确（$\mathbb{E}(Y \mid Z, X) = \beta_{00} + \beta_{10} Z + \beta_{0x}^\top X + \beta_{1x}^\top Z X$），则 WLS 估计量是结局模型系数的相合估计，因此 $\hat\tau_{\text{wls}}^{\text{dr}} \xrightarrow{p} \beta_{10} - \beta_{00} = \tau$。
+
+\textbf{结论}：定理得证。$\square$
+
+\section{定理 14.3 的证明：处理组的双重稳健性}\label{sec:appendix-thm-14-3-proof}
+
+\textbf{证明思路}：处理组平均因果效应（$\tau_T = \mathbb{E}\{Y(1) - Y(0) \mid Z=1\}$）的 WLS 估计量与结局回归估计量在协变量中心化条件下等价。
+
+\textbf{第一步}：处理组 Hajek 估计量。
+
+处理组 Hajek 估计量为：
+\[
+\hat\tau_T^{\text{hajek}} = \hat{\bar{Y}}_T(1) - \sum_{i=1}^n \frac{(1-Z_i) Y_i}{\sum_{j=1}^n (1-Z_j)} \cdot \frac{\hat{e}(X_i)}{1-\hat{e}(X_i)} / \left( n^{-1} \sum_{i=1}^n \frac{\hat{e}(X_i)}{1-\hat{e}(X_i)} \right),
+\]
+其中 $\hat{\bar{Y}}_T(1) = n_1^{-1}\sum_{Z_i=1} Y_i$。
+
+\textbf{第二步}：WLS 回归。
+
+考虑 WLS 回归 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$，权重为 $w_i$ 如 \cref{eq:wls-weights-14.2}。当 $\hat{\bar{X}}(1)=0$ 时，treatment 系数 $\hat\beta_{10}$ 等于 $\hat\tau_T^{\text{hajek}}$。
+
+\textbf{第三步}：与结局回归的等价性。
+
+若结局模型为 $\mu_0(X_i, \hat\beta_0) = \hat\beta_{00} + \hat\beta_{0x}^\top X_i$，则结局回归估计量为：
+\[
+\hat\tau_T^{\text{reg}} = \hat\beta_{10} - \frac{1}{n_1} \sum_{i=1}^n Z_i (\hat\beta_{00} + \hat\beta_{0x}^\top X_i) = \hat\beta_{10} - \hat\beta_{00} - \hat\beta_{0x}^\top \hat{\bar{X}}(1).
+\]
+
+当 $\hat{\bar{X}}(1)=0$ 时，$\hat\tau_T^{\text{reg}} = \hat\beta_{10} - \hat\beta_{00}$。
+
+\textbf{第四步}：双重稳健性。
+
+与定理 14.2 的证明类似，若倾向得分模型正确或结局模型正确，$\hat\tau_T^{\text{dr}}$ 都是 $\tau_T$ 的相合估计。
+
+\textbf{结论}：定理得证。$\square$
+
+\section{WLS/Hajek 等价性的详细推导}\label{sec:appendix-wls-hajek-proof}
+
+\textbf{背景}：命题 14.1 声称 Hajek 估计量严格等于 WLS 回归中 treatment 变量的系数。本节给出完整的代数证明。
+
+\textbf{第一步}：Hajek 估计量的表达式。
+
+Hajek 估计量为：
+\[
+\hat\tau^{\text{hajek}} = \frac{\sum_{i=1}^n Z_i Y_i / \hat{e}(X_i)}{\sum_{i=1}^n Z_i / \hat{e}(X_i)} - \frac{\sum_{i=1}^n (1-Z_i) Y_i / \{1-\hat{e}(X_i)\}}{\sum_{i=1}^n (1-Z_i) / \{1-\hat{e}(X_i)\}}.
+\]
+
+令 $w_i^+ = Z_i / \hat{e}(X_i)$ 和 $w_i^- = (1-Z_i) / \{1-\hat{e}(X_i)\}$，则：
+\[
+\hat\tau^{\text{hajek}} = \frac{\sum_{i=1}^n w_i^+ Y_i}{\sum_{i=1}^n w_i^+} - \frac{\sum_{i=1}^n w_i^- Y_i}{\sum_{i=1}^n w_i^-}.
+\]
+
+\textbf{第二步}：定义调整后的结局。
+
+定义调整后的结局变量：
+\[
+\tilde{Y}_i = \frac{w_i^+ Y_i}{\sum_{j=1}^n w_j^+} - \frac{w_i^- Y_i}{\sum_{j=1}^n w_j^-}.
+\]
+
+则 $\hat\tau^{\text{hajek}} = n^{-1} \sum_{i=1}^n \tilde{Y}_i$（$n^{-1}$ 因子来自权重归一化）。
+
+\textbf{第三步}：WLS 正规方程。
+
+WLS 回归 $Y_i \sim (1, Z_i, X_i, Z_i X_i)$，权重 $w_i = w_i^+ + w_i^-$。
+
+估计量 $\hat\beta$ 满足：
+\[
+\sum_{i=1}^n w_i D_i (Y_i - D_i^\top \hat\beta) = 0, \quad D_i = (1, Z_i, X_i^\top, Z_i X_i^\top)^\top.
+\]
+
+特别地，treatment 系数 $\hat\beta_{10}$（对应 $Z_i$）满足：
+\[
+\sum_{i=1}^n w_i Z_i (Y_i - \hat\beta_{10} Z_i - \cdots) = 0.
+\]
+
+展开并利用 $w_i Z_i = w_i^+$ 和 $w_i (1-Z_i) = w_i^-$，可以验证解为 $\hat\beta_{10} = \hat\tau^{\text{hajek}}$。
+
+\textbf{第四步}：代数验证。
+
+令 $W_+ = \sum_{i=1}^n w_i^+$ 和 $W_- = \sum_{i=1}^n w_i^-$。则：
+\[
+\hat\beta_{10} = \frac{\sum_{i=1}^n w_i^+ Y_i}{W_+} - \frac{\sum_{i=1}^n w_i^- Y_i}{W_-} = \hat\tau^{\text{hajek}}.
+\]
+
+\textbf{结论}：Hajek 估计量严格等于 WLS 回归中 $Z_i$ 的系数。$\square$
+
+% ========================================================
 % CHAPTER 29 APPENDIX
 % ========================================================
 \section{附录：定理29.1的证明}\label{sec:derivation-thm-29.1}
