@@ -1,0 +1,984 @@
+\chapter{Markov Chains}
+\label{chap:markov-chains}
+
+\section{First Examples and Definitions}
+\label{sec:first-examples-definitions}
+
+\subsection{Example 5.1}
+\label{exm:telephone-markov}
+
+In some homes the use of the telephone can become quite a sensitive issue. Suppose that if the phone is free during some period of time, say the $n$th minute, then with probability $p$, where $0 < p < 1$, it will be busy during the next minute. If the phone has been busy during the $n$th minute, it will become free during the next minute with probability $q$, where $0 < q < 1$. Assume that the phone is free in the 0th minute. We would like to answer the following two questions.
+
+\begin{enumerate}
+\item What is the probability $x_{n}$ that the telephone will be free in the $n$th minute?
+\item What is $\lim_{n\to \infty}x_n$, if it exists?
+\end{enumerate}
+
+Denote by $A_{n}$ the event that the phone is free during the $n$th minute and let $B_{n} = \Omega \setminus A_{n}$ be its complement, i.e. the event that the phone is busy during the $n$th minute. The conditions of the example give us
+
+\begin{equation}
+P(B_{n+1} | A_{n}) = p, \tag{5.1}
+\end{equation}
+
+\begin{equation}
+P(A_{n+1} | B_{n}) = q. \tag{5.2}
+\end{equation}
+
+We also assume that $P(A_0) = 1$, i.e. $x_0 = 1$. Using this notation, we have $x_n = P(A_n)$. Then the total probability formula, see Exercise 1.10, together with (5.1)-(5.2) imply that
+
+\begin{equation}
+\begin{aligned}
+x_{n+1} &= P(A_{n+1}) \\
+&= P(A_{n+1} | A_{n}) P(A_{n}) + P(A_{n+1} | B_{n}) P(B_{n}) \\
+&= (1-p) x_n + q(1-x_n) = q + (1-p-q) x_n. \tag{5.3}
+\end{aligned}
+\end{equation}
+
+It's a bit tricky to find an explicit formula for $x_n$. To do so we suppose first that the sequence $\{x_n\}$ is convergent, i.e.
+
+\begin{equation}
+\lim_{n\to\infty} x_n = x. \tag{5.4}
+\end{equation}
+
+The elementary properties of limits and equation (5.3), i.e. $x_{n+1} = q + (1-p-q)x_n$, yield
+
+\begin{equation}
+x = q + (1-p-q)x. \tag{5.5}
+\end{equation}
+
+The unique solution to the last equation is
+
+\begin{equation}
+x = \frac{q}{q+p}. \tag{5.6}
+\end{equation}
+
+In particular,
+
+\begin{equation}
+\frac{q}{q+p} = q + (1-p-q)\frac{q}{q+p}. \tag{5.7}
+\end{equation}
+
+Subtracting (5.7) from (5.3), we infer that
+
+\begin{equation}
+x_{n+1} - \frac{q}{q+p} = (1-p-q)\left(x_n - \frac{q}{q+p}\right). \tag{5.8}
+\end{equation}
+
+Thus, $\{x_n - \frac{q}{q+p}\}$ is a geometric sequence and therefore, for all $n\in\mathbb{N}$,
+
+\begin{equation}
+x_n - \frac{q}{q+p} = (1-p-q)^n\left(x_0 - \frac{q}{q+p}\right).
+\end{equation}
+
+Hence, by taking into account the initial condition $x_0 = 1$, we have
+
+\begin{equation}
+\begin{aligned}
+x_n &= \frac{q}{q+p} + \left(x_0 - \frac{q}{q+p}\right)(1-p-q)^n \\
+&= \frac{q}{q+p} + \frac{p}{q+p}(1-p-q)^n. \tag{5.9}
+\end{aligned}
+\end{equation}
+
+Let us point out that although we have used the assumption (5.4) to derive (5.8), the proof of the latter is now complete. Indeed, having proven (5.9), we can show that the assumption (5.4) is indeed satisfied. This is because the conditions $0 < p, q < 1$ imply that $|1-p-q| < 1$, and so $(1-p-q)^n \to 0$ as $n \to \infty$. Thus, (5.4) holds. This provides an answer to the second part of the example, i.e. $\lim_{n\to\infty} x_n = \frac{q}{p+q}$.
+
+\begin{exercise}
+\label{exr:telephone-busy}
+In the framework of Example \ref{exm:telephone-markov}, let $y_n$ denote the probability that the telephone is busy in the $n$th minute. Supposing that $y_0 = 1$, find an explicit formula for $y_n$ and, if it exists, $\lim_{n\to\infty} y_n$.
+
+\begin{hint}
+This exercise can be solved directly by repeating the above argument, or indirectly by using some of the results in Example \ref{exm:telephone-markov}.
+\end{hint}
+\end{exercise}
+
+\begin{rem}
+\label{rem:vector-matrix-form}
+The formulae (5.3) and (5.9) can be written collectively in a compact form by using vector and matrix notation. First of all, since $x_n + y_n = 1$, we get
+
+\begin{equation}
+x_{n+1} = (1-p)x_n + q y_n,
+\end{equation}
+
+\begin{equation}
+y_{n+1} = p x_n + (1-q) y_n.
+\end{equation}
+
+Hence, the matrix version takes the form
+
+\begin{equation}
+\begin{bmatrix}
+x_{n+1} \\
+y_{n+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1-p & q \\
+p & 1-q
+\end{bmatrix}
+\begin{bmatrix}
+x_n \\
+y_n
+\end{bmatrix}.
+\end{equation}
+
+The situation described in Example \ref{exm:telephone-markov} is quite typical. Often the probability of a certain event at time $n+1$ depends only on what happens at time $n$, but not further into the past. Example \ref{exm:telephone-markov} provides us with a simple case of a Markov chain. See also the following definition and exercises.
+\end{rem}
+
+\begin{definition}[Markov chain]
+\label{def:markov-chain}
+Suppose that $S$ is a finite or a countable set. Suppose also that a probability space $(\Omega, \mathcal{F}, P)$ is given. An $S$-valued sequence of random variables $\xi_n$, $n\in\mathbb{N}$, is called an $S$-valued Markov chain or a Markov chain on $S$ if for all $n\in\mathbb{N}$ and all $s\in S$
+
+\begin{equation}
+P(\xi_{n+1} = s \mid \xi_0, \dots, \xi_n) = P(\xi_{n+1} = s \mid \xi_n). \tag{5.10}
+\end{equation}
+
+Here $P(\xi_{n+1}=s|\xi_n)$ is the conditional probability of the event $\{\xi_{n+1}=s\}$ with respect to random variable $\xi_n$, or equivalently, with respect to the $\sigma$-field $\sigma(\xi_n)$ generated by $\xi_n$. Similarly, $P(\xi_{n+1}=s|\xi_0,\ldots,\xi_n)$ is the conditional probability of $\{\xi_{n+1}=s\}$ with respect to the $\sigma$-field $\sigma(\xi_0,\cdots,\xi_n)$ generated by the random variables $\xi_0,\cdots,\xi_n$.
+
+Property (5.10) will usually be referred to as the Markov property of the Markov chain $\xi_n, n\in\mathbb{N}$. The set $S$ is called the state space and the elements of $S$ are called states.
+\end{definition}
+
+\begin{prop}
+\label{prp:telephone-is-markov}
+The model in Example \ref{exm:telephone-markov} and Exercise \ref{exr:telephone-busy} is a Markov chain.
+\end{prop}
+
+\begin{proof}
+Let $S = \{0,1\}$, where 0 and 1 represent the states of the phone being free or busy. First we need to construct an appropriate probability space. Let $\Omega$ be the set of all sequences $\omega_0, \omega_1, \ldots$ with values in $S$. Let $\mu_0$ be any probability measure on $S$. For example, $\mu = \delta_0$ corresponds to the case when the phone is free at time 0. We shall define $P$ by induction. For any $S$-valued sequence $s_0, s_1, \ldots$ we put
+
+\begin{equation}
+P(\{\omega\in\Omega : \omega_0 = s_0\}) = \mu_0(\{s_0\}) \tag{5.11}
+\end{equation}
+
+and
+
+\begin{equation}
+\begin{aligned}
+&P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n+1\}) \\
+&= p(s_{n+1} \mid s_n) P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n\}), \tag{5.12}
+\end{aligned}
+\end{equation}
+
+where $p(s \mid r)$ are the entries of the $2\times 2$ matrix
+
+\begin{equation}
+\begin{bmatrix}
+p(0 \mid 0) & p(0 \mid 1) \\
+p(1 \mid 0) & p(1 \mid 1)
+\end{bmatrix}
+=
+\begin{bmatrix}
+1-p & q \\
+p & 1-q
+\end{bmatrix}.
+\end{equation}
+
+It seems reasonable to expect $P$ to be a probability measure (with respect to the trivial $\sigma$-field of all subsets of $\Omega$). Take this for granted, check only that $P(\Omega) = 1$.
+
+How would you define the process $\xi_n, n\in\mathbb{N}$? We shall do it in the standard way, i.e.
+
+\begin{equation}
+\xi_n(\omega) = \omega_n, \omega\in\Omega. \tag{5.13}
+\end{equation}
+
+First we shall show that the transition probabilities of $\xi_n$ are what they should be, i.e.
+
+\begin{equation}
+P(\xi_{n+1} = 1 \mid \xi_n = 0) = p, \tag{5.14}
+\end{equation}
+
+\begin{equation}
+P(\xi_{n+1} = 0 \mid \xi_n = 1) = q. \tag{5.15}
+\end{equation}
+
+The definition of conditional probability yields
+
+\begin{equation}
+P(\xi_{n+1} = 1 \mid \xi_n = 0) = \frac{P(\xi_{n+1} = 1, \xi_n = 0)}{P(\xi_n = 0)}.
+\end{equation}
+
+Next, the definition of $P$ gives
+
+\begin{equation}
+\begin{aligned}
+P(\xi_{n+1} = 1, \xi_n = 0)
+&= P(\{\omega\in\Omega : \omega_n = 0, \omega_{n+1} = 1\}) \\
+&= \sum_{s_0,\ldots,s_{n-1}\in S} P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n-1, \omega_n = 0, \omega_{n+1} = 1\}) \\
+&= \sum_{s_0,\ldots,s_{n-1}\in S} p P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n-1, \omega_n = 0\}) \\
+&= p P(\xi_n = 0),
+\end{aligned}
+\end{equation}
+
+by (5.12). We have proven (5.14). Moreover, (5.15) follows by the same argument. A similar line of reasoning shows that $\xi_n$ is indeed a Markov chain. For this we need to verify that for any $n\in\mathbb{N}$ and any $s_0, s_1, \cdots, s_{n+1}\in S$
+
+\begin{equation}
+P(\xi_{n+1} = s_{n+1} \mid \xi_0 = s_0, \ldots, \xi_n = s_n) = P(\xi_{n+1} = s_{n+1} \mid \xi_n = s_n).
+\end{equation}
+
+We have
+
+\begin{equation}
+\begin{aligned}
+&P(\xi_0 = s_0, \ldots, \xi_n = s_n, \xi_{n+1} = s_{n+1}) \\
+&= P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n+1\}) \\
+&= p(s_{n+1} \mid s_n) P(\{\omega\in\Omega : \omega_i = s_i, i=0,\ldots,n\}) \\
+&= p(s_{n+1} \mid s_n) P(\xi_0 = s_0, \ldots, \xi_n = s_n)
+\end{aligned}
+\end{equation}
+
+which, in view of the definition of conditional probability, gives
+
+\begin{equation}
+P(\xi_{n+1} = s_{n+1} \mid \xi_0 = s_0, \ldots, \xi_n = s_n) = p(s_{n+1} \mid s_n).
+\end{equation}
+
+On the other hand, by an easy generalization of (5.14) and (5.15)
+
+\begin{equation}
+P(\xi_{n+1} = s_{n+1} \mid \xi_n = s_n) = p(s_{n+1} \mid s_n),
+\end{equation}
+
+which proves (5.10). \qed
+\end{proof}
+
+In Example \ref{exm:telephone-markov} the transition probabilities from state $i$ to state $j$ do not depend on the time $n$. This is an important class of Markov chains.
+
+\begin{definition}[Time-homogeneous Markov chain]
+\label{def:time-homogeneous}
+An $S$-valued Markov chain $\xi_n, n\in\mathbb{N}$, is called time-homogeneous or homogeneous if for all $n\in\mathbb{N}$ and all $i, j\in S$
+
+\begin{equation}
+P(\xi_{n+1} = j \mid \xi_n = i) = P(\xi_1 = j \mid \xi_0 = i). \tag{5.16}
+\end{equation}
+
+The number $P(\xi_1 = j \mid \xi_0 = i)$ is denoted by $p(j \mid i)$ and called the transition probability from state $i$ to state $j$. The matrix $P = [p(j \mid i)]_{j,i\in S}$ is called the transition matrix of the chain $\xi_n$.
+\end{definition}
+
+\begin{exercise}
+\label{exr:transition-matrix-columns}
+In the discussion so far we have seen an example of a transition matrix, $P = \begin{bmatrix} 1-p & q \\ p & 1-q \end{bmatrix}$. Obviously the sum of the entries in each column of $P$ is equal to 1. Prove that this is true in general.
+
+\begin{hint}
+Remember that $P(\Omega \mid A) = 1$ for any event $A$.
+\end{hint}
+\end{exercise}
+
+\begin{definition}[Stochastic matrix]
+\label{def:stochastic-matrix}
+$A = [a_{ji}]_{i,j\in S}$ is called a stochastic matrix if
+
+\begin{enumerate}
+\item $a_{ji} \geq 0$, for all $i, j\in S$;
+\item the sum of the entries in each column is 1, i.e. $\sum_{j\in S} a_{ji} = 1$ for any $i\in S$.
+\end{enumerate}
+
+$A$ is called a double stochastic matrix if both $A$ and its transpose $A^t$ are stochastic matrices.
+\end{definition}
+
+\begin{prop}
+\label{prp:double-stochastic}
+Show that a stochastic matrix is doubly stochastic if and only if the sum of the entries in each row is 1, i.e. $\sum_{i\in S} a_{ji} = 1$ for any $j\in S$.
+\end{prop}
+
+\begin{exercise}
+\label{exr:power-of-stochastic}
+Show that if $P = [p_{ji}]_{j,i\in S}$ is a stochastic matrix, then any natural power $P^n$ of $P$ is a stochastic matrix. Is the corresponding result true for a double stochastic matrix?
+
+\begin{hint}
+Show that if $A$ and $B$ are two stochastic matrices, then so is $BA$. For the second problem, recall that $(BA)^t = A^t B^t$.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:compute-p-squared}
+Let $P = \begin{bmatrix} 1-p & q \\ p & 1-q \end{bmatrix}$. Show that
+
+\begin{equation}
+P^2 = \begin{bmatrix}
+1+p^2-2p+pq & 2q-pq-q^2 \\
+2p-pq-p^2 & 1+q^2-2q+pq
+\end{bmatrix}.
+\end{equation}
+
+\begin{hint}
+This is just simple matrix multiplication.
+\end{hint}
+\end{exercise}
+
+We see that there is a problem with finding higher powers of the matrix $P$. When multiplying $P^2$ by $P$, $P^3$, and so on, we obtain more and more complicated expressions.
+
+\begin{definition}[$n$-step transition matrix]
+\label{def:n-step-transition}
+The $n$-step transition matrix of a Markov chain $\xi_n$ with transition probabilities $p(j \mid i)$, $j, i\in S$ is the matrix $P_n$ with entries
+
+\begin{equation}
+p_n(j \mid i) = P(\xi_n = j \mid \xi_0 = i). \tag{5.17}
+\end{equation}
+\end{definition}
+
+\begin{exercise}
+\label{exr:find-n-step-transition}
+Find an exact formula for $P_n$ for the matrix $P$ from Exercise \ref{exr:compute-p-squared}.
+
+\begin{hint}
+Put $x_n = P(\xi_n = 0 \mid \xi_0 = 0)$ and $y_n = P(\xi_n = 1 \mid \xi_0 = 1)$. Is it correct to suppose that $p_n(0 \mid 0) = x_n$ and $p_n(1 \mid 1) = y_n$? If yes, you may be able use Example \ref{exm:telephone-markov} and Exercise \ref{exr:telephone-busy}.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:pn-equals-p-power}
+You may suspect that $P_n$ equals $P^n$, the $n$th power of the matrix $P$. This holds for $n=1$. Check if it is true for $n=2$. If this is the case, try to prove that $P_n = P^n$ for all $n\in\mathbb{N}$.
+
+\begin{hint}
+Once again, this is an exercise in matrix multiplication.
+\end{hint}
+\end{exercise}
+
+The following is a generalization of Exercise \ref{exr:pn-equals-p-power}.
+
+\begin{prop}[Chapman--Kolmogorov equation]
+\label{prp:chapman-kolmogorov}
+Suppose that $\xi_n, n\in\mathbb{N}$, is an $S$-valued Markov chain with $n$-step transition probabilities $p_n(j \mid i)$. Then for all $k, n\in\mathbb{N}$
+
+\begin{equation}
+p_{n+k}(j \mid i) = \sum_{s\in S} p_n(j \mid s) p_k(s \mid i), \quad i,j\in S. \tag{5.18}
+\end{equation}
+\end{prop}
+
+\begin{exercise}
+\label{exr:prove-chapman-kolmogorov}
+Prove Proposition \ref{prp:chapman-kolmogorov}.
+
+\begin{hint}
+$p_{n+k}(j \mid i)$ are the entries of the matrix $P_{n+k} = P^{n+k}$.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:random-walk}
+Suppose that $S = \mathbb{Z}$. Let $\eta_n, n \geq 1$ be a sequence of independent identically distributed random variables with $P(\eta_1 = 1) = p$ and $P(\eta_1 = -1) = q = 1-p$. Define $\xi_n = \sum_{i=1}^n \eta_i$ for $n \geq 1$ and $\xi_0 = 0$. Show that $\xi_n$ is a Markov chain with transition probabilities
+
+\begin{equation}
+p(j \mid i) = \begin{cases}
+p, & \text{if } j = i+1, \\
+q, & \text{if } j = i-1, \\
+0, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+$\xi_n, n \geq 0$, is called a random walk starting at 0. Replacing $\xi_0 = 0$ with $\xi_0 = i$, we get a random walk starting at $i$.
+
+\begin{hint}
+$\xi_{n+1} = \xi_n + \eta_{n+1}$. Are $\xi_n$ and $\eta_{n+1}$ independent?
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:random-walk-binomial}
+For the random walk $\xi_n$ defined in Exercise \ref{exr:random-walk} prove that
+
+\begin{equation}
+P(\xi_n = j \mid \xi_0 = i) = \binom{n}{\frac{n+j-i}{2}} p^{\frac{n+j-i}{2}} q^{\frac{n-j+i}{2}} \tag{5.19}
+\end{equation}
+
+if $n+j-i$ is an even non-negative integer, and $P(\xi_n = j \mid \xi_0 = i) = 0$ otherwise.
+
+\begin{hint}
+Use induction. Note that $\binom{n}{\frac{n+j-i}{2}}p^{\frac{n+j-i}{2}}$ equals 0 if $|j-i| \geq n+1$.
+\end{hint}
+\end{exercise}
+
+\begin{prop}
+\label{prp:random-walk-returns}
+For all $p\in(0,1)$
+
+\begin{equation}
+P(\xi_n = i \mid \xi_0 = i) \to 0, \text{ as } n\to\infty. \tag{5.20}
+\end{equation}
+\end{prop}
+
+\begin{prop}
+\label{prp:return-probability}
+The probability that the random walk $\xi_n$ ever returns to the starting point is
+
+\begin{equation}
+1 - |p-q|.
+\end{equation}
+\end{prop}
+
+\begin{exercise}
+\label{exr:binomial-series}
+Prove formula (5.24).
+
+\begin{hint}
+Use the Taylor formula to expand the right-hand side of (5.24) into a power series.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}[Branching process]
+\label{exr:branching-process}
+On the island Elschenbieden there lives an almost extinct species called Vugiel. Vugiel's males can produce zero, one, two, $\cdots$ male offspring with probability $p_0, p_1, p_2, \cdots$ respectively, where $p_i \geq 0$ and $\sum_{i=0}^\infty p_i = 1$. A challenging problem would be to find the Vugiel's chances of survival assuming that each individual lives exactly one year. At this moment, we ask you only to rewrite the problem in the language of Markov chains.
+
+\begin{hint}
+The number of descendants of each male has the same distribution.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:branching-binomial-poisson}
+Consider the following two cases:
+
+\begin{enumerate}
+\item In Exercise \ref{exr:branching-process} suppose that
+
+\begin{equation}
+p_m = \binom{N}{m} p^m (1-p)^{N-m}.
+\end{equation}
+
+for some $p\in(0,1)$ and $N\in\mathbb{N}^*$, where $\mathbb{N}^* = \{1,2,3,\cdots\}$. (Note that $p_m = 0$ if $m > N$.) Show that
+
+\begin{equation}
+p(j \mid i) = \binom{Ni}{j} p^j (1-p)^{Ni-j}. \tag{5.26}
+\end{equation}
+
+Deduce that, in particular, $p(j \mid i) = 0$ if $j > Ni$.
+
+\item Suppose that
+
+\begin{equation}
+p_m = \frac{\lambda^m}{m!} e^{-\lambda}, m\in\mathbb{N},
+\end{equation}
+
+for some $\lambda > 0$. In other words, assume that each $X_j$ has the Poisson distribution with mean $\lambda$. Show that
+
+\begin{equation}
+p(j \mid i) = \frac{(\lambda i)^j}{j!} e^{-\lambda i}, j,i \geq 0. \tag{5.27}
+\end{equation}
+\end{enumerate}
+
+\begin{hint}
+If $X_1$ has the binomial distribution $P(X_1=m) = \binom{N}{m}p^m(1-p)^{N-m}, m\in\mathbb{N}$, then there exists a finite sequence $\eta_1^1, \cdots, \eta_N^1$ of independent identically distributed random variables such that $P(\eta_j^1 = 1) = p$, $P(\eta_j^1 = 0) = 1-p$ and $X_j = \eta_1^j + \cdots + \eta_N^j = m$. Hence, $X_1 + \cdots + X_i = \sum_{r=1}^i \sum_{s=1}^N \eta_s^r$, i.e. the sum of $Ni$ independent identically distributed random variables with distribution as above. Hence we infer (5.26).
+\end{hint}
+\end{exercise}
+
+\begin{prop}
+\label{prp:survival-probability}
+The probability of survival in Exercise \ref{exr:branching-binomial-poisson}, part 2) equals 0 if $\lambda \leq 1$, and $1 - \hat{r}^k$ if $\lambda > 1$, where $k$ is the initial Vugiel population and $\hat{r}\in(0,1)$ is a solution to
+
+\begin{equation}
+r = e^{(r-1)\lambda}. \tag{5.28}
+\end{equation}
+\end{prop}
+
+\begin{rem}
+\label{rem:branching-mean-lambda}
+The method presented in the last solution works for any distribution of the variables $X_j$. It turns out that the mean value $\lambda$ of $X_1$ plays the same role as above. One can show that if $\lambda \leq 1$, then the population will become extinct with probability 1, while for $\lambda > 1$ the probability of extinction is larger than 0 and smaller than 1.
+\end{rem}
+
+\begin{exercise}
+\label{exr: Elschenbieden}
+On the, now familiar, island of Elschenbieden the question of survival of the Vugiel is a hot political issue. The (human) population of the island is $N$. Those who believe that action should be taken in order to help the animals preach their conviction quite convincingly. For if a supporter discusses the issue with a non-supporter, the latter will change his mind with probability one. However, they do so only in face-to-face encounters. Suppose that the probability of an encounter of exactly one pair of humans during one day is $p$ and that with probability $q$ this pair is a supporter-non-supporter one. Write down a Markov chain model of this situation. Neglect the probability of two or more encounters during one day.
+
+\begin{hint}
+On each day the number of supporters can either increase by 1 or remain unchanged. What is the probability of the former?
+\end{hint}
+\end{exercise}
+
+\begin{exercise}[Queuing model]
+\label{exr:queuing}
+A car wash machine can serve at most one customer at a time. With probability $p$, $0 < p < 1$, the machine can finish serving a customer in a unit time. If this happens, the next waiting car (if any) can be served at the beginning of the next unit of time. During the time interval between the $n$th and $(n+1)$st unit of time the number of cars arriving has the Poisson distribution with parameter $\lambda > 0$. Let $\xi_n$ denote the number of cars being served or waiting to be served at the beginning of unit $n$. Show that $\xi_n, n\in\mathbb{N}$, is a Markov chain and find its transition probabilities.
+
+\begin{hint}
+Let $Z_n, n=0,1,2,\ldots$ be a sequence of independent identically distributed random variables, each having the Poisson distribution with parameter $\lambda$. Then $\xi_{n+1} - \xi_n - Z_n$ equals $-1$ or $0$.
+\end{hint}
+\end{exercise}
+
+\begin{rem}
+\label{rem:queuing-large-n}
+In the last model we are interested in the behaviour of $\xi_n$ for large values of $n$. In particular, it is interesting to determine whether the limit of $\xi_n$ or that of $\mathbb{E}\xi_n$ (as $n\to\infty$) exists. In Exercise \ref{exr:ergodicity-queuing} we shall find conditions which guarantee the existence of a unique invariant measure and imply that the Markov chain in question is ergodic.
+\end{rem}
+
+\section{Classification of States}
+\label{sec:classification-states}
+
+In what follows we fix an $S$-valued Markov chain with transition matrix $P = [p(j \mid i)]_{j,i\in S}$, where $S$ is a non-empty and at most countable set.
+
+\begin{definition}[Recurrent and transient states]
+\label{def:recurrent-transient}
+A state $i$ is called recurrent if the process $\xi_n$ will eventually return to $i$ given that it starts at $i$, i.e.
+
+\begin{equation}
+P(\xi_n = i \text{ for some } n \geq 1 \mid \xi_0 = i) = 1. \tag{5.36}
+\end{equation}
+
+If the condition (5.36) is not satisfied, then the state $i$ is called transient.
+\end{definition}
+
+\begin{thrm}
+\label{thrm:random-walk-recurrent}
+Show that for a random walk on $\mathbb{Z}$ with parameter $p\in(0,1)$, the state 0 is recurrent if and only if $p = 1/2$. Show that the same holds if 0 is replaced by any other state $i\in\mathbb{Z}$.
+\end{thrm}
+
+\begin{definition}[Communicating states]
+\label{def:communicates}
+We say that a state $i$ communicates with a state $j$ if with positive probability the chain will visit the state $j$ having started at $i$, i.e.
+
+\begin{equation}
+P(\xi_n = j \text{ for some } n \geq 0 \mid \xi_0 = i) > 0. \tag{5.37}
+\end{equation}
+
+If $i$ communicates with $j$, then we shall write $i \to j$. We say that the state $i$ intercommunicates with a state $j$, and write $i \leftrightarrow j$, if $i \to j$ and $j \to i$.
+\end{definition}
+
+\begin{exercise}
+\label{exr:communicates-pn}
+Show that $i \to j$ if and only if $p_k(j \mid i) > 0$ for some $k \geq 1$.
+
+\begin{hint}
+Recall that $p_k(j \mid i) = P(\xi_k = j \mid \xi_0 = i)$.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:equivalence-relation}
+Show that
+
+\begin{enumerate}
+\item $i \leftrightarrow i$,
+\item if $i \leftrightarrow j$ then $j \leftrightarrow i$, and
+\item if $i \leftrightarrow j, j \leftrightarrow k$ then $i \leftrightarrow k$.
+\end{enumerate}
+
+In other words, show that $\leftrightarrow$ is an equivalence relation on $S$.
+
+\begin{hint}
+1) and 2) are obvious. For 3) use the Chapman-Kolmogorov equations.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:generating-functions}
+For $|x| < 1$ and $j, i\in S$ define
+
+\begin{equation}
+P_{ji}(x) = \sum_{n=0}^\infty p_n(j \mid i) x^n, \tag{5.38}
+\end{equation}
+
+\begin{equation}
+F_{ji}(x) = \sum_{n=1}^\infty f_n(j \mid i) x^n, \tag{5.39}
+\end{equation}
+
+where $f_n(j \mid i) = P(\xi_n = j, \xi_k \neq j, k=1,\cdots,n-1 \mid \xi_0 = i)$. Show that the power series in (5.38)-(5.39) are absolutely convergent for $|x|<1$ and that
+
+\begin{equation}
+P_{ji}(x) = F_{ji}(x) P_{jj}(x), \text{ if } j \neq i, \tag{5.40}
+\end{equation}
+
+\begin{equation}
+P_{ii}(x) = 1 + F_{ii}(x) P_{ii}(x). \tag{5.41}
+\end{equation}
+
+\begin{hint}
+Note that $|p_n(j \mid i)| \leq 1$, so the radius of convergence of the power series (5.38) is $\geq 1$.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:abel-lemma}
+Show that $\lim_{x\to 1} P_{jj}(x) = \sum_{n=0}^\infty p_n(j \mid j)$ and $\lim_{x\to 1} F_{jj}(x) = \sum_{n=0}^\infty f_n(j \mid j)$.
+
+\begin{hint}
+Apply Abel's lemma: If $a_k \geq 0$ for all $k \geq 0$ and $\limsup_{k\to\infty} \sqrt[k]{|a_k|} \leq 1$, then $\lim_{x\to 1} \sum_{k=0}^\infty a_k x^k = \sum_{k=0}^\infty a_k$, no matter whether this sum is finite or infinite.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:recurrent-sum}
+Show that a state $j$ is recurrent if and only if $\sum_n p_n(j \mid j) = \infty$. Deduce that the state $j$ is transient if and only if
+
+\begin{equation}
+\sum_n p_n(j \mid j) < \infty. \tag{5.42}
+\end{equation}
+
+Show that if $j$ is transient, then for each $i\in S$
+
+\begin{equation}
+\sum_n p_n(j \mid i) < \infty. \tag{5.43}
+\end{equation}
+
+\begin{hint}
+If $j$ is recurrent, then $F_{jj}(x) \to \sum_n f_n(j \mid j) = 1$ as $x \nearrow 1$. Use (5.41) in conjunction with Abel's Lemma.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:two-state-recurrent}
+For a Markov chain $\xi_n$ with transition matrix $P = \begin{bmatrix} 1-p & q \\ p & 1-q \end{bmatrix}$ show that both states are recurrent.
+
+\begin{hint}
+Use Exercise \ref{exr:recurrent-sum} and Exercise \ref{exr:find-n-step-transition}.
+\end{hint}
+\end{exercise}
+
+One may suspect that if the state space $S$ is finite, then there must exist at least one recurrent state. For otherwise, if all states were transient and $S = \{1,2,\cdots,N\}$, then with positive probability a chain starting from 1 would visit 1 only a finite number of times. Thus, after visiting that state for the last time, the chain would move to a different state, say $i_2$, in which it would stay for a finite time only with positive probability. Thus, in finite time, with positive probability, the chain will never return to states 1 and $i_2$. By induction, in finite time, with positive probability, the chain will never return to any of the states. This is impossible. The following exercise will give precision to this argument.
+
+\begin{exercise}
+\label{exr:finite-state-recurrent}
+Show that if $\xi_n$ is a Markov chain with finite state space $S$, then there exists at least one recurrent state $i\in S$.
+
+\begin{hint}
+Argue by contradiction and use (5.43).
+\end{hint}
+\end{exercise}
+
+The following result is quoted here for reference. The proof is surprisingly difficult and falls beyond the scope of this book.
+
+\begin{thrm}
+\label{thrm:infinitely-often}
+A state $j\in S$ is recurrent if and only if
+
+\begin{equation}
+P(\xi_n = j \text{ for infinitely many } n \mid \xi_0 = j) = 1,
+\end{equation}
+
+and is transient if and only if
+
+\begin{equation}
+P(\xi_n = j \text{ for infinitely many } n \mid \xi_0 = j) = 0.
+\end{equation}
+\end{thrm}
+
+\begin{definition}[Null-recurrent and positive-recurrent states]
+\label{def:null-positive-recurrent}
+For an $S$-valued Markov chain $\xi_n, n\in\mathbb{N}$, a state $i\in S$ is called null-recurrent if it is recurrent and its mean recurrence time $m_i$ defined by
+
+\begin{equation}
+m_i := \sum_{n=0}^\infty n f_n(i \mid i) \tag{5.44}
+\end{equation}
+
+equals $\infty$. A state $i\in S$ is called positive-recurrent if it is recurrent and its mean recurrence time $m_i$ is finite.
+\end{definition}
+
+\begin{rem}
+\label{rem:null-recurrent-criterion}
+One can show that a recurrent state $i$ is null-recurrent if and only if $p_n(i \mid i) \to 0$.
+\end{rem}
+
+We already know that for a random walk on $\mathbb{Z}$ the state 0 is recurrent if and only if $p = 1/2$, i.e. if and only if the random walk is symmetric. In the following problem we shall try to answer if 0 is a null-recurrent or positive-recurrent state (when $p = 1/2$).
+
+\begin{exercise}
+\label{exr:symmetric-random-walk-null}
+Consider a symmetric random walk on $\mathbb{Z}$. Show that 0 is a null-recurrent state. Can you deduce whether other states are positive-recurrent or null-recurrent?
+
+\begin{hint}
+State 0 is null-recurrent if and only if $\sum_n n f_n(0 \mid 0) = \infty$. As in Exercise \ref{exr:abel-lemma}, $\sum_n n f_n(0 \mid 0) = \lim_{x\to 1} F_{00}'(x)$, where $F_{00}$ is defined by (5.39).
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:two-state-positive}
+For the Markov chain $\xi_n$ from Exercise \ref{exr:two-state-recurrent} show that not only are all states recurrent, but they are positive-recurrent.
+
+\begin{hint}
+Calculate $f_n(0 \mid 0)$ directly.
+\end{hint}
+\end{exercise}
+
+The last two exercises suggest that the type of a state $i\in S$, i.e. whether it is transient, null-recurrent or positive-recurrent is invariant under the equivalence $\leftrightarrow$. We shall investigate this question in more detail below, but even before doing so we need one more notion: that of a periodic state.
+
+\begin{definition}[Periodic and aperiodic states]
+\label{def:periodic}
+Suppose that $\xi_n, n\in\mathbb{N}$, is a Markov chain on a state space $S$. Let $i\in S$. We say that $i$ is a periodic state if and only if the greatest common divisor (gcd) of all $n\in\mathbb{N}^*$, where $\mathbb{N}^* = \{1,2,3,\cdots\}$, such that $p_n(i \mid i) > 0$ is $\geq 2$. Otherwise, the state $i$ is called aperiodic. In both cases, the gcd is denoted by $d(i)$ and is called the period of the state $i$. Thus, $i$ is periodic if and only if $d(i) \geq 2$. A state $i$ which is positive recurrent and aperiodic is called ergodic.
+\end{definition}
+
+\begin{exercise}
+\label{exr:period-positive}
+Is this claim that $p_{d(i)}(i \mid i) > 0$ true or not?
+
+\begin{hint}
+Think of a Markov chain in which it is possible to return to the starting point by two different routes. One route with four steps, the other one with six steps.
+\end{hint}
+\end{exercise}
+
+One of the by-products of the following exercise is another example of the type asked for in Exercise \ref{exr:period-positive}.
+
+\begin{exercise}
+\label{exr:period-two-state}
+Consider a Markov chain on $S = \{1,2\}$ with transition probability matrix $P = \begin{bmatrix} 0 & 1/2 \\ 1 & 1/2 \end{bmatrix}$. This chain can also be described by the graph in Figure \ref{fig:exr-5-25}. Find $d(1)$ and $d(2)$.
+
+\begin{hint}
+Calculate $P^2$ and $P^3$. This can be done in two different ways: either algebraically or, probabilistically.
+\end{hint}
+\end{exercise}
+
+\begin{prop}
+\label{prp:recurrence-type-invariant}
+Suppose that $i, j\in S$ and $i \leftrightarrow j$. Show that
+
+\begin{enumerate}
+\item $i$ is transient if and only if $j$ is;
+\item $i$ is recurrent if and only if $j$ is;
+\item $i$ is null-recurrent if and only if $j$ is;
+\item $i$ is positive-recurrent if and only if $j$ is;
+\item $i$ is periodic if and only if $j$ is, in which case $d(i) = d(j)$;
+\item $i$ is ergodic if and only if $j$ is.
+\end{enumerate}
+\end{prop}
+
+\begin{exercise}
+\label{exr:recurrent-implies-intercommunicate}
+Show that the following modification of 2) above is true: If $i$ is recurrent and $i \to j$, then $j \to i$. Deduce that if $i$ is recurrent and $i \to j$, then $j$ is recurrent and $j \leftrightarrow i$.
+
+\begin{hint}
+Is it possible for a chain starting from $i$ to visit $j$ and then never return to $i$? Is such a situation possible when $i$ is a recurrent state?
+\end{hint}
+\end{exercise}
+
+The following result describes how the state space $S$ can be partitioned into a countable sum of classes. One of these classes consists of all transient states. Each of the other classes consists of interconnecting recurrent states. If the chain enters one of the classes of second type, it will never leave it. However, if the chain enters the class of transient states, it will eventually leave it (and so never return to it). We begin with a definition.
+
+\begin{definition}[Closed and irreducible sets]
+\label{def:closed-irreducible}
+Suppose that $\xi_n, n\in\mathbb{N}$, is a Markov chain on a countable state space $S$.
+
+\begin{enumerate}
+\item A set $C \subset S$ is called closed if once the chain enters $C$ it will never leave it, i.e.
+
+\begin{equation}
+P(\xi_k \in S\setminus C \text{ for some } k \geq n \mid \xi_n \in C) = 0. \tag{5.45}
+\end{equation}
+
+\item A set $C \subset S$ is called irreducible if any two elements $i, j$ of $C$ intercommunicate, i.e. for all $i, j\in C$ there exists an $n\in\mathbb{N}$ such that $p_n(j \mid i) > 0$.
+\end{enumerate}
+\end{definition}
+
+\begin{thrm}
+\label{thrm:state-space-decomposition}
+Suppose that $\xi_n, n\in\mathbb{N}$, is a Markov chain on a countable state space $S$. Then
+
+\begin{equation}
+S = T \cup \bigcup_{j=1}^N C_j, \text{ (disjoint sum)}, \tag{5.46}
+\end{equation}
+
+where $T$ is the set of all transient states in $S$ and each $C_j$ is a closed irreducible set of recurrent states.
+\end{thrm}
+
+\begin{exercise}
+\label{exr:closed-characterization}
+Suppose that $\xi_n, n\in\mathbb{N}$, is a Markov chain on a countable state space $S$. Show that a set $C \subset S$ is closed if and only if $p(j \mid i) = 0$ for all $i\in C$ and $j\in S\setminus C$.
+
+\begin{hint}
+One implication is trivial. For the other one use the countable additivity of the measure $P$.
+\end{hint}
+\end{exercise}
+
+\section{Long-Time Behaviour of Markov Chains: General Case}
+\label{sec:long-time-general}
+
+For convenience we shall denote the countable state space $S$ by $\{1,2,3,\cdots\}$ when $S$ is an infinite set and by $\{1,2,\cdots,n\}$ when $S$ is finite.
+
+\begin{prop}
+\label{prp:limit-implies-invariant}
+Let $P = [p(j \mid i)]$ be the transition matrix of a Markov chain with state space $S$. Suppose that for all $i,j\in S$
+
+\begin{equation}
+\lim_{n\to\infty} p_n(j \mid i) =: \pi_j. \tag{5.47}
+\end{equation}
+
+(In particular, the limit is independent of $i$.) Then
+
+\begin{enumerate}
+\item $\sum_j \pi_j \leq 1$;
+\item $\sum_i p(j \mid i) \pi_i = \pi_j$;
+\item either $\sum_j \pi_j = 1$, or $\pi_j = 0$ for all $j\in S$.
+\end{enumerate}
+\end{prop}
+
+\begin{prop}
+\label{prp:invariant-measure}
+Let $P = [p(j \mid i)]$ be the transition matrix of a Markov chain with state space $S$. Suppose that for all $i,j\in S$
+
+\begin{equation}
+\lim_{n\to\infty} p_n(j \mid i) =: \pi_j. \tag{5.47}
+\end{equation}
+
+Then the vector $\pi = (\pi_j)_{j\in S}$ satisfies $\pi = P^T \pi$, i.e.,
+
+\begin{equation}
+\sum_{i\in S} p(j \mid i) \pi_i = \pi_j \quad \text{for all } j\in S. \tag{5.65}
+\end{equation}
+\end{prop}
+
+\begin{thrm}
+\label{thrm:poisson-binomial}
+Suppose that $a \geq 1$ is a natural number. Consider a random walk on $S = \{0,1,\cdots,a\}$ with absorbing barriers at 0 and $a$, and with probability $p$ of moving to the right and probability $q = 1-p$ of moving to the left from any of the states $1,\ldots,a-1$. Hence, our random walk is a Markov chain with transition probabilities
+
+\begin{equation}
+p(j \mid i) = \begin{cases}
+p, & \text{if } 1 \leq i \leq a-1, j = i+1, \\
+q, & \text{if } 1 \leq i \leq a-1, j = i-1, \\
+1, & \text{if } i = j = 0 \text{ or } i = j = a, \\
+0, & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+Find, (a) all invariant measures (there may be just one), (b) the probability of hitting the right-hand barrier prior to hitting the left-hand one.
+
+\begin{hint}
+For (a) recall Exercise \ref{exr:invariant-measures-finite} and for (b) Exercise \ref{exr:branching-binomial-poisson}.
+\end{hint}
+\end{thrm}
+
+\begin{exercise}
+\label{exr:dice-maximum}
+Ian plays a fair game of dice. After the $n$th roll of a die he writes down the maximum outcome $\xi_n$ obtained so far. Show that $\xi_n$ is a Markov chain and find its transition probabilities.
+
+\begin{hint}
+$\xi_{n+1} = \max\{\xi_n, X_{n+1}\}$, where $X_k$ is the outcome of the $k$th roll.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:pyramid-maximum}
+Analyse the Markov chain described in Exercise \ref{exr:dice-maximum}, but with fair die replaced by a fair pyramid.
+
+\begin{hint}
+A pyramid has four faces only.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:random-walk-absorbing}
+Consider a random walk on $S = \{0,1,\ldots,a\}$ with absorbing barriers at 0 and $a$, and with probability $p$ of moving to the right and probability $q = 1-p$ of moving to the left from any of the states $1,\ldots,a-1$. Find the probability of hitting the right-hand barrier before the left-hand one.
+
+\begin{hint}
+Use the result from Proposition \ref{prp:hitting-probability} or solve directly using recurrence relations.
+\end{hint}
+\end{exercise}
+
+\begin{prop}
+\label{prp:hitting-probability}
+For the random walk with absorbing barriers described above, the probability of hitting state $a$ before state 0 when starting from $i$ ($1 \leq i \leq a-1$) is given by
+
+\begin{equation}
+P(\text{hit } a \text{ before } 0 \mid \xi_0 = i) = \frac{1 - (q/p)^i}{1 - (q/p)^a} \quad \text{if } p \neq q,
+\end{equation}
+
+and
+
+\begin{equation}
+P(\text{hit } a \text{ before } 0 \mid \xi_0 = i) = \frac{i}{a} \quad \text{if } p = q = 1/2.
+\end{equation}
+\end{prop}
+
+\begin{prop}
+\label{prp:stationary-binomial}
+The stationary distribution $\pi$ for the random walk with absorbing barriers (when considered on the non-absorbing states) satisfies
+
+\begin{equation}
+\pi_i = \frac{1}{Z} \left(\frac{p}{q}\right)^i, \quad i = 0,1,\ldots,a,
+\end{equation}
+
+where $Z = \sum_{i=0}^a (p/q)^i$ is the normalizing constant.
+\end{prop}
+
+\begin{thrm}
+\label{thrm:poisson-stationary}
+For the Poisson queueing model in Exercise \ref{exr:queuing}, the stationary distribution exists if and only if $\lambda' < 1$, where $\lambda'$ is the mean arrival rate. When it exists, the stationary distribution is Poisson with parameter $\lambda'$, i.e.,
+
+\begin{equation}
+\pi_j = e^{-\lambda'} \frac{(\lambda')^j}{j!}, \quad j = 0,1,2,\ldots
+\end{equation}
+\end{thrm}
+
+\begin{exercise}
+\label{exr:ergodicity-queuing}
+Prove that if there exists an invariant measure for the Markov chain in Exercise \ref{exr:queuing}, then $\lambda' := \sum_{j=0}^\infty j q_j' < 1$. Assuming that the converse is also true, conclude that the chain is ergodic if and only if $\lambda' < 1$. Show that if such an invariant measure exists, then it is unique.
+
+\begin{hint}
+Suppose that $\pi = \sum_{j=0}^\infty \pi_j \delta_j$ is an invariant measure. Write down an infinite system of linear equations for $\pi_j$. If you don't know how to follow, look at the solution.
+\end{hint}
+\end{exercise}
+
+\section{Long-Time Behaviour of Markov Chains with Finite State Space}
+\label{sec:long-time-finite}
+
+As we have seen above, the existence of the $\pi_j$ plays a very important role in the study of invariant measures. In what follows we shall investigate this question in the case when the state space $S$ is finite.
+
+\begin{thrm}
+\label{thrm:finite-state-convergence}
+Suppose that $S$ is finite and the transition matrix $P = [p(j \mid i)]$ of a Markov chain on $S$ satisfies the condition
+
+\begin{equation}
+\exists n_0\in\mathbb{N} \exists \varepsilon > 0: p_{n_0}(j \mid i) \geq \varepsilon, \quad i,j\in S. \tag{5.54}
+\end{equation}
+
+Then, the following limit exists for all $i,j\in S$ and is independent of $i$:
+
+\begin{equation}
+\lim_{n\to\infty} p_n(j \mid i) = \pi_j. \tag{5.55}
+\end{equation}
+
+The numbers $\pi_j$ satisfy
+
+\begin{equation}
+\pi_j > 0, j\in S \text{ and } \sum_{j\in S} \pi_j = 1. \tag{5.56}
+\end{equation}
+
+Conversely, if a sequence of numbers $\pi_j, j\in S$ satisfies conditions (5.55)-(5.56), then assumption (5.54) is also satisfied.
+\end{thrm}
+
+\begin{exercise}
+\label{exr:exponential-convergence}
+Show that $p_n(j \mid i) \to \pi_j$ at an exponential rate.
+
+\begin{hint}
+Recall that $m_n(j) \leq \pi_j \leq M_n(j)$ and use (5.62).
+\end{hint}
+\end{exercise}
+
+The above proves the following important result.
+
+\begin{thrm}
+\label{thrm:ergodic-finite}
+Suppose that the transition matrix $P = [p(j \mid i)]$ of a Markov chain $\xi_n, n\in\mathbb{N}$, satisfies assumption (5.54). Show that there exists a unique invariant measure $\mu$. Moreover, for some $A > 0$, and $\alpha < 1$
+
+\begin{equation}
+|p_n(j \mid i) - \pi_j| \leq A \alpha^n, \quad i,j\in S, n\in\mathbb{N}. \tag{5.63}
+\end{equation}
+\end{thrm}
+
+\begin{exercise}
+\label{exr:invariant-measures-finite}
+Investigate the existence and uniqueness of an invariant measure for the Markov chain in Proposition \ref{prp:telephone-is-markov}.
+
+\begin{hint}
+Are the assumptions of Theorem \ref{thrm:finite-state-convergence} satisfied?
+\end{hint}
+\end{exercise}
+
+\begin{rem}
+\label{rem:solve-invariant-directly}
+The solution to Exercise \ref{exr:invariant-measures-finite} allows us to find the unique invariant measure by direct methods, i.e. by solving the linear equations (5.79)-(5.80).
+\end{rem}
+
+\begin{exercise}
+\label{exr:find-invariant-limit}
+Find the invariant measure from Exercise \ref{exr:invariant-measures-finite} by calculating the limits (5.55).
+
+\begin{hint}
+Refer to Solution 5.5.
+\end{hint}
+\end{exercise}
+
+\begin{exercise}
+\label{exr:finite-state-summary}
+For each of the following transition matrices, determine: (a) whether the chain is irreducible, (b) whether it is aperiodic, (c) the invariant distribution (if it exists), (d) whether the chain is ergodic.
+
+\begin{enumerate}
+\item $P = \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & 0.5 \end{bmatrix}$
+\item $P = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$
+\item $P = \begin{bmatrix} 0.5 & 0.25 & 0.25 \\ 0 & 0.5 & 0.5 \\ 0 & 0 & 1 \end{bmatrix}$
+\end{enumerate}
+
+\begin{hint}
+Check the definitions of irreducibility, aperiodicity, and use Theorem \ref{thrm:ergodic-finite}.
+\end{hint}
+\end{exercise}
