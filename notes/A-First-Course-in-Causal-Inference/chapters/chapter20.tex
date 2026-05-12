@@ -159,6 +159,39 @@ Y_i \sim \{1, Z_i, X_i - x_0, Z_i(X_i - x_0)\}
 
 然而，这种方法对线性模型假设的违背可能敏感。理论建议仅使用断点附近的局部观测值进行回归。\texttt{rdrobust} 包实现了各种"局部"带宽选择，这本质上是一种敏感性分析。
 
+\subsection{Lee（2008）现任优势研究}\label{sec:20-lee-example}
+
+Lee（2008）提供了一个著名的 RD 应用实例，研究美国众议院选举中的现任优势（incumbency advantage）。运行变量是上届选举的政党得票率（以 0 为断点），处理变量是本届选举中是否为执政党候选人，结局是本届选举的得票率。
+
+直观上，现任优势是一个本质上难以用因果推断回答的问题——那些在上届选举中获胜的候选人之所以成功，可能是因为他们本身就更具竞争力，而非因为"现任"身份本身。然而，RD 设计提供了一个巧妙的研究框架。
+
+\begin{lstlisting}[language=R]
+library("rdrobust")
+house = read.csv("house.csv")[, -1]
+
+## 探索性图：得票率散点图（仅显示抽样点）
+plot(y ~ x, data = house, pch = 19, cex = 0.1,
+     xlab = "上届执政党得票率（中心化）",
+     ylab = "本届执政党得票率")
+abline(v = 0, col = "grey")
+
+## rdrobust 分析：三套带宽选择
+fit1 = rdrobust(y, x, c = 0, kernel = "triangular", p = 1)
+fit2 = rdrobust(y, x, c = 0, kernel = "triangular", p = 1, bwselect = "mserd")
+fit3 = rdrobust(y, x, c = 0, kernel = "triangular", p = 1, bwselect = "cerrd")
+
+## 输出点估计和置信区间
+rbind(fit1$Estimate,
+      fit2$Estimate,
+      fit3$Estimate)[, c("Estimate", "ci.lb", "ci.ub")]
+##        Estimate   ci.lb    ci.ub
+## Main  0.0757   0.0670   0.0844
+## MSE   0.0760   0.0672   0.0847
+## CER   0.0759   0.0671   0.0847
+\end{lstlisting}
+
+三套带宽选择均给出约 $7.6\%$ 的现任优势估计，且置信区间高度重叠，说明结论对带宽选择不敏感。这一结果在政治科学中有重要意义：现任优势确实存在，且相当稳定。
+
 \subsection{RD 的问题}\label{sec:20-rd-problems}
 
 RD 分析可能出什么问题？技术上，关键挑战在于指定断点附近的邻域。
