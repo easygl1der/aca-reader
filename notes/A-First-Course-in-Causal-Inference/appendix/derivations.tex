@@ -340,6 +340,40 @@ s^2 = (n-1)^{-1} \sum_{i=1}^n (Y_i - \bar{Y})^2 = (n-1)^{-1} \left( \sum_{i=1}^n
   \item 这与直觉一致：治疗组和对照组越平衡，我们越能准确估计因果效应
 \end{itemize}
 
+\subsubsection*{方差估计的期望}\label{sec:appendix-neyman-vhat}
+\textbf{背景}：Neyman 保守方差估计量 $\hat{V} = \hat{S}^2(1)/n_1 + \hat{S}^2(0)/n_0$ 的期望为 $\mathbb{E}(\hat{V}) = \operatorname{var}(\hat{\tau}) + S^2(\tau)/n$。本节推导这一结果。
+
+\textbf{第一步}：计算 $\mathbb{E}\{\hat{S}^2(1)\}$。
+
+由样本方差的定义：
+\[
+\hat{S}^2(z) = (n_z - 1)^{-1} \sum_{Z_i=z} \{Y_i(z) - \hat{\bar{Y}}(z)\}^2, \quad z \in \{0, 1\}.
+\]
+
+其中 $\hat{\bar{Y}}(z) = n_z^{-1}\sum_{Z_i=z} Y_i(z)$ 是有限总体均值 $\bar{Y}(z)$ 的估计。
+
+在 CRE 下，治疗分配与潜在结果独立，因此 $\mathbb{E}\{\hat{S}^2(z)\} = S^2(z)$（样本方差是有限总体方差的无偏估计）。
+
+\textbf{第二步}：代入 $\mathbb{E}(\hat{V})$。
+
+\[
+\mathbb{E}(\hat{V}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0}.
+\]
+
+\textbf{第三步}：与 Neyman 方差公式比较。
+
+由 Neyman 方差公式：
+\[
+\operatorname{var}(\hat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n}.
+\]
+
+因此：
+\[
+\mathbb{E}(\hat{V}) - \operatorname{var}(\hat{\tau}) = \frac{S^2(\tau)}{n} \geq 0.
+\]
+
+\textbf{结论}：方差估计量 $\hat{V}$ 对 $\operatorname{var}(\hat{\tau})$ 是\textbf{保守的}，偏差为 $S^2(\tau)/n$，仅在所有单元的个体因果效应恒定（$S^2(\tau) = 0$）时无偏。
+
 \section{CRE 中分层平衡性的推导}\label{sec:appendix-5-2-balance}
 
 \textbf{背景（Background）}：在完全随机实验（CRE）中，我们固定总的治疗组和对照组样本量 $n_1$ 和 $n_0$，但各层内的分配数量 $n_{[k]1}$ 和 $n_{[k]0}$ 是随机的。本节证明各层治疗组和对照组比例之差的期望为零。
