@@ -2196,6 +2196,122 @@ round(strat.res, 3)
 其中 $\nabla \tau(\beta)$ 是 $\tau$ 关于 $\beta = (\beta_0, \beta_z, \beta_x^\top)^\top$ 的梯度。
 
 % ========================================================
+% CHAPTER 19 APPENDIX
+% ========================================================
+\section{定理 19.2（最坏情况 p 值）的证明}\label{sec:appendix-19-worst-case-proof}
+
+\textbf{背景}：在 \cref{sec:19-worst-case-dist} 中我们声称，在 Rosenbaum 灵敏度分析模型（\cref{as:19-rosenbaum}）下，配对 $i$ 的处理指示 $S_i$ 在零假设 $H_{0F}$ 下服从最坏情况的 Bernoulli 分布 $\mathrm{Bernoulli}(\Gamma/(1+\Gamma))$。本节给出详细证明。
+
+\textbf{配对条件概率的表达式}：条件于配对 $i$ 中所有潜在结果 $\mathbb{S}_i = \{Y_{i1}(1), Y_{i1}(0), Y_{i2}(1), Y_{i2}(0)\}$ 和配对内恰好一个单位接受处理的约束 $Z_{i1} + Z_{i2} = 1$，我们有：
+\[
+\pi_{i1} = \frac{e_{i1}(1 - e_{i2})}{e_{i1}(1 - e_{i2}) + (1 - e_{i1})e_{i2}},
+\]
+其中 $e_{ij} = \Pr(Z_{ij} = 1 \mid X_i, \mathbb{S}_i)$ 是配对内单位 $(i,j)$ 的倾向得分。定义 odds $o_{ij} = e_{ij} / (1 - e_{ij})$，则 $\pi_{i1} = o_{i1} / (o_{i1} + o_{i2})$。
+
+在 $H_{0F}$ 下，$\mathbb{S}_i$ 是固定的（因为所有潜在结果相等），因此 $S_i$ 的随机性完全来自 $Z_{i1}$ 的条件分布。
+
+\textbf{Rosenbaum 模型}：\cref{as:19-rosenbaum} 施加约束
+\[
+o_{i1} / o_{i2} \leq \Gamma, \quad o_{i2} / o_{i1} \leq \Gamma,
+\]
+即 $1/\Gamma \leq o_{i1}/o_{i2} \leq \Gamma$，或等价地
+\[
+\frac{1}{1+\Gamma} \leq \pi_{i1} \leq \frac{\Gamma}{1+\Gamma}.
+\]
+
+\textbf{最坏情况分布}：在所有满足上述约束的分布中，$S_i$ 的最坏情况（即使 p 值最大）分布对应于取 $\pi_{i1} = \Gamma/(1+\Gamma)$（上界）。这是因为 $T = \sum_i S_i q_i$ 在 $q_i \geq 0$ 时是 $S_i$ 的单调增函数，因此更大的 $S_i$ 期望（更大的 $\pi_{i1}$）产生更大的检验统计量期望，从而在零假设下产生更大的 p 值。
+
+因此，在 $H_{0F}$ 下，$S_i \sim \mathrm{Bernoulli}(\Gamma/(1+\Gamma))$ 且各配对独立。这正是 \cref{th:19-worst-case} 的陈述。\qed
+
+% ========================================================
+% CHAPTER 21 APPENDIX
+% ========================================================
+\section{CACE 分解的推导}\label{sec:appendix-21-ace-decomposition}
+
+\textbf{背景}：在 \cref{sec:21-latent-compliance} 中我们给出了 ACE 的四类分解（\cref{eq:21-ace-decomposition}）。本节补充该分解的详细推导。
+
+\textbf{潜在依从性类型}：每个单元 $i$ 有四个潜在结果 $\{Y_i(1), Y_i(0), D_i(1), D_i(0)\}$。潜在依从性类型 $U_i = (D_i(1), D_i(0))$ 有四种可能取值：
+\begin{itemize}
+  \item $U_i = a$（always taker）：$D_i(1) = D_i(0) = 1$
+  \item $U_i = c$（complier）：$D_i(1) = 1, D_i(0) = 0$
+  \item $U_i = d$（defier）：$D_i(1) = 0, D_i(0) = 1$
+  \item $U_i = n$（never taker）：$D_i(1) = D_i(0) = 0$
+\end{itemize}
+
+\textbf{ACE 分解}：总体平均因果效应为
+\[
+\tau_Y = \mathbb{E}\{Y(1) - Y(0)\}.
+\]
+
+应用全概率公式（按 $U$ 的取值分解）：
+\[
+\begin{aligned}
+\tau_Y &= \sum_{u \in \{a,c,d,n\}} \mathbb{E}\{Y(1) - Y(0) \mid U = u\} \Pr(U = u) \\
+&= \mathbb{E}\{Y(1) - Y(0) \mid U = a\} \Pr(U = a) \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = c\} \Pr(U = c) \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = d\} \Pr(U = d) \\
+&\quad + \mathbb{E}\{Y(1) - Y(0) \mid U = n\} \Pr(U = n).
+\end{aligned}
+\]
+
+这就是 \cref{eq:21-ace-decomposition}。
+
+\textbf{每类人的效应解释}：
+\begin{itemize}
+  \item \textbf{Always taker}：无论是否被分配治疗都会接受治疗，因此 $Z$ 对其没有"鼓励"效果，其治疗状态不受 $Z$ 影响。
+  \item \textbf{Complier}：只有在被鼓励时才会接受治疗——这类人是 IV 识别效应的核心。
+  \item \textbf{Defier}：被鼓励时反而拒绝治疗——这类人在单调性假设下不存在。
+  \item \textbf{Never taker}：无论是否被鼓励都不接受治疗，因此 $Z$ 对其也没有"鼓励"效果。
+\end{itemize}
+
+在单调性（\cref{asm:21-monotonicity}）下，$\Pr(U = d) = 0$，故第三项消失。在排除限制（\cref{asm:21-exclusion}）下，always taker 和 never taker 的 $Y(1) = Y(0)$，故第一、四项也为零。于是只剩下 complier 项：$\tau_Y = \mathbb{E}\{Y(1) - Y(0) \mid U = c\} \Pr(U = c)$，即 \cref{eq:21-reduced-ace}。\qed
+
+\section{Wald 估计量方差的推导}\label{sec:appendix-21-wald-variance}
+
+\textbf{背景}：在 \cref{sec:21-estimation} 中我们使用了方差估计量 $\hat{V}(\hat{\tau}_c) = \hat{V}_Y / \hat{\tau}_D^2$。本节推导该公式。
+
+\textbf{Wald 估计量的形式}：
+\[
+\hat{\tau}_c = \frac{\hat{\tau}_Y}{\hat{\tau}_D} = \frac{\bar{Y}_1 - \bar{Y}_0}{\bar{D}_1 - \bar{D}_0}.
+\]
+
+定义 $\tau_c$ 为真值。我们对 $\hat{\tau}_c$ 在 $\tau_c$ 附近做一阶 Taylor 展开：
+\[
+\hat{\tau}_c - \tau_c = \frac{\hat{\tau}_Y - \tau_c \hat{\tau}_D}{\hat{\tau}_D}.
+\]
+
+当 $\hat{\tau}_D > 0$ 且样本量足够大时，用 $\tau_D$ 近似 $\hat{\tau}_D$：
+\[
+\hat{\tau}_c - \tau_c \approx \frac{\hat{\tau}_Y - \tau_c \hat{\tau}_D}{\tau_D} = \frac{\hat{A}}{\tau_D},
+\]
+其中 $\hat{A} = \hat{\tau}_Y - \tau_c \hat{\tau}_D$ 是调整后结局 $A_i = Y_i - \tau_c D_i$ 的差分均值。
+
+\textbf{调整后结局的方差}：在 CRE 下，调整后结局 $A_i$ 在处理组和对照组分别有均值
+\[
+\mathbb{E}(A_i \mid Z = 1) = \mathbb{E}(Y_i - \tau_c D_i \mid Z = 1),\quad
+\mathbb{E}(A_i \mid Z = 0) = \mathbb{E}(Y_i - \tau_c D_i \mid Z = 0).
+\]
+由于 $\tau_c = \tau_Y / \tau_D$，可以验证在零假设（即 $\tau_c = 0$）下，$\mathbb{E}(A_i \mid Z = 1) = \mathbb{E}(A_i \mid Z = 0) = 0$，但这仅在检验时成立。
+
+作为渐近近似，我们用 $\hat{A}_i = Y_i - \hat{\tau}_c D_i$（基于估计的 $\hat{\tau}_c$）计算方差。Neyman 型方差估计量为：
+\[
+\hat{V}_{\hat{A}} = \frac{\hat{S}_{\hat{A}}^2(1)}{n_1} + \frac{\hat{S}_{\hat{A}}^2(0)}{n_0},
+\]
+其中 $\hat{S}_{\hat{A}}^2(1)$ 和 $\hat{S}_{\hat{A}}^2(0)$ 分别是处理组和对照组调整后结局的样本方差。
+
+\textbf{方差公式}：因此
+\[
+\hat{V}(\hat{\tau}_c) = \frac{\hat{V}_{\hat{A}}}{\hat{\tau}_D^2},
+\]
+这正是正文中的公式。当 $\hat{\tau}_D$ 较小时（弱 IV），该方差可能非常大，这正是 Wald 型置信区间在弱 IV 情况下失效的原因。\qed
+
+\textbf{注意}：在原假设 $\tau_c = 0$ 下，可以使用更简单的方差估计量 $\hat{V}_Y / \hat{\tau}_D^2$，其中 $\hat{V}_Y$ 是 $\hat{\tau}_Y$ 的 Neyman 型方差。这个估计量在 $\tau_c \neq 0$ 时是不一致的，因此仅可用于检验，不能用于构建置信区间。\qed
+
+% ========================================================
+% End of derivations.tex
+% ========================================================
+
+% ========================================================
 % CHAPTER 11 APPENDIX
 % ========================================================
 \section{第十一章 HT 估计量缺乏位置不变性}\label{sec:appendix-11-ht-location}
