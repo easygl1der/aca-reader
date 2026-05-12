@@ -1,0 +1,196 @@
+% Appendix: Difference-in-Differences
+% Moved from chapters/chapter26 (out of sync with textbook structure)
+% The textbook's Chapter 26 is "Principal Stratification", not DiD.
+% This DiD content is retained here as supplementary material.
+
+\section{双重差分：利用面板数据的结构识别因果效应}\label{sec:appendix-did}
+
+\subsection{引言：一个看似简单的问题}\label{sec:appendix-did-intro}
+
+考虑一个政策评估的常见场景：某市政府在 2020 年对某区企业实施了一项税收优惠政策。我们想知道这项政策是否促进了就业增长。
+
+一个朴素的思路是：比较政策实施前后该区的就业变化。例如，若 2019 年就业人数为 $1000$，2021 年为 $1200$，则增长 $20\%$，似乎说明政策有效。
+
+然而，这个推理存在一个根本性的缺陷：**时间趋势本身可能导致就业变化**。即使没有税收优惠，经济周期、技术进步、产业迁移等因素也可能导致就业的自然波动。换言之，我们观察到的变化可能是政策效果，也可能是时间趋势的结果——两者无法分离。
+
+这个困境促使我们思考：能否利用**面板数据**（panel data，即同一组单元在多个时间点的观测数据）的结构，在一定程度上消除时间趋势的干扰，从而更准确地识别政策效果？
+
+\textbf{双重差分（Difference-in-Differences, DiD）}正是为解决这一问题而诞生的方法。其核心思想朴素而深刻——同时利用**组间比较**和**时间比较**，通过两次差分消除时间趋势的影响。
+
+\subsection{基本设定：2$\times$2 情形}\label{sec:appendix-did-setup}
+
+\textbf{研究设计与记号}。考虑一个最简单的 DiD 设定：有两组单元（处理组和对照组）和两个时间点（政策实施前和政策实施后）。记
+
+\begin{itemize}
+  \item $G_i \in \{0, 1\}$：单元 $i$ 的组别，$G_i = 1$ 表示处理组，$G_i = 0$ 表示对照组
+  \item $T_t \in \{0, 1\}$：时间，$T_t = 0$ 表示政策实施前（基期），$T_t = 1$ 表示政策实施后
+  \item $Y_{it}$：单元 $i$ 在时间 $t$ 的观测结果
+  \item $D_i = G_i$：处理指示变量（假设政策实施后处理组收到处理，对照组未处理）
+\end{itemize}
+
+\textbf{关键假设：潜在结果框架}。对每个单元 $i$ 和每个时间 $t$，定义潜在结果：
+\[
+Y_{it}(1) \quad \text{和} \quad Y_{it}(0)
+\]
+分别表示如果收到处理和未收到处理时单元 $i$ 在时间 $t$ 的结果。观测结果由下式给出：
+\[
+Y_{it} = Y_{it}(0) + D_i \bigl( Y_{it}(1) - Y_{it}(0) \bigr).
+\]
+
+\textbf{att 的定义}。处理组在时间 $t$ 的平均处理效应（Average Treatment effect on the Treated, ATT）为：
+\[
+\tau_t = \mathbb{E}\bigl( Y_{it}(1) - Y_{it}(0) \mid G_i = 1 \bigr).
+\]
+
+\subsection{基本 DiD 估计量}\label{sec:appendix-did-estimator}
+
+考虑以下四个总体均值：
+\[
+\begin{aligned}
+\bar{Y}_{00} &= \mathbb{E}(Y_{it} \mid G_i = 0, T_t = 0) &&\text{（对照组，政策前）}\\
+\bar{Y}_{01} &= \mathbb{E}(Y_{it} \mid G_i = 0, T_t = 1) &&\text{（对照组，政策后）}\\
+\bar{Y}_{10} &= \mathbb{E}(Y_{it} \mid G_i = 1, T_t = 0) &&\text{（处理组，政策前）}\\
+\bar{Y}_{11} &= \mathbb{E}(Y_{it} \mid G_i = 1, T_t = 1) &&\text{（处理组，政策后）}
+\end{aligned}
+\]
+
+\textbf{第一次差分：组内时间差分}。
+
+处理组的时间差分为 $\bar{Y}_{11} - \bar{Y}_{10}$，包含两部分：
+\[
+\bar{Y}_{11} - \bar{Y}_{10} = \underbrace{\tau_1}_{\text{政策效果}} + \underbrace{\bigl[ \bar{Y}_{10}(0) - \bar{Y}_{11}(0) \bigr]}_{\text{时间趋势造成的变化}} ,
+\]
+其中 $\bar{Y}_{1t}(0) = \mathbb{E}(Y_{it}(0) \mid G_i = 1, T_t = t)$ 表示处理组若未受处理在时间 $t$ 的潜在结果均值。
+
+类似地，对照组的时间差分为 $\bar{Y}_{01} - \bar{Y}_{00}$，这一差分完全由时间趋势驱动（因为对照组未受处理）：
+\[
+\bar{Y}_{01} - \bar{Y}_{00} = \bar{Y}_{10}(0) - \bar{Y}_{11}(0).
+\]
+
+\textbf{第二次差分：组间差分消除时间趋势}。
+
+将处理组的时间差分减去对照组的时间差分：
+\[
+\underbrace{(\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00})}_{\text{双重差分}}
+= \tau_1 + \underbrace{\bigl[ \bar{Y}_{10}(0) - \bar{Y}_{11}(0) \bigr]}_{\text{时间趋势}} - \underbrace{\bigl[ \bar{Y}_{10}(0) - \bar{Y}_{11}(0) \bigr]}_{\text{时间趋势}}.
+\]
+
+时间趋势项被消去了！我们得到：
+\[
+\text{DiD} = (\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00}) = \tau_1.
+\]
+
+这意味着，在\textbf{平行趋势假设}（见下节）下，双重差分恰好识别出了处理组的平均处理效应 ATT。
+
+DiD 估计量可以写成更直观的形式：
+\[
+\hat{\tau}_\text{DiD} = (\bar{Y}_{11} - \bar{Y}_{10}) - (\bar{Y}_{01} - \bar{Y}_{00})
+= (\bar{Y}_{11} - \bar{Y}_{01}) - (\bar{Y}_{10} - \bar{Y}_{00}).
+\label{eq:appendix-did-estimator}
+\]
+
+\fboxsep=6pt\fboxrule=1pt
+\noindent\fbox{
+\begin{minipage}{0.97\textwidth}
+\textbf{核心公式（式 \cref{eq:appendix-did-estimator}）}：
+\[
+\hat{\tau}_\text{DiD} = \underbrace{(\bar{Y}_{11} - \bar{Y}_{01})}_{\text{处理组的时间变化}} - \underbrace{(\bar{Y}_{10} - \bar{Y}_{00})}_{\text{对照组的时间变化}}.
+\]
+第一项是处理组政策前后的结果均值之差；第二项是对照组政策前后的结果均值之差。两项相减，即消除了时间趋势。
+\end{minipage}
+}
+
+\subsection{平行趋势假设}\label{sec:appendix-did-pt}
+
+DiD 方法的核心假设是\textbf{平行趋势假设（Parallel Trends Assumption）}：
+
+\begin{Assumption}[平行趋势假设]\label{assum:appendix-did-pt}
+在没有处理的情况下，处理组和对照组的结果随时间变化的趋势相同，即
+\[
+\mathbb{E}\bigl( Y_{i1}(0) - Y_{i0}(0) \mid G_i = 1 \bigr) = \mathbb{E}\bigl( Y_{i1}(0) - Y_{i0}(0) \mid G_i = 0 \bigr).
+\]
+Equivalently,
+\[
+\bar{Y}_{10}(0) - \bar{Y}_{11}(0) = \bar{Y}_{00} - \bar{Y}_{01}.
+\]
+\end{Assumption}
+
+这个假设的含义是：**若两组都未受处理，它们结果的时间变化模式应完全相同**。换言之，处理组和对照组之间的差异仅仅是组间固定效应，而不存在特异性的时间趋势。
+
+\textbf{为何称为"平行"趋势}。图示可以帮助理解这一假设。假设横轴为时间，纵轴为结果。在平行趋势假设下，处理组和对照组的结果轨迹在政策实施前是两条斜率相同的平行直线；政策实施后，处理组的轨迹发生跳跃，而对照组继续沿原趋势发展。DiD 正是利用政策实施前后的信息，估计这个"跳跃"的大小。
+
+在数学上，若假设结果对数形式为线性趋势：
+\[
+Y_{it}(0) = \alpha + \beta \cdot G_i + \gamma \cdot t + \varepsilon_{it},
+\]
+则处理组和对照组的时间趋势相同（均为 $\gamma$），平行趋势假设自动成立。
+
+\textbf{重要警示}：平行趋势假设是无法从数据中直接验证的——因为我们永远无法同时观测到处理组的"反事实"（若未受处理会怎样）。这使得 DiD 本质上是一个\textbf{半参数识别}问题：识别依赖于研究者对趋势函数形式的额外假设。
+
+实践中，研究者通常会：
+\begin{enumerate}
+  \item 检验政策实施前的处理组和对照组趋势是否平行（\`\`pre-trend test''）；
+  \item 展示多个政策实施前的时期，确认趋势的稳定性；
+  \item 使用安慰剂检验（placebo test），将政策实施时间人为提前，看是否仍能识别出效应。
+\end{enumerate}
+
+这些检验并非平行趋势假设的证明，而只是提供间接证据。
+
+\subsection{回归框架与标准误差}\label{sec:appendix-did-reg}
+
+DiD 估计量可以通过回归方法方便地实现。考虑以下双向固定效应（Two-Way Fixed Effects, TWFE）模型：
+\[
+Y_{it} = \alpha + \beta \cdot D_{it} + \gamma_i + \delta_t + \varepsilon_{it},
+\label{eq:appendix-did-twfe}
+\]
+其中：
+\begin{itemize}
+  \item $D_{it} = G_i \cdot T_t$ 为处理指示变量（组别 $\times$ 时间的交互项）
+  \item $\gamma_i$ 为个体固定效应（控制组间差异）
+  \item $\delta_t$ 为时间固定效应（控制共同的时间趋势）
+\end{itemize}
+
+在这个模型中，$\beta$ 就是 DiD 估计量，它等于处理组的时间变化减去对照组的时间变化，即式 \cref{eq:appendix-did-estimator} 中的 $\hat{\tau}_\text{DiD}$。
+
+\textbf{关于标准误差}。在面板数据回归中，标准误差的估计需要考虑以下问题：
+\begin{itemize}
+  \item \textbf{聚类标准误差（Clustered Standard Errors）}：同一单元的观测值可能存在自相关，建议按单元聚类
+  \item \textbf{Driscoll-Kraay 标准误差}：当时间维度较大且存在潜在的面板相关结构时
+  \item \textbf{Bootstrap}：在小样本情况下，参数自举法可能更可靠
+\end{itemize}
+
+\subsection{拓展：异质性处理效应}\label{sec:appendix-did-hetero}
+
+标准的 TWFE 回归 \cref{eq:appendix-did-twfe} 假设处理效应在所有单元和时间上都是恒定的（$\beta$ 不随 $i$ 或 $t$ 变化）。然而，在实际研究中，处理效应很可能随单元特征或时间而变化。
+
+考虑\textbf{异质性处理效应}的情形。记处理效应为 $\tau_{it} = \mathbb{E}(Y_{it}(1) - Y_{it}(0))$，它可能依赖于单元 $i$ 或时间 $t$。
+
+Angrist and Pischke \citep{AngristPischke:2009} 指出，当处理效应存在异质性时，标准的 TWFE 估计量识别的是一种**处理效应分布的加权均值**，而非简单的 ATT。这一加权结构可能产生难以解释的估计量，甚至在外推含义上产生偏误。
+
+\fboxsep=6pt\fboxrule=1pt
+\noindent\fbox{
+\begin{minipage}{0.97\textwidth}
+\textbf{警告（异质性处理效应下 TWFE 的陷阱）}：当不同单元的处理效应不同时，TWFE 回归中的 $\beta$ 不再简单等于 ATT。它可能混合了处理组和未处理组中不同处理效应分布的特征，导致估计量难以解释。详见 \cite{AngristPischke:2009} 的讨论。
+\end{minipage}
+}
+
+\textbf{多期 DiD}。当有多个时间点时，DiD 可以推广到**多期情形**。设 $T_t \in \{0, 1, \dots, T\}$，则处理指示变量 $D_{it} = G_i \cdot \mathbb{I}(t \geq t^*)$，其中 $t^*$ 为政策实施时间。
+
+多期 DiD 的 TWFE 回归为：
+\[
+Y_{it} = \alpha_i + \delta_t + \sum_{t=0}^T \beta_t \cdot D_{it} + \varepsilon_{it},
+\label{eq:appendix-did-multi}
+\]
+其中 $\beta_t$ 捕捉了政策实施后各时期的处理效应（通常以政策实施前一期为基准期，令其效应为零）。
+
+\textbf{事件研究图（Event Study Plot）}是展示多期 DiD 结果的标准方法——将 $\beta_t$ 对时间作图，政策实施前的系数应接近零（提供平行趋势的间接证据），政策实施后的系数应反映处理效应的大小和动态变化。
+
+\subsection{经典参考文献}\label{sec:appendix-did-refs}
+
+关于 DiD 的经典参考文献包括：
+\begin{itemize}
+  \item \cite{AngristPischke:2009}：《Mostly Harmless Econometrics》，第 5 章系统介绍了 DiD 的理念和实践
+  \item \cite{CardKruger:1994}：DiD 方法的早期经典应用，研究最低工资对就业的影响
+  \item \cite{GoodmanBacon:2021}：关于异质性处理效应下 TWFE 估计量的最新讨论
+  \item \cite{DeChaisemartinDHaul:2020}：提出诊断和处理 TWFE 中异质性处理效应的方法
+\end{itemize}

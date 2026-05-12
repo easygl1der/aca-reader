@@ -350,6 +350,94 @@ $\hat\tau_{\text{adj}}$ 的保守方差估计量为
 
 基于 Neymanian 推断，我们计算点估计和方差估计。\footnote{完整计算见附录 \cref{sec:appendix-7-ctw-example}}
 
+\section{MPE 与 CRE 的比较}\label{sec:7-mpe-vs-cre}
+
+配对随机实验（MPE）本质上是一种特殊的分层随机实验（SRE），其中每个层恰好包含一个治疗单元和一个对照单元。那么，MPE 与在相同总体上进行完全随机实验（CRE）相比，效率如何？
+
+考虑一个包含 $2n$ 个单元的总体。设 $X_i$ 为配对 $i$ 中两个单元的协变量均值，即 $X_i = (X_{i1} + X_{i2}) / 2$。记配对内协变量差异为 $d_i = X_{i1} - X_{i2}$，其方差为 $\sigma_d^2 = n^{-1}\sum_{i=1}^n d_i^2$。
+
+为比较 MPE 与 CRE，我们需要对潜在结果的协变量依赖进行建模。假设线性结果模型：
+\[
+Y_{ij}(1) = \alpha + \beta X_{ij} + \varepsilon_{ij}, \quad Y_{ij}(0) = \alpha - \beta X_{ij} + \varepsilon_{ij},
+\]
+其中 $\varepsilon_{ij}$ 是均值为 $0$、方差为 $\sigma_\varepsilon^2$ 的独立误差项，且与协变量 $X_{ij}$ 无关。在此模型下，单元 $ij$ 的因果效应为 $\tau_{ij} = 2\beta X_{ij}$，平均因果效应为 $\tau = 2\beta \bar{X}$。
+
+\begin{Theorem}[MPE 与 CRE 的效率比较]\label{th:7-mpe-vs-cre}
+在上述线性结果模型下，当 $n$ 较大且 $\sigma_d^2 > 0$ 时，MPE 的方差严格小于 CRE 的方差：
+\[
+\text{var}_\MPE(\hat\tau) < \text{var}_\CRE(\hat\tau).
+\]
+效率增益来自配对设计消除的配对间变异。
+\end{Theorem}
+
+直观上，配对设计利用协变量信息将相似的单元配对，使得配对内两个单元的协变量接近（$|d_i|$ 较小）。由于因果效应与协变量相关，配对内两个单元的因果效应也接近，从而配对内差异 $\hat\tau_i$ 的方差较小。
+
+\cref{th:7-mpe-vs-cre} 表明，\textbf{只要协变量能够预测潜在结果，配对设计就能带来效率提升。} 这一结论与第 \ref{ch:5} 章关于 SRE 与 CRE 比较的结论一致——MPE 是 SRE 的极端形式，同样受益于协变量的使用。
+
+\begin{Proposition}[效率增益的量化]\label{prop:7-efficiency-gain}
+设配对内协变量差异的方差为 $\sigma_d^2$，配对数均值的方差为 $\sigma_X^2$。在上述线性模型下，MPE 与 CRE 的方差之比为
+\[
+\frac{\text{var}_\MPE(\hat\tau)}{\text{var}_\CRE(\hat\tau)} \approx \frac{\sigma_\varepsilon^2}{\sigma_\varepsilon^2 + \beta^2 \sigma_d^2}.
+\]
+当 $\sigma_d^2 \to 0$（完美配对）时，该比值趋近于 $0$，效率增益最大；当 $\sigma_d^2 \to \infty$（随机配对）时，该比值趋近于 $1$，效率增益消失。
+\end{Proposition}
+
+从实践角度，以下因素会影响 MPE 相对于 CRE 的效率增益：
+\begin{enumerate}
+  \item \textbf{协变量的预测能力}：$\beta$ 越大，协变量对结果越有预测力，效率增益越大；
+  \item \textbf{配对质量}：$\sigma_d^2$ 越小，配对越精确，效率增益越大；
+  \item \textbf{样本量}：当 $n$ 较小时，有限样本校正可能影响精确比较。
+\end{enumerate}
+
+\section{一般配对实验的扩展}\label{sec:7-general-matched}
+
+前述 MPE 的讨论基于一个关键假设：每对恰好包含一个治疗单元和一个对照单元。本节将此设定推广到更一般的情形。
+
+\subsection{每对多个单元}\label{sec:7-general-multi}
+
+有时出于实际考虑，配对内的单元数可能大于 $2$（即每对有多个治疗单元和多个对照单元）。设第 $i$ 对有 $n_{i1}$ 个治疗单元和 $n_{i0}$ 个对照单元，其中 $n_{i1} + n_{i0} = n_i$。
+
+与 \cref{sec:7-neymanian} 类似，配对 $i$ 内的平均因果效应为
+\[
+\tau_i = n_i^{-1} \sum_{j=1}^{n_i} \{Y_{ij}(1) - Y_{ij}(0)\},
+\]
+总体平均因果效应为 $\tau = n^{-1}\sum_{i=1}^n n_i \tau_i$。
+
+配对 $i$ 内的差值均值估计量为
+\[
+\hat\tau_i = \bar{Y}_{i1}(\text{obs}) - \bar{Y}_{i0}(\text{obs}),
+\]
+其中 $\bar{Y}_{i1}(\text{obs})$ 和 $\bar{Y}_{i0}(\text{obs})$ 分别是治疗组和对照组观测结果的均值。
+
+加权估计量为
+\[
+\hat\tau = \sum_{i=1}^n \frac{n_i}{n} \hat\tau_i.
+\]
+
+方差估计量需要考虑配对内随机化。类似 \cref{sec:7-neymanian}，我们可以证明方差估计量的保守性。
+
+\subsection{不完美配对}\label{sec:7-imperfect-pairing}
+
+前述讨论假设配对完美，即同一对内两个单元的协变量完全相同。但实际中，由于协变量的连续性或维度较高，我们可能无法找到精确匹配的单元。此时，每对内的协变量存在差异 $(X_{i1} \neq X_{i2})$。
+
+不完美配对下的 MPE 仍然有效，因为随机化仍然保证了比较的基础。但估计精度会有所下降。直观上，配对越不完美（$|d_i|$ 越大），MPE 越接近 CRE，效率增益越小。
+
+\begin{Remark}
+当配对不完美时，第 \ref{sec:7-covariate} 节的协变量调整策略尤为重要。通过调整配对内协变量差异，我们可以恢复部分效率损失。
+\end{Remark}
+
+\subsection{层内配对}\label{sec:7-stratified-pairing}
+
+另一种扩展是先按协变量分层，再在每层内进行配对。这种两层设计结合了 SRE（减少层间变异）和 MPE（减少层内变异）的优点。
+
+设 $K$ 个层，第 $k$ 层有 $n_{[k]}$ 个单元。先按 $X$ 将单元分层，再在每层内将单元配对。最终的估计量是层别加权平均：
+\[
+\hat\tau = \sum_{k=1}^K \pi_{[k]} \hat\tau_{[k]},
+\]
+其中 $\hat\tau_{[k]}$ 是第 $k$ 层内的配对估计量。
+
+这种设计在协变量高度预测结果时尤其有效，因为可以在关键的协变量层内精确匹配单元。
+
 \section{本章小结}\label{sec:7-summary}
 
 本章介绍了配对随机实验（MPE），主要内容如下：
@@ -360,6 +448,8 @@ $\hat\tau_{\text{adj}}$ 的保守方差估计量为
   \item \textbf{FRT}：可以使用多种检验统计量，包括配对 $t$ 统计量（\cref{eq:7-t-pair}）、Wilcoxon 符号秩统计量（\cref{eq:7-wilcoxon}）、Kolmogorov--Smirnov 型统计量（\cref{eq:7-ks-statistic}）和符号统计量（\cref{eq:7-sign-stat}）。
   \item \textbf{Neymanian 推断}：方差估计量 $\hat V$（\cref{eq:7-variance-estimator}）是保守的（\cref{th:7-variance-conservative}）；点估计和方差估计都可以通过 OLS 方便地得到（\cref{prop:7-ols}）。
   \item \textbf{协变量调整}：调整估计量 $\hat\tau_{\text{adj}}$（\cref{eq:7-final-adjusted}）和方差估计量 $\hat V_{\text{adj}}$ 可以通过 OLS 方便地计算（\cref{prop:7-adjusted-ols}）。
+  \item \textbf{MPE 与 CRE 的比较}：只要协变量能预测潜在结果，MPE 的方差严格小于 CRE 的方差（\cref{th:7-mpe-vs-cre}）。
+  \item \textbf{一般配对实验}：MPE 可以推广到每对多个单元、不完美配对和层内配对等情形。
 \end{enumerate}
 
 \section{习题}\label{sec:chapter7-exercises}
