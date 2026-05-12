@@ -254,6 +254,87 @@ $\star$ \textbf{Insight}：理解 $\mathbf{Z}$ 的关键是：它是一个指示
 
 \textbf{答}：第一基本形式是曲面上用来度量弧长、面积以及角度的工具，本质上是曲面自带的一种"度量结构"——它告诉我们如何在曲面上测量距离和角度。
 
+\subsection{远置信集的构造}\label{sec:qa-far-confidence-set}
+
+\textbf{问}：远置信集（far confidence set）是如何构造的？
+
+\textbf{答}：远置信集是通过在参数空间中搜索满足置信水平的最大区域构造的。具体方法是在约束条件下寻找使目标函数最大化的参数点，从而确定置信范围。
+
+\subsection{ITT 的含义}\label{sec:qa-itt-meaning}
+
+\textbf{问}：什么是 ITT（Intent-to-Treat）？
+
+\textbf{答}：ITT 即意向性治疗分析（Intent-to-Treat），是一种保守的估计方法，无论实际是否依从，都按随机分配的方案进行分析。它估计的是"随机化本身的效应"，而非实际治疗的因果效应。
+
+\subsection{工具变量的直觉}\label{sec:qa-iv-intuition}
+
+\textbf{问}：工具变量（Instrumental Variable）的直觉是什么？
+
+\textbf{答}：工具变量 $Z$ 满足：（1）与 treatment 相关；（2）通过随机分配获得外生性；（3）只通过 treatment 影响结果，不能直接影响结果。它的直觉是：通过随机分配产生的 variation（被称为"准实验 variation"），可以用来估计 treatment 效应，即使存在选择偏差。
+
+\subsection{单调性假设是否可检验}\label{sec:qa-monotonicity-testable}
+
+\textbf{问}：单调性假设（Monotonicity）是否可检验？
+
+\textbf{答}：单调性假设（$Y_i(1) \geq Y_i(0)$ 对所有人成立）通常是不可直接检验的，因为它涉及反事实结果。但在某些特殊情况下（如二元结果、随机实验），可以通过辅助假设或分层分析提供间接证据。
+
+\subsection{随机化假设的含义}\label{sec:qa-randomization-assumption}
+
+\textbf{问}：随机化假设（Randomization Assumption）在工具变量框架下意味着什么？
+
+\textbf{答}：随机化假设是指工具变量 $Z$ 与潜在结果 $(Y_i(0), Y_i(1))$ 和潜在处理 $(D_i(0), D_i(1))$ 是相互独立的，即 $Z \perp (Y_i(0), Y_i(1), D_i(0), D_i(1))$。这确保了工具变量的外生性，排除了一切混杂。
+
+\subsection{弱工具变量问题}\label{sec:qa-weak-iv-problem}
+
+\textbf{问}：什么是弱工具变量问题（Weak IV Problem）？
+
+\textbf{答}：弱工具变量是指与 treatment 相关性很弱的工具变量（$F$ 统计量较小）。使用弱工具变量会导致：偏差增大、置信区间扩张、有限样本下分布偏离标准分布。需要检查 $F$ 统计量是否超过临界值（如 Staiger-Stock 规则中的 10）。
+
+\subsection{为什么是局部平均处理效应}\label{sec:qa-why-local}
+
+\textbf{问}：工具变量方法估计的为什么是"局部"平均处理效应（LATE）而非总体 ATE？
+
+\textbf{答}：因为工具变量利用的是"受工具影响的 Compliers"的 variation。在单调性假设下，只有 Compliers（$D_i(1) > D_i(0)$）对工具变量的效应有贡献，而 Defiers 和 Always-takers 被排除。因此估计量只识别了 Compliers 群体的 ATE，即 LATE。
+
+% === 练习题解答占位符 ===
+% 本节用于记录正文中引用的练习题解答
+
+\subsection*{替代标准误公式的推导}\label{sec:sol-alternative-si}
+
+\textbf{注}：此解答待补充。详见对应章节练习题。
+
+\subsection*{连续或二元结果下 $m$ 的性质}\label{sec:sol-contin-m-binary-y}
+
+\textbf{注}：此解答待补充。当 $Y$ 为二元变量或连续变量时，函数 $m(X) = \mathbb{E}[Y|X]$ 的形式与性质讨论。
+
+\subsection*{差商积形式的推导}\label{sec:sol-difference-product}
+
+\textbf{注}：此解答待补充。关于差商与乘积关系的推导。
+
+\subsection*{交互效应的可识别性}\label{sec:sol-interaction}
+
+\textbf{注}：此解答待补充。条件可识别性框架下交互效应的识别与估计。
+
+\subsection*{Logit 模型下二元处理变量 $m$ 的推导}\label{sec:sol-logit-binary-m}
+
+\textbf{注}：此解答待补充。在 Logit 回归框架下处理二元变量 $m$ 的具体推导过程。
+
+\subsection*{Robins  mediation formula 与潜在组}\label{sec:sol-mediation-robins-latent-groups}
+
+\textbf{注}：此解答待补充。Robins 提出的 mediation formula 在潜在组（latent groups）框架下的应用。
+
+\subsection*{二元结果下的自然间接效应}\label{sec:sol-nie-binary}
+
+\textbf{注}：此解答待补充。当结果变量 $Y$ 为二元时，自然间接效应的定义与估计。
+
+\subsection*{跨世界独立性假设的问题}\label{sec:sol-no-crossworld}
+
+\textbf{注}：此解答待补充。跨世界独立性（cross-world independence）假设在 mediation analysis 中的局限性。
+
+\subsection*{Surrogate 准则与 Jr 条件}\label{sec:sol-sr-jr}
+
+\textbf{注}：此解答待补充。Surrogate 准则（Sr）与Jr 条件的关系与推导。
+
 \textit{当你在阅读过程中提出问题时，回答将被记录在此处。}
 
 % === 用户注解 ===
