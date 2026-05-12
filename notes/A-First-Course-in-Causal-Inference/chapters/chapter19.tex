@@ -135,6 +135,48 @@ T = \sum_{i=1}^n S_i |\hat{\tau}_i|,
 图 \ref{fig:19-lalonde-sensitivity} 展示了 p 值随 $\Gamma$ 变化的灵敏度曲线。曲线的陡峭程度告诉我们结论对未测量混杂的敏感程度——曲线越平缓，结论越稳健。
 \end{Example}
 
+\cref{fig:19-lalonde-sensitivity} 由以下 R 代码生成。首先使用 \texttt{Matching} 包构造匹配数据集，然后使用 \texttt{sensitivitymw} 包中的 \texttt{senmw} 函数计算不同 $\Gamma$ 值下的最坏情况 p 值：
+
+\begin{lstlisting}[language=R]
+library("Matching")
+library("sensitivitymvm")
+library("sensitivitymw")
+dat <- read.table("cps1re74.csv", header = TRUE)
+dat$u74 <- as.numeric(dat$re74 == 0)
+dat$u75 <- as.numeric(dat$re75 == 0)
+y = dat$re78
+z = dat$treat
+x = as.matrix(dat[, c("age", "educ", "black",
+                      "hispan", "married", "nodegree",
+                      "re74", "re75", "u74", "u75")])
+
+## 1-1 配对匹配
+matchest = Match(Y = y, Tr = z, X = x)
+ytreated = y[matchest$index.treated]
+ycontrol = y[matchest$index.control]
+datamatched = cbind(ytreated, ycontrol)
+
+## 计算 pair t 统计量 tau_i
+taumatched = (ytreated - ycontrol)
+
+## 不同 Gamma 下的 p 值序列
+Gamma = seq(1, 1.4, 0.001)
+Pvalue = sapply(Gamma, function(g) senmw(taumatched, gamma = g, method = "t")$pval)
+
+## 找到 Gamma_star（使 p-value = 0.05 的临界值）
+gammastar = Gamma[which(Pvalue >= 0.05)[1]]
+gammastar  # 1.233
+\end{lstlisting}
+
+图 \ref{fig:19-lalonde-sensitivity} 的左图展示了 $\hat{\tau}_i$ 的直方图，右图展示了 p 值随 $\Gamma$ 变化的曲线，其中虚线标记了 $\Gamma = 1.233$ 的临界位置。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth]{R/figures/ch19-lalonde-sensitivity.pdf}
+  \caption{LaLonde 数据的灵敏度分析：左图为配对处理效应 $\hat{\tau}_i$ 的分布；右图为 p 值随 $\Gamma$ 变化的曲线，虚线 $\Gamma = 1.233$ 标记了 $0.05$ 显著性水平的临界值。}
+  \label{fig:19-lalonde-sensitivity}
+\end{figure}
+
 \subsection{Rosenbaum 包中的其他实例}\label{sec:19-rosenbaum-packages}
 
 Rosenbaum 的 R 包（如 \texttt{sensitivity2x2} 和 \texttt{sensitivitymv}）提供了便捷的灵敏度分析工具。我们简要介绍两个应用场景。
