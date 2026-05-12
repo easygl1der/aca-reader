@@ -179,13 +179,42 @@ gammastar  # 1.233
 
 \subsection{Rosenbaum 包中的其他实例}\label{sec:19-rosenbaum-packages}
 
-Rosenbaum 的 R 包（如 \texttt{sensitivity2x2} 和 \texttt{sensitivitymv}）提供了便捷的灵敏度分析工具。我们简要介绍两个应用场景。
+Rosenbaum 的 R 包（如 \texttt{sensitivity2x2} 和 \texttt{sensitivitymv}）提供了便捷的灵敏度分析工具。我们介绍两个应用场景。
 
-\textbf{实例 1：两分类处理的配对研究}。对于 $2\times 2$ 配对数据，可以计算在给定 $\Gamma$ 下拒绝零假设的最小处理组比例。
+\textbf{实例 1：焊接工人 DNA 洗脱率研究（erpcp 数据）}。该数据集来自 \texttt{sensitivitymw} 包，包含 $n=39$ 个配对（焊工与对照），基于年龄和吸烟协变量匹配。结局是 DNA 洗脱率。
 
-\textbf{实例 2：多分类处理的匹配研究}。对于多水平处理（如剂量梯度），灵敏度分析可以量化每个处理水平相对于对照组的效应稳定性。
+\begin{lstlisting}[language=R]
+library("sensitivitymw")
+data(erpcp)
+taue = erpcp[, 1] - erpcp[, 2]  # 配对内差异
 
-这些包的共同特点是：研究者可以系统地探索因果结论在不同未测量混杂强度下的稳健性，而不是简单地说"结论成立"或"结论不成立"。
+## 图 19.3(a): 左图直方图 + 右图灵敏度曲线
+Gamma = seq(1, 5, 0.005)
+Pvalue = sapply(Gamma, function(g) senmw(taue, gamma = g, method = "t")$pval)
+gammastar = Gamma[which(Pvalue >= 0.05)[1]]
+## gammastar = 3.366
+\end{lstlisting}
+
+\textbf{实例 2：吸烟者血铅水平研究（lead250 数据）}。该数据集来自 \texttt{sensitivitymw} 包，包含 $n=250$ 个配对（每日吸烟者与非吸烟者对照），基于性别、年龄、种族、教育程度和家庭收入进行匹配。结局是血铅水平（$\mu$g/L）。
+
+\begin{lstlisting}[language=R]
+data(lead250)
+taul = lead250[, 1] - lead250[, 2]  # 配对内差异
+
+Gamma = seq(1, 2.5, 0.001)
+Pvalue = sapply(Gamma, function(g) senmw(taul, gamma = g, method = "t")$pval)
+gammastar = Gamma[which(Pvalue >= 0.05)[1]]
+## gammastar = 1.476
+\end{lstlisting}
+
+图 \ref{fig:19-rosenbaum-packages} 展示了这两个数据集的分析结果。erpcp 数据要求 $\Gamma$ 超过 $3.37$ 才能使 p 值超过 $0.05$，而 lead250 数据仅要求 $\Gamma > 1.48$，说明后者对未测量混杂更敏感。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth]{R/figures/ch19-rosenbaum-packages.pdf}
+  \caption{(a) erpcp 数据：焊工 vs 对照的 DNA 洗脱率灵敏度分析；(b) lead250 数据：吸烟者 vs 非吸烟者的血铅水平灵敏度分析。左列为 $\hat{\tau}_i$ 直方图；右列为 p 值随 $\Gamma$ 变化的曲线。}
+  \label{fig:19-rosenbaum-packages}
+\end{figure}
 
 \section{练习}\label{sec:19-exercises}
 
