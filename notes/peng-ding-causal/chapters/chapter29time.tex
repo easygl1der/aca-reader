@@ -1,0 +1,998 @@
+ 
+\chapter{Time-Varying Treatment and Confounding}
+ \label{chapter::timevarying}
+ 
+
+Studies with time-varying treatments are common in biomedical and social sciences. James Robins championed the research in biostatistics. 
+A classic example is that HIV patients may take azidothymidine, an antiretroviral medication, on and off over time \citep{robins2000marginal, hernan2000marginal}. Similar problems also exist in other fields.  In education, a classic example is that students may receive different types of instructions over time \citep{hong2008causal}. In political science, a classic example is that candidates continuously recalibrate their campaign strategy based on time-varying polls and opponent actions \citep{blackwell2013framework}. 
+
+
+Causal inference with time-varying treatments is not a simple extension of causal inference with a treatment at a single time point. The main challenge is time-varying confounding. Even if we assume all time-varying confounders are observed, we still face statistical challenges in adjusting for those confounders. On the one hand, we should stratify on these confounders to adjust for confounding; on the other hand, stratifying on post-treatment variables will cause bias. Due to these two conflicting goals, causal inference with time-varying treatments and confounding requires more sophisticated statistical methods. It is the main topic of this chapter. 
+
+ 
+
+
+To minimize the notational burden, I will use the setting with treatments at two time points to convey the most important ideas. Extensions to treatments at multiple time points can be conceptually straightforward although technical complexities will arise in finite samples. I will discuss the complexities and relegate general results to Problems \ref{problem::g-formula-multiple-time}--\ref{problem::snm-multiple-time}. 
+
+
+
+\section{Basic setup and sequential ignorability}
+
+
+Start with treatments at two time points. The temporal order (not the causal diagram) of the variables with two time points is below:
+$$
+X_0 \rightarrow Z_1 \rightarrow X_1 \rightarrow Z_2 \rightarrow Y 
+$$
+where 
+\begin{itemize}
+\item
+$X_0$ denotes the baseline pre-treatment covariates;
+\item
+$Z_1$ denotes the treatment at time point 1;
+\item
+$X_1$ denotes the time-varying covariates between the treatments at time points 1 and 2;
+\item
+$Z_2$ denotes the treatment at time point 2;
+\item
+$Y$ denotes the outcome. 
+\end{itemize}
+
+
+With binary treatments $(Z_1, Z_2 )$, each unit has four potential outcomes 
+$$
+Y(z_1, z_2)  \text{ for } z_1, z_2  = 0, 1.
+$$ 
+The observed outcome equals 
+$$
+Y = Y(Z_1,Z_2) = \sum_{z_1=0,1} \sum_{z_2=0,1}  1(Z_1=z_1) 1(Z_2=z_2) Y(z_1, z_2).
+$$
+I will focus on the canonical setting with sequential ignorability, that is, the treatments are sequentially randomized given the observed history.
+
+\begin{assumption}
+[sequential ignorability]
+\label{assume::sr-time-varying} 
+(1)
+$Z_1$ is randomized given $X_0$:
+$$
+Z_1 \ind Y(z_1, z_2) \mid X_0 \text{ for } z_1, z_2  = 0, 1.
+$$
+
+(2)
+$Z_2$ is randomized given $( Z_1, X_1, X_0)$:
+$$
+Z_2\ind Y(z_1, z_2) \mid (Z_1, X_1, X_0) \text{ for } z_1, z_2  = 0, 1.
+$$
+\end{assumption}
+ 
+ 
+ Figure \ref{fig::si-simple} is a simple causal diagram corresponding to Assumption  \ref{assume::sr-time-varying}, which does not contain any unmeasured confounding. 
+ 
+\begin{figure}
+\bigskip 
+$$
+ \xymatrix{
+ Z_1 \ar[r]  \ar@/^1.3pc/[rr]  \ar@/^2.0pc/[rrr] & X_1  \ar@/^1pc/[rr]\ar[r]  & Z_2  \ar[r] & Y
+ }
+ $$
+ \caption{Assumption  \ref{assume::sr-time-varying} holds without unmeasured confounding $U$ between $X_1$ and $Y$. The causal diagram conditions on the pre-treatment covariates $X_0$.}\label{fig::si-simple}
+\end{figure}
+
+
+
+  Figure \ref{fig::si-complex} is a more complex causal diagram corresponding to Assumption  \ref{assume::sr-time-varying}. Sequential ignorability rules out only the confounding between the treatment $( Z_1, Z_2) $ and the outcome $Y$, but allows for unmeasured confounding between the time-varying covariate $X_1$ and the outcome $Y$.
+  The possible existence of $U$ causes many subtle issues even under sequential ignorability. 
+
+\begin{figure}
+\bigskip 
+$$
+ \xymatrix{
+ Z_1 \ar[r] \ar@/^1.3pc/[rr] \ar@/^2.0pc/[rrr] & X_1  \ar@/^1pc/[rr]\ar[r]  & Z_2  \ar[r] & Y \\
+                                             &                                             &U\ar[lu]\ar[ru]
+ }
+ $$
+ \caption{Assumption  \ref{assume::sr-time-varying} holds with unmeasured confounding between $X_1$ and $Y$. The causal diagram conditions on the pre-treatment covariates $X_0$.}\label{fig::si-complex}
+\end{figure}
+
+
+
+\section{g-formula and outcome modeling}
+\label{section:si-outcome-regression}
+
+
+
+Recall the outcome-based identification formula with a treatment at a single time point:
+$$
+E\{  Y(z) \}  = E\{  E(Y\mid Z=z, X) \} .
+$$
+With discrete $X$, it reduces to
+$$
+E\{  Y(z) \}  = \sum_x E(Y\mid Z=z, X=x) \pr(X=x) ;
+$$
+with continuous $X$, it reduces to
+$$
+E\{  Y(z) \}  =  \int E(Y\mid Z=z, X=x) f (x) \text{d} x.
+$$
+The following result extends it to the setting with treatments at two time points. 
+ 
+ 
+ 
+ \begin{theorem}
+\label{thm::sr-outcome}
+Under Assumption \ref{assume::sr-time-varying}, 
+\begin{equation}\label{eq::identification-si-recursive}
+E\{ Y(z_1, z_2) \} 
+=  E\Big [   E\{    E(Y\mid  z_2, z_1, X_1, X_0)  \mid z_1, X_0 \}  \Big ].
+\end{equation}
+\end{theorem}
+
+
+In Theorem \ref{thm::sr-outcome}, I simplify the notation `$Z_2=z_2$'' to ``$z_2$''. To void complex formulas in this chapter, I will use the lowercase letter to represent the event that the random variable takes the corresponding value.  
+With discrete $X_0$ and $X_1$, the identification formula \eqref{eq::identification-si-recursive} reduces to
+\begin{equation}\label{eq::identification-si-g-formula-1}
+E\{ Y(z_1, z_2) \}  = \sum_{x_0} \sum_{x_1} E( Y \mid  z_2, z_1, x_1,  x_0) \pr(x_1\mid    z_1, x_0) \pr(x_0);
+\end{equation}
+with continuous $X_0$ and $X_1$, the identification formula \eqref{eq::identification-si-recursive} reduces to
+\begin{equation}\label{eq::identification-si-g-formula-2}
+E\{ Y(z_1, z_2) \}  =  \int \int E( Y \mid  z_2,  z_1, x_1,  x_0) f(x_1\mid    z_1, x_0) f(x_0) \text{d}x_1 \text{d}x_0.
+\end{equation}
+Compare \eqref{eq::identification-si-g-formula-1} with the formula based on the law of total probability to gain more insights:
+\begin{eqnarray}
+E(Y)  &=& \sum_{x_0} \sum_{z_1} \sum_{x_1} \sum_{z_2} E( Y \mid  z_2, z_1, x_1,  x_0)  \nonumber   \\
+&& \qquad   \pr(z_2 \mid  z_1, x_1,  x_0)
+\pr(x_1\mid    z_1, x_0)  \pr(z_1\mid x_0)  \pr(x_0). \label{eq::identification-law-total-prob}
+\end{eqnarray}
+Erasing the probabilities of $Z_2$ and $Z_1$ in \eqref{eq::identification-law-total-prob}, we can obtain the formula \eqref{eq::identification-si-g-formula-2}. This is intuitive because the potential outcome $Y(z_1, z_2)$ has the meaning of fixing $Z_1$ and $Z_2$ at $z_1$ and $z_2$, respectively. 
+
+
+Robins called \eqref{eq::identification-si-g-formula-1} and \eqref{eq::identification-si-g-formula-2} the g-formulas. 
+Now I will prove Theorem  \ref{thm::sr-outcome}. 
+ 
+
+\begin{myproof}{Theorem}{\ref{thm::sr-outcome}}
+By the tower property, 
+$$
+E\{ Y(z_1, z_2) \}  = E \Big[  E\{ Y(z_1, z_2) \mid X_0 \}  \Big ],
+$$
+so I will focus on $E\{ Y(z_1, z_2) \mid X_0 \}$. 
+By Assumption \ref{assume::sr-time-varying}(1) and the tower property,
+\begin{eqnarray*}
+E\{ Y(z_1, z_2) \mid X_0 \} &=& E\{ Y(z_1, z_2) \mid  z_1, X_0 \} \\
+&=& E\Big [ E\{ Y(z_1, z_2) \mid   z_1, X_1, X_0 \} \mid   z_1, X_0  \Big].
+\end{eqnarray*}
+By Assumption \ref{assume::sr-time-varying}(2),
+\begin{eqnarray*}
+E\{ Y(z_1, z_2) \mid X_0 \}  
+&=& E\Big [ E\{ Y(z_1, z_2) \mid z_2,   z_1,X_1, X_0 \} \mid  z_1, X_0  \Big] \\
+&=& E\Big [ E\{ Y \mid z_2, z_1, X_1, X_0 \} \mid   z_1, X_0  \Big] .
+\end{eqnarray*}
+The formula \eqref{eq::identification-si-recursive} follows. 
+\end{myproof}
+
+
+
+\subsection{Plug-in estimation based on outcome modeling}
+\label{section::si-plug-in-outcome}
+
+The g-formulas \eqref{eq::identification-si-g-formula-1} and \eqref{eq::identification-si-g-formula-2} suggest that to estimate the means of the potential outcomes, we need to model $E(Y\mid z_2,z_1, x_1, x_0)$, $\pr(x_1\mid z_1,x_0)$ and $\pr(x_0)$. With these fitted models, we can plug them into the g-formulas. 
+
+With some special functional forms, this task can be simplified. Example \ref{example::linear-si} below gives the results under a linear model for the outcome. 
+
+\begin{example}\label{example::linear-si}
+Assume a linear outcome model
+$$
+E(Y\mid z_2,z_1,x_1, x_0) = \beta_0+ \beta_1 z_2 + \beta_2 z_1   + \beta_3  x_1  +\beta_4 x_0.
+$$
+We can verify that
+\begin{eqnarray*}
+E\{ Y(z_1, z_2) \}  &=& \sum_{x_0} \sum_{x_1} (\beta_0+ \beta_1 z_2 + \beta_2 z_1 + \beta_3 x_1  +\beta_4 x_0) \pr(x_1\mid   z_1, x_0) \pr(x_0)  \\
+&=& \beta_0 + \beta_1 z_2 + \beta_2  z_1  +  \beta_3 \sum_{x_0} E(X_1\mid z_1, x_0) \pr(x_0)  +\beta_4 E(X_0) .
+\end{eqnarray*}
+Define 
+\begin{equation}\label{eq::si-x1-identification}
+E\{ X_1(z_1)\} = \sum_{x_0} E(X_1\mid z_1, x_0) \pr(x_0) 
+\end{equation}
+to simplify the formula as
+$$
+E\{ Y(z_1, z_2) \}  = \beta_0 + \beta_1 z_2 + \beta_2 z_1  + \beta_3 E\{ X_1(z_1)\}   +\beta_4 E(X_0) .
+$$
+In \eqref{eq::si-x1-identification}, I introduce the potential outcome of $X_1$ under the treatment $Z_1=z_1$ at time point 1. It is reasonable because the right-hand side of \eqref{eq::si-x1-identification} is the identification formula of $E\{ X_1(z_1)\} $ under  ignorability $X_1(z_1)\ind Z_1 \mid X_0$ for $z_1  = 0, 1$. We do not really need the potential outcome $X_1(z_1)$ and the ignorability, but it is a convenient notation and matches our previous discussion.
+ 
+ 
+Define $\tau_{Z_1\rightarrow X_1} = E\{ X_1(1)  - X_1(0)\}$. We can verify that
+\begin{eqnarray*}
+E\{ Y(1,0)  - Y(0,0)\} &=& \beta_2 +  \beta_3 \tau_{Z_1\rightarrow X_1},\\
+E\{ Y(0,1)  - Y(0,0)\} &=& \beta_1,\\
+E\{ Y(1,1)  - Y(0,0)\} &=& \beta_1 +  \beta_2 + \beta_3 \tau_{Z_1\rightarrow X_1}.
+\end{eqnarray*}
+Therefore, we can estimate the effect of $(Z_1,Z_2)$ on $Y$ based on the above formulas by first estimating the regression coefficients $\beta$s and the average causal effect of $Z_1$ on $X_1$ using standard methods. 
+
+
+If we further assume a linear model for $X_1$
+$$
+E(X_1\mid Z_1, X_0) = \gamma_0 + \gamma_1 z_1 + \gamma_2 x_0,
+$$
+then $\tau_{Z_1\rightarrow X_1} = \gamma_1$ and  
+\begin{eqnarray} 
+E\{ Y(1,0)  - Y(0,0)\} &=& \beta_2 +  \beta_3 \gamma_1,  \label{eq::gformula-linear1}\\
+E\{ Y(0,1)  - Y(0,0)\} &=& \beta_1, \label{eq::gformula-linear2}\\
+E\{ Y(1,1)  - Y(0,0)\} &=& \beta_1 +  \beta_2 + \beta_3 \gamma_1. \label{eq::gformula-linear3} 
+\end{eqnarray}
+The formulas in \eqref{eq::gformula-linear1}--\eqref{eq::gformula-linear3} are intuitive based on Figure \ref{fig::si-simple-coefficients} with regression coefficients on the arrows. In \eqref{eq::gformula-linear1}, the effect of $Z_1$ equals the sum of the coefficients on the paths $Z_1\rightarrow Y$ and $Z_1\rightarrow X_1\rightarrow Y$; in \eqref{eq::gformula-linear2}, the effect of $Z_2$ equals the coefficient on the path $Z_2\rightarrow Y$; in \eqref{eq::gformula-linear3}, the total effect of $(Z_1,Z_2)$ equals the sum of the coefficients  on the paths $Z_1\rightarrow Y$, $Z_1\rightarrow X_1\rightarrow Y$ and $Z_2\rightarrow Y$. 
+\end{example}
+
+
+\begin{figure}[t]
+\bigskip 
+$$
+ \xymatrix{
+ Z_1 \ar[r]^{\gamma_1}   \ar@/^1.3pc/[rr]  \ar@/^2.0pc/[rrr]^{\beta_2} & X_1  \ar@/^1pc/[rr]^{\beta_3}  \ar[r] & Z_2  \ar[r]^{\beta_1} & Y
+ }
+ $$
+ \caption{A linear causal diagram with coefficients on the arrows, conditional on the pre-treatment covariates $X_0$.}\label{fig::si-simple-coefficients}
+\end{figure}
+ 
+ 
+ 
+
+
+However, \citet{robinswasserman1997estimation} pointed out a surprising drawback of the plug-in estimation based on outcome modeling. They showed that with model misspecification in this strategy, data analyzers may falsely reject the null hypothesis of zero causal effect of $(Z_1,Z_2)$ on $Y$ even when the true effect is zero in the data-generating process. They called it the {\it g-null paradox}. Perhaps surprisingly, they show that the g-null paradox may even arise in the simple linear outcome model in Example \ref{example::linear-si}.  \citet{mcgrath2021revisiting} revisited this paradox. See Problem \ref{problem::g-null-paradox} for more details. 
+
+ 
+
+\subsection{Recursive estimation based on outcome modeling}
+\label{section::recursive}
+
+The plug-in estimation in Section \ref{section::si-plug-in-outcome} involves modeling the time-varying confounder $X_1$ and causes the unpleasant g-null paradox. It is not a desirable method. 
+
+Recall the outcome regression estimator with a treatment at a single time based on $E\{  Y(z)  \} = E\{  E(Y\mid Z=z, X) \}$. We first fit a model of $Y$ on $X$ using the subset of the data with $Z=z$, and obtain the fitted values $\hat{Y}_i(z)$ for all units. We then obtain the estimator 
+$$
+\hat E\{  Y(z)  \}  = n^{-1} \sumn \hat{Y}_i(z).
+$$
+
+Similarly, the recursive expectation formula in \eqref{eq::identification-si-recursive} motivates a  simpler method for estimation. Start from the inner conditional expectation, denoted by 
+$$
+\tilde Y_2(z_1, z_2) = E(Y\mid Z_2 = z_2,Z_1 = z_1, X_1,  X_0).
+$$ 
+We can fit a model of $Y$ on $(X_1,X_0)$ using the subset of the data with $(Z_2 = z_2, Z_1 = z_1)$, and obtain the fitted values $\hat{Y}_{2i}(z_1, z_2) $ for all units. Move on to outer conditional expectation, denoted by 
+$$
+\tilde{Y}_1(z_1, z_2)  =  E\{  \tilde{Y}_2(z_1, z_2)  \mid Z_1=z_1, X_0 \}. 
+$$
+We can fit a model of $\hat{Y}_2(z_1, z_2) $ on $X_0$ using the subset of data with $Z_1=z_1$, and obtain the fitted values $\hat{Y}_{1i}(z_1, z_2) $ for all units. The final estimator for $E\{ Y(z_1, z_2) \} $ is then
+$$
+\hat E\{ Y(z_1, z_2) \}  = n^{-1} \sumn \hat{Y}_{1i}(z_1, z_2) .
+$$
+
+The above recursive estimation does not involve fitting a model for $X_1$ and avoids the g-null paradox. See Problem \ref{problem::recursive-null} for a special case. However, the estimator based on recursive regression is not easy to implement because it involves modeling variables that do not correspond to the natural structure of the causal diagram, e.g., $\tilde{Y}_2(z_1, z_2)$. 
+
+
+
+
+\section{Inverse propensity score weighting}\label{section::si-ipw}
+
+
+Recall the IPW identification formula with a treatment at a single time point:
+$$
+E\{  Y(z) \} = E  \left\{   \frac{ 1(Z=z) Y  }{  \pr(Z=z\mid X) }  \right\}.
+$$
+The following result extends it to the setting with a treatment at two time points. Define 
+$$
+e(z_1, X_0) = \pr(Z_1=z_1\mid X_0) 
+$$
+and
+$$
+e(z_2, Z_1, X_1, X_0) =  \pr(Z_2 = z_2 \mid Z_1, X_1,  X_0)
+$$
+as the propensity scores at time points 1 and 2, respectively. 
+
+\begin{theorem}
+\label{thm::sr-ipw}
+Under Assumption \ref{assume::sr-time-varying}, 
+\begin{equation}
+E\{ Y(z_1, z_2) \} 
+= E\left\{    \frac{  1(Z_1=z_1) 1(Z_2=z_2) Y  }{   e(z_1, X_0)  e(z_2,Z_1, X_1,  X_0)     }   \right\} .
+\label{eq::si-ipw}
+\end{equation}
+\end{theorem}
+
+
+Theorem \ref{thm::sr-ipw} reveals the omitted overlap assumption:
+$$
+0< e(z_1, X_0)   <1,\quad
+0< e(z_2, Z_1, X_1,  X_0)   < 1
+$$
+for all $z_1$ and $z_2$. If some propensity scores are 0 or 1, then the identification formula \eqref{eq::si-ipw} blows up to infinity. 
+
+
+
+\begin{myproof}{Theorem}{\ref{thm::sr-ipw}}
+Conditioning on $(Z_1, X_1, X_0)$ and using Assumption \ref{assume::sr-time-varying}(2), we can simplify the right-hand side of \eqref{eq::si-ipw} as 
+\begin{eqnarray} 
+&&E\left\{    \frac{  1(Z_1=z_1) 1(Z_2=z_2) Y(z_1,z_2)  }{    \pr(Z_1=z_1\mid X_0)  \pr(Z_2 = z_2 \mid Z_1, X_1, X_0)    }   \right\} \nonumber  \\
+&=& E\left\{    \frac{  1(Z_1=z_1) \pr(Z_2=z_2\mid Z_1, X_1, X_0) E(Y(z_1,z_2) \mid Z_1, X_1, X_0)  }{    \pr(Z_1=z_1\mid X_0)  \pr(Z_2 = z_2 \mid Z_1, X_1, X_0)    }   \right\}  \nonumber    \\
+&=& E\left\{    \frac{  1(Z_1=z_1)    }{    \pr(Z_1=z_1\mid X_0)     }  E(Y(z_1,z_2) \mid Z_1, X_1, X_0)  \right\}   \nonumber   \\
+&=& E\left\{    \frac{  1(Z_1=z_1)    }{    \pr(Z_1=z_1\mid X_0)     }  Y(z_1,z_2)  \right\}, \label{eq::ipw-condition1}
+\end{eqnarray}
+where \eqref{eq::ipw-condition1} follows from the tower property. 
+
+
+Conditioning on $X_0$ and using Assumption \ref{assume::sr-time-varying}(1), we can simplify the right-hand side of \eqref{eq::ipw-condition1} as 
+\begin{eqnarray*} 
+&& E\left\{    \frac{  \pr(Z_1=z_1\mid X_0)    }{    \pr(Z_1=z_1\mid X_0)     }  E(Y(z_1,z_2) \mid X_0)  \right\}\\
+&=& E\left\{    E(Y(z_1,z_2) \mid X_0)  \right\}\\
+&=&  E\{Y(z_1,z_2)\},
+\end{eqnarray*}
+where, again, the last line follows from the tower property. 
+\end{myproof}
+
+
+  
+ 
+  
+ 
+ The estimator based on IPW is much simpler which only involves modeling two binary treatment indicators. First, we can fit a model of $Z_1$ on $X_0$ to obtain the fitted values $\hat{e}_{1}(z_1, X_{0i})$ and fit a model of $Z_2$ on $(Z_1, X_1, X_0)$ to obtain the fitted values $\hat{e}_{2}(z_2, Z_{1i}, X_{1i}, X_{0i})$ for all units. Then, we obtain the following IPW estimator:
+$$
+\hat{E}^\textup{ht}\{ Y(z_1, z_2) \}  = n^{-1} \sumn 
+  \frac{  1(Z_{1i}=z_1) 1(Z_{2i}=z_2) Y_i  }{   \hat{e}_{1}(z_1, X_{0i}) \hat{e}_{2} (z_2, Z_{1i}, X_{1i}, X_{0i})   }  .
+$$
+Similar to the discussion in Chapter \ref{chapter::pscore-key}, the HT estimator is not invariant to the location shift of the outcome and suffers from instability in finite samples. A modified Hajek-type estimator is $\hat{E}^\textup{haj}\{ Y(z_1, z_2) \}  = \hat{E}^\textup{ht}\{ Y(z_1, z_2) \}   / \hat 1^\textup{ht}(z_1,z_2)$, where 
+$$
+\hat 1^\textup{ht}(z_1,z_2)  = n^{-1}  \sumn 
+  \frac{  1(Z_{1i}=z_1) 1(Z_{2i}=z_2)  }{   \hat{e}_{1} (z_1, X_{0i})\hat{e}_{2} (z_2, Z_{1i}, X_{1i}, X_{0i})   }  .
+$$
+%$$
+%\hat{E}^\textup{haj}\{ Y(z_1, z_2) \}  = \sumn 
+%  \frac{  1(Z_{1i}=z_1) 1(Z_{2i}=z_2) Y_i  }{   \hat{e}_{1} (z_1, X_{0i})\hat{e}_{2}  (z_2, Z_{1i}, X_{1i}, X_{0i})  }  
+%  \Big /
+%  \sumn 
+%  \frac{  1(Z_{1i}=z_1) 1(Z_{2i}=z_2)  }{   \hat{e}_{1} (z_1, X_{0i})\hat{e}_{2} (z_2, Z_{1i}, X_{1i}, X_{0i})   }  .
+%$$
+
+
+ 
+ 
+  
+ 
+ 
+ 
+ 
+
+\section{Multiple time points}
+
+
+Extending the estimation strategies in Sections \ref{section:si-outcome-regression} and \ref{section::si-ipw} is not immediate with multiple time points. Even with a binary treatment and $K$ time points, the number of treatment combinations grows exponentially with $K$ (for example, $2^5 = 32$ and $2^{10} = 1024$). Consequently, the outcome regression and IPW estimators in Sections \ref{section:si-outcome-regression} and \ref{section::si-ipw} are not feasible in finite samples because they require enough data for every combination of the treatment levels. 
+
+
+\subsection{Marginal structural model}
+
+A powerful approach is based on the marginal structural model (MSM) \citep{robins2000marginal, hernan2000marginal}. 
+For simplicity of notation, I will only present the MSM with $K=2$ although its main use is in the general case. 
+
+\begin{definition}
+[MSM]
+\label{def::si-msm}
+The marginal mean of $Y(z_1, z_2)$ equals
+$$
+E\{  Y(z_1, z_2) \} = f(z_1,z_2; \beta). 
+$$
+\end{definition}
+
+
+A leading example of Definition \ref{def::si-msm} is $E\{  Y(z_1, z_2) \} = \beta_0 + \beta_1 z_1 + \beta_2 z_2$. It is also straightforward to include the baseline covariates in the model. Definition \ref{def::si-msm-with-x0} below extends Definition \ref{def::si-msm}. 
+
+ \begin{definition}
+[MSM with baseline covariates]
+\label{def::si-msm-with-x0}
+The mean of $Y(z_1, z_2)$ conditional on $X_0$ equals
+$$
+E\{  Y(z_1, z_2) \mid X_0 \} = f(z_1,z_2, X_0; \beta). 
+$$
+\end{definition}
+
+A leading example of Definition \ref{def::si-msm-with-x0} is 
+\begin{equation}\label{eq::linear-msm}
+E\{  Y(z_1, z_2)  \mid X_0\} = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3\tran X_0 .
+\end{equation}
+If we observe all the potential outcomes, we can solve $\beta$ from the following minimization problem:
+\begin{equation}
+\label{eq::beta-ols-msm}
+\beta = \arg\min_b \sum_{z_2}\sum_{z_1}  E \{  Y(z_1, z_2) -  f(z_1,z_2, X_0; b)   \}^2 .
+\end{equation}
+For simplicity, I focus on the least squares formulation. We can also extend the discussion to general models; see Problem \ref{hw::logistic-msm} for an example of the logistic model. 
+
+
+
+Under sequential ignorability, we can solve $\beta$ from the following minimization problem that only involves observables.
+
+
+\begin{theorem}
+[IPW under MSM]
+\label{thm::si-msm-ipw}
+Under Assumption \ref{assume::sr-time-varying} and Definition \ref{def::si-msm-with-x0}, the $\beta$ in \eqref{eq::beta-ols-msm} equals 
+$$
+\beta = \arg\min_b \sum_{z_2}\sum_{z_1}  E\left[   \frac{  1(Z_1=z_1) 1(Z_2=z_2)   }{   e(z_1, X_0) e(z_2, Z_1, X_1, X_0)     }      
+\{ Y -  f(z_1,z_2, X_0; b)  \}^2 \right] .
+$$
+\end{theorem}
+
+The proof of Theorem \ref{thm::si-msm-ipw} is similar to that of Theorem \ref{thm::sr-ipw}. I relegate it to Problem \ref{problem::ipw-msm}.
+
+
+ Theorem \ref{thm::si-msm-ipw} implies a simple estimation strategy based on weighted regressions. For instance, under \eqref{eq::linear-msm}, we can fit WLS of $Y_i$ on $(1,Z_{1i}, Z_{2i}, X_{0i})$ with weights $\hat{e}_{1}^{-1}(Z_{1i}, X_{0i})  \hat{e}_{2i}^{-1}(Z_{2i}, Z_{i1}, X_{1i}, X_{0i})$. 
+
+ 
+
+
+
+\subsection{Structural nested model}
+
+
+
+A key problem of IPW is that it is not applicable if the overlap assumption is violated.  To address this challenge, Robins proposed the structural nested model. Again, to simplify the presentation, I only review the version with two time points.
+
+\begin{definition}
+[structural nested model]
+\label{def::snm}
+The conditional effect at time point 1 is
+$$
+E\{  Y(z_1,0) - Y(0,0) \mid  Z_1=z_1,  X_0 \} = g_1( z_1, X_0; \beta)   
+$$
+for all  $z_1$, 
+and the conditional effect at time point 2 is 
+$$
+E\{  Y(z_1,z_2) - Y(z_1,0) \mid Z_2=z_2,Z_2=z_1,  X_1,  X_0 \} = g_2(z_2, z_1,  X_1,  X_0; \beta) 
+$$
+for all $ z_1, z_2.$
+\end{definition}
+
+
+%Under sequential ignorability, Definition \ref{def::snm} simplifies to  $E\{  Y(z_1,0) - Y(0,0) \mid   X_0 \} = g_1( z_1, X_0; \beta) $ and $E\{  Y(z_1,z_2) - Y(z_1,0) \mid   X_1,  X_0 \} = g_2(z_2, z_1,  X_1,  X_0; \beta)$, which implies 
+%\begin{eqnarray*}
+%E\{  Y(z_1,z_2) - Y(0,0)  \}  &=&  E\{  Y(z_1,z_2) - Y(z_1,0) \} +E\{  Y(z_1,0) - Y(0,0)\}\\
+%&=& E\{g_2(z_2, z_1,  X_1,  X_0; \beta) \} +  E\{ g_1( z_1, X_0; \beta)\}.
+%\end{eqnarray*}
+%Therefore, if we can estimate the parameter $\beta$ by $\hat\beta$ based on the strategy discussed below, we can estimate the causal effect based on the empirical average
+%$$
+%\hat E\{  Y(z_1,z_2) - Y(0,0)  \}  =  n^{-1} \sumn  g_2(z_2, z_1,  X_{1i,}  X_{0i}; \hat \beta)  +  n^{-1} \sumn  g_1( z_1, X_{0i}; \hat \beta).
+%$$
+
+
+In Definition \ref{def::snm},  two logical restrictions are 
+$$
+g_1( 0, X_0; \beta)  = 0
+$$
+and
+$$
+g_2(0, z_1,  X_1,  X_0; \beta) =0   \text{ for all } z_1.
+$$ 
+ Two leading choices of Definition \ref{def::snm} are below.
+
+\begin{example}
+\label{example::snm-leading1}
+Assume
+$$
+    \begin{cases}
+g_1( z_1, X_0; \beta)  =  \beta_1 z_1, \\
+g_2(z_2, z_1,  X_1,  X_0; \beta) =  (\beta_2 + \beta_3 z_1  ) z_2 .
+    \end{cases}    
+  $$
+\end{example}
+
+\begin{example}
+\label{example::snm-leading2}
+Assume
+$$
+    \begin{cases}
+g_1( z_1, X_0; \beta) = (\beta_1 + \beta_2\tran X_0) z_1, \\
+g_2(z_2, z_1,  X_1,  X_0; \beta) = (\beta_3 + \beta_4 z_1  + \beta_5\tran X_1 ) z_2.
+    \end{cases}    
+    $$
+\end{example}
+ 
+
+
+Compare Definitions \ref{def::si-msm-with-x0} and \ref{def::snm}. The structural nested model allows for adjusting for the baseline covariates as well as the time-varying covariates whereas the marginal structural model only allows for adjusting for the baseline covariates. The estimation under Definition \ref{def::snm} is more involved. A strategy is to estimate the parameter based on estimating equations. 
+
+I first introduce two important building blocks for discussing the estimation. 
+Define 
+$$
+U_2(\beta) = Y- g_2(Z_2, Z_1, X_1, X_0;\beta) 
+$$
+and
+$$
+U_1(\beta) = Y- g_2(Z_2, Z_1, X_1, X_0;\beta)  - g_1( Z_1, X_0;\beta) .
+$$
+They are not directly computable from the data because they depend on the true value of the parameter $\beta$. At the true value, they have the following properties. 
+
+
+\begin{lemma}
+\label{lemma::snm-1}
+Under Assumption \ref{assume::sr-time-varying} and Definition \ref{def::snm}, we have
+\begin{eqnarray*}
+E\{  U_2(\beta)  \mid Z_2, Z_1, X_1, X_0 \}  &=&  E\{  U_2(\beta)  \mid  Z_1, X_1, X_0 \}  \\
+&=&  E\{   Y(Z_1,0) \mid  Z_1, X_1, X_0 \}
+\end{eqnarray*}
+ and
+ \begin{eqnarray*}
+E\{  U_1(\beta)  \mid  Z_1, X_0 \}  &=&  E\{  U_1(\beta)  \mid  X_0 \}  \\
+&=&  E\{   Y(0,0) \mid   X_0 \}.
+\end{eqnarray*}
+\end{lemma}
+
+
+Lemma \ref{lemma::snm-1} involves a subtle  notation $ Y(Z_1,0) $ because $Z_1$ is random. It should be read as $  Y(Z_1,0) = Z_1 Y(1,0) +(1-Z_1) Y(0,0)$.
+Based on the definitions and Lemma \ref{lemma::snm-1}, 
+$U_1(\beta)$ acts as the control potential outcome before receiving any treatment and $U_2(\beta)  $ acts as the control potential outcome after receiving the treatment at time point 1. 
+
+
+\begin{myproof}{Lemma}{\ref{lemma::snm-1}}
+{\bf Part 1}. 
+We have
+\begin{eqnarray*}
+&&E\{  U_2(\beta)  \mid Z_2=1, Z_1, X_1, X_0 \}  \\
+&=&    E\{  Y(Z_1,1)- g_2(1, Z_1, X_1, X_0;\beta)   \mid Z_2=1, Z_1, X_1, X_0 \}  \\
+&=& E\{  Y(Z_1,0)   \mid Z_2=1, Z_1, X_1, X_0 \} 
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+&&E\{  U_2(\beta)  \mid Z_2=0, Z_1, X_1, X_0 \} \\
+ &=&    E\{  Y(Z_1,0)- g_2(0, Z_1, X_1, X_0;\beta)   \mid Z_2=0, Z_1, X_1, X_0 \}   \\
+&=& E\{  Y(Z_1,0)   \mid Z_2=0, Z_1, X_1, X_0 \}
+\end{eqnarray*}
+so
+\begin{eqnarray*}
+E\{  U_2(\beta)  \mid Z_2, Z_1, X_1, X_0 \}  &=&  E\{  Y(Z_1,0)   \mid Z_2, Z_1, X_1, X_0 \} \\
+&=& E\{  Y(Z_1,0)   \mid   Z_1, X_1, X_0 \}
+\end{eqnarray*}
+where the last identity follows from sequential ignorability. Since the last term does not depend on $Z_2$, we also have
+$$
+E\{  U_2(\beta)  \mid Z_2, Z_1, X_1, X_0 \}  = E\{  U_2(\beta)  \mid  Z_1, X_1, X_0 \} . 
+$$
+
+{\bf Part 2}. 
+Using the above results, we have
+ \begin{eqnarray*}
+&&E\{  U_1(\beta)  \mid  Z_1, X_0 \}  \\
+&=&  E\{  U_2(\beta)  - g_1( Z_1, X_0;\beta)  \mid  Z_1, X_0 \} \qquad (\text{Definition } \ref{def::snm}) \\
+&=& E\left[    E\{  U_2(\beta)  - g_1( Z_1, X_0;\beta)  \mid X_1,  Z_1, X_0 \}   \mid  Z_1, X_0 \right]  \qquad (\text{tower property})  \\
+&=&  E\left[    E\{ Y(Z_1,0) - g_1( Z_1, X_0;\beta)  \mid X_1,  Z_1, X_0 \}   \mid  Z_1, X_0 \right]   \qquad (\text{part 1}) \\
+&=&  E\{ Y(Z_1,0) - g_1( Z_1, X_0;\beta)  \mid  Z_1, X_0 \} \qquad (\text{tower property})  \\
+&=& E\{ Y(0,0)  \mid  Z_1, X_0 \} \qquad (\text{Definition } \ref{def::snm}) \\
+&=&  E\{ Y(0,0)  \mid  X_0 \}  \qquad (\text{sequential ignorability}).
+\end{eqnarray*}
+Since the last term does not depend on $Z_1$, we also have
+$$
+E\{  U_1(\beta)  \mid  Z_1, X_0 \}   = E\{  U_1(\beta)  \mid   X_0 \}.   
+$$
+\end{myproof}
+
+
+With Lemma \ref{lemma::snm-1}, we can prove Theorem \ref{thm::estimating-equation-snm} below. 
+
+\begin{theorem}
+\label{thm::estimating-equation-snm}
+Under Assumption \ref{assume::sr-time-varying} and Definition \ref{def::snm},
+$$
+E\Big[  h_2(Z_1, X_1, X_0)  \{ Z_2 - e(1, Z_1, X_1, X_0)  \}  U_2(\beta)   \Big] = 0
+$$
+and
+$$
+E\Big[    h_1(X_0)  \{  Z_1 - e(1, X_0) \}  U_1(\beta) \Big] = 0 . 
+$$
+for any functions $h_1$ and $h_2$, provided that the moments exist. 
+\end{theorem}
+
+ 
+
+\begin{myproof}{Theorem}{\ref{thm::sr-ipw}}
+Use the tower property by conditioning on $(Z_2, Z_1, X_1, X_0)$ and Lemma \ref{lemma::snm-1} to obtain
+\begin{eqnarray*}
+%&&E\left[  h_2(Z_1, X_1, X_0)  \{ Z_2 - e(1, Z_1, X_1, X_0)  \}   \{Y- g_2(Z_2, Z_1, X_1, X_0;\beta) \}   \right]  \\
+&& E\left[  h_2(Z_1, X_1, X_0)  \{  Z_2 - e(1, Z_1, X_1, X_0)  \}   E\{U_2(\beta) \mid  Z_2, Z_1, X_1, X_0\}   \right] \\
+&=& E\left[  h_2(Z_1, X_1, X_0)  \{  Z_2 - e(1, Z_1, X_1, X_0)  \}   E\{U_2(\beta) \mid  Z_1, X_1, X_0\}   \right] .
+\end{eqnarray*}
+Use the  tower property by conditioning on $( Z_1, X_1, X_0)$ to show that the last identity equals 0 because $E\{  Z_2 - e(1, Z_1, X_1, X_0) \mid  Z_1, X_1, X_0\} = 0. $
+ 
+Similarly,  use the tower property by conditioning on $(Z_1, X_0)$ and Lemma \ref{lemma::snm-1} to obtain
+ \begin{eqnarray*}
+%&& E\left[    h_1(X_0)   \{  Z_1 - e(1, X_0) \}  \{Y- g_2(Z_2, Z_1, X_1, X_0;\beta)  - g_1( Z_1, X_0;\beta) \}  \right]  \\
+&& E\left[    h_1(X_0)   \{  Z_1 - e(1, X_0) \}  E \{U_1(  \beta) \mid Z_1, X_0\}  \right]  \\
+&=& E\left[    h_1(X_0)   \{  Z_1 - e(1, X_0) \} E \{U_1(  \beta) \mid X_0\}  \right] .
+ \end{eqnarray*}
+Use the  tower property by conditioning on $X_0$ to show that the last identity equals 0 because $E\{  Z_1 - e(1, X_0) \mid X_0 \} = 0.$
+\end{myproof}
+
+
+
+To use Theorem \ref{thm::estimating-equation-snm}, we must specify $h_1$ and $h_2$ to ensure that there are enough equations for solving $\beta$. Example \ref{example::g-estimation-snm} below revisits Example \ref{example::snm-leading1}. 
+
+
+\begin{example}
+\label{example::g-estimation-snm}
+Under Example \ref{example::snm-leading1}, we can choose $h_1 = 1$ and $h_2 = (1,Z_1)$ to obtain
+ \begin{eqnarray*}
+ E\left[    \{ Z_2 - e(1, Z_1, X_1, X_0)  \}  \{Y-  (\beta_2 + \beta_3 Z_1  ) Z_2\}   \right] &=& 0,
+\\
+ E\left[   Z_1 \{ Z_2 - e(1, Z_1, X_1, X_0)  \}  \{Y-  (\beta_2 + \beta_3 Z_1  ) Z_2\}   \right] &=& 0,
+ \\
+ E\left[    \{  Z_1 - e(1, X_0) \}  \{Y- (\beta_2 + \beta_3 Z_1  ) Z_2 - \beta_1  Z_1 \}  \right] &=& 0 . 
+ \end{eqnarray*}
+ We can then solve for the $\beta$'s from the above linear equations; see Problem \ref{problem::snm-estimation-example}. A natural question is whether alternative choices of $(h_1, h_2)$ can lead to more efficient estimators. The answer is yes. For example, we can choose many $(h_1, h_2)$ and use the generalized method of moment \citep{hansen1982large}.  The technical details are beyond this book.  
+\end{example}
+
+ 
+\citet{naimi2017introduction} and \citet{vansteelandt2014structural} provided tutorials on the structural nested models. 
+ 
+  
+  
+\section{Homework problems}
+
+\paragraph{g-null paradox}\label{problem::g-null-paradox}
+
+
+Consider the simple causal diagram in Figure \ref{fig::si-g-null-paradox} without pre-treatment covariates $X_0$ and without the arrows from $(Z_1, Z_2)$ to $Y$. So the effect of $(Z_1,Z_2)$ on $Y$ is zero.
+
+\begin{figure}
+\bigskip 
+$$
+ \xymatrix{
+ Z_1 \ar[r]   & X_1   \ar[r]  & Z_2  & Y \\
+                                             &                                             &U\ar[lu]\ar[ru]
+ }
+ $$
+ \caption{With unmeasured confounding between $X_1$ and $Y$. The causal diagram ignores the pre-treatment covariates $X_0$.}\label{fig::si-g-null-paradox}
+\end{figure}
+
+
+Revisit Example \ref{example::linear-si}. Show that the expectation $E\{ Y(z_1, z_2) \} $ does not depend on $(z_1, z_2)$ if
+$$
+\beta_1  = \beta_2 = 0  \text{ and }   \beta_3 = 0
+$$
+or 
+$$
+\beta_1 = \beta_2 = 0 \text{ and } E\{ X_1(z_1)\}  \text{ does not depend on } z_1.
+$$
+holds. 
+
+
+Remark: 
+However, $\beta_3 = 0$ in the first condition rules out the dependence of $Y$ on $X_1$, contradicting the existence of unmeasured confounder $U$ between $X_1$ and $Y$; the independence of $E\{ X_1(z_1)\} $ on $z_1$ rules out the dependence of $X_1$ on $Z_1$, contradicting with the existence of the arrow from $Z_1$ on $X_1$. That is, if there is an unmeasured confounder $U$ between $X_1$ and $Y$ and there is an arrow from $Z_1$ on $X_1$, then the formula of $E\{ Y(z_1, z_2) \} $ in Example \ref{example::linear-si} must depend on $(z_1, z_2)$, which leads to a contradiction with the absence of arrows from $(Z_1, Z_2)$ to $Y$.  
+
+
+\paragraph{Recursive estimation under the null model}\label{problem::recursive-null}
+
+
+Consider the recursive estimation method in \ref{section::recursive} under the causal diagram in Problem \ref{problem::g-null-paradox}. 
+Show that based on linear models, the estimator converges to 0. 
+
+
+
+\paragraph{IPW under MSM}\label{problem::ipw-msm}
+
+
+Prove Theorem \ref{thm::si-msm-ipw}. 
+
+
+\paragraph{A nonlinear example of Definition \ref{def::si-msm-with-x0}}\label{hw::logistic-msm}
+
+
+Another leading example of Definition \ref{def::si-msm-with-x0} is 
+\begin{equation}\label{eq::logistic-msm}
+\text{logit} \left[ \pr\{  Y(z_1, z_2)  =1  \mid X_0\}  \right] = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3\tran X_0 .
+\end{equation}
+If we observe all potential outcomes, we can solve $\beta$ by minimizing the expectation of the negative log-likelihood function (see Chapter \ref{sec::mle-logistic} for a simpler version):
+\begin{equation}
+\label{eq::beta-logistic}
+\beta = \arg\min_b   \sum_{z_2}\sum_{z_1}  E\left\{   \log (1 + e^{\ell })
+- Y(z_1, z_2)  \ell  \right\}
+\end{equation}
+where $\ell = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3\tran X_0.$
+Under sequential ignorability, we can solve $\beta$ from the following minimization problem that only involves observables.
+
+
+\begin{theorem}
+[IPW under MSM]
+\label{thm::si-msm-ipw-logistic}
+Under Assumption \ref{assume::sr-time-varying} and Definition \ref{def::si-msm-with-x0}, the $\beta$ in \eqref{eq::beta-logistic} equals 
+$$
+\beta = \arg\min_b \sum_{z_2}\sum_{z_1}  E\left[   \frac{  1(Z_1=z_1) 1(Z_2=z_2)   }{   e(z_1, X_0) e(z_2, Z_1, X_1, X_0)     }      
+\left\{   \log (1 + e^{\ell })
+- Y(z_1, z_2)  \ell  \right\} \right] .
+$$
+\end{theorem}
+
+Prove Theorem \ref{thm::si-msm-ipw-logistic}. 
+
+Remark: 
+Theorem \ref{thm::si-msm-ipw-logistic} implies a simple estimation strategy based on weighted regressions. For instance, under \eqref{eq::logistic-msm}, we can fit weighted logistic regression of $Y_i$ on $(1,Z_{1i}, Z_{2i}, X_{0i})$ with weights $\hat{e}_{1}^{-1}(Z_{1i}, X_{0i})  \hat{e}_{2i}^{-1}(Z_{2i}, Z_{i1}, X_{1i}, X_{0i})$. 
+
+ 
+
+
+
+
+\paragraph{Structural nested model with a single time point}\label{problem::snm-single-time}
+
+ 
+
+Recall the standard setting of observational studies with IID data drawn from $\{ X,Z, Y(1), Y(0)\}$. Define the propensity score as $e(X) = \pr(Z=1\mid X)$. Assume
+$$
+Z\ind Y(0)\mid X
+$$
+and the following structural nested model.
+
+
+\begin{definition}
+[structural nested model with a single time point]
+\label{definition::snm-single}
+The conditional mean of the individual effect is
+$$
+E\{  Y(z) - Y(0)\mid Z=z, X \} = g(z,X;\beta).
+$$
+\end{definition}
+
+In Definition \ref{definition::snm-single}, a logical restriction is $g(0,X;\beta) = 0$. Prove the following results.
+
+
+\begin{enumerate}
+\item
+We have
+$$
+E\{  Y - g(Z,X;\beta) \mid X, Z\} = E\{  Y - g(Z,X;\beta) \mid X\}  = E\{  Y(0) \mid X\}. 
+$$
+
+
+\item
+We have
+\begin{eqnarray}\label{eq::Estimating-equation-snm-1}
+E\Big [  h(X)  \{ Z-e(X) \}   \{  Y - g(Z,X;\beta) \}  \Big ] = 0
+\end{eqnarray}
+for any function $h$, provided that the moment exists.
+\end{enumerate}
+
+ 
+
+
+Remark:  Equation \eqref{eq::Estimating-equation-snm-1} is the basis for parameter estimation. 
+Consider a special case of Definition \ref{definition::snm-single} with $g(z,X;\beta) = \beta z$. Choose $h(X) = 1$ to obtain
+$$
+E\{   (Z-e(X))   (Y-  \beta Z) \}  = 0.
+$$
+Solve for $\beta$ to obtain
+$$
+\beta = \frac{   E\{ (Z-e(X)) Y \}   }{   E\{ (Z-e(X))  Z\}   }.
+$$
+Therefore, $\beta$ equals the coefficient of $Z$ in the TSLS of $Y$ on $Z$ with $Z-e(X)$ being the IV for $Z$. With some basic calculations, we can also show that
+$$
+\beta = \frac{   \cov\{ Z-e(X), Y\}   }{ \cov\{ Z-e(X) \}  }.
+$$
+Therefore, $\beta$ equals the coefficient of $Z-e(X)$ in the OLS of $Y$ on $Z-e(X)$, which appeared in Chapter \ref{sec::regress-on-pscore} before. 
+
+Consider another special case of Definition \ref{definition::snm-single} with $g(z,X;\beta) = (\beta_0 + \beta_1\tran X) z$. Choose $h(X) = (1,X)$ to obtain
+$$
+E\left\{   \begin{pmatrix}
+Z-e(X)\\
+(Z-e(X)) X
+\end{pmatrix}  
+(Y-  \beta_0 Z - \beta_1\tran XZ) \right\}  = 0.
+$$
+That is, $(\beta_0,\beta_1)$ equal the coefficients in the TSLS of $Y$ on $(Z, XZ)$ with $(Z-e(X),  (Z-e(X)) X )$ being the IV for $(Z, XZ)$. 
+
+
+
+\paragraph{Estimation under Example \ref{example::g-estimation-snm}}\label{problem::snm-estimation-example}
+ 
+
+We can estimate the $\beta$'s by solving the empirical version of the estimating equations in Example \ref{example::g-estimation-snm}. We first estimate the two propensity scores and obtain the centered treatment 
+$$
+\check{Z}_{1i} = Z_{1i} - \hat{e}(1,X_{0i})
+$$
+ at time point 1 and 
+ $$
+ \check{Z}_{2i} = Z_{2i}  - \hat{e}(1, Z_{1i}, X_{1i}, X_{0i})
+ $$
+ at time point 2. 
+
+
+Show that we can estimate $\beta_2$ and $\beta_3$ by running TSLS of $Y_i$ on $(Z_{2i}, Z_{1i} Z_{2i} )$ with $( \check{Z}_{2i} ,  Z_{1i}\check{Z}_{2i} )$ as the IV for $(Z_{2i}, Z_{1i} Z_{2i} )$, and then we can estimate $\beta_1$ by running TSLS of $Y_i - (\hat{\beta}_2+\hat{\beta}_3 Z_{1i}) Z_{2i}$ on $Z_{1i}$ with $\check{Z}_{1i} $ as the IV for $Z_{1i}$. 
+ 
+ 
+ 
+ 
+\paragraph{g-formula with a treatment at multiple time points}\label{problem::g-formula-multiple-time}
+
+
+
+Extend the discussion to the setting with $K$ time points. The temporal ordering (but not the causal diagram) of the variables is
+$$
+X_0 \rightarrow Z_1 \rightarrow X_1 \rightarrow Z_2 \rightarrow \cdots  \rightarrow  X_{K-1}  \rightarrow Z_K .
+$$
+Introduce the notation $\overline{Z}_k = (Z_1, \ldots, Z_k)$ and $\overline{X}_k = (X_0, X_1, \ldots, X_k)$ with lower case $\overline{z}_k $ and $\overline{x}_k$  denoting the corresponding  realized values. With $k=0$, we have $\overline{X}_0 = X_0$ and $\overline{Z}_0$ is empty. 
+Each unit has $2^K$ potential outcomes:
+$$
+Y(\overline{z}_K) \text{ for all } z_1,\ldots, z_K = 0,1.
+$$
+Assume sequential ignorability below.
+
+\begin{assumption}
+[sequential ignorability at multiple time points]\label{assume::si-multiple}
+We have
+$$
+Z_k \ind Y(\overline{z}_K) \mid (\overline{Z}_{k-1}, \overline{X}_{k-1})
+$$
+for all $k=1,\ldots, K$ and all $z_1,\ldots, z_K = 0,1.$
+\end{assumption}
+
+
+Prove Theorem \ref{thm::g-formula-multiple} below. 
+
+
+\begin{theorem}
+[g-formula with multiple time points]
+\label{thm::g-formula-multiple}
+Under Assumption \ref{assume::si-multiple}, 
+$$
+E\{ Y(\overline{z}_K)  \} = E\left[ \cdots    
+E\{   E(Y\mid \overline{z}_K, \overline{X}_{K-1}) \mid \overline{z}_{K-1}, \overline{X}_{K-2} \}
+\cdots \mid z_1,  X_0 \right] .
+$$
+\end{theorem}
+
+
+Remark: 
+In Theorem \ref{thm::g-formula-multiple}, I use the simplified notation ``$\overline{z}_k$'' for  ``$\overline{Z}_k = \overline{z}_k $.''
+With discrete $X$, Theorem \ref{thm::g-formula-multiple} reduces to
+\begin{eqnarray*}
+ E\{ Y(\overline{z}_K)  \}  
+&=& 
+\sum_{x_0} \sum_{x_1} \cdots   \sum_{x_{K-1}} 
+ E(Y\mid \overline{z}_K, \overline{x}_{K-1})   \\
+ && 
+\qquad \qquad \cdot  \pr(x_{K-1}\mid \overline{z}_{K-1}, \overline{x}_{K-2}) 
+ \cdots
+ \pr(x_1\mid z_{1}, x_0)
+ \pr(x_0) ; 
+\end{eqnarray*} 
+with continuous $X$, Theorem \ref{thm::g-formula-multiple} reduces to
+\begin{eqnarray*}
+  E\{ Y(\overline{z}_K)  \}  
+&=& 
+\int 
+ E(Y\mid \overline{z}_K, \overline{x}_{K-1})   \\
+ && \cdot 
+ f(x_{K-1}\mid \overline{z}_{K-1}, \overline{x}_{K-2}) 
+ \cdots
+ f(x_1\mid z_{1}, x_0)
+ f(x_0)
+ \d \overline{x}_{K-1}   . 
+\end{eqnarray*} 
+
+
+
+
+
+ 
+ \paragraph{IPW with treatments at multiple time points}\label{problem::ipw-multiple-time}
+
+Inherit the setting of Problem \ref{problem::g-formula-multiple-time}. Define the propensity score at $K$ time points as
+\begin{eqnarray*}
+e(z_1, X_0) &=& \pr(Z_1 = z_1\mid X_0) ,\\
+\vdots \\
+e(z_k, \overline{Z}_{k-1},  \overline{X}_{k-1}) &=&  \pr(Z_k = z_k \mid \overline{Z}_{k-1},  \overline{X}_{k-1}) ,\\
+\vdots \\
+e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1}) &=&  \pr(Z_K = z_K \mid \overline{Z}_{K-1},  \overline{X}_{K-1}) .
+\end{eqnarray*}
+
+
+Prove Theorem \ref{thm::ipw-multiple} below assuming overlap implicitly. 
+
+
+\begin{theorem}
+[IPW with multiple time points]\label{thm::ipw-multiple}
+Under Assumption \ref{assume::si-multiple},
+$$
+  E\{ Y(\overline{z}_K)  \}   = E\left\{  
+  \frac{1(Z_1 = z_1) \cdots  1( Z_K = z_K) Y}{    e(z_1, X_0)  \cdots  e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1})   }
+  \right\}.
+$$
+\end{theorem}
+
+
+Based on Theorem \ref{thm::ipw-multiple}, construct the Horvitz--Thompson and Hajek estimators. 
+
+
+ \paragraph{MSM with treatments at multiple time points}\label{problem::msm-multiple-time}
+
+
+The number of potential outcomes grows exponentially with $K$. The formulas in Problems \ref{problem::g-formula-multiple-time} and \ref{problem::ipw-multiple-time} are not directly applicable in finite samples. We can impose the following structural assumptions on the potential outcomes.
+
+
+\begin{definition}
+[MSM with multiple time points]\label{definition::msm-multiple}
+Assume 
+$$
+  E\{ Y(\overline{z}_K)  \mid X_0\}  = f(\overline{z}_K, X_0 ; \beta  ).
+$$
+\end{definition}
+
+
+Two leading examples of Definition \ref{definition::msm-multiple} are 
+$$
+  E\{ Y(\overline{z}_K)  \mid X_0\}   = \beta_0 + \beta_1 \sum_{k=1}^K z_k + \beta_2\tran X_0 
+  $$
+and
+$$ 
+ E\{ Y(\overline{z}_K)  \mid X_0\}   = \beta_0 +  \sum_{k=1}^K \beta_k z_k + \beta_{K+1}\tran X_0 .
+ $$
+
+If we know all the potential outcomes, we can solve $\beta$ from the following minimization problem:
+$$
+\beta = \arg \min_b  \sum_{  \overline{z}_K  }  E\{   Y(\overline{z}_K) -  f(\overline{z}_K, X_0 ; \beta  )\}^2.
+$$
+Theorem \ref{thm::ipw-multiple} below shows that under Assumption \ref{assume::si-multiple}, we can solve $\beta$ from a minimization problem that only involves observables. 
+
+
+\begin{theorem}
+[IPW for MSM with multiple time points]\label{thm::ipw-multiple}
+Under Assumption \ref{assume::si-multiple},
+$$
+\beta = \arg \min_b  \sum_{  \overline{z}_K  }    E\left[ 
+  \frac{1(Z_1 = z_1) \cdots 1( Z_K = z_K) }{    e(z_1, X_0)  \cdots  e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1})    }
+  \{ Y -  f(\overline{z}_K, X_0 ; \beta  )\} ^2
+  \right] .
+$$
+\end{theorem}
+
+
+
+  
+   \paragraph{Structural nested model with treatments at multiple time points}\label{problem::snm-multiple-time}
+
+
+Inherit the setting from Problem \ref{problem::g-formula-multiple-time} and the notation from Problem \ref{problem::ipw-multiple-time}. This problem presents a general structural nested model. 
+
+\begin{definition}
+[structural nested model with multiple time points]
+\label{def::snm-multiple}
+The conditional effect at time $k$ is 
+$$
+E\{  Y(\overline{z}_k,0) - Y( \overline{z}_{k-1},0) \mid \overline{z}_k , \overline{X}_{k-1} \} = g_k( \overline{z}_k, \overline{X}_{k-1}; \beta) 
+$$
+for all $\overline{z}_k$ and all $k=1,\ldots, K$. 
+\end{definition}
+
+
+ 
+In Definition \ref{def::snm-multiple},  a logical restriction is
+$$
+g_k(0,  \overline{z}_{k-1}, \overline{X}_{k-1}; \beta)    = 0
+$$ 
+for all $\overline{z}_{k-1}$ and all $k=1,\ldots, K$. 
+
+
+Define 
+$$
+U_k(\beta) = Y - \sum_{s=1}^k  g_s( \overline{Z}_s, \overline{X}_{s-1}; \beta) 
+$$
+for all $k=1,\ldots, K$. Theorem  \ref{thm::snm-estimating-equation-multiple} below extends Theorem \ref{thm::estimating-equation-snm}.
+
+
+
+\begin{theorem}
+\label{thm::snm-estimating-equation-multiple}
+Under Assumption \ref{assume::si-multiple} and Definition \ref{def::snm-multiple},  we have 
+$$
+E\left[    h_k( \overline{Z}_{k-1}, \overline{X}_{k-1} ) \{  Z_k - e(1, \overline{Z}_{k-1}, \overline{X}_{k-1}) \}  U_k(\beta) 
+\right] = 0
+$$
+for any functions $h_k$ $(k=1,\ldots, K)$, provided that   the moment exists. 
+\end{theorem}
+
+
+
+Remark: Choosing appropriate $h_k$'s, we can estimate $\beta$ by solving the empirical version of Theorem \ref{thm::snm-estimating-equation-multiple}. 
+
+
+  
+  \paragraph{Recommended reading} 
+
+\citet{robins2000marginal} reviewed the MSM. \citet{naimi2017introduction} reviewed the g-methods.  

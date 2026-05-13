@@ -1,0 +1,571 @@
+
+\chapter{The Average Causal Effect on the Treated Units and Other Estimands}
+ \label{chapter::ATT-and-other}
+
+Chapters \ref{chapter::observational-studies}--\ref{chapter::doubly-robust} focused on the identification and estimation of the average causal effect $\tau = E\{  Y(1) - Y(0) \}$ under the ignorability and overlap assumptions. Conceptually, it is straightforward to extend the discussion to the average causal effects on the treated and control units:
+\begin{eqnarray*}
+\tau_\textsc{T}  &=&  E\{  Y(1) - Y(0) \mid Z=1 \} ,  \\
+\tau_\textsc{C}  &=&  E\{  Y(1) - Y(0) \mid Z=0 \} . 
+\end{eqnarray*}
+If $\tau_\textsc{T}$ and $\tau_\textsc{C}$ differ from $\tau$, then the average causal effects are heterogeneous across the treatment and control groups. Whether we should estimate $\tau_\textsc{T}$, $\tau_\textsc{C}$ or $\tau$ depends on the practical question of interest. 
+
+
+Because of the symmetry, this chapter focuses on $\tau_\textsc{T} $. Chapter \ref{sec::other-estmand-overlap} also discusses extensions to other estimands. 
+
+
+
+\section{Nonparametric identification of $\tau_\textsc{T} $ }
+
+
+The average causal effect on the treated units equals 
+$$
+\tau_\textsc{T} = E(Y\mid Z=1) -  E\{    Y(0) \mid Z=1 \},
+$$
+where the first term $E(Y\mid Z=1) $ is directly identifiable from the data and the second term $E\{    Y(0) \mid Z=1 \}$ is counterfactual. The key assumption to identify the second term is the following ignorability and overlap assumptions.
+
+
+
+\begin{assumption}
+\label{assume::ignorability-y0}
+$Z\ind Y(0) \mid X$ and $e(X) < 1$. 
+\end{assumption}
+
+Because the key is to identify $E\{    Y(0) \mid Z=1 \}$, we only need the ``one-sided'' ignorability and overlap assumptions. Under Assumption \ref{assume::ignorability-y0}, we have the following identification result for $\tau_\textsc{T} $. 
+
+
+\begin{theorem}
+\label{thm::identification-ATT}
+Under Assumption \ref{assume::ignorability-y0}, we have 
+\begin{eqnarray*}
+ E\{    Y(0) \mid Z=1 \}  &=& E\left\{  E(    Y \mid Z=0 , X) \mid  Z=1  \right\} \\
+ &=&  \int  E(    Y \mid Z=0 , X=x) f(  x \mid Z=1) \diff x .
+\end{eqnarray*}
+\end{theorem}
+
+
+By Theorem \ref{thm::identification-ATT} the counterfactual mean $ E\{    Y(0) \mid Z=1 \}  $ equals the conditional mean of the observed outcomes under the control, averaged over the distribution of the covariates under the treatment.
+It implies that $\tau_\textsc{T} $ is nonparametrically  identified by
+\begin{equation}
+\tau_\textsc{T}  = E(Y\mid Z=1) -E\left\{  E(    Y \mid Z=0 , X) \mid  Z=1  \right\}  \label{eq::att-identification} 
+\end{equation}
+
+\begin{myproof}{Theorem}{\ref{thm::identification-ATT}} 
+We have 
+\begin{eqnarray*}
+ E\{    Y(0) \mid Z=1 \} &=&  E\big[   E\{    Y(0) \mid Z=1 , X\} \mid  Z=1  \big] \\
+ &=& E\big[   E\{    Y(0) \mid Z=0 , X\} \mid  Z=1  \big] \\
+ &=& E\left\{  E(    Y \mid Z=0 , X) \mid  Z=1  \right\} \\
+ &=& \int  E(    Y \mid Z=0 , X=x) f(  x \mid Z=1)  \diff x.
+\end{eqnarray*}
+\end{myproof}
+
+
+With a discrete $X$, the identification formula in Theorem \ref{thm::identification-ATT} reduces to 
+$$
+ E\{    Y(0) \mid Z=1 \}  = \sum_{k=1}^K E(    Y \mid Z=0 , X=k) \pr(X=k \mid  Z=1  ),
+$$
+%
+%Under Assumption \ref{assume::ignorability-y0}, we have 
+%\begin{eqnarray*}
+% E\{    Y(0) \mid Z=1 \} &=&  E\big[   E\{    Y(0) \mid Z=1 , X\} \mid  Z=1  \big] \\
+% &=& E\big[   E\{    Y(0) \mid Z=0 , X\} \mid  Z=1  \big] \\
+% &=& E\left\{  E(    Y \mid Z=0 , X) \mid  Z=1  \right\} ,
+%\end{eqnarray*}
+%therefore, we can identify $\tau_\textsc{T}$ by
+%\begin{eqnarray} 
+%\tau_\textsc{T}  &=& E(Y\mid Z=1) -E\left\{  E(    Y \mid Z=0 , X) \mid  Z=1  \right\}  \label{eq::att-identification}  \\
+%&=& E(Y\mid Z=1) - \sum_{k=1}^K E(    Y \mid Z=0 , X=k) \pr(X=k \mid  Z=1  )  \nonumber \\
+%&=& E(Y\mid Z=1) - \int  E(    Y \mid Z=0 , X=x) F( \text{d} x \mid Z=1),  \nonumber 
+%\end{eqnarray} 
+%where $F( x \mid Z=1)$ is the distribution function of the covariates among treated units. 
+%For discrete $X$, we can use
+motivating the following stratified estimator for $\tau_\textsc{T} $:
+$$
+\hat{\tau}_\textsc{T} =   \hat{\bar{Y}}(1) - \sum_{k=1}^K \hat{\pi}_{[k]\mid 1} \hat{\bar{Y}}_{[k]}(0),
+$$
+where $\hat{\pi}_{[k]\mid 1} = n_{[k]1}/n_1$ is the proportion of category $k$ of $X$ among the treated units. 
+
+
+For continuous $X$, we need to fit an outcome model for $E(Y\mid Z=0, X)$ using the control units. If the fitted values for the control potential outcomes are $\hat{\mu}_0(X_i)$, then the outcome regression estimator is
+$$
+\hat{\tau}_\textsc{T}^\text{reg} =  \hat{\bar{Y}}(1) - n_1^{-1} \sumn Z_i \hat{\mu}_0(X_i) = n_1^{-1} \sumn Z_i  \{  Y_i - \hat{\mu}_0(X_i)  \}. 
+$$
+
+
+\begin{example}\label{eg::att-regression1}
+If we specify a linear model for all units
+$$
+E(Y\mid Z, X) = \beta_0  + \beta_z  Z + \beta_x\tran X,
+$$
+then 
+\begin{eqnarray*}
+\tau_\textsc{T} &=& E\{   E(Y\mid Z=1, X)  -  E(    Y \mid Z=0 , X)  \mid Z=1\} \\
+&=&  \beta_z.
+\end{eqnarray*}
+If we run OLS to obtain $( \hat{\beta}_0, \hat{\beta}_z,  \hat{\beta}_x )$, then we can use $\hat{\beta}_z$ to estimate $\tau_\textsc{T} $. 
+% The estimator is
+%$$
+%\hat{\tau}_\textsc{T} = \hat{\bar{Y}}(1) - \hat{\beta}_0 -  \hat{\beta}_x \tran \hat{\bar{X}}(1).
+%$$
+%Using the property of the OLS (see Section \ref{eq::OLS-mean-data}), we have
+%$$
+%\sumn Z_i(   Y_i - \hat{\beta}_0 -  \hat{\beta}_z Z_i -   \hat{\beta}_x\tran X_i  ) = 0
+%\Longrightarrow   
+%\hat{\bar{Y}}(1)  -  \hat{\beta}_0 - \hat{\beta}_z -   \hat{\beta}_x\tran \hat{\bar{X}}(1) =0 .
+%$$
+%%which implies that $  \hat{\bar{Y}}(1)  -  \hat{\beta}_0 - \hat{\beta}_z -   \hat{\beta}_x\tran \hat{\bar{X}}(1) =0$. 
+%Therefore, the above estimator reduces to $\hat{\tau}_\textsc{T}  = \hat{\beta}_z$, the OLS coefficient of $Z$. 
+%
+%
+%By the property of the OLS, we can also write $\hat{\beta}_z$ as the difference in means of the adjusted outcome $Y_i -  \hat{\beta}_x\tran X_i $, resulting in
+%\begin{eqnarray}
+%\hat{\tau}_\textsc{T}  
+%&=&  \left\{  \hat{\bar{Y}}(1) - \hat{\beta}_x\tran \hat{\bar{X}}(1)  \right\} 
+%-    \left\{  \hat{\bar{Y}}(0)   -  \hat{\beta}_x\tran \hat{\bar{X}}(0)   \right\}  \nonumber   \\
+%&=& \left\{  \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) \right\} 
+%-  \hat{\beta}_x\tran  \left\{  \hat{\bar{X}}(1) -  \hat{\bar{X}}(0) \right\}. \label{eq::ATT--regression1}
+%\end{eqnarray}
+%Therefore, $\hat{\tau}_\textsc{T}  $ equals the simple difference in means of the outcome, adjusted by the imbalance of the covariates in the treatment and control groups. 
+Section \ref{sec::outcome-regression} shows that $\hat{\beta}_z$ is an estimator for $\tau$, and this example further shows that $\hat{\beta}_z$ is an estimator for $\tau_\textsc{T}$. This is not surprising because the linear model assumes constant causal effects across units. 
+\end{example}
+
+
+\begin{example}\label{eg::att-regression2}
+The identification formula depends only on $E(Y\mid Z=0, X)$, so we need only to specify a model for the control units. When this model is linear, 
+$$
+E(Y\mid Z=0, X) =\beta_{0\mid 0}   + \beta_{x\mid 0} \tran X,
+$$
+we have 
+\begin{eqnarray*}
+\tau_\textsc{T} &=& E(Y\mid Z=1) - E(   \beta_{0\mid 0}   + \beta_{x\mid 0} \tran X  \mid Z=1 ) \\
+&=& E(Y\mid Z=1) -   \beta_{0\mid 0}    -  \beta_{x\mid 0}   \tran E(X\mid Z=1). 
+\end{eqnarray*}
+If we run OLS with only the control units to obtain $( \hat{\beta}_{0\mid 0} ,  \hat{\beta}_{x\mid 0})$, then the estimator is
+$$
+\hat{\tau}_\textsc{T} = \hat{\bar{Y}}(1) -\hat{\beta}_{0\mid 0}  - \hat{\beta}_{x\mid 0}  \tran \hat{\bar{X}}(1).
+$$
+Using the property of the OLS (see \ref{eq::OLS-mean-data}), we have 
+$$
+\hat{\bar{Y}}(0) = \hat{\beta}_{0\mid 0} + \hat{\beta}_{x\mid 0}  \tran \hat{\bar{X}}(0).
+$$ 
+Therefore, the above estimator reduces to
+$$
+\hat{\tau}_\textsc{T} = \left\{  \hat{\bar{Y}}(1) - \hat{\bar{Y}}(0) \right\} - \hat{\beta}_{x\mid 0}  \tran \left\{  \hat{\bar{X}}(1) -  \hat{\bar{X}}(0) \right\}, 
+$$
+which is similar to \eqref{eq::ATT--regression1} with a different coefficient for the difference in means of the covariates. 
+
+As an algebraic fact, we can show that this estimator equals the coefficient of $Z$ in the OLS fit of the outcome on the treatment, covariates, and their interactions, with the covariates centered as $ X_i  - \hat{\bar{X}}(1)$. See Problem \ref{para::regression-att-algebra} for more details.  
+\end{example}
+
+
+
+
+\section{Inverse propensity score weighting and doubly robust estimation of $\tau_\textsc{T} $}
+
+
+\begin{theorem}
+\label{thm::ipw-att}
+Under Assumption \ref{assume::ignorability-y0}, we have
+\begin{eqnarray}
+E\{ Y(0) \mid Z=1 \} = E\left\{         \frac{e(X)}{e}  \frac{1-Z}{1-e(X)} Y \right\}
+\label{eq::ipw-att}
+\end{eqnarray}
+and
+\begin{eqnarray}\label{eq::att-ipw-formula}
+\tau_\textsc{T} = E(Y\mid Z=1) -  E\left\{         \frac{e(X)}{e}  \frac{1-Z}{1-e(X)} Y \right\} ,
+\end{eqnarray}
+where $e = \pr(Z=1)$ is the marginal probability of the treatment. 
+\end{theorem}
+
+
+\begin{myproof}{Theorem}{\ref{thm::ipw-att}} 
+The left-hand side of \eqref{eq::ipw-att} equals
+\begin{eqnarray*}
+E\{ Y(0) \mid Z=1 \} &=& E\{ ZY(0)   \} /e \\
+&=& E\big[  E( Z \mid X) E\{ Y(0) \mid X  \} \big] /e \\
+&=&E\big[ e(X)  E\{ Y(0) \mid X  \} \big] /e . 
+\end{eqnarray*}
+The right-hand side of \eqref{eq::ipw-att} equals 
+\begin{eqnarray*}
+E\left\{         \frac{e(X)}{e}  \frac{1-Z}{1-e(X)} Y \right\} 
+&=& E\left[  E\left\{         \frac{e(X)}{e}  \frac{1-Z}{1-e(X)} Y(0) \mid X \right\}  \right]\\
+&=& E\left[   \frac{e(X)}{e \{1-e(X)\} }   E\left\{       (1-Z)Y(0) \mid X \right\}  \right]\\
+&=& E\left[   \frac{e(X)}{e \{1-e(X)\} }   E(      1-Z\mid X )   E\left\{       Y(0) \mid X \right\}  \right]\\
+&=& E\big[ e(X)  E\{ Y(0) \mid X  \} \big] /e .  
+\end{eqnarray*}
+So \eqref{eq::ipw-att}  holds. 
+\end{myproof}
+
+
+
+
+We have two  IPW  estimators  
+$$
+\hat{\tau}_\textsc{T}^\text{ht} =  \hat{\bar{Y}}(1) - n_1^{-1} \sumn \hat{o}(X_i) (1-Z_i) Y_i
+$$
+and
+$$
+\hat{\tau}_\textsc{T}^\text{hajek} = \hat{\bar{Y}}(1) 
+- \frac{  \sumn \hat{o}(X_i) (1-Z_i) Y_i }{ \sumn \hat{o}(X_i) (1-Z_i) } ,
+$$
+where $\hat{o}(X_i) = \hat{e}(X_i) / \{ 1 - \hat{e}(X_i)  \} $ is the fitted odds of the treatment given covariates. 
+
+ 
+ 
+
+
+
+We also have a doubly robust estimator for $E\{  Y(0)\mid Z=1\}$ which combines the propensity score and the outcome models. Define
+\begin{eqnarray}
+\label{eq::dr-att-mu0}
+\tilde{\mu}_{0\textsc{T}}^\textup{dr} = E\left[ o(X,\alpha)  (1-Z) \{ Y - \mu_0(X, \beta_0) \}     + Z  \mu_0(X, \beta_0) \right] /e, 
+\end{eqnarray}
+where $o(X,\alpha)  = e(X,\alpha)/ \{ 1 - e(X,\alpha)\}.$
+
+\begin{theorem}
+\label{thm::dr-att}
+Under Assumption \ref{assume::ignorability-y0}, if either $ e(X,\alpha) = e(X)$ or $\mu_0(X, \beta_0)=\mu_0(X) $, then $\mu_{0\textsc{T}}^\text{dr}  = E\{ Y(0) \mid Z=1 \}.$
+\end{theorem}
+
+
+\begin{myproof}{Theorem}{\ref{thm::dr-att}}
+We have the decomposition
+\begin{eqnarray*}
+&&  e\left[  \tilde{\mu}_{0\textsc{T}}^\text{dr}  -  E\{ Y(0) \mid Z=1 \} \right] \\
+&=& E\left[ o(X,\alpha) ( 1-Z )  \{ Y(0) - \mu_0(X, \beta_0) \} + Z  \mu_0(X, \beta_0) \right] -  E\{ Z Y(0)   \} \\
+&=& E\left[ o(X,\alpha) ( 1-Z ) \{ Y(0) - \mu_0(X, \beta_0) \} - Z  \{ Y (0) - \mu_0(X, \beta_0) \} \right] \\
+&=& E\left[ \left\{ o(X,\alpha)  ( 1-Z  ) -Z\right\} \{ Y (0) - \mu_0(X, \beta_0) \}   \right] \\
+&=& E\left[    \frac{ e(X,\alpha) - Z  }{1-  e(X,\alpha)}   \{ Y (0) - \mu_0(X, \beta_0) \}   \right] \\
+&=& E\left[  E\left\{   \frac{ e(X,\alpha) - Z  }{1-  e(X,\alpha)}  \mid X \right\}  \times E  \{ Y (0) - \mu_0(X, \beta_0)  \mid X\}   \right] \\
+&=& E\left[   \frac{ e(X,\alpha) - e(X)  }{1-  e(X,\alpha)} \times    \{ \mu_0(X) - \mu_0(X, \beta_0)  \}   \right] .
+\end{eqnarray*}
+Therefore, $\tilde{\mu}_{0\textsc{T}}^\text{dr}  -  E\{ Y(0) \mid Z=1 \}  = 0$
+ if either $ e(X,\alpha) = e(X)$ or $\mu_0(X, \beta_0)=\mu_0(X) $. 
+\end{myproof}
+
+
+Based on the population versions of $\tilde{\mu}_{0\textsc{T}}^\text{dr}$ in \eqref{eq::dr-att-mu0}, we can obtain its sample version to construct a doubly robust estimator for $\tau_\textsc{T}$. 
+
+\begin{definition}
+[doubly robust estimator for $\tau_\textsc{T}$]\label{def::dr-att}
+Based on the data $(X_i, Z_i, Y_i)_{i=1}^n$, we can obtain a doubly robust estimator for $\tau_\textsc{T}$ by the following steps: 
+\begin{enumerate}
+[(1)]
+\item
+obtain the fitted values of the propensity scores $e(X_i, \hat{\alpha})$ and then obtain the fitted values of the odds $o(X_i, \hat{\alpha})  =  e(X_i, \hat{\alpha}) / (1- e(X_i, \hat{\alpha}))$; 
+\item
+obtain the fitted values of the outcome mean under control $ \mu_0(X_i, \hat{\beta}_0) $; 
+\item
+construct the doubly robust estimator: $\hat{\tau}_\textsc{T}^\textup{dr} = \hat{\bar{Y}}(1) - \hat{\mu}_{0\textsc{T}}^\textup{dr}$, where
+$$
+ \hat{\mu}_{0\textsc{T}}^\textup{dr}  
+ = \frac{1}{n_1} \sumn \left[ o(X_i,\hat{\alpha}) (1-Z_i)\{ Y_i-\mu_0(X_i, \hat{\beta}_0) \}      +Z_i \mu_0(X_i, \hat{\beta}_0)       \right].
+$$
+\end{enumerate}
+\end{definition}
+
+
+By Definition \ref{def::dr-att}, we can rewrite $\hat{\tau}_\textsc{T}^\textup{dr}$ as
+$$
+e(X_i, \hat{\alpha})
+= \hat{\tau}_\textsc{T}^\textup{reg}
+ - \frac{1}{n_1} \sumn  o(X_i,\hat{\alpha})  (1-Z_i)\{ Y_i-\mu_0(X_i, \hat{\beta}_0) \}    
+$$
+or
+$$
+e(X_i, \hat{\alpha})
+= \hat{\tau}_\textsc{T}^\textup{ht} 
+- \frac{1}{n_1} \sumn  \{ o(X_i,\hat{\alpha}) (1-Z_i) + Z_i  \} \mu_0(X_i, \hat{\beta}_0)  .
+$$
+Similar to the discussion of $\hat{\tau}^\textup{dr}  $, we can  estimate the  variance of $\hat{\tau}_\textsc{T}^\textup{dr}  $  via the bootstrap by resampling from $(Z_i, X_i, Y_i)_{i=1}^n$. 
+\citet{hahn1998role}, \citet{mercatanti2014debit}, \citet{shinozaki2015brief} and \citet{yang2018asymptotic} are references on the estimation of $\tau_\textsc{T}$. 
+
+
+
+\section{An example}
+\label{sec::dr-att-example}
+
+
+The following \ri{R} function implements two outcome regression estimators, two IPW estimators, and the doubly robust estimator for $\tau_\textsc{T}$. To avoid extreme estimated propensity scores, we can also truncate them from the above. 
+
+\begin{lstlisting}
+ATT.est = function(z, y, x, out.family = gaussian, Utruncps = 1)
+{
+  ## sample size
+  nn  = length(z)
+  nn1 = sum(z)
+  
+  ## fitted propensity score
+  pscore   = glm(z ~ x, family = binomial)$fitted.values
+  pscore   = pmin(Utruncps, pscore)
+  odds     = pscore/(1 - pscore)
+  
+  ## fitted potential outcomes
+  outcome0 = glm(y ~ x, weights = (1 - z), 
+                 family = out.family)$fitted.values
+  
+  ## outcome regression estimator
+  ace.reg0 = lm(y ~ z + x)$coef[2]
+  ace.reg  = mean(y[z==1]) - mean(outcome0[z==1]) 
+  ## propensity score weighting estimator
+  ace.ipw0 = mean(y[z==1]) - 
+                mean(odds*(1 - z)*y)*nn/nn1
+  ace.ipw  = mean(y[z==1]) - 
+                mean(odds*(1 - z)*y)/mean(odds*(1 - z))
+  ## doubly robust estimator
+  res0     = y - outcome0
+  ace.dr   = ace.reg - mean(odds*(1 - z)*res0)*nn/nn1
+  
+  return(c(ace.reg0, ace.reg, ace.ipw0, ace.ipw, ace.dr))     
+}
+\end{lstlisting}
+
+The following \ri{R} function further implements the bootstrap variance estimators. 
+
+\begin{lstlisting}
+OS_ATT = function(z, y, x, n.boot = 10^2,
+                  out.family = gaussian, Utruncps = 1)
+{
+  point.est  = ATT.est(z, y, x, out.family, Utruncps)
+  
+  ## nonparametric bootstrap
+  n   = length(z)
+  x          = as.matrix(x)
+  boot.est   = replicate(n.boot, {
+    id.boot = sample(1:n, n, replace = TRUE)
+    ATT.est(z[id.boot], y[id.boot], x[id.boot, ], 
+            out.family, Utruncps)
+  })
+  
+  boot.se    = apply(boot.est, 1, sd)
+  
+  res        = rbind(point.est, boot.se)
+  rownames(res) = c("est", "se")
+  colnames(res) = c("reg0", "reg", "HT", "Hajek", "DR")
+  
+  return(res)
+}
+\end{lstlisting}
+
+ 
+Now we re-analyze the data in Example \ref{eg::chan-bmi-ATE} to estimate $\tau_\textsc{T}$. 
+We obtain
+\begin{lstlisting}
+     reg0    reg     HT  Hajek     DR
+est 0.061 -0.351 -1.992 -0.351 -0.187
+se  0.227  0.258  0.705  0.328  0.287
+\end{lstlisting}
+without truncating the estimated propensity scores, and
+\begin{lstlisting}
+     reg0    reg     HT  Hajek     DR
+est 0.061 -0.351 -0.597 -0.192 -0.230
+se  0.223  0.255  0.579  0.302  0.276
+\end{lstlisting}
+by truncating the estimated propensity scores from the above at $0.9$. The HT estimator is sensitive to the truncation as expected. The regression estimator in Example \ref{eg::att-regression1} is quite different from other estimators. It imposes an unnecessary assumption that the regression functions in the treatment and control group share the same coefficient of $X$. The regression estimator in Example \ref{eg::att-regression2} is much closer to the Hajek and doubly robust estimators. The estimates above are slightly different from those in Section \ref{sec::ATE-application}, suggesting the existence of treatment effect heterogeneity across $\tau_\textsc{T}$ and $\tau$. 
+
+
+
+\section{Other estimands}\label{sec::other-estmand-overlap}
+
+
+\citet{li2018balancing} gave a unified discussion of the causal estimands in observational studies. Starting from the conditional average causal effect $\tau(X)$, they proposed a general class of estimands
+$$
+\tau^h =  \frac{  E\{ h(X) \tau(X)  \} }{ E\{ h(X)   \} }
+$$
+indexed by a weighting function $h(X)$ with $E\{ h(X)   \}  \neq 0$. The normalization in the denominator is to ensure that a constant causal effect $\tau(X) = \tau$ averages to the same $\tau$. 
+
+
+Under ignorability, 
+$$
+\tau^h =  \frac{  E[  h(X)   \{ \mu_1(X) - \mu_0(X) \}   ] }{ E\{ h(X)   \} }
+$$
+which 
+motivates the outcome regression estimator
+$$
+\hat \tau^h =  \frac{   \sumn h(X_i)  \{ \hat{\mu}_1(X_i)   -  \hat{\mu}_0(X_i) \}  }{  \sumn h(X_i) } .
+$$
+Moreover, we can show that $\tau^h$ has the following weighting form:
+
+\begin{theorem}\label{thm::weighted-estimand-li}
+Under the ignorability and overlap assumption, we have
+$$
+\tau^h = E\left\{ \frac{ZYh(X)}{ e(X)}  - \frac{(1-Z)Yh(X)}{1-e(X)}  \right\} / E\{ h(X)   \} .
+$$
+\end{theorem}
+
+The proof of Theorem \ref{thm::weighted-estimand-li} is similar to those of Theorems \ref{thm::pscore-weighting} and \ref{thm::ipw-att} which is relegated to Problem \ref{problem::general-estimand-li}. Based on Theorem \ref{thm::weighted-estimand-li}, we can construct the corresponding IPW estimator for $\tau^h$. 
+
+
+By Theorem \ref{thm::weighted-estimand-li}, each unit is associated with the weight due to the definition of the estimand as well as the weight due to the inverse of the propensity score. Finally, the treated units are weighted by $h(X) / e(X)$ and the control units are weighted by $h(X)/ \{  1-e(X) \}.$ \citet[][Table 1]{li2018balancing} summarized several estimands, and I present a part of it below: 
+
+\begin{tabular}{cccc}
+\hline 
+ population & $h(X)$ & estimand & weights \\ \hline 
+combined & $1$ & $\tau$ & $1/e(X)$ and $1/\{  1-e(X) \} $  \\
+treated & $e(X)$ & $\tau_\textsc{T}$ & 1 and $ e(X)/\{  1-e(X) \}$ \\
+control & $1-e(X)$ & $\tau_\textsc{C}$ & $\{  1-e(X) \} /e(X) $ and 1\\
+overlap & $e(X)\{  1-e(X) \} $ &$\tau_\textsc{O}$  &  $ 1-e(X)$ and $e(X) $ \\
+\hline 
+\end{tabular}
+
+
+The overlap population and the corresponding estimand
+$$
+\tau_\textsc{O} = \frac{   E\left[ e(X)\{  1-e(X) \}   \tau(X) \right] }{   E\left[ e(X)\{  1-e(X) \}    \right] }
+$$
+is new to us. This estimand has the largest weight for units with $e(X) = 1/2$ and down weights the units with extreme propensity scores. 
+A nice feature of this estimand is that its IPW estimator is stable without the possibly extremely small values of $e(X)$ and $1-e(X) $ in the denominator. If $ e(X) \ind  \tau(X) $ including the special case of $\tau(X) = \tau$, the parameter $\tau_\textsc{O} $ reduces to $\tau$. In general, however, the estimand $\tau_\textsc{O} $ may cause controversy because it changes the initial population and depends on the propensity score which may be misspecified in practice. \citet{li2018balancing} and \citet{li2019addressing} gave some justifications and numerical evidence.
+This estimand will appear again in Chapter \ref{chapter::pscore-unification}. 
+
+
+We can also construct the doubly robust estimator for $\tau^h$. I relegate the details to Problem \ref{problem::general-estimand-dr}. 
+ 
+ 
+ \section{Homework Problems}
+ 
+ 
+\paragraph{Comparing $\tau_\textsc{T},  \tau_\textsc{C}, $ and $\tau$}\label{hw::difference-tau-T-tau} 
+ 
+Assume $Z\ind \{Y(1), Y(0)\} \mid X$.  Recall $e(X) = \pr(Z=1\mid X)$ is the propensity score,  $e = \pr(Z=1)$ is the marginal probability of the treatment, and $\tau(X) = E\{  Y(1)-Y(0) \mid X \}$ is the CATE. 
+Show that 
+$$
+\tau_\textsc{T} - \tau = \frac{  \cov\{ e(X) ,  \tau(X)  \} }{e},\quad
+\tau_\textsc{C} - \tau = - \frac{  \cov\{ e(X) ,  \tau(X)  \} }{1-e}.
+$$ 
+
+
+Remark: The results above also imply that $ \tau_\textsc{T} -  \tau_\textsc{C} =  \cov\{ e(X) ,  \tau(X)  \} / \{  e(1-e) \}$.  So the differences among $ \tau_\textsc{T} ,   \tau_\textsc{C} , \tau$ depend on the covariance between the propensity score and CATE.   
+When $e(X) $ and $  \tau(X) $ are uncorrelated, their differences are 0. 
+ 
+ 
+\paragraph{An algebraic fact about a regression estimator for $\tau_\textsc{T}$} 
+ \label{para::regression-att-algebra}
+ 
+ This problem provides more details for Example \ref{eg::att-regression2}. 
+ 
+Show that if we center the covariates by $X_i - \hat{\bar{X}}(1)$ for all units, then $\hat{\tau}_\textsc{T} $ equals the coefficient of $Z$ in the OLS fit of the outcome on the intercept, the treatment, covariates, and their interactions. 
+ 
+ 
+ 
+ \paragraph{Simulation for the average causal effect on the treated units}
+
+Chapter \ref{chapter::doubly-robust} ran some simulation studies for $\tau$. Run similar simulation studies for $\tau_\textsc{T}$ with either correct or incorrect propensity score or outcome models. 
+
+You can choose different model parameters, a larger number of simulation settings, and a larger number of bootstrap replicates. Report your findings, including at least the bias, variance, and variance estimator via the bootstrap. You can also report other properties of the estimators, for example, the asymptotic Normality and the coverage rates of the confidence intervals. 
+
+
+
+\paragraph{An alternative form of the doubly robust estimator for $\tau_\textsc{T}$}\label{hw::alternative-dr2-robins-att}
+
+Motivated by \eqref{eq::dr-att-mu0}, we have an alternative form of doubly robust estimator for $ E\{ Y(0) \mid Z=1 \}  $: 
+$$
+\tilde{\mu}_{0\textsc{T}}^\text{dr2} = 
+\frac{  E\left[ o(X,\alpha)   (1-Z) \{ Y - \mu_0(X, \beta_0) \}  \right] }{  E\left[ o(X,\alpha)   (1-Z) \right] } 
+  + E\{  Z  \mu_0(X, \beta_0) \} /e.
+$$
+
+Show that under Assumption \ref{assume::ignorability-y0}, $\tilde{\mu}_{0\textsc{T}}^\text{dr2}= E\{ Y(0) \mid Z=1 \}$ if either $e(X,\alpha)  = e(X)$ or $\mu_0(X, \beta_0) =  \mu_0(X)$.  Give the sample analog of the doubly robust estimator for $\tau_\textsc{T}$. 
+
+ 
+
+
+
+ \paragraph{Average causal effect on the control units}\label{hw::formulas-atc}
+
+Prove the identification formulas for $\tau_\textsc{C}$, analogous to \eqref{eq::att-identification} and \eqref{eq::att-ipw-formula}. Propose the doubly robust estimator for $\tau_\textsc{C}$. 
+
+
+\paragraph{Estimating individual effect and conditional average causal effect}\label{hw::individual-effect-prediction}
+
+Assume that $\{ Z_i, X_i, Y_i(1), Y_i(0) \}_{i=1}^n \iidsim \{ Z, X, Y(1), Y(0) \}$. The individual effect is $\tau_i = Y_i(1) - Y_i(0)$ and the conditional average causal effect is $\tau(X_i) = E\{ Y_i(1) - Y_i(0) \mid X_i  \}$. Since we will discuss the individual effect, we do not drop the subscript $i$ since $\tau$ means the average causal effect, not the population version of $Y(1) - Y(0)$. 
+
+\begin{enumerate}
+\item
+Under randomization with $Z_i\ind \{ Y_i(1), Y_i(0)  \}$ and $e = \pr(Z_i = 1)$, show that
+$$
+\delta_i = \frac{Z_i Y_i}{e} - \frac{(1-Z_i)Y_i}{1-e}
+$$
+is an unbiased predictor of the individual effect in the sense that
+$$
+E( \delta_i  -  \tau_i ) = 0\quad (i=1,\ldots, n).
+$$
+Further show that $E( \delta_i ) = \tau $ for all $i=1,\ldots, n$. 
+
+\item
+Under ignorability with $Z_i\ind \{ Y_i(1), Y_i(0)  \}\mid X_i$ and $e(X_i) = \pr(Z_i=1\mid X_i)$, show that 
+$$
+\delta_i = \frac{Z_i Y_i}{ e(X_i) } - \frac{(1-Z_i)Y_i}{1-e(X_i)}
+$$
+is an unbiased predictor of the individual effect and the conditional average causal effect in the sense that
+$$
+E( \delta_i  -  \tau_i ) = 0, \quad
+E\{  \delta_i  -  \tau(X_i) \} = 0, \quad (i=1,\ldots, n).
+$$
+Further show that $E( \delta_i ) = \tau $ for all $i=1,\ldots, n$. 
+\end{enumerate}
+ 
+
+
+\paragraph{General estimand and $(\tau_\textsc{T}, \tau_\textsc{C})$}\label{problem::general-estimand-att-atc}
+
+
+Assume unconfoundedness.
+Show that $\tau^h = \tau_\textsc{T}$ if $h(X) = e(X)$, and $\tau^h = \tau_\textsc{C}$ if $h(X) = 1-  e(X)$.
+
+
+\paragraph{More on $\tau_\textsc{O}$}\label{problem::ATO-treated-control}
+
+Show that
+$$
+\tau_\textsc{O} 
+=  \frac{   E  [   \{1-e(X)\} \tau(X) \mid Z=1   ]      }{  E  \{ 1-e(X) \mid Z=1   \}   }
+=  \frac{   E  \{ e(X) \tau(X) \mid Z=0   \}      }{  E  \{ e(X) \mid Z=0   \}   }.
+$$
+
+
+
+\paragraph{IPW for the general estimand}\label{problem::general-estimand-li}
+
+Prove Theorem \ref{thm::weighted-estimand-li}. 
+
+
+\paragraph{Doubly robust estimation for general estimand}\label{problem::general-estimand-dr}
+
+
+For a given $h(X)$, we have the following formulas for constructing the doubly robust estimator for $\tau^h$: 
+\begin{eqnarray*}
+\tilde{\mu}_1^{h,\textup{dr}} &=& E\left[   \frac{Zh(X)  \{ Y-\mu_1(X,\beta_1)   \}}{  e(X,\alpha) }   + h(X) \mu_1(X, \beta_1)  \right] ,  \\
+\tilde{\mu}_0^{h, \textup{dr}} &=& E\left[   \frac{(1-Z) h(X)  \{ Y-\mu_0(X,\beta_0) \}}{  1-e(X,\alpha) }   + h(X) \mu_0(X, \beta_0)  \right]  .  
+\end{eqnarray*}
+Show that under ignorability and overlap,
+\begin{enumerate}
+\item
+if either $e(X,\alpha) = e(X)$ or $\mu_1(X, \beta_1) = \mu_1(X)$, then $\tilde{\mu}_1^{h,\textup{dr}}= E\{  h(X)  Y(1) \}$;
+\item
+if either $e(X,\alpha) = e(X)$ or $\mu_0(X, \beta_0) = \mu_0(X)$, then $\tilde{\mu}_0^{h, \textup{dr}}= E\{ h(X)  Y(0) \}$;
+\item 
+if either $e(X,\alpha) = e(X)$ or $\{\mu_1(X, \beta_1) = \mu_1(X),   \mu_0(X, \beta_0) = \mu_0(X)\}$, then 
+$$
+\frac{\tilde{\mu}_1^{h,\textup{dr}}  -\tilde{\mu}_0^{h, \textup{dr}}  }{  E\{ h(X)  \}  }
+= \tau^h .
+$$
+\end{enumerate}
+
+Remark: 
+\citet{tao2019doubly} proved the above results. However, they hold only for a  given $h(X)$. The most interesting cases of $\tau_\textsc{T}, \tau_\textsc{C}$ and $\tau_\textsc{O}$ all have weight depending on the propensity score $e(X)$, which must be estimated in the first place. The above formulas do not apply to constructing the doubly robust estimators for $\tau_\textsc{T}$ and $\tau_\textsc{C}$; there does not exist a doubly robust estimator for $\tau_\textsc{O}$.
+
+
+\paragraph{Analyzing a dataset from the Karolinska Institute}\label{hw::Karolinska-att}
+
+Revisit Problem \ref{hw::Karolinska-dr}. Estimate $\tau_\textsc{T}$ based on the methods introduced in this Chapter. 
+
+
+
+ \paragraph{Recommended reading}
+ 
+ \citet{shinozaki2015brief} focused on $\tau_\textsc{T}$, and \citet{li2018balancing} discussed general $\tau^h$. 
+ 
+ 
+ 
+ 
+

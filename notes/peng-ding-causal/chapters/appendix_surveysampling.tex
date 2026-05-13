@@ -1,0 +1,262 @@
+
+\chapter{Some Useful Lemmas for Simple Random Sampling From a Finite Population}
+\chaptermark{Simple Random Sampling} 
+ \label{chapter::SRS-appendix}
+
+\section{Lemmas}
+ 
+Simple random sampling is a basic topic in standard survey sampling textbooks \citep[e.g.,][]{cochran1953}. Below I review some results for simple random sampling that are useful for design-based inference in the CRE in Chapters \ref{ch::frt-cre} and \ref{chapter::neyman-cr}. I define simple random sampling based on the distribution of the inclusion indicators. 
+
+
+\begin{definition}
+[simple random sampling]\label{definition-srs}
+A simple random sample of size $n_1$ consists of a subset from a finite population of $n$ units indexed by $i=1,\ldots, n$. 
+Let $\bm{Z} = (Z_1, \ldots, Z_n)$ be the inclusion indicators of the $n$ units with $Z_i=1$ if unit $i$ is sampled and $Z_i=0$ otherwise.
+The vector $\bm{Z}$ can take $\binom{n}{n_1}$ possible permutations of a vector of $n_1$ 1's and $n_0$ 0's, and each has equal probability.
+\end{definition}
+
+By Definition \ref{definition-srs}, simple random sampling is a special form of {\it sampling without replacement} because it does not allow for repeatedly sampling the same unit. Lemma \ref{lemma::randomization} below summarizes the first two moments of the inclusion indicators. 
+
+ 
+
+\begin{lemma}
+\label{lemma::randomization}
+Under simple random sampling, we have 
+$$
+E ( Z_i )  = \frac{n_1}{ n}, \quad 
+\var(Z_i) = \frac{  n_1 n_0 }{n^2}, \quad 
+\cov(Z_i, Z_j) = - \frac{n_1 n_0 } { n^2 (n-1)  }.
+$$ 
+In more compact forms, we have 
+$$
+E(\bm{Z}) = \frac{n_1}{n} \bm{1}_n,\quad
+\cov(\bm{Z}) = \frac{n_1n_0}{n(n-1)} \bm{P}_n,
+$$
+where $ \bm{1}_n$ is a $n$-dimensional vector of $1$'s, and $\bm{P}_n = \bm{I}_n  - n^{-1} \bm{1}_n \bm{1}_n\tran $ is the $n\times n$ projection matrix orthogonal to $ \bm{1}_n.$
+\end{lemma}
+
+
+
+
+Let $\{ c_1, \ldots, c_n\} $ be a finite population with mean $ \bar{c}  = \sumn c_i/n$ and variance
+$$
+S_c^2 = (n-1)^{-1} \sumn (c_i -  \bar{c} )^2;
+$$
+let $\{  d_1, \ldots, d_n \} $ be another finite population with mean $ \bar{d}   = \sumn d_i/n$ and variance
+$$
+S_d^2 =  (n-1)^{-1}   \sumn (d_i -  \bar{d}  )^2;
+$$
+their covariance is
+$$
+S_{cd} =  (n-1)^{-1}   \sumn (c_i -  \bar{c} ) (d_i -  \bar{d}  ).
+$$
+Under simple random sampling, the sample means are
+$$
+ \hat{\bar{c}}  =  n_1^{-1} \sumn Z_i c_i,\quad 
+ \hat{\bar{d}}   = n_1^{-1} \sumn Z_i d_i;
+$$
+sample variances are
+$$
+ \hat{S}_c^2   = (n_1 - 1)^{-1} \sumn Z_i (c_i -  \hat{\bar{c}} )^2,\quad 
+ \hat{S}_d^2   = (n_1 - 1)^{-1}   \sumn Z_i (d_i -  \hat{\bar{d}}  )^2;
+$$
+the sample covariance is
+$$
+ \hat{S}_{cd}   = (n_1 - 1)^{-1}  \sumn Z_i (c_i -  \hat{\bar{c}} ) (d_i -  \hat{\bar{d}}  ). 
+$$
+
+Lemma \ref{lemma::samplemean} below gives the moments of the sample means $ \hat{\bar{c}} $ and $ \hat{\bar{d}}  $. 
+
+\begin{lemma}
+\label{lemma::samplemean}
+Under simple random sampling, the sample means are unbiased for the population means:
+$$
+E( \hat{\bar{c}} ) =  \bar{c} ,\quad
+E( \hat{\bar{d}}  ) =  \bar{d}  .
+$$
+Their variances and covariance are
+\begin{eqnarray*}
+\var\left(   \hat{\bar{c}} \right) = \frac{ n_0}{n n_1  }  S_c^2 ,\quad 
+\var\left(   \hat{\bar{d}}  \right) = \frac{ n_0}{n n_1  }  S_d^2, \quad 
+\cov\left(  \hat{\bar{c}}  ,   \hat{\bar{d}}  \right) = \frac{ n_0}{n n_1 } S_{cd}. 
+\end{eqnarray*}
+\end{lemma}
+
+In the variance formulas in Lemma \ref{lemma::samplemean},  the coefficient $  n_0 / (n n_1 )  = 1/n_1 \times (1-n_1/n)$ in Lemma \ref{lemma::samplemean} is different from $1/n_1$ under IID sampling. The additional term $1-n_1/n = n_0/n$ is called the {\it finite population correction} factor. 
+
+
+Lemma \ref{lemma::variance-unbiased} below gives the unbiasedness of the sample variances and covariance for estimating the population analogs. 
+ 
+\begin{lemma}\label{lemma::variance-unbiased}
+Under simple random sampling, the sample variances and covariance are unbiased for their population versions:
+$$
+E( \hat{S}_c^2  ) = S_c^2,\quad 
+E( \hat{S}_d^2  ) = S_d^2,\quad
+E( \hat{S}_{cd} ) = S_{cd}  .
+$$
+\end{lemma}
+
+
+An important practical question is to make inference about $ \bar{c} $ based on the simple random sample. This requires a more precise characterization of the distribution of its unbiased estimator $ \hat{\bar{c}} $. The finite-sample exact distribution of $ \hat{\bar{c}} $ depends on the whole finite population $\{  c_1, \ldots, c_n \}$, which is unknown. The following finite population CLT characterizes the asymptotic distribution of $ \hat{\bar{c}} $ based on its first two moments. 
+
+\begin{lemma}[finite population CLT]
+\label{lemma::finite-population-clt}
+Under Under simple random sampling, as $n\rightarrow \infty$, if
+$$
+  \frac{ \max_{1\leq i \leq n}  (c_i -  \bar{c}  )^2 }{ \min(n_1, n_0)  S_c^2  } \rightarrow 0,
+$$
+then 
+$$
+\frac{  \hat{\bar{c}}  -  \bar{c}  }{   \sqrt{  \frac{ n_0}{n n_1  }  S_c^2}    } \rightarrow \textsc{N}(0,1)
+$$
+in distribution, and
+$
+ \hat{S}_c^2   / S_c^2   \rightarrow 1
+$
+in probability. 
+\end{lemma}
+
+Lemma \ref{lemma::finite-population-clt} justifies the Wald-type $1-\alpha$ confidence interval for $ \bar{c} $: 
+$$
+ \hat{\bar{c}}  \pm z_{1-\alpha/2}  \sqrt{  \frac{ n_0}{n n_1  }   \hat{S}_c^2  } 
+$$
+where $z_{1-\alpha/2} $ is the $1-\alpha/2$ upper quantile of the standard Normal random variable. 
+
+\section{Proofs}
+
+
+
+
+\begin{myproof}{Lemma}{\ref{lemma::randomization}}
+By symmetry, the $Z_i$'s have the same mean, so
+$$
+n_1 = \sumn Z_i = E\left (  \sumn Z_i  \right  )  = n E(Z_i)
+\Longrightarrow  E(Z_i) = n_1/n .
+$$
+%implies that $E(Z_i) = n_1/n$. 
+Because $Z_i$ is a Bernoulli random variable, its variance is 
+$$
+\var(Z_i) = \frac{n_1}{ n} \left(1 - \frac{n_1}{n} \right) = \frac{n_1 n_0}{n^2}.
+$$
+By symmetry again, the $Z_i$'s have the same variance and the pairs $(Z_i, Z_j)$'s have the same covariance, so 
+$$
+0 = \var\left(   \sumn Z_i \right)   = n   \var(Z_i) + n(n-1) \cov(Z_i, Z_j)
+$$
+which implies that  
+$$
+\cov(Z_i, Z_j) = - \frac{n_1 n_0 } { n^2 (n-1)  }  \quad (i\neq j).
+$$
+\end{myproof}
+
+
+
+
+ 
+
+\begin{myproof}{Lemma}{\ref{lemma::samplemean}}
+The unbiasedness of the sample mean follows from linearity. For example,
+$$
+E( \hat{\bar{c}} ) = E\left(   \frac{1}{n_1} \sumn Z_i c_i \right) =   \frac{1}{n_1} \sumn E(Z_i) c_i =  \bar{c} .
+$$
+
+The covariance of the sample means is
+\begin{eqnarray*}
+&&\cov( \hat{\bar{c}} ,  \hat{\bar{d}}  ) \\
+&=& \cov\left\{      \frac{1}{n_1} \sumn Z_i (c_i -  \bar{c}  ) ,   \frac{1}{n_1} \sumn Z_i (d_i -  \bar{d}   )\right\} \\
+&=& \frac{1}{n_1^2} \left[ \sumn \var(Z_i) (c_i -  \bar{c}  ) (d_i -  \bar{d}   ) + 
+\sum_{i\neq j} \cov(Z_i, Z_j) (c_i -  \bar{c}  )(d_j -  \bar{d}   ) 
+\right] \\
+&=& \frac{1}{n_1^2} \left[ \frac{n_1 n_0}{n^2} \sumn   (c_i -  \bar{c}  )(d_i -  \bar{d}   )
+-\frac{n_1 n_0 } { n^2 (n-1)  }
+\sum_{i\neq j}  (c_i -  \bar{c}  )(d_j -  \bar{d}   ) 
+\right] .
+\end{eqnarray*}
+Because 
+$$
+0 =   \sumn   (c_i -  \bar{c}  )  \sumn   (d_i -  \bar{d}   )  
+= 
+\sumn   (c_i -  \bar{c}  )(d_i -  \bar{d}   )   + 
+\sum_{i\neq j}  (c_i -  \bar{c}  )(d_j -  \bar{d}   ) ,
+$$
+the covariance of the sample means reduces to
+\begin{eqnarray*}
+&&\cov( \hat{\bar{c}} ,  \hat{\bar{d}} )  \\
+&=& \frac{1}{n_1^2} \left[ \frac{n_1 n_0}{n^2} \sumn   (c_i -  \bar{c}  ) (d_i -  \bar{d}   ) 
++\frac{n_1 n_0 } { n^2 (n-1)  }
+\sumn   (c_i -  \bar{c}  ) (d_i -  \bar{d}  ) 
+\right]  \\
+&=& \frac{n_0}{nn_1} S_{cd}.
+\end{eqnarray*}
+The variance formulas are just special cases with $ \hat{\bar{c}}  =  \hat{\bar{d}}  $. 
+\end{myproof}
+
+
+
+
+\begin{myproof}{Lemma}{\ref{lemma::variance-unbiased}} 
+We prove only the sample covariance term because the formulas for sample variances are special cases.
+We have the following decomposition:
+\begin{eqnarray*}
+(n_1 - 1)  \hat{S}_{cd}  &=& \sumn Z_i  (c_i -  \hat{\bar{c}} ) (d_i -  \hat{\bar{d}}  ) \\
+&=& \sumn Z_i \{    (c_i -  \bar{c}  ) - (  \hat{\bar{c}}   -  \bar{c} )  \}  \{    (d_i -  \bar{d}   ) - (  \hat{\bar{d}}    -  \bar{d}  )  \}\\
+&=&\sumn Z_i    (c_i -  \bar{c}  ) (d_i -  \bar{d}   )  -  n_1(  \hat{\bar{c}}   -  \bar{c} )   (  \hat{\bar{d}}    -  \bar{d}  ).
+\end{eqnarray*}
+Taking expectations on both sides, we have
+\begin{eqnarray*}
+E\{ (n_1 - 1)  \hat{S}_{cd}  \} &=&   \sumn E(Z_i)    (c_i -  \bar{c}  )  (d_i -  \bar{d}   )   -  n_1 E\{ (  \hat{\bar{c}}   -  \bar{c} )   (  \hat{\bar{d}}    -  \bar{d}  ) \} \\
+&=& \frac{n_1}{n}  \sumn     (c_i -  \bar{c}  ) (d_i -  \bar{d}   ) - n_1 \frac{n_0}{nn_1} S_{cd} \\
+&=& S_{cd} \left\{   \frac{n_1(n-1)}{n} - \frac{n_0}{n} \right\} \\
+&=& (n_1 - 1) S_{cd},
+\end{eqnarray*}
+and the conclusion follows by dividing both sides by $n_1-1$. 
+\end{myproof}
+
+
+
+
+
+\begin{myproof}{Lemma}{\ref{lemma::finite-population-clt}}
+\citet{hajek1960limiting} gave a proof of the CLT for simple random sampling, and \citet{lehmann2006nonparametrics} gave a more accessible version of the proof. \citet{li2017general} modified the CLT as presented in Lemma \ref{lemma::finite-population-clt}, and proved the consistency of the sample variance. Due to the technical complexities, I omit the proof. 
+\end{myproof}
+
+
+
+\section{Comments on the literature}
+
+
+Survey sampling and experimental design have been deeply connected ever since \citet{neyman1934two, neyman1935statistical}'s seminal work. \citet{li2017general} and \citet{mukerjee2018using} made many theoretical ties between these two areas. 
+
+
+
+\section{Homework Problems}
+
+\paragraph{Sampling without replacement and the Hypergeometric distribution}
+\label{problem::srs-hypergeometric}
+
+
+Consider a special case of Lemma \ref{lemma::samplemean} with $c_i$'s being binary. Assume the total number of 1's equals $T$ so the total number of 0's equals $n-T$. Let $t = \sumn Z_i c_i$ denote the total number of 1's in the sample of size $n_1$. 
+
+Find the distribution, mean, and variance of $t$. 
+
+Remark: $t$ follows a Hypergeometric distribution.  
+
+
+
+\paragraph{Vector form of Lemma \ref{lemma::samplemean}}
+\label{para::srs-vector-form}
+
+
+Assume the $c_i$'s are vectors and define 
+$$
+S_c^2 = (n-1)^{-1} \sumn (c_i  - \bar{c})(c_i -  \bar{c}) \tran ,\quad
+\hat S_c^2 = (n_1-1)^{-1} \sumn Z_i (c_i  - \hat{\bar{c}})(c_i - \hat{\bar{c}}) \tran .
+$$
+Show that 
+$$
+E(\hat{\bar{c}}) = \bar c,\quad
+\cov( \hat{\bar{c}} ) = \frac{n_0}{ nn_1} S_c^2,\quad
+E(\hat S_c^2 ) = S_c^2 .
+$$
+
+
+
