@@ -631,25 +631,6 @@ where $z_{1-\alpha/2}$ is the $1-\alpha/2$ upper quantile of the standard Normal
 
 I use the following simple example to illustrate the idea of the bootstrap. With $n=100$ IID observations $Y_i$'s from $\textsc{N}(1,1)$, the sample mean should be close to $1$ with variance $1/100 = 0.01$. Over $500$ simulations, the classic variance estimator and the bootstrap variance estimator with $B=200$ both have average values close to $0.01$. 
 
-\begin{lstlisting}
-> ## sample size
-> n  = 100
-> ## number of Monte Carlo simulations
-> MC = 500
-> ## number of bootstrap replicates B
-> n.boot = 200
-> simulation = replicate(MC, {
-+   Y = rnorm(n, 1, 1)
-+   boot.mu.hat = replicate(n.boot, {
-+     index = sample(1:n, n, replace = TRUE)
-+     mean(Y[index])
-+   })
-+   c(mean(Y), var(Y)/n, var(boot.mu.hat))
-+ })
-> ## summarize the results
-> apply(simulation, 1, mean)
-[1] 0.997602961 0.010006303 0.009921895
-\end{lstlisting}
 
 
 
