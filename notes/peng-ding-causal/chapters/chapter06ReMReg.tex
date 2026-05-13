@@ -507,66 +507,6 @@ Arrows 3 and 4 illustrate the benefits of the combination of ReM and the CRE.
 
 \section{Final remarks}
 
-ReM uses the Mahalanobis distance as the balance criterion.
-
-\begin{lstlisting}
-angrist   = read.dta("star.dta")
-angrist2  = subset(angrist, control == 1||sfsp == 1)
-## imputing missing outcomes
-y = angrist2$GPA_year1
-meany    = mean(y, na.rm = TRUE)
-y = ifelse(is.na(y), meany, y)
-z = angrist2$sfsp 
-x = angrist2[, c("female", "gpa0")]
-\end{lstlisting}
-
-
-The following code gives the results based on the unadjusted and adjusted estimators. 
-\begin{lstlisting}
-> ## unadjusted estimator
-> fit_unadj = lm(y ~ z)
-> ace_unadj = coef(fit_unadj)[2]
-> se_unadj  = sqrt(hccm(fit_unadj, type = "hc2")[2, 2])
-> 
-> ## regression adjustment
-> x         = scale(x)
-> fit_adj   = lm(y ~ z*x)
-> ace_adj   = coef(fit_adj)[2]
-> se_adj    = sqrt(hccm(fit_adj, type = "hc2")[2, 2])
-> 
-> res = c(ace_unadj, ace_adj, se_unadj, se_adj)
-> dim(res) = c(2, 2)
-> t.stat   = res[, 1]/res[, 2]
-> p.value  = 2*pnorm(abs(t.stat), lower.tail = FALSE) 
-> res      = cbind(res, t.stat, p.value)
-> rownames(res) = c("Neyman", "Lin")
-> colnames(res) = c("estimate", "s.e.", "t-stat", "p-value")
-> round(res, 3)
-       estimate  s.e. t-stat p-value
-Neyman    0.054 0.076  0.719   0.472
-Lin       0.075 0.072  1.036   0.300
-\end{lstlisting}
-The adjusted estimator has a smaller standard error although it gives the same insignificant result as the unadjusted estimator. 
-
-
-
-I also use this dataset to conduct simulation studies to evaluate the four design and analysis strategies summarized in Table \ref{tb::design-analysis-2x2}. I fit quadratic functions of the outcome on the covariates and use them to impute all the missing potential outcomes, separately for the treated and control groups. To show the improvement of ReM and regression adjustment, I also rescale the error terms by $0.1$ and $0.25$ to increase the signal-to-noise ratio. With the imputed Science Table, I generate 2000 treatments, obtain the observed data, and calculate the estimators. In the simulation, the ``true'' outcome model is nonlinear, but we still use linear adjustment for estimation. By doing this, we can evaluate the properties of the estimators even when the linear model is misspecified. 
-
-
-Figure \ref{fg::rerandomizationandancova} shows the violin plots\footnote{A violin plot is similar to a box plot, with the addition of a rotated kernel density plot on each side.} of the four combinations, subtracting the true $\tau$ from the estimates. As predicted by the theory, all estimators are nearly unbiased, and both ReM and regression adjustment improve efficiency. They are more effective when the noise level is smaller. 
-
-\begin{figure}
-\centering
-\includegraphics[width = \textwidth]{figures/RemReg_violin.pdf}
-\caption{Simulation with $2000$ Monte Carlo replicates and $a=0.05$ for ReM} \label{fg::rerandomizationandancova}
-\end{figure}
-
-
- 
-
-
-\section{Final remarks}
-
 ReM uses the Mahalanobis distance as the balance criterion. We can consider general rerandomization with the balance criterion defined as a function of $\bm{Z}$ and $\bm{X}$.  For example, we can use the following criterion based on marginal tests for all coordinates of $X_i = (x_{i1}, \ldots, x_{iK})\tran$. We accept $\bm{Z}$ if and only if 
 \begin{equation}
 \label{eq::marginal-testing-rerandomization}
