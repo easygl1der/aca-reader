@@ -61,6 +61,52 @@ $$
 
 Remark: The results above also imply that $\tau_\mathrm{T} - \tau_\mathrm{C} = \cov\{e(X), \tau(X)\} / \{e(1-e)\}$. So the differences among $\tau_\mathrm{T}, \tau_\mathrm{C}, \tau$ depend on the covariance between the propensity score and CATE. When $e(X)$ and $\tau(X)$ are uncorrelated, their differences are 0.
 
+\Paragraph{Solution to 13.1}
+
+Under the ignorability assumption $Z \ind \{Y(1), Y(0)\} \mid X$, the conditional average treatment effect satisfies:
+\begin{equation*}
+    \tau(X) = E\{Y(1) - Y(0) \mid X\} = E\{Y(1) - Y(0) \mid Z=1, X\}.
+\end{equation*}
+
+\textbf{1. Derivation for $\tau_\mathrm{T} - \tau$:}
+
+By the Law of Iterated Expectations, the average treatment effect on the treated (ATT) is:
+\begin{align*}
+    \tau_\mathrm{T} &= E\{Y(1) - Y(0) \mid Z=1\} \\
+    &= E[ E\{Y(1) - Y(0) \mid Z=1, X\} \mid Z=1 ] \\
+    &= E\{ \tau(X) \mid Z=1 \}.
+\end{align*}
+Using the property of conditional expectation $E(A \mid B) = E(A \cdot \mathbbm{I}_B) / \pr(B)$:
+\begin{equation}
+    \tau_\mathrm{T} = \frac{E\{ \tau(X) \mathbbm{I}(Z=1) \}}{\pr(Z=1)} = \frac{E[ E\{ \tau(X) \mathbbm{I}(Z=1) \mid X \} ]}{e} = \frac{E\{ \tau(X) e(X) \}}{e}. \label{eq:tauT_step}
+\end{equation}
+Recall the definition of covariance: $\cov\{e(X), \tau(X)\} = E\{e(X) \tau(X)\} - E\{e(X)\}E\{\tau(X)\}$. Since $E\{e(X)\} = e$ and $E\{\tau(X)\} = \tau$, we have:
+\begin{equation*}
+    E\{e(X) \tau(X)\} = \cov\{e(X), \tau(X)\} + e\tau.
+\end{equation*}
+Substituting this into \eqref{eq:tauT_step}:
+\begin{equation*}
+    \tau_\mathrm{T} = \frac{\cov\{e(X), \tau(X)\} + e\tau}{e} = \frac{\cov\{e(X), \tau(X)\}}{e} + \tau.
+\end{equation*}
+Thus, $\tau_\mathrm{T} - \tau = \frac{\cov\{e(X), \tau(X)\}}{e}$.
+
+\vspace{1em}
+\textbf{2. Derivation for $\tau_\mathrm{C} - \tau$:}
+
+Similarly, for the average treatment effect on the control (ATC):
+\begin{align*}
+    \tau_\mathrm{C} &= E\{ \tau(X) \mid Z=0 \} = \frac{E\{ \tau(X) \mathbbm{I}(Z=0) \}}{\pr(Z=0)} \\
+    &= \frac{E\{ \tau(X) (1 - e(X)) \}}{1-e} \\
+    &= \frac{E\{\tau(X)\} - E\{\tau(X)e(X)\}}{1-e}.
+\end{align*}
+Substituting $E\{\tau(X)\} = \tau$ and $E\{\tau(X)e(X)\} = \cov\{e(X), \tau(X)\} + e\tau$:
+\begin{align*}
+    \tau_\mathrm{C} &= \frac{\tau - [\cov\{e(X), \tau(X)\} + e\tau]}{1-e} \\
+    &= \frac{\tau(1-e) - \cov\{e(X), \tau(X)\}}{1-e} \\
+    &= \tau - \frac{\cov\{e(X), \tau(X)\}}{1-e}.
+\end{align*}
+Thus, $\tau_\mathrm{C} - \tau = - \frac{\cov\{e(X), \tau(X)\}}{1-e}$.
+
  \Paragraph{13.6~Estimating individual effect and conditional average causal effect}\label{hw::individual-effect-prediction}
 
 Assume that $\{Z_i, X_i, Y_i(1), Y_i(0)\}_{i=1}^n \iidsim \{Z, X, Y(1), Y(0)\}$. The individual effect is $\tau_i = Y_i(1) - Y_i(0)$ and the conditional average causal effect is $\tau(X_i) = E\{Y_i(1) - Y_i(0) \mid X_i\}$.
@@ -88,6 +134,42 @@ E(\delta_i - \tau_i) = 0, \quad
 E\{\delta_i - \tau(X_i)\} = 0, \quad (i=1,\ldots, n).
 $$
 Further show that $E(\delta_i) = \tau$ for all $i=1,\ldots, n$.
+\end{enumerate}
+
+\Paragraph{Solution to 13.6}
+
+First, note that the observed outcome is $Y_i = Z_i Y_i(1) + (1-Z_i) Y_i(0)$. Because $Z_i$ is binary, $Z_i^2 = Z_i$ and $Z_i(1-Z_i) = 0$. Thus, $Z_i Y_i = Z_i Y_i(1)$ and $(1-Z_i) Y_i = (1-Z_i) Y_i(0)$.
+
+\begin{enumerate}
+\item \textbf{Under Randomization:}
+The predictor is $\delta_i = \frac{Z_i Y_i(1)}{e} - \frac{(1-Z_i) Y_i(0)}{1-e}$. Conditioning on the potential outcomes:
+\begin{align*}
+    E(\delta_i \mid Y_i(1), Y_i(0)) &= \frac{Y_i(1)}{e} E(Z_i \mid Y_i(1), Y_i(0)) - \frac{Y_i(0)}{1-e} E(1-Z_i \mid Y_i(1), Y_i(0)) \\
+    &= \frac{Y_i(1)}{e} \cdot e - \frac{Y_i(0)}{1-e} \cdot (1-e) \\
+    &= Y_i(1) - Y_i(0) = \tau_i,
+\end{align*}
+where we used randomization $Z_i \ind \{Y_i(1), Y_i(0)\}$, implying $E(Z_i \mid Y_i(1), Y_i(0)) = E(Z_i) = e$.
+By the Law of Iterated Expectations (LIE):
+\begin{equation*}
+    E(\delta_i - \tau_i) = E[ E(\delta_i - \tau_i \mid Y_i(1), Y_i(0)) ] = E[\tau_i - \tau_i] = 0.
+\end{equation*}
+Finally, $E(\delta_i) = E(\tau_i) = \tau$.
+
+\item \textbf{Under Ignorability:}
+The predictor is $\delta_i = \frac{Z_i Y_i(1)}{e(X_i)} - \frac{(1-Z_i) Y_i(0)}{1-e(X_i)}$. Conditioning on $(X_i, Y_i(1), Y_i(0))$:
+\begin{align*}
+    E(\delta_i \mid X_i, Y_i(1), Y_i(0)) &= \frac{Y_i(1)}{e(X_i)} E(Z_i \mid X_i, Y_i(1), Y_i(0)) - \frac{Y_i(0)}{1-e(X_i)} E(1-Z_i \mid X_i, Y_i(1), Y_i(0)) \\
+    &= \frac{Y_i(1)}{e(X_i)} \cdot e(X_i) - \frac{Y_i(0)}{1-e(X_i)} \cdot (1-e(X_i)) \\
+    &= \tau_i,
+\end{align*}
+where we used ignorability $Z_i \ind \{Y_i(1), Y_i(0)\} \mid X_i$. 
+As before, $E(\delta_i - \tau_i) = E[ E(\delta_i - \tau_i \mid X_i, Y_i(1), Y_i(0)) ] = 0$.
+For the CATE $\tau(X_i)$, by LIE:
+\begin{equation*}
+    E(\delta_i \mid X_i) = E[ E(\delta_i \mid X_i, Y_i(1), Y_i(0)) \mid X_i ] = E(\tau_i \mid X_i) = \tau(X_i).
+\end{equation*}
+Thus, $E(\delta_i - \tau(X_i)) = E[ E(\delta_i - \tau(X_i) \mid X_i) ] = 0$.
+Finally, $E(\delta_i) = E[E(\delta_i \mid X_i)] = E[\tau(X_i)] = \tau$.
 \end{enumerate}
 
 
@@ -126,11 +208,74 @@ $$
 $$
 \end{enumerate}
 
+\Paragraph{Solution to 13.10}
+
+Let $e^*(X) = e(X, \alpha)$ and $\mu_1^*(X) = \mu_1(X, \beta_1)$. We analyze $\tilde{\mu}_1^{h,\mathrm{dr}}$ first.
+\begin{align*}
+    \tilde{\mu}_1^{h,\mathrm{dr}} &= E\left[\frac{Zh(X)\{Y - \mu_1^*(X)\}}{e^*(X)} + h(X)\mu_1^*(X)\right] \\
+    &= E\left[ \frac{Zh(X)Y(1)}{e^*(X)} - \frac{Zh(X)\mu_1^*(X)}{e^*(X)} + h(X)\mu_1^*(X) \right] \quad (\text{since } ZY = ZY(1)).
+\end{align*}
+Applying the Law of Iterated Expectations by conditioning on $X$:
+\begin{align*}
+    E[\tilde{\mu}_1^{h,\mathrm{dr}}] &= E\left[ E\left\{ \frac{Zh(X)Y(1)}{e^*(X)} - \frac{Zh(X)\mu_1^*(X)}{e^*(X)} + h(X)\mu_1^*(X) \mid X \right\} \right] \\
+    &= E\left[ \frac{h(X) \mu_1(X) e(X)}{e^*(X)} - \frac{h(X)\mu_1^*(X)e(X)}{e^*(X)} + h(X)\mu_1^*(X) \right] \quad (\text{by } Z \ind Y(1) \mid X) \\
+    &= E\left[ \frac{h(X)e(X)}{e^*(X)} \{ \mu_1(X) - \mu_1^*(X) \} + h(X)\mu_1^*(X) \right].
+\end{align*}
+
+\begin{enumerate}
+    \item \textbf{Part 1:} 
+    \begin{itemize}
+        \item If $e^*(X) = e(X)$, then $E[\tilde{\mu}_1^{h,\mathrm{dr}}] = E[ h(X)\mu_1(X) - h(X)\mu_1^*(X) + h(X)\mu_1^*(X) ] = E[h(X)\mu_1(X)]$.
+        \item If $\mu_1^*(X) = \mu_1(X)$, then $E[\tilde{\mu}_1^{h,\mathrm{dr}}] = E[ 0 + h(X)\mu_1(X) ] = E[h(X)\mu_1(X)]$.
+    \end{itemize}
+    In both cases, $E[\tilde{\mu}_1^{h,\mathrm{dr}}] = E[h(X)E\{Y(1)\mid X\}] = E[h(X)Y(1)]$.
+
+    \item \textbf{Part 2:}
+    Symmetrically, for $\tilde{\mu}_0^{h,\mathrm{dr}} = E\left[ \frac{(1-Z)h(X)\{Y - \mu_0^*(X)\}}{1 - e^*(X)} + h(X)\mu_0^*(X) \right]$:
+    \begin{equation*}
+        E[\tilde{\mu}_0^{h,\mathrm{dr}}] = E\left[ \frac{h(X)(1-e(X))}{1-e^*(X)} \{ \mu_0(X) - \mu_0^*(X) \} + h(X)\mu_0^*(X) \right].
+    \end{equation*}
+    If either $e^*(X) = e(X)$ or $\mu_0^*(X) = \mu_0(X)$, we have $E[\tilde{\mu}_0^{h,\mathrm{dr}}] = E[h(X)\mu_0(X)] = E[h(X)Y(0)]$.
+
+    \item \textbf{Part 3:}
+    If the conditions in Part 1 and Part 2 are met (which is true if either $e(X, \alpha) = e(X)$ or both outcome models are correct), then:
+    \begin{equation*}
+        \frac{E[\tilde{\mu}_1^{h,\mathrm{dr}}] - E[\tilde{\mu}_0^{h,\mathrm{dr}}]}{E[h(X)]} = \frac{E[h(X)Y(1)] - E[h(X)Y(0)]}{E[h(X)]} = \frac{E[h(X)\{Y(1)-Y(0)\}]}{E[h(X)]} = \tau^h.
+    \end{equation*}
+\end{enumerate}
+
 \subsection{Chapter 14: Using the Propensity Score in Regressions for Causal Effects}
 
  \Paragraph{14.3~Weighted logistic regression with a binary outcome}\label{hw::logistic-regression}
 
 With a binary outcome, we can replace linear outcome models with logistic outcome models. Show that with weights in the logistic regressions, the doubly robust estimators equal the outcome regression estimator. The result holds for both $\tau$ and $\tau_\mathrm{T}$.
+
+\Paragraph{Solution to 14.3}
+
+We show the result for the treated group component of $\tau$; the control group and the case for $\tau_\mathrm{T}$ follow the same logic. 
+
+The outcome regression estimator for $E[Y(1)]$ is $\hat{\mu}_1^{\mathrm{or}} = n^{-1} \sum_{i=1}^n \mu_1(X_i, \hat{\beta}_1)$. 
+The doubly robust estimator is:
+\begin{equation*}
+    \hat{\mu}_1^{\mathrm{dr}} = n^{-1} \sum_{i=1}^n \left[ \frac{Z_i Y_i}{e(X_i)} - \frac{Z_i - e(X_i)}{e(X_i)} \mu_1(X_i, \hat{\beta}_1) \right].
+\end{equation*}
+Rearranging the DR estimator, we have:
+\begin{equation*}
+    \hat{\mu}_1^{\mathrm{dr}} = n^{-1} \sum_{i=1}^n \mu_1(X_i, \hat{\beta}_1) + n^{-1} \sum_{i=1}^n \frac{Z_i}{e(X_i)} \{ Y_i - \mu_1(X_i, \hat{\beta}_1) \}.
+\end{equation*}
+Thus, $\hat{\mu}_1^{\mathrm{dr}} = \hat{\mu}_1^{\mathrm{or}}$ if and only if $\sum_{i=1}^n \frac{Z_i}{e(X_i)} \{ Y_i - \mu_1(X_i, \hat{\beta}_1) \} = 0$.
+
+In a weighted logistic regression with weights $w_i = 1/e(X_i)$ for the treated group, the score equation for the intercept is:
+\begin{equation*}
+    \sum_{i=1}^n w_i Z_i \{ Y_i - \mu_1(X_i, \beta_1) \} = 0 \implies \sum_{i=1}^n \frac{Z_i}{e(X_i)} \{ Y_i - \mu_1(X_i, \beta_1) \} = 0.
+\end{equation*}
+Since $\hat{\beta}_1$ is the solution to this score equation, the condition is satisfied, and $\hat{\mu}_1^{\mathrm{dr}} = \hat{\mu}_1^{\mathrm{or}}$.
+
+For $\tau_\mathrm{T}$, the weights in the logistic regression are $w_i = 1$ for $Z_i=1$, and the DR estimator uses different weights. The ATT outcome regression estimator is $n_1^{-1} \sum_{i: Z_i=1} Y_i$ (if we just use the treated units) or $n_1^{-1} \sum_{i: Z_i=1} \mu_1(X_i)$ if we use the whole sample to fit. Actually, for $\tau_\mathrm{T}$, the DR estimator is:
+\begin{equation*}
+    \hat{\tau}_{\mathrm{T, dr}} = \frac{1}{n_1} \sum_{i=1}^n Z_i Y_i - \frac{1}{n_1} \sum_{i=1}^n \frac{e(X_i)(1-Z_i)}{1-e(X_i)} \{ Y_i - \mu_0(X_i, \hat{\beta}_0) \} - \frac{1}{n_1} \sum_{i=1}^n Z_i \mu_0(X_i, \hat{\beta}_0).
+\end{equation*}
+Weighted logistic regression for the control group with weights $w_i = e(X_i)/(1-e(X_i))$ ensures $\sum \frac{e(X_i)(1-Z_i)}{1-e(X_i)} (Y_i - \mu_0(X_i)) = 0$, leading to $\hat{\tau}_{\mathrm{T, dr}} = \hat{\tau}_{\mathrm{T, or}}$.
 
 \subsection{Chapter 17: E-Value: Evidence for Causation in Observational Studies with Unmeasured Confounding}
 
