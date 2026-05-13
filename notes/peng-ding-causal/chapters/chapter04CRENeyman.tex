@@ -266,97 +266,6 @@ Problem \ref{hw::neyman-ols-nox} provides more technical details for \eqref{eq::
  
 
  
-\section{Examples} 
-
-
-\subsection{Simulation}
-\label{sec::simulation-neyman-formula}
-
-
-
-I first choose the sample size as $n=100$ with $60$ treated and $40$ control units, and generate the potential outcomes with constant individual causal effects. 
-\begin{lstlisting}
-n  = 100
-n1 = 60
-n0 = 40
-y0 = rexp(n)
-y0 = sort(y0, decreasing = TRUE)
-y1 = y0 + 1
- \end{lstlisting}
-With the Science Table fixed, I repeatedly generate CREs and apply Theorem \ref{thm::neyman1923} to obtain the point estimator, the conservative variance estimator, and the confidence interval based on the Normal approximation. 
-The $(1,1)$th panel of Figure \ref{fig::simulation-neyman} shows the scatter plot of the potential outcomes,
-and the $(1,2)$th panel of Figure \ref{fig::simulation-neyman}  shows the histogram of $\hat{\tau} - \tau$. 
-
-I then change the potential outcomes by sorting the control potential outcomes in reverse order
-\begin{lstlisting}
-y0 = sort(y0, decreasing = FALSE)
- \end{lstlisting}
-and repeat the above simulation. 
-The $(2,1)$th panel of Figure \ref{fig::simulation-neyman} shows the scatter plot of the potential outcomes,
-and the $(2,2)$th panel of Figure \ref{fig::simulation-neyman}  shows the histogram of $\hat{\tau} - \tau$. 
-
-
-
-
-I finally permute the control potential outcomes randomly 
- \begin{lstlisting}
-y0 = sample(y0)
- \end{lstlisting}
- and repeat the above simulation. 
- The $(3,1)$th panel of Figure \ref{fig::simulation-neyman} shows the scatter plot of the potential outcomes,
-and the $(2,2)$th panel of Figure \ref{fig::simulation-neyman}  shows the histogram of $\hat{\tau} - \tau$. 
-
- 
- Importantly, in the above three sets of simulations, the correlations between potential outcomes are different but the marginal distributions are the same. The following table compares the true variances, the average estimated variances, and the coverage rates of the $95\%$ confidence intervals. 
- \begin{lstlisting}
-              constant negative independent
-var              0.036    0.007       0.020
-estimated var    0.036    0.036       0.036
-coverege rate    0.947    1.000       0.989
- \end{lstlisting}
-The true variance depends on the correlation between the potential outcomes, with positively correlated potential outcomes corresponding to a larger sampling variance. This verifies \eqref{eq::neyman23var-equivalent}. The estimated variances are almost identical because the formula of $\hat{V}$ depends only on the marginal distributions of the potential outcomes. Due to the discrepancy between the true and estimated variances, the coverage rates differ across the three sets of simulations. Only with constant causal effects, the estimated variance is identical to the true variance, verifying point \ref{neyman-3} of Theorem \ref{thm::neyman1923}. 
- 
-Figure \ref{fig::simulation-neyman} also shows the Normal density curves based on the CLT for $\hat{\tau} $. They are very close to the histogram over simulations, verifying Theorem \ref{thm::clt-difference-in-means}.
- 
- 
- \begin{figure}
- \centering 
- \includegraphics[width = \textwidth]{figures/neymanevaluation3.pdf}
- \caption{
-Left: joint distributions of the potential outcomes with the same marginal distributions. 
-Right: sampling distribution of $\hat{\tau} - \tau$ over $10^4$ simulations with different joint distributions of the potential outcomes.}\label{fig::simulation-neyman}
- \end{figure} 
- 
- 
- 
- 
- 
- \subsection{Heavy-tailed outcome and failure of Normal approximations}
-
-
-The  CLT of $\hat{\tau}  $ in Theorem \ref{thm::clt-difference-in-means} holds under some regularity conditions. Those conditions will be violated with heavy-tailed potential outcomes. We can modify the above simulation studies to illustrate this point. Assume the individual causal effects are constant but the control potential outcomes are contaminated by a Cauchy component with probability $0.1, 0.3$, or $0.5$. The following code generates the potential outcomes with the probability of contamination being $0.1$. 
-
-\begin{lstlisting}
-eps = rbinom(n, 1, 0.1)
-y0 = (1 - eps)*rexp(n) + eps*rcauchy(n)
-y1 = y0 + 1
-\end{lstlisting} 
-
-
-Figures \ref{fig::simulation-neyman-heavytail-1} and \ref{fig::simulation-neyman-heavytail-2} show two realizations of the histograms of $\hat{\tau} - \tau$ with the corresponding Normal approximations. With heavy-tailed potential outcomes, the Normal approximations are quite poor. Moreover, unlike Figure \ref{fig::simulation-neyman}, the histograms are quite sensitive to the random seed of the simulation. 
-
-
- \begin{figure}
- \centering 
- \includegraphics[width = \textwidth]{figures/neyman_comtamination_realized1.pdf}
- \caption{Sampling distribution of $\hat{\tau} - \tau$ with contaminated potential outcomes (with different contamination probabilities): realization one }\label{fig::simulation-neyman-heavytail-1}
- \end{figure} 
- 
-  \begin{figure}
- \centering 
- \includegraphics[width = \textwidth]{figures/neyman_comtamination_realized2.pdf}
- \caption{Sampling distribution of $\hat{\tau} - \tau$ with contaminated potential outcomes (with different contamination probabilities): realization two }\label{fig::simulation-neyman-heavytail-2}
- \end{figure} 
  
  
 
@@ -417,7 +326,6 @@ Prove Lemma \ref{lemma::variancecovariancetau}.
 
 
 \paragraph{Alternative proof of Theorem \ref{thm::neyman1923}}\label{hw::neyman-alternative-proof}
-
 
 Under a CRE, calculate 
 $$
@@ -537,10 +445,5 @@ Compare the variance of the above unbiased estimator and the asymptotic variance
 Remark: 
 Under the BRE, the estimator $\hat{\tau}$ does not have finite variance but the variance of its asymptotic distribution is finite. 
 
-
-
-\paragraph{Recommended reading}
-
- \citet{Ding:2014} compared the Fisherian approach and Neymanian approach to analyzing the CRE. 
 
 

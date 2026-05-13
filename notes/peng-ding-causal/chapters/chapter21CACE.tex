@@ -322,16 +322,6 @@ I do not implement the corresponding estimator and variance estimator but relega
 
 \subsection{A procedure robust to weak IV}
  
-Even if $\tau_D >0$, there is a positive probability that $\hat{\tau}_D$ is zero, so the variance of $\hat{\tau}_\cp$ is infinity (see Problem \ref{problem::infinite-var-iv}). The variance from the Normal approximation discussed before is not the variance of  $\hat{\tau}_\cp$ but rather the variance of its asymptotic distribution. This is a subtle technical point.  When $ \tau_D$ is close to $0$, which is referred to as the weak IV case, the ratio estimator $\hat{\tau}_\cp = \hat{\tau}_Y / \hat{\tau}_D$ has poor finite-sample properties.  In this scenario, $\hat{\tau}_\cp$ has finite-sample bias and non-Normal asymptotic distribution, and the corresponding Wald-type confidence intervals have poor coverage properties\footnote{The theory often assumes that $\tau_D$ has the order $n^{-1/2}$. Under this regime, the proportion of compliers goes to 0 as $n$ goes to infinity. The IV method can only identify a subgroup average causal effect with the proportion shrinking to 0.  This is a contrived regime for theoretical analysis. It is hard to justify this assumption in practice. The following discussion does not assume it.}. In the simple case with a binary outcome $Y$, we know that $\tau_Y$ must be bounded between $-1$ and $1$, but there is no guarantee that $\hat{\tau}_\cp$ is bounded between $-1$ and $1$. 
- 
-
-
-
-
-
-
-\section{Weak IV}
-
 Even if $\tau_D >0$, there is a positive probability that $\hat{\tau}_D$ is zero, so the variance of $\hat{\tau}_\cp$ is infinity (see Problem \ref{problem::infinite-var-iv}). The variance from the Normal approximation discussed before is not the variance of  $\hat{\tau}_\cp$ but rather the variance of its asymptotic distribution. This is a subtle technical point.  When $ \tau_D$ is close to $0$, which is referred to as the weak IV case, the ratio estimator $\hat{\tau}_\cp = \hat{\tau}_Y / \hat{\tau}_D$ has poor finite-sample properties.  In this scenario, $\hat{\tau}_\cp$ has finite-sample bias and non-Normal asymptotic distribution, and the corresponding Wald-type confidence intervals have poor coverage properties. In the simple case with a binary outcome $Y$, we know that $\tau_Y$ must be bounded between $-1$ and $1$, but there is no guarantee that $\hat{\tau}_\cp$ is bounded between $-1$ and $1$.
 From a testing perspective, there is an easy solution.
 $$
@@ -422,32 +412,6 @@ FARciX = function(Z, D, Y, X, Lower, Upper, grid)
   return(list(CIrange = CIrange, Pvalue  = Pvalue))
 }
 \end{lstlisting}
-
-
-Figure \ref{fg::FAR-ci-simulation} displays the $p$-value as a function of $b$ in simulated data with different $\pi_\cp$. Figures \ref{fig::FARci-realization1} and \ref{fig::FARci-realization2} are based on two realizations of the same data-generating process, with details relegated to the \ri{R} code.  In Figure \ref{fig::FARci-realization1}, the FAR confidence sets are all closed intervals, whereas, in Figure \ref{fig::FARci-realization2}, the confidence sets are not closed intervals with $\pi_\cp = 0.2$ and $\pi_\cp = 0.1$. The shapes of the confidence sets remain stable across two realizations with $\pi_\cp = 0.5$. 
-
-
-
-\begin{figure}
-\centering 
-\begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/FARci_simulation1.pdf}
-                \caption{Realization 1}
-                \label{fig::FARci-realization1}
-        \end{subfigure}%
-\begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{figures/FARci_simulation2.pdf}
-                \caption{Realization 2}
-                \label{fig::FARci-realization2}
-        \end{subfigure}%        
-\caption{FAR confidence interval based on simulated data with different $\pi_\cp$: two realizations}\label{fg::FAR-ci-simulation}
-\end{figure}
-
-
-
-
 
 
 
