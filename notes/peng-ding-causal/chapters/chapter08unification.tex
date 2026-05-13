@@ -113,53 +113,6 @@ Similarly, this is a feature of the studentized statistic $t_\textsc{L} $. \cite
 
 
 
-\section{A simulation study}
-\label{sec::simulation-xfrt-typeoneerror}
-
-
-
-
-Now I use simulation to evaluate the finite-sample properties of the $p_\frt$'s under the weak null hypothesis. I will use the following twelve test statistics.
-\begin{enumerate}
-\item
-The first three test statistics are from the OLS implementation of \citet{Neyman:1923}, including the coefficient of the treatment, the $t$-statistic based on the classic standard error, and the $t$-statistic based on the EHW standard error.
-
-\item
-The next three test statistics are based on the pseudo-outcome strategy in Definition \ref{def::pseudo-y-frt}, advocated by \citet{rosenbaum2002covariance}. We first residualize the outcomes by regressing $Y_i$ on $(1,X_i)$, and then obtain the three test statistics similar to the first three.
-
-\item
-The next three test statistics are based on the OLS implementation of \citet{fisher1925statistical}, as discussed in Chapter \ref{sec::ancova}.
-
-\item
-The final three test statistics are based on the OLS implementation of \citet{lin2013}, as discussed in Chapter \ref{sec::ancova}.
-\end{enumerate}
-
- 
-
-
-Consider a finite population of $n=100$ units subjected to a CRE of size $(n_1, n_0) =(20,80)$.
-For each $i  $, we draw a univariate covariate $ X_i $ from Unif$(-1,1)$ and generate potential outcomes as $Y_i(1) \sim \textsc{N}(  X_i ^3 , 1)$ and $Y_i(0) \sim \textsc{N}( - X_i ^3 , 0.5^2)$.
-Center the $Y_i(1)$'s and $Y_i(0)$'s  to ensure $\tau= 0$.  
-Fix $\{Y_i(1), Y_i(0),  X_i \}_{ i = 1}^{n} $ in simulation. We draw a random permutation of $n_1$ 1's and $n_0$ 0's to obtain the observed outcomes and conduct FRTs. 
-The procedure is repeated 500 times, with the $p$-values approximated by 500 independent permutations of the treatment vector in each replication. 
-
-
-
-Figure \ref{fig::xfrt-type1error} shows the $p$-values under the weak null hypothesis.
-The four robust $t$-statistics, as shown in the last row, are the only ones that preserve the correct type one error rates. 
-In fact, they are conservative, which is coherent with the theory. 
-All the other eight statistics yield type one error rates greater than the nominal levels and are thus not proper for testing the weak null hypothesis.
-
- 
-
-
-
-\begin{sidewaysfigure} 
-\centering
-\includegraphics[width = \textwidth]{figures/typeoneerrorXFRT.pdf}
-\caption{Histograms of $p_\frt$ under the weak null hypothesis}\label{fig::xfrt-type1error}
-\end{sidewaysfigure}
-
 
 
 
