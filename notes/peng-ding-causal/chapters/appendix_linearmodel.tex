@@ -237,36 +237,6 @@ Based on the \ri{BostonHousing} data, we first obtain the standard output from t
 
 In \ri{R}, the \ri{lm} function can compute $\hat{\beta}$, and the \ri{hccm} function in the package \ri{car} can compute $\hat{V}_\textsc{ehw} $ as well as its variants. Below we compare the $t$-statistics based on different choices of the standard errors. In this example, the EHW standard errors differ a lot for some regression coefficients. 
 
-\begin{lstlisting}
-> library("car")
-> ols.fit.hc0 = sqrt(diag(hccm(ols.fit, type = "hc0")))
-> ols.fit.hc1 = sqrt(diag(hccm(ols.fit, type = "hc1")))
-> ols.fit.hc2 = sqrt(diag(hccm(ols.fit, type = "hc2")))
-> ols.fit.hc3 = sqrt(diag(hccm(ols.fit, type = "hc3")))
-> tvalues = summary(ols.fit)$coef[,1]/
-+   cbind(summary(ols.fit)$coef[,2], 
-+         ols.fit.hc0, 
-+         ols.fit.hc1, 
-+         ols.fit.hc2, 
-+         ols.fit.hc3)
-> colnames(tvalues) = c("ols", "hc0", "hc1", "hc2", "hc3")
-> round(tvalues, 2)
-               ols   hc0   hc1   hc2   hc3
-(Intercept)   7.14  4.62  4.56  4.48  4.33
-crim         -3.29 -3.78 -3.73 -3.48 -3.17
-zn            3.38  3.42  3.37  3.35  3.27
-indus         0.33  0.41  0.41  0.41  0.40
-chas1         3.12  2.11  2.08  2.05  2.00
-nox          -4.65 -4.76 -4.69 -4.64 -4.53
-rm            9.12  4.57  4.51  4.43  4.28
-age           0.05  0.04  0.04  0.04  0.04
-dis          -7.40 -6.97 -6.87 -6.81 -6.66
-rad           4.61  5.05  4.98  4.91  4.76
-tax          -3.28 -4.65 -4.58 -4.54 -4.43
-ptratio      -7.28 -8.23 -8.11 -8.06 -7.89
-b             3.47  3.53  3.48  3.44  3.34
-lstat       -10.35 -5.34 -5.27 -5.18 -5.01
-\end{lstlisting}
 
 
 
