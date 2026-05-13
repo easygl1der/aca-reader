@@ -1,22 +1,23 @@
 #!/bin/bash
-set -e
+# 编译 LaTeX 文档（运行三次以确保交叉引用正确）
+#
+# xelatex: XeLaTeX 编译器，支持 Unicode 和中文字符
+# -interaction=nonstopmode: 遇到错误继续运行，不等待用户交互
+# -synctex=1: 启用 SyncTeX，实现 PDF 与源码双向同步
 
-NAME="Causalinference"
+FILE="Causalinference"
 
-# First pass: xelatex to generate aux files
-echo "=== Pass 1/4: xelatex (generating aux files) ==="
-xelatex -synctex=1 -interaction=nonstopmode "${NAME}.tex"
+echo "=== 第一次编译 ==="
+xelatex -interaction=nonstopmode -synctex=1 ${FILE}.tex
 
-# Bibliography pass
-echo "=== Pass 2/4: bibtex ==="
-bibtex "${NAME}.aux" || true
+echo "=== 编译参考文献 ==="
+bibtex ${FILE}.aux
 
-# Second pass: resolve citations and references
-echo "=== Pass 3/4: xelatex (resolving refs) ==="
-xelatex -synctex=1 -interaction=nonstopmode "${NAME}.tex"
+echo "=== 第二次编译 ==="
+xelatex -interaction=nonstopmode -synctex=1 ${FILE}.tex
 
-# Third pass: final resolution
-echo "=== Pass 4/4: xelatex (final pass) ==="
-xelatex -synctex=1 -interaction=nonstopmode "${NAME}.tex"
+echo "=== 第三次编译 ==="
+xelatex -interaction=nonstopmode -synctex=1 ${FILE}.tex
 
-echo "=== Done: ${NAME}.pdf ==="
+echo "=== 编译完成 ==="
+ls -la ${FILE}.pdf
