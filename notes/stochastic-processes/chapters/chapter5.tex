@@ -1361,13 +1361,108 @@ The uniqueness follows from the fact that for an irreducible Markov chain, if an
 \end{Solution}
 
 \section{Long-Time Behaviour of Markov Chains with Finite State Space}
-...
+
+As we have seen above, the existence of the $\pi_j$ plays a very important role in the study of invariant measures. In what follows we shall investigate this question in the case when the state space $S$ is finite.
+
+\begin{Proof}[Proof of Theorem \ref{thrm:finite-state-convergence}]
+Denote the matrix $P^{n_0} = [p_{n_0}(j \mid i)]$ by $Q = [q(j \mid i)]$. Then the process $\eta_k = \xi_{kn_0}$, $k \in \mathbb{N}$, is a Markov chain on $S$ with transition probability matrix $Q$ satisfying (5.54) with $n_0$ equal to $1$. Note that $p_{kn_0}(j \mid i) = q_k(j \mid i)$ due to the Chapman--Kolmogorov equations. Suppose that the properties (5.55)--(5.56) hold true for $Q$. In particular, $\lim_{k \to \infty} p_{kn_0}(j \mid i) = \pi_j$ exists and is independent of $i$. We claim that they are also true for the original matrix $P$. Obviously, one only needs to check condition (5.55). The Chapman--Kolmogorov equations (and the fact that $S$ is finite) imply that for any $r = 1, \cdots, n_0 - 1$
+\[
+\begin{aligned}
+p_{kn_0+r}(j \mid i) &= \sum_{s \in S} p_{kn_0}(j \mid s) p_r(s \mid i) \to \sum_{s \in S} \pi_j p_r(s \mid i) \\
+&= \pi_j \sum_{s \in S} p_r(s \mid i) = \pi_j.
+\end{aligned}
+\]
+
+Therefore, by a simple result in calculus, according to which, if for a sequence $a_n$, $n \in \mathbb{N}$, there exists a natural number $n_0$ such that for each $r \in \{0, 1, \cdots, n_0-1\}$ the limit $\lim_{k \to \infty} a_{kn_0+r}$ exists and is $r$-independent, then the sequence $a_n$ is convergent to the common limit of those subsequences, we infer that (5.55) is satisfied.
+
+In what follows we shall assume that (5.54) holds with $n_0 = 1$. Let us put $p_0(j \mid i) = \delta_{ji}$ and for $j \in S$
+\[
+m_n(j) := \min_{i \in S} p_n(j \mid i), \quad M_n(j) := \max_{i \in S} p_n(j \mid i).
+\]
+
+Observe that $M_0(j) = 1$ and $m_0(j) = 0$ for all $j \in S$. From the Chapman-Kolmogorov equations it follows that the sequence $M_n(j)$, $n \in \mathbb{N}$, is decreasing, while the sequence $m_n(j)$, $n \in \mathbb{N}$, is increasing. Indeed, since $\sum_k p(k \mid i) = 1$,
+\[
+\begin{aligned}
+p_{n+1}(j \mid i) &= \sum_{k \in S} p_n(j \mid k) p(k \mid i) \\
+&\geq \min_k p_n(j \mid k) \sum_{k \in S} p(k \mid i) = \min_k p_n(j \mid k) = m_n(j).
+\end{aligned}
+\]
+
+Hence, by taking the minimum over all $i \in S$, we arrive at
+\[
+m_{n+1}(j) = \min_i p_{n+1}(j \mid i) \geq m_n(j).
+\]
+
+Similarly,
+\[
+\begin{aligned}
+p_{n+1}(j \mid i) &= \sum_{k \in S} p_n(j \mid k) p(k \mid i) \\
+&\leq \max_k p_n(j \mid k) \sum_{k \in S} p(k \mid i) = \max_k p_n(j \mid k) = M_n(j).
+\end{aligned}
+\]
+
+Hence, by taking the maximum over all $i \in S$, we obtain
+\[
+M_{n+1}(j) = \max_i p_{n+1}(j \mid i) \leq M_n(j).
+\]
+
+Since $M_n(j) \geq m_n(j)$, the sequences $M_n(j)$ and $m_n(j)$ are bounded from below and from above, respectively. As a consequence, they both have limits. To show that the limits coincide we shall prove that
+\[
+\lim_{n \to \infty} (M_n(j) - m_n(j)) = 0. \tag{5.57}
+\]
+
+For $n \geq 0$ we have
+\[
+p_{n+1}(j \mid i) = \sum_{s \in S} p_n(j \mid s) p(s \mid i) \tag{5.58}
+\]
+\[
+= \sum_{s \in S} p_n(j \mid s) [p(s \mid i) - \varepsilon p_n(s \mid j)] + \varepsilon \sum_{s \in S} p_n(j \mid s) p_n(s \mid j)
+\]
+\[
+= \sum_{s \in S} p_n(j \mid s) [p(s \mid i) - \varepsilon p_n(s \mid j)] + \varepsilon p_{2n}(j \mid j)
+\]
+by the Chapman--Kolmogorov equations. The expression in square brackets is $\geq 0$. Indeed, by assumption (5.54), $p(s \mid i) \geq \varepsilon$ and $p_n(s \mid j) \leq 1$. Therefore,
+\[
+p_{n+1}(j \mid i) \geq \min_{s \in S} p_n(j \mid s) \sum_{s \in S} [p(s \mid i) - \varepsilon p_n(s \mid j)] + \varepsilon p_{2n}(j \mid j) \tag{5.59}
+\]
+\[
+= (1 - \varepsilon) m_n(j) + \varepsilon p_{2n}(j \mid j).
+\]
+
+By taking the minimum over $i \in S$, we arrive at
+\[
+m_{n+1}(j) \geq (1 - \varepsilon) m_n(j) + \varepsilon p_{2n}(j \mid j). \tag{5.60}
+\]
+
+Recycling the above argument, we obtain a similar inequality for the sequence $M_n(j)$:
+\[
+M_{n+1}(j) \leq (1 - \varepsilon) M_n(j) + \varepsilon p_{2n}(j \mid j). \tag{5.61}
+\]
+
+Thus, by subtracting (5.60) from (5.61) we get
+\[
+M_{n+1}(j) - m_{n+1}(j) \leq (1 - \varepsilon) (M_n(j) - m_n(j)). \tag{5.62}
+\]
+
+Hence, by induction
+\[
+M_n(j) - m_n(j) \leq (1 - \varepsilon)^n, \quad n \in \mathbb{N}.
+\]
+
+This proves (5.57). Denote by $\pi_j$ the common limit of $M_n(j)$ and $m_n(j)$. Then (5.55) follows from (5.57). Indeed, if $i, j \in S$, then
+\[
+m_n(j) \leq p_n(j \mid i) \leq M_n(j).
+\]
+
+To prove that $\pi_j > 0$ let us recall that $m_n(j)$ is an increasing sequence and $m_1(j) \geq \varepsilon$ by (5.54). We infer that $\pi_j \geq \varepsilon$. $\square$
+\end{Proof}
+
 \begin{Exercise}
 \label{exr:exponential-convergence}
 Show that $p_n(j \mid i) \to \pi_j$ at an exponential rate.
 
 \begin{hint}
-Recall that $m_n(j) \leq \pi_j \leq M_n(j)$ and use (5.62).
+Recall that $m_n(j) \leq \pi_j \leq M_n(j)$ and use (5.57).
 \end{hint}
 \end{Exercise}
 
