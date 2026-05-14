@@ -302,26 +302,67 @@ $$
 $$
 \end{thesis}
 
+\begin{proof}
+Define 
+$$ 
+f_{1,x} = \pr(U=1\mid Z=1,X=x),\quad
+f_{0,x}  = \pr(U=1\mid Z=0,X=x) .
+$$ 
+We can decompose $\RR_{ZY\mid x}^\obs$ as
+\begin{align*}
+\RR_{ZY\mid x}^\obs  
+&= \frac{  \pr( Y  = 1\mid Z=1, X=x  ) }{ \pr( Y  = 1\mid  Z=0,  X=x  ) } \\
+&= \frac{ \pr(U=1\mid Z=1,  X=x) \pr( Y  = 1\mid Z=1, U=1,  X=x  ) + \pr(U=0\mid Z=1,  X=x) \pr( Y  = 1\mid Z=1, U=0,  X=x  ) }
+{  \pr(U=1\mid Z=0,  X=x) \pr( Y  = 1\mid  Z=0, U=1,  X=x  )  +  \pr(U=0\mid Z=0,  X=x) \pr( Y  = 1\mid  Z=0, U=0,  X=x  )   } \\
+&= \frac{ \pr(U=1\mid Z=1,  X=x) \pr( Y  = 1\mid U=1,  X=x  ) + \pr(U=0\mid Z=1,  X=x) \pr( Y  = 1\mid U=0,  X=x  )  }
+{   \pr(U=1\mid Z=0,  X=x) \pr( Y  = 1\mid   U=1,  X=x  )  +  \pr(U=0\mid Z=0,  X=x) \pr( Y  = 1\mid  U=0,  X=x  )   } \\
+&= \frac{  f_{1,x} \RR_{UY\mid x} + 1- f_{1,x}  }{ f_{0,x} \RR_{UY\mid x} + 1- f_{0,x}  } \\
+&= \frac{  (\RR_{UY\mid x} - 1) f_{1,x} + 1  }{      \frac{  \RR_{UY\mid x} - 1}{  \RR_{ZU\mid x} }    f_{1,x} + 1  } .
+\end{align*}
+By the technical lemma (Exercise 17.1), $f(x) = \frac{ax+1}{bx+1}$ is increasing in $x$ if $a > b$. Here $a = \RR_{UY\mid x} - 1$ and $b = \frac{\RR_{UY\mid x} - 1}{\RR_{ZU\mid x}}$. Since $\RR_{ZU\mid x} > 1$, we have $a > b$. Thus, $\RR_{ZY\mid x}^\obs$ is increasing in $f_{1,x}$. Letting $f_{1,x} = 1$, we obtain the upper bound:
+$$
+\RR_{ZY\mid x}^\obs \leq \frac{  (\RR_{UY\mid x} - 1) + 1  }{      \frac{  \RR_{UY\mid x} - 1}{  \RR_{ZU\mid x} }    + 1  }
+= \frac{ \RR_{ZU\mid x}  \RR_{UY\mid x} }{  \RR_{ZU\mid x} + \RR_{UY\mid x} - 1} .
+$$
+\end{proof}
+
  \Paragraph{17.1~A technical lemma for the proof of \cref{17.1}}\label{hw::technical-lemma}
 
 Show that $f(x) = \frac{ax+1}{bx+1}$ is increasing in $x$ if $a > b$ and decreasing in $x$ if $a < b$.
+
+\Paragraph{Solution to 17.1}
+
+Consider the derivative of $f(x)$ with respect to $x$:
+\begin{equation*}
+    f'(x) = \frac{a(bx+1) - b(ax+1)}{(bx+1)^2} = \frac{abx + a - abx - b}{(bx+1)^2} = \frac{a - b}{(bx+1)^2}.
+\end{equation*}
+Since the denominator $(bx+1)^2$ is always positive:
+\begin{itemize}
+    \item If $a > b$, then $f'(x) > 0$, so $f(x)$ is increasing in $x$.
+    \item If $a < b$, then $f'(x) < 0$, so $f(x)$ is increasing in $x$.
+\end{itemize}
 
  \Paragraph{17.2~Technical assumption for Theorem 17.1}\label{hw::technical-assumption}
 
 Revisit the proof of \cref{17.1}. Assume $Z\ind Y \mid (X, U)$. Show that if $\RR_{ZU|x} > 1$ but $\RR_{UY|x} < 1$, then $\RR_{ZY|x}^{\obs} < 1$.
 
-Remark: This result is intuitive. Condition on $X$. It says that if the $Z$-$U$ relationship is positive and the $U$-$Y$ relationship is negative, then the $Z$-$Y$ relationship is negative given the conditional independence of $Z$ and $Y$ given $U$.
+\Paragraph{Solution to 17.2}
 
-
-\begin{definition}[Cornfield-type risk differences]\label{17:def:cornfield-rd}
-For binary $Z, Y, U$, the observed risk difference is
-$$\RD_{ZY}^{\obs} = \pr(Y=1\mid Z=1) - \pr(Y=1\mid Z=0).$$
-The treatment-confounder risk difference is
-$$\RD_{ZU} = \pr(U=1\mid Z=1) - \pr(U=1\mid Z=0).$$
-The confounder-outcome risk difference is
-$$\RD_{UY} = \pr(Y=1\mid U=1) - \pr(Y=1\mid U=0).$$
-Under latent ignorability $Z\ind Y\mid U$, we have the product relation $\RD_{ZY}^{\obs} = \RD_{ZU} \times \RD_{UY}$.
-\end{definition}
+Condition on $X=x$ implicitly. Let $q_z = \pr(U=1 \mid Z=z)$ and $p_u = \pr(Y=1 \mid U=u)$. By $Z \ind Y \mid U$, we have $\pr(Y=1 \mid Z=z, U=u) = \pr(Y=1 \mid U=u) = p_u$.
+Using the Law of Total Probability:
+\begin{align*}
+    \pr(Y=1 \mid Z=z) &= \pr(Y=1 \mid Z=z, U=1)\pr(U=1 \mid Z=z) + \pr(Y=1 \mid Z=z, U=0)\pr(U=0 \mid Z=z) \\
+    &= p_1 q_z + p_0 (1 - q_z) = p_0 + (p_1 - p_0)q_z.
+\end{align*}
+The observed risk ratio is $\RR_{ZY}^{\obs} = \frac{p_0 + (p_1 - p_0)q_1}{p_0 + (p_1 - p_0)q_0}$. 
+Given:
+\begin{itemize}
+    \item $\RR_{ZU} > 1 \implies \frac{q_1}{q_0} > 1 \implies q_1 > q_0$ (assuming $q_0 > 0$).
+    \item $\RR_{UY} < 1 \implies \frac{p_1}{p_0} < 1 \implies p_1 < p_0$.
+\end{itemize}
+Then $\pr(Y=1 \mid Z=1) - \pr(Y=1 \mid Z=0) = (p_1 - p_0)(q_1 - q_0)$.
+Since $p_1 - p_0 < 0$ and $q_1 - q_0 > 0$, the product is negative. 
+Thus $\pr(Y=1 \mid Z=1) < \pr(Y=1 \mid Z=0)$, which implies $\RR_{ZY}^{\obs} < 1$.
 
  \Paragraph{17.6~Cornfield-type inequalities for the risk difference}\label{hw::cornfield-rd}
 
@@ -330,6 +371,24 @@ $$
 \RD_{ZY}^{\obs} = \RD_{ZU} \times \RD_{UY}
 $$
 where $\RD_{ZY}^{\obs}$ is the observed risk difference of $Z$ on $Y$, and $\RD_{ZU}$ and $\RD_{UY}$ are the treatment-confounder and confounder-outcome risk differences, respectively.
+
+\Paragraph{Solution to 17.6}
+
+From the decomposition in the solution to 17.2:
+\begin{align*}
+    \pr(Y=1 \mid Z=1) &= p_0 + (p_1 - p_0)q_1, \\
+    \pr(Y=1 \mid Z=0) &= p_0 + (p_1 - p_0)q_0.
+\end{align*}
+Subtracting the two equations:
+\begin{equation*}
+    \RD_{ZY}^{\obs} = \pr(Y=1 \mid Z=1) - \pr(Y=1 \mid Z=0) = (p_1 - p_0)(q_1 - q_0).
+\end{equation*}
+By definition:
+\begin{itemize}
+    \item $\RD_{UY} = \pr(Y=1 \mid U=1) - \pr(Y=1 \mid U=0) = p_1 - p_0$.
+    \item $\RD_{ZU} = \pr(U=1 \mid Z=1) - \pr(U=1 \mid Z=0) = q_1 - q_0$.
+\end{itemize}
+Therefore, $\RD_{ZY}^{\obs} = \RD_{ZU} \times \RD_{UY}$.
 
 Remark: Without loss of generality, assume that $\RD_{ZY}^{\obs}, \RD_{ZU}, \RD_{UY}$ are all positive. Then the above implies:
 $$
@@ -393,6 +452,19 @@ Many statistical analyses require a strict version of overlap (Assumption \ref{2
 
 Show that Assumption \ref{20.1} implies $\eta \leq e \leq 1 - \eta$ and the inequality above.
 
+\Paragraph{Solution to 20.1}
+
+Assumption \ref{20.1} states that $\eta \leq e(X) \leq 1 - \eta$.
+By the Law of Iterated Expectations, the marginal probability of treatment is:
+\begin{equation*}
+    e = \pr(Z=1) = E[ \pr(Z=1 \mid X) ] = E[ e(X) ].
+\end{equation*}
+Since $\eta \leq e(X) \leq 1 - \eta$ for all $X$, it follows that:
+\begin{equation*}
+    E[\eta] \leq E[e(X)] \leq E[1 - \eta] \implies \eta \leq e \leq 1 - \eta.
+\end{equation*}
+The second part regarding covariate balance follows from Theorem 20.1 in the textbook. The constant $C$ is derived by bounding the variance of the weights $Z/e(X)$ and $(1-Z)/(1-e(X))$ under strict overlap. Specifically, $\var(Z/e(X) \mid X) = e(X)(1-e(X))/e(X)^2 = (1-e(X))/e(X)$. Under strict overlap, this is bounded by $(1-\eta)/\eta$.
+
 \section{Theoretical Exercises: Identification Formulas for Sensitivity Analysis}
 
 Denote $\mu_z(X) = E(Y \mid Z=z, X)$ and $e(X) = \pr(Z=1 \mid X)$.
@@ -415,6 +487,32 @@ $$
 \mathrm{ACE} = E\{ZY + (1-Z)\mu_1(X)/\epsilon_1(X)\} - E\{Z\mu_0(X)\epsilon_0(X) + (1-Z)Y\}.
 $$
 
+\Paragraph{Solution to (a)}
+
+From the sensitivity parameter definition for $Y(1)$:
+\begin{equation*}
+    E\{Y(1) \mid Z=0, X\} = \frac{E\{Y(1) \mid Z=1, X\}}{\epsilon_1(X)} = \frac{E\{Y \mid Z=1, X\}}{\epsilon_1(X)} = \frac{\mu_1(X)}{\epsilon_1(X)}.
+\end{equation*}
+By the Law of Iterated Expectations:
+\begin{equation*}
+    E\{Y(1) \mid Z=0\} = E[ E\{Y(1) \mid Z=0, X\} \mid Z=0 ] = E\{ \mu_1(X)/\epsilon_1(X) \mid Z=0 \}.
+\end{equation*}
+Similarly, for $Y(0)$:
+\begin{equation*}
+    E\{Y(0) \mid Z=1, X\} = E\{Y(0) \mid Z=0, X\} \epsilon_0(X) = E\{Y \mid Z=0, X\} \epsilon_0(X) = \mu_0(X)\epsilon_0(X).
+\end{equation*}
+Thus, $E\{Y(0) \mid Z=1\} = E\{ \mu_0(X)\epsilon_0(X) \mid Z=1 \}$.
+The average causal effect (ACE) is $E[Y(1)] - E[Y(0)]$:
+\begin{align*}
+    E[Y(1)] &= E[Y(1) \mid Z=1] \pr(Z=1) + E[Y(1) \mid Z=0] \pr(Z=0) \\
+    &= E[ ZY + (1-Z) E\{Y(1) \mid Z=0, X\} ] = E[ ZY + (1-Z) \mu_1(X)/\epsilon_1(X) ].
+\end{align*}
+By symmetric logic for $E[Y(0)]$:
+\begin{equation*}
+    E[Y(0)] = E[ Z E\{Y(0) \mid Z=1, X\} + (1-Z)Y ] = E[ Z \mu_0(X)\epsilon_0(X) + (1-Z)Y ].
+\end{equation*}
+Subtracting gives the required ACE formula.
+
  \Paragraph{(b)~IPW representation}\label{hw::sensitivity-ipw}
 
 Show that
@@ -424,8 +522,38 @@ E\{Y(0)\} = E\left\{w_0(X)\frac{(1-Z)Y}{1-e(X)}\right\},
 $$
 where $w_1(X) = e(X) + \{1-e(X)\}/\epsilon_1(X)$ and $w_0(X) = e(X)\epsilon_0(X) + \{1-e(X)\}$.
 
+\Paragraph{Solution to (b)}
+
+From Part (a), we have $E[Y(1) \mid X] = \pr(Z=1 \mid X) E[Y(1) \mid Z=1, X] + \pr(Z=0 \mid X) E[Y(1) \mid Z=0, X]$.
+Substituting the sensitivity relationship:
+\begin{align*}
+    E[Y(1) \mid X] &= e(X) \mu_1(X) + \{1-e(X)\} \frac{\mu_1(X)}{\epsilon_1(X)} \\
+    &= \mu_1(X) \left[ e(X) + \frac{1-e(X)}{\epsilon_1(X)} \right] = \mu_1(X) w_1(X).
+\end{align*}
+Since $\mu_1(X) = E[ZY/e(X) \mid X]$, we have:
+\begin{equation*}
+    E[Y(1)] = E[ \mu_1(X) w_1(X) ] = E[ E\{ZY/e(X) \mid X\} w_1(X) ] = E\left\{ w_1(X) \frac{ZY}{e(X)} \right\}.
+\end{equation*}
+By symmetry, $E[Y(0) \mid X] = e(X) \mu_0(X)\epsilon_0(X) + \{1-e(X)\} \mu_0(X) = \mu_0(X) w_0(X)$, which yields the IPW formula for $Y(0)$.
+
  \Paragraph{(c)~Doubly robust estimation (Optional)}\label{hw::sensitivity-dr}
 
 Derive the doubly robust estimation formula.
+
+\Paragraph{Solution to (c)}
+
+The doubly robust estimator for $E[Y(1)]$ combines the OR and IPW components:
+\begin{equation*}
+    \tilde{\mu}_1^{\mathrm{dr}} = E\left[ \frac{ZY w_1(X)}{e(X)} - \frac{Z - e(X)}{e(X)} \mu_1(X) w_1(X) \right].
+\end{equation*}
+Expanding this:
+\begin{equation*}
+    \tilde{\mu}_1^{\mathrm{dr}} = E\left[ \frac{Z w_1(X)}{e(X)} \{ Y - \mu_1(X) \} + \mu_1(X) w_1(X) \right].
+\end{equation*}
+Similarly, for $E[Y(0)]$:
+\begin{equation*}
+    \tilde{\mu}_0^{\mathrm{dr}} = E\left[ \frac{(1-Z) w_0(X)}{1 - e(X)} \{ Y - \mu_0(X) \} + \mu_0(X) w_0(X) \right].
+\end{equation*}
+The DR estimator for ACE is then $\tilde{\mu}_1^{\mathrm{dr}} - \tilde{\mu}_0^{\mathrm{dr}}$.
 
 \end{document}
