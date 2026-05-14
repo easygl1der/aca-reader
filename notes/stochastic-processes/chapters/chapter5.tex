@@ -502,8 +502,94 @@ If $n+j-i$ is odd, or if $k < 0$ or $k > n$, it is impossible to reach state $j$
 \end{Solution}
 
 \begin{Proposition}
-...
+\label{prp:simple-random-walk-return-prob}
+For all $p \in (0,1)$
+\[
+P(\xi_n = i \mid \xi_0 = i) \to 0 \quad \text{as } n \to \infty. \tag{5.20}
+\]
 \end{Proposition}
+
+\begin{Proof}
+To begin with, we shall consider the case $p \neq \frac{1}{2}$. When $j = i$, formula (5.19) becomes
+\[
+P(\xi_n = i \mid \xi_0 = i) = \begin{cases} \frac{(2k)!}{(k!)^2} (pq)^k, & \text{if } n = 2k, \\ 0, & \text{if } n \text{ is odd.} \end{cases} \tag{5.21}
+\]
+
+Then, denoting $a_k = \frac{(2k)!}{(k!)^2} (pq)^k$, we have
+\[
+\frac{a_{k+1}}{a_k} = pq \frac{(2k+1)(2k+2)}{(k+1)^2} \to 4pq < 1.
+\]
+
+Hence, $a_k \to 0$. Thus, $P(\xi_{2k} = i \mid \xi_0 = i) \to 0$. The result follows, since $P(\xi_{2k+1} = i \mid \xi_0 = i) = 0 \to 0$.
+
+This argument does not work for $p = \frac{1}{2}$ because $4pq = 1$. In this case we shall need the Stirling formula
+\[
+k! \sim \sqrt{2\pi k} \left(\frac{k}{e}\right)^k \quad \text{as } k \to \infty. \tag{5.22}
+\]
+
+Here we use the standard convention: $a_n \sim b_n$ whenever $\frac{a_n}{b_n} \to 1$ as $n \to \infty$. By (5.22)
+\[
+a_k \sim \frac{\sqrt{4\pi k}}{2\pi k} \left(\frac{2k}{e}\right)^{2k} \left(\frac{e}{k}\right)^{2k} (pq)^k = \frac{1}{\sqrt{\pi k}} \to 0 \quad \text{as } k \to \infty.
+\]
+
+Let us note that the second method works in the first case too. However, in the first case there is no need for anything as sophisticated as the Stirling formula. $\square$
+\end{Proof}
+
+\begin{Proposition}
+\label{prp:return-probability}
+The probability that the random walk $\xi_n$ ever returns to the starting point is
+\[
+1 - |p - q|.
+\]
+\end{Proposition}
+
+\begin{Proof}
+Suppose that $\xi_0 = 0$ and denote by $f_0(n)$ the probability that the process returns to $0$ at time $n$ for the first time, i.e.
+\[
+f_0(n) = P(\xi_n = 0, \xi_i \neq 0, i = 1, \dots, n-1).
+\]
+
+If also $p_0(n) = P(\xi_n = 0)$ for any $n \in \mathbb{N}$, then we can prove that
+\[
+\sum_{n=1}^\infty p_0(n) = \sum_{n=0}^\infty p_0(n) \sum_{n=1}^\infty f_0(n). \tag{5.23}
+\]
+
+Since all the numbers involved are non-negative, in order to prove (5.23) we need only to show that
+\[
+p_0(n) = \sum_{k=1}^n f_0(k) p_0(n-k) \quad \text{for } n \geq 1.
+\]
+
+The total probability formula and the Markov property (5.10) yield
+\[
+\begin{aligned}
+p_0(n) &= \sum_{k=1}^n P(\xi_n = 0, \xi_k = 0, \xi_i \neq 0, i = 1, \dots, k-1) \\
+&= \sum_{k=1}^n P(\xi_k = 0, \xi_i \neq 0, i = 1, \dots, k-1) \\
+&\quad \times P(\xi_n = 0 \mid \xi_k = 0, \xi_i \neq 0, i = 1, \dots, k-1) \\
+&= \sum_{k=1}^n P(\xi_k = 0, \xi_i \neq 0, i = 1, \dots, k-1) P(\xi_n = 0 \mid \xi_k = 0) \\
+&= \sum_{k=1}^n f_0(k) p_0(n-k).
+\end{aligned}
+\]
+
+Having proved (5.23), we are going to make use of it. First we notice that the probability that the process will ever return to $0$ equals $\sum_{n=1}^\infty f_0(n)$. Next, from (5.23) we infer that
+\[
+\begin{aligned}
+P(\exists n \geq 1: \xi_n = 0) &= \sum_{n=1}^\infty f_0(n) \\
+&= 1 - \left(\sum_{n=0}^\infty p_0(n)\right)^{-1} = 1 - \left(\sum_{k=0}^\infty p_0(2k)\right)^{-1}.
+\end{aligned}
+\]
+
+Since $p_0(2k) = \frac{(2k)!}{(k!)^2} (pq)^k$ and
+\[
+\sum_{k=0}^\infty \binom{2k}{k} x^k = (1-4x)^{-1/2}, \quad |x| < \frac{1}{4}, \tag{5.24}
+\]
+it follows that for $p \neq 1/2$
+\[
+P(\exists n \geq 1: \xi_n = 0) = 1 - (1-4pq)^{1/2} = 1 - |p - q|, \tag{5.25}
+\]
+since, recalling that $q = 1-p$, we have $1-4pq = 1-4p+4p^2 = (1-2p)^2 = (q-p)^2$.
+
+The case $p = 1/2$ is more delicate and we shall not pursue this topic here. $\square$
+\end{Proof}
 
 \begin{Exercise}
 \label{exr:binomial-series}
