@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\usepackage{xeCJK}
+\setCJKmainfont{STSong}
+\setCJKsansfont{Heiti SC}
+
+\input{../../templates/template.LaTeX.homework/structure.tex}
+
+%----------------------------------------------------------------------------------------
+%  ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+\newcommand{\assignmentQuestionName}{习题}
+\newcommand{\assignmentClass}{离散数学}
+\newcommand{\assignmentTitle}{第4章 函数 — 第11次作业}
+\newcommand{\assignmentAuthorName}{乐绎华}
+\newcommand{\studentID}{23363017}
+\newcommand{\assignmentClassInstructor}{左孝凌、刘永才《离散数学》}
+\newcommand{\assignmentDueDate}{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+%----------------------------------------------------------------------------------------
+%  4-1(6) 双射函数个数
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-1(6) 双射函数的计数}
+  设 $f: A \to B$ 为函数，$|A| = |B| = n$，求从 $A$ 到 $B$ 的双射函数的个数。
+
+  \begin{answer}
+    \textbf{分析}：双射函数要求既是单射又是满射。当 $|A| = |B| = n$ 时，$A$ 和 $B$ 的基数相等。
+
+    \vspace{0.5em}
+    \textbf{单射计数}：将 $A$ 中的每个元素映射到 $B$ 中不同的像。
+    \begin{itemize}
+      \item $a_1$ 有 $n$ 种选择（$B$ 中任意元素）
+      \item $a_2$ 有 $n-1$ 种选择（不能与 $a_1$ 相同）
+      \item $a_3$ 有 $n-2$ 种选择
+      \item $\cdots$
+      \item $a_n$ 有 $1$ 种选择
+    \end{itemize}
+
+    由乘法原理，单射个数为 $n \times (n-1) \times (n-2) \times \cdots \times 1 = n!$。
+
+    \vspace{0.5em}
+    \textbf{满射验证}：当 $|A| = |B|$ 时，单射必为满射（因为基数为 $n$ 的有限集合，单射即为双射）。
+
+    \vspace{0.5em}
+    \textbf{结论}：从 $A$ 到 $B$ 的双射函数个数为
+
+    $$n!$$
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  4-2(3) 函数计数
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-2(3) 函数、单射、满射计数}
+  设 $|A| = 3$，$|B| = 6$，求：
+  \begin{enumerate}
+    \item 从 $A$ 到 $B$ 的函数个数
+    \item 从 $A$ 到 $B$ 的单射个数
+    \item 从 $A$ 到 $B$ 的满射个数
+  \end{enumerate}
+
+  \begin{answer}
+    \vspace{1em}
+    \noindent\textbf{（1）函数个数}
+
+    $|B| = 6$，$A$ 中每个元素都有 $6$ 种选择，由乘法原理：
+
+    $$|B|^{|A|} = 6^3 = 216$$
+
+    \vspace{1em}
+    \noindent\textbf{（2）单射个数}
+
+    要求像各不相同。$A = \{a_1, a_2, a_3\}$：
+    \begin{itemize}
+      \item $a_1$ 有 $6$ 种选择
+      \item $a_2$ 有 $5$ 种选择（不能与 $a_1$ 相同）
+      \item $a_3$ 有 $4$ 种选择（不能与前两者相同）
+    \end{itemize}
+
+    $$6 \times 5 \times 4 = 120$$
+
+    \vspace{1em}
+    \noindent\textbf{（3）满射个数}
+
+    $|A| = 3 < |B| = 6$，即定义域元素少于陪域元素。满射要求每个 $B$ 中元素至少有一个原像，但 $3$ 个原像无法覆盖 $6$ 个不同的值。
+
+    $$\text{满射个数} = 0$$
+
+    \begin{info}[结论:]
+      当 $|A| < |B|$ 时，不存在从 $A$ 到 $B$ 的满射。
+    \end{info}
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  4-2(4) 函数计数（续）
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-2(4) 不同基数条件下的函数性质}
+  设 $|A| = 4$，$|B| = 4$；$|A| = 5$，$|B| = 8$。分别讨论各情况下函数 $f: A \to B$ 的性质（是否为单射、满射、双射）。
+
+  \begin{answer}
+    \vspace{1em}
+    \noindent\textbf{（1）$|A| = 4$，$|B| = 4$}
+
+    此时 $|A| = |B|$，任意单射必为满射。
+
+    \begin{itemize}
+      \item \textbf{单射}：个数 $= 4! = 24$
+      \item \textbf{满射}：个数 $= 4! = 24$（与单射相同）
+      \item \textbf{双射}：个数 $= 4! = 24$
+    \end{itemize}
+
+    $A$ 到 $B$ 的函数总数为 $4^4 = 256$，其中双射占 $24$ 个。
+
+    \vspace{1em}
+    \noindent\textbf{（2）$|A| = 5$，$|B| = 8$}
+
+    此时 $|A| < |B|$（$5 < 8$）。
+
+    \begin{itemize}
+      \item \textbf{单射}：可能。$a_1$ 到 $a_5$ 依次有 $8, 7, 6, 5, 4$ 种选择：
+        $$8 \times 7 \times 6 \times 5 \times 4 = 6720$$
+      \item \textbf{满射}：不可能。$5$ 个原像无法覆盖 $8$ 个不同的值。
+        $$\text{满射个数} = 0$$
+      \item \textbf{双射}：不可能。双射要求 $|A| = |B|$。
+        $$\text{双射个数} = 0$$
+    \end{itemize}
+
+    \begin{info}[规律总结:]
+      \begin{enumerate}
+        \item $|A| = |B|$ 时，$A \to B$ 的双射函数个数 $= |A|! = |B|!$
+        \item $|A| < |B|$ 时，无满射，无双射；单射个数 $= \dfrac{|B|!}{(|B|-|A|)!}$
+        \item $|A| > |B|$ 时，无单射，无双射；满射个数可用容斥原理计算
+      \end{enumerate}
+    \end{info}
+  \end{answer}
+\end{question}
+
+\end{document}
