@@ -24,123 +24,147 @@
 \newpage
 
 %----------------------------------------------------------------------------------------
-%  4-1(6) 双射函数个数
+%  4-1(6) 入射函数与双射函数计数
 %----------------------------------------------------------------------------------------
 
-\begin{question}{4-1(6) 双射函数的计数}
-  设 $f: A \to B$ 为函数，$|A| = |B| = n$，求从 $A$ 到 $B$ 的双射函数的个数。
+\begin{question}{4-1(6) 入射函数与双射函数的计数}
+  设 $A$ 和 $B$ 是有穷集合，求有多少不同的入射函数和双射函数。
 
   \begin{answer}
-    \textbf{分析}：双射函数要求既是单射又是满射。当 $|A| = |B| = n$ 时，$A$ 和 $B$ 的基数相等。
+    设 $|A| = m$，$|B| = n$。
 
     \vspace{0.5em}
-    \textbf{单射计数}：将 $A$ 中的每个元素映射到 $B$ 中不同的像。
+    \textbf{（1）入射函数计数}
+
+    入射要求 $A$ 中不同元素映射到 $B$ 中不同元素，即像各不相同。
+
     \begin{itemize}
-      \item $a_1$ 有 $n$ 种选择（$B$ 中任意元素）
+      \item $a_1$ 有 $n$ 种选择
       \item $a_2$ 有 $n-1$ 种选择（不能与 $a_1$ 相同）
       \item $a_3$ 有 $n-2$ 种选择
       \item $\cdots$
-      \item $a_n$ 有 $1$ 种选择
+      \item $a_m$ 有 $n-m+1$ 种选择
     \end{itemize}
 
-    由乘法原理，单射个数为 $n \times (n-1) \times (n-2) \times \cdots \times 1 = n!$。
+    由乘法原理，入射函数个数为
+
+    $$n \times (n-1) \times (n-2) \times \cdots \times (n-m+1) = \frac{n!}{(n-m)!}$$
+
+    入射存在的必要条件：$m \leq n$（即 $|A| \leq |B|$）。
 
     \vspace{0.5em}
-    \textbf{满射验证}：当 $|A| = |B|$ 时，单射必为满射（因为基数为 $n$ 的有限集合，单射即为双射）。
+    \textbf{（2）双射函数计数}
 
-    \vspace{0.5em}
-    \textbf{结论}：从 $A$ 到 $B$ 的双射函数个数为
+    双射要求既是单射又是满射。当 $|A| = |B| = n$ 时：
 
-    $$n!$$
-  \end{answer}
-\end{question}
+    由（1）知入射个数为 $\dfrac{n!}{(n-n)!} = n!$。
 
-%----------------------------------------------------------------------------------------
-%  4-2(3) 函数计数
-%----------------------------------------------------------------------------------------
-
-\begin{question}{4-2(3) 函数、单射、满射计数}
-  设 $|A| = 3$，$|B| = 6$，求：
-  \begin{enumerate}
-    \item 从 $A$ 到 $B$ 的函数个数
-    \item 从 $A$ 到 $B$ 的单射个数
-    \item 从 $A$ 到 $B$ 的满射个数
-  \end{enumerate}
-
-  \begin{answer}
-    \vspace{1em}
-    \noindent\textbf{（1）函数个数}
-
-    $|B| = 6$，$A$ 中每个元素都有 $6$ 种选择，由乘法原理：
-
-    $$|B|^{|A|} = 6^3 = 216$$
-
-    \vspace{1em}
-    \noindent\textbf{（2）单射个数}
-
-    要求像各不相同。$A = \{a_1, a_2, a_3\}$：
-    \begin{itemize}
-      \item $a_1$ 有 $6$ 种选择
-      \item $a_2$ 有 $5$ 种选择（不能与 $a_1$ 相同）
-      \item $a_3$ 有 $4$ 种选择（不能与前两者相同）
-    \end{itemize}
-
-    $$6 \times 5 \times 4 = 120$$
-
-    \vspace{1em}
-    \noindent\textbf{（3）满射个数}
-
-    $|A| = 3 < |B| = 6$，即定义域元素少于陪域元素。满射要求每个 $B$ 中元素至少有一个原像，但 $3$ 个原像无法覆盖 $6$ 个不同的值。
-
-    $$\text{满射个数} = 0$$
+    又此时入射必为满射（有限集合基相等），故双射函数个数为 $n!$。
 
     \begin{info}[结论:]
-      当 $|A| < |B|$ 时，不存在从 $A$ 到 $B$ 的满射。
+      \begin{itemize}
+        \item 入射函数个数：$|B| \geq |A|$ 时为 $\dfrac{|B|!}{(|B|-|A|)!}$，否则为 $0$
+        \item 双射函数个数：$|A| = |B| = n$ 时为 $n!$，否则为 $0$
+      \end{itemize}
     \end{info}
   \end{answer}
 \end{question}
 
 %----------------------------------------------------------------------------------------
-%  4-2(4) 函数计数（续）
+%  4-2(3) 复合函数与满射/入射
 %----------------------------------------------------------------------------------------
 
-\begin{question}{4-2(4) 不同基数条件下的函数性质}
-  设 $|A| = 4$，$|B| = 4$；$|A| = 5$，$|B| = 8$。分别讨论各情况下函数 $f: A \to B$ 的性质（是否为单射、满射、双射）。
+\begin{question}{4-2(3) 复合函数与单射/满射/双射的性质}
+  设 $f \circ g$ 是复合函数，证明：
+  \begin{enumerate}
+    \item[a)] 如果 $f \circ g$ 是满射的，那么 $f$ 是满射的。
+    \item[b)] 如果 $f \circ g$ 是入射的，那么 $g$ 是入射的。
+    \item[c)] 如果 $f \circ g$ 是双射的，那么 $f$ 是满射的而 $g$ 是入射的。
+  \end{enumerate}
 
   \begin{answer}
     \vspace{1em}
-    \noindent\textbf{（1）$|A| = 4$，$|B| = 4$}
+    \noindent\textbf{a) $f \circ g$ 满射 $\Rightarrow$ $f$ 满射}
 
-    此时 $|A| = |B|$，任意单射必为满射。
+    已知 $f \circ g: X \to Z$ 是满射，即 $\operatorname{ran}(f \circ g) = Z$。
 
-    \begin{itemize}
-      \item \textbf{单射}：个数 $= 4! = 24$
-      \item \textbf{满射}：个数 $= 4! = 24$（与单射相同）
-      \item \textbf{双射}：个数 $= 4! = 24$
-    \end{itemize}
+    对任意 $z \in Z$，存在 $x \in X$ 使得 $(f \circ g)(x) = z$，
+    即 $f(g(x)) = z$。令 $y = g(x) \in Y$，则 $f(y) = z$。
 
-    $A$ 到 $B$ 的函数总数为 $4^4 = 256$，其中双射占 $24$ 个。
+    因此对任意 $z \in Z$，存在 $y \in Y$ 使得 $f(y) = z$，
+    故 $f$ 是满射。
 
     \vspace{1em}
-    \noindent\textbf{（2）$|A| = 5$，$|B| = 8$}
+    \noindent\textbf{b) $f \circ g$ 入射 $\Rightarrow$ $g$ 入射}
 
-    此时 $|A| < |B|$（$5 < 8$）。
+    已知 $f \circ g: X \to Z$ 是入射，即对任意 $x_1, x_2 \in X$，
+    若 $(f \circ g)(x_1) = (f \circ g)(x_2)$，则 $x_1 = x_2$。
 
-    \begin{itemize}
-      \item \textbf{单射}：可能。$a_1$ 到 $a_5$ 依次有 $8, 7, 6, 5, 4$ 种选择：
-        $$8 \times 7 \times 6 \times 5 \times 4 = 6720$$
-      \item \textbf{满射}：不可能。$5$ 个原像无法覆盖 $8$ 个不同的值。
-        $$\text{满射个数} = 0$$
-      \item \textbf{双射}：不可能。双射要求 $|A| = |B|$。
-        $$\text{双射个数} = 0$$
-    \end{itemize}
+    假设 $g(x_1) = g(x_2)$，则
+    $f(g(x_1)) = f(g(x_2))$，即 $(f \circ g)(x_1) = (f \circ g)(x_2)$。
 
-    \begin{info}[规律总结:]
-      \begin{enumerate}
-        \item $|A| = |B|$ 时，$A \to B$ 的双射函数个数 $= |A|! = |B|!$
-        \item $|A| < |B|$ 时，无满射，无双射；单射个数 $= \dfrac{|B|!}{(|B|-|A|)!}$
-        \item $|A| > |B|$ 时，无单射，无双射；满射个数可用容斥原理计算
-      \end{enumerate}
+    由入射性得 $x_1 = x_2$，故 $g$ 是入射的。
+
+    \vspace{1em}
+    \noindent\textbf{c) $f \circ g$ 双射 $\Rightarrow$ $f$ 满射且 $g$ 入射}
+
+    $f \circ g$ 双射意味着既是满射又是入射。
+
+    由 a)：$f \circ g$ 满射 $\Rightarrow$ $f$ 满射。
+
+    由 b)：$f \circ g$ 入射 $\Rightarrow$ $g$ 入射。
+
+    故 $f$ 是满射的，$g$ 是入射的。
+
+    \begin{warn}
+      逆命题一般不成立。例如：$f: \{a\} \to \{1,2\}$（常函数 $f(a)=1$），
+      $g: \emptyset \to \{a\}$（空函数），则 $f \circ g = \emptyset$（空函数）是双射，
+      但 $f$ 不是入射，$g$ 不是满射。
+    \end{warn}
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  4-2(4) 逆函数的证明
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-2(4) 逆函数的唯一性}
+  试证明：若 $f: A \to B, g: B \to A$，且 $g \circ f = I_A$，$f \circ g = I_B$，
+  则 $g = f^{-1}$，且 $f = g^{-1}$。
+
+  \begin{answer}
+    由条件 $g \circ f = I_A: A \to A$ 和 $f \circ g = I_B: B \to B$。
+
+    \vspace{0.5em}
+    \textbf{证明 $f$ 是双射}：
+
+    对任意 $a \in A$，由 $g \circ f(a) = I_A(a) = a$，得 $f(a)$ 在 $g$ 下映回 $a$，
+    故 $f$ 必为入射（若 $f(a_1) = f(a_2)$，则 $a_1 = g(f(a_1)) = g(f(a_2)) = a_2$）。
+
+    对任意 $b \in B$，由 $f \circ g(b) = I_B(b) = b$，得 $g(b) \in A$ 且 $f(g(b)) = b$，
+    故每个 $b$ 都有原像，$f$ 为满射。
+
+    因此 $f$ 是双射，从而 $f^{-1}$ 存在。
+
+    \vspace{0.5em}
+    \textbf{证明 $g = f^{-1}$}：
+
+    对任意 $a \in A$，设 $f(a) = b \in B$，则
+
+    $$g(a) = g(f(a)) = (g \circ f)(a) = I_A(a) = a$$
+
+    另一方面，$f^{-1}(a)$ 是满足 $f(x) = a$ 的唯一 $x$，即 $f^{-1}(f(a)) = a$。
+
+    由 $g(a) = a = f^{-1}(f(a))$ 且 $f$ 为双射，知 $g = f^{-1}$。
+
+    \vspace{0.5em}
+    \textbf{同理得 $f = g^{-1}$}：
+
+    由 $g = f^{-1}$ 两边取逆：$(f^{-1})^{-1} = g^{-1}$，即 $f = g^{-1}$。
+
+    \begin{info}[几何意义:]
+      条件 $g \circ f = I_A$ 和 $f \circ g = I_B$ 表明 $f$ 和 $g$ 互为逆函数。
+      此时称 $f$ 为双射，$g$ 为 $f$ 的逆函数 $f^{-1}$。
     \end{info}
   \end{answer}
 \end{question}
