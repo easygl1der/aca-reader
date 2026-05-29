@@ -50,7 +50,6 @@
 
 \[
 H_0: \theta = \theta' \quad \text{versus} \quad H_1: \theta = \theta''. \label{eq:simple-vs-simple}
-
 \]
 
 \begin{definition}[最佳临界区域]\label{def:best-critical-region}
@@ -342,7 +341,6 @@ f(x;\theta) = \exp[p(\theta)K(x) + H(x) + q(\theta)],
 设 $X$ 的密度为 $f(\mathbf{x}; \boldsymbol{\theta})$，参数 $\boldsymbol{\theta} \in \Omega \subset \mathbb{R}^p$。考虑复合假设：
 \[
 H_0: \boldsymbol{\theta} \in \omega \quad \text{versus} \quad H_1: \boldsymbol{\theta} \in \Omega \cap \omega^c, \label{eq:general-hypotheses}
-
 \]
 其中 $\omega \subset \Omega$ 是参数空间的某个子集。
 
@@ -429,7 +427,6 @@ H_0: \theta_3 = \theta_4 \quad \text{versus} \quad H_1: \theta_3 \neq \theta_4.
 可以证明（练习 8.3.11），LRT 统计量可以化为
 \[
 F = \frac{\sum_{i=1}^n (X_i - \bar{X})^2 / (n-1)}{\sum_{i=1}^m (Y_i - \bar{Y})^2 / (m-1)}. \label{eq:f-statistic-variance}
-
 \]
 
 在 $H_0$ 下，$F \sim F(n-1, m-1)$。因此双向 LRT 为：
@@ -467,7 +464,6 @@ H_0: \theta = \theta' \quad \text{versus} \quad H_1: \theta = \theta'',
 \textbf{核心思想}：在每个步骤 $n$，计算似然比
 \[
 \Lambda_n = \frac{L(\theta'; x_1, \ldots, x_n)}{L(\theta''; x_1, \ldots, x_n)} = \prod_{i=1}^n \frac{f(x_i; \theta')}{f(x_i; \theta'')}.
-
 \]
 
 如果 $\Lambda_n$ 非常小（即数据强烈支持 $H_1$），我们就提前停止并拒绝 $H_0$；如果 $\Lambda_n$ 非常大（即数据强烈支持 $H_0$），我们就提前停止并接受 $H_0$；如果 $\Lambda_n$ 处于中间位置，我们就继续观察下一个样本。
@@ -486,7 +482,6 @@ SPRT 的决策规则为：
 \text{继续采样} & \text{if } A < \Lambda_n < B.
 \end{cases}
 \label{eq:sprt-rule}
-
 \]
 
 \textbf{Wald 的误差控制}：教材证明，在连续型情形下若真实错误概率记为 $\alpha$ 与 $\beta$，则
@@ -541,14 +536,12 @@ c_0(n) = \frac{153}{2}n - \frac{100}{3}\log 9 < \sum_{i=1}^n x_i < \frac{153}{2}
 此时风险函数为：
 \[
 R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C) = \mathcal{L}(\theta'', \theta') \cdot \beta,
-
 \]
 其中 $\alpha$ 是显著性水平，$\beta$ 是 Type II 错误概率。
 
 极小化极大原则要求选择 $C$ 使得 $\max\{R(\theta', C), R(\theta'', C)\}$ 最小。可以证明，当 $k$ 满足
 \[
 \mathcal{L}(\theta', \theta'') \int_C L(\theta') = \mathcal{L}(\theta'', \theta') \int_{C^c} L(\theta'')
-
 \]
 时（即两类错误造成的风险相等），临界区域 $C$ 是极小化极大的。这个条件与 NP 似然比条件是一致的——本质上，最佳检验同时也是极小化极大检验（当两类错误的相对代价被适当选择时）。
 \begin{example}[正态均值的极小化极大检验]\label{ex:minimax-normal}
@@ -557,12 +550,10 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 临界区域形如 $\bar{x} \geq c$，其中 $c$ 满足：
 \[
 3 \cdot \mathbb{P}_{\theta=75}(\bar{X} \geq c) = \mathbb{P}_{\theta=78}(\bar{X} < c).
-
 \]
 由于 $\bar{X} \sim N(\theta, 1)$，这化为
 \[
 3[1 - \Phi(c-75)] = \Phi(c-78).
-
 \]
 
 求解得 $c \approx 76.8$。此时显著性水平 $\alpha = 1 - \Phi(1.8) \approx 0.036$，功效为 $1 - \Phi(-1.2) \approx 0.885$。\end{example}
@@ -576,7 +567,6 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 由 NP 定理，最佳分类规则是似然比规则：
 \[
 \frac{f(x,y;\theta')}{f(x,y;\theta'')} \leq k \quad \Longrightarrow \quad \text{分类为 $\theta''$ 类}.
-
 \]
 
 若两类的先验概率为 $\pi'$ 和 $\pi''$，则最优规则取 $k = \pi''/\pi'$（当两类等可能时 $k=1$）。
@@ -586,7 +576,6 @@ R(\theta', C) = \mathcal{L}(\theta', \theta'') \cdot \alpha, \quad R(\theta'', C
 设 $(X,Y)$ 来自二元正态分布，参数为 $(\mu_1', \mu_2', \sigma_1^2, \sigma_2^2, \rho')$ 或 $(\mu_1'', \mu_2'', \sigma_1^2, \sigma_2^2, \rho'')$。则似然比不等式化为
 \[
 ax + by \leq c,
-
 \]
 其中 $a$ 和 $b$ 是由两个总体的均值向量和协方差矩阵决定的常数。这给出了一个\textbf{线性决策边界}——在二维空间中是一条直线，将平面分为两部分，分别对应两类。\end{example}
 
@@ -619,47 +608,36 @@ ax + by \leq c,
 \item 写出功效差：
 \[
 \int_C L(\theta'') - \int_A L(\theta'') = \int_{C \cap A^c} L(\theta'') - \int_{A \cap C^c} L(\theta'').
-
 \label{eq:np-proof-eq1}
-
 \]
 
 \item 由条件 (a)：在 $C$ 上 $L(\theta'') \geq \frac{1}{k}L(\theta')$，故
 \[
 \int_{C \cap A^c} L(\theta'') \geq \frac{1}{k} \int_{C \cap A^c} L(\theta').
-
 \label{eq:np-proof-eq2}
-
 \]
 
 \item 由条件 (b)：在 $C^c$ 上 $L(\theta'') \leq \frac{1}{k}L(\theta')$，故
 \[
 \int_{A \cap C^c} L(\theta'') \leq \frac{1}{k} \int_{A \cap C^c} L(\theta').
-
 \label{eq:np-proof-eq3}
-
 \]
 
 \item 将 \cref{eq:np-proof-eq2} 和 \cref{eq:np-proof-eq3} 代入 \cref{eq:np-proof-eq1}：
 \[
 \int_C L(\theta'') - \int_A L(\theta'') \geq \frac{1}{k}\left[\int_{C \cap A^c} L(\theta') - \int_{A \cap C^c} L(\theta')\right].
-
 \label{eq:np-proof-eq4}
-
 \]
 
 \item 计算括号内项：
 \[
 \int_{C \cap A^c} L(\theta') - \int_{A \cap C^c} L(\theta') = \int_C L(\theta') - \int_A L(\theta') = \alpha - \alpha = 0.
-
 \label{eq:np-proof-eq5}
-
 \]
 
 \item 由 \cref{eq:np-proof-eq4} 和 \cref{eq:np-proof-eq5} 得 $\int_C L(\theta'') - \int_A L(\theta'') \geq 0$，即
 \[
 \mathbb{P}_{\theta''}(\mathbf{X} \in C) \geq \mathbb{P}_{\theta''}(\mathbf{X} \in A).
-
 \]
 
 证毕。
@@ -677,31 +655,26 @@ ax + by \leq c,
 \item 写出似然函数：
 \[
 L(\theta; \mathbf{x}) = (2\pi)^{-n/2} \exp\left[-\frac{1}{2}\sum_{i=1}^n (x_i - \theta)^2\right].
-
 \]
 
 \item 似然比：
 \[
 \frac{L(0; \mathbf{x})}{L(1; \mathbf{x})} = \frac{\exp\left[-\frac{1}{2}\sum x_i^2\right]}{\exp\left[-\frac{1}{2}\sum (x_i-1)^2\right]} = \exp\left[-\sum_{i=1}^n x_i + \frac{n}{2}\right].
-
 \]
 
 \item 令 $\frac{L(0; \mathbf{x})}{L(1; \mathbf{x})} \leq k$：
 \[
 \exp\left[-\sum x_i + \frac{n}{2}\right] \leq k \quad \Longleftrightarrow \quad \sum_{i=1}^n x_i \geq \frac{n}{2} - \log k = c.
-
 \]
 
 \item 当 $H_0$ 为真时，$\overline{X} \sim N(0, 1/n)$，故临界值
 \[
 c_1 = \frac{c}{n} = \frac{1}{2} - \frac{\log k}{n} = q_{\alpha}(0, 1/\sqrt{n}).
-
 \]
 
 \item 功效函数：当 $\theta = 1$ 时，$\overline{X} \sim N(1, 1/n)$，
 \[
 \text{Power}(\theta=1) = \mathbb{P}_{\theta=1}\left(\overline{X} \geq q_{\alpha}(0, 1/\sqrt{n})\right) = 1 - \Phi\left(\frac{q_{\alpha}(0, 1/\sqrt{n}) - 1}{1/\sqrt{n}}\right).
-
 \]
 
 证毕。
@@ -725,7 +698,6 @@ c_1 = \frac{c}{n} = \frac{1}{2} - \frac{\log k}{n} = q_{\alpha}(0, 1/\sqrt{n}).
 \item \textbf{对简单假设 $H_0': \theta = \theta'$ 对 $\theta'' > \theta'$ 的最优性}：由 NP 定理，最佳临界区域由
 \[
 \frac{L(\theta';\mathbf{x})}{L(\theta'';\mathbf{x})} \leq k
-
 \]
 给出。由于 MLR 性质，$g(Y) \leq k \Longleftrightarrow Y \geq g^{-1}(k)$。取 $c_Y = g^{-1}(k)$，则对任意 $\theta'' > \theta'$，临界区域 $C = \{Y \geq c_Y\}$ 是 $H_0': \theta = \theta'$ 对 $\theta''$ 的最佳检验。
 
