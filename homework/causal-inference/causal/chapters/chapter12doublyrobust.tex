@@ -1,0 +1,470 @@
+
+\chapter{The Doubly Robust or the Augmented Inverse Propensity Score Weighting Estimator for the Average Causal Effect}\label{chapter::doubly-robust}
+ \chaptermark{Doubly Robust Estimator}
+
+Under ignorability $Z\ind \{ Y(1), Y(0) \} \mid X$ and overlap $0< e(X) < 1$, Chapter \ref{chapter::pscore-key} has shown two identification formulas of the average causal effect $\tau = E\{ Y(1) - Y(0)  \}$. First, the outcome regression formula  is 
+\begin{eqnarray}
+\tau  =  E\{ \mu_1(X) \} - E\{ \mu_0(X) \} \label{eq::iden-outreg}
+\end{eqnarray}
+where 
+\begin{eqnarray*}
+\mu_1(X)  &=& E\{  Y(1) \mid X \} = E(Y\mid Z=1, X),\\ 
+\mu_0(X) &=& E\{  Y(0) \mid X \} = E(Y\mid Z=0, X)
+\end{eqnarray*}
+are the two conditional mean functions of the outcome given covariates under the treatment and control, respectively. Second, the IPW formula is 
+\begin{eqnarray}
+\tau = E\left\{  \frac{ZY}{e(X)}   \right\} - E\left\{  \frac{(1-Z)Y}{1-e(X)}   \right\} \label{eq::iden-ipw}
+\end{eqnarray}
+where
+$$
+e(X) = \pr(Z=1\mid X)
+$$
+is the propensity score introduced in Chapter \ref{chapter::pscore-key}.  
+
+
+The outcome regression estimator requires fitting a model for the outcome given the treatment and covariates. It is consistent if the outcome model is correctly specified. The IPW estimator requires fitting a model for the treatment given the covariates. It is consistent if the propensity score model is correctly specified. 
+
+
+Mathematically, we have many combinations of \eqref{eq::iden-outreg} and \eqref{eq::iden-ipw} that lead to different identification formulas of the average causal effect. Below I will discuss a particular combination that has appealing theoretical properties. This combination motivates an estimator that is consistent if either the propensity score or the outcome model is correctly specified. It is called the {\it doubly robust} estimator, championed by James Robins \citep{scharfstein1999adjusting, bang2005doubly}. 
+
+
+
+\section{The doubly robust estimator}
+
+\subsection{Population version}
+
+
+We posit a model for the conditional means of the outcome $\mu_1(X, \beta_1)$ and $\mu_0(X, \beta_0)$, indexed by the parameters $\beta_1$ and $\beta_0$. For example, if the conditional means are linear or logistic under the working model, then the parameters are just the regression coefficients. If the outcome  model is  correctly specified, then $\mu_1(X, \beta_1) = \mu_1(X)$ and $   \mu_0(X, \beta_0) = \mu_0(X)$. 
+We posit a working model for the propensity score $e(X, \alpha)$, indexed by the parameter $\alpha$. For example, if the working model is logistic, then $\alpha$ is the regression coefficient. If the propensity score model is correctly specified, then $e(X,\alpha) = e(X)$. In practice, both models may be misspecified. Sometimes, we call them {\it working models}  due to the possibility of misspecification. 
+
+Define 
+\begin{eqnarray}
+\tilde{\mu}_1^\textup{dr} &=& E\left[   \frac{Z\{ Y-\mu_1(X,\beta_1) \}}{  e(X,\alpha) }   + \mu_1(X, \beta_1)  \right] , \label{eq::dr-aug-out1}   \\
+\tilde{\mu}_0^\textup{dr} &=& E\left[   \frac{(1-Z)\{ Y-\mu_0(X,\beta_0) \}}{  1-e(X,\alpha) }   + \mu_0(X, \beta_0)  \right]  , \label{eq::dr-aug-out0} 
+\end{eqnarray}
+which can also be written as 
+\begin{eqnarray}
+\tilde{\mu}_1^\textup{dr} &=& E\left[   \frac{Z Y}{  e(X,\alpha) }   - \frac{  Z -  e(X,\alpha)  }{ e(X,\alpha) } \mu_1(X, \beta_1)  \right]  ,\label{eq::dr-aug-ipw1} \\
+\tilde{\mu}_0^\textup{dr} &=& E\left[   \frac{(1-Z) Y}{  1-e(X,\alpha) }    - \frac{ e(X,\alpha)-Z  }{1- e(X,\alpha)} \mu_0(X, \beta_0)  \right]    .\label{eq::dr-aug-ipw0} 
+\end{eqnarray}
+ 
+The formulas in \eqref{eq::dr-aug-out1} and \eqref{eq::dr-aug-out0} augment the outcome regression estimator by inverse propensity score weighting terms of the residuals. The formulas in \eqref{eq::dr-aug-ipw1} and \eqref{eq::dr-aug-ipw0} augment the IPW estimator by the imputed outcomes. For this reason, the doubly robust estimator is also called the {\it augmented inverse propensity score weighting} (AIPW) estimator. 
+
+
+
+The augmentation strengthens the theoretical properties in the following sense.   
+ 
+ 
+
+
+\begin{theorem}
+\label{thm::doublyrobust}
+Assume ignorability $Z \ind  \{  Y(1), Y(0) \} \mid X$ and overlap $0 < e(X) < 1$. 
+\begin{enumerate}
+\item
+If either $e(X,\alpha) = e(X)$ or $\mu_1(X, \beta_1) = \mu_1(X)$, then $\tilde{\mu}_1^\textup{dr} = E\{  Y(1) \}$.
+\item 
+If either $e(X,\alpha) = e(X)$ or $\mu_0(X, \beta_0) = \mu_0(X)$, then $\tilde{\mu}_0^\textup{dr} = E\{  Y(0) \}$.
+\item 
+If either $e(X,\alpha) = e(X)$ or $\{\mu_1(X, \beta_1) = \mu_1(X),   \mu_0(X, \beta_0) = \mu_0(X)\}$, then $\tilde{\mu}_1^\textup{dr} - \tilde{\mu}_0^\textup{dr} = \tau$. 
+\end{enumerate}
+\end{theorem}
+
+
+By Theorem \ref{thm::doublyrobust}, $\tilde{\mu}_1^\textup{dr} - \tilde{\mu}_0^\textup{dr} $ equals $\tau$ if either the propensity score model or the outcome model is correctly specified. That's why it is called the doubly robust estimator.  
+
+
+\begin{myproof}{Theorem}{\ref{thm::doublyrobust}}
+I only prove the result for $\mu_1 = E\{  Y(1) \}$. The proof for the result for $\mu_0 = E\{  Y(0) \}$ is similar. 
+
+
+We have the decomposition
+\begin{eqnarray*}
+&&\tilde{\mu}_1^\textup{dr} - E\{  Y(1) \}     \\
+&=& E\left[   \frac{Z\{ Y(1)-\mu_1(X,\beta_1) \}}{  e(X,\alpha) }   - \{ Y(1) -  \mu_1(X, \beta_1) \} \right]  
+\qquad (\text{by definition})\\
+&=&    E\left[   \frac{Z - e(X,\alpha) }{  e(X,\alpha) }   \{ Y(1) -  \mu_1(X, \beta_1) \} \right]  
+\qquad (\text{combining terms})\\
+&=&  E\left(  E\left[   \frac{Z - e(X,\alpha) }{  e(X,\alpha) }   \{ Y(1) -  \mu_1(X, \beta_1) \} \mid X \right] \right) 
+\qquad (\text{tower property})\\
+&=& E\left[  E\left\{   \frac{Z - e(X,\alpha) }{  e(X,\alpha) } \mid X \right\} \times E\left\{  Y(1) -  \mu_1(X, \beta_1)  \mid X \right\} \right] 
+\qquad (\text{ignorability})\\
+&=& E\left[   \frac{e(X) - e(X,\alpha) }{  e(X,\alpha) }  \times  \left\{  \mu_1(X) -  \mu_1(X, \beta_1)   \right\} \right]  . 
+\end{eqnarray*}
+Therefore, $\tilde{\mu}_1^\textup{dr} - E\{  Y(1) \}  = 0$
+ if either $e(X,\alpha) = e(X)$ or $\mu_1(X, \beta_1) = \mu_1(X)$. 
+\end{myproof}
+
+
+
+ 
+
+\subsection{Sample version}
+
+
+Based on the population versions of $\tilde{\mu}_1^\textup{dr} $ and $\tilde{\mu}_0^\textup{dr} $, we can obtain their sample analogs to construct a doubly robust estimator for $\tau$.
+
+
+\begin{definition}
+[doubly robust estimator for the average causal effect]\label{def::dr:ace}
+Based on the data $(X_i, Z_i, Y_i)_{i=1}^n$, we can obtain a doubly robust estimator for $\tau$ by the following steps:\footnote{I used $\hat e(X_i)$ for $e(X_i, \hat{\alpha})$ and $ \hat \mu_z(X_i) $ for $ \mu_z(X_i, \hat{\beta}_1) $ before when I did not want to emphasize the parameters in the working models.} 
+\begin{enumerate}
+[(1)]
+\item
+obtain the fitted values of the propensity scores: $e(X_i, \hat{\alpha})$; 
+\item
+obtain the fitted values of the outcome means: $ \mu_1(X_i, \hat{\beta}_1) $ and $ \mu_0(X_i, \hat{\beta}_0) $; 
+\item
+construct the doubly robust estimator: $\hat{\tau}^\textup{dr} = \hat{\mu}_1^\textup{dr}  - \hat{\mu}_0^\textup{dr}$, where
+$$
+ \hat{\mu}_1^\textup{dr}  = \frac{1}{n} \sumn \left[ \frac{Z_i\{ Y_i-\mu_1(X_i,\hat{\beta}_1) \}}{  e(X_i, \hat{\alpha}) }   + \mu_1(X_i, \hat{\beta}_1) \right]
+$$
+and
+$$
+ \hat{\mu}_0^\textup{dr}  = \frac{1}{n} \sumn \left[  \frac{(1-Z_i)\{ Y_i-\mu_0(X_i, \hat{\beta}_0) \}}{  1-e(X_i,\hat{\alpha}) }   + \mu_0(X_i, \hat{\beta}_0)       \right] . 
+$$
+\end{enumerate}
+\end{definition}
+
+By Definition \ref{def::dr:ace}, we can also write the doubly robust estimator as
+$$
+\hat{\tau}^\textup{dr} =\hat{\tau}^\textup{reg}  + 
+\frac{1}{n} \sumn  \frac{Z_i\{ Y_i-\mu_1(X_i,\hat{\beta}_1) \}}{  e(X_i, \hat{\alpha}) } 
+-  \frac{1}{n} \sumn   \frac{(1-Z_i)\{ Y_i-\mu_0(X_i, \hat{\beta}_0) \}}{  1-e(X_i,\hat{\alpha}) }  . 
+$$ 
+Analogous to \eqref{eq::dr-aug-ipw1} and \eqref{eq::dr-aug-ipw0}, we can also rewrite it as 
+$$
+\hat{\tau}^\textup{dr} = \hat{\tau}^\textup{ipw}  
+  - \frac{1}{n} \sumn    \frac{  Z_i -  e(X_i, \hat\alpha)  }{ e(X_i, \hat\alpha) } \mu_1(X_i, \hat\beta_1)
+  + \frac{1}{n} \sumn    \frac{ e(X_i, \hat\alpha)-Z_i  }{1- e(X_i,\hat \alpha)} \mu_0(X_i, \hat\beta_0) .
+$$ 
+
+ 
+\citet{funk2011doubly} suggested to  approximate the variance of $\hat{\tau}^\textup{dr}$ via the nonparametric bootstrap by resampling from $(Z_i, X_i, Y_i)_{i=1}^n$.
+ 
+
+\section{More intuition and theory for the doubly robust estimator}
+
+Although the beginning of this chapter claims that the basic identification formulas based on outcome regression and IPW immediately yield infinitely many other identification formulas, the particular forms of the doubly robust estimators in \eqref{eq::dr-aug-out1} and \eqref{eq::dr-aug-out0} are not obvious to come up with. The original motivation for \eqref{eq::dr-aug-out1} and \eqref{eq::dr-aug-out0} was quite theoretical,  and relied on something called the {\it semiparametric efficiency theory} in advanced mathematical statistics \citep{bickel1993efficient}. It is beyond the level of this book. Below I will give two intuitive perspectives to construct \eqref{eq::dr-aug-out1} and \eqref{eq::dr-aug-out0}. Both Sections \ref{sec::improving-ipw} and \ref{sec::improving-outreg} below focus on the estimation of $E\{ Y(1) \}$ since the estimation of $E\{ Y(0) \}$ is similar by symmetry. 
+
+
+
+\subsection{Reducing the variance of the IPW estimator}\label{sec::improving-ipw}
+
+
+The IPW estimator for $\mu_1$ based on
+$$
+\mu_1 = E\left\{   \frac{ZY}{e(X)}   \right\}
+$$
+completely ignores the outcome model of $Y$. It has the advantage of being consistent without assuming any outcome model. However, if the covariates are predictive of the outcome, the residual based on a working outcome model usually has a smaller variance than the outcome even when this working outcome model is wrong. With a possibly misspecified outcome model $\mu_1(X, \beta_1)$, a trivial decomposition holds:
+$$
+\mu_1  = E\{ Y(1) \} = E\{ Y(1)  -\mu_1(X, \beta_1) \} + E\{\mu_1(X, \beta_1)\}.
+$$
+If we apply the IPW formula to the first term in the above formula viewing $Y(1)  -\mu_1(X, \beta_1)$ as a ``pseudo potential outcome'' under the treatment, we can rewrite the above formula as
+\begin{eqnarray}
+\mu_1  &=& E\left\{ \frac{Z \{Y  -\mu_1(X, \beta_1) \}}{e(X)} \right\} + E\{\mu_1(X, \beta_1)\}  \label{eq::explain-ipw-efficiency-basic}  \\
+&=& E\left\{ \frac{Z \{Y  -\mu_1(X, \beta_1) \}}{e(X)}  +  \mu_1(X, \beta_1) \right\} ,\label{eq::explain-ipw-efficiency}
+\end{eqnarray}
+which holds if the propensity score model is correct without assuming that the outcome model is correct. Using a working model to improve efficiency is an old idea from survey sampling. \citet{little2004robust} and \citet{lumley2011connections} pointed out its connection with the doubly robust estimator.   
+
+
+
+\subsection{Reducing the bias of the outcome regression estimator}\label{sec::improving-outreg}
+
+
+The discussion in Section \ref{sec::improving-ipw} starts with the IPW estimator and improves its efficiency based on a working outcome model. Alternatively, we can also start with an outcome regression estimator based on
+$$
+\tilde{\mu}_1 = E\{\mu_1(X, \beta_1)\} 
+$$
+which may not be the same as $\mu_1$ since the outcome model may be wrong. The bias of this estimator is $ E\{\mu_1(X, \beta_1)  -  Y(1)\}   $, which can be estimated by an IPW estimator
+$$
+B = 
+E\left\{ \frac{Z \{\mu_1(X, \beta_1) - Y\}}{e(X)} \right\} 
+$$
+if the propensity score model is correct. So a de-biased estimator is
+$
+\tilde{\mu}_1 - B  ,
+$
+which is identical to \eqref{eq::explain-ipw-efficiency}. 
+
+
+\section{Examples}
+\label{sec::dr-examples}
+
+
+\subsection{Summary of some canonical estimators for $\tau$}
+
+
+The following \ri{R} code implements the outcome regression, HT, Hajek, and doubly robust estimators for $\tau$. These estimators can be conveniently implemented based on the fitted values of the \ri{glm} function. The default choice for the propensity score model is the logistic model, and the default choice for the outcome model is the linear model with \ri{out.family = gaussian}\footnote{The \ri{glm} function is more general than the \ri{lm} function. With \ri{out.family = gaussian}, \ri{glm} is identical to \ri{lm}.}. For binary outcomes, we can also specify \ri{out.family = binomial} to fit the logistic model.
+
+\begin{lstlisting}
+OS_est = function(z, y, x, out.family = gaussian, 
+                  truncps = c(0, 1))
+{
+     ## fitted propensity score
+     pscore   = glm(z ~ x, family = binomial)$fitted.values
+     pscore   = pmax(truncps[1], pmin(truncps[2], pscore))
+     
+     ## fitted potential outcomes
+     outcome1 = glm(y ~ x, weights = z, 
+                    family = out.family)$fitted.values
+     outcome0 = glm(y ~ x, weights = (1 - z), 
+                    family = out.family)$fitted.values
+     
+     ## outcome regression estimator
+     ace.reg  = mean(outcome1 - outcome0) 
+     ## IPW estimators
+     y.treat     = mean(z*y/pscore)
+     y.control   = mean((1 - z)*y/(1 - pscore))
+     one.treat   = mean(z/pscore)
+     one.control = mean((1 - z)/(1 - pscore))
+     ace.ipw0    = y.treat - y.control
+     ace.ipw     = y.treat/one.treat - y.control/one.control
+     ## doubly robust estimator
+     res1      = y - outcome1
+     res0      = y - outcome0
+     r.treat   = mean(z*res1/pscore)
+     r.control = mean((1 - z)*res0/(1 - pscore))
+     ace.dr    = ace.reg + r.treat - r.control
+
+     return(c(ace.reg, ace.ipw0, ace.ipw, ace.dr))     
+}
+\end{lstlisting}
+
+
+It is tedious to calculate the analytic formulas for the variances of the above estimators. The bootstrap provides convenient approximations to the variances based on resampling from $\{ Z_i, X_i, Y_i \}_{i=1}^n$. Building upon the function \ri{OS_est} above, the following function returns point estimators as well as the bootstrap standard errors. 
+
+
+\begin{lstlisting}
+OS_ATE = function(z, y, x, n.boot = 2*10^2,
+                     out.family = gaussian, truncps = c(0, 1))
+{
+     point.est  = OS_est(z, y, x, out.family, truncps)
+     
+     ## nonparametric bootstrap
+     n          = length(z)
+     x          = as.matrix(x)
+     boot.est   = replicate(n.boot, {
+       id.boot = sample(1:n, n, replace = TRUE)
+       OS_est(z[id.boot], y[id.boot], x[id.boot, ], 
+              out.family, truncps)
+     })
+
+     boot.se    = apply(boot.est, 1, sd)
+     
+     res        = rbind(point.est, boot.se)
+     rownames(res) = c("est", "se")
+     colnames(res) = c("reg", "HT", "Hajek", "DR")
+     
+     return(res)
+}
+\end{lstlisting}
+
+
+
+
+\subsection{Simulation}
+\label{sec::dr-simulation}
+
+
+I will use simulation to evaluate the finite-sample properties of the estimators under four scenarios:
+\begin{enumerate}
+\item\label{case::11}
+both the propensity score and outcome models are correct;
+\item\label{case::01}
+the propensity score model is wrong but the outcome model is correct;
+\item\label{case::10}
+the propensity score model is correct but the outcome model is wrong;
+\item\label{case::00}
+both the propensity score and outcome models are wrong.
+\end{enumerate}
+I will report the average bias, the true standard error, and the average estimated standard error of the estimators over simulation. 
+
+
+
+In case \ref{case::11}, the data generating process is
+\begin{lstlisting}
+  x       = matrix(rnorm(n*2), n, 2)
+  x1      = cbind(1, x)
+  beta.z  = c(0, 1, 1)
+  pscore  = 1/(1 + exp(- as.vector(x1%*%beta.z)))
+  z       = rbinom(n, 1, pscore)
+  beta.y1 = c(1, 2, 1)
+  beta.y0 = c(1, 2, 1)
+  y1      = rnorm(n, x1%*%beta.y1)
+  y0      = rnorm(n, x1%*%beta.y0)
+  y       = z*y1 + (1 - z)*y0
+\end{lstlisting}
+In case \ref{case::01}, I modify the propensity score model to be nonlinear:
+\begin{lstlisting}
+  x1      = cbind(1, x, exp(x))
+  beta.z  = c(-1, 0, 0, 1, -1)
+  pscore  = 1/(1 + exp(- as.vector(x1%*%beta.z)))
+\end{lstlisting}
+In case \ref{case::10}, I modify the outcome model to be nonlinear: 
+\begin{lstlisting}
+  beta.y1 = c(1, 0, 0, 0.2, -0.1)
+  beta.y0 = c(1, 0, 0, -0.2, 0.1)
+  y1      = rnorm(n, x1%*%beta.y1)
+  y0      = rnorm(n, x1%*%beta.y0)
+\end{lstlisting}
+In case \ref{case::00}, I modify both the propensity score and the outcome model. 
+
+
+We set the sample size to be $n=500$ and generate $500$ independent data sets according to the data-generating processes above. 
+In case \ref{case::11}, 
+\begin{lstlisting}
+          reg   HT Hajek   DR
+ave.bias 0.00 0.02  0.03 0.01
+true.se  0.11 0.28  0.26 0.13
+est.se   0.10 0.25  0.23 0.12
+\end{lstlisting}
+All estimators are nearly unbiased. The two weighting estimators have larger variances. 
+In case \ref{case::01},
+\begin{lstlisting}
+          reg    HT Hajek    DR
+ave.bias 0.00 -0.76 -0.75 -0.01
+true.se  0.12  0.59  0.47  0.18
+est.se   0.13  0.50  0.38  0.18
+\end{lstlisting}
+The two weighting estimators are severely biased due to the misspecification of the propensity score model. The outcome regression and doubly robust estimators are nearly unbiased. 
+
+
+In case \ref{case::10},
+\begin{lstlisting}
+           reg   HT Hajek   DR
+ave.bias -0.05 0.00 -0.01 0.00
+true.se   0.11 0.15  0.14 0.14
+est.se    0.11 0.14  0.13 0.14
+\end{lstlisting}
+The outcome regression estimator has a larger bias than the other three estimators due to the misspecification of the outcome model. The weighting and doubly robust estimators are nearly unbiased. 
+
+
+In case \ref{case::00},
+\begin{lstlisting}
+           reg   HT Hajek   DR
+ave.bias -0.08 0.11 -0.07 0.16
+true.se   0.13 0.32  0.20 0.41
+est.se    0.13 0.25  0.16 0.26
+\end{lstlisting}
+All estimators are biased because both the propensity score and outcome models are wrong. The HT and doubly robust estimator has the largest bias. When both models are wrong, the doubly robust estimator appears to be doubly fragile. 
+
+
+In all the cases above, the bootstrap standard errors are close to the true ones when the estimators are nearly unbiased for the true average causal effect. 
+
+
+
+
+\subsection{Applications}
+\label{sec::ATE-application}
+
+
+
+
+Revisiting Example \ref{eg::chan-bmi-ATE}, we obtain the following estimators and bootstrap standard errors:
+\begin{lstlisting}
+       reg     HT  Hajek     DR
+est -0.017 -1.516 -0.156 -0.019
+se   0.230  0.492  0.246  0.233
+\end{lstlisting}
+The two weighting estimators are much larger than the other two estimators. Truncating the estimated propensity score at $[0.1, 0.9]$, we obtain the following estimators and bootstrap standard errors:
+\begin{lstlisting}
+       reg     HT  Hajek     DR
+est -0.017 -0.713 -0.054 -0.043
+se   0.223  0.422  0.235  0.231
+\end{lstlisting}
+The Hajek estimator becomes much closer to the outcome regression and doubly robust estimators, while the Horvitz--Thompson estimator is still an outlier. 
+
+
+
+\section{Some further discussion}
+
+
+
+Recall the proof of Theorem \ref{thm::doublyrobust}, the key for the double robustness property is the product structure in 
+$$
+\tilde{\mu}_1^\textup{dr} - E\{  Y(1) \} 
+= E\left[   \frac{e(X) - e(X,\alpha) }{  e(X,\alpha) }  \times  \left\{  \mu_1(X) -  \mu_1(X, \beta_1)   \right\} \right] ,
+$$
+which ensures that the estimation error is zero if either $e(X) = e(X,\alpha) $ or $ \mu_1(X) =  \mu_1(X, \beta_1) $. This delicate structure renders the doubly robust estimator possibly doubly fragile when both the propensity score and the outcome models are misspecified. The product of two errors multiply to yield potentially much larger errors. 
+The simulation in Chapter \ref{sec::dr-simulation} confirms this point. 
+
+
+\citet{kang2007demystifying} criticized the doubly robust estimator based on simulation studies. They found that the finite-sample performance of the doubly robust estimator can be even wilder than the simple outcome regression and IPW estimators. 
+Despite the critique from \citet{kang2007demystifying},  the doubly robust estimator has been a standard strategy in causal inference since the seminal work of \citet{scharfstein1999adjusting}. Recently, it was resurrected in the theoretical statistics and econometrics literature with a fancier name ``double machine learning'' \citep{chernozhukov2018double}. The basic idea is to replace the working models for the propensity score and outcome with machine learning tools which can be viewed as more flexible models than the traditional parametric models. 
+
+
+
+
+
+\section{Homework problems}
+
+
+
+ \paragraph{A sanity check}\label{hw::discreteX-obs}
+Consider the case in which the covariate is discrete $X \in \{1, \ldots, K\}$ and the parameter of interest is $\tau$. Without imposing any model assumptions, the estimated propensity score $\hat{e}(X)$ equals $\hat{e}_{[k]} = \hat{\pr}(Z=1\mid X=k) $, the proportion of units receiving the treatment, and the estimated outcome means are the sample means of the outcomes $\hat{\bar{Y}}_{[k]}(1)  = \hat{E}(Y\mid Z=1, X=k) $ and $\hat{\bar{Y}}_{[k]}(0)  = \hat{E}(Y\mid Z=0, X=k) $ under treatment, within stratum $X=k\ (k=1, \ldots, K)$. Show that the stratified estimator, outcome regression estimator, HT estimator, Hajek estimator, and doubly robust estimator are all identical numerically. 
+ 
+
+
+\paragraph{An alternative form of the doubly robust estimator for $\tau$}\label{hw::alternative-dr2-robins}
+
+Motivated by \eqref{eq::explain-ipw-efficiency-basic}, we have an alternative form of the doubly robust estimator for $\mu_1 = E\{ Y(1) \} $: 
+$$
+\tilde{\mu}_1^\text{dr2} = 
+\frac{ E\left[   \frac{Z\{ Y-\mu_1(X,\beta_1) \}}{  e(X,\alpha) } \right] }{E\left[   \frac{Z }{  e(X,\alpha) } \right]} 
+ + E\{ \mu_1(X, \beta_1)  \} .
+$$
+Show that $\tilde{\mu}_1^\text{dr2} = \mu_1$ if either $e(X,\alpha)  = e(X)$ or $\mu_1(X, \beta_1) =  \mu_1(X)$. Give the analogous formula for estimating $\mu_0$. Give the sample analog of the doubly robust estimator for $\tau$ based on these formulas. 
+
+Remark: 
+This form of doubly robust estimator appeared in \citet{robins2007comment}. 
+
+
+
+\paragraph{An upper bound of the bias of the doubly robust estimator}\label{hw::upperbound-dr}
+
+
+Consider the population version of the doubly robust estimator $\tilde{\mu}_1^\textup{dr} $ for $E\{  Y(1) \} $. 
+Show that
+$$
+ |   \tilde{\mu}_1^\textup{dr} - E\{  Y(1) \}  |  \leq
+\sqrt{
+E\left[   \frac{ \{  e(X) - e(X,\alpha)\}^2  }{  e(X,\alpha)^2 }  \right] \times 
+E\left[  \left\{  \mu_1(X) -  \mu_1(X, \beta_1)   \right\}^2 \right] .
+}
+$$
+Find the analogous upper bound for the bias of $\tilde{\mu}_0^\textup{dr} $ for $E\{  Y(0) \} $. 
+
+
+Remark: You may find Section \ref{sec::cauchy-schwarz-inequality} useful for the proof. 
+
+
+\paragraph{Data analysis of Example \ref{eg::job-training-obs}}
+
+
+Analyze the dataset \ri{cps1re74.csv} using the methods discussed so far. 
+
+ 
+ 
+\paragraph{Analyzing a dataset from the Karolinska Institute}\label{hw::Karolinska-dr}
+ 
+ \citet{rubin2008objective} used the dataset \texttt{karolinska.txt} to illustrate the ideas of causal inference in observational studies. 
+ The dataset has 158 cardia cancer patients diagnosed between 1988 and 1995 in Central and Northern Sweden, 79 diagnosed at large volume hospitals, defined as treating more than ten patients with cardia cancer during that period, and 79 diagnosed at the remaining small volume hospitals. The treatment \texttt{z}  is the indicator of whether a patient was diagnosed at a large volume hospital. The outcome \texttt{y} is whether the patient survived longer than 1 year after the diagnosis. The covariates \texttt{x} contain information about age, whether a patient was from a rural area, and whether a patient was male. 
+ 
+\begin{lstlisting}
+karolinska = read.table("karolinska.txt", header = TRUE)
+z = karolinska$hvdiag
+y = 1 - (karolinska$year.survival == 1)
+x = as.matrix(karolinska[, c(3, 4, 5)])
+\end{lstlisting}
+
+
+Analyze the dataset using the methods discussed so far. 
+
+
+
+ \paragraph{Recommended reading}
+ 
+ \citet{lunceford2004stratification} gave a review and comparison of many methods discussed in Chapters \ref{chapter::pscore-key} and \ref{chapter::doubly-robust}. 
+ 
+

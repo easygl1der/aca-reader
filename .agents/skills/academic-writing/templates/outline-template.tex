@@ -1,0 +1,130 @@
+% !TEX root = ../[topic]-notes.tex
+% Chapter Outline Template - ~30% filled
+
+%======================================================================
+% \chapter{章节标题}\label{ch:X}
+%======================================================================
+
+\begin{refsection}
+\chapter{第5章 协变量平衡与因果回归}\label{ch:5}
+
+%======================================================================
+\section{引言}\label{sec:5-intro}
+%====================================================================--
+
+在第三章中，我们学习了潜在结果框架的基本概念%
+\addtocounter{footnote}{1}\addtocounter{footnote}{-1}\footnotesize%
+\par\_notes{关于潜在结果的详细讨论见 \cref{sec:3-1}。}，
+认识到因果效应定义为%
+$\tau = \mathbb{E}[Y(1) - Y(0)]$。
+
+然而，这一框架在实践中面临一个根本性困难：\textbf{无法同时观测每个单元的两种潜在结果}。
+这引导我们思考：如何在只有部分观测数据的情况下，估计因果效应？
+
+\textbf{本章结构概览}：
+\begin{enumerate}
+\item \S\ref{sec:5-1} 引入协变量平衡的核心概念；
+\item \S\ref{sec:5-2} 建立协变量平衡与因果识别的主要定理；
+\item \S\ref{sec:5-3} 通过数值例子说明定理的应用；
+\item \S\ref{sec:5-4} 讨论协变量平衡的诊断方法。
+\end{enumerate}
+
+%======================================================================
+\section{协变量平衡的定义}\label{sec:5-1}
+%====================================================================--
+
+\subsection{从混杂因子谈起}\label{sec:5-1-1}
+
+\textbf{核心问题}：当处理分配 $Z$ 与潜在结果 $(Y(1), Y(0))$ 相关时，
+即存在\textbf{混杂因子}（confounder）时，直接比较处理组和对照组会产生偏误。
+
+\textbf{历史脉络}：这个问题最早由...
+
+
+\subsection{形式化定义}\label{sec:5-1-2}
+
+在正式定义协变量平衡之前，我们考虑一个简单例子说明其直观含义...
+
+\begin{Example}[二元处理的协变量平衡]\label{ex:5-1}
+设处理变量 $Z \in \{0, 1\}$，协变量 $X \in \mathbb{R}^p$...
+\end{Example}
+\par\_notes{完整计算过程见附录 \cref{sec:appendix-ex-5-1}。}
+
+\begin{Definition}[5.1 — 协变量平衡]\label{def:5-1}
+我们称处理组和对照组满足\textbf{协变量平衡}，如果
+\begin{equation}\label{eq:5-1-balance}
+\mathbb{P}(Z=1 \mid X) = \mathbb{P}(Z=1)
+\end{equation}
+或者更一般地，如果
+\begin{equation}\label{eq:5-1-balance-general}
+\mathbb{E}[Z \mid X] = \mathbb{E}[Z]。
+\end{equation}
+\end{Definition}
+
+\textbf{直观理解}：协变量平衡意味着，处理分配的倾向与协变量无关，
+从而使我们可以将组间差异归因于处理效应而非混淆因素。
+
+
+%======================================================================
+\section{协变量平衡与因果识别}\label{sec:5-2}
+%====================================================================--
+
+\subsection{主要定理}\label{sec:5-2-1}
+
+\begin{Theorem}[5.1 — 协变量平衡与因果识别]\label/thm:5-1}
+假设以下条件成立：
+\begin{enumerate}
+\item \textbf{强可忽略性}（Strong Ignorability）：
+$(Y(1), Y(0)) \Perp Z \mid X$；
+\item \textbf{重叠性}（Overlap）：$0 < \mathbb{P}(Z=1 \mid X) < 1$。
+\end{enumerate}
+则有
+\begin{equation}\label{eq:5-2-ate}
+\mathbb{E}[Y(1) - Y(0)] = \mathbb{E}_X\big[\mathbb{E}(Y \mid Z=1, X) - \mathbb{E}(Y \mid Z=0, X)\big]。
+\end{equation}
+\end{Theorem}
+
+\begin{Proof}
+证明概要：证明的核心思想是...
+
+\done
+\par\_notes{完整证明见附录 \cref{sec:appendix-thm-5-1}。}
+\end{Proof}
+
+
+%======================================================================
+\section{数值例子}\label{sec:5-3}
+%====================================================================--
+
+\begin{Example}[协变量平衡的计算]\label{ex:5-2}
+考虑一个简单研究...
+\end{Example}
+\par\_notes{完整计算过程见附录 \cref{sec:appendix-ex-5-2}。}
+
+
+%======================================================================
+\section{协变量平衡的诊断}\label{sec:5-4}
+%====================================================================--
+
+\textbf{动机}：在实际研究中，我们通常无法验证协变量平衡是否成立，
+但可以通过一些诊断方法来评估...
+
+
+%======================================================================
+\section{小结}\label/sec:5-summary}
+%====================================================================--
+
+本章引入了协变量平衡的核心概念...
+
+\textbf{主要结果}：
+\begin{enumerate}
+\item 定义 \ref{def:5-1} 提供了协变量平衡的数学刻画；
+\item 定理 \ref/thm:5-1} 表明，在强可忽略性和重叠性下...
+\end{enumerate}
+
+在下一章中，我们将学习如何通过...来评估和实现协变量平衡。
+
+\par\_notes{主要定理的完整证明见附录 \crefrange{sec:appendix-thm-5-1}{sec:appendix-thm-5-2}。}
+
+\end{refsection}
+\endinput

@@ -1,0 +1,462 @@
+
+\chapter{Difficulties of Unconfoundedness in Observational Studies for Causal Effects}
+ \label{chapter::difficulties-observational-studies}
+ 
+ 
+Part \ref{part::observational-studies} of this book discusses causal inference with observational studies under two assumptions: unconfoundedness and overlap. Both are strong assumptions and are likely to be violated in practice. This chapter will discuss the difficulties of the unconfoundedness assumption.  Chapters \ref{chapter::evalue}--\ref{sec::rosenbaum-sensitivity-analysis} will discuss various strategies for sensitivity analysis in observational studies with unmeasured confounding. Chapter \ref{chapter::overlap}  will discuss the difficulties of the overlap assumption. 
+ 
+ 
+ 
+
+\section{Some basics of the causal diagram}
+
+
+\citet{pearl1995causal} introduced the causal diagram as a powerful tool for causal inference in empirical research. 
+\citet{pearl2000causality} is a textbook on the causal diagram. Here I introduce the causal diagram as an intuitive tool for illustrating the causal relationships among variables. 
+
+For example, if we have the causal diagram
+$$
+\xymatrix{
+ & X \ar[ld]\ar[rd] \\
+Z\ar[rr] &&Y 
+}
+$$
+and focus on the causal effect of $Z$ on $Y$,
+we can read it as the following data-generating process: 
+$$
+\left\{ 
+\begin{aligned}
+      X & \sim F_X(x), \\
+      Z  &=   f_Z(X, \varepsilon_Z) , \\
+      Y(z) &=  f_Y(X, z, \varepsilon_Y(z)) ,
+\end{aligned}
+\right. 
+$$
+where $\varepsilon_Z \ind \varepsilon_Y(z)$ for both $z=0,1$. 
+In the above,  covariates $X$ are generated from a distribution  $F_X(x)$, the treatment assignment is a function of $X$ with a random error term $\varepsilon_Z$, and the potential outcome $ Y(z) $ is a function of $X$, $z$ and a random error term $\varepsilon_Y(z)$. We can easily read from the equations that $Z\ind Y(z) \mid X$, i.e., the unconfoundedness assumption holds. 
+
+
+If we have a causal diagram 
+$$
+\xymatrix{
+ X \ar[d]\ar[rrd] & & U\ar[d]\ar[lld] \\
+Z\ar[rr] &&Y 
+}
+$$
+we can read it as  the following data-generating process: 
+$$
+\left\{ 
+\begin{aligned}
+       X & \sim F_X(x), \\
+       U& \sim F_U(u), \\ 
+      Z  &=   f_Z(X, U,  \varepsilon_Z) , \\
+      Y(z) &=  f_Y(X, U, z, \varepsilon_Y(z)) ,
+\end{aligned}
+\right. 
+$$
+where $\varepsilon_Z \ind \varepsilon_Y(z)$ for both $z=0,1$. We can easily read from the equations that $Z\ind Y(z) \mid (X,U)$ but $Z\nind Y(z) \mid X$, i.e., the unconfoundedness assumption holds conditional on $(X,U)$ but does not hold conditional on $X$ only. In this case, $U$ is an unmeasured confounder. In this diagram, $U$ is called an unmeasured confounder. 
+
+
+
+
+
+
+\section{Assessing the unconfoundedness assumption}
+
+
+The unconfoundedness assumption 
+$$
+Z\ind Y(1) \mid X, \quad 
+Z\ind Y(0) \mid X
+$$
+implies that 
+\begin{eqnarray*}
+\pr\{ Y(1)\mid  Z=1, X \}  &=& \pr\{ Y(1)\mid  Z=0, X \} , \\
+\pr\{ Y(0)\mid  Z=1, X \} &=& \pr\{ Y(0)\mid  Z=0, X \} . 
+\end{eqnarray*}
+So the unconfoundedness assumption basically requires that the counterfactual distribution $\pr\{ Y(1)\mid  Z=0, X \}$ equals the observed distribution 
+$\pr\{ Y(1)\mid  Z=1, X \}$, and the counterfactual distribution $\pr\{ Y(0)\mid  Z=1, X \} $ equals the observed distribution $\pr\{ Y(0)\mid  Z=0, X \}$. Because the counterfactual distributions are not directly identifiable from the data, the unconfoundedness assumption is fundamentally untestable without additional assumptions. I will discuss two strategies to assess the unconfoundedness assumption. Here, ``assess'' is a weaker notion than ``test''. The former is referred to as supplementary analysis that supports or undermines the initial analysis, but the latter is referred to as formal statistical testing. 
+
+
+
+\subsection{Using negative outcomes}
+
+
+ 
+
+Assume that $Y^\textup{n}$ is an outcome similar to $Y$ and ideally, shares the same confounding structure as $Y$. If we believe $Z\ind Y(z)\mid X$, then we also tend to believe $Z\ind Y^\textup{n} (z)\mid X$.
+Moreover, we know, a priori, the effect of $Z$ on $Y^\textup{n}$:
+$$
+\tau(Z\rightarrow Y^\textup{n} )
+= 
+E\{  Y^\textup{n}(1) - Y^\textup{n}(0) \} .
+$$
+An important example is that $\tau(Z\rightarrow Y^\textup{n} ) = 0$. A causal diagram satisfying these requirements is below:
+
+$$
+\xymatrix{
+ & X \ar[ld]\ar[rd] \ar[rr] & & Y^\textup{n}  \\
+Z\ar[rr] &&Y 
+}
+$$
+
+
+
+\begin{example}
+\citet{Cornfield::1959} studied the causal role of cigarette smoking on lung cancer based on observational studies. They controlled for many important background variables but it is still possible to have some unmeasured confounders biasing the observed effects. To strengthen the evidence for causation, they also reported the effect of cigarette smoking on car accidents, which was close to zero, the anticipated effect based on biology. So even if they could not rule out unmeasured confounding in the analysis, this supplementary analysis based on a negative outcome makes the evidence of the causal effect of cigarette smoking on lung cancer stronger. 
+\end{example}
+
+\begin{example}
+\citet{imbens2015causal} suggested using the lagged outcome as a negative outcome. In most cases, it is reasonable to believe that the lagged outcome and the outcome have a similar confounding structure. Since the lagged outcome happens before the treatment, the average causal effect on it must be $0$. However, their suggestion should be used with caution since in most studies we simply treat lagged outcomes as an observed confounder. 
+
+In some sense, the covariate balance check in Chapter \ref{chapter::pscore-key} is a special case of using negative controls. Similar to the problem of using lagged outcomes as negative controls, those covariates are usually a part of the unconfoundedness assumption. Therefore, the failure of the covariate balance check does not really falsify the unconfoundedness assumption but rather the model specification of the propensity score. 
+\end{example}
+
+\begin{example}
+Observational studies of elderly persons have shown that vaccination against influenza remarkably reduces one's risk of pneumonia/influenza hospitalization and all-cause mortality in the following season, after adjustment for measured covariates. \citet{jackson2006evidence} were skeptical about the large magnitude and thus conducted supplementary analysis on negative outcomes. Vaccination often begins in the fall, but influenza transmission is often minimal until the winter. Based on biology, the effect of vaccination should be most prominent during influenza season. But \citet{jackson2006evidence} found a greater effect before the influenza season, suggesting that the observed effect is due to unmeasured confounding. 
+\end{example}
+
+\citet{jackson2006evidence} seems the most convincing one since the influenza-related outcomes before and during the influenza season should have similar confounding patterns. \citet{Cornfield::1959}'s additional evidence seems weaker since car accidents and lung cancer have very different causal mechanisms with respect to cigarette smoking. In fact, \citet{Fisher::1957}'s critique was that the relationship between cigarette smoking on lung cancer may be due to an unobserved genetic factor (see Chapter \ref{chapter::evalue}). Such a genetic factor might affect cigarette smoking and lung cancer simultaneously, but it seems unlikely that it also affects car accidents.  
+
+
+\citet{lipsitch2010negative} is a recent article on negative outcomes. 
+\citet{rosenbaum1989role} discussed the role of known effects in causal inference. 
+
+ 
+
+\subsection{Using negative exposures}
+
+ 
+
+
+Negative exposures are duals of negative outcomes. 
+Assume $Z^\textup{n}$ is a treatment variable similar to $Z$ and shares the same confounding structure as $Z$. If we believe $Z \ind Y  (z) \mid X$, then we tend to believe
+$
+Z^\textup{n}\ind Y  (z) \mid X.
+$
+Moreover, we know, a priori, the effect of $Z^\textup{n}$ on $Y $ 
+$$
+\tau(Z^\textup{n}\rightarrow Y  )
+= 
+E\{  Y(1^\textup{n}) - Y (0^\textup{n}) \}.
+$$
+An important example is that $\tau(Z^\textup{n}\rightarrow Y  ) = 0.$ A causal diagram satisfying these requirements is below:
+
+
+$$
+\xymatrix{
+Z^\textup{n} & & X \ar[ll] \ar[ld]\ar[rd] \\
+&Z  \ar[rr] && Y 
+}
+$$
+
+
+
+
+\begin{example}
+\citet{sanderson2017negative} give many examples of negative exposures in determining the effect of intrauterine exposure on later outcomes by comparing the association of maternal exposure during pregnancy with the outcome of interest, with the association of paternal exposure with the same outcome. They review studies on the effect of maternal and paternal smoking on offspring outcomes, and studies on the effect of maternal and paternal BMI on later offspring BMI and autism spectrum disorder.  In these examples, we expect the association of maternal exposure with the outcome to be larger than that of paternal exposure with the outcome. 
+\end{example}
+
+
+
+\subsection{Summary}
+
+
+The unconfoundedness assumption is fundamentally untestable without additional assumptions. Although negative outcomes and negative controls in observational studies cannot prove or disprove unconfoundedness, using them in supplementary analyses can strengthen the evidence for causation. However, it is often non-trivial to conduct this type of supplementary analysis because it involves more data and more importantly, a deeper understanding of the causal problems to find convincing negative outcomes and negative controls. 
+
+ 
+ 
+
+
+\section{Problems of over-adjustment}
+\label{sec::pearl-bias}
+
+We have discussed many methods for estimating causal effects under the unconfoundedness assumption:
+$$
+Z\ind \{ Y(1), Y(0) \} \mid X .
+$$
+This is an assumption conditioning on $X$. It is crucial to select the right set of $X$ that ensures the conditional independence. 
+\citet{rosenbaum2002design} wrote that ``there is no reason to avoid adjustment for a variable describing subjects before treatment.'' Similarly, \citet{rubin2007design} wrote that ``typically, the more conditional an assumption, the more acceptable it is.'' Both argued that we should control for all observed pretreatment covariates. \citet{vanderweele2011new} called it the {\it pretreatment criterion}. 
+Pearl disagreed with this recommendation and gave two counterexamples below. 
+
+
+\subsection{M-bias}
+\label{section::m-bias}
+
+M-bias appears in the following causal diagram with an M-structure:
+$$
+\xymatrix{
+U_1 \ar[dd]\ar[dr] &&U_2 \ar[dd]\ar[dl] \\
+&X& \\
+Z   && Y 
+}
+$$
+
+We can read from the diagram the data-generating process:
+$$
+\left\{ 
+\begin{aligned}
+&U_1 \ind U_2 ,\\
+&X = f_X(U_1, U_2, \varepsilon_X),\\
+&Z=   f_Z(U_1,  \varepsilon_Z) , \\
+&Y=      Y(z) =  f_Y(U_2, \varepsilon_Y) ,
+\end{aligned}
+\right. 
+$$
+where $(\varepsilon_X, \varepsilon_Z, \varepsilon_Y) $ are independent random error terms. In the above causal diagram, $X$ is observed, but $U_1$ and $U_2$ are unobserved. 
+If we change the value of $Z$, the value of $Y$ will not change at all. So the true causal effect of $Z$ on $Y$ must be $0$. From the data-generating equations, we can read that $Z\ind Y$, so the association between $Z$ and $Y$ is $0$, and, in particular, 
+$$
+\tau_\textsc{PF} = E(Y\mid Z=1) - E(Y\mid Z=0) = 0.
+$$
+This means that without adjusting for the covariate $X$, the simple estimator is unbiased for the true parameter. 
+
+However, if we condition on $X$, then $U_1\nind  U_2 \mid X$, and consequently, $Z\nind Y\mid X$ and
+$$
+\int \{  E(Y\mid Z=1, X=x) - E(Y\mid Z=0, X=x) \} f(x) \diff x \neq 0
+$$
+in general. 
+To gain intuition, we consider the case with Normal linear models\footnote{It is not ideal for our discussion of binary $Z$, but it simplifies the derivations. \citet{ding2015adjust} gave a detailed discussion with more natural models for binary $Z$. }:
+$$
+\left\{ 
+\begin{aligned}
+&X = a U_1 + b U_2 +  \varepsilon_X,\\
+&Z=   cU_1 +  \varepsilon_Z , \\
+&Y=      Y(z) =  dU_2 +  \varepsilon_Y ,
+\end{aligned}
+\right. 
+$$
+where $(U_1, U_2, \varepsilon_X, \varepsilon_Z, \varepsilon_Y)  \iidsim \N01$. 
+We have 
+$$
+\cov(Z,Y) = \cov(  cU_1 +  \varepsilon_Z,  dU_2 +  \varepsilon_Y) = 0,
+$$
+but by the result in Problem \ref{hw::partial-correlation}, the partial correlation coefficient between $Z$ and $Y$ given $X$ is\footnote{The notation $\propto$ reads as ``proportional to'' and allows us to drop some unimportant constants.}
+\begin{eqnarray*}
+\rho_{ZY\mid X} &=& \frac{   \rho_{ZY} - \rho_{ZX} \rho_{YX}  }{  \sqrt{  1-\rho_{ZX}^2 }  \sqrt{1- \rho_{YX}^2  }  }   
+\\
+&\propto &  - \rho_{ZX} \rho_{YX}  \\
+&\propto &  - \cov(Z, X) \cov(Y, X)  \\
+&=&  - abcd,
+\end{eqnarray*}
+the product of the coefficients on the path from $Z$ to $Y$. 
+So the unadjusted estimator is unbiased but the adjusted estimator has a bias proportional to $abcd$. 
+
+
+ 
+ 
+The following simple example illustrates M-bias.
+
+\begin{lstlisting}
+> ## M bias with large sample size
+> n  = 10^6
+> U1 = rnorm(n)
+> U2 = rnorm(n)
+> X  = U1 + U2 + rnorm(n)
+> Y  = U2 + rnorm(n)
+> ## with a continuous treatment Z
+> Z  = U1 + rnorm(n)
+> round(summary(lm(Y ~ Z))$coef[2, 1], 3)
+[1] 0
+> round(summary(lm(Y ~ Z + X))$coef[2, 1], 3)
+[1] -0.2
+> 
+> ## with a binary treatment Z
+> Z  = (Z >= 0)
+> round(summary(lm(Y ~ Z))$coef[2, 1], 3)
+[1] 0.002
+> round(summary(lm(Y ~ Z + X))$coef[2, 1], 3)
+[1] -0.42
+\end{lstlisting}
+
+
+
+\subsection{Z-bias}
+\label{sec::z-bias}
+
+ 
+
+Consider the following causal diagram:
+$$
+\xymatrix{
+&&&U \ar[dl]_b \ar[dr]^c \\
+X \ar[rr]^a &&Z\ar[rr]^\tau   && Y 
+}
+$$
+with the data generating process\footnote{Again, we generate continuous $Z$ from a linear model to simplify the derivations.  \citet{ding2017instrumental} extended the theory to more general causal models, especially for binary $Z$. 
+}
+$$
+\left\{ 
+\begin{aligned}
+&Z=   aX + bU +   \varepsilon_Z , \\
+&Y(z)=   \tau z + cU +  \varepsilon_Y ,
+\end{aligned}
+\right. 
+$$
+where $(U, X, \varepsilon_Z, \varepsilon_Y) $ are IID  $ \N01$. In this data-generating process, we have
+$X\ind U,$ $X\nind Z$, and $X$ affects $Y$ only through $Z$.  
+
+ 
+The unadjusted estimator is
+\begin{eqnarray*}
+\tau_\textup{unadj} &=& \frac{ \cov(Z, Y)  }{  \var(Z) }  \\
+&=& \frac{ \cov(Z, \tau Z + cU)  }{ \var(Z) }  \\
+&=& \tau + \frac{c \cov(aX + bU, U)  }{  \var(Z) }  \\
+&=& \tau + \frac{c b }{  a^2 + b^2 + 1} ,
+\end{eqnarray*}
+which has bias $bc/(a^2 + b^2 + 1)$. The adjusted estimator from the OLS of $Y$ on $(Z,X)$ satisfies
+$$
+\left\{ 
+\begin{aligned}
+E\{  Z(Y- \tau_\textup{adj} Z  - \alpha X  )  \} &= 0,\\
+E\{  X(Y - \tau_\textup{adj} Z - \alpha X)  \} &= 0.
+\end{aligned}
+\right. 
+$$
+Solve the above linear system of $(\tau_\textup{adj}, \alpha)$ to obtain the formula of $  \tau_\textup{adj}$:
+\begin{equation}
+\label{eq::zbias-result}
+  \tau_\textup{adj}  = \tau +  \frac{    bc }{   b^2+1 },
+\end{equation}
+which has bias $bc/(b^2+1)$. I relegate the details for solving the linear system of $(\tau_\textup{adj}, \alpha)$ as Problem \ref{hw::z-bias-formula}. 
+
+So the unadjusted estimator has a smaller bias than the adjusted estimator. More interestingly, the stronger the association between $X$ and $Z$ is (measured by $a$), the larger the bias of the adjusted estimator is. 
+
+
+The mathematical derivation is not extremely hard. But this type of bias seems rather mysterious. Here is the intuition. The treatment is a function of $X$, $U$, and other random errors. If we condition on $X$, it is merely a function of  $U$ and other random errors. Therefore, conditioning on $X$ makes $Z$ less random, and more critically, makes the unmeasured confounder $U$ play a more important role in $Z$. Consequently, the confounding bias due to $U$ is amplified by conditioning on $X$. This idealized example illustrates the danger of over-adjusting for some covariates. 
+
+
+
+ \citet{heckman2004using} observed this phenomenon in simulation studies. 
+ \citet[][technical report in 2006]{wooldridge2009should} verified it in linear models. 
+ \citet{pearl2010class, pearl2011invited} explained it using causal diagrams. 
+ \citet{ding2017instrumental} provided a more general theory as well as some intuition for this phenomenon. 
+ This type of bias is called Z-bias because, in Pearl's original papers, he used the symbol $Z$ for our variable $X$. Throughout the book, however, $Z$ is used for the treatment variable. In Part \ref{part::instrumentalvariables} of this book,  we will call $Z$ an instrumental variable if it satisfies the causal diagram presented in this subsection. This justifies the {\it instrumental variable bias} as another name for this type of bias. 
+
+
+
+The following simple example illustrates Z-bias.
+\begin{lstlisting}
+> ## Z bias with large sample size
+> n  = 10^6
+> X = rnorm(n)
+> U = rnorm(n)
+> Z = X + U + rnorm(n)
+> Y = U + rnorm(n)
+> 
+> round(summary(lm(Y ~ Z))$coef[2, 1], 3)
+[1] 0.333
+> round(summary(lm(Y ~ Z + X))$coef[2, 1], 3)
+[1] 0.501
+> 
+> ## stronger association between X and Z
+> Z = 2*X + U + rnorm(n)
+> round(summary(lm(Y ~ Z))$coef[2, 1], 3)
+[1] 0.167
+> round(summary(lm(Y ~ Z + X))$coef[2, 1], 3)
+[1] 0.501
+> 
+> ## even stronger association between X and Z
+> Z = 10*X + U + rnorm(n)
+> round(summary(lm(Y ~ Z))$coef[2, 1], 3)
+[1] 0.01
+> round(summary(lm(Y ~ Z + X))$coef[2, 1], 3)
+[1] 0.5
+\end{lstlisting} 
+
+
+\subsection{What covariates should we adjust for in observational studies?}
+
+
+We never know the true underlying data-generating process which can be quite complicated. However, the following causal diagram helps to clarify many ideas. It already rules out the possibility of $M$-bias discussed in Section \ref{section::m-bias}. 
+$$
+\xymatrix{
+ &&X_R&& \\
+X_Z \ar[ddr] && X \ar[ddl] \ar[ddr]&& X_Y \ar[ddl] \\
+ &\\
+ &Z \ar[rr] \ar[ddr] &&Y \ar[ddl]& \\
+ & \\
+ &&X_I&&
+}
+$$
+The covariates above have different features: 
+\begin{enumerate}
+\item
+$X$ affects both the treatment and the outcome. Conditioning on $X$ ensures the unconfoundedness assumption, so we should control for $X$.
+\item
+$X_R$ is pure random noise not affecting either the treatment or the outcome. Including it in the analysis does not bias the estimate but introduces unnecessary variability in finite samples.
+\item
+$X_Z$ is an instrumental variable that affects the outcome only through the treatment. In the diagram above, including it in the analysis does not bias the estimate but increases the variability of the estimate. However, with unmeasured confounding, including it in the analysis amplifies the bias as shown in Section \ref{section::m-bias}. 
+\item
+$X_Y$ affects the outcome only but not the treatment. Without conditioning on it, the unconfoundedness assumption still holds. Since they are predictive of the outcome, including them in analysis often improves precision.
+\item
+$X_I$ is affected by the treatment and outcome. It is a post-treatment variable, not a pretreatment covariate. We should not include it if the goal is to infer the effect of the treatment on the outcome. We will discuss issues with post-treatment variables in causal inference in Part \ref{part::post-treatmentvariable} of this book. 
+\end{enumerate}
+
+
+
+If we believe the above causal diagram, we should adjust for at least $X$ to remove bias and more ideally, further adjust for $X_Y$ to reduce variance. 
+
+
+ 
+ 
+ 
+\section{Homework Problems}
+
+
+\paragraph{More details for the formula of Z-bias}\label{hw::z-bias-formula}
+Verify \eqref{eq::zbias-result}.
+ 
+
+\paragraph{Cochran's formula or the omitted variable bias formula}
+\label{hw::cochran+ovb}
+
+
+
+Sir David Cox calls the following result {\it Cochran's formula} \citep{cochran1938omission, cox2007generalization} and econometricians call it the {\it omitted variable bias formula} \citep{angrist2008mostly}. 
+A special case appeared in \citet{fisher1925statistical}.
+It is also a counterpart of the Frisch--Waugh--Lovell theorem in Chapter \ref{appendix::fwl-theorem}.  
+
+The formula has two versions. All vectors below are column vectors. 
+
+\begin{enumerate}
+[(1)]
+\item
+(Population version) Assume $(y_i, x_{1i}, x_{2i})_{i=1}^n$ are IID, where $y_i$ is a scalar, $x_{i1}$ has dimension $K$, and $x_{i2}$ has dimension $L$. 
+
+We have the following OLS decompositions of random variables
+\begin{eqnarray}
+y_i &=& \beta_1 \tran x_{i1} + \beta_2  \tran x_{2i} + \varepsilon_i , \label{eq::long}\\
+y_i&=&\gamma  \tran x_{i1} + e_i, \label{eq::short}\\
+x_{i2} &=& \delta  \tran x_{i1} + v_i . \label{eq::inter}
+\end{eqnarray}
+Equation \eqref{eq::long} is called the long regression, and Equation \eqref{eq::short} is called the short regression. In Equation \eqref{eq::inter}, $\delta$ is a matrix because it is a regression of a vector on a vector. You can view \eqref{eq::inter} as regression of each component of $x_{i2}$ on $x_{i1}$. 
+
+Show that $\gamma = \beta_1 + \delta \beta_2.$
+
+
+\item
+(Sample version) We have an $n\times 1$ vector $Y$, an $n\times K$ matrix $X_1$, and an $n\times L$ matrix $X_2$. We do not assume any randomness. All results below are purely linear algebra. 
+
+We can obtain the following OLS fits: 
+\begin{eqnarray*}
+Y &=& X_1 \hat{\beta}_1 + X_2 \hat{\beta}_2+ \hat{\varepsilon},\\
+Y &=& X_1 \hat{\gamma} + \hat{e} ,\\
+X_2 &=& X_1 \hat{\delta} + \hat{v},
+\end{eqnarray*}
+where $\hat{\varepsilon},  \hat{e}, \hat{v}$ are the residuals. 
+Again, the last OLS fit means the OLS fit of each column of $X_2$ on $X_1$, and therefore the residual $\hat{v}$ is an $n\times L$ matrix.
+
+Show that $\hat{\gamma} = \hat{\beta}_1 +  \hat{\delta} \hat{\beta}_2$.
+
+\end{enumerate}
+
+ 
+Remark: The product terms  $\delta \beta_2$ and $\hat{\delta} \hat{\beta}_2$ are often referred to as the omitted-variable bias at the population level and sample level, respectively. 
+ 
+ 
+ \paragraph{Recommended reading} 
+ 
+\citet{imbens2020potential} reviews and compares the roles of potential outcomes and causal diagrams for causal inference. 
+
+
+

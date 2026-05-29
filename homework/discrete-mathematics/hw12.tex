@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+
+\usepackage{xeCJK}
+\setCJKmainfont{STSong}
+\setCJKsansfont{Heiti SC}
+
+\input{../../templates/template.LaTeX.homework/structure.tex}
+
+%----------------------------------------------------------------------------------------
+%  ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+\newcommand{\assignmentQuestionName}{习题}
+\newcommand{\assignmentClass}{离散数学}
+\newcommand{\assignmentTitle}{第4章 基数与可数集 — 第12次作业}
+\newcommand{\assignmentAuthorName}{乐绎华}
+\newcommand{\studentID}{23363017}
+\newcommand{\assignmentClassInstructor}{左孝凌、刘永才《离散数学》}
+\newcommand{\assignmentDueDate}{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+%----------------------------------------------------------------------------------------
+%  4-4(1d) 构造双射函数
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-4(1d) 构造双射函数}
+  构造一个从 $A = R$ 到 $B = (0, \infty)$ 的双射函数，说明 $A$ 和 $B$ 具有相同的势。
+
+  \begin{answer}
+    \textbf{构造函数：}
+    定义函数 $f: R \to (0, \infty)$ 如下：
+    $$f(x) = e^x$$
+
+    \textbf{证明 $f$ 是双射：}
+    \begin{enumerate}
+      \item \textbf{单射性：} 对于任意 $x_1, x_2 \in R$，若 $f(x_1) = f(x_2)$，即 $e^{x_1} = e^{x_2}$。两边取自然对数得 $\ln(e^{x_1}) = \ln(e^{x_2})$，即 $x_1 = x_2$。故 $f$ 是单射。
+      \item \textbf{满射性：} 对于任意 $y \in (0, \infty)$，令 $x = \ln y$。因为 $y > 0$，则 $x \in R$ 且 $f(x) = e^{\ln y} = y$。故 $f$ 是满射。
+    \end{enumerate}
+
+    综上所述，$f$ 是从 $R$ 到 $(0, \infty)$ 的双射函数。
+
+    \begin{info}[结论:]
+      由于存在双射函数，$A = R$ 与 $B = (0, \infty)$ 等势，即 $K[R] = K[(0, \infty)] = \aleph$。
+    \end{info}
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  4-5(1b, 1c) 集合的势
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-5(1b, 1c) 集合的势}
+  下列集合 $A$ 的势是什么？
+  \begin{enumerate}
+    \item[b)] $A = \{\langle p, q \rangle \mid p, q \text{ 都是有理数}\}$
+    \item[c)] $A$ 是由所有半径为1，圆心在 $x$ 轴上的圆周所组成的集合
+  \end{enumerate}
+
+  \begin{answer}
+    \textbf{b) $A = \{\langle p, q \rangle \mid p, q \in Q\}$ 的势}
+
+    由题意知 $A = Q \times Q$。
+    \begin{itemize}
+      \item 已知有理数集 $Q$ 是可数集，即 $K[Q] = \aleph_0$。
+      \item 根据定理：两个可数集的笛卡尔积仍然是可数集。
+      \item 因此 $Q \times Q$ 是可数集。
+    \end{itemize}
+    故 $K[A] = \aleph_0$。
+
+    \vspace{1em}
+    \textbf{c) 半径为1，圆心在 $x$ 轴上的圆周集合的势}
+
+    每一个此类圆周由其圆心唯一确定。圆心在 $x$ 轴上，其坐标形式为 $(x, 0)$，其中 $x \in R$。
+    设 $S$ 为此类圆周的集合，构造映射 $f: S \to R$：
+    $$f(\text{圆心为 } (x, 0) \text{ 的圆周}) = x$$
+    显然 $f$ 是双射。
+    因为 $K[R] = \aleph$，故 $K[A] = \aleph$。
+
+    \begin{info}[总结:]
+      b) 的势为 $\aleph_0$（可数集）；c) 的势为 $\aleph$（连续统势）。
+    \end{info}
+  \end{answer}
+\end{question}
+
+%----------------------------------------------------------------------------------------
+%  4-5(5) 笛卡尔积的可数性
+%----------------------------------------------------------------------------------------
+
+\begin{question}{4-5(5) 笛卡尔积的可数性}
+  证明：有限集 $A$ 和可数集 $B$ 的笛卡尔积集 $A \times B$ 是可数集。
+
+  \begin{answer}
+    \begin{proof}
+      若 $A$ 为空集，则 $A \times B = \emptyset$，是有穷集（至多可数集）。
+
+      若 $A$ 为非空有限集，设 $A = \{a_1, a_2, \dots, a_n\}$，其中 $n = |A| \in Z^+$。
+      则 $A \times B$ 可以表示为：
+      $$A \times B = \bigcup_{i=1}^n (\{a_i\} \times B)$$
+
+      对于每一个集合 $B_i = \{a_i\} \times B$：
+      定义映射 $g_i: B \to B_i$ 为 $g_i(b) = \langle a_i, b \rangle$。
+      容易验证 $g_i$ 是双射，故 $B_i \sim B$。
+      由于 $B$ 是可数集，故每个 $B_i$ 也是可数集。
+
+      由定理“有限个可数集的并集是可数集”可知：
+      $A \times B = \bigcup_{i=1}^n B_i$ 是可数集。
+    \end{proof}
+
+    \begin{info}[注:]
+      本题结论表明，可数性的性质在有限集合的笛卡尔积运算下是保持的。
+    \end{info}
+  \end{answer}
+\end{question}
+
+\end{document}

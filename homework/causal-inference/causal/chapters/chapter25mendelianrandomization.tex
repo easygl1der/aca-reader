@@ -1,0 +1,308 @@
+ 
+\chapter{Application of the Instrumental Variable Method: Mendelian Randomization}
+ \label{chapter::iv-mr}
+
+
+
+
+\citet{katan1986apoupoprotein} was concerned with the observational studies suggesting that low serum cholesterol levels were associated with the risk of cancer. As we have discussed, however, observational studies suffer from unmeasured confounding. Consequently, it is difficult to interpret the observed association as causality. In the particular problem studied by \citet{katan1986apoupoprotein}, it is even possible that early stages of cancer reversely cause low serum cholesterol levels. Disentangling the causal effect of the serum cholesterol level on cancer seems a hard problem using standard epidemiologic studies. \citet{katan1986apoupoprotein} argued that Apolipoprotein E genes are associated with serum cholesterol levels but do not directly affect the cancer status. So if low serum cholesterol levels cause cancer, we should observe differences in cancer risks among people with and without the genotype that leads to different serum cholesterol levels. Using our language for causal inference, \citet{katan1986apoupoprotein}  proposed to use Apolipoprotein E genes as IVs. 
+
+
+\citet{katan1986apoupoprotein} did not conduct any data analysis but just proposed a conceptual design that could address not only {\it unmeasured confounding} but also {\it reverse causality}. Since then, more complicated and sophisticated studies have been conducted thanks to the modern genome-wide association studies. These studies used genetic information as IVs for exposures in epidemiologic studies to estimate the causal effects of exposures on outcomes. They were all motivated by {\it Mendel's second law}, the law of {\it random assortment}, which suggests that the inheritance of one trait is independent of the inheritance of other traits. Therefore, the method of using genetic information as IV is called {\it Mendelian Randomization} (MR). 
+
+
+\section{Background and motivation}
+
+Graphically, Figure \ref{fig::mr-dag} shows the causal diagram on the treatment $D$, outcome $Y$, unmeasured confounder $U$, as well as the genetic IVs $G_1, \ldots, G_p$. In many MR studies, the genetic IVs are single nucleotide polymorphisms (SNPs). Because of pleiotropy, \footnote{Pleiotropy occurs when one gene influences two or more seemingly unrelated phenotypic traits. } it is possible that the genetic IVs have a direct effect on the outcome of interest, so Figure \ref{fig::mr-dag} also allows for the violation of the exclusion restriction assumption.  
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.8 \textwidth]{figures/mr_dag.pdf}
+\caption{Causal graph for MR}\label{fig::mr-dag}
+\end{figure}
+
+
+
+The standard linear IV model assumes away the direct effect of the IVs on the outcome. Definition \ref{def::linear-iv-model-mr} below gives both the structural and reduced forms. 
+
+\begin{definition}
+[linear IV model]\label{def::linear-iv-model-mr}
+The standard linear IV model
+\begin{eqnarray}
+Y  &=& \beta_0 +  \beta D + \beta_u U + \varepsilon_Y , \\
+D  &=& \gamma_0 +   \gamma_1 G_1 + \cdots + \gamma_p G_p + \gamma_u U + \varepsilon_D ,
+\end{eqnarray}
+has reduced form
+\begin{eqnarray}
+Y  &=&\beta_0 +  \beta  \gamma_0 + \beta \gamma_1 G_1 + \cdots + \beta  \gamma_p G_p  + (\beta_u + \beta_0 \gamma_u )U + \varepsilon_Y , \\
+D  &=& \gamma_0 +  \gamma_1 G_1 + \cdots + \gamma_p G_p + \gamma_u U + \varepsilon_D ,
+\end{eqnarray}
+\end{definition}
+
+
+
+Definition \ref{def::linear-model-invalid-iv-mr} below allows for the violation of exclusion restriction. Then, $G_1, \ldots, G_p$ are not valid IVs. 
+
+
+\begin{definition}
+[linear model with possibly invalid IVs]\label{def::linear-model-invalid-iv-mr}
+The linear model 
+\begin{eqnarray}
+Y  &=& \beta_0 + \beta D + \alpha_1 G_1 + \cdots + \alpha_p G_p  + \beta_u U + \varepsilon_Y ,   \\
+D  &=& \gamma_0 + \gamma_1 G_1 + \cdots + \gamma_p G_p + \gamma_u U + \varepsilon_D ,
+\end{eqnarray}
+ has reduced form
+\begin{eqnarray}
+Y  &=& ( \beta_0 +\beta  \gamma_0 ) +  (\alpha_1 + \beta \gamma_1)  G_1 + \cdots + (\alpha_p +  \beta  \gamma_p) G_p \nonumber  \\
+&&+  ( \beta_u + \beta \gamma_u )  U + \varepsilon_Y ,   \\
+D  &=& \gamma_0 +  \gamma_1 G_1 + \cdots + \gamma_p G_p + \gamma_u U + \varepsilon_D .
+\end{eqnarray}
+\end{definition}
+
+Definitions \ref{def::linear-iv-model-mr} and \ref{def::linear-model-invalid-iv-mr} are slightly different from the linear IV  model in Chapter \ref{chapter::iv-econometric}. They include the confounder $U$ explicitly. But this slight difference does not change the discussion fundamentally. 
+
+
+In Definition \ref{def::linear-iv-model-mr} with exclusion restriction, we have 
+$$
+\Gamma_j = \beta \gamma_j,\quad (j=1,\ldots,p).
+$$
+In Definition \ref{def::linear-model-invalid-iv-mr} without exclusion restriction, we have 
+$$
+\Gamma_j = \alpha_j +   \beta \gamma_j,\quad (j=1,\ldots,p). 
+$$
+
+
+
+If we have individual data, we can apply the classic TSLS estimator to estimate $\beta$ under the linear IV model in Definition \ref{def::linear-iv-model-mr}. However, most MR studies do not have individual data but rather summary statistics from multiple genome-wide association studies. A canonical MR study with summary statistics has the following data structure.
+
+
+\begin{assumption}
+[MR study with summary statistics]\label{assume::MR-summary}
+(a)
+We have the regression coefficients of the treatment on the genetic IVs $\hat{\gamma}_1   , \ldots, \hat{\gamma}_p$ as well as the standard errors $\se_{D1}, \ldots, \se_{Dp}$. Assume 
+\begin{eqnarray}
+\label{eq::small-gammas}
+\hat{\gamma}_1  \rightarrow \gamma_1 , \ldots, \hat{\gamma}_p \rightarrow \gamma_p
+\end{eqnarray}
+in probability, and ignore the uncertainty in the standard errors. 
+
+(b)
+We have the regression coefficients of the outcome on the genetic IVs $\hat{\Gamma}_1   , \ldots, \hat{\Gamma}_p$ as well as with standard errors $\se_{Y1}, \ldots, \se_{Yp}.$ Assume 
+\begin{eqnarray}
+\label{eq::big-gammas}
+\hat{\Gamma}_1 \rightarrow \Gamma_1 , \ldots, \hat{\Gamma}_p \rightarrow \Gamma_p
+\end{eqnarray}
+in probability, and ignore the uncertainty in the standard errors.  
+
+(c)
+Assume $\hat{\gamma}_1   , \ldots, \hat{\gamma}_p, \hat{\Gamma}_1   , \ldots, \hat{\Gamma}_p$ are jointly Normal and independent.
+\end{assumption}
+
+
+%\begin{eqnarray}
+%\label{eq::small-gammas}
+%\hat{\gamma}_1  \rightarrow \gamma_1 , \ldots, \hat{\gamma}_p \rightarrow \gamma_p
+%\end{eqnarray}
+%in probability with standard errors
+%\begin{eqnarray}
+%\label{eq::small-gammas-se}
+%\se_{D1}, \ldots, \se_{Dp},
+%\end{eqnarray}
+%and the regression coefficients of the outcome on  the  genetic IVs:
+%\begin{eqnarray}
+%\label{eq::big-gammas}
+%\hat{\Gamma}_1 \rightarrow \Gamma_1 , \ldots, \hat{\Gamma}_p \rightarrow \Gamma_p
+%\end{eqnarray}
+%in probability with standard errors
+%\begin{eqnarray}
+%\label{eq::big-gammas-se}
+%\se_{Y1}, \ldots, \se_{Yp}.
+%\end{eqnarray}
+
+The asymptotic Normality of the regression coefficients can be justified by the CLT. The standard errors are accurate estimates of the true standard errors in large samples. Therefore, the only subtle assumption is the joint independence of the regression coefficients. The independence of the $\hat{\gamma}_j$'s and the $\hat{\Gamma}_j$'s are reasonable because they are often calculated based on different samples. 
+
+The independence among the $\hat{\gamma}_j$'s  can be reasonable if the $G_j$'s are independent and the true linear model for $D$ holds with homoskedastic error terms. See Chapter \ref{section::linear-model-var}. However, this assumption can be tricky if the error term of the linear model is heteroskedastic. Without the independence of the $G_j$'s, it is hard to justify the independence. If the regression coefficients are from nonlinear models, then it is even harder to justify the independence. The independence among the $\hat{\Gamma}_j$'s follows from a similar argument. 
+
+This chapter focuses on the statistical inference of $\beta$ based on the above summary statistics in Assumption \ref{assume::MR-summary}. 
+
+
+
+\section{MR based on summary statistics}
+
+
+\subsection{Fixed-effect estimator}\label{sec::mr-fixed-effect}
+
+
+Under Definition \ref{def::linear-iv-model-mr},  $\alpha_j = 0$ which implies that $\beta = \Gamma_j / \gamma_j$ for all $j$. A simple approach is based on the so-called {\it meta-analysis} \citep{bowden2018improving}, that is, combining multiple estimates $\hat{\beta}_j =  \hat \Gamma_j / \hat\gamma_j$ for the common parameter $\beta$, also called the fixed effect. Using delta method (see Example \ref{thm::delta-method}), the ratio estimator $\hat{\beta}_j$ has approximate squared standard error 
+$$
+\se_j^2 = (\se_{Yj}^2 + \hat{\beta}_j^2\se_{Dj}^2  )    / \hat\gamma_j^2.
+$$
+Therefore, the best linear combination to estimate $\beta$ is  the Fisher weighting based on the inverses of the variances (see Problem \ref{hw::fisher-weighting}):
+$$
+\hat{\beta}_{\text{fisher}0} =  \frac{ \sum_{j=1}^p  \hat{\beta}_j  / \se_j^2  }{ \sum_{j=1}^p 1  / \se_j^2 }
+$$
+which has variance $(\sum_{j=1}^p 1  / \se_j^2)^{-1} $. Ignoring the uncertainty due to  $\hat\gamma_j$ quantified by $\se_{Dj}$, the estimator reduces to
+$$
+\hat{\beta}_{\text{fisher}1} =  \frac{ \sum_{j=1}^p  \hat{\beta}_j  \hat\gamma_j^2 /  \se_{Yj}^2 }{ \sum_{j=1}^p   \hat\gamma_j^2 /  \se_{Yj}^2 }
+=\frac{ \sum_{j=1}^p  \hat \Gamma_j   \hat\gamma_j /  \se_{Yj}^2 }{ \sum_{j=1}^p   \hat\gamma_j^2 /  \se_{Yj}^2 },
+$$
+which has variance $( \sum_{j=1}^p   \hat\gamma_j^2 /  \se_{Yj}^2 )^{-1}$. Inference based on $\hat{\beta}_{\text{fisher}1} $ is suboptimal although it is more widely used in practice \citep{bowden2018improving}. 
+Both $\hat{\beta}_{\text{fisher}0}$ and $\hat{\beta}_{\text{fisher}1}$ are called the {\it fixed-effect estimators}. 
+
+
+Focus on the suboptimal yet simpler estimator $\hat{\beta}_{\text{fisher}1}$. Under Definition \ref{def::linear-model-invalid-iv-mr},  we can show that 
+$$
+\hat{\beta}_{\text{fisher}1}  \rightarrow 
+\frac{ \sum_{j=1}^p   \Gamma_j    \gamma_j /  \se_{Yj}^2 }{ \sum_{j=1}^p    \gamma_j^2 /  \se_{Yj}^2 }
+= \beta + \frac{ \sum_{j=1}^p   \alpha_j    \gamma_j /  \se_{Yj}^2 }{ \sum_{j=1}^p    \gamma_j^2 /  \se_{Yj}^2 }
+$$
+in probability. 
+If $\alpha_j = 0$ for all $j$, $\hat{\beta}_{\text{fisher}1} $ is consistent. Even if this does not hold, it is still possible that $\hat{\beta}_{\text{fisher}1}  $ is consistent as long as the inner product between $\alpha_j  $ and $  \gamma_j$ weighted by $ 1/  \se_{Yj}^2$ is zero. This holds if we have many genetic instruments and violation of the exclusion restriction, captured by $\alpha_j$, is an independent random draw from a distribution with mean zero. 
+
+
+\subsection{Egger regression}
+
+
+Start with Definition \ref{def::linear-iv-model-mr}. 
+With the true parameters, we have
+$$
+\Gamma_j = \beta \gamma_j \quad (j=1,\ldots, p);
+$$
+with the estimates, the above identity holds only approximately
+$$
+\hat \Gamma_j \approx  \beta \hat \gamma_j \quad (j=1,\ldots, p).
+$$
+This seems a classic least-squares problem of $\{\hat \Gamma_j \}_{j=1}^p$ on $\{\hat \gamma_j \}_{j=1}^p$. We can fit a WLS of $\hat \Gamma_j$ on $\hat \gamma_j$, with or without an intercept, possibly weighted by $w_j$, to estimate $\beta$. The following results hold thanks to the algebraic properties of the WLS reviewed in Chapter \ref{sec::appendix-wls}. 
+
+
+Without an intercept, the coefficient of $\hat \gamma_j$ is
+$$
+\hat{\beta}_{\text{egger}1}  = \frac{  \sum_{j=1}^p  \hat \gamma_j  \hat \Gamma_j w_j     }{ \sum_{j=1}^p  \hat \gamma_j ^2 w_j },
+$$
+which reduces to $\hat{\beta}_{\text{fisher}1} $ if $w_j =  1/\se_{Yj}^2$.  The WLS is called the {\it Egger regression}. 
+It is more general than the fixed-effect estimators in Section \ref{sec::mr-fixed-effect}.  
+With an intercept, the coefficient of $\hat \gamma_j$ is 
+$$
+\hat{\beta}_{\text{egger}0}  =  \frac{  \sum_{j=1}^p  (\hat \gamma_j  - \hat \gamma_w) (\hat \Gamma_j - \hat \Gamma_w) w_j     }
+{ \sum_{j=1}^p  (\hat \gamma_j  - \hat \gamma_w) ^2 w_j }
+$$
+where $\hat \gamma_w = \sum_{j=1}^p \hat \gamma_j w_j /  \sum_{j=1}^p   w_j  $ and $\hat \Gamma_w = \sum_{j=1}^p \hat \Gamma_j w_j /  \sum_{j=1}^p   w_j  $  are the weighted averages of the $\hat \gamma_j$'s and $\hat \Gamma_j$'s, respectively. 
+
+
+
+
+
+Even without assuming that all $\gamma_j$'s are zero under Definition \ref{def::linear-model-invalid-iv-mr}, we have
+$$
+\hat{\beta}_{\text{egger}0} \rightarrow 
+\frac{  \sum_{j=1}^p  (  \gamma_j  -   \gamma_w) ( \Gamma_j -   \Gamma_w) w_j     }
+{ \sum_{j=1}^p  (  \gamma_j  -  \gamma_w) ^2 w_j }
+=\beta + \frac{  \sum_{j=1}^p  (  \gamma_j  -   \gamma_w) ( \alpha_j -   \alpha_w) w_j     }
+{ \sum_{j=1}^p  (  \gamma_j  -  \gamma_w) ^2 w_j }
+$$
+in probability, where $\gamma_w, \Gamma_w$ and $\alpha_w$ are the corresponding weighted averages of the true parameters. So $\hat{\beta}_{\text{egger}0} $ is consistent for $\beta$ as long as the WLS coefficient of $\alpha_j$ on $\gamma_j$ is zero. This is weaker than $\alpha_j=0$ for all $j$. This weaker assumption holds if $\gamma_j$ and $\alpha_j$ are realizations of independent random variables, which is called the Instrument Strength Independent of Direct Effect (InSIDE) assumption \citep{bowden2015mendelian}. More interestingly, the intercept from the Egger regression is
+$$
+\hat{\alpha}_{\text{egger}0}  = \hat \Gamma_w - \hat{\beta}_{\text{egger}0}  \hat \gamma_w,
+$$
+which, under the InSIDE assumption, converges to
+$$
+\Gamma_w -  \beta  \gamma_w = \alpha_w
+$$
+in probability. So the intercept estimates the weighted average of the direct effects. 
+
+
+\section{An example}
+\label{sec::mr-examples}
+
+First, the following function can implement Fisher weighting.
+ \begin{lstlisting}
+fisher.weight = function(est, se)
+{
+  n = sum(est/se^2)
+  d = sum(1/se^2)
+  res = c(n/d, sqrt(1/d))
+  names(res) = c("est", "se")
+  res
+}
+\end{lstlisting}
+
+I use the \ri{bmi.sbp} data in the \ri{mr.raps} package \citep{zhao2020statistical} to illustrate the Fisher weighting based on different variance estimates. The results based on $\hat{\beta}_{\text{fisher}0} $ and $\hat{\beta}_{\text{fisher}1} $ are similar. 
+ \begin{lstlisting}
+> bmisbp = read.csv("mr_bmisbp.csv")
+> bmisbp$iv      = with(bmisbp, beta.outcome/beta.exposure)
+> bmisbp$se.iv   = with(bmisbp, se.outcome/beta.exposure)
+> bmisbp$se.iv1  = with(bmisbp,
++                       sqrt(se.outcome^2 + iv^2*se.exposure^2)/beta.exposure)
+> fisher.weight(bmisbp$iv, bmisbp$se.iv)
+       est         se 
+0.31727680 0.05388827 
+> fisher.weight(bmisbp$iv, bmisbp$se.iv1)
+       est         se 
+0.31576007 0.05893783
+\end{lstlisting}
+
+
+The Egger regressions with or without the intercept also give very similar results. But the standard errors are quite different from those based on  Fisher weighting. 
+\begin{lstlisting}
+> mr.egger = lm(beta.outcome ~ 0 + beta.exposure,
++               data = bmisbp,
++               weights = 1/se.outcome^2)
+> summary(mr.egger)$coef
+               Estimate Std. Error  t value    Pr(>|t|)
+beta.exposure 0.3172768  0.1105994 2.868704 0.004681659
+> 
+> mr.egger.w = lm(beta.outcome ~ beta.exposure,
++                 data = bmisbp,
++                 weights = 1/se.outcome^2)
+> summary(mr.egger.w)$coef 
+                  Estimate  Std. Error    t value    Pr(>|t|)
+(Intercept)   0.0001133328 0.002079418 0.05450217 0.956603931
+beta.exposure 0.3172989306 0.110948506 2.85987564 0.004811017
+ \end{lstlisting}
+ 
+ 
+Figure \ref{fig::bmi-sdp-egger} shows the raw data as well as the fitted Egger regression line with the intercept. 
+ 
+\begin{figure}
+\centering
+\includegraphics[width = \textwidth]{figures/MR_bmi_sdp.pdf}
+\caption{Scatter plot proportional to the inverse of the variance, with the Egger regression line}\label{fig::bmi-sdp-egger}
+\end{figure} 
+
+ 
+\section{Critiques of the analysis based on MR}
+
+
+
+
+MR is an application of the idea of IV. It relies on strong assumptions. I provide three sets of critiques from the conceptual, biological, and technical perspectives. 
+
+
+
+Conceptually, the treatments in most studies based on MR are not well defined from the potential outcomes perspective. For instance, the treatments are often defined as the cholesterol level or the BMI. They are composite variables and can correspond to complex, non-unique definitions of the hypothetical experiments. The SUTVA often does not hold for these treatments. Recall the discussion in Chapter \ref{chapter::potential-outcomes}. 
+
+
+Biologically, the fundamental assumptions for the IV analysis may not hold. Mendel's second law ensures that the inheritances of different traits are independent. However, it does not ensure that the candidate IVs are independent of the hidden confounders between the treatment and the outcome. It is possible that these IVs have direct effects on the confounders. It is also possible that some unmeasured genes affect both the IVs and the confounders. Mendel's second law does not ensure the exclusion restriction assumption either. It is possible that the IVs have other causal pathways to the outcome, beyond the pathway through the treatment of interest. 
+
+
+Technically, the statistical assumptions for MR are quite strong.  Clearly, the linear IV model is a strong modeling assumption. The independence of the $\hat\gamma_j$'s and the $\hat\Gamma_j$'s is also quite strong. Other issues in the data-collecting process can further complicate the interpretation of the IV assumptions. For instance, the treatments and outcomes are often measured with errors, and the genome-wide associate studies are often based on the case-control design with the samples conditional on the outcomes (see Chapter \ref{sec::case-control}).
+
+ 
+\citet{vanderweele2014methodological} is an excellent review paper that discusses the methodological challenges in MR. 
+
+ 
+ 
+\section{Homework Problems}
+
+\paragraph{Data analysis}\label{para::data-bmi-bmi}
+Analyze the \ri{bmi.bmi} data in the \ri{R} package \ri{mr.raps}. See the package and \citet[][Section 7.2]{zhao2020statistical} for more details. 
+
+
+ 
+ \paragraph{Recommended reading}
+
+\citet{davey2003mendelian} reviewed the potentials and limitations of MR. 
+
+
+
+

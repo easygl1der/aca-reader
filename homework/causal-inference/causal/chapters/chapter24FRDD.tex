@@ -1,0 +1,322 @@
+ 
+\chapter{Application of the Instrumental Variable Method: Fuzzy Regression Discontinuity}
+ \label{chapter::iv-frdd}
+
+
+
+The regression discontinuity method introduced in Chapter \ref{chapter::overlap} and the IV method introduced in Chapters \ref{chapter::iv-experiment}--\ref{chapter::iv-econometric} are two important examples of {\it natural experiments}. The study designs are not as ideal as randomized experiments in Part \ref{part::rcts}, but they have features similar to randomized experiments. That's why they are called natural experiments. 
+
+
+Compounding the regression discontinuity method with the IV method yields the {\it fuzzy regression discontinuity} method, another important natural experiment. I will start with examples and then provide a mathematical formulation.  
+
+
+
+
+\section{Motivating examples}
+\label{sec::frdd-motivation}
+
+Chapter \ref{chapter::overlap} introduces the regression discontinuity method. The following three examples are slightly different because the treatments received are not deterministic functions of the running variables. Rather, the running variables discontinuously change the probabilities of the treatments received at the cutoff points. 
+
+\begin{example}\label{eg::indianroad}
+In 2000, the Government of India launched the Prime Minister's Village Road Program, and by 2015, this program had funded the construction of all-weather roads to nearly 200,000 villages.  Based on village-level data, 
+\citet{asher2020rural} use the regression discontinuity method to estimate the effect of new feeder roads on various economic variables. The national program guidelines prioritized larger villages according to arbitrary thresholds based on the 2001 Population Census. The treatment variable equals 1 if the village received a new road before the year in which the outcomes were measured. The difference between the population size of a village and the threshold did not determine the treatment variable but affected its probability discontinuously at the cutoff point 0. 
+\end{example}
+
+
+\begin{example}\label{eg::italianuniversity}
+\citet{li2015evaluating} used the data on the first-year students enrolled in 2004 to 2006 from two Italian universities to evaluate the causal effect of a university grant on the dropout rate. The students were eligible for this grant if their standardized family income was below  15,000 euros. For simplicity, we use the running variable defined as 15,000 minus the standardized family income. To receive this grant, the students must apply first. Therefore, the eligibility and the application status jointly determined the final treatment status. The running variable alone did not determine the treatment status although it changed the treatment probability at the cutoff point 0. 
+\end{example}
+
+
+
+\begin{example}
+\citet{amarante2016cash} estimated the impact of in-utero exposure to a social assistance program on children's birth outcomes. They used a  regression discontinuity induced by the Uruguayan {\it Plan de Atención Nacional a la Emergencia Social}. It was a temporary social assistance program targeted to the poorest 10 percent of
+households, implemented between April 2005 and December 2007. 
+Households with a predicted low-income score below a predetermined threshold were assigned to the program. The predicted income score did not determine whether the mother received at least one program transfer during the pregnancy but it changed the probability of the final treatment received. The birth outcomes included birth weight, weeks of gestation, etc. 
+\end{example}
+
+
+The above examples are called fuzzy regression discontinuity in contrast to the (sharp) regression discontinuity in Chapter \ref{chapter::overlap}.  I will analyze the data in  Examples \ref{eg::indianroad} and \ref{eg::italianuniversity} in Chapter \ref{sec::application-frdd} below. 
+
+\section{Mathematical formulation}
+\label{sec::frdd-math}
+
+
+Let $X_i$ denote the running variable which determines 
+$$
+Z_i = I(X_i \geq x_0)
+$$ 
+with the cutoff point $x_0$. The treatment received $D_i$ may not equal $Z_i$, but $\pr(D_i=1\mid X_i = x)$ has a jump at $x_0$. Figure \ref{fig::rdd-compare} compares the treatment received probabilities of the sharp regression discontinuity and fuzzy regression discontinuity. It shows a special case of fuzzy regression discontinuity with $\pr(D=1\mid X < x_0) = 0$, which is coherent to Example \ref{eg::italianuniversity}. 
+
+
+\begin{figure}
+\centering
+\includegraphics[width = \textwidth]{figures/RDcompare.pdf}
+\caption{The treatment assignments of sharp regression discontinuity (left) and fuzzy regression discontinuity (right)}\label{fig::rdd-compare}
+\end{figure}
+
+
+
+
+
+
+Let $Y_i$  denote the outcome of interest. Viewing $Z_i$ as the treatment assigned, we can define potential outcomes $\{ D_i(1), D_i(0), Y_i(1), Y_i(0) \}$. The sharp regression discontinuity of $Z$ allows for the identification of
+\begin{eqnarray*}
+\tau_D(x_0)  &=& E\{ D(1) - D(0)  \mid X=x_0 \}\\
+&=& \lim_{\varepsilon \rightarrow 0+} E( D \mid Z=1, X=x_0+\varepsilon ) - \lim_{\varepsilon \rightarrow 0+} E( D \mid Z=0, X=x_0-\varepsilon )
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\tau_Y(x_0)  &=& E\{ Y(1) - Y(0)  \mid X=x_0 \}\\
+&=& \lim_{\varepsilon \rightarrow 0+} E( Y \mid Z=1, X=x_0+\varepsilon ) - \lim_{\varepsilon \rightarrow 0+} E( Y \mid Z=0, X=x_0-\varepsilon )
+\end{eqnarray*}
+based on Theorem \ref{thm::identification-rdd}. 
+Using $Z$ as an IV for $D$ and imposing the IV assumptions at $X = x_0$, we can identify the local complier average causal effect by applying Theorem \ref{thm::CACE-identification}.
+
+\begin{theorem}
+\label{thm::identification-frdd}
+Assume that the treatment is determined by  $Z = I(X \geq x_0)$
+where $x_0$ is a predetermined threshold. 
+Assume monotonicity
+$$
+D_i(1) \geq D_i(0)
+$$ 
+and exclusion restriction 
+$$
+D_i(1) = D_i(0) \Longrightarrow  Y_i(1) = Y_i(0) 
+$$
+in the infinitesimal neighborhood of $x_0$. The local complier average causal effect, defined as 
+$$
+ \tau_\cp(x_0)   
+= E\{ Y(1) - Y(0)  \mid D(1)  >  D(0),  X=x_0 \},
+$$
+can be identified by
+$$
+ \tau_\cp(x_0)   
+=  \frac{ E\{ Y(1) - Y(0)  \mid X=x_0 \}  }{E\{ D(1) - D(0)  \mid X=x_0 \}} .
+$$
+Further assume that $E\{ D(1) \mid X=x   \}$ and $E\{ Y(1) \mid X=x   \}$ are continuous from the right at $x=x_0$, and $E\{ D(0) \mid X=x   \}$ and $E\{ Y(0) \mid X=x   \}$ are continuous from the left at $x=x_0$. 
+The local complier average causal effect  can be identified by 
+$$
+ \tau_\cp(x_0) 
+ = \frac{ \lim_{\varepsilon \rightarrow 0+} E( Y \mid Z=1, X=x_0+\varepsilon ) - \lim_{\varepsilon \rightarrow 0+} E( Y \mid Z=0, X=x_0-\varepsilon ) }
+{\lim_{\varepsilon \rightarrow 0+} E( D \mid Z=1, X=x_0+\varepsilon ) - \lim_{\varepsilon \rightarrow 0+} E( D \mid Z=0, X=x_0-\varepsilon )}
+$$
+if  $E(D\mid X=x)$ has a non-zero jump at $x=x_0$. 
+\end{theorem}
+
+
+ Theorem \ref{thm::identification-frdd} is a superposition of Theorems \ref{thm::identification-rdd} and \ref{thm::CACE-identification}. I leave its proof as Problem \ref{para::proof-theorem-frd}. 
+ 
+
+In both sharp and fuzzy regression discontinuity,  the key is to specify the neighborhood around the cutoff point. Practically, a smaller neighborhood leads to a smaller bias but a larger variance, while a larger neighborhood leads to a larger bias but a smaller variance. That is, we face a bias-variance trade-off. Some automatic procedures exist based on some statistical criteria, which rely on some strong conditions. It seems wiser to conduct sensitivity analysis over a range of the choice of the neighborhood. 
+
+Assume that we have specified the neighborhood of $x_0$ determined by a bandwidth $h$. 
+For data with $X_i \in [x_0-h, x_0 + h]$, we can estimate $\tau_D(x_0) $ by  
+$$
+\hat{\tau}_D(x_0) = \text{the coefficient of } Z_i
+\text{ in the OLS fit of } D_i \text{ on } \{1, Z_i, R_i, L_i\},
+$$
+and estimate $\tau_Y(x_0) $ 
+$$
+\hat{\tau}_Y(x_0) = \text{the coefficient of } Z_i
+\text{ in the OLS fit of } Y_i \text{ on } \{1, Z_i, R_i, L_i\},
+$$
+recalling the definitions $R_i = \max(X_i - x_0, 0)$ and $L_i= \min (X_i - x_0, 0)$. Then we can estimate the local complier average causal effect by  
+$$
+\hat\tau_\cp(x_0)  = \hat{\tau}_Y(x_0) / \hat{\tau}_D(x_0).
+$$ 
+This is an indirect least squares estimator. By Theorem \ref{thm::ils=2sls}, it is numerically identical to
+$$
+\text{the coefficient of } D_i
+\text{ in the TSLS fit of } Y_i \text{ on } \{1, D_i, R_i, L_i\}  
+$$
+with $D_i$ instrumented by $Z_i$. In sum, after specifying $h$, the estimation of  $ \tau_\cp(x_0)$ reduces to a TSLS procedure with the local data around the cutoff point.  
+
+
+\section{Application}
+ \label{sec::application-frdd}
+
+\subsection{Re-analyzing \citet{asher2020rural}'s data}
+\label{sec::indian-road-data}
+
+Revisit Example \ref{eg::indianroad}. We can compute the point estimates and standard errors for a sequence of $h$ based on the outcome \ri{occupation_index_andrsn}. 
+\begin{lstlisting}
+library("car")
+road_dat = read.csv("indianroad.csv")
+table(road_dat$t, road_dat$r2012)
+road_dat$runv = road_dat$left + road_dat$right
+## sensitivity analysis 
+seq.h  = seq(10, 80, 1)
+frd_sa = lapply(seq.h, function(h){
+  road_sub = subset(road_dat, abs(runv)<=h)
+  road_sub$r2012hat = lm(r2012 ~ t + left + right,
+                         data = road_sub)$fitted.values
+  tslsreg = lm(occupation_index_andrsn ~ r2012hat + left + right,
+               data = road_sub)
+  res = with(road_sub,
+             {
+               occupation_index_andrsn -
+                 cbind(1, r2012, left, right)%*%coef(tslsreg)
+             })
+  tslsreg$residuals = as.vector(res)
+  
+  c(coef(tslsreg)[2],
+    sqrt(hccm(tslsreg, type = "hc2")[2, 2]),
+    length(res))
+})
+frd_sa = do.call(rbind, frd_sa)
+\end{lstlisting}
+Figure \ref{fig::indian_road} shows the results. The treatment effect is not significant unless $h$ is large. 
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\textwidth]{figures/frd_indian.pdf}
+\caption{Re-analyzing \citet{asher2020rural}'s data, with point estimates and standard errors from TSLS.}
+\label{fig::indian_road}
+\end{figure} 
+
+
+The package \ri{rdrobust} selects the bandwidth automatically. The results suggest that receiving a new road did not affect the outcome significantly. 
+
+\begin{lstlisting}
+> library("rdrobust")
+> frd_road = with(road_dat,
++                 {
++                   rdrobust(y = occupation_index_andrsn,
++                            x = runv,
++                            c = 0,
++                            fuzzy = r2012)
++                 })
+> res = cbind(frd_road$coef, frd_road$se)
+> round(res, 3)
+                Coeff Std. Err.
+Conventional   -0.253     0.301
+Bias-Corrected -0.283     0.301
+Robust         -0.283     0.359
+\end{lstlisting}
+
+\subsection{Re-analyzing \citet{li2015evaluating}'s data}
+ \label{sec::italian-university}
+ 
+ 
+ Revisit Example  \ref{eg::italianuniversity}. 
+Recall that the running variable is 15,000 minus the standardized income. In the analysis, I restrict the data to a subset with this running between $[-5,000,5,000]$, and then divide the running variable by $5,000$ so that the running variable is bounded between $[-1,1]$ at cutoff point zero. 
+We can compute the point estimates and standard errors for a sequence of $h$. 
+\begin{lstlisting}
+library("car")
+italy = read.csv("italy.csv")
+italy$left  = pmin(italy$rv0, 0)
+italy$right = pmax(italy$rv0, 0)
+## sensitivity analysis 
+seq.h  = seq(0.1, 1, 0.01)
+frd_sa = lapply(seq.h, function(h){
+  italy_sub = subset(italy, abs(rv0)<=h)
+  italy_sub$Dhat = lm(D ~ Z + left + right,
+                      data = italy_sub)$fitted.values
+  tslsreg = lm(outcome ~ Dhat + left + right,
+               data = italy_sub)
+  res = with(italy_sub,
+             {
+               outcome -
+                 cbind(1, D, left, right)%*%coef(tslsreg)
+             })
+  tslsreg$residuals = as.vector(res)
+  
+  c(coef(tslsreg)[2],
+    sqrt(hccm(tslsreg, type = "hc2")[2, 2]),
+    length(res))
+})
+frd_sa = do.call(rbind, frd_sa)
+ \end{lstlisting}
+ 
+
+
+  Figure \ref{fig::italy_university} shows the results and suggests that the university grant did not affect the dropout rate significantly. 
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\textwidth]{figures/frd_italy.pdf}
+\caption{Re-analyzing \citet{li2015evaluating}'s data, with point estimates and standard errors from TSLS.}
+\label{fig::italy_university}
+\end{figure} 
+ 
+ 
+ 
+The results based on the package \ri{rdrobust}  reach the same conclusion. 
+ 
+ \begin{lstlisting}
+> library("rdrobust")
+> frd_italy = with(italy,
++                  {
++                    rdrobust(y = outcome,
++                             x = rv0,
++                             c = 0,
++                             fuzzy = D)
++                  })
+> res = cbind(frd_italy$coef, frd_italy$se)
+> round(res, 3)
+                Coeff Std. Err.
+Conventional   -0.149     0.101
+Bias-Corrected -0.155     0.101
+Robust         -0.155     0.121
+ \end{lstlisting}
+ 
+ 
+ 
+ \section{Discussion}
+
+
+Both Chapter \ref{chapter::overlap} and this chapter formulate regression discontinuity based on the continuity of the conditional expectations of the potential outcomes given the running variables. This perspective is mathematically simpler but it only identifies the local effects precisely at the cutoff point of the running variable. \citet{hahn2001identification} started this line of literature. 
+
+An alternative, not so dominant perspective is based on {\it local randomization} \citep{cattaneo2015randomization, li2015evaluating}. If we view the running variable as a noisy measure of some underlying truth and the cutoff point is somewhat arbitrarily chosen, the units near the cutoff point do not differ systematically. This suggests that in a small neighborhood of the cutoff point, the units receive the treatment and the control in a random fashion just as in a randomized experiment. Similar to the issue of choosing $h$ in the first perspective, it is crucial to decide how local should the randomized experiment be under the regression discontinuity. It is not easy to quantify the intuition mathematically, and again conducting sensitivity analysis with a range of $h$ seems a reasonable approach in the second perspective as well.  
+
+
+See \citet{sekhon2017interpreting} for a more conceptual discussion of regression discontinuity. 
+
+
+
+ 
+\section{Homework Problems}
+
+\paragraph{Proof of Theorem \ref{thm::identification-frdd}}\label{para::proof-theorem-frd}
+
+Prove Theorem \ref{thm::identification-frdd}. 
+
+
+\paragraph{Data analysis}
+ 
+Section \ref{sec::indian-road-data} reports the estimate of the effect on \ri{occupation_index_andrsn}. Four other outcome variables are \ri{transport_index_andrsn}, \ri{firms_index_andrsn}, \ri{consumption_index_andrsn}, and \ri{agriculture_index_andrsn}, with meanings defined in the original paper. Estimate the effects on these outcomes. 
+
+ 
+
+\paragraph{Reflection on the analysis of \citet{li2015evaluating}'s data}
+\label{problem::italy-srd}
+
+In \citet{li2015evaluating}, a key variable determining the treatment status is the binary application status $A$, which has potential outcomes $A(1)$ and $A(0)$ corresponding to the treatment $Z=1$ and control $Z=0$. By definition,
+$$
+D(1) = A(1), \quad D(0) = 0,
+$$
+so the compliers $\{ D(1), D(0) \} = (1,0)$ is equivalent to $A(1) = 1$. So 
+$$
+\tau_\cp(x_0) = E\{ Y(1) - Y(0) \mid A(1) = 1, X = x_0 \}. 
+$$
+Section \ref{sec::italian-university} used the whole data set to estimate $\tau_\cp(x_0)$. 
+
+An alternative analysis is to use the units with $A=1$ only. Then the treatment status is determined by $X$. However, this analysis can be problematic because
+\begin{eqnarray}
+&& \lim_{\varepsilon \rightarrow 0+} E\{ Y \mid A  = 1, X = x_0 + \varepsilon \} -\lim_{\varepsilon \rightarrow 0+}  E\{ Y \mid A  = 1, X = x_0- \varepsilon  \}  \nonumber  \\
+&=& E\{ Y(1) \mid A(1)  = 1,   X = x_0   \} -  E\{ Y(0) \mid A(0)  = 1,   X = x_0   \} .\label{hw::frdd-florence-A=1}
+\end{eqnarray}
+Prove \eqref{hw::frdd-florence-A=1} and explain why this analysis can be problematic.
+
+
+Remark: 
+The left-hand side of \eqref{hw::frdd-florence-A=1} is the identification formula of the local average treatment effect at $X=x_0$, conditional on $A=1$. The right-hand side of \eqref{hw::frdd-florence-A=1} is the difference in means of the potential outcomes for the subgroups of units with $(A(1)  = 1,   X = x_0 )$ and $(A(0)  = 1,   X = x_0)$, respectively. 
+See Chapter \ref{chapter::principal-stratification} later for related discussions. 
+ 
+
+
+ 
+ \paragraph{Recommended reading}
+
+\citet{imbens2008regression} gave practical guidance to regression discontinuity based on the potential outcomes framework. \citet{lee2010regression} reviewed regression discontinuity and its applications in economics. 

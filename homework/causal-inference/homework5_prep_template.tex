@@ -1,0 +1,745 @@
+\documentclass[krantz1]{krantz}
+\usepackage{fixltx2e,fix-cm}
+\usepackage{amssymb, bbm, bm, mathtools}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color, rotating}
+\usepackage{subcaption}
+\usepackage{makeidx}
+\usepackage{multicol}
+\usepackage[all,import]{xy}
+\usepackage{natbib}
+\usepackage{hyperref}
+
+\definecolor{mygray}{gray}{0.6}
+\usepackage{listings}
+
+\lstset{language=R,
+    basicstyle=\small\ttfamily,
+showstringspaces=false,
+    commentstyle=\color{mygray},
+}
+
+\lstnewenvironment{rc}[1][]{\lstset{language=R}}{}
+\newcommand{\ri}[1]{\lstinline{#1}}
+
+\lstset{language=R}
+
+\renewcommand{\theparagraph}{\arabic{chapter}.\arabic{paragraph}}
+\setcounter{secnumdepth}{5}
+\newenvironment{myproof}[2] {\noindent {\bfseries Proof of {#1} {#2}:}}{\hfill$\square$}
+\newenvironment{mysolution}[1]{\vspace{0.1in} \noindent {\bfseries Solution to Problem {#1}:}}{\hfill$\square$}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
+\newtheorem{condition}{Condition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+
+\newcommand{\pkg}[1]{{\fontseries{b}\selectfont #1}}
+\def\letas{\mathrel{\mathop{=}\limits^{\triangle}}}
+\def\ind{\begin{picture}(9,8)
+         \put(0,0){\line(1,0){9}}
+         \put(3,0){\line(0,1){8}}
+         \put(6,0){\line(0,1){8}}
+         \end{picture}
+        }
+\def\nind{\begin{picture}(9,8)
+         \put(0,0){\line(1,0){9}}
+         \put(3,0){\line(0,1){8}}
+         \put(6,0){\line(0,1){8}}
+         \put(1,0){{\it /}}
+         \end{picture}
+    }
+
+\def\AVar{\text{AsyVar}}
+\def\var{\textup{var}}
+\def\cov{\textup{cov}}
+\def\sumn{\sum_{i=1}^n}
+\def\summ{\sum_{j=1}^m}
+\def\convergeas{\stackrel{a.s.}{\longrightarrow}}
+\def\converged{\stackrel{\textup{d}}{\longrightarrow}}
+\def\iidsim{\stackrel{\textup{IID}}{\sim}}
+\def\indsim{\stackrel{ind}{\sim}}
+\def\pr{\textup{pr}}
+\def\RD{\textsc{rd}}
+\def\RR{\textsc{rr}}
+\def\OR{\textsc{or}}
+\def\true{\textup{true}}
+\def\obs{\textup{obs}}
+\def\G{\text{Gamma}}
+\def\d{\textnormal{d}}
+\def\N01{\textsc{N}(0,1)}
+\def\HF{H_{0\textsc{f}}}
+\def\HN{H_{0\textsc{n}}}
+\newcommand*{\tran }{^{\mkern-1.5mu\mathsf{T}}}
+\def\asim{\stackrel{\cdot}{\sim}}
+\def\diff{\textup{d}}
+\def\at{\textup{a}}
+\def\nt{\textup{n}}
+\def\cp{\textup{c}}
+\def\df{\textup{d}}
+\def\logit{\textup{logit}}
+\def\expit{\textup{expit}}
+\def\L{\ell}
+\def\U{u}
+\def\CDE{\textsc{cde}}
+\def\NDE{\textsc{nde}}
+\def\NIE{\textsc{nie}}
+\def\se{\textup{se}}
+\def\frt{\textsc{frt}}
+\def\CACE{\textsc{cace}}
+\def\LATE{\textsc{late}}
+\def\TSLS{\textsc{tsls}}
+\def\ILS{\textsc{ils}}
+
+\frenchspacing
+\tolerance=5000
+
+\makeindex
+
+\title{Problem Set 5 Preparation}
+\author{Name: \underline{\hspace{3cm}}}
+\date{Due: May 27, 4:30 pm}
+
+\begin{document}
+
+\frontmatter
+
+\maketitle
+\tableofcontents
+
+\mainmatter
+
+\makeatletter
+\@addtoreset{assumption}{chapter}
+\@addtoreset{example}{chapter}
+\@addtoreset{lemma}{chapter}
+\@addtoreset{remark}{chapter}
+\@addtoreset{theorem}{chapter}
+\@addtoreset{corollary}{chapter}
+\@addtoreset{proposition}{chapter}
+\@addtoreset{definition}{chapter}
+\makeatother
+
+\renewcommand {\theexample} {\thechapter.\arabic{example}}
+\renewcommand {\theassumption} {\thechapter.\arabic{assumption}}
+\renewcommand {\thelemma} {\thechapter.\arabic{lemma}}
+\renewcommand {\thetheorem} {\thechapter.\arabic{theorem}}
+\renewcommand {\theremark} {\thechapter.\arabic{remark}}
+\renewcommand {\thecondition} {\thechapter.\arabic{condition}}
+\renewcommand {\thecorollary} {\thechapter.\arabic{corollary}}
+\renewcommand {\theproposition} {\thechapter.\arabic{proposition}}
+\renewcommand {\thedefinition} {\thechapter.\arabic{definition}}
+
+\chapter{Problem Set 5 Preparation}
+
+\section{Notation and Basic Results}
+
+This document collects the problem statements, notation, and relevant results
+needed for Problem Set 5. It follows the style of Ding's textbook: state the
+setup, recall the assumptions and results, and leave the solution below each
+problem. The solution and proof parts are intentionally left blank.
+
+Consider units indexed by \(i=1,\ldots,n\). Let \(Z_i\) be the treatment assigned
+or instrumental variable, \(D_i\) be the treatment received, and \(Y_i\) be the
+outcome. For a binary \(D\), define the latent compliance type
+\[
+U_i=\left\{
+\begin{array}{ll}
+\at, & D_i(1)=1,\ D_i(0)=1,\\
+\cp, & D_i(1)=1,\ D_i(0)=0,\\
+\df, & D_i(1)=0,\ D_i(0)=1,\\
+\nt, & D_i(1)=0,\ D_i(0)=0.
+\end{array}
+\right.
+\]
+Here \(\at,\cp,\df,\nt\) denote always takers, compliers, defiers, and never
+takers, respectively.
+
+\begin{assumption}[randomization]\label{assume::random-hw}
+\[
+Z\ind \{D(1),D(0),Y(1),Y(0)\}.
+\]
+\end{assumption}
+
+\begin{assumption}[monotonicity]\label{assume::Mono-hw}
+\[
+\pr(U=\df)=0,
+\]
+or equivalently \(D_i(1)\geq D_i(0)\) for all \(i\).
+\end{assumption}
+
+\begin{assumption}[exclusion restriction]\label{assume::ER-hw}
+\[
+Y_i(1)=Y_i(0)
+\]
+for always takers and never takers.
+\end{assumption}
+
+\begin{definition}[CACE or LATE]\label{def::CACE-hw}
+Define
+\[
+\tau_\cp
+=
+E\{Y(1)-Y(0)\mid U=\cp\}
+\]
+as the complier average causal effect or local average treatment effect.
+\end{definition}
+
+\begin{theorem}[identification of CACE]\label{thm::CACE-identification-hw}
+Under Assumptions \ref{assume::random-hw}--\ref{assume::ER-hw},
+\[
+\tau_\cp
+=
+\frac{E(Y\mid Z=1)-E(Y\mid Z=0)}
+{E(D\mid Z=1)-E(D\mid Z=0)}.
+\]
+The corresponding sample ratio is the Wald estimator or IV estimator
+\[
+\hat\tau_\cp=\frac{\hat\tau_Y}{\hat\tau_D}.
+\]
+\end{theorem}
+
+\begin{remark}
+When the potential outcome is indexed by both assignment and treatment received,
+the exclusion restriction is written as \(Y_i(z,d)=Y_i(d)\). In that notation,
+\[
+\tau_\cp=E\{Y(d=1)-Y(d=0)\mid U=\cp\}.
+\]
+\end{remark}
+
+\section{Homework problems}
+
+\paragraph{Variance of the Wald estimator}\label{problem::infinite-var-iv-hw}
+
+Show that
+\[
+\var(\hat{\tau}_\cp)=\infty.
+\]
+
+Source: Ding, Chapter 21, Problem 21.1, corresponding to
+\ri{problem::infinite-var-iv}.
+
+The following facts are useful. The Wald estimator has the form
+\[
+\hat{\tau}_\cp
+=
+\frac{\hat{\tau}_Y}{\hat{\tau}_D},
+\quad
+\hat{\tau}_Y=\bar Y_1-\bar Y_0,
+\quad
+\hat{\tau}_D=\bar D_1-\bar D_0.
+\]
+Even if \(\tau_D>0\), the denominator \(\hat\tau_D\) may be zero with positive
+probability in finite samples. This is the key reason that the finite-sample
+variance of the ratio estimator can be infinite.
+
+\begin{remark}
+This problem is connected to the weak IV discussion in Chapter 21. The Wald
+estimator was introduced by \citet{wald1940fitting}; the CACE/LATE framework is
+based on \citet{imbens1994identification} and \citet{angrist1996identification}.
+\end{remark}
+
+\begin{mysolution}{21.1}
+
+\end{mysolution}
+
+\paragraph{Binary IV and ordinal treatment received}\label{para::iv-ordinal-treatment-hw}
+
+\citet{angrist1995two} discussed a more general setting with a binary IV \(Z\),
+an ordinal treatment received \(D\in\{0,1,\ldots,J\}\), and an outcome \(Y\).
+The ordinal treatment received has potential outcomes \(D(1)\) and \(D(0)\),
+and the outcome has potential outcomes \(Y(z,d)\). The relevant assumptions are
+\[
+Z\ind \{D(z),Y(z,d):z=0,1;\ d=0,1,\ldots,J\},
+\]
+\[
+D(1)\geq D(0),
+\quad
+Y(z,d)=Y(d).
+\]
+Prove that
+\[
+\frac{E(Y\mid Z=1)-E(Y\mid Z=0)}
+{E(D\mid Z=1)-E(D\mid Z=0)}
+=
+\sum_{j=1}^J w_j
+E\{Y(j)-Y(j-1)\mid D(1)\geq j>D(0)\},
+\]
+where
+\[
+w_j=
+\frac{\pr\{D(1)\geq j>D(0)\}}
+{\sum_{j'=1}^J\pr\{D(1)\geq j'>D(0)\}}.
+\]
+
+Source: Ding, Chapter 21, Problem 21.6, corresponding to
+\ri{para::iv-ordinal-treatment}.
+
+When \(J=1\), the result reduces to Theorem
+\ref{thm::CACE-identification-hw}. A useful starting point is
+\[
+D(z)=\sum_{j=0}^J j1\{D(z)=j\},
+\quad
+Y(D(z))=\sum_{j=0}^J Y(j)1\{D(z)=j\}.
+\]
+Ding suggests using Abel's lemma, also called summation by parts:
+\[
+\sum_{j=0}^J f_j(g_{j+1}-g_j)
+=
+f_Jg_{J+1}-f_0g_0-\sum_{j=1}^J g_j(f_j-f_{j-1}).
+\]
+
+\begin{remark}
+The target estimand is a weighted average of adjacent-level causal effects for
+latent groups defined by \(D(1)\geq j>D(0)\).
+\end{remark}
+
+\begin{mysolution}{21.6}
+
+\end{mysolution}
+
+\paragraph{Data analysis: a flu shot encouragement design}\label{problem::flushot-hw}
+
+The dataset \ri{fludata.txt} is from a randomized encouragement design of
+\citet{mcdonald1992effects}, which was also re-analyzed by
+\citet{hirano2000assessing}. It contains the following variables:
+\[
+\begin{array}{ll}
+\hline
+\texttt{assign} & \text{binary encouragement to receive the flu shot}\\
+\texttt{receive} & \text{binary indicator for receiving the flu shot}\\
+\texttt{outcome} & \text{binary outcome for flu-related hospitalization}\\
+\texttt{age} & \text{age of the patient}\\
+\texttt{sex} & \text{sex of the patient}\\
+\texttt{race} & \text{race of the patient}\\
+\texttt{copd} & \text{chronic obstructive pulmonary disease}\\
+\texttt{dm} & \text{diabetes}\\
+\texttt{heartd} & \text{heart disease}\\
+\texttt{renal} & \text{renal disease}\\
+\texttt{liverd} & \text{liver disease}\\
+\hline
+\end{array}
+\]
+Analyze the data with and without adjusting for the covariates.
+
+Source: Ding, Chapter 21, Problem 21.7, corresponding to
+\ri{problem::flushot}. The local data file is
+\ri{/Users/yitwah/homework/hw-causal/fludata.txt}.
+
+Without covariates, use the Wald estimator
+\[
+\hat\tau_\cp
+=
+\frac{\bar Y_{Z=1}-\bar Y_{Z=0}}
+{\bar D_{Z=1}-\bar D_{Z=0}}.
+\]
+With covariates in a completely randomized experiment, use Lin-style covariate
+adjustment for both \(Y\) and \(D\), then take the ratio
+\[
+\hat\tau_{\cp,L}
+=
+\frac{\hat\tau_{Y,L}}{\hat\tau_{D,L}}.
+\]
+
+\begin{remark}
+Report the first stage \(\hat\tau_D\), ITT effect \(\hat\tau_Y\), CACE estimate,
+standard error or confidence interval, and the assumptions used for the causal
+interpretation.
+\end{remark}
+
+\begin{mysolution}{21.7}
+
+\end{mysolution}
+
+\paragraph{Risk ratio for compliers}\label{hw::rr-compliers-hw}
+
+With a binary outcome, define the risk ratio for compliers as
+\[
+\RR_\cp
+=
+\frac{\pr\{Y(1)=1\mid U=\cp\}}
+{\pr\{Y(0)=1\mid U=\cp\}}.
+\]
+Show that under Assumptions \ref{assume::random-hw}--\ref{assume::ER-hw},
+\[
+\RR_\cp
+=
+\frac{E(DY\mid Z=1)-E(DY\mid Z=0)}
+{E\{(D-1)Y\mid Z=1\}-E\{(D-1)Y\mid Z=0\}}.
+\]
+
+Source: Ding, Chapter 22, Problem 22.2, corresponding to
+\ri{hw::rr-compliers}.
+
+We first recall the mixture identification formulas:
+\[
+\pi_\nt=\pr(D=0\mid Z=1),
+\quad
+\pi_\at=\pr(D=1\mid Z=0),
+\quad
+\pi_\cp=E(D\mid Z=1)-E(D\mid Z=0).
+\]
+The complier potential outcome means are
+\[
+\mu_{1\cp}
+=
+\pi_\cp^{-1}\{E(DY\mid Z=1)-E(DY\mid Z=0)\},
+\]
+and
+\[
+\mu_{0\cp}
+=
+\pi_\cp^{-1}
+\left[E\{(1-D)Y\mid Z=0\}-E\{(1-D)Y\mid Z=1\}\right].
+\]
+
+\begin{remark}
+Since \((D-1)Y=-(1-D)Y\), the denominator in the target expression equals the
+identified numerator of \(\mu_{0\cp}\).
+\end{remark}
+
+\begin{mysolution}{22.2}
+
+\end{mysolution}
+
+\paragraph{Bounds on the average causal effect on the whole population}\label{para::bounds-ACE-hw}
+
+Use the potential outcome \(Y(d)\) and define the average causal effect of the
+treatment received on the whole population as
+\[
+\delta=E\{Y(d=1)-Y(d=0)\}.
+\]
+Let
+\[
+m_{du}=E\{Y(d)\mid U=u\},\quad u=\at,\nt,\cp.
+\]
+Then
+\[
+\delta=\sum_{u=\at,\nt,\cp}\pi_u(m_{1u}-m_{0u}).
+\]
+The data identify
+\(\pi_\at,\pi_\nt,\pi_\cp,m_{1\at},m_{0\nt},m_{1\cp},m_{0\cp}\), but not
+\(m_{0\at}\) and \(m_{1\nt}\). With \(Y\in[\underline y,\overline y]\), prove
+\[
+\underline\delta\leq \delta\leq \overline\delta,
+\]
+where
+\[
+\underline{\delta}
+=
+\delta'
+-\overline y\,\pr(D=1\mid Z=0)
++\underline y\,\pr(D=0\mid Z=1),
+\]
+\[
+\overline{\delta}
+=
+\delta'
+-\underline y\,\pr(D=1\mid Z=0)
++\overline y\,\pr(D=0\mid Z=1),
+\]
+and
+\[
+\delta'=E(DY\mid Z=1)-E(Y-DY\mid Z=0).
+\]
+
+Source: Ding, Chapter 22, Problem 22.7, corresponding to
+\ri{para::bounds-ACE}.
+
+The useful identified proportions are
+\[
+\pi_\at=\pr(D=1\mid Z=0),
+\quad
+\pi_\nt=\pr(D=0\mid Z=1),
+\quad
+\pi_\cp=E(D\mid Z=1)-E(D\mid Z=0).
+\]
+The unidentified terms are bounded only by the outcome support:
+\[
+m_{0\at}\in[\underline y,\overline y],
+\quad
+m_{1\nt}\in[\underline y,\overline y].
+\]
+
+\begin{remark}
+For a binary outcome, Ding gives the simplified bounds
+\[
+\underline{\delta}
+=
+E(DY\mid Z=1)-E(D+Y-DY\mid Z=0),
+\]
+and
+\[
+\overline{\delta}
+=
+E(DY+1-D\mid Z=1)-E(Y-DY\mid Z=0).
+\]
+\end{remark}
+
+\begin{mysolution}{22.7}
+
+\end{mysolution}
+
+\paragraph{More algebra for TSLS}\label{prob::algebra-tsls-hw}
+
+Show that the \(\hat\Gamma\) in \(\hat D_i=\hat\Gamma\tran Z_i\) equals
+\[
+\hat{\Gamma}
+=
+\left(\sumn Z_iZ_i\tran\right)^{-1}\sumn Z_iD_i\tran.
+\]
+Then show that \(\hat\beta_\TSLS\) reduces to \(\hat\beta_{\textsc{iv}}\) if
+\(Z\) and \(D\) have the same dimension and
+\[
+n^{-1}\sumn Z_iZ_i\tran,
+\quad
+n^{-1}\sumn Z_iD_i\tran
+\]
+are both invertible.
+
+Source: Ding, Chapter 23, Problem 23.1, corresponding to
+\ri{prob::algebra-tsls}.
+
+The two-stage least squares estimator \citep{theil1953estimation,basmann1957generalized}
+is defined by first regressing \(D\) on \(Z\) to get \(\hat D\), and then
+regressing \(Y\) on \(\hat D\). Explicitly,
+\[
+\hat\beta_\TSLS
+=
+\left(\sumn \hat D_i\hat D_i\tran\right)^{-1}\sumn \hat D_iY_i.
+\]
+The first-stage OLS fit gives \(D_i=\hat D_i+\check D_i\) and the orthogonality
+\[
+\sumn \hat D_i\check D_i\tran=0.
+\]
+
+\begin{remark}
+In the just-identified case, the relevant IV estimator is
+\[
+\hat\beta_{\textsc{iv}}
+=
+\left(\sumn Z_iD_i\tran\right)^{-1}\sumn Z_iY_i.
+\]
+\end{remark}
+
+\begin{mysolution}{23.1}
+
+\end{mysolution}
+
+\paragraph{Equivalence between TSLS and ILS}\label{para::tsls-ils-hw}
+
+Prove that, with a single endogenous treatment and a single IV,
+\[
+\hat\beta_{1,\ILS}=\hat\beta_{1,\TSLS}.
+\]
+
+Source: Ding, Chapter 23, Problem 23.2, corresponding to
+\ri{para::tsls-ils}. This problem is optional in Problem Set 5.
+
+The structural form is
+\[
+\left\{
+\begin{array}{l}
+Y_i=\beta_0+\beta_1D_i+\beta_2\tran X_i+\varepsilon_i,\\
+D_i=\gamma_0+\gamma_1Z_i+\gamma_2\tran X_i+\varepsilon_{2i}.
+\end{array}
+\right.
+\]
+The reduced form is
+\[
+\left\{
+\begin{array}{l}
+Y_i=\Gamma_0+\Gamma_1Z_i+\Gamma_2\tran X_i+\varepsilon_{1i},\\
+D_i=\gamma_0+\gamma_1Z_i+\gamma_2\tran X_i+\varepsilon_{2i}.
+\end{array}
+\right.
+\]
+The ILS estimator is
+\[
+\hat\beta_{1,\ILS}=\frac{\hat\Gamma_1}{\hat\gamma_1}.
+\]
+
+\begin{remark}
+Ding suggests using the FWL theorem. The equality was noted by
+\citet[][Section A.3]{imbens2014instrumental}.
+\end{remark}
+
+\begin{mysolution}{23.2}
+
+\end{mysolution}
+
+\paragraph{Control function in the linear instrumental variable model}\label{para::control-function-iv-hw}
+
+Define the control function estimator \(\hat\beta_{\textsc{cf}}\) as follows.
+First run OLS of \(D\) on \(Z\), and obtain residuals \(\check D_i\). Then run
+OLS of \(Y\) on \(D\) and \(\check D\), and take the coefficient of \(D\). Show
+that
+\[
+\hat\beta_{\textsc{cf}}=\hat\beta_\TSLS.
+\]
+
+Source: Ding, Chapter 23, Problem 23.3, corresponding to
+\ri{para::control-function-iv}.
+
+Use the first-stage decomposition
+\[
+D=\hat D+\check D.
+\]
+The fitted value \(\hat D\) is orthogonal to the residual \(\check D\). The
+FWL theorem and OLS orthogonality are the main algebraic tools.
+
+\begin{remark}
+\citet{hausman1978specification} pointed out this result, and
+\citet{wooldridge2015control} provides a broader discussion of control function
+methods.
+\end{remark}
+
+\begin{mysolution}{23.3}
+
+\end{mysolution}
+
+\section{Additional problems from Problem Set 5}
+
+\paragraph{Wald and two-stage least squares}\label{hw::wald-cov-form}
+
+We derived the identification formula for CACE under randomization in class.
+Show that
+\[
+\CACE
+=
+\frac{\cov(Z_i,Y_i)}{\cov(Z_i,D_i)}.
+\]
+
+The starting point is Theorem \ref{thm::CACE-identification-hw}. For a binary
+\(Z\), with \(p=\pr(Z=1)\),
+\[
+\cov(Z,Y)=p(1-p)\{E(Y\mid Z=1)-E(Y\mid Z=0)\},
+\]
+and
+\[
+\cov(Z,D)=p(1-p)\{E(D\mid Z=1)-E(D\mid Z=0)\}.
+\]
+Chapter 23 gives the same formula from the scalar IV model:
+\[
+\beta=\frac{\cov(Z,Y)}{\cov(Z,D)}.
+\]
+
+\begin{remark}
+This problem links the potential-outcome CACE formula to the linear IV/TSLS
+notation.
+\end{remark}
+
+\begin{mysolution}{2}
+
+\end{mysolution}
+
+\paragraph{Weighting method for CACE in observational studies}\label{hw::weighting-cace-x}
+
+Suppose randomization is replaced by conditional ignorability
+\[
+Z_i\ind \{Y_i(1),Y_i(0),D_i(1),D_i(0)\}\mid X_i,
+\]
+while monotonicity and exclusion restriction continue to hold. Define
+\[
+\kappa_{0i}
+=
+(1-D_i)
+\frac{(1-Z_i)-\pr(Z_i=0\mid X_i)}
+{\pr(Z_i=0\mid X_i)\pr(Z_i=1\mid X_i)},
+\]
+and
+\[
+\kappa_{1i}
+=
+D_i
+\frac{Z_i-\pr(Z_i=1\mid X_i)}
+{\pr(Z_i=0\mid X_i)\pr(Z_i=1\mid X_i)}.
+\]
+Show that
+\[
+E\{g(Y_i(0),X_i)\mid U_i=\cp\}
+=
+\frac{1}{\pr(U_i=\cp)}E\{\kappa_{0i}g(Y,X)\},
+\]
+and
+\[
+E\{g(Y_i(1),X_i)\mid U_i=\cp\}
+=
+\frac{1}{\pr(U_i=\cp)}E\{\kappa_{1i}g(Y,X)\}.
+\]
+
+Source: Problem Set 5, Problem 3. This problem is optional.
+
+Let \(e(X)=\pr(Z=1\mid X)\). Conditional ignorability allows observed conditional
+expectations within \(Z\)-groups to represent conditional potential-outcome
+expectations. The monotonicity and exclusion restriction assumptions keep the
+same latent compliance interpretation as in Chapter 21.
+
+\begin{remark}
+This problem is the observational-study analogue of the mixture disentangling
+identities in Chapter 22.
+\end{remark}
+
+\begin{mysolution}{3}
+
+\end{mysolution}
+
+\paragraph{Analysis of return to schooling}\label{hw::card-schooling}
+
+\citet{card1993using} used geographic variation in college proximity to
+estimate the return to schooling. The treatment is education, the outcome is log
+wage, and the IV is college proximity.
+
+First, dichotomize the education variable and infer the CACE for units with
+\(D(1)=1,D(0)=0\), where \(D\) is the dichotomized education. Discuss how to
+choose the threshold and whether the results are sensitive to the choice. Conduct
+an analysis with covariates. Second, without dichotomizing education, use the
+standard TSLS estimator and compare the results.
+
+Source: Problem Set 5, Problem 4. The same Card data-analysis problem appears as
+a commented problem in Ding, Chapter 23.
+
+For a threshold \(c\), define \(D_c=1\{\text{education}\geq c\}\). The
+dichotomized causal quantity is
+\[
+\tau_\cp(c)
+=
+E\{Y(1)-Y(0)\mid D_c(1)=1,D_c(0)=0\}.
+\]
+Without covariates,
+\[
+\hat\tau_\cp(c)
+=
+\frac{\bar Y_{Z=1}-\bar Y_{Z=0}}
+{\bar D_{c,Z=1}-\bar D_{c,Z=0}}.
+\]
+With covariates, adjust both \(Y\) and \(D_c\), then take the ratio of the
+adjusted effects. Without dichotomization, the TSLS specification is
+\[
+\left\{
+\begin{array}{l}
+\text{education}_i=\gamma_0+\gamma_1Z_i+\gamma_2\tran X_i+\varepsilon_{2i},\\
+\log(\text{wage}_i)=\beta_0+\beta_1\text{education}_i+\beta_2\tran X_i+\varepsilon_i.
+\end{array}
+\right.
+\]
+
+\begin{remark}
+The current folder does not contain \ri{card.csv} or \ri{code\_bk.txt}.
+Add their local paths here before doing the empirical analysis.
+\end{remark}
+
+\begin{mysolution}{4}
+
+\end{mysolution}
+
+\bibliographystyle{plainnat}
+\bibliography{causal/causal}
+
+\end{document}

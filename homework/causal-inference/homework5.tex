@@ -1,0 +1,236 @@
+\documentclass[krantz1]{krantz}
+\usepackage{fixltx2e,fix-cm}
+\usepackage{amssymb, bbm, bm, mathtools}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage{color, rotating}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{xeCJK}
+\usepackage{natbib}
+
+% Theorem-like environments
+\newtheorem{exercise}{Exercise}[chapter]
+\newtheorem{example}{Example}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}[chapter]
+\newtheorem{thesis}{Theorem}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+
+\title{Problem Set 5: Comprehensive Solutions}
+\author{乐绎华 学号 23363017}
+
+% Custom environments from the book template
+\newenvironment{myproof}[2] {\noindent {\bfseries Proof of {#1} {#2}:}}{\hfill$\square$}
+\newenvironment{mysolution}[1]{\vspace{0.1in} \noindent {\bfseries Solution to Problem {#1}:}}{\hfill$\square$}
+
+% Custom macros from the book
+\def\iidsim{\stackrel{\textup{IID}}{\sim}}
+\def\indsim{\stackrel{ind}{\sim}}
+\def\convergeas{\stackrel{a.s.}{\longrightarrow}}
+\def\converged{\stackrel{\textup{d}}{\longrightarrow}}
+\def\pr{\textup{pr}}
+\def\cov{\textup{cov}}
+\def\ind{\perp}
+\def\RD{\textsf{rd}}
+\def\RR{\textsf{rr}}
+\def\OR{\textsf{or}}
+\def\true{\textup{true}}
+\def\obs{\textup{obs}}
+\def\se{\textup{se}}
+\def\logit{\textup{logit}}
+\def\expit{\textup{expit}}
+\def\sumn{\sum_{i=1}^n}
+\def\diff{\textsf{d}}
+\def\Paragraph{\paragraph}
+\def\at{\textup{a}}
+\def\cp{\textup{c}}
+\def\df{\textup{d}}
+\def\nt{\textup{n}}
+\def\CACE{\text{CACE}}
+\def\TSLS{\text{TSLS}}
+\def\ILS{\text{ILS}}
+\def\var{\textup{var}}
+\def\sumn{\sum_{i=1}^n}
+\def\tran{\textup{T}}
+
+\begin{document}
+\maketitle
+
+\chapter{Problem Set 5}
+
+This problem set covers Chapters 21, 22, and 23 of Peng Ding's \textit{A First Course in Causal Inference}, focusing on the Instrumental Variable (IV) method from both experimental and econometric perspectives.
+
+\section{Background: The Instrumental Variable Framework}
+
+Consider units $i=1, \dots, n$. Let $Z_i$ be the treatment assignment (instrument), $D_i$ be the treatment received, and $Y_i$ be the outcome. 
+
+\begin{definition}[Latent Compliance Status]\label{def::compliance}
+Stratify the population into four latent groups based on $U_i = \{D_i(1), D_i(0)\}$:
+\begin{itemize}
+    \item Always-taker ($\at$): $D_i(1)=1, D_i(0)=1$.
+    \item Complier ($\cp$): $D_i(1)=1, D_i(0)=0$.
+    \item Defier ($\df$): $D_i(1)=0, D_i(0)=1$.
+    \item Never-taker ($\nt$): $D_i(1)=0, D_i(0)=0$.
+\end{itemize}
+\end{definition}
+
+\begin{assumption}[randomization]\label{21.1}
+$Z \ind \{D(1), D(0), Y(1), Y(0)\}$.
+\end{assumption}
+
+\begin{assumption}[monotonicity]\label{21.2}
+$\pr(U = \df) = 0$, i.e., $D_i(1) \ge D_i(0)$ for all $i$.
+\end{assumption}
+
+\begin{assumption}[exclusion restriction]\label{21.3}
+$Y_i(1) = Y_i(0)$ for always-takers ($U=\at$) and never-takers ($U=\nt$).
+\end{assumption}
+
+\begin{thesis}\label{thm::21.1}\emph{(Theorem 21.1, Ding, 2025)}
+Under Assumptions \ref{21.1}--\ref{21.3}, the Complier Average Causal Effect (CACE) is identified as:
+$$ \tau_\cp = E\{Y(1) - Y(0) \mid U=\cp\} = \frac{E(Y\mid Z=1) - E(Y\mid Z=0)}{E(D\mid Z=1) - E(D\mid Z=0)}. $$
+\end{thesis}
+
+\section{Exercises from Chapter 21: Compliance, IV, and LATE}
+
+\Paragraph{21.1~Variance of the Wald estimator}\label{hw::infinite-var-iv}
+
+Show that $\var(\hat{\tau}_\cp)=\infty$.
+
+\begin{mysolution}{21.1}
+The Wald estimator is $\hat{\tau}_\cp = \hat{\tau}_Y / \hat{\tau}_D$. In finite samples, $\hat{\tau}_D$ is a discrete random variable with a strictly positive probability that $\hat{\tau}_D = 0$ (e.g., if all units in the sample are never-takers). Consequently, the expectation of $\hat{\tau}_\cp^2$ diverges due to the non-zero probability of a zero denominator, leading to $\var(\hat{\tau}_\cp) = \infty$.
+\end{mysolution}
+
+\Paragraph{21.6~Binary IV and ordinal treatment received}\label{para::iv-ordinal-treatment}
+
+\citet{angrist1995two} discussed a binary IV $Z$, an ordinal treatment $D \in \{0, 1, \dots, J\}$, and outcome $Y$. Under randomization, monotonicity ($D(1) \ge D(0)$), and exclusion restriction ($Y(z,d) = Y(d)$), prove:
+$$ \frac{E(Y\mid Z=1) - E(Y\mid Z=0)}{E(D\mid Z=1) - E(D\mid Z=0)} = \sum_{j=1}^J w_j E\{Y(j) - Y(j-1) \mid D(1) \ge j > D(0)\} $$
+where $w_j = \frac{\pr\{D(1) \ge j > D(0)\}}{\sum_{j'=1}^J \pr\{D(1) \ge j' > D(0)\}}$.
+
+\begin{mysolution}{21.6}
+Write $D(z) = \sum_{j=1}^J \mathbb{I}(D(z) \ge j)$ and $Y(D(z)) = Y(0) + \sum_{j=1}^J [Y(j) - Y(j-1)] \mathbb{I}(D(z) \ge j)$.
+By monotonicity, $\mathbb{I}(D(1) \ge j) - \mathbb{I}(D(0) \ge j) = \mathbb{I}(D(1) \ge j > D(0))$.
+The denominator of the Wald ratio is:
+$$ E[D(1) - D(0)] = \sum_{j=1}^J \pr(D(1) \ge j > D(0)). $$
+The numerator (ITT effect on $Y$) is:
+\begin{align*}
+E[Y(D(1)) - Y(D(0))] &= \sum_{j=1}^J E\{ [Y(j) - Y(j-1)] \mathbb{I}(D(1) \ge j > D(0)) \} \\
+&= \sum_{j=1}^J E\{ Y(j) - Y(j-1) \mid D(1) \ge j > D(0) \} \pr(D(1) \ge j > D(0)).
+\end{align*}
+Dividing the numerator by the denominator yields the weighted average with weights $w_j$.
+\end{mysolution}
+
+\Paragraph{21.7~Data analysis: a flu shot encouragement design}\label{hw::flushot}
+
+Analyze \texttt{fludata.txt} with and without covariates.
+
+\begin{mysolution}{21.7}
+The analysis yields the following estimates:
+\begin{itemize}
+    \item \textbf{Unadjusted}: $\hat{\tau}_Y = -0.0147$, $\hat{\tau}_D = 0.1184 \implies \hat{\tau}_\cp = \mathbf{-0.1246}$.
+    \item \textbf{Lin-adjusted}: $\hat{\tau}_{Y,L} = -0.0149$, $\hat{\tau}_{D,L} = 0.1187 \implies \hat{\tau}_{\cp,L} = \mathbf{-0.1252}$.
+\end{itemize}
+Encouraging flu shots reduces hospitalization by $\sim$12.5\% among compliers.
+\end{mysolution}
+
+\section{Exercises from Chapter 22: IV Inequalities}
+
+\begin{thesis}\label{thm::22.1}\emph{(Theorem 22.1, Ding, 2025)}
+Under Assumptions \ref{21.1}--\ref{21.3}:
+$$ \mu_{1\cp} = \frac{E(DY\mid Z=1) - E(DY\mid Z=0)}{\pi_\cp}, \quad \mu_{0\cp} = \frac{E\{(1-D)Y\mid Z=0\} - E\{(1-D)Y\mid Z=1\}}{\pi_\cp} $$
+where $\pi_\cp = E(D\mid Z=1) - E(D\mid Z=0)$.
+\end{thesis}
+
+\Paragraph{22.2~Risk ratio for compliers}\label{hw::rr-compliers}
+
+Define $\RR_\cp = \frac{\pr\{Y(1)=1\mid U=\cp\}}{\pr\{Y(0)=1\mid U=\cp\}}$. Show:
+$$ \RR_\cp = \frac{E(DY\mid Z=1) - E(DY\mid Z=0)}{E\{(D-1)Y\mid Z=1\} - E\{(D-1)Y\mid Z=0\}}. $$
+
+\begin{mysolution}{22.2}
+By Theorem \ref{thm::22.1}, $\mu_{1\cp} = \pi_\cp^{-1}[E(DY\mid Z=1) - E(DY\mid Z=0)]$ and $\mu_{0\cp} = \pi_\cp^{-1}[E((1-D)Y\mid Z=0) - E((1-D)Y\mid Z=1)]$.
+Observe $E\{(D-1)Y \mid Z\} = E\{DY - Y \mid Z\} = -E\{(1-D)Y \mid Z\}$.
+Thus, $E\{(D-1)Y \mid Z=1\} - E\{(D-1)Y \mid Z=0\} = E\{(1-D)Y \mid Z=0\} - E\{(1-D)Y \mid Z=1\}$.
+The ratio $\mu_{1\cp}/\mu_{0\cp}$ then simplifies to the target identity.
+\end{mysolution}
+
+\Paragraph{22.7~Bounds on the average causal effect on the whole population}\label{para::bounds-ACE}
+
+For $Y \in [\underline{y}, \overline{y}]$, let $\delta = E\{Y(d=1) - Y(d=0)\}$. Prove:
+$$ \underline{\delta} = \delta' - \overline{y} \pr(D=1\mid Z=0) + \underline{y} \pr(D=0\mid Z=1) $$
+$$ \overline{\delta} = \delta' - \underline{y} \pr(D=1\mid Z=0) + \overline{y} \pr(D=0\mid Z=1) $$
+where $\delta' = E(DY\mid Z=1) - E((1-D)Y\mid Z=0)$.
+
+\begin{mysolution}{22.7}
+Decompose $\delta = \pi_\at(m_{1\at} - m_{0\at}) + \pi_\nt(m_{1\nt} - m_{0\nt}) + \pi_\cp(m_{1\cp} - m_{0\cp})$.
+Define $\delta' = \pi_\at m_{1\at} + \pi_\cp (m_{1\cp} - m_{0\cp}) - \pi_\nt m_{0\nt}$.
+Then $\delta = \delta' + \pi_\nt m_{1\nt} - \pi_\at m_{0\at}$.
+Since $m_{1\nt}, m_{0\at} \in [\underline{y}, \overline{y}]$, the lower bound occurs at $(m_{1\nt}, m_{0\at}) = (\underline{y}, \overline{y})$ and the upper bound at $(\overline{y}, \underline{y})$. Substitution yields the sharp bounds.
+\end{mysolution}
+
+\section{Exercises from Chapter 23: Econometric Perspective and TSLS}
+
+\Paragraph{23.1~More algebra for TSLS}\label{hw::algebra-tsls}
+\begin{enumerate}
+    \item Show $\hat{\Gamma} = (\sumn Z_i Z_i\tran)^{-1} \sumn Z_i D_i\tran$.
+    \item Show $\hat{\beta}_\TSLS = \hat{\beta}_{\textsc{iv}}$ in the just-identified case.
+\end{enumerate}
+
+\begin{mysolution}{23.1}
+1. The OLS estimator $\hat{\Gamma}$ minimizes $\sumn \|D_i - \Gamma^\tran Z_i\|^2$, satisfying the normal equation $\sumn Z_i(D_i - \hat{\Gamma}^\tran Z_i)^\tran = 0$. Solving for $\hat{\Gamma}$ yields $\hat{\Gamma} = (\sumn Z_i Z_i\tran)^{-1} \sumn Z_i D_i\tran$.
+
+2. If $Z, D$ have the same dimension, $\hat{\Gamma}$ is invertible.
+$\sum \hat{D}_i \hat{D}_i\tran = \hat{\Gamma}^\tran (\sum Z_i Z_i\tran) \hat{\Gamma} = (\sum D_i Z_i\tran) (\sum Z_i Z_i\tran)^{-1} (\sum Z_i D_i\tran)$.
+Similarly, $\sum \hat{D}_i Y_i = \hat{\Gamma}^\tran \sum Z_i Y_i = (\sum D_i Z_i\tran) (\sum Z_i Z_i\tran)^{-1} \sum Z_i Y_i$.
+Taking the ratio cancels $(\sum D_i Z_i\tran)$ and $(\sum Z_i Z_i\tran)^{-1}$, leaving $\hat{\beta}_\TSLS = (\sum Z_i D_i\tran)^{-1} \sum Z_i Y_i = \hat{\beta}_{\textsc{iv}}$.
+\end{mysolution}
+
+\Paragraph{23.2~Equivalence between TSLS and ILS}\label{para::tsls-ils}
+Prove $\hat{\beta}_{1,\ILS} = \hat{\beta}_{1,\TSLS}$ for a single treatment and IV.
+
+\begin{mysolution}{23.2}
+The ILS estimator is $\hat{\beta}_{1,\ILS} = \hat{\Gamma}_1 / \hat{\gamma}_1 = \frac{\cov(Z, Y)/\var(Z)}{\cov(Z, D)/\var(Z)} = \frac{\cov(Z, Y)}{\cov(Z, D)}$.
+TSLS regresses $Y$ on $\hat{D} = \hat{\gamma}_0 + \hat{\gamma}_1 Z$:
+$\hat{\beta}_{1,\TSLS} = \frac{\cov(\hat{D}, Y)}{\var(\hat{D})} = \frac{\cov(\hat{\gamma}_1 Z, Y)}{\var(\hat{\gamma}_1 Z)} = \frac{\hat{\gamma}_1 \cov(Z, Y)}{\hat{\gamma}_1^2 \var(Z)} = \frac{\cov(Z, Y)}{\hat{\gamma}_1 \var(Z)}$.
+Substituting $\hat{\gamma}_1 = \cov(Z, D)/\var(Z)$ yields $\frac{\cov(Z, Y)}{\cov(Z, D)}$.
+\end{mysolution}
+
+\Paragraph{23.3~Control function in the linear IV model}\label{para::control-function-iv}
+Show $\hat{\beta}_{\textsc{cf}} = \hat{\beta}_\TSLS$.
+
+\begin{mysolution}{23.3}
+By the FWL theorem, the coefficient of $D$ in a regression of $Y$ on $(D, \check{D})$ is the same as regressing $Y$ on the residual of $D$ on $\check{D}$.
+Since $D = \hat{D} + \check{D}$ and $\hat{D} \perp \check{D}$, this residual is exactly $\hat{D}$. Regressing $Y$ on $\hat{D}$ is the TSLS procedure, hence the equivalence.
+\end{mysolution}
+
+\section{Additional Problems}
+
+\Paragraph{2.~CACE as Ratio of Covariances}\label{hw::wald-cov-form}
+Show $\CACE = \frac{\cov(Z, Y)}{\cov(Z, D)}$.
+
+\begin{mysolution}{2}
+For binary $Z$, $\cov(Z, Y) = \pr(Z=1)\pr(Z=0) [E(Y\mid Z=1) - E(Y\mid Z=0)]$ and $\cov(Z, D) = \pr(Z=1)\pr(Z=0) [E(D\mid Z=1) - E(D\mid Z=0)]$. Their ratio is the Wald identity, which identifies CACE.
+\end{mysolution}
+
+\Paragraph{3.~Weighting method for CACE in observational studies}\label{hw::weighting-cace-x}
+Show $E[\kappa_{1i} g(Y, X)] = \pr(U=\cp) E[g(Y(1), X) \mid U=\cp]$.
+
+\begin{mysolution}{3}
+By iterated expectations, $E[\kappa_{1i} g(Y, X)] = E_X [ E[D \frac{Z - e(X)}{e(X)(1-e(X))} g(Y, X) \mid X ] ]$.
+The inner term is $e(X)(1-e(X))^{-1} [E(DZ g \mid X) - e(X) E(D g \mid X)]$.
+Simplifying, $E(DZ g \mid X) = e(X) E[D(1) g(1) \mid X]$ and $E(D g \mid X) = e(X) E[D(1) g(1) \mid X] + (1-e(X)) E[D(0) g(0) \mid X]$.
+Substitution yields $E_X[E((D(1)-D(0))g(1) \mid X)] = E[\mathbb{I}(U=\cp)g(1)] = \pr(U=\cp) E[g(1) \mid U=\cp]$.
+\end{mysolution}
+
+\Paragraph{4.~Analysis of Card (1993)}\label{hw::card-schooling}
+Discuss dichotomization vs. TSLS.
+
+\begin{mysolution}{4}
+Dichotomization identifies LATE for a specific threshold, providing clear interpretability for a sub-population. TSLS utilizes the full education distribution and, under linearity, identifies the average derivative effect.
+\end{mysolution}
+
+\bibliographystyle{plainnat}
+\bibliography{causal/causal}
+
+\end{document}
