@@ -615,7 +615,8 @@ ax + by \leq c,
 
 \textbf{推导步骤（Derivation Steps）}：
 
-1. 写出功效差：
+\begin{enumerate}
+\item 写出功效差：
 \[
 \int_C L(\theta'') - \int_A L(\theta'') = \int_{C \cap A^c} L(\theta'') - \int_{A \cap C^c} L(\theta'').
 
@@ -623,7 +624,7 @@ ax + by \leq c,
 
 \]
 
-2. 由条件 (a)：在 $C$ 上 $L(\theta'') \geq \frac{1}{k}L(\theta')$，故
+\item 由条件 (a)：在 $C$ 上 $L(\theta'') \geq \frac{1}{k}L(\theta')$，故
 \[
 \int_{C \cap A^c} L(\theta'') \geq \frac{1}{k} \int_{C \cap A^c} L(\theta').
 
@@ -631,7 +632,7 @@ ax + by \leq c,
 
 \]
 
-3. 由条件 (b)：在 $C^c$ 上 $L(\theta'') \leq \frac{1}{k}L(\theta')$，故
+\item 由条件 (b)：在 $C^c$ 上 $L(\theta'') \leq \frac{1}{k}L(\theta')$，故
 \[
 \int_{A \cap C^c} L(\theta'') \leq \frac{1}{k} \int_{A \cap C^c} L(\theta').
 
@@ -639,7 +640,7 @@ ax + by \leq c,
 
 \]
 
-4. 将 (8.A.2) 和 (8.A.3) 代入 (8.A.1)：
+\item 将 \cref{eq:np-proof-eq2} 和 \cref{eq:np-proof-eq3} 代入 \cref{eq:np-proof-eq1}：
 \[
 \int_C L(\theta'') - \int_A L(\theta'') \geq \frac{1}{k}\left[\int_{C \cap A^c} L(\theta') - \int_{A \cap C^c} L(\theta')\right].
 
@@ -647,7 +648,7 @@ ax + by \leq c,
 
 \]
 
-5. 计算括号内项：
+\item 计算括号内项：
 \[
 \int_{C \cap A^c} L(\theta') - \int_{A \cap C^c} L(\theta') = \int_C L(\theta') - \int_A L(\theta') = \alpha - \alpha = 0.
 
@@ -655,13 +656,14 @@ ax + by \leq c,
 
 \]
 
-6. 由 (8.A.4) 和 (8.A.5) 得 $\int_C L(\theta'') - \int_A L(\theta'') \geq 0$，即
+\item 由 \cref{eq:np-proof-eq4} 和 \cref{eq:np-proof-eq5} 得 $\int_C L(\theta'') - \int_A L(\theta'') \geq 0$，即
 \[
 \mathbb{P}_{\theta''}(\mathbf{X} \in C) \geq \mathbb{P}_{\theta''}(\mathbf{X} \in A).
 
 \]
 
 证毕。
+\end{enumerate}
 
 \subsection{正态均值 NP 检验的完整推导}\label{sec:normal-np-derivation}
 
@@ -671,37 +673,39 @@ ax + by \leq c,
 
 \textbf{推导步骤（Derivation Steps）}：
 
-1. 写出似然函数：
+\begin{enumerate}
+\item 写出似然函数：
 \[
 L(\theta; \mathbf{x}) = (2\pi)^{-n/2} \exp\left[-\frac{1}{2}\sum_{i=1}^n (x_i - \theta)^2\right].
 
 \]
 
-2. 似然比：
+\item 似然比：
 \[
 \frac{L(0; \mathbf{x})}{L(1; \mathbf{x})} = \frac{\exp\left[-\frac{1}{2}\sum x_i^2\right]}{\exp\left[-\frac{1}{2}\sum (x_i-1)^2\right]} = \exp\left[-\sum_{i=1}^n x_i + \frac{n}{2}\right].
 
 \]
 
-3. 令 $\frac{L(0; \mathbf{x})}{L(1; \mathbf{x})} \leq k$：
+\item 令 $\frac{L(0; \mathbf{x})}{L(1; \mathbf{x})} \leq k$：
 \[
 \exp\left[-\sum x_i + \frac{n}{2}\right] \leq k \quad \Longleftrightarrow \quad \sum_{i=1}^n x_i \geq \frac{n}{2} - \log k = c.
 
 \]
 
-4. 当 $H_0$ 为真时，$\overline{X} \sim N(0, 1/n)$，故临界值
+\item 当 $H_0$ 为真时，$\overline{X} \sim N(0, 1/n)$，故临界值
 \[
 c_1 = \frac{c}{n} = \frac{1}{2} - \frac{\log k}{n} = q_{\alpha}(0, 1/\sqrt{n}).
 
 \]
 
-5. 功效函数：当 $\theta = 1$ 时，$\overline{X} \sim N(1, 1/n)$，
+\item 功效函数：当 $\theta = 1$ 时，$\overline{X} \sim N(1, 1/n)$，
 \[
 \text{Power}(\theta=1) = \mathbb{P}_{\theta=1}\left(\overline{X} \geq q_{\alpha}(0, 1/\sqrt{n})\right) = 1 - \Phi\left(\frac{q_{\alpha}(0, 1/\sqrt{n}) - 1}{1/\sqrt{n}}\right).
 
 \]
 
 证毕。
+\end{enumerate}
 
 \subsection{Karlin-Rubin 定理的证明}\label{sec:karlin-rubin-proof}
 
@@ -717,18 +721,20 @@ c_1 = \frac{c}{n} = \frac{1}{2} - \frac{\log k}{n} = q_{\alpha}(0, 1/\sqrt{n}).
 
 \textbf{推导步骤（Derivation Steps）}：
 
-1. \textbf{对简单假设 $H_0': \theta = \theta'$ 对 $\theta'' > \theta'$ 的最优性}：由 NP 定理，最佳临界区域由
+\begin{enumerate}
+\item \textbf{对简单假设 $H_0': \theta = \theta'$ 对 $\theta'' > \theta'$ 的最优性}：由 NP 定理，最佳临界区域由
 \[
 \frac{L(\theta';\mathbf{x})}{L(\theta'';\mathbf{x})} \leq k
 
 \]
 给出。由于 MLR 性质，$g(Y) \leq k \Longleftrightarrow Y \geq g^{-1}(k)$。取 $c_Y = g^{-1}(k)$，则对任意 $\theta'' > \theta'$，临界区域 $C = \{Y \geq c_Y\}$ 是 $H_0': \theta = \theta'$ 对 $\theta''$ 的最佳检验。
 
-2. \textbf{对所有 $\theta'' > \theta'$ 的一致性}：由于 NP 最佳临界区域的形式只依赖于 $Y \geq c_Y$（而不依赖于具体的 $\theta''$），$C = \{Y \geq c_Y\}$ 对所有 $\theta'' > \theta'$ 都是最佳的。
+\item \textbf{对所有 $\theta'' > \theta'$ 的一致性}：由于 NP 最佳临界区域的形式只依赖于 $Y \geq c_Y$（而不依赖于具体的 $\theta''$），$C = \{Y \geq c_Y\}$ 对所有 $\theta'' > \theta'$ 都是最佳的。
 
-3. \textbf{无偏性（保证 level 不超过 $\alpha$）}：设 $\gamma_Y(\theta) = \mathbb{P}_\theta(Y \geq c_Y)$ 为功效函数。对 $\theta_1 < \theta_2$，由第 1 步，$C$ 是 $\theta_1$ 对 $\theta_2$ 的最佳检验，故 $\gamma_Y(\theta_2) \geq \gamma_Y(\theta_1)$。因此 $\gamma_Y(\theta)$ 是 $\theta$ 的非降函数，$\max_{\theta \leq \theta'} \gamma_Y(\theta) = \gamma_Y(\theta') = \alpha$。故该检验是 level $\alpha$ 的。
+\item \textbf{无偏性（保证 level 不超过 $\alpha$）}：设 $\gamma_Y(\theta) = \mathbb{P}_\theta(Y \geq c_Y)$ 为功效函数。对 $\theta_1 < \theta_2$，由第 1 步，$C$ 是 $\theta_1$ 对 $\theta_2$ 的最佳检验，故 $\gamma_Y(\theta_2) \geq \gamma_Y(\theta_1)$。因此 $\gamma_Y(\theta)$ 是 $\theta$ 的非降函数，$\max_{\theta \leq \theta'} \gamma_Y(\theta) = \gamma_Y(\theta') = \alpha$。故该检验是 level $\alpha$ 的。
 
-综上，$C = \{Y \geq c_Y\}$ 是UMP level $\alpha$ 检验。证毕。
+综上，$C = \{Y \geq c_Y\}$ 是 UMP level $\alpha$ 检验。证毕。
+\end{enumerate}
 
 \section*{Exercises}\label{sec:exercises-ch8}
 
