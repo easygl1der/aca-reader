@@ -56,7 +56,7 @@
 
 另一种比较估计量的框架是决策论（decision theory）。设 $\mathcal{L}[\theta, \delta(y)]$ 是损失函数（loss function），衡量估计值 $\delta(y)$ 与真实参数 $\theta$ 之间的差距。常见的损失函数是平方误差损失 $\mathcal{L}[\theta, \delta(y)] = [\theta - \delta(y)]^2$。
 
-风险函数（risk function）定义为损失的期望：$R(\theta, \delta) = E[\mathcal{L}(\theta, \delta(Y))]$。一个自然的想法是寻找使风险函数最小化的决策函数。但在一般情况下，使 $R(\theta, \delta)$ 对所有 $\theta$ 同时最小的估计量不存在（见下例）。
+风险函数（risk function）定义为损失的期望：$R(\theta, \delta) = \mathbb{E}[\mathcal{L}(\theta, \delta(Y))]$。一个自然的想法是寻找使风险函数最小化的决策函数。但在一般情况下，使 $R(\theta, \delta)$ 对所有 $\theta$ 同时最小的估计量不存在（见下例）。
 
 \begin{example}[最小化风险函数的困难]\label{ex:risk-difficulty}
 设 $X_1, \ldots, X_{25}$ 是来自 $N(\theta, 1)$ 的样本。考虑平方损失函数 $\mathcal{L}[\theta, \delta(y)] = [\theta - \delta(y)]^2$。
@@ -336,7 +336,7 @@ E(Y_2) = n \cdot E(1/Y_1) = n \int_0^\infty \frac{\theta^n}{n!} t^{-1} t^{n-1} e
 \subsection{完备性的定义}
 
 \begin{definition}[完备族]\label{def:complete-family}
-设随机变量 $Z$（连续型或离散型）的 pdf 或 pmf 是族 $\{h(z; \theta): \theta \in \Omega\}$ 的一员。若条件 $E[u(Z)] = 0$ 对所有 $\theta \in \Omega$ 成立能够推出 $u(z) = 0$（除了一个对每个 $h(z; \theta)$ 概率为零的点集），则称该族为\textbf{完备族（complete family）}。
+设随机变量 $Z$（连续型或离散型）的 pdf 或 pmf 是族 $\{h(z; \theta): \theta \in \Omega\}$ 的一员。若条件 $\mathbb{E}[u(Z)] = 0$ 对所有 $\theta \in \Omega$ 成立能够推出 $u(z) = 0$（除了一个对每个 $h(z; \theta)$ 概率为零的点集），则称该族为\textbf{完备族（complete family）}。
 \end{definition}
 
 简言之：\textbf{只有零函数才能期望为零}。
@@ -347,7 +347,7 @@ E(Y_2) = n \cdot E(1/Y_1) = n \int_0^\infty \frac{\theta^n}{n!} t^{-1} t^{n-1} e
 g(y_1; \theta) = \frac{(n\theta)^{y_1} e^{-n\theta}}{y_1!},\quad y_1 = 0,1,2,\ldots
 \]
 
-设 $E[u(Y_1)] = 0$ 对所有 $\theta > 0$ 成立，即
+设 $\mathbb{E}[u(Y_1)] = 0$ 对所有 $\theta > 0$ 成立，即
 \[
 \sum_{y_1=0}^\infty u(y_1) \frac{(n\theta)^{y_1} e^{-n\theta}}{y_1!} = 0.
 \]
@@ -368,7 +368,7 @@ u(0) = u(1) = u(2) = \cdots = 0.
 \begin{example}[指数分布族的完备性]\label{ex:exponential-complete}
 设 $Z \sim \text{Exp}(\theta)$，即 pdf 为 $h(z; \theta) = \frac{1}{\theta} e^{-z/\theta}$，$z > 0$。
 
-设 $E[u(Z)] = 0$ 对所有 $\theta > 0$ 成立：
+设 $\mathbb{E}[u(Z)] = 0$ 对所有 $\theta > 0$ 成立：
 \[
 \int_0^\infty u(z) \frac{1}{\theta} e^{-z/\theta} dz = 0,\quad \forall \theta > 0.
 \]
@@ -389,7 +389,7 @@ u(0) = u(1) = u(2) = \cdots = 0.
 若存在 $Y_1$ 的一个函数是 $\theta$ 的无偏估计量，则该函数是唯一的 MVUE。
 \end{theorem}
 
-\textbf{证明思路}：设 $\varphi(Y_1)$ 和 $\psi(Y_1)$ 都是 $Y_1$ 的无偏估计量函数。则 $E[\varphi(Y_1) - \psi(Y_1)] = 0$ 对所有 $\theta$ 成立。由完备性，$\varphi(y_1) - \psi(y_1) = 0$ 几乎处处成立，即两个估计量函数几乎处处相等——这就是"唯一"含义。
+\textbf{证明思路}：设 $\varphi(Y_1)$ 和 $\psi(Y_1)$ 都是 $Y_1$ 的无偏估计量函数。则 $\mathbb{E}[\varphi(Y_1) - \psi(Y_1)] = 0$ 对所有 $\theta$ 成立。由完备性，$\varphi(y_1) - \psi(y_1) = 0$ 几乎处处成立，即两个估计量函数几乎处处相等——这就是"唯一"含义。
 
 \textbf{战略意义}：\textbf{完备充分统计量的无偏函数就是 MVUE}。
 
@@ -399,7 +399,7 @@ u(0) = u(1) = u(2) = \cdots = 0.
 g(y_n; \theta) = \frac{n y_n^{n-1}}{\theta^n},\quad 0 < y_n < \theta.
 \]
 
-验证完备性：设 $E[u(Y_n)] = 0$ 对所有 $\theta > 0$ 成立，
+验证完备性：设 $\mathbb{E}[u(Y_n)] = 0$ 对所有 $\theta > 0$ 成立，
 \[
 \int_0^\theta u(t) \frac{n t^{n-1}}{\theta^n} dt = 0.
 \]
@@ -485,7 +485,7 @@ f_{Y_1}(y_1; \theta) = R(y_1) \exp[p(\theta)y_1 + nq(\theta)],\quad y_1 \in \mat
 在正则指数族条件下，$Y_1 = \sum_{i=1}^n K(X_i)$ 是 $\theta$ 的\textbf{完备充分统计量}。
 \end{theorem}
 
-\textbf{证明思路}：设 $E[u(Y_1)] = 0$ 对所有 $\theta$ 成立。利用 $Y_1$ 的分布形式，可得
+\textbf{证明思路}：设 $\mathbb{E}[u(Y_1)] = 0$ 对所有 $\theta$ 成立。利用 $Y_1$ 的分布形式，可得
 \[
 \int u(y_1)R(y_1) \exp[p(\theta)y_1] dy_1 = 0,\quad \forall \theta.
 \]
@@ -520,7 +520,7 @@ $E(Y_1) = n\theta$，故 $\varphi(Y_1) = Y_1/n = \overline{X}$ 是 $\theta$ 的�
 
 \subsection{技术一：观察法}
 
-如果能通过观察 $E[\varphi(Y_1)] = g(\theta)$ 解出 $\varphi$ 就可直接得到 MVUE。
+如果能通过观察 $\mathbb{E}[\varphi(Y_1)] = g(\theta)$ 解出 $\varphi$ 就可直接得到 MVUE。
 
 \begin{example}[二项分布方差的 MVUE]\label{ex:binomial-variance-mvue}
 设 $X_1, \ldots, X_n \sim \text{Bernoulli}(\theta)$。$Y = \sum X_i$ 是完备充分统计量。样本比例 $Y/n$ 是 $\theta$ 的 MVUE。
@@ -529,7 +529,7 @@ $E(Y_1) = n\theta$，故 $\varphi(Y_1) = Y_1/n = \overline{X}$ 是 $\theta$ 的�
 
 MLE 为 $\tilde{\delta} = (Y/n)(1 - Y/n)$。计算期望：
 \[
-E[\tilde{\delta}] = E\left[\frac{Y}{n}\left(1 - \frac{Y}{n}\right)\right] = \frac{n-1}{n}\theta(1-\theta).
+\mathbb{E}[\tilde{\delta}] = E\left[\frac{Y}{n}\left(1 - \frac{Y}{n}\right)\right] = \frac{n-1}{n}\theta(1-\theta).
 \]
 
 故 $\hat{\delta} = \frac{n}{n-1}\tilde{\delta} = \frac{Y(n-Y)}{n(n-1)}$ 是 $\delta$ 的 MVUE。
@@ -548,7 +548,7 @@ $(X_1, \overline{X})$ 的联合分布是二元正态，条件分布 $X_1 \mid \o
 
 计算条件期望：
 \[
-E[Z \mid \overline{X} = \overline{x}] = P(X_1 \leq c \mid \overline{X} = \overline{x}) = \Phi\left[\frac{\sqrt{n}(c - \overline{x})}{\sqrt{n-1}}\right].
+\mathbb{E}[Z \mid \overline{X} = \overline{x}] = P(X_1 \leq c \mid \overline{X} = \overline{x}) = \Phi\left[\frac{\sqrt{n}(c - \overline{x})}{\sqrt{n-1}}\right].
 \]
 
 这是 $\Phi(c - \theta)$ 的 MVUE。
@@ -638,7 +638,7 @@ f(x; \theta_1, \theta_2) = \exp\left[-\frac{1}{2\theta_2}x^2 + \frac{\theta_1}{\
 取 $K_1(x) = x^2$，$K_2(x) = x$，则联合充分统计量为 $(\sum X_i^2, \sum X_i)$，与之前的结论一致。
 \end{example}
 
-\textbf{多参数情况下的 MVUE}：设 $\delta = g(\boldsymbol{\theta})$ 是感兴趣的参数函数。若 $\mathbf{Y}$ 是联合完备充分统计量，则 $E[\delta \mid \mathbf{Y}]$ 是 $\delta$ 的 MVUE。
+\textbf{多参数情况下的 MVUE}：设 $\delta = g(\boldsymbol{\theta})$ 是感兴趣的参数函数。若 $\mathbf{Y}$ 是联合完备充分统计量，则 $\mathbb{E}[\delta \mid \mathbf{Y}]$ 是 $\delta$ 的 MVUE。
 
 \subsection*{本节小结}
 
@@ -895,7 +895,7 @@ If $az^{2} + bz + c = 0$ for more than two values of $z$, then $a = b = c = 0$. 
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.4.2} Non-Complete Families – Hogg 7.4.2}\label{exr:7.4.2}
-Show that each of the following families is not complete by finding at least one nonzero function $u(x)$ such that $E[u(X)] = 0$ , for all $\theta > 0$ .
+Show that each of the following families is not complete by finding at least one nonzero function $u(x)$ such that $\mathbb{E}[u(X)] = 0$ , for all $\theta > 0$ .
 
 (a) $f(x; \theta) = \frac{1}{2\theta}$ for $-\theta < x < \theta$ , zero elsewhere, where $0 < \theta < \infty$
 
@@ -915,11 +915,11 @@ Consider the family of probability density functions $\{h(z;\theta):\theta \in \
 
 (a) Show that the family is complete provided that $\Omega = \{\theta : 0 < \theta < \infty\}$ .
 
-Hint: For convenience, assume that $u(z)$ is continuous and note that the derivative of $E[u(Z)]$ with respect to $\theta$ is equal to zero also.
+Hint: For convenience, assume that $u(z)$ is continuous and note that the derivative of $\mathbb{E}[u(Z)]$ with respect to $\theta$ is equal to zero also.
 
 (b) Show that this family is not complete if $\Omega = \{\theta : 1 < \theta < \infty\}$ .
 
-Hint: Concentrate on the interval $0 < z < 1$ and find a nonzero function $u(z)$ on that interval such that $E[u(Z)] = 0$ for all $\theta > 1$ .
+Hint: Concentrate on the interval $0 < z < 1$ and find a nonzero function $u(z)$ on that interval such that $\mathbb{E}[u(Z)] = 0$ for all $\theta > 1$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.4.5} Complete Sufficient Statistic for Shifted Exponential – Hogg 7.4.5}\label{exr:7.4.5}
@@ -997,13 +997,13 @@ Let $X_1, X_2, \ldots, X_n$ denote a random sample of size $n$ from a distributi
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.4} Conditional Expectation for Gamma Mean – Hogg 7.5.4}\label{exr:7.5.4}
-Let $\overline{X}$ denote the mean of the random sample $X_{1}, X_{2}, \ldots, X_{n}$ from a gamma-type distribution with parameters $\alpha > 0$ and $\beta = \theta > 0$ . Compute $E[X_1|\overline{x}]$ .
+Let $\overline{X}$ denote the mean of the random sample $X_{1}, X_{2}, \ldots, X_{n}$ from a gamma-type distribution with parameters $\alpha > 0$ and $\beta = \theta > 0$ . Compute $\mathbb{E}[X_1|\overline{x}]$ .
 
-Hint: Can you find directly a function $\psi(\overline{X})$ of $\overline{X}$ such that $E[\psi(\overline{X})] = \theta$ ? Is $E(X_1|\overline{x}) = \psi(\overline{x})$ ? Why?
+Hint: Can you find directly a function $\psi(\overline{X})$ of $\overline{X}$ such that $\mathbb{E}[\psi(\overline{X})] = \theta$ ? Is $E(X_1|\overline{x}) = \psi(\overline{x})$ ? Why?
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.5} Mean and Variance of Exponential Class – Hogg 7.5.5}\label{exr:7.5.5}
-Let $X$ be a random variable with the pdf of a regular case of the exponential class, given by $f(x; \theta) = \exp[\theta K(x) + H(x) + q(\theta)]$ , $a < x < b$ , $\gamma < \theta < \delta$ . Show that $E[K(X)] = -q'(\theta) / p'(\theta)$ , provided these derivatives exist, by differentiating both members of the equality
+Let $X$ be a random variable with the pdf of a regular case of the exponential class, given by $f(x; \theta) = \exp[\theta K(x) + H(x) + q(\theta)]$ , $a < x < b$ , $\gamma < \theta < \delta$ . Show that $\mathbb{E}[K(X)] = -q'(\theta) / p'(\theta)$ , provided these derivatives exist, by differentiating both members of the equality
 \[
 \int_a^b \exp[p(\theta)K(x) + H(x) + q(\theta)] dx = 1
 \]
@@ -1015,7 +1015,7 @@ Given that $f(x; \theta) = \exp[\theta K(x) + H(x) + q(\theta)]$ , $a < x < b$ ,
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.7} Normal from Exponential Class – Hogg 7.5.7}\label{exr:7.5.7}
-In the preceding exercise, given that $E(Y) = E[K(X)] = \theta$ , prove that $Y$ is $N(\theta, 1)$ .
+In the preceding exercise, given that $E(Y) = \mathbb{E}[K(X)] = \theta$ , prove that $Y$ is $N(\theta, 1)$ .
 
 Hint: Consider $M'(0) = \theta$ and solve the resulting differential equation.
 \end{exercise}
@@ -1093,7 +1093,7 @@ Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a Poisson distribution
 
 (a) Find the MVUE of $P(X\leq 1) = (1 + \theta)e^{-\theta}$
 
-Hint: Let $u(x_{1}) = 1$ , $x_{1} \leq 1$ , zero elsewhere, and find $E[u(X_1)|Y = y]$ where $Y = \sum_{1}^{n}X_{i}$ .
+Hint: Let $u(x_{1}) = 1$ , $x_{1} \leq 1$ , zero elsewhere, and find $\mathbb{E}[u(X_1)|Y = y]$ where $Y = \sum_{1}^{n}X_{i}$ .
 
 (b) Express the MVUE as a function of the mle of $\theta$
 
@@ -1103,9 +1103,9 @@ Hint: Let $u(x_{1}) = 1$ , $x_{1} \leq 1$ , zero elsewhere, and find $E[u(X_1)|Y
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.6.7} Poisson Conditional Expectation with $(-1)^{X_{1}}$ – Hogg 7.6.7}\label{exr:7.6.7}
-Let $X_{1}, X_{2}, \ldots, X_{n}$ denote a random sample from a Poisson distribution with parameter $\theta > 0$ . From Remark 7.6.1, we know that $E[(-1)^{X_1}] = e^{-2\theta}$ .
+Let $X_{1}, X_{2}, \ldots, X_{n}$ denote a random sample from a Poisson distribution with parameter $\theta > 0$ . From Remark 7.6.1, we know that $\mathbb{E}[(-1)^{X_1}] = e^{-2\theta}$ .
 
-(a) Show that $E[(-1)^{X_1}|Y_1 = y_1] = (1 - 2/n)^{y_1}$ , where $Y_1 = X_1 + X_2 + \dots + X_n$ . Hint: First show that the conditional pdf of $X_1, X_2, \ldots, X_{n-1}$ , given $Y_1 = y_1$ , is multinomial, and hence that of $X_1$ , given $Y_1 = y_1$ , is $b(y_1, 1/n)$ .
+(a) Show that $\mathbb{E}[(-1)^{X_1}|Y_1 = y_1] = (1 - 2/n)^{y_1}$ , where $Y_1 = X_1 + X_2 + \dots + X_n$ . Hint: First show that the conditional pdf of $X_1, X_2, \ldots, X_{n-1}$ , given $Y_1 = y_1$ , is multinomial, and hence that of $X_1$ , given $Y_1 = y_1$ , is $b(y_1, 1/n)$ .
 
 (b) Show that the mle of $e^{-2\theta}$ is $e^{-2\overline{X}}$
 
@@ -1230,7 +1230,7 @@ where $\theta_{1} > 0$ and $\theta_{2} > 0$ , is often used to model lifetimes. 
 \begin{exercise}{\ref{exr:7.7.11} MVUE of $3\theta_{2}^{2}$ for Normal – Hogg 7.7.11}\label{exr:7.7.11}
 Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a $N(\theta_{1}, \theta_{2})$ distribution.
 
-(a) Show that $E[(X_1 - \theta_1)^4] = 3\theta_2^2$ .
+(a) Show that $\mathbb{E}[(X_1 - \theta_1)^4] = 3\theta_2^2$ .
 
 (b) Find the MVUE of $3\theta_2^2$
 \end{exercise}
