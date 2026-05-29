@@ -303,7 +303,7 @@ f(x; \theta) = \theta e^{-\theta x},\quad x > 0,\quad \theta > 0
 
 MLE 为 $Y_2 = 1/\overline{X} = n/Y_1$。由于 MLE 渐近无偏，我们计算其期望。$Y_1 \sim \Gamma(n, 1/\theta)$，因此
 \[
-E(Y_2) = n \cdot E(1/Y_1) = n \int_0^\infty \frac{\theta^n}{n!} t^{-1} t^{n-1} e^{-\theta t} dt = \frac{n}{n-1}\theta,\quad n > 1.
+\mathbb{E}(Y_2) = n \cdot \mathbb{E}(1/Y_1) = n \int_0^\infty \frac{\theta^n}{n!} t^{-1} t^{n-1} e^{-\theta t} dt = \frac{n}{n-1}\theta,\quad n > 1.
 \]
 
 故 $(n-1)/n \cdot Y_2 = (n-1)/Y_1$ 是 $\theta$ 的无偏估计量，且是充分统计量的函数，因此是 MVUE。
@@ -476,7 +476,7 @@ f(x; \theta) = e^{-\theta} \frac{\theta^x}{x!} = \exp[(\log\theta)x - \theta - \
 f_{Y_1}(y_1; \theta) = R(y_1) \exp[p(\theta)y_1 + nq(\theta)],\quad y_1 \in \mathcal{S}_{Y_1},
 \]
 其中 $\mathcal{S}_{Y_1}$ 和 $R(y_1)$ 不依赖于 $\theta$
-\item $E(Y_1) = -n \frac{q'(\theta)}{p'(\theta)}$
+\item $\mathbb{E}(Y_1) = -n \frac{q'(\theta)}{p'(\theta)}$
 \item $\text{var}(Y_1) = n \cdot \frac{p''(\theta)q'(\theta) - q''(\theta)p'(\theta)}{[p'(\theta)]^3}$
 \end{enumerate}
 \end{theorem}
@@ -500,7 +500,7 @@ f(x; \theta) = \exp\left[\frac{\theta}{\sigma^2}x - \frac{x^2}{2\sigma^2} - \log
 
 故 $p(\theta) = \theta/\sigma^2$，$K(x) = x$，$q(\theta) = -\frac{\theta^2}{2\sigma^2}$。$Y_1 = \sum X_i = n\overline{X}$ 是完备充分统计量。
 
-$E(Y_1) = n\theta$，故 $\varphi(Y_1) = Y_1/n = \overline{X}$ 是 $\theta$ 的唯一 MVUE。
+$\mathbb{E}(Y_1) = n\theta$，故 $\varphi(Y_1) = Y_1/n = \overline{X}$ 是 $\theta$ 的唯一 MVUE。
 \end{example}
 
 \textbf{指数族的战略价值}：对于指数族，完备充分统计量可以通过观察直接写出，MVUE 也容易通过期望计算得到。
@@ -537,12 +537,12 @@ MLE 为 $\tilde{\delta} = (Y/n)(1 - Y/n)$。计算期望：
 
 \subsection{技术二：条件期望法}
 
-若 $Z$ 是 $\theta$ 的无偏估计量，则 $\varphi(Y_1) = E(Z \mid Y_1)$ 是 MVUE。
+若 $Z$ 是 $\theta$ 的无偏估计量，则 $\varphi(Y_1) = \mathbb{E}(Z \mid Y_1)$ 是 MVUE。
 
 \begin{example}[正态分布累积概率的 MVUE]\label{ex:normal-cdf-mvue}
 设 $X_1, \ldots, X_n \sim N(\theta, 1)$。欲估计 $P(X \leq c) = \Phi(c - \theta)$。
 
-取 $Z = I(X_1 \leq c)$，则 $E(Z) = \Phi(c - \theta)$，是无偏的。
+取 $Z = I(X_1 \leq c)$，则 $\mathbb{E}(Z) = \Phi(c - \theta)$，是无偏的。
 
 $(X_1, \overline{X})$ 的联合分布是二元正态，条件分布 $X_1 \mid \overline{X} = \overline{x}$ 是正态，均值为 $\overline{x}$，方差为 $(n-1)/n$。
 
@@ -867,11 +867,11 @@ In each of Exercises 7.2.1-7.2.4, show that the mle of $\theta$ is a function of
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.3.2} Rao-Blackwell for Uniform Order Statistics – Hogg 7.3.2}\label{exr:7.3.2}
-Let $Y_{1} < Y_{2} < Y_{3} < Y_{4} < Y_{5}$ be the order statistics of a random sample of size 5 from the uniform distribution having pdf $f(x; \theta) = 1 / \theta$ , $0 < x < \theta$ , $0 < \theta < \infty$ , zero elsewhere. Show that $2Y_{3}$ is an unbiased estimator of $\theta$ . Determine the joint pdf of $Y_{3}$ and the sufficient statistic $Y_{5}$ for $\theta$ . Find the conditional expectation $E(2Y_{3}|y_{5}) = \varphi(y_{5})$ . Compare the variances of $2Y_{3}$ and $\varphi(Y_{5})$ .
+Let $Y_{1} < Y_{2} < Y_{3} < Y_{4} < Y_{5}$ be the order statistics of a random sample of size 5 from the uniform distribution having pdf $f(x; \theta) = 1 / \theta$ , $0 < x < \theta$ , $0 < \theta < \infty$ , zero elsewhere. Show that $2Y_{3}$ is an unbiased estimator of $\theta$ . Determine the joint pdf of $Y_{3}$ and the sufficient statistic $Y_{5}$ for $\theta$ . Find the conditional expectation $\mathbb{E}(2Y_{3}|y_{5}) = \varphi(y_{5})$ . Compare the variances of $2Y_{3}$ and $\varphi(Y_{5})$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.3.3} Rao-Blackwell for Exponential Distribution – Hogg 7.3.3}\label{exr:7.3.3}
-If $X_{1}, X_{2}$ is a random sample of size 2 from a distribution having pdf $f(x; \theta) = (1/\theta)e^{-x/\theta}$, $0 < x < \infty$, $0 < \theta < \infty$, zero elsewhere, find the joint pdf of the sufficient statistic $Y_{1} = X_{1} + X_{2}$ for $\theta$ and $Y_{2} = X_{2}$. Show that $Y_{2}$ is an unbiased estimator of $\theta$ with variance $\theta^{2}$. Find $E(Y_{2} \mid y_{1}) = \varphi(y_{1})$ and the variance of $\varphi(Y_{1})$.
+If $X_{1}, X_{2}$ is a random sample of size 2 from a distribution having pdf $f(x; \theta) = (1/\theta)e^{-x/\theta}$, $0 < x < \infty$, $0 < \theta < \infty$, zero elsewhere, find the joint pdf of the sufficient statistic $Y_{1} = X_{1} + X_{2}$ for $\theta$ and $Y_{2} = X_{2}$. Show that $Y_{2}$ is an unbiased estimator of $\theta$ with variance $\theta^{2}$. Find $\mathbb{E}(Y_{2} \mid y_{1}) = \varphi(y_{1})$ and the variance of $\varphi(Y_{1})$.
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.3.4} Joint Distribution and Conditional Expectation – Hogg 7.3.4}\label{exr:7.3.4}
@@ -879,7 +879,7 @@ Let $f(x,y) = (2 / \theta^2)e^{-(x + y) / \theta}$ , $0 < x < y < \infty$ , zero
 
 (a) Show that the mean and the variance of $Y$ are, respectively, $3\theta / 2$ and $5\theta^{2} / 4$ .
 
-(b) Show that $E(Y|x) = x + \theta$ . In accordance with the theory, the expected value of $X + \theta$ is that of $Y$ , namely, $3\theta / 2$ , and the variance of $X + \theta$ is less than that of $Y$ . Show that the variance of $X + \theta$ is in fact $\theta^2 / 4$ .
+(b) Show that $\mathbb{E}(Y|x) = x + \theta$ . In accordance with the theory, the expected value of $X + \theta$ is that of $Y$ , namely, $3\theta / 2$ , and the variance of $X + \theta$ is less than that of $Y$ . Show that the variance of $X + \theta$ is in fact $\theta^2 / 4$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.3.5} Unbiased Estimators via Sufficient Statistics – Hogg 7.3.5}\label{exr:7.3.5}
@@ -887,7 +887,7 @@ In each of Exercises 7.2.1-7.2.3, compute the expected value of the given suffic
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.3.6} Conditional Expectation for Poisson – Hogg 7.3.6}\label{exr:7.3.6}
-Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a Poisson distribution with mean $\theta$ . Find the conditional expectation $E(X_{1} + 2X_{2} + 3X_{3} \mid \sum_{1}^{n} X_{i})$ .
+Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a Poisson distribution with mean $\theta$ . Find the conditional expectation $\mathbb{E}(X_{1} + 2X_{2} + 3X_{3} \mid \sum_{1}^{n} X_{i})$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.4.1} Completeness of Binomial Family – Hogg 7.4.1}\label{exr:7.4.1}
@@ -999,7 +999,7 @@ Let $X_1, X_2, \ldots, X_n$ denote a random sample of size $n$ from a distributi
 \begin{exercise}{\ref{exr:7.5.4} Conditional Expectation for Gamma Mean – Hogg 7.5.4}\label{exr:7.5.4}
 Let $\overline{X}$ denote the mean of the random sample $X_{1}, X_{2}, \ldots, X_{n}$ from a gamma-type distribution with parameters $\alpha > 0$ and $\beta = \theta > 0$ . Compute $\mathbb{E}[X_1|\overline{x}]$ .
 
-Hint: Can you find directly a function $\psi(\overline{X})$ of $\overline{X}$ such that $\mathbb{E}[\psi(\overline{X})] = \theta$ ? Is $E(X_1|\overline{x}) = \psi(\overline{x})$ ? Why?
+Hint: Can you find directly a function $\psi(\overline{X})$ of $\overline{X}$ such that $\mathbb{E}[\psi(\overline{X})] = \theta$ ? Is $\mathbb{E}(X_1|\overline{x}) = \psi(\overline{x})$ ? Why?
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.5} Mean and Variance of Exponential Class – Hogg 7.5.5}\label{exr:7.5.5}
@@ -1015,7 +1015,7 @@ Given that $f(x; \theta) = \exp[\theta K(x) + H(x) + q(\theta)]$ , $a < x < b$ ,
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.7} Normal from Exponential Class – Hogg 7.5.7}\label{exr:7.5.7}
-In the preceding exercise, given that $E(Y) = \mathbb{E}[K(X)] = \theta$ , prove that $Y$ is $N(\theta, 1)$ .
+In the preceding exercise, given that $\mathbb{E}(Y) = \mathbb{E}[K(X)] = \theta$ , prove that $Y$ is $N(\theta, 1)$ .
 
 Hint: Consider $M'(0) = \theta$ and solve the resulting differential equation.
 \end{exercise}
@@ -1027,7 +1027,7 @@ Hint: Let $Y_{2} = X_{2}, \ldots, Y_{n} = X_{n}$ be $n - 1$ auxiliary random var
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.9} Conditional Expectation of Median given Mean – Hogg 7.5.9}\label{exr:7.5.9}
-Let $Y$ denote the median and let $\overline{X}$ denote the mean of a random sample of size $n = 2k + 1$ from a distribution that is $N(\mu, \sigma^2)$ . Compute $E(Y|\overline{X} = \overline{x})$ .
+Let $Y$ denote the median and let $\overline{X}$ denote the mean of a random sample of size $n = 2k + 1$ from a distribution that is $N(\mu, \sigma^2)$ . Compute $\mathbb{E}(Y|\overline{X} = \overline{x})$ .
 
 Hint: See Exercise 7.5.4.
 \end{exercise}
@@ -1037,7 +1037,7 @@ Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with pdf $f(x
 
 (a) Argue that $Y = \sum_{1}^{n} X_{i}$ is a complete sufficient statistic for $\theta$ .
 
-(b) Compute $E(1 / Y)$ and find the function of $Y$ that is the unique MVUE of $\theta$ .
+(b) Compute $\mathbb{E}(1 / Y)$ and find the function of $Y$ that is the unique MVUE of $\theta$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.11} Binomial MVUE via Rao-Blackwell – Hogg 7.5.11}\label{exr:7.5.11}
@@ -1047,9 +1047,9 @@ Let $X_{1}, X_{2}, \ldots, X_{n}$ , $n > 2$ , be a random sample from the binomi
 
 (b) Find the function $\varphi(Y_1)$ that is the MVUE of $\theta$ .
 
-(c) Let $Y_{2} = (X_{1} + X_{2}) / 2$ and compute $E(Y_{2})$ .
+(c) Let $Y_{2} = (X_{1} + X_{2}) / 2$ and compute $\mathbb{E}(Y_{2})$ .
 
-(d) Determine $E(Y_{2}|Y_{1} = y_{1})$ .
+(d) Determine $\mathbb{E}(Y_{2}|Y_{1} = y_{1})$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.5.12} Zero-Truncated Geometric MVUE – Hogg 7.5.12}\label{exr:7.5.12}
@@ -1236,7 +1236,7 @@ Let $X_{1}, X_{2}, \ldots, X_{n}$ be a random sample from a $N(\theta_{1}, \thet
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.7.12} MVUE of Mean for Continuous Distribution – Hogg 7.7.12}\label{exr:7.7.12}
-Let $X_{1},\ldots ,X_{n}$ be a random sample from a distribution of the continuous type with cdf $F(x)$ . Suppose the mean, $\mu = E(X_1)$ , exists. Using Example 7.7.5, show that the sample mean, $\overline{X} = n^{-1}\sum_{i = 1}^{n}X_{i}$ , is the MVUE of $\mu$ .
+Let $X_{1},\ldots ,X_{n}$ be a random sample from a distribution of the continuous type with cdf $F(x)$ . Suppose the mean, $\mu = \mathbb{E}(X_1)$ , exists. Using Example 7.7.5, show that the sample mean, $\overline{X} = n^{-1}\sum_{i = 1}^{n}X_{i}$ , is the MVUE of $\mu$ .
 \end{exercise}
 
 \begin{exercise}{\ref{exr:7.7.13} MVUE of CDF at Known Point – Hogg 7.7.13}\label{exr:7.7.13}
