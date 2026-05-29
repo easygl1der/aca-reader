@@ -1129,3 +1129,25 @@ Q_{k-1} = \sum_{i=1}^k \frac{(X_i - np_{i0})^2}{np_{i0}} \xrightarrow{D} \chi^2(
 \]
 
 因此，对于大样本，$Q_{k-1}$ 具有近似卡方分布，自由度为 $k-1$（减去一个约束 $\sum p_i = 1$）。这就是 Karl Pearson 于 1900 年提出的拟合优度 $\chi^2$ 检验的理论基础。$\blacksquare$
+
+\subsection{正态分布均值充分性的推导}\label{sec:appendix-ch7}
+
+\textbf{背景（Background）}：
+在第 7 章中，我们用因子分解定理说明正态模型中样本均值保留了关于均值参数的全部信息。这里给出对应的代数展开。
+
+设 $X_1, \ldots, X_n \sim N(\theta, \sigma^2)$，其中 $\sigma^2$ 已知。联合密度为
+\[
+L(\theta;\mathbf{x}) = (2\pi\sigma^2)^{-n/2}\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\theta)^2\right\}.
+\]
+利用恒等式
+\[
+\sum_{i=1}^n (x_i-\theta)^2
+= \sum_{i=1}^n (x_i-\overline{x})^2 + n(\overline{x}-\theta)^2,
+\]
+可将似然写成
+\[
+L(\theta;\mathbf{x})
+= \underbrace{(2\pi\sigma^2)^{-n/2}\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\overline{x})^2\right\}}_{h(\mathbf{x})}
+\underbrace{\exp\left\{-\frac{n}{2\sigma^2}(\overline{x}-\theta)^2\right\}}_{g(\overline{x},\theta)}.
+\]
+第一项不含 $	heta$，第二项只通过 $\overline{x}$ 依赖样本。因此，由因子分解定理，$\overline{X}$ 是 $\theta$ 的充分统计量。$\blacksquare$
