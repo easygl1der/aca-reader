@@ -81,21 +81,13 @@ L(\theta; \mathbf{x}) = \prod_{i=1}^n f(x_i; \theta), \quad \theta \in \Omega.
 \subsection{经典例子}
 
 \begin{example}[正态分布的 MLE]\label{ex:normal-mle}
-设 $X_1, \ldots, X_n \sim N(\theta, \sigma^2)$，其中 $\sigma^2$ 已知，$\theta$ 未知。对数似然函数为
-
+设 $X_1, \ldots, X_n \sim N(\theta, \sigma^2)$，其中 $\sigma^2$ 已知，$\theta$ 未知。此时最大化似然等价于最小化平方损失
 \[
-l(\theta) = -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n (x_i - \theta)^2.
+\sum_{i=1}^n (x_i-\theta)^2,
 \]
+因此 MLE 为 $\widehat{\theta}=\bar{x}$。
 
-求导并令为零：
-
-\[
-\frac{\partial l(\theta)}{\partial \theta} = \frac{1}{\sigma^2}\sum_{i=1}^n (x_i - \theta) = \frac{n(\bar{x} - \theta)}{\sigma^2} = 0.
-\]
-
-解得 $\widehat{\theta} = \bar{x}$。这是样本均值。
-
-\textbf{意义}：对于正态分布，样本均值不仅是矩估计量，也是最大似然估计量。
+\textbf{意义}：在正态模型中，样本均值同时由两个原则推出：它既匹配一阶矩，也是让观测样本最可能出现的参数值。这说明矩估计与似然估计有时会重合，但这种重合来自模型结构，而不是一般规律。
 \end{example}
 
 \textbf{定理 6.1.2 的 Invariance 性质}：若 $\widehat{\theta}$ 是 $\theta$ 的 MLE，则对任意函数 $g(\theta)$，$g(\widehat{\theta})$ 是 $g(\theta)$ 的 MLE。
