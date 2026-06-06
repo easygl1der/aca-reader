@@ -28,13 +28,13 @@ n^{-1}\sum_{i=1}^{n}Z_{i}Y_{i}=n^{-1}\sum_{i=1}^{n}Z_{i}D_{i}^{\top}\beta \label
 
 TSLS 提供了一个优雅的解决方案。顾名思义，这个方法包含两个阶段：
 
-\begin{definition}[两阶段最小二乘估计量]\label{def:TSLS}
+\begin{Definition}[两阶段最小二乘估计量]\label{def:TSLS}
 定义以 $Z$ 为工具变量、$D$ 的系数 $\beta$ 的 TSLS 估计量如下：
 \begin{enumerate}
 \item[\textbf{第一阶段}] 对 $D$ 关于 $Z$ 做 OLS 回归，得到拟合值 $\hat{D}_i$（$i=1,\ldots,n$）。如果 $D_i$ 是向量，则按分量做 OLS 回归。将拟合值向量组成矩阵 $\hat{D}$，其第 $i$ 行为 $\hat{D}_i^{\top}$；
 \item[\textbf{第二阶段}] 对 $Y$ 关于 $\hat{D}$ 做 OLS 回归，得到系数 $\hat{\beta}_{\mathrm{TSLS}}$。
 \end{enumerate}
-\end{definition}
+\end{Definition}
 
 这个定义的表述方式非常直观，但为了理解其深层原理，我们需要进行一些代数推导。
 
@@ -88,13 +88,13 @@ D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i},
 
 在此特殊情形下，\cref{def:TSLS} 中的 TSLS 估计量简化为：
 
-\begin{definition}[单一内生回归子的 TSLS]\label{def:TSLS-single}
+\begin{Definition}[单一内生回归子的 TSLS]\label{def:TSLS-single}
 基于方程组 \cref{eq:23.7}，TSLS 估计量包含以下两步：
 \begin{enumerate}
 \item[\textbf{第一阶段}] 对 $D$ 关于 $(1, Z, X)$ 做 OLS 回归，得到拟合值 $\hat{D}_i$（$i=1,\ldots,n$）；
 \item[\textbf{第二阶段}] 对 $Y$ 关于 $(1, \hat{D}, X)$ 做 OLS 回归，得到系数 $\hat{\beta}_{\mathrm{TSLS}}$，特别是 $\hat{\beta}_{1,\mathrm{TSLS}}$，即 $\hat{D}$ 的系数。
 \end{enumerate}
-\end{definition}
+\end{Definition}
 
 这个两步程序在经验研究中极为常用，因为它在计算上简洁直观，同时保持了良好的统计性质。
 
@@ -121,12 +121,12 @@ D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i},
 
 有趣的是，ILS 估计量与 TSLS 估计量在数值上完全相同。
 
-\begin{theorem}[TSLS 与 ILS 的等价性]\label{th:TSLS-ILS-equivalence}
+\begin{Theorem}[TSLS 与 ILS 的等价性]\label{th:TSLS-ILS-equivalence}
 在单一内生处理变量和单一工具变量的情形下（方程组 \cref{eq:23.7}），我们有
 \begin{equation}
 \hat{\beta}_{1,\mathrm{ILS}} = \hat{\beta}_{1,\mathrm{TSLS}}. \label{eq:23.11}
 \end{equation}
-\end{theorem}
+\end{Theorem}
 
 这个定理的本质是一个代数恒等式，它说明尽管 TSLS 和 ILS 看起来是不同的估计方法，但它们实际上是同一估计量的不同计算路径。\footnote{定理 \cref{th:TSLS-ILS-equivalence} 的证明详见附录 \cref{sec:appendix-TSLS-ILS-proof}。}
 

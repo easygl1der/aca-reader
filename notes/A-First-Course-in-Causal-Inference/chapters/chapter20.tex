@@ -2,22 +2,22 @@
 % A First Course in Causal Inference - Peng Ding
 % Rewrite V1 - Stein Narrative Style
 
-\chapter{平行世界框架}\label{ch:20}
+\chapter{重叠性、外推风险与回归断点}\label{ch:20}
 
 \section{引言：跨越两个世界的桥梁}\label{sec:20-intro}
 
 \textit{``If we could intervene on a unit and set its treatment, then we would know its potential outcome under that treatment. But what if the treatment is deterministic for some units? Can we still conceive their counterfactual outcomes?''}
---- \citep[adapted from King and Zeng, 2006]{}
+--- adapted from King and Zeng (2006)
 
-在因果推断中，我们始终面对一个根本性的哲学困难：对于每个单元，我们只能观测到**一个**世界的结果，而必须推断**另一个**世界的结果。Rubin 的潜在结果框架（Rubin, 1974, 1975）用数学语言精确化了这个直观的"平行世界"隐喻。
+在因果推断中，我们始终面对一个根本性的哲学困难：对于每个单元，我们只能观测到\textbf{一个}世界的结果，而必须推断\textbf{另一个}世界的结果。Rubin 的潜在结果框架（Rubin, 1974, 1975）用数学语言精确化了这个直观的"平行世界"隐喻。
 
 在第 \ref{ch:11} 章讨论倾向得分时，我们遇到了一个关键的技术性假设——\textbf{重叠假设（overlap assumption）}：
 
-\[
+\begin{equation}
 0 < e(X) < 1 .
 \tag{20.1}
 \label{eq:overlap-assumption}
-\]
+\end{equation}
 
 这个假设保证每个单元都有正概率接受两种治疗，从而允许我们比较同一单元在不同治疗下的潜在结果。然而，当 $e(X) = 0$ 或 $e(X) = 1$ 时，事情变得微妙起来：如果一个单元注定接受治疗，那么谈论它在"如果没接受治疗"情况下的潜在结果还有意义吗？
 
@@ -45,12 +45,12 @@ D'Amour 等人（2021）证明了严格重叠假设在协变量维度 $p$ 很大
 
 \begin{Theorem}[D'Amour et al., 2021]\label{th:20-overlap-implication}
 在 \cref{ass:strict-overlap} 下，设 $e = \pr(Z=1)$ 为治疗组比例，$\lambda_1$ 和 $\lambda_0$ 分别为 $X|Z=1$ 和 $X|Z=0$ 条件下协变量矩阵的最大特征值。则
-\[
+\begin{equation}
 \frac{1}{p} \sum_{k=1}^{p} \bigl| \mathbb{E}(X_k \mid Z=1) - \mathbb{E}(X_k \mid Z=0) \bigr|
 \leq p^{-1/2} C^{1/2} \bigl\{ e \lambda_1^{1/2} + (1-e) \lambda_0^{1/2} \bigr\},
 \tag{20.2}
 \label{eq:overlap-theorem}
-\]
+\end{equation}
 其中 $C = \dfrac{(e-\eta)(1-e-\eta)}{e^2(1-e)^2\eta(1-\eta)}$ 是仅依赖于 $(e,\eta)$ 的正常数。
 \end{Theorem}
 
@@ -64,11 +64,11 @@ D'Amour 等人（2021）证明了严格重叠假设在协变量维度 $p$ 很大
 
 另一个思路是转向\textbf{结果建模}。如果在高清协变量下，结果均值仅依赖于 $X$ 的某个低维函数 $r(X)$：
 
-\[
+\begin{equation}
 \mathbb{E}\{Y(z) \mid X\} = f_z(r(X)), \quad (z=0,1),
 \tag{20.3}
 \label{eq:outcome-modeling}
-\]
+\end{equation}
 
 那么控制 $r(X)$ 就足够了。由于维度约化，$r(X)$ 上的严格重叠条件可能远弱于 $X$ 上的。\footnote{详细理论见附录 \cref{sec:appendix-20-outcome-modeling}}
 
@@ -78,25 +78,25 @@ D'Amour 等人（2021）证明了严格重叠假设在协变量维度 $p$ 很大
 
 让我们从最简单的情况开始——单位协变量 $X$。一种极端的治疗分配机制是确定性的：
 
-\[
+\begin{equation}
 Z = \mathbb{I}(X \geq x_0),
 \tag{20.4}
 \label{eq:rd-treatment-rule}
-\]
+\end{equation}
 
 其中 $x_0$ 是预设的阈值。
 
 这种分配的一个有趣后果是：可忽略性假设自动成立——
 
-\[
+\begin{equation}
 Z \perp \{Y(1), Y(0)\} \mid X ,
 \tag{20.5}
 \label{eq:rd-ignorability}
-\]
+\end{equation}
 
 因为 $Z$ 是 $X$ 的确定性函数，而常数与任何随机变量独立。然而，重叠假设必然被违反：
 
-\[
+\begin{equation}
 e(x) = \pr(Z=1 \mid X=x) = \mathbb{I}(x \geq x_0) =
 \begin{cases}
 1 & \text{若 } x \geq x_0, \\
@@ -104,7 +104,7 @@ e(x) = \pr(Z=1 \mid X=x) = \mathbb{I}(x \geq x_0) =
 \end{cases}
 \tag{20.6}
 \label{eq:rd-propensity}
-\]
+\end{equation}
 
 这正是\textbf{回归断点设计（RD）}的核心思想。
 
@@ -133,19 +133,19 @@ e(x) = \pr(Z=1 \mid X=x) = \mathbb{I}(x \geq x_0) =
 
 决定治疗的变量 $X$ 称为\textbf{运行变量（running variable）}。直观上，回归断点可以识别断点 $x_0$ 处的局部平均因果效应：
 
-\[
+\begin{equation}
 \tau(x_0) = \mathbb{E}\{Y(1) - Y(0) \mid X = x_0\}.
 \tag{20.7}
 \label{eq:rd-local-ace}
-\]
+\end{equation}
 
 \begin{Theorem}[RD 识别定理]\label{th:20-rd-identification}
 假设治疗由 $Z = \mathbb{I}(X \geq x_0)$ 确定，其中 $x_0$ 是预设阈值。假设 $\mathbb{E}\{Y(1) \mid X=x\}$ 在 $x_0$ 处右连续，$\mathbb{E}\{Y(0) \mid X=x\}$ 在 $x_0$ 处左连续。则在 $X=x_0$ 处的局部平均因果效应由下式识别：
-\[
+\begin{equation}
 \tau(x_0) = \lim_{\varepsilon \to 0^+} \mathbb{E}(Y \mid Z=1, X=x_0+\varepsilon) - \lim_{\varepsilon \to 0^+} \mathbb{E}(Y \mid Z=0, X=x_0-\varepsilon).
 \tag{20.8}
 \label{eq:rd-identification}
-\]
+\end{equation}
 \end{Theorem}
 
 由于 \cref{eq:rd-identification} 的右端仅涉及可观测量，参数 $\tau(x_0)$ 是非参数可识别的。\footnote{证明见附录 \cref{sec:appendix-20-rd-proof}}
@@ -154,19 +154,19 @@ e(x) = \pr(Z=1 \mid X=x) = \mathbb{I}(x \geq x_0) =
 
 假设 $\mathbb{E}(Y \mid Z=1, X=x) = \gamma_1 + \beta_1 x$ 和 $\mathbb{E}(Y \mid Z=0, X=x) = \gamma_0 + \beta_0 x$ 关于 $x$ 线性。则我们可以估计 $x_0$ 处的平均因果效应为
 
-\[
+\begin{equation}
 \hat{\tau}(x_0) = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0) x_0 .
 \tag{20.9}
 \label{eq:rd-ols-estimator}
-\]
+\end{equation}
 
 数值上，$\hat{\tau}(x_0)$ 与 OLS 回归
 
-\[
+\begin{equation}
 Y_i \sim \{1, Z_i, X_i - x_0, Z_i(X_i - x_0)\}
 \tag{20.10}
 \label{eq:rd-ols-model}
-\]
+\end{equation}
 
 中 $Z_i$ 的系数相同。\footnote{代数推导见附录 \cref{sec:appendix-20-ols-equivalence}}
 
@@ -233,20 +233,20 @@ RD 设计的核心洞察在于：当确定性治疗分配使得某些单元的�
 
 设 $\Sigma_1 = \cov(X \mid Z=1)$ 和 $\Sigma_0 = \cov(X \mid Z=0)$。根据条件协方差的分解，
 
-\[
+\begin{equation}
 \Sigma = \mathbb{E}\{\cov(X \mid Z)\} + \cov\{\mathbb{E}(X \mid Z)\}.
 \tag{20.11}
 \label{eq:cov-decomposition}
-\]
+\end{equation}
 
 在严格重叠假设下，$\Sigma_1$ 和 $\Sigma_0$ 的特征值以 $C$ 为界。利用 Cauchy-Schwarz 不等式和对偶范数，我们得到
 
-\[
+\begin{equation}
 \frac{1}{p} \sum_{k=1}^p |\mathbb{E}(X_k \mid Z=1) - \mathbb{E}(X_k \mid Z=0)|
 \leq \frac{1}{\sqrt{p}} \|\Sigma^{1/2}\| \cdot \|d\|,
 \tag{20.12}
 \label{eq:overlap-proof-step}
-\]
+\end{equation}
 
 其中 $d = \mathbb{E}(X \mid Z=1) - \mathbb{E}(X \mid Z=0)$ 是均值差异向量，$\|\cdot\|$ 是欧几里得范数。结合 \cref{eq:cov-decomposition} 和严格重叠给出的特征值界，我们得到 \cref{eq:overlap-theorem}。\qed
 
@@ -254,19 +254,19 @@ RD 设计的核心洞察在于：当确定性治疗分配使得某些单元的�
 
 在 \cref{eq:outcome-modeling} 下，均衡因果效应 $\tau = \mathbb{E}\{Y(1) - Y(0)\}$ 可由下式识别：
 
-\[
+\begin{equation}
 \tau = \mathbb{E}\bigl\{ \mathbb{E}(Y \mid Z=1, r(X)) - \mathbb{E}(Y \mid Z=0, r(X)) \bigr\}
 \tag{20.13}
 \label{eq:outcome-modeling-formula}
-\]
+\end{equation}
 
 或等价地，
 
-\[
+\begin{equation}
 \tau = \mathbb{E}\left\{ \frac{ZY}{e(r(X))} \right\} - \mathbb{E}\left\{ \frac{(1-Z)Y}{1-e(r(X))} \right\},
 \tag{20.14}
 \label{eq:outcome-modeling-ipw}
-\]
+\end{equation}
 
 其中 $e(r(X)) = \pr\{Z=1 \mid r(X)\}$。\footnote{证明思路：利用 $r(X)$ 上的条件期望和潜在结果的定义，直接展开即可。}
 
@@ -274,21 +274,19 @@ RD 设计的核心洞察在于：当确定性治疗分配使得某些单元的�
 
 由右连续性，
 
-\[
+\begin{equation}
 \mathbb{E}\{Y(1) \mid X=x_0\} = \lim_{\varepsilon \to 0^+} \mathbb{E}\{Y(1) \mid X=x_0+\varepsilon\}.
 \tag{20.15}
 \label{eq:rd-proof-right}
-
-\]
+\end{equation}
 
 由 $Z$ 的定义，当 $X=x_0+\varepsilon$ 时，$Z=1$，因此
 
-\[
+\begin{equation}
 \mathbb{E}\{Y(1) \mid X=x_0+\varepsilon\} = \mathbb{E}(Y \mid Z=1, X=x_0+\varepsilon).
 \tag{20.16}
 \label{eq:rd-proof-z}
-
-\]
+\end{equation}
 
 左连续性给出 $\mathbb{E}\{Y(0) \mid X=x_0\}$ 的类似表达式。取差即得 \cref{eq:rd-identification}。\qed
 
@@ -296,21 +294,19 @@ RD 设计的核心洞察在于：当确定性治疗分配使得某些单元的�
 
 设 $R_i = \max(X_i - x_0, 0)$ 和 $L_i = \min(X_i - x_0, 0)$。则
 
-\[
+\begin{equation}
 Z_i(X_i - x_0) = Z_i R_i - (1-Z_i)L_i = R_i - L_i - (1-Z_i)R_i + (1-Z_i)L_i .
 \tag{20.17}
 \label{eq:rd-ols-expand}
-
-\]
+\end{equation}
 
 在模型 $Y_i \sim \{1, Z_i, X_i-x_0, Z_i(X_i-x_0)\}$ 中，$Z_i$ 的系数为
 
-\[
+\begin{equation}
 \hat{\tau} = (\hat{\gamma}_1 - \hat{\gamma}_0) + (\hat{\beta}_1 - \hat{\beta}_0)x_0 .
 \tag{20.18}
 \label{eq:rd-ols-tau}
-
-\]
+\end{equation}
 
 这与 \cref{eq:rd-ols-estimator} 相同。类似地，对模型 $Y_i \sim \{1, Z_i, R_i, L_i\}$ 展开并比较系数可得相同结果。\qed
 

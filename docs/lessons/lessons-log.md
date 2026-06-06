@@ -176,3 +176,14 @@ The proof follows the strategy of Gao--Xiong \cite[Section 2]{GX2025}\footnote{�
 2. **rewrite 时要 grep 检查** — 搜所有 .tex 文件中是否有对新内容的引用，确保没有遗漏
 3. **commit 前用 `git diff` 确认** — 确认只改了你意图改的文件，没有意外副作用
 4. **qa.tex 应该有独立的 commit** — 不应与其他章节内容混在同一个 commit 里
+
+## 2026-06-06: 项目 Codex 目录统一使用小写 `.codex`
+
+**问题/场景**：用户纠正我把项目规则目录说成 `.Codex/`，实际项目约定应为小写 `.codex/`。
+
+**教训**：本项目内所有 Codex 配置、hooks、rules、agents 路径统一写作 `.codex/`。即使 macOS 上 `.Codex` 和 `.codex` 可能指向同一个目录，也必须在文档和回答中使用小写路径，避免跨平台和心智模型混乱。
+
+**检查清单**：
+- [ ] 回答项目路径时统一写 `.codex/`
+- [ ] 新增规则文件时放入 `.codex/rules/`
+- [ ] 修改索引文档时避免重新引入 `.Codex/`

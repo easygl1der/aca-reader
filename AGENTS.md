@@ -1,9 +1,9 @@
 # AGENTS.md
-> **⚠️ 每次开工必须先读本文件。** 本文件是索引，详细规范在 `.Codex/rules/` 和 `docs/`。
+> **⚠️ 每次开工必须先读本文件。** 本文件是索引，详细规范在 `.codex/rules/` 和 `docs/`。
 
 ## ⚠️ 必须遵守的规则（每次必读）
 
-**PDF 打开**：每次打开 PDF 必须用 Skim — `open -a Skim <file>`；跳转用 `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"` 或 hook `~/.Codex/hooks/skim-jump.sh <line> [tex-file]`
+**PDF 打开**：每次打开 PDF 必须用 Skim — `open -a Skim <file>`；跳转用 `/Applications/Skim.app/Contents/SharedSupport/displayline -r -g <line> "<pdf>" "<tex>"` 或 hook `.codex/hooks/skim-jump.sh <line> [tex-file]`
 
 **读 PDF 的正确方式（绝对规则！）**：永远先查 transcript 目录（`PDFs/<topic>/transcript/<论文名>/`）或 `chapters/` 下的 .tex 文件，**不要直接扫描 PDF**。PDF 只用于用户要我打开查看特定页/图、需要视觉确认、或 transcript 不存在时（用 `pages` 参数限制范围）。
 
@@ -13,25 +13,25 @@
 - ❌ `\bm`（向量用 `\mathbf`，矩阵用 `\boldsymbol`）、`\I`（用 `\mathbb{I}`）、unicode 下标 `$n₁$` → `$n_1$`
 - ✅ **空括号记号**：空的方括号写成 `[\cdot]`，空的圆括号写成 `(\cdot)` — 这是用户的符号习惯
 - ❌ Markdown 语法、`\tag{}` 引用公式
-- ✅ 必须 `\label{eq:名称}` + `\cref{eq:名称}`，详细规范见 `.Codex/rules/latex-tex.rules`
+- ✅ 必须 `\label{eq:名称}` + `\cref{eq:名称}`，详细规范见 `.codex/rules/latex-tex.rules`
 
-**Git 大文件禁止**：禁止 git 处理 >50MB 文件、`git lfs` / `filter-repo` / force push，规范见 `.Codex/rules/git-workflow.rules`
+**Git 大文件禁止**：禁止 git 处理 >50MB 文件、`git lfs` / `filter-repo` / force push，规范见 `.codex/rules/git-workflow.rules`
 
 **编译规范**：必须用各目录的 `compile.sh`（xelatex, 3次），禁止直接用 `latexmk` / `xelatex`
 
-**QA 记录（强制！）**：每次用户提问后：1. 口语化回答 → 2. **记录到 `appendix/qa.tex`** → 3. `\subsection{标题}\label{sec:qa-xxx}` + `\footnote{问：...？见附录 \cref{sec:qa-xxx}}` → 4. 重新编译。详细规范见 `.Codex/rules/qa-workflow.rules`
+**QA 记录（强制！）**：每次用户提问后：1. 口语化回答 → 2. **记录到 `appendix/qa.tex`** → 3. `\subsection{标题}\label{sec:qa-xxx}` + `\footnote{问：...？见附录 \cref{sec:qa-xxx}}` → 4. 重新编译。详细规范见 `.codex/rules/qa-workflow.rules`
 
 **引用补充规范（核心习惯！）**：当正文中引用了定理/定义但没有给出具体内容时，必须：查找源文件 → 提取内容 → 以 footnote 形式补充 → 加 `\footnote{详见 \cite[ Theorem X.Y]{key}}`
 
 **数学问题调研**：自动使用 `/gemini-browser-chat` 进行深入调研，同时调研笔记上下文。
 
-**写作任务强制路由**：prompt 含"生成第X章笔记"/"写 chapters/"/"润色 .tex"/"写作任务"时，必须用 `/writing-team` Skill 启动 Agent Team（主笔 + 评审，至少 2 轮互发消息讨论）。禁止单 agent 直接输出。按 `.Codex/writer-round-robin.json` 轮询选择 writer pair。
+**写作任务强制路由**：prompt 含"生成第X章笔记"/"写 chapters/"/"润色 .tex"/"写作任务"时，必须用 `/writing-team` Skill 启动 Agent Team（主笔 + 评审，至少 2 轮互发消息讨论）。禁止单 agent 直接输出。按 `.codex/writer-round-robin.json` 轮询选择 writer pair。
 
 **章节写作一体化**："生成第X章笔记"时 → 知识点笔记 `chapters/chapterX.tex` + 习题 + 推导 `\footnote{推导见附录}`，详见 `docs/exercise-workflow.md`, `docs/stein-writing-style.md`
 
 ## 📚 规范文档索引
 
-### `.Codex/rules/` — 自动加载规则
+### `.codex/rules/` — 自动加载规则
 
 | 文件 | 作用域 | 内容 |
 |------|--------|------|
@@ -51,9 +51,9 @@
 | `docs/progress.md` | 主题进度 |
 | `docs/knowledge-profile.md` | 用户知识画像 |
 | `docs/lessons/` | 教训记录（每次纠正错误后更新） |
-| `.Codex/skills/web-style-learner/SKILL.md` | 网页风格分析 |
-| `.Codex/skills/skim-proofread/SKILL.md` | Skim 跳转校验 |
-| `.Codex/skills/lesson-capture/SKILL.md` | 经验教训主动记录 |
+| `.codex/skills/web-style-learner/SKILL.md` | 网页风格分析 |
+| `.codex/skills/skim-proofread/SKILL.md` | Skim 跳转校验 |
+| `.codex/skills/lesson-capture/SKILL.md` | 经验教训主动记录 |
 
 > **⚠️ 路径别名**：`~/Projects/aca-workflow/notes/Schubert-Polynomials/chapters/chapter5.tex` 是当前活跃章节。
 

@@ -4,6 +4,15 @@
 \documentclass[12pt]{amsbook}
 \usepackage{amsmath, amssymb, amsthm, amsbsy, mathtools}
 \usepackage{xeCJK}
+\setCJKmainfont[
+  Path = fonts/source-han-serif/,
+  UprightFont = *-Regular.otf,
+  BoldFont = *-Bold.otf
+]{SourceHanSerifSC}
+\xeCJKsetup{
+  CJKmath = true,
+  PunctStyle = quanjiao
+}
 \usepackage{microtype}
 \usepackage{hyperref}
 \hypersetup{unicode}
@@ -35,6 +44,9 @@
 \usepackage{capt-of}
 \usepackage{tikz}
 \usetikzlibrary{arrows,positioning}
+\usepackage[all]{xy}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \geometry{margin=1in}
 
 % Theorem styles - 标准定义环境
@@ -52,6 +64,21 @@
 \newtheorem{Result}{结果}[chapter]
 \newtheorem{Assumption}{假设}[chapter]
 \newtheorem*{Proof}{证明}
+\newenvironment{assumption}[1][]{\begin{Assumption}[#1]}{\end{Assumption}}
+\newenvironment{definition}[1][]{\begin{Definition}[#1]}{\end{Definition}}
+\newenvironment{theorem}[1][]{\begin{Theorem}[#1]}{\end{Theorem}}
+\newenvironment{lemma}[1][]{\begin{Lemma}[#1]}{\end{Lemma}}
+\newenvironment{remark}[1][]{\begin{Remark}[#1]}{\end{Remark}}
+\newenvironment{example}[1][]{\begin{Example}[#1]}{\end{Example}}
+
+% Keep legacy drafts compiling while preserving missing-asset warnings in text.
+\newcommand{\safeincludegraphics}[2][]{%
+  \IfFileExists{#2}{\includegraphics[#1]{#2}}{%
+    \fbox{\begin{minipage}{0.86\textwidth}
+      \centering 缺失图片：\texttt{#2}
+    \end{minipage}}%
+  }%
+}
 
 % User annotation command
 \newcommand{\userannotation}[2]{%
@@ -59,6 +86,17 @@
     \textbf{#1:} #2
   \end{Remark}
 }
+\newcommand{\Notes}[1]{%
+  \begin{Remark}
+    \textbf{笔记：} #1
+  \end{Remark}
+}
+\newcommand{\Vanderweele}{VanderWeele}
+\newcommand{\Rudolf}{Rudolph}
+\newcommand{\NDE}{\mathrm{NDE}}
+\newcommand{\NIE}{\mathrm{NIE}}
+\newcommand{\CDE}{\mathrm{CDE}}
+\newcommand{\ATE}{\mathrm{ATE}}
 
 % Independence symbol (standard notation in causal inference)
 \DeclareMathOperator{\Perp}{\mathrel{\perp\!\!\!\perp}}
@@ -101,9 +139,12 @@
 
 % Include chapters
 \include{chapters/chapter0}
-\include{chapters/chapterB}
+
+\part{从关联到因果语言}
 \include{chapters/chapter1}
 \include{chapters/chapter2}
+
+\part{随机实验作为金标准}
 \include{chapters/chapter3}
 \include{chapters/chapter4}
 \include{chapters/chapter5}
@@ -111,24 +152,30 @@
 \include{chapters/chapter7}
 \include{chapters/chapter8}
 \include{chapters/chapter9}
+
+\part{观测研究的四种基本策略}
 \include{chapters/chapter10}
 \include{chapters/chapter11}
 \include{chapters/chapter12}
 \include{chapters/chapter13}
 \include{chapters/chapter14}
 \include{chapters/chapter15}
+
+\part{观测研究的困难与诊断}
 \include{chapters/chapter16}
 \include{chapters/chapter17}
 \include{chapters/chapter18}
 \include{chapters/chapter19}
 \include{chapters/chapter20}
+
+\part{工具变量与局部识别}
 \include{chapters/chapter21}
 \include{chapters/chapter22}
 \include{chapters/chapter23}
 \include{chapters/chapter24}
 \include{chapters/chapter25}
-% chapter 26 moved to appendix/did.tex (Difference-in-Differences, supplementary)
-% The textbook's Chapter 26 is "Principal Stratification" -- see chapters/chapter26.tex
+
+\part{处理后变量、机制与动态处理}
 \include{chapters/chapter26}
 \include{chapters/chapter27}
 \include{chapters/chapter28}
@@ -136,6 +183,11 @@
 
 % Appendix
 \appendix
+\part{附录与补充专题}
+\include{chapters/chapterA}
+\include{chapters/chapterB}
+% TODO: add a Chinese rewrite of the textbook Appendix C:
+% Some Useful Lemmas for Simple Random Sampling From a Finite Population.
 \include{appendix/did}
 \include{appendix/derivations}
 \include{appendix/qa}
