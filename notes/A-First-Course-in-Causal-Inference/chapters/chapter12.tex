@@ -163,185 +163,84 @@ B = E\left\{\frac{Z\{\mu_1(X, \beta_1) - Y\}}{e(X)}\right\},
   \item \textbf{双重脆弱性}：当两个模型都错误时，两个误差的乘积可能放大偏差。
 \end{enumerate}
 
-\section{习题}\label{sec:chapter12-exercises}
+\section{习题}\label{sec:12-homework}
 
-\begin{Exercise}{验证双重稳健性}\label{exr:12-1}
-考虑协变量离散的情况 $X \in \{1, \ldots, K\}$。证明在这种情况下，分层估计量、结果回归估计量、Horvitz-Thompson 估计量、Hajek 估计量和双重稳健估计量在数值上是完全相同的。\citep[参见][ Theorem 12.1]{Ding:2023}
-\end{Exercise}
+\begin{HomeworkProblem}[A sanity check]\label{exr:12-1}
+Consider the case in which the covariate is discrete $X \in \{1, \ldots, K\}$ and the parameter of interest is $\tau$. Without imposing any model assumptions, the estimated propensity score $\hat{e}(X)$ equals $\hat{e}_{[k]} = \hat{\pr}(Z=1\mid X=k) $, the proportion of units receiving the treatment, and the estimated outcome means are the sample means of the outcomes $\hat{\bar{Y}}_{[k]}(1)  = \hat{E}(Y\mid Z=1, X=k) $ and $\hat{\bar{Y}}_{[k]}(0)  = \hat{E}(Y\mid Z=0, X=k) $ under treatment, within stratum $X=k\ (k=1, \ldots, K)$. Show that the stratified estimator, outcome regression estimator, HT estimator, Hajek estimator, and doubly robust estimator are all identical numerically.
 
-\begin{Exercise}{DR 估计量的另一种形式}\label{exr:12-2}
-基于 \cref{eq:12-dr-mu1}，给出 $\mu_1 = E\{Y(1)\}$ 的双重稳健估计量的另一种形式：
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[An alternative form of the doubly robust estimator for $\tau$]\label{exr:12-2}
+
+Motivated by \eqref{eq::explain-ipw-efficiency-basic}, we have an alternative form of the doubly robust estimator for $\mu_1 = E\{ Y(1) \} $:
 \[
-\tilde\mu_1^{\mathrm{dr}2} = \frac{E\left[\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)}\right]}{E\left[\frac{Z}{e(X, \alpha)}\right]} + E\{\mu_1(X, \beta_1)\}.
+\tilde{\mu}_1^\text{dr2} =
+\frac{ E\left[   \frac{Z\{ Y-\mu_1(X,\beta_1) \}}{  e(X,\alpha) } \right] }{E\left[   \frac{Z }{  e(X,\alpha) } \right]}
+ + E\{ \mu_1(X, \beta_1)  \} .
 \]
-证明若 $e(X, \alpha) = e(X)$ 或 $\mu_1(X, \beta_1) = \mu_1(X)$ 之一成立，则 $\tilde\mu_1^{\mathrm{dr}2} = \mu_1$。给出估计 $\mu_0$ 的类似公式，并给出基于这些公式的 $\tau$ 的双重稳健估计量的样本 analog。\citep[参见][式 (12.7)]{Ding:2023}
-\end{Exercise}
+Show that $\tilde{\mu}_1^\text{dr2} = \mu_1$ if either $e(X,\alpha)  = e(X)$ or $\mu_1(X, \beta_1) =  \mu_1(X)$. Give the analogous formula for estimating $\mu_0$. Give the sample analog of the doubly robust estimator for $\tau$ based on these formulas.
 
-\begin{Exercise}{偏差界不等式证明}\label{exr:12-3}
-证明双重稳健估计量的偏差界。假设倾向得分模型和结果模型分别有偏差 $|e(X) - e(X, \alpha)| \leq \delta_e$ 和 $|\mu_1(X) - \mu_1(X, \beta_1)| \leq \delta_\mu$，且 $0 < e(X, \alpha) < 1$。证明：
+Remark:
+This form of doubly robust estimator appeared in \citet{robins2007comment}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[An upper bound of the bias of the doubly robust estimator]\label{exr:12-3}
+
+
+Consider the population version of the doubly robust estimator $\tilde{\mu}_1^\textup{dr} $ for $E\{  Y(1) \} $.
+Show that
 \[
-|\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\}| \leq \frac{\delta_e}{1-\delta_e} \cdot \delta_\mu + \text{higher-order terms}.
+ |   \tilde{\mu}_1^\textup{dr} - E\{  Y(1) \}  |  \leq
+\sqrt{
+E\left[   \frac{ \{  e(X) - e(X,\alpha)\}^2  }{  e(X,\alpha)^2 }  \right] \times
+E\left[  \left\{  \mu_1(X) -  \mu_1(X, \beta_1)   \right\}^2 \right] .
+}
 \]
-讨论这个偏差界对双重稳健估计量设计的启示。
-\end{Exercise}
+Find the analogous upper bound for the bias of $\tilde{\mu}_0^\textup{dr} $ for $E\{  Y(0) \} $.
 
-\begin{Exercise}{LaLonde 数据分析}\label{exr:12-4}
-使用 LaLonde 数据集（\texttt{cps1re74.csv}）比较不同因果推断方法的表现。\footnote{数据来源：\url{https://www.nber.org/programs/projects/ferri/programs-and-data.htm}，或使用 R 包 \texttt{causalweight} 中的 \texttt{LaLonde} 数据集。}
-\begin{enumerate}
-  \item 读取数据并熟悉变量：\texttt{treat}（治疗指示变量）、\texttt{age}、\texttt{education}、\texttt{married}、\texttt{nodegree}、\texttt{re74}、\texttt{re75}、\texttt{re78}（结果变量）；
-  \item 使用倾向得分分层（$K = 5, 10$）估计 ATT，并与已知的实验基准（\$1794）比较；
-  \item 使用双重稳健估计量重新估计 ATT，讨论其表现与倾向得分分层估计量的差异；
-  \item 对倾向得分进行截断（截断水平为 $0.1$ 和 $0.05$），分析截断对估计结果的影响；
-  \item 进行敏感性分析：使用不同的倾向得分模型（logistic 回归 vs. 机器学习模型），讨论结果的变化。
-\end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{Karolinska 教育干预数据分析}\label{exr:12-5}
-使用瑞典教育数据集（\texttt{karolinska.txt}）分析教育年限对收入的因果效应。\footnote{数据来源：斯德哥尔摩大学因果推断课程，数据文件位于课程主页。}
-\begin{enumerate}
-  \item 读取数据并熟悉变量结构：教育年限、性别、父母教育水平、家庭背景等协变量；
-  \item 拟合倾向得分模型，使用逆概率加权估计量估计平均因果效应；
-  \item 使用双重稳健估计量重新估计，比较与 IPW 估计量的差异；
-  \item 检验协变量平衡：报告治疗组和对照组在各协变量上的均值差异，讨论重叠条件是否满足；
-  \item 讨论外推风险：如果某些单元的倾向得分接近 0 或 1，估算由此带来的潜在偏差。
-\end{enumerate}
-\end{Exercise}
+Remark: You may find Section \ref{sec::cauchy-schwarz-inequality} useful for the proof.
 
-% ============================================================
-% Appendix
-% ============================================================
-\newpage
-\section{定理 \cref{th:12-dr} 的证明}\label{sec:appendix-12-dr-proof}
 
-\textbf{背景}：我们需要证明在 ignorability 和 overlap 假设下，双重稳健估计量满足 $\tilde\mu_1^{\mathrm{dr}} = E\{Y(1)\}$ 当且仅当倾向得分模型或结果模型之一正确。
+\end{HomeworkProblem}
 
-\textbf{证明}：这里给出第一部分的证明，第二部分类似。考虑分解：\footnote{详细步骤见原书 \cite[ Theorem 12.1]{Ding:2023}}
-\[
-\begin{aligned}
-\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\}
-&= E\left[\frac{Z\{Y(1) - \mu_1(X, \beta_1)\}}{e(X, \alpha)} - \{Y(1) - \mu_1(X, \beta_1)\}\right] \\
-&= E\left[\frac{Z - e(X, \alpha)}{e(X, \alpha)}\{Y(1) - \mu_1(X, \beta_1)\}\right] \\
-&= E\left(E\left[\frac{Z - e(X, \alpha)}{e(X, \alpha)}\{Y(1) - \mu_1(X, \beta_1)\} \mid X\right]\right) \quad \text{(tower property)} \\
-&= E\left[E\left\{\frac{Z - e(X, \alpha)}{e(X, \alpha)} \mid X\right\} \times E\left\{Y(1) - \mu_1(X, \beta_1) \mid X\right\}\right] \quad \text{(ignorability)} \\
-&= E\left[\frac{e(X) - e(X, \alpha)}{e(X, \alpha)} \times \{\mu_1(X) - \mu_1(X, \beta_1)\}\right].
-\end{aligned}
-\]
-由此可知，上式为零当且仅当 $e(X) = e(X, \alpha)$ 或 $\mu_1(X) = \mu_1(X, \beta_1)$ 之一成立。\qed
+\begin{HomeworkProblem}[Data analysis of Example \ref{eg::job-training-obs}]\label{exr:12-4}
 
-\section{双重稳健估计量的等价形式推导}\label{sec:appendix-12-alt-forms}
 
-\subsection*{\cref{eq:12-dr-reg-aug} 的推导}
+Analyze the dataset \ri{cps1re74.csv} using the methods discussed so far.
 
-从 \cref{def:12-dr} 出发：
-\[
-\hat\tau^{\mathrm{dr}} = \hat\mu_1^{\mathrm{dr}} - \hat\mu_0^{\mathrm{dr}} = \frac{1}{n}\sum_{i=1}^n\left[\mu_1(X_i, \hat\beta_1) - \mu_0(X_i, \hat\beta_0)\right] + \frac{1}{n}\sum_{i=1}^n\left[\frac{Z_i\{Y_i - \mu_1(X_i, \hat\beta_1)\}}{e(X_i, \hat\alpha)} - \frac{(1-Z_i)\{Y_i - \mu_0(X_i, \hat\beta_0)\}}{1-e(X_i, \hat\alpha)}\right].
-\]
-第一项恰好是结果回归估计量 $\hat\tau^{\mathrm{reg}}$，于是得到 \cref{eq:12-dr-reg-aug}。
 
-\subsection*{\cref{eq:12-dr-ipw-aug} 的推导}
 
-利用恒等式
-\[
-\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X, \alpha)} = \frac{ZY}{e(X, \alpha)} - \frac{Z}{e(X, \alpha)}\mu_1(X, \beta_1),
-\]
-以及
-\[
-\frac{(1-Z)\{Y - \mu_0(X, \beta_0)\}}{1-e(X, \alpha)} = \frac{(1-Z)Y}{1-e(X, \alpha)} - \frac{1-Z}{1-e(X, \alpha)}\mu_0(X, \beta_0),
-\]
-代入 \cref{eq:12-dr-reg-aug} 并重新整理项，可得 \cref{eq:12-dr-ipw-aug}。
+\end{HomeworkProblem}
 
-\section{从 IPW 到 DR 的分解}\label{sec:appendix-12-ipw-decomp}
+\begin{HomeworkProblem}[Analyzing a dataset from the Karolinska Institute]\label{exr:12-5}
 
-从分解
-\[
-\mu_1 = E\{Y(1)\} = E\{Y(1) - \mu_1(X, \beta_1)\} + E\{\mu_1(X, \beta_1)\}
-\]
-出发，对第一项应用 IPW 公式（将 $Y(1) - \mu_1(X, \beta_1)$ 视为伪潜在结果）：
-\[
-E\{Y(1) - \mu_1(X, \beta_1)\} = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)}\right\},
-\]
-这在倾向得分模型正确时成立。于是得到
-\[
-\mu_1 = E\left\{\frac{Z\{Y - \mu_1(X, \beta_1)\}}{e(X)}\right\} + E\{\mu_1(X, \beta_1)\}.
-\]
+ \citet{rubin2008objective} used the dataset \texttt{karolinska.txt} to illustrate the ideas of causal inference in observational studies.
+ The dataset has 158 cardia cancer patients diagnosed between 1988 and 1995 in Central and Northern Sweden, 79 diagnosed at large volume hospitals, defined as treating more than ten patients with cardia cancer during that period, and 79 diagnosed at the remaining small volume hospitals. The treatment \texttt{z}  is the indicator of whether a patient was diagnosed at a large volume hospital. The outcome \texttt{y} is whether the patient survived longer than 1 year after the diagnosis. The covariates \texttt{x} contain information about age, whether a patient was from a rural area, and whether a patient was male.
 
-\section{从结果回归到 DR 的偏倚修正}\label{sec:appendix-12-bias-correct}
+\begin{lstlisting}
+karolinska = read.table("karolinska.txt", header = TRUE)
+z = karolinska$hvdiag
+y = 1 - (karolinska$year.survival == 1)
+x = as.matrix(karolinska[, c(3, 4, 5)])
+\end{lstlisting}
 
-结果回归估计量 $\tilde\mu_1 = E\{\mu_1(X, \beta_1)\}$ 的偏倚为：
-\[
-\text{bias} = E\{\mu_1(X, \beta_1) - Y(1)\}.
-\]
-如果倾向得分模型正确，这个偏倚可以用 IPW 估计量来估计：
-\[
-B = E\left\{\frac{Z\{\mu_1(X, \beta_1) - Y\}}{e(X)}\right\}.
-\]
-于是去偏估计量为 $\tilde\mu_1 - B$，展开后恰好等于 \cref{eq:12-dr-mu1}。
 
-\section{双重稳健性的乘积结构}\label{sec:appendix-12-product-structure}
+Analyze the dataset using the methods discussed so far.
 
-从 \cref{sec:appendix-12-dr-proof} 的证明中，我们得到：
-\[
-\tilde\mu_1^{\mathrm{dr}} - E\{Y(1)\} = E\left[\frac{e(X) - e(X, \alpha)}{e(X, \alpha)} \times \{\mu_1(X) - \mu_1(X, \beta_1)\}\right].
-\]
-这个乘积结构揭示了双重稳健性的本质：当两个模型都错误时，$e(X) - e(X, \alpha)$ 和 $\mu_1(X) - \mu_1(X, \beta_1)$ 这两个误差会相乘，可能放大偏差。
 
-\section{模拟研究详情}\label{sec:appendix-12-simulation}
 
-\subsection*{数据生成过程}
+\end{HomeworkProblem}
 
-我们设置样本量 $n = 500$，按以下四个场景生成 500 个独立数据集。
+\begin{HomeworkProblem}[Recommended reading]\label{exr:12-6}
 
-\textbf{场景 1（两个模型都正确）}：
-\begin{verbatim}
-x = matrix(rnorm(n*2), n, 2)
-x1 = cbind(1, x)
-beta.z = c(0, 1, 1)
-pscore = 1/(1 + exp(- as.vector(x1 %*% beta.z)))
-z = rbinom(n, 1, pscore)
-beta.y1 = c(1, 2, 1)
-beta.y0 = c(1, 2, 1)
-y1 = rnorm(n, x1 %*% beta.y1)
-y0 = rnorm(n, x1 %*% beta.y0)
-y = z*y1 + (1-z)*y0
-\end{verbatim}
+ \citet{lunceford2004stratification} gave a review and comparison of many methods discussed in Chapters \ref{chapter::pscore-key} and \ref{chapter::doubly-robust}.
 
-\textbf{场景 2（倾向得分模型错误）}：使用非线性倾向得分模型。
 
-\textbf{场景 3（结果模型错误）}：使用非线性结果模型。
 
-\textbf{场景 4（两个模型都错误）}：同时使用非线性倾向得分和非线性结果模型。
-
-\subsection*{模拟结果}\label{sec:appendix-12-simulation-table}
-
-\begin{table}[h]
-\centering
-\caption{四种场景下的模拟结果（$n=500$，500 次重复）}
-\label{tab:12-simulation}
-\begin{tabular}{lcccc}
-\hline
-& reg & HT & Hajek & DR \\
-\hline
-\multicolumn{5}{l}{场景 1：两个模型都正确} \\
-平均偏倚 & 0.00 & 0.02 & 0.03 & 0.01 \\
-真标准误 & 0.11 & 0.28 & 0.26 & 0.13 \\
-估计标准误 & 0.10 & 0.25 & 0.23 & 0.12 \\
-\hline
-\multicolumn{5}{l}{场景 2：倾向得分模型错误} \\
-平均偏倚 & 0.00 & $-$0.76 & $-$0.75 & $-$0.01 \\
-真标准误 & 0.12 & 0.59 & 0.47 & 0.18 \\
-估计标准误 & 0.13 & 0.50 & 0.38 & 0.18 \\
-\hline
-\multicolumn{5}{l}{场景 3：结果模型错误} \\
-平均偏倚 & $-$0.05 & 0.00 & $-$0.01 & 0.00 \\
-真标准误 & 0.11 & 0.15 & 0.14 & 0.14 \\
-估计标准误 & 0.11 & 0.14 & 0.13 & 0.14 \\
-\hline
-\multicolumn{5}{l}{场景 4：两个模型都错误} \\
-平均偏倚 & $-$0.08 & 0.11 & $-$0.07 & 0.16 \\
-真标准误 & 0.13 & 0.32 & 0.20 & 0.41 \\
-估计标准误 & 0.13 & 0.25 & 0.16 & 0.26 \\
-\hline
-\end{tabular}
-\end{table}
-
-\textbf{结论}：当两个模型都错误时（场景 4），双重稳健估计量的表现反而最差，验证了"双重脆弱性"现象。
+\end{HomeworkProblem}

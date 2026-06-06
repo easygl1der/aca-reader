@@ -173,51 +173,62 @@ Z \perp \{Y(1), Y(0)\} \mid X.
 
 协变量调整的核心思想是：\textbf{利用可观测的协变量信息，提高因果效应的估计精度}。这一思想将在后续章节讨论观测性研究时发挥更重要的作用。
 
-\section{习题}\label{sec:chapter9-exercises}
+\section{习题}\label{sec:9-homework}
 
-\begin{Exercise}{CRE 的协变量平衡}\label{exr:9-1}
-在超级总体框架下，证明 \cref{eq:9-ace-expression}：平均因果效应可以写为 $E(Y \mid Z=1) - E(Y \mid Z=0)$。
-\end{Exercise}
+\begin{HomeworkProblem}[OLS decomposition of the observed outcome under the CRE]\label{exr:9-1}
 
-\begin{Exercise}{OLS 分解与 pooled regression}\label{exr:9-2}
-基于 \cref{eq:9-ols-potential-1} 和 \cref{eq:9-ols-potential-0}，证明观测结果的 OLS 分解为：
+Based on \eqref{eq::ols-decomposition-y1} and \eqref{eq::ols-decomposition-y0}, show that the OLS decomposition of the observed outcome on the treatment, covariates, and their interaction is
 \[
-Y = \alpha_0 + \alpha_Z Z + \alpha_X^T X + \alpha_{ZX}^T (Z \cdot X) + \varepsilon,
+Y= \alpha_0 + \alpha_Z  Z +
+\alpha_X \tran X + \alpha_{ZX} \tran X Z + \varepsilon
 \]
-其中
+where
 \[
-\alpha_0 = \gamma_0,\quad \alpha_Z = \gamma_1 - \gamma_0,\quad \alpha_X = \beta_0,\quad \alpha_{ZX} = \beta_1 - \beta_0.
+\alpha_0 = \gamma_0 ,\quad
+\alpha_Z = \gamma_1 - \gamma_0,\quad
+\alpha_X  =  \beta_0, \quad
+\alpha_{ZX} = \beta_1 - \beta_0
 \]
-\end{Exercise}
+and
+\[
+\varepsilon  = Z \varepsilon (1) + (1-Z) \varepsilon (0).
+\]
+That is,
+\[
+(\alpha_0, \alpha_Z, \alpha_X , \alpha_{ZX} )
+=\arg\min_{a_0, a_Z, a_X, a_{ZX}   }  E  (  Y - a_0 - a_Z Z - a_X\tran X -a_{ZX} \tran X Z)^2.
+\]
 
-\begin{Exercise}{Lin (2013) 估计量的性质}\label{exr:9-3}
-证明在正则条件下，Lin (2013) 估计量 $\hat{\tau}_L$ 是 $\tau$ 的半参数有效估计量。
-\end{Exercise}
 
-\begin{Exercise}{方差估计量的比较}\label{exr:9-4}
-在超级总体框架下，模拟 $\{X_i, Z_i, Y_i(1), Y_i(0)\}_{i=1}^n$，其中 $\beta_1 \neq \beta_0$。比较以下四种方差估计量的表现：
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Variance estimation of \citet{lin2013}'s estimator under the super population framework]\label{exr:9-2}
+
+Under the super population framework, simulate $\{  X_i, Z_i, Y_i(1), Y_i(0) \}_{i=1}^n$ with $\beta_1 \neq \beta_0$ in \eqref{eq::ols-decomposition-y1} and \eqref{eq::ols-decomposition-y0}. Calculate \citet{lin2013}'s estimator in each simulated dataset.
+Compare the true variance and the following estimated variances:
 \begin{enumerate}
-  \item 标准的 EHW 稳健方差估计量；
-  \item 带校正项 \cref{eq:9-variance-correction} 的 EHW 估计量；
-  \item Bootstrap 方差估计量（协变量在开始时中心化，但不每次重新中心化）；
-  \item Bootstrap 方差估计量（协变量在每次 bootstrap 样本中重新中心化）。
+\item
+the EHW robust variance estimator;
+\item
+the EHW robust variance estimator with the correction term defined in \eqref{eq::lin-ehw-correction};
+\item
+the bootstrap variance estimator, with covariates centered at the beginning but not re-centered for each bootstrap sample;
+\item
+the bootstrap variance estimator, with covariates re-centered for each bootstrap sample.
 \end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{SRE 中的协变量调整}\label{exr:9-5}
-在 SRE 的超级总体框架下，推导 $\tau$ 的协变量调整估计量及其方差估计量。
-\end{Exercise}
 
-\begin{Exercise}{协变量调整与后分层的关系}\label{exr:9-6}
-证明：当各层的层别倾向得分 $e_{[k]} = n_{[k]1} / n_{[k]}$ 相等时，协变量调整与后分层给出相同的点估计量。
-\end{Exercise}
 
-\begin{Exercise}{文献阅读}\label{exr:9-7}
-阅读 \citet{Lin:2013} 的原文，总结其核心贡献和主要结论。
-\end{Exercise}
+% \paragraph{Variance estimation in the MPE}
+% Show \eqref{eq::super-pop-mpe-var} under the super population framework.
 
-\begin{Exercise}{回归调整的几何解释}\label{exr:9-8}
-从几何角度解释协变量调整：为什么减去 $(\hat{\beta}_1 - \hat{\beta}_0)^T \bar{X}$ 可以提高估计精度？
-\end{Exercise}
 
-\endinput
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:9-3}
+
+
+\citet{ding2017bridging} provide a unified discussion of the finite population and superpopulation inferences for the average causal effect.
+
+
+\end{HomeworkProblem}

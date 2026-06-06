@@ -269,69 +269,81 @@ OS_est_ta = function(z, y, x, out.family = gaussian,
 
 \section{习题}\label{sec:18-homework}
 
-\begin{HomeworkProblem}[18.1]\label{hw:18-1}
-证明定理 \ref{th:18-1}。
+\begin{HomeworkProblem}[Proof of Theorem \ref{thm::outcome-reg-sensitivity}]\label{exr:18-1}
+
+Prove Theorem \ref{thm::outcome-reg-sensitivity}.
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[18.2]\label{hw:18-2}
-证明定理 \ref{th:18-2}。
+\begin{HomeworkProblem}[Proof of Theorem \ref{thm::ipw-sensitivity}]\label{exr:18-2}
+
+Prove Theorem \ref{thm::ipw-sensitivity}.
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[18.3]\label{hw:18-3}
-第 \ref{sec:18-example} 节只给出了点估计。报告相应的 Bootstrap 标准误差。
+\begin{HomeworkProblem}[Standard errors in sensitivity analysis]\label{exr:18-3}
+
+Chapter \ref{sec::eg-sensitivity-tau} only presents the point estimates. Report the corresponding bootstrap standard errors.
+
+
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[18.4]\label{hw:18-4}
-（处理组平均因果效应的灵敏度分析）本习题将第 \ref{ch:13} 章的结果推广到允许未测混杂的情形，估计
+\begin{HomeworkProblem}[Sensitivity analysis for the average causal effect on the treated units $\tau_\textsc{T}$]\label{exr:18-4}
+
+This problem extends Chapter \ref{chapter::ATT-and-other} to allow for unmeasured confounding for estimating
 \[
-\tau_{\mathrm{T}} = \mathbb{E}\{Y(1) - Y(0) \mid Z=1\} = \mathbb{E}(Y \mid Z=1) - \mathbb{E}\{Y(0) \mid Z=1\} .
+\tau_\textsc{T} = E\{  Y(1) - Y(0)  \mid Z=1  \}
+= E(Y\mid Z=1) - E\{  Y(0)  \mid Z=1  \} .
 \]
+We can easily estimate $E(Y\mid Z=1)$ by the sample moment, $\hat{\mu}_{\textsc{t}1} =   \sumn Z_i Y_i / \sumn Z_i$. The only counterfactual term is $E\{  Y(0)  \mid Z=1  \}$. Therefore, we only need the sensitivity parameter $ \varepsilon_0(X) $. We have the following two identification formulas with a known  $\varepsilon_0(X) .$
 
-我们容易用样本矩估计 $\mathbb{E}(Y \mid Z=1)$：$\hat{\mu}_{\mathrm{T1}} = \sum_{i=1}^n Z_i Y_i / \sum_{i=1}^n Z_i$。唯一的反事实项是 $\mathbb{E}\{Y(0) \mid Z=1\}$，因此我们只需要灵敏度参数 $\varepsilon_0(X)$。在已知 $\varepsilon_0(X)$ 的条件下，我们有以下两个识别公式。
-
-\begin{Theorem}[处理组平均因果效应的识别]\label{th:18-3}
-在已知 $\varepsilon_0(X)$ 的条件下，
-\[
-\mathbb{E}\{Y(0) \mid Z=1\} = \frac{\mathbb{E}\{Z\mu_0(X)\varepsilon_0(X)\}}{e}
-= \frac{\mathbb{E}\left\{e(X)\varepsilon_0(X)\frac{1-Z}{1-e(X)}Y\right\}}{e} ,
-\]
-其中 $e = \Pr(Z=1)$。
+\begin{Theorem}
+\label{thm::att-reg-ipw}
+With known $\varepsilon_0(X) $, we have
+ \begin{eqnarray*}
+E\{  Y(0)  \mid Z=1  \}  &=& E\left\{  Z \mu_0(X)  \varepsilon_0(X)    \right\} /e \\
+&=& E\left\{  e(X)\varepsilon_0(X) \frac{ 1-Z}{1-e(X)}  Y      \right\} /e,
+\end{eqnarray*}
+where $e = \pr(Z=1)$
 \end{Theorem}
 
-证明定理 \ref{th:18-3}。
 
-\textbf{注}：定理 \ref{th:18-3} 启发我们使用 $\hat{\tau}_{\mathrm{T}}^{*} = \hat{\mu}_{\mathrm{T1}} - \hat{\mu}_{\mathrm{T0}}^{*}$ 估计 $\tau_{\mathrm{T}}$，其中
+Prove Theorem \ref{thm::att-reg-ipw}.
+
+Remark:  Theorem \ref{thm::att-reg-ipw} motivates using $\hat{\tau}_{\textsc{t}}^* = \hat{\mu}_{\textsc{t}1}  - \hat{\mu}_{\textsc{t}0}^*$ to estimate $\tau_{\textsc{t}}$, where
+ \begin{eqnarray*}
+\hat{\mu}_{\textsc{t}0}^\text{reg} &=& n_1^{-1} \sumn Z_i  \varepsilon_0(X_i) \hat  \mu_0(X_i) ,   \\
+\hat{\mu}_{\textsc{t}0}^\text{ht} &=& n_1^{-1} \sumn   \varepsilon_0(X_i) \hat  o(X_i) (1-Z_i) Y_i ,   \\
+\hat{\mu}_{\textsc{t}0}^\text{haj} &=&  \sumn   \varepsilon_0(X_i) \hat  o(X_i) (1-Z_i) Y_i  /  \sumn   \hat  o(X_i) (1-Z_i) ,
+\end{eqnarray*}
+with $  \hat  o(X_i) = \hat  e(X_i) / \{1- \hat  e(X_i)\}$ being the estimated conditional odds of the treatment given the observed covariates.
+Moreover, we can construct the doubly robust estimator
+$\hat{\tau}_{\textsc{t}}^\text{dr} = \hat{\mu}_{\textsc{t}1}  - \hat{\mu}_{\textsc{t}0}^\text{dr}$ for $\tau_{\textsc{t}}$, where
 \[
-\hat{\mu}_{\mathrm{T0}}^{\mathrm{reg}} = n_1^{-1}\sum_{i=1}^n Z_i\varepsilon_0(X_i)\hat{\mu}_0(X_i) ,
+\hat{\mu}_{\textsc{t}0}^\text{dr} =
+\hat{\mu}_{\textsc{t}0}^\text{ht}  - n_1^{-1} \sumn \varepsilon_0(X_i) \frac{\hat e(X_i) - Z}{1-\hat e(X_i)}  \hat \mu_0(X_i)  .
 \]
-\[
-\hat{\mu}_{\mathrm{T0}}^{\mathrm{ht}} = n_1^{-1}\sum_{i=1}^n \varepsilon_0(X_i)\hat{o}(X_i)(1-Z_i)Y_i ,
-\]
-\[
-\hat{\mu}_{\mathrm{T0}}^{\mathrm{haj}} = \frac{\sum_{i=1}^n \varepsilon_0(X_i)\hat{o}(X_i)(1-Z_i)Y_i}{\sum_{i=1}^n \hat{o}(X_i)(1-Z_i)} ,
-\]
-其中 $\hat{o}(X_i) = \hat{e}(X_i)/\{1-\hat{e}(X_i)\}$ 是给定协变量条件下治疗的条件比数比估计量。此外，我们可以构造 $\tau_{\mathrm{T}}$ 的双重稳健估计量
-\[
-\hat{\tau}_{\mathrm{T}}^{\mathrm{dr}} = \hat{\mu}_{\mathrm{T1}} - \hat{\mu}_{\mathrm{T0}}^{\mathrm{dr}} ,
-\]
-其中
-\[
-\hat{\mu}_{\mathrm{T0}}^{\mathrm{dr}} = \hat{\mu}_{\mathrm{T0}}^{\mathrm{ht}} - n_1^{-1}\sum_{i=1}^n \varepsilon_0(X_i)\frac{\hat{e}(X_i)-Z_i}{1-\hat{e}(X_i)}\hat{\mu}_0(X_i) .
-\]
-详见 Lu and Ding (2023)。
+\citet{luding2023flexible} provide more details.
+
+
+
 \end{HomeworkProblem}
 
-\section{推荐阅读}\label{sec:18-reading}
+\begin{HomeworkProblem}[R code]\label{exr:18-5}
 
-\begin{itemize}
-  \item \citet{Manski1990}：Manski 首次将界的思想引入因果推断。
-  \item \citet{Manski2003}：系统综述了计量经济学中的部分识别方法。
-  \item \citet{DingVanderWeele2016}：E-value 的理论基础，也是本章灵敏度分析的起点。
-  \item \citet{LuDing2023}：提供了本章方法的更技术性的细节。
-  \item \citet{Rosenbaum1983} 和 \citet{Imbens2003}：经典但更复杂的灵敏度分析文献。
-\end{itemize}
+Implement the estimators in Problem \ref{hw::att-sentivity-analysis}.
+Analyze the data used in Chapter \ref{sec::eg-sensitivity-tau}.
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-% APPENDIX
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:18-6}
+
+ \citet{Rosenbaum::1983JRSSB} and \citet{imbens2003sensitivity} are two classic papers on sensitivity analysis which, however, involve more complicated procedures.
+
+
+
+\end{HomeworkProblem}

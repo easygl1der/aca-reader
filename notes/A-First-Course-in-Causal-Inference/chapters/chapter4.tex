@@ -277,61 +277,153 @@ OLS 的通常标准误偏小：
 
 下一章我们将学习如何通过\textbf{分层（stratification）}来提高估计的精度——这是一种利用协变量信息来改进推断的方法。
 
-\section{习题}\label{sec:4-exercises}
+\section{习题}\label{sec:4-homework}
 
-\begin{Exercise}{\ref{ex:4.1} 引理的证明}\label{ex:4.1}
-证明 Lemma \ref{lemm:4.1}：$2S(1,0) = S^2(1) + S^2(0) - S^2(\tau)$。
-\end{Exercise}
+\begin{HomeworkProblem}[Proof of Lemma \ref{lemma::variancecovariancetau}]\label{exr:4-1}
 
-\begin{Exercise}{\ref{ex:4.2} Neyman (1923) 定理的另一种证明}\label{ex:4.2}
-在 CRE 下，计算：
+
+Prove Lemma \ref{lemma::variancecovariancetau}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Alternative proof of Theorem \ref{thm::neyman1923}]\label{exr:4-2}
+
+
+Under a CRE, calculate
 \[
-\operatorname{var}\{\hat{\bar{Y}}(1)\}, \quad \operatorname{var}\{\hat{\bar{Y}}(0)\}, \quad \operatorname{cov}\{\hat{\bar{Y}}(1), \hat{\bar{Y}}(0)\}
+\var\{  \hat{\bar{Y}}(1)  \} ,\quad
+\var\{  \hat{\bar{Y}}(0)  \} ,\quad
+\cov\{  \hat{\bar{Y}}(1) ,  \hat{\bar{Y}}(0)  \}
 \]
-并利用这些公式推导 $\operatorname{var}(\hat{\tau})$。
-\end{Exercise}
+and use these formulas to calculate $\var(\hat{\tau} )$.
 
-\begin{Exercise}{\ref{ex:4.3} Neymanian 推断与 OLS}\label{ex:4.3}
-证明 \cref{eq:4-3}（OLS 系数等于差值均值）。证明 EHW 稳健方差估计量的 HC2 变体恰好等于 $\hat{V}$。
+Remark: Use the results in Chapter \ref{chapter::SRS-appendix}.
 
-\noindent\textbf{推导见附录} \cref{sec:appendix-ex-4-3}。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:4.4} 治疗效应的异质性}\label{ex:4.4}
-证明 $S^2(\tau) = 0$ 蕴含 $S^2(1) = S^2(0)$。给出反例说明 $S^2(1) = S^2(0)$ 但 $S^2(\tau) \neq 0$。
 
-证明 $S^2(1) < S^2(0)$ 蕴含 $S(Y(0), \tau) < 0$。给出反例说明 $S^2(1) > S^2(0)$ 但 $S(Y(0), \tau) < 0$。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:4.5} 方差公式的改进上界}\label{ex:4.5}
-证明方差公式的改进上界：
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Neymanian inference and OLS]\label{exr:4-3}
+
+
+Prove \eqref{eq::ols-difference-in-means}--\eqref{eq::ols-ehw}. Moreover, prove that the HC2 variant of the EHW robust variance estimator recovers $\hat{V}$ exactly.
+
+Remark: Chapter \ref{appendix::basic-linear-regression} reviews some important technical results about OLS.
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Treatment effect heterogeneity]\label{exr:4-4}
+
+
+Show that $S^2(\tau) = 0$ implies that $S^2(1) = S^2(0)$. Given a counterexample with $S^2(1) = S^2(0)$ but $S^2(\tau) \neq  0$.
+
+
+Show that $S^2(1) < S^2(0)$ implies that
 \[
-\operatorname{var}(\hat{\tau}) \leq \frac{1}{n}\left\{\sqrt{\frac{n_0}{n_1}}S(1) + \sqrt{\frac{n_1}{n_0}}S(0)\right\}^2
+S(Y(0),\tau)  = (n-1)^{-1} \sumn \{ Y_i(0)  - \bar{Y}(0) \} (\tau_i - \tau) <0.
 \]
-并讨论等号成立的条件。
-\end{Exercise}
+Give a counterexample with $S^2(1) > S^2(0)$ but $S(Y(0),\tau)  < 0 .$
 
-\begin{Exercise}{\ref{ex:4.6} Neyman (1923) 的向量版本}\label{ex:4.6}
-将 Neyman (1923) 的结果推广到多结局情形。考虑向量结局 $\mathbf{V} \in \mathbb{R}^K$ 的平均因果效应：
+
+
+Remark: The first result states that no treatment effect heterogeneity implies equal variances in the treated and control potential outcomes. But the converse is not true. The second result states that if the treated potential outcome has a smaller variance than the control potential outcome, then the individual treatment effect is negatively correlated with the control potential outcome. But the converse is not true. \citet[][page 293]{gerber2012field} and \citet[][Appendix B.3]{ding2019decomposing} gave related discussions.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[A better bound of the variance formula]\label{exr:4-5}
+
+
+\cite{Neyman:1923}'s conservative variance estimator essentially uses the following upper bound on the true variance:
 \[
-\tau_{\mathbf{V}} = \frac{1}{n}\sum_{i=1}^n \{\mathbf{V}_i(1) - \mathbf{V}_i(0)\}
+\var(\widehat{\tau}) = \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0} - \frac{S^2(\tau)}{n} \leq \frac{S^2(1)}{n_1} + \frac{S^2(0)}{n_0},
+\]
+which uses the trivial fact that $S^2(\tau) \geq 0$.
+Show the following upper bound
+\begin{eqnarray}\label{hw::cs-bound-neyman}
+\var(\widehat{\tau})  \leq   \frac{1}{n} \left\{   \sqrt{  \frac{n_0}{n_1}  } S(1) +  \sqrt{  \frac{n_1}{n_0}  } S(0)   \right\}^2.
+\end{eqnarray}
+When does the equality in \eqref{hw::cs-bound-neyman} hold?
+
+The upper bound \eqref{hw::cs-bound-neyman} motivates another conservative variance estimator
+\[
+\hat{V}' =  \frac{1}{n} \left\{   \sqrt{  \frac{n_0}{n_1}  } \hat S(1) +  \sqrt{  \frac{n_1}{n_0}  } \hat S(0)   \right\}^2.
+\]
+Section \ref{sec::simulation-neyman-formula} used $\hat{V}$ in the simulation. Repeat the simulation with an additional comparison with the variance estimator $\hat{V}' $ and the associated confidence interval.
+
+
+
+Remark:
+You may find Section \ref{sec::cauchy-schwarz-inequality} useful for the proof.
+The upper bound \eqref{hw::cs-bound-neyman} can be further improved.
+\citet{aronow2014sharp} derived the sharp upper bound for $\var(\widehat{\tau}) $ using the Frechet--Hoeffding inequality. Those improvements are rarely used in practice mainly for two reasons. First, they are more complicated than $\hat{V}$ which can be conveniently implemented by OLS. Second, the confidence interval based on  $\hat{V}$ also works under other formulations, for example, under a true linear model of the outcome on the treatment, but those improvements do not. Although they are theoretically interesting, those improvements have little practical impact.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Vector version of \citet{Neyman:1923}]\label{exr:4-6}
+
+The classic result of \citet{Neyman:1923} is about a scalar outcome. It is common to have multiple outcomes in practice. Therefore, we now extend the potential outcomes to vectors. We consider the average causal effect on a vector outcome $\mathbf{V}  \in \mathbb{R}^K$:
+\[
+\tau_{\mathbf{V}} = \frac{1}{n}  \sumn \left\{  \mathbf{V}_i(1) - \mathbf{V}_i(0) \right\},
+\]
+where $\mathbf{V}_i(1)$ and $\mathbf{V}_i(0)$ are the potential outcomes of $\mathbf{V}$ for unit $i$.
+The Neyman-type estimator for $\tau_{\mathbf{V}}$ is the difference between the sample mean vectors of the observed outcomes under treatment and control:
+\[
+\widehat{ \tau}_{\mathbf{V}} = \bar{\mathbf{V}}_1  - \bar{\mathbf{V}}_0
+= \frac{1}{n_1}   \sumn Z_i  \mathbf{V}_i   - \frac{1}{n_0}  \sumn (1-Z_i) \mathbf{V}_i .
 \]
 
-证明 $\hat{\tau}_{\mathbf{V}}$ 对 $\tau_{\mathbf{V}}$ 是无偏的，并求出其协方差矩阵。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:4.7} 完全随机化实验中的推断}\label{ex:4.7}
-回忆在 \cref{def:cre} 中定义的完全随机化实验。在这种设定下，推导平均因果效应的方差公式，并比较其与 CRE 中方差的差异。
-\end{Exercise}
+Consider a CRE. Show that $\widehat{ \tau}_{\mathbf{V}} $ is unbiased for $\tau_{\mathbf{V}} $. Find the covariance matrix of $\widehat{ \tau}_{\mathbf{V}} $. Find a (possibly conservative) estimator for the variance.
 
-\begin{Exercise}{\ref{ex:4.8} 推荐阅读}\label{ex:4.8}
-\begingroup
-\parskip=0pt
-\textbf{推荐阅读}：\cite{ding2017} 重新审视了因果推断中的一些经典问题。\cite{imbens2015} 是关于因果推断的权威综述。
 
-\textbf{历史注记}：Neyman 1923 年的原始论文 \cite{neyman1923} 奠定了有限总体推断的基础。当代统计学家将其视为因果推断范式的里程碑。
-\endgroup
-\end{Exercise}
+\end{HomeworkProblem}
 
-% === 用户问答记录 ===
-% (后续通过 interactive-qa 更新)
+\begin{HomeworkProblem}[Inference in the BRE]\label{exr:4-7}
+
+
+In this book, I use the following definition for the BRE.
+
+\begin{definition}
+[BRE]\label{def::BRE}
+The treatment indicators $Z_i$'s are IID Bernoulli$(\pi)$ with $n_1 = \sumn Z_i$ receiving the treatment and $n_0 = \sumn (1-Z_i)$ receiving the control, respectively.
+\end{definition}
+
+
+
+First, we can use the FRT to analyze the BRE. How do we test $\HF$ in the BRE? Can we use the same FRT procedure as in the CRE if the actual experiment is the BRE? If yes, give a justification; if no, explain why.
+
+Second, we can obtain point estimators for $\tau$ and find the associated variance estimators, as \citet{Neyman:1923} did for the CRE.
+\begin{enumerate}
+\item
+Is $\hat{\tau}$ unbiased for $\tau$? Is it consistent?
+\item
+Find an unbiased estimator for $\tau$.
+\item
+Compare the variance of the above unbiased estimator and the asymptotic variance of $\hat{\tau}$.
+\end{enumerate}
+
+Remark:
+Under the BRE, the estimator $\hat{\tau}$ does not have finite variance but the variance of its asymptotic distribution is finite.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:4-8}
+
+ \citet{Ding:2014} compared the Fisherian approach and Neymanian approach to analyzing the CRE.
+
+
+
+\end{HomeworkProblem}

@@ -212,27 +212,54 @@ with $D_i$ instrumented by $Z_i$。
 
 下一章我们将学习\textbf{局部随机化视角下的断点回归}，这为 RDD 提供了另一种理论依据。
 
-\section{习题}
+\section{习题}\label{sec:24-homework}
 
-\begin{Exercise}{\ref{exr:24-1} 模糊 RDD 识别定理的证明}\label{exr:24-1}
-证明 \cref{th:frdd-identification} 中的识别公式。
-\end{Exercise}
+\begin{HomeworkProblem}[Proof of Theorem \ref{thm::identification-frdd}]\label{exr:24-1}
 
-\begin{Exercise}{\ref{exr:24-2} 清晰 RDD 与模糊 RDD 的比较}\label{exr:24-2}
-\begin{enumerate}
-  \item 在清晰 RDD 中，治疗分配 $D$ 和工具变量 $Z$ 有什么关系？
-  \item 在模糊 RDD 中，这种关系如何变化？
-  \item 给出清晰 RDD 和模糊 RDD 各一个现实生活中的例子。
-\end{enumerate}
-\end{Exercise}
+Prove Theorem \ref{thm::identification-frdd}.
 
-\begin{Exercise}{\ref{exr:24-3} 带宽敏感性分析}\label{exr:24-3}
-对于 \cref{sec:indian-road-app-frdd} 中的印度道路数据，使用不同的带宽 $h$ 进行敏感性分析。报告点估计和标准误如何随 $h$ 变化。
-\end{Exercise}
 
-\begin{Exercise}{\ref{exr:24-4} ILS 与 TSLS 的等价性}\label{exr:24-4}
-证明在模糊 RDD 中，间接最小二乘估计器（比率形式）和两阶段最小二乘估计器在数值上是等价的。
-\end{Exercise}
+\end{HomeworkProblem}
 
-% === 用户问答记录 ===
-% (后续通过 interactive-qa 更新)
+\begin{HomeworkProblem}[Data analysis]\label{exr:24-2}
+
+Section \ref{sec::indian-road-data} reports the estimate of the effect on \ri{occupation_index_andrsn}. Four other outcome variables are \ri{transport_index_andrsn}, \ri{firms_index_andrsn}, \ri{consumption_index_andrsn}, and \ri{agriculture_index_andrsn}, with meanings defined in the original paper. Estimate the effects on these outcomes.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Reflection on the analysis of \citet{li2015evaluating}'s data]\label{exr:24-3}
+
+In \citet{li2015evaluating}, a key variable determining the treatment status is the binary application status $A$, which has potential outcomes $A(1)$ and $A(0)$ corresponding to the treatment $Z=1$ and control $Z=0$. By definition,
+\[
+D(1) = A(1), \quad D(0) = 0,
+\]
+so the compliers $\{ D(1), D(0) \} = (1,0)$ is equivalent to $A(1) = 1$. So
+\[
+\tau_\cp(x_0) = E\{ Y(1) - Y(0) \mid A(1) = 1, X = x_0 \}.
+\]
+Section \ref{sec::italian-university} used the whole data set to estimate $\tau_\cp(x_0)$.
+
+An alternative analysis is to use the units with $A=1$ only. Then the treatment status is determined by $X$. However, this analysis can be problematic because
+\begin{eqnarray}
+&& \lim_{\varepsilon \rightarrow 0+} E\{ Y \mid A  = 1, X = x_0 + \varepsilon \} -\lim_{\varepsilon \rightarrow 0+}  E\{ Y \mid A  = 1, X = x_0- \varepsilon  \}  \nonumber  \\
+&=& E\{ Y(1) \mid A(1)  = 1,   X = x_0   \} -  E\{ Y(0) \mid A(0)  = 1,   X = x_0   \} .\label{hw::frdd-florence-A=1}
+\end{eqnarray}
+Prove \eqref{hw::frdd-florence-A=1} and explain why this analysis can be problematic.
+
+
+Remark:
+The left-hand side of \eqref{hw::frdd-florence-A=1} is the identification formula of the local average treatment effect at $X=x_0$, conditional on $A=1$. The right-hand side of \eqref{hw::frdd-florence-A=1} is the difference in means of the potential outcomes for the subgroups of units with $(A(1)  = 1,   X = x_0 )$ and $(A(0)  = 1,   X = x_0)$, respectively.
+See Chapter \ref{chapter::principal-stratification} later for related discussions.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:24-4}
+
+\citet{imbens2008regression} gave practical guidance to regression discontinuity based on the potential outcomes framework. \citet{lee2010regression} reviewed regression discontinuity and its applications in economics.
+
+\end{HomeworkProblem}

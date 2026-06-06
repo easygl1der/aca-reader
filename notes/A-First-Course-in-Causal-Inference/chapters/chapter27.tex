@@ -439,162 +439,238 @@ NIE -0.014  0.009  -1.528
 
 \par\Notes{中介公式的完整证明见附录 \cref{sec:proof-mediation}；Baron--Kenny 公式的推导见附录 \cref{sec:proof-bk-formulas}；各节练习题见附录 \cref{sec:mediation-exercises}。}
 
-\section*{练习}\label{sec:mediation-exercises}
+\section{习题}\label{sec:27-homework}
 
-% === 练习内容 ===
+\begin{HomeworkProblem}[\citet{Robins::1992}'s clarification of the units based on nested potential outcomes]\label{exr:27-1}
 
-\begin{Exercise}\label{ex:mediation-robins-latent-groups}
-%（\cite{Robins::1992} 的潜在群组澄清）
 
-假设 $(Z, M, Y)$ 均为二值变量。基于潜在结果
+Assume $(Z, M, Y)$ are all binary. Based on the joint value of
 \[
-M(1), M(0), Y(1, M_1), Y(1, M_0), Y(0, M_1), Y(0, M_0)
+M(1), M(0),  Y(1, M_1), Y(1, M_0), Y(0, M_1), Y(0, M_0) ,
 \]
-的联合取值，单元可以分成多少类型？
+how many types of units do we have?
 
-若进一步假设单调性 $M(1) \geq M(0)$（$Z$ 对 $M$ 的单调性），则单元可以分成多少类型？
-
-若再假设 $Y(1, m) \geq Y(0, m)$ 且 $Y(z, 1) \geq Y(z, 0)$ 对所有 $z, m$ 成立（$Z$ 和 $M$ 对 $Y$ 的单调性），则单元可以分成多少类型？
-\end{Exercise}
-
-\par\Notes{本题答案见附录 \cref{sec:sol-mediation-robins-latent-groups}。}
-
-\begin{Exercise}\label{ex:sr-jr-equivalence}
-%（序列随机化与联合随机化的等价性）
-
-证明 \cref{eq:joint-randomization} 与 \cref{assume:mediation-no-z-y-confounding,assume:mediation-no-m-y-confounding} 等价。
-\end{Exercise}
-
-\par\Notes{本题答案见附录 \cref{sec:sol-sr-jr}。}
-
-\begin{Exercise}\label{ex:alternative-si}
-%（\cite{Imai::2010} 的另一组假设）
-
-\Citet{Imai::2010} 提出了另一组假设来推导中介公式：
+If we assume monotonicity of $Z$ on $M$, that is,
 \[
-\{Y(z, m), M(z')\} \ind Z \mid X, \qquad Y(z, m) \ind M(z') \mid (Z = z', X),
+M(1) \geq  M(0),
 \]
-对所有 $z, z', m$ 成立。
+then how many types of units do we have?
 
-证明：在上述假设下，\cref{eq:mediation-formula} 中的中介公式同样成立。
-\end{Exercise}
-
-\par\Notes{本题答案见附录 \cref{sec:sol-alternative-si}。}
-
-\begin{Exercise}\label{ex:difference=product}
-%（差值法与乘积法的等价性）
-
-在 Baron--Kenny 线性模型（\cref{assume:bk-model}）下，首先拟合：
+If we further assume monotonicity of $Z$ and $M$ on $Y$, that is,
 \[
-\hat M = \hat\beta_0 + \hat\beta_1 Z + \hat\beta_2^\top X, \qquad
-\hat Y = \hat\theta_0 + \hat\theta_1 Z + \hat\theta_2 M + \hat\theta_4^\top X.
+Y(1, m) \geq Y(0, m),  \quad Y(z, 1) \geq Y(z, 0)
 \]
-则 NIE 的估计量为乘积 $\hat\theta_2 \hat\beta_1$（乘积法）。
+for all $z$ and $m$, then how many types of units do we have?
 
-另一方面，首先拟合：
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Sequential randomization and joint randomization]\label{exr:27-2}
+
+Show \eqref{eq::joint-randomization} is equivalent to Assumptions \ref{assume::mediation1} and \ref{assume::mediation2}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Verifying the assumptions for mediation analysis]\label{exr:27-3}
+
+Show that Assumptions \ref{assume::mediation1}--\ref{assume::mediation4} hold under the data generating process in Example \ref{eg::mediation-assumptions}.
+Also show that if we allow $  \varepsilon_M$ and $\varepsilon_Y$ to be $ \varepsilon_M(z)$ and $\varepsilon_Y(z,m)$, then Assumptions \ref{assume::mediation1}--\ref{assume::mediation4} can fail.
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Another set of assumptions for the mediation formula]\label{exr:27-4}
+
+
+
+\citet{Imai::2010} invoked the following set of assumptions to derive the mediation formula.
+
+\begin{assumption}
+\label{assume::mediation-imai}
+We have
 \[
-\hat Y = \hat\alpha_0 + \hat\alpha_1 Z + \hat\alpha_1^\top X,
+\{Y(z, m), M(z') \} \ind  Z\mid X
 \]
-再拟合：
+and
 \[
-\hat Y = \tilde\theta_0 + \tilde\theta_1 Z + \tilde\theta_2 M + \tilde\theta_4^\top X,
+Y(z, m) \ind M(z' ) \mid (Z=z' , X)
 \]
-则 NIE 的另一估计量为差值 $\hat\alpha_1 - \tilde\theta_1$（差值法）。
+for all $z, z', m$.
+\end{assumption}
 
-证明：$\hat\alpha_1 - \tilde\theta_1 = \hat\theta_2 \hat\beta_1$。
-\end{Exercise}
 
-\par\Notes{本题答案见附录 \cref{sec:sol-difference-product}。}
+\begin{Theorem}
+\label{thm::mediation-imai}
+Under Assumption \ref{assume::mediation-imai}, the mediation formula in Theorem \ref{thm::mediation} holds.
+\end{Theorem}
 
-\begin{Exercise}\label{ex:nie-binary-m}
-%（二值中介的 NIE）
 
-证明 \cref{cor:nie-binary}（二值中介的 NIE 乘积公式）。
-\end{Exercise}
+Prove Theorem \ref{thm::mediation-imai}.
 
-\par\Notes{本题答案见附录 \cref{sec:sol-nie-binary}。}
 
-\begin{Exercise}\label{ex:interaction}
-%（处理—中介交互项）
 
-\Citet{vanderweele2015explanation} 建议在结果模型中加入处理与中介的交互项：
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Difference method and product method are identical]\label{exr:27-5}
+
+
+In the main text, we first obtain the OLS fits
 \[
-\begin{cases}
-\mathbb{E}(M \mid Z, X) = \beta_0 + \beta_1 Z + \beta_2^\top X, \\[4pt]
-\mathbb{E}(Y \mid Z, M, X) = \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM + \theta_4^\top X.
-\end{cases}
+\left\{\begin{array}{rcl}
+\hat M_i &=&  \hat\beta_0 + \hat\beta_1 Z_i + \hat\beta_2\tran X_i, \\
+\hat Y_i &=&\hat \theta_0 + \hat\theta_1 Z_i +\hat \theta_2 M_i + \hat\theta_4\tran X_i.
+\end{array}\right.
 \]
+The estimate for the NIE is the product $\hat \theta_2 \hat\beta_1 $, which is called the product method.
 
-证明：在此模型下，
+Alternatively, we can first obtain OLS fits:
 \[
-\NDE = \theta_1 + \theta_3\{\beta_0 + \beta_2^\top \mathbb{E}(X)\}, \qquad
-\NIE = (\theta_2 + \theta_3) \beta_1.
+\left\{\begin{array}{rcl}
+\hat Y_i &=&  \hat\alpha_0 + \hat\alpha_1 Z_i + \hat\alpha_1 \tran X_i, \\
+\hat Y_i &=&\hat \theta_0 + \hat\theta_1 Z_i +\hat \theta_2 M_i + \hat\theta_4\tran X_i.
+\end{array}\right.
 \]
-并说明如何在 IID 数据下估计 $\NDE$ 和 $\NIE$。
-\end{Exercise}
+Another estimate for the NIE is the difference $\hat\alpha_1 -  \hat\theta_1$, which is called the difference method.
 
-\par\Notes{本题答案见附录 \cref{sec:sol-interaction}。}
+Show that $\hat\alpha_1 -  \hat\theta_1 = \hat \theta_2 \hat\beta_1 .$
 
-\begin{Exercise}\label{ex:contin-m-binary-y}
-%（连续中介 + 二值结果）
 
-考虑中介 $M$ 服从正态线性模型、结果 $Y$ 服从 logistic 模型：
+Remark: Recall Cochran's formula in Problem \ref{hw::cochran+ovb}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Natural indirect effect with a binary mediator]\label{exr:27-6}
+
+Prove Corollary \ref{corollary::mediation-binary-M}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[With treatment-outcome interaction on the outcome]\label{exr:27-7}
+\citet{vanderweele2015explanation} suggested using the following linear models:
 \[
-\begin{cases}
-M \mid Z, X \sim \mathcal{N}(\beta_0 + \beta_1 Z + \beta_2^\top X, \sigma_M^2), \\[4pt]
-\operatorname{logit}\{\Pr(Y = 1 \mid Z, M, X)\} = \theta_0 + \theta_1 Z + \theta_2 M + \theta_4^\top X.
-\end{cases}
+\left\{\begin{array}{rcl}
+E(M \mid Z, X) &=&  \beta_0 + \beta_1 Z + \beta_2\tran X, \\
+E(Y\mid Z,M,X) &=& \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM + \theta_4\tran X,
+\end{array}\right.
 \]
-请将 $\NDE$ 和 $\NIE$ 表示为模型参数和 $X$ 分布的函数，并说明如何在 IID 数据下估计它们。
-\end{Exercise}
+where the outcome model has the interaction term between the treatment and the mediator.
 
-\par\Notes{本题答案见附录 \cref{sec:sol-contin-m-binary-y}。}
 
-\begin{Exercise}\label{ex:logit-binary-m}
-%（二值中介 + 连续结果）
-
-考虑二值中介 $M$ 服从 logistic 模型、结果 $Y$ 服从线性模型：
+Under the above linear models,  show that
 \[
-\begin{cases}
-\operatorname{logit}\{\Pr(M = 1 \mid Z, X)\} = \beta_0 + \beta_1 Z + \beta_2^\top X, \\[4pt]
-\mathbb{E}(Y \mid Z, M, X) = \theta_0 + \theta_1 Z + \theta_2 M + \theta_4^\top X.
-\end{cases}
+\NDE = \theta_1 + \theta_3\{ \beta_0 + \beta_2\tran E(X)\}, \qquad
+\NIE = (\theta_2 + \theta_3 ) \beta_1.
 \]
+How do we estimate $\NDE$ and $\NIE$ with IID data?
 
-证明：
+Remark:
+Consider the simple case with a binary $Z$ and binary $M$.
+Under the linear models, the average causal effect of $Z$ of $M$ equals $\beta_1$, and the average causal effect of $M$ on $Y$ equals $\theta_2 + \theta_3 E(Z)$. Therefore, it is possible that both of these effects are positive, but the natural indirect effect is negative. For instance:
 \[
-\NDE = \theta_1, \qquad
-\NIE = \theta_2 \, \mathbb{E}\big\{ \operatorname{expit}(\beta_0 + \beta_1 + \beta_2^\top X) - \operatorname{expit}(\beta_0 + \beta_2^\top X) \big\}.
+\beta_1 = 1,\quad \theta_2 = 1, \quad  \theta_3= -1.5, \quad E(Z) = 0.5.
 \]
-并说明如何在 IID 数据下估计 $\NDE$ 和 $\NIE$。
-\end{Exercise}
+This is somewhat paradoxical and can be called the {\it mediator paradox}. \citet{chen2007criteria} reported a related {\it surrogate endpoint paradox} or {\it intermediate variable paradox}.
 
-\par\Notes{本题答案见附录 \cref{sec:sol-logit-binary-m}。}
 
-\begin{Exercise}\label{ex:no-crossworld-modification}
-%（放松跨世界独立性假设）
 
-将嵌套潜在结果修改为
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Mediation analysis with continuous mediator and binary outcome]\label{exr:27-8}
+
+
+Consider the following Normal linear model for the mediator and logistic model for the binary outcome:
 \[
-Y(z, F_{M_{z'} \mid X}) = \int Y(z, m) \, f(M_{z'} = m \mid X) \, \mathrm{d}m,
+\left\{\begin{array}{rcl}
+M \mid Z, X &\sim &  \textsc{N}(\beta_0 + \beta_1 Z + \beta_2\tran X, \sigma_M^2), \\
+\logit \{ \pr(Y = 1 \mid Z,M,X ) \} &=& \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X,
+\end{array}\right.
 \]
-其中 $F_{M_{z'} \mid X}$ 是条件分布而非确定值。相应地将 NDE 和 NIE 定义为
+where $\logit (w)  = \log\{ w/(1-w) \} $ with inverse $\expit(w) = (1 + e^{-w})^{-1}.$
+Express $\NDE$ and $\NIE$ in terms of the model parameters and the distribution of $X$. How do we estimate $\NDE$ and $\NIE$ with IID data?
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Mediation analysis with binary mediator and continuous outcome]\label{exr:27-9}
+Consider the following logistic model for the binary mediator and linear model for the outcome:
 \[
-\NDE = \mathbb{E}\{ Y(1, F_{M_0 \mid X}) - Y(0, F_{M_0 \mid X}) \}, \quad
-\NIE = \mathbb{E}\{ Y(1, F_{M_1 \mid X}) - Y(1, F_{M_0 \mid X}) \}.
+\left\{\begin{array}{rcl}
+\logit\{ \pr(M  = 1\mid Z, X) \}&=&  \beta_0 + \beta_1 Z + \beta_2\tran X, \\
+E(Y\mid Z,M,X) &=& \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X .
+\end{array}\right.
+\]
+%where $\logit (w)  = \log\{ w/(1-w) \} $ with inverse $\expit(w) = (1 + e^{-w})^{-1}.$
+
+
+Under these models, show that
+\[
+\NDE = \theta_1  ,\qquad
+\NIE = \theta_2 E \left\{  \expit(\beta_0 + \beta_1  + \beta_2\tran X)
+-  \expit(\beta_0   + \beta_2\tran X)  \right\}.
+\]
+How do we estimate $\NDE$ and $\NIE$ with IID data?
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Mediation analysis with binary mediator and outcome]\label{exr:27-10}
+
+Consider the following logistic models for the binary mediator and outcome:
+\[
+\left\{\begin{array}{rcl}
+\logit\{ \pr(M  = 1\mid Z, X) \}&=&  \beta_0 + \beta_1 Z + \beta_2\tran X, \\
+\logit \{ \pr(Y = 1 \mid Z,M,X ) \} &=& \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X.
+\end{array}\right.
+\]
+Express $\NDE$ and $\NIE$ in terms of the model parameters and the distribution of $X$. How do we estimate $\NDE$ and $\NIE$ with IID data?
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Modify the definitions to drop the cross-world independence]\label{exr:27-11}
+
+
+Define
+\[
+Y(z, F_{M_{z'}\mid X}) = \int Y(z,m) f(M_{z'} = m\mid X) \d m
+\]
+as the potential outcome under treatment $z$ and a random draw from the distribution of $M_{z'}\mid X$.
+With a discrete $M$, the definition simplifies to
+\[
+Y(z, F_{M_{z'}\mid X}) =\sum_m Y(z,m) \pr(M_{z'} = m\mid X).
+\]
+The key difference between $Y(z,M_{z'})$ and $Y(z, F_{M_{z'}\mid X}) $ is that $M_{z'}$ is the potential mediator for the same unit whereas $F_{M_{z'}\mid X}$ is a random draw from the conditional distribution of the potential mediator in the whole population.
+Define the natural direct and indirect effects as
+\[
+\NDE = E\{Y(1, F_{M_{0}\mid X})  - Y(0, F_{M_{0}\mid X})   \},\quad
+\NIE  =  E\{Y(1, F_{M_{1}\mid X})  - Y(1, F_{M_{0}\mid X})   \}.
 \]
 
-证明：在仅假设 \cref{assume:mediation-no-z-y-confounding,assume:mediation-no-m-y-confounding,assume:mediation-no-z-m-confounding}（不要求跨世界独立性）下，$\NDE$ 和 $\NIE$ 的识别公式与正文相同。
-\end{Exercise}
 
-\par\Notes{本题答案见附录 \cref{sec:sol-no-crossworld}。}
+Show that under Assumptions \ref{assume::mediation1}--\ref{assume::mediation3}, the identification formulas for $\NDE$ and $\NIE$ remain the same as in the main text.
 
-\begin{Exercise}\label{ex:principal-mediation-connection}
-%（主分层与中介分析的联系）
 
-\Citet{vanderweele2008simple} 和 \Citet{forastiere2018principal} 综述并比较了主分层与中介分析两种方法。请查阅这些文献，并撰写一页总结，阐述两种方法的异同与各自的优缺点。
-\end{Exercise}
 
-\par\Notes{本题为开放性研究型练习，请参考 \cite{vanderweele2008simple} 和 \cite{forastiere2018principal}。}
+Remark: Modifying the definitions of the nested potential outcomes allows us to relax the strong cross-world independence assumption but weakens the interpretation of the natural direct and indirect effects. See \citet{vanderweele2015explanation} for more discussion and \citet{vanderweele2017mediation} for an application to a more complex setting with time-varying treatment and mediator.
 
-\endinput
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Connections between principal stratification and mediation analysis]\label{exr:27-12}
+
+\citet{vanderweele2008simple} and
+\citet{forastiere2018principal} reviewed and compared principal stratification and mediation analysis.
+
+\end{HomeworkProblem}

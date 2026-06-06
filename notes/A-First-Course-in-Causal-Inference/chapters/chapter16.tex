@@ -366,50 +366,65 @@ $X_I$（干预后） & 是 & 是 & 不应调整 \\
 
 \section{习题}\label{sec:16-homework}
 
-\begin{Exercise}\label{pro:16-z-bias-formula}
-验证正文中的公式 \cref{eq:16-z-bias-unadj} 和 \cref{eq:16-z-bias-adj}。
-\end{Exercise}
+\begin{HomeworkProblem}[More details for the formula of Z-bias]\label{exr:16-1}
+Verify \eqref{eq::zbias-result}.
 
-\begin{Exercise}\label{pro:16-m-bias-formula}
-考虑正文中的 M-偏倚正态线性模型。证明给定 $X$ 时 $Z$ 和 $Y$ 的偏相关系数公式 \cref{eq:16-partial-corr}。
-\end{Exercise}
 
-\begin{Exercise}\label{pro:16-negative-control}
-找出一个你自己的研究领域中的阴性结果或阴性暴露的例子。讨论为什么它符合阴性控制的条件，以及它如何帮助评估不可混淆性假设。
-\end{Exercise}
+\end{HomeworkProblem}
 
-\begin{Exercise}\label{pro:16-cochran}
-\Citet{Cochran:1938} 和 econometricians 提出了以下\textbf{Cochran 公式}（也称为遗漏变量偏倚公式）。设 $(y_i, x_{1i}, x_{2i})_{i=1}^n$ 为 IID 样本，其中 $y_i$ 是标量，$x_{1i}$ 维数为 $K$，$x_{2i}$ 维数为 $L$。考虑 OLS 分解：
-\[
-y_i = \beta_1^{\mathrm{T}} x_{1i} + \beta_2^{\mathrm{T}} x_{2i} + \varepsilon_i \quad \text{（长回归）},
-\]
-\[
-y_i = \gamma^{\mathrm{T}} x_{1i} + e_i \quad \text{（短回归）},
-\]
-\[
-x_{2i} = \delta^{\mathrm{T}} x_{1i} + v_i .
-\]
-证明：$\gamma = \beta_1 + \delta \beta_2$。解释为什么 $\delta \beta_2$ 被称为遗漏变量偏倚。
-\end{Exercise}
+\begin{HomeworkProblem}[Cochran's formula or the omitted variable bias formula]\label{exr:16-2}
 
-\begin{Exercise}\label{pro:16-overadjustment-design}
-设计一个模拟研究，演示以下情形：
+
+
+Sir David Cox calls the following result {\it Cochran's formula} \citep{cochran1938omission, cox2007generalization} and econometricians call it the {\it omitted variable bias formula} \citep{angrist2008mostly}.
+A special case appeared in \citet{fisher1925statistical}.
+It is also a counterpart of the Frisch--Waugh--Lovell theorem in Chapter \ref{appendix::fwl-theorem}.
+
+The formula has two versions. All vectors below are column vectors.
+
 \begin{enumerate}
-  \item 调整混杂变量 $X$ 可以减少偏倚；
-  \item 调整与未测混杂相关的变量会引入 M-偏倚；
-  \item 调整工具变量 $X_Z$ 在存在未测混杂时会放大偏倚。
+[(1)]
+\item
+(Population version) Assume $(y_i, x_{1i}, x_{2i})_{i=1}^n$ are IID, where $y_i$ is a scalar, $x_{i1}$ has dimension $K$, and $x_{i2}$ has dimension $L$.
+
+We have the following OLS decompositions of random variables
+\begin{eqnarray}
+y_i &=& \beta_1 \tran x_{i1} + \beta_2  \tran x_{2i} + \varepsilon_i , \label{eq::long}\\
+y_i&=&\gamma  \tran x_{i1} + e_i, \label{eq::short}\\
+x_{i2} &=& \delta  \tran x_{i1} + v_i . \label{eq::inter}
+\end{eqnarray}
+Equation \eqref{eq::long} is called the long regression, and Equation \eqref{eq::short} is called the short regression. In Equation \eqref{eq::inter}, $\delta$ is a matrix because it is a regression of a vector on a vector. You can view \eqref{eq::inter} as regression of each component of $x_{i2}$ on $x_{i1}$.
+
+Show that $\gamma = \beta_1 + \delta \beta_2.$
+
+
+\item
+(Sample version) We have an $n\times 1$ vector $Y$, an $n\times K$ matrix $X_1$, and an $n\times L$ matrix $X_2$. We do not assume any randomness. All results below are purely linear algebra.
+
+We can obtain the following OLS fits:
+\begin{eqnarray*}
+Y &=& X_1 \hat{\beta}_1 + X_2 \hat{\beta}_2+ \hat{\varepsilon},\\
+Y &=& X_1 \hat{\gamma} + \hat{e} ,\\
+X_2 &=& X_1 \hat{\delta} + \hat{v},
+\end{eqnarray*}
+where $\hat{\varepsilon},  \hat{e}, \hat{v}$ are the residuals.
+Again, the last OLS fit means the OLS fit of each column of $X_2$ on $X_1$, and therefore the residual $\hat{v}$ is an $n\times L$ matrix.
+
+Show that $\hat{\gamma} = \hat{\beta}_1 +  \hat{\delta} \hat{\beta}_2$.
+
 \end{enumerate}
-对于每种情形，使用大样本量（$n = 10^5$）计算未调整和调整后的估计量。
-\end{Exercise}
 
-\section{推荐阅读}\label{sec:16-reading}
 
-关于因果图和因果推断的深入讨论，见 Pearl (2000) 的经典教科书。
+Remark: The product terms  $\delta \beta_2$ and $\hat{\delta} \hat{\beta}_2$ are often referred to as the omitted-variable bias at the population level and sample level, respectively.
 
-VanderWeele 和 Shpitser (2011) 讨论了协变量选择的正式准则。
 
-Rosenbaum (2002b) 是关于观测性研究中敏感性分析的重要参考文献，也是本章许多思想的源头。
+\end{HomeworkProblem}
 
-Ding 等 (2017b) 提供了 Z-偏倚（工具变量偏倚）的一般性理论。
+\begin{HomeworkProblem}[Recommended reading]\label{exr:16-3}
 
-% 本章完
+\citet{imbens2020potential} reviews and compares the roles of potential outcomes and causal diagrams for causal inference.
+
+
+
+
+\end{HomeworkProblem}

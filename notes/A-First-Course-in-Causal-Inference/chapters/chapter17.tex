@@ -306,55 +306,124 @@ E-value 等于 $\max(\RR_{ZU\mid x}, \RR_{UY\mid x})$——即要解释掉观察
 
 \section{习题}\label{sec:17-homework}
 
-\begin{HomeworkProblem}[17.1]\label{hw:17-1}
-证明函数 $f(x) = (ax+1)/(bx+1)$ 在 $a > b$ 时关于 $x$ 单调递增，在 $a < b$ 时单调递减。
+\begin{HomeworkProblem}[A technical lemma for the proof of Theorem \ref{thm::bounding-factor}]\label{exr:17-1}
+
+Show that
+\[
+f(x) = \frac{ax+1}{bx+1}
+\]
+is increasing in $x$ if $a>b$ and decreasing in $x$ is $a<b$.
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[17.2]\label{hw:17-2}
-证明在假设 $Z \perp Y \mid (X,U)$ 下，如果 $\RR_{ZU\mid x} > 1$ 但 $\RR_{UY\mid x} < 1$，则 $\RR_{ZY\mid x}^{\mathrm{obs}} < 1$。这说明 \cref{eq:17-assumptions} 中的第三个条件在某种意义上是冗余的。
+\begin{HomeworkProblem}[Technical assumption for Theorem \ref{thm::bounding-factor}]\label{exr:17-2}
+
+Revisit the proof of Theorem \ref{thm::bounding-factor}. Assume $Z\ind Y \mid (X, U)$. Show that if $ \RR_{ZU\mid x} > 1$ but $ \RR_{UY\mid x} < 1$, then $\RR_{ZY\mid x}^\obs < 1$.
+
+
+Remark:
+This result is intuitive. Condition on $X.$ It says that if the $Z$-$U$ relationship is positive and the $U$-$Y$ relationship is negative, then the $Z$-$Y$ relationship is negative given the conditional independence of $Z$ and $Y$ given $U$.
+Based on this result, if we assume $\RR_{ZY\mid x}^\obs > 1$ and $ \RR_{ZU\mid x} > 1$, then $ \RR_{UY\mid x} > 1$ must be true.
+Therefore, the third condition in \eqref{eq::largerthan1-evalue} is in fact redundant.
+
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[17.3]\label{hw:17-3}
-证明引理 \ref{lm:17-beta-properties}。
+\begin{HomeworkProblem}[Lemma \ref{lemma::betaw1w2}]\label{exr:17-3}
+
+Prove Lemma \ref{lemma::betaw1w2}.
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[17.4]\label{hw:17-4}
-（Schlesselman 1978 公式）在二值治疗 $Z$、结果 $Y$ 和未测混杂 $U$ 下，假设层内（$U=0$ 和 $U=1$）治疗对结果的风险比相同，$\RR_{ZY\mid U=0} = \RR_{ZY\mid U=1}$，且混杂对结果的风险比在两组治疗下也相同（记为 $\gamma$）。证明：
-\begin{equation}
-\frac{\RR_{ZY}^{\mathrm{obs}}}{\RR_{ZY}^{\mathrm{true}}} = \frac{1 + (\gamma - 1)\pr(U=1 \mid Z=1)}{1 + (\gamma - 1)\pr(U=1 \mid Z=0)} .
-\label{eq:17-schlesselman}
-\end{equation}
-并讨论此公式与定理 \ref{th:17-cornfield} 的关系。
+\begin{HomeworkProblem}[\citet{Schlesselman::1978}'s formula]\label{exr:17-4}
+
+For simplicity, we condition on $X$ implicitly in this problem.
+Consider a binary treatment $Z$, outcome $Y$, and unmeasured confounder $U$.
+Assume a common risk ratio of the treatment on the outcome within both $U=0$ and $U=1$:
+\[
+%\RR_{ZY}^{\true}  =
+ \RR_{ZY|U=0} = \RR_{ZY|U=1},
+\]
+and also a common risk ratio of the confounder on the outcome within both $Z=0$ and $Z=1$:
+\[
+\RR_{UY|Z=0} = \RR_{UY|Z=1} , \text{ denoted by }\gamma.
+\]
+
+Show that
+\[
+\frac{\RR_{ZY}^{\obs}}{  \RR_{ZY}^{\true} } = \frac{1 + (  \gamma  -1)\pr(U=1\mid Z=1)  }
+{ 1 + (  \gamma -1)\pr(U=1\mid Z=0) } .
+\]
+
+
+
+
+Remark: First verify that if  $\RR_{ZY|U=0} = \RR_{ZY|U=1}$ then
+\[
+\RR_{ZY}^{\true}  = \RR_{ZY|U=0} = \RR_{ZY|U=1} .
+\]
+This identity shows the {\it collapsibility} of the risk ratio.
+In epidemiology, the risk ratio is a {\it collapsible} measure of association.
+
+
+
+\citet{Schlesselman::1978}'s formula does not assume conditional independence $Z\ind Y\mid U$, but assumes homogeneity of the $Z$-$Y$ and $U$-$Y$ risk ratios. It is a classic formula for sensitivity analysis. It is an identity that is simple to implement with pre-specified
+\[
+\{   \gamma  ,  \pr(U=1\mid Z=1), \pr(U=1\mid Z=0)  \} .
+\]
+However, it involves more sensitivity parameters than Theorem \ref{thm::bounding-factor}. Even though Theorem \ref{thm::bounding-factor} only gives an inequality, it is not a loose inequality compared to \citet{Schlesselman::1978}'s formula under stronger assumptions. With Theorem \ref{thm::bounding-factor},  \citet{Schlesselman::1978}'s formula is only of historical interest.
+
+
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[17.5]\label{hw:17-5}
-使用与例 \ref{ex:17-nchs} 相同的数据集，计算结果为子痫前期（preeclampsia）时的 E-value。
+\begin{HomeworkProblem}[E-value after logistic regression: data analysis]\label{exr:17-5}
+
+This problem uses the same dataset as Example \ref{eg::NCHS2003}.
+
+Report the E-value for the outcome \ri{preeclampsia}.
+
+
 \end{HomeworkProblem}
 
-\begin{HomeworkProblem}[17.6]\label{hw:17-6}
-（风险差的 Cornfield 不等式）考虑二值 $Z, Y, U$。在潜在可忽略性 $Z \perp Y \mid U$ 下，证明风险差的 Cornfield 不等式：
-\begin{equation}
-\RD_{ZY}^{\mathrm{obs}} = \RD_{ZU} \times \RD_{UY} ,
-\label{eq:17-rd-cornfield}
-\end{equation}
-并由此推出：
-\begin{equation}
-\min(\RD_{ZU}, \RD_{UY}) \geq \RD_{ZY}^{\mathrm{obs}}, \quad
-\max(\RD_{ZU}, \RD_{UY}) \geq \sqrt{\RD_{ZY}^{\mathrm{obs}}} .
-\label{eq:17-rd-cornfield-ineq}
-\end{equation}
+\begin{HomeworkProblem}[Cornfield-type inequalities for the risk difference]\label{exr:17-6}
+
+
+
+Consider binary $Z, Y, U$, and condition on $X$ implicitly. Assume latent ignorability given $U$.  Show that under $Z\ind Y\mid U$, we have
+\begin{eqnarray}
+\RD_{ZY}^\obs = \RD_{ZU} \times \RD_{UY}
+\end{eqnarray}
+where $\RD_{ZY}^\obs$ is the observed risk difference of $Z$ on $Y$, and $\RD_{ZU}$ and $ \RD_{UY}$ are the treatment-confounder and confounder-outcome risk differences, respectively (recall the definition of the risk difference in Chapter \ref{sec::twobytwotables-withresume}).
+
+
+Remark: Without loss of generality, assume that $\RD_{ZY}^\obs, \RD_{ZU} ,\RD_{UY}$ are all positive. Then \eqref{eq::cornfield-rd} implies that
+\[
+\min(\RD_{ZU}  , \RD_{UY}) \geq \RD_{ZY}^\obs
+\]
+and
+\[
+\max(\RD_{ZU}  , \RD_{UY}) \geq  \sqrt{ \RD_{ZY}^\obs} .
+\]
+These are the Cornfield inequalities for the risk difference with a binary confounder.
+They show that for an unmeasured confounder to explain away an observed risk difference $\RD_{ZY}^\obs$, the treatment-confounder and confounder-outcome risk differences must both be larger than $\RD_{ZY}^\obs$, and the maximum of them must be larger than the square root of $\RD_{ZY}^\obs$.
+
+\citet{Cornfield::1959} obtained, but did not appreciate the significance of \eqref{eq::cornfield-rd}. \citet{gastwirth1998cornfield} and \citet{poole2010origin} discussed the first Cornfield condition for the risk difference, and \citet{ding2014generalized} discussed the second.
+
+\citet{ding2014generalized}  also derived more general results without assuming a binary $U$. Unfortunately, the results for a general $U$ are weaker than those above for a binary $U$, that is, the inequalities become looser with more levels of $U$. This motivated \citet{ding2016sensitivity} to focus on the Cornfield inequalities for the risk ratio, which do not deteriorate with more levels of $U$.
+
+
+
+
 \end{HomeworkProblem}
 
-\section{推荐阅读}\label{sec:17-reading}
+\begin{HomeworkProblem}[Recommended reading]\label{exr:17-7}
 
-\begin{itemize}
-  \item \citet{DingVanderWeele2016}：扩展并统一了 Cornfield 型灵敏度分析，是 E-value 的理论基础。
-  \item \citet{VanderWeeleDing2017}：首次正式提出 E-value 并给出其流行病学解释。
-  \item \citet{BradfordHill1965}：Bradford Hill 原文，九条因果准则的经典来源。
-  \item \citet{Ioannidis2019}：对 E-value 的批评性讨论。
-\end{itemize}
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-% APPENDIX
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+\citet{ding2016sensitivity}  extended and unified the Cornfield-type sensitivity analysis, which is the theoretical basis for the notion of E-value.
 
+
+\end{HomeworkProblem}

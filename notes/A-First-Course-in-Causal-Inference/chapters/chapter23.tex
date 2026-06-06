@@ -173,27 +173,101 @@ D_i = \gamma_0 + \gamma_1 Z_i + \gamma_2^{\top}X_i + \varepsilon_{2i},
 
 在应用层面，TSLS 已成为计量经济学中处理内生性问题的标准工具。下一章我们将讨论如何检验工具变量的有效性，以及如何处理可能的工具变量失效情形。
 
-\section{习题}\label{sec:TSLS-homework}
+\section{习题}\label{sec:23-homework}
 
-\begin{Exercise}[TSLS 与 IV 的等价性]\label{hw:23.1}
-证明在恰好识别情形下（$Z$ 与 $D$ 维度相同），TSLS 估计量 $\hat{\beta}_{\mathrm{TSLS}}$ 与 IV 估计量 $\hat{\beta}_{\mathrm{IV}}$ 数值相同。
+\begin{HomeworkProblem}[More algebra for TSLS in Section \ref{sec::sec::iv-over-identify}]\label{exr:23-1}
 
-\textbf{提示}：利用第一阶段 OLS 的正交性条件 $\sum_{i=1}^n \hat{D}_i \check{D}_i^{\top} = 0$。
-\end{Exercise}
-
-\begin{Exercise}[TSLS 与 ILS 的等价性]\label{hw:23.2}
-证明定理 \cref{th:TSLS-ILS-equivalence}：在单一内生处理变量和单一工具变量情形下，TSLS 估计量等于约化形式系数比值 $\hat{\Gamma}_1 / \hat{\gamma}_1$。
-
-\textbf{提示}：利用第一阶段拟合值的表达式 $\hat{D}_i = \hat{\gamma}_0 + \hat{\gamma}_1 Z_i + \hat{\gamma}_2^{\top}X_i$，验证第二阶段 OLS 中 $\hat{D}$ 的系数恰好等于比值形式。
-\end{Exercise}
-
-\begin{Exercise}[弱工具变量的影响]\label{hw:23.3}
-考虑 TSLS 估计量 $\hat{\beta}_{1,\mathrm{TSLS}} = \hat{\Gamma}_1 / \hat{\gamma}_1$。当工具变量较弱（即 $\gamma_1$ 接近于零）时，讨论：
 \begin{enumerate}
-\item 为什么 $\hat{\gamma}_1$ 的小误差会导致 $\hat{\beta}_{1,\mathrm{TSLS}}$ 的巨大偏差？
-\item FAR 置信区间相比 Wald 型置信区间的优势是什么？
-\end{enumerate}
-\end{Exercise}
+\item
+Show that the $\hat \Gamma$ in \eqref{eq::ols-donz} equals
+\[
+\hat{\Gamma} = \left(  \sumn Z_i Z_i\tran  \right)^{-1} \sumn Z_i D_i\tran .
+\]
 
-% 可分离文件，不要在此引入 chapter 文件！
-%\ifdefined\Separation\else\input{../appendix/appendix-TSLS-derivation}\fi
+\item
+Show $\hat{\beta}_\textsc{tsls} $ defined in \eqref{eq::2sls-definition} reduces to $ \hat{\beta}_\textsc{iv}$ defined in \eqref{eq::iv-estimator} if $Z$ and $D$ have the same dimension and
+\[
+n^{-1} \sumn Z_i Z_i\tran, \quad n^{-1} \sumn Z_i D_i\tran
+\]
+are both invertible.
+\end{enumerate}
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Equivalence between TSLS and ILS]\label{exr:23-2}
+Prove Theorem \ref{thm::ils=2sls}.
+
+
+Remark: Use the FWL theorem in Chapter \ref{appendix::basic-linear-regression}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Control function in the linear instrumental variable model]\label{exr:23-3}
+
+Definition \ref{def::cf} below parallels Definition \ref{def::2sls} above.
+
+\begin{definition}
+[control function]\label{def::cf}
+Define the control function estimator $\hat{\beta}_\textsc{cf}$ as follows.
+\begin{enumerate}
+\item
+Run OLS of $D$ on $Z$, and obtain the residuals $\check D_i\ (i=1,\ldots, n)$. If $D_i$ is a vector, then we need to run component-wise OLS to obtain $\check D_i$. Put the residual vectors in a matrix $\check{D}$ with rows $\check{D}_i\tran $;
+\item
+Run OLS of $Y$ on $D$ and $\check{D}$, and obtain the coefficient of $D$, $\hat{\beta}_\textsc{cf}$.
+\end{enumerate}
+\end{definition}
+
+ Show that $\hat{\beta}_\textsc{cf} = \hat{\beta}_\textsc{tsls}$.
+
+
+ Remark:
+To prove the result, you can use the results in Problems \ref{hw::ols-orthogonal} and \ref{hw::ols-transform-regressors}.
+  In Definition \ref{def::cf}, $\check{D}$ from Step 1 is called the control function for Step 2.
+ \citet{hausman1978specification} pointed out this result. \citet{wooldridge2015control} provided a more general discussion of the control function methods in more complex models.
+
+
+
+
+
+
+%\paragraph{Data analysis: \citet{card1993using}}
+%
+%\citet{card1993using} used the geographic variation in college proximity to estimate the return to schooling. The treatment is education and the outcome is log wage. The IV is the college proximity.
+%\texttt{card.csv} is a slightly modified version of the data from Card's homepage with detailed explanations of the variable names in \texttt{code\_bk.txt}.
+%
+%You can dichotomize the education variable and infer the LATE. How do you choose the threshold for the dichotomization? Are the results sensitive to your choice? Conduct an analysis with covariates.
+%
+%Without dichotomizing the education variable, you can use the standard two-stage least squares estimator. Compare the results to the above analysis.
+%
+%What if the return of education is nonlinear? Do the data provide information for us to test the nonlinearity?
+%
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data analysis: \citet{efron1991compliance}]\label{exr:23-4}
+
+\citet{efron1991compliance} was one of the early studies dealing with noncompliance under the potential outcomes framework. The original randomized experiment, the Lipid Research Clinics Coronary Primary Prevention Trial (LRC-CPPT), was designed to evaluate the effect of the drug cholestyramine on cholesterol levels.
+In the dataset \texttt{EF.csv}, the first column contains the binary indicators for treatment and control, the second column contains the proportions of the nominal cholestyramine dose actually taken, and the last three columns are cholesterol levels.
+Note that the individuals did not know whether they were assigned to cholestyramine or to the placebo, but differences in adverse side effects could induce differences in compliance behavior by treatment status. All individuals were assigned the same nominal dose of the drug or placebo, for the same time period.
+Column 3, $C_3$, was taken before communication about the benefits of a low-cholesterol diet, Column 4, $C_4,$ was taken after this suggestion, but before the random assignment to cholestyramine or placebo, and Column 5, $C_5$,  an average of post-randomization cholesterol readings, averaged over two-month readings for a period of time averaging 7.3 years for all the individuals in the study. \citet{efron1991compliance} used the change in cholesterol level as the final outcome of interest, defined as $C_5 - 0.25C_3 - 0.75C_4$. Their original paper contains more detailed descriptions.
+
+
+The data structure here is more complicated than the noncompliance problem discussed in Chapters \ref{chapter::iv-experiment} and \ref{chapter::iv-inequalities}.
+\citet{jin2008principal} re-analyzed the data based on the idea in Chapter \ref{chapter::principal-stratification} later.
+You can analyze the data based on your understanding of the problem, but you need to justify your choice of the method. There is no gold-standard solution for this problem.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:23-5}
+
+
+\citet{imbens2014instrumental} gave an econometrician's perspective of IV.
+
+
+\end{HomeworkProblem}

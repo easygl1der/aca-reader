@@ -252,49 +252,76 @@ Y_i(0), & \text{if } T_i = 0
 
 下一章我们将看到，\textbf{随机实验}提供了一种绕过根本问题的优雅方式——通过随机分配治疗，我们可以建立组间可比性，从而识别因果效应。
 
-\section{习题}\label{sec:chapter2-exercises}
+\section{习题}\label{sec:2-homework}
 
-\begin{Exercise}{\ref{ex:2.1} 完美的医生}\label{ex:2.1}
-假设潜在结果由以下模型生成：
+\begin{HomeworkProblem}[A perfect doctor]\label{exr:2-1}
+
+Following the first perfect doctor example in Section \ref{sec::Treatment-ScienceTable}, assume the potential outcomes are random variables generated from
 \[
-Y_i(0) \sim N(0, 1), \quad \tau_i = -0.5 + Y_i(0), \quad Y_i(1) = Y_i(0) + \tau_i
+Y(0) \sim \textsc{N}(0,1), \quad \tau = -0.5 + Y(0),\quad Y(1)  = Y(0) + \tau .
 \]
-治疗分配为 $T_i = \mathbb{I}(\tau_i \geq 0)$，观测结果为 $Y_i = T_i Y_i(1) + (1-T_i) Y_i(0)$。
-
-计算条件均值差 $\mathbb{E}(Y_i \mid T_i=1) - \mathbb{E}(Y_i \mid T_i=0)$。
-
-\textbf{提示}：需要使用截断正态分布的均值公式。当 $X \sim N(\mu, \sigma^2)$ 时，
+The binary treatment is determined by the treatment effect as $Z = 1(\tau \geq 0)$, and the observed outcome is determined by the potential outcomes and the treatment by $Y = ZY(1) + (1-Z) Y(0)$. Calculate the difference in means
 \[
-\mathbb{E}(X \mid a < X < b) = \mu - \sigma \frac{\phi\left(\frac{b-\mu}{\sigma}\right) - \phi\left(\frac{a-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a-\mu}{\sigma}\right)}
+E(Y\mid Z=1) - E(Y\mid Z=0).
 \]
-其中 $\phi$ 和 $\Phi$ 分别是标准正态分布的密度函数和分布函数。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:2.2} 非线性因果参数}\label{ex:2.2}
-证明平均因果效应是线性因果参数的例子，即 $\bar{Y}(1) - \bar{Y}(0) = n^{-1}\sum_{i=1}^n \{Y_i(1) - Y_i(0)\}$。
 
-其他参数可能不是线性的。例如，定义中位数治疗效应为：
+Remark: The mean of a truncated Normal random variable equals
 \[
-\delta_1 = \text{median}\{Y_i(1)\} - \text{median}\{Y_i(0)\}
+E(X\mid   a < X < b ) = \mu - \sigma \frac{   \phi \left(  \frac{b-\mu}{\sigma} \right )   -  \phi \left(  \frac{a-\mu}{\sigma} \right )   }
+{   \Phi \left(  \frac{b-\mu}{\sigma} \right )   -  \Phi \left(  \frac{a-\mu}{\sigma} \right )   } ,
 \]
-这通常不同于个体治疗效应的中位数：
+where $X \sim \textsc{N}(\mu, \sigma^2)$, and $\phi(\cdot)$ and $\Phi(\cdot)$ are the probability density and cumulative distribution functions of a standard Normal random variable $\textsc{N}(0,1)$.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Nonlinear causal estimands]\label{exr:2-2}
+
+
+
+With potential outcomes $\{  (Y_i(1), Y_i(0) \}_{i=1}^n$ for $n$ units under the treatment and control, the difference in means equals the mean of the individual treatment effects:
 \[
-\delta_2 = \text{median}\{Y_i(1) - Y_i(0)\}
+\bar{Y}(1) - \bar{Y}(0) = n^{-1} \sum_{i=1}^n  \{ Y_i(1) - Y_i(0) \}.
+\]
+Therefore, the average treatment effect is a {\it linear} causal estimand in the sense that the difference in average potential outcomes equals the average of the differences in individual potential outcomes.
+
+
+Other estimands may not be linear. For instance, we can define the median treatment effect as
+\[
+\delta_1 = \text{median}\{  (Y_i(1) \}_{i=1}^n - \text{median}\{  (Y_i(0) \}_{i=1}^n,
+\]
+which is, in general, different from the median of the individual treatment effect
+\[
+\delta_2 = \text{median}\{  (Y_i(1) - Y_i(0) \}_{i=1}^n .
 \]
 
 \begin{enumerate}
-  \item 给出数值例子分别满足 $\delta_1 = \delta_2$、$\delta_1 > \delta_2$ 和 $\delta_1 < \delta_2$。
-  \item 哪个参数更有意义？为什么？请用例子来证明你的结论。
+\item
+Give numerical examples that have $\delta_1 = \delta_2$, $\delta_1 > \delta_2$, and $\delta_1 < \delta_2$, respectively.
+
+
+\item
+Which estimand makes more sense, $\delta_1$ or $\delta_2$? Why? Use examples to justify your conclusion. If you feel that both $\delta_1$ and $\delta_2$ can make sense in different applications, you can also give examples to justify both estimands.
 \end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:2.3} 平均效应与个体效应}\label{ex:2.3}
-给出一个数值例子，其中 $\tau = n^{-1}\sum_{i=1}^n \{Y_i(1) - Y_i(0)\} > 0$，但有不到一半的单元满足 $Y_i(1) > Y_i(0)$。即平均因果效应为正，但治疗对不到一半的单元有益。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:2.4} 推荐阅读}\label{ex:2.4}
-\begingroup
-\parskip=0pt
-\textbf{推荐阅读}：\cite{holland1986} 是统计因果推断领域的经典综述文章，它推广了``Rubin 因果模型''这一名称。在 UC Berkeley，我们称之为``Neyman 模型''——原因显而易见。
-\endgroup
-\end{Exercise}
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Average and individual effects]\label{exr:2-3}
+
+Give a numerical example in which $\tau = n^{-1} \sum_{i=1}^n  \{ Y_i(1) - Y_i(0) \}  >0$ but the proportion of units with $Y_i(1) > Y_i(0)$ is smaller than $0.5$. That is, the average causal effect is positive, but the treatment benefits less than half of the units.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:2-4}
+
+\citet{holland1986statistics} is a classic review article on statistical causal inference. It popularized the name ``Rubin Causal Model'' for the potential outcomes framework. At the University of California Berkeley, we call it the ``Neyman Model'' for obvious reasons.
+
+
+
+\end{HomeworkProblem}

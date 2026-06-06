@@ -314,3 +314,98 @@ Z_i(X_i - x_0) = Z_i R_i - (1-Z_i)L_i = R_i - L_i - (1-Z_i)R_i + (1-Z_i)L_i .
 % DAmour et al. (2021), King and Zeng (2006), Crump et al. (2009), Yang and Ding (2018b),
 % Thistlethwaite and Campbell (1960), Bor et al. (2014), Carpenter and Dobkin (2009),
 % Lee (2008), Rubin (2008), McCrary (2008)
+
+\section{习题}\label{sec:20-homework}
+
+\begin{HomeworkProblem}[A theorem for the role of outcome modeling in the presence of limited overlap]\label{exr:20-1}
+
+This problem extends the discussion in Section \ref{sec::outcome-modeling-overlap}. I state a formal theorem below.
+
+\begin{Theorem}
+\label{thm::outcome-overlap}
+Assume
+\[
+Z\ind Y(z) \mid X, \quad (z=0,1)
+\]
+and
+\[
+E\{  Y(z) \mid X \} = f_z( r(X)   ),\quad (z=0,1)
+\]
+for some function $r(X)$.
+The average causal effect $\tau = E\{ Y(1) - Y(0)  \}$ can be identified by
+\[
+\tau =E\{   E(Y\mid Z=1, r(X)) - E(Y\mid Z=0, r(X)) \}
+\]
+or
+\[
+\tau = E\left\{   \frac{ZY}{  e(r(X)) }  \right\}  - E\left\{   \frac{(1-Z)Y}{ 1 -  e(r(X)) }  \right\}
+\]
+where $e(r(X)) = \pr\{ Z=1\mid r(X) \}$.
+\end{Theorem}
+
+Prove Theorem \ref{thm::outcome-overlap}.
+
+Remark: When $r(X) = X$, Theorem \ref{thm::outcome-overlap} reduces to the standard IPW formula for the average causal effect. When $r(X)$ has a lower dimension than $X$, Theorem \ref{thm::outcome-overlap} has broader applicability if the overlap condition on $e(X)$ fails whereas the overlap condition on $e(r(X)) $ may still hold.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Linear potential outcome models]\label{exr:20-2}
+
+
+ This problem gives more details for the numerical equivalence in Section \ref{sec::rdd-numerical}.
+
+ Show that $\hat\tau(x_0) $ equals the coefficients of $Z_i$ in OLS fits \eqref{eq::ols-rdd-1} and \eqref{eq::ols-rdd-1}.
+
+% Assume that
+% \[
+% Y_i(1) = \gamma_1 + \beta_1 X_i + \varepsilon_i(1),\quad
+%  Y_i(0) = \gamma_0 + \beta_0 X_i + \varepsilon_i(0)
+% \]
+%with $ E\{\varepsilon_i(1) \mid X_i \} =  E\{\varepsilon_i(0) \mid X_i \} = 0$. First, express
+%\[
+%\tau(x_0) = E\{ Y_i(1) - Y_i(0)\mid X_i = x_0 \}
+%\]
+%in terms of the parameters in the above model, and then show that $\tau(x_0)$ can be unbiased estimated by the coefficient of $Z_i$ in the OLS fits of \eqref{eq::ols-rdd-1} or \eqref{eq::ols-rdd-2}.
+
+
+Remark: It is helpful to start with the figures of $Z_i(X_i - x_0)$, $L_i$, and $R_i$ with $X_i$ on the x-axis. The conclusion holds by a reparametrization of the OLS regressions.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Simulation for regression discontinuity]\label{exr:20-3}
+
+In Figure \ref{fig::4examples-rdd}, the potential outcomes are simulated from linear models. Change them to nonlinear models, and compare different point estimators and confidence intervals, including the biases and variances of the point estimators, and the coverage properties of confidence intervals.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Re-analysis of the data on the minimum legal drinking age]\label{exr:20-4}
+
+
+Figure \ref{fig::mlda-9outcomes} shows the jumps at the cutoff point.
+Analyze the data \ri{mlda.csv} of \citet{carpenter2009effect}.
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Re-analysis of \citet{lee2008randomized}'s data]\label{exr:20-5}
+
+Figure \ref{fig::rdd-lee} plots the confidence intervals based on the standard errors assuming homoskedasticity. Generate a figure with confidence intervals based on the EHW standard errors in OLS.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:20-6}
+
+\citet{d2017overlap} discussed the implications of overlap with high dimensional covariates.
+
+\citet{thistlethwaite1960regression}'s original paper on regression discontinuity was re-printed as \citet{thistlewaiteregression2016obs} with many insightful comments.  Coincidentally, \citet{thistlethwaite1960regression} and \citet{Rubin:1974} were both published in the {\it Journal of Educational Psychology}.
+
+\end{HomeworkProblem}

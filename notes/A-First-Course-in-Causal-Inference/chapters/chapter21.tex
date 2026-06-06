@@ -439,20 +439,189 @@ abline(h = 0.05, lty = 2)
 
 FAR 置信集的结果与上面的置信区间基本一致，但对弱 IV 更稳健。
 
-\section{习题}\label{sec:21-exercises}
+\section{习题}\label{sec:21-homework}
 
-\begin{Exercise}{\ref{exr:21-1} Wald 估计量的方差}\label{exr:21-1}
-证明 Wald 估计量 $\hat{\tau}_c = \hat{\tau}_Y / \hat{\tau}_D$ 的渐近方差为 $\hat{V}_Y / \tau_D^2$，其中 $\hat{V}_Y$ 是 ITT 估计量 $\hat{\tau}_Y$ 的方差。
-\end{Exercise}
+\begin{HomeworkProblem}[Variance of the Wald estimator]\label{exr:21-1}
 
-\begin{Exercise}{\ref{exr:21-2} 强单调性下的 IV 估计}\label{exr:21-2}
-在强单调性（所有人都是 complier 或 never taker，且 $\Pr(U=n)=0$）下，证明 IV 估计量 $\hat{\tau}_c$ 的一致性。
-\end{Exercise}
+Show that $\var(\hat{\tau}_\cp) = \infty$.
 
-\begin{Exercise}{\ref{exr:21-3} 单侧非依从性}\label{exr:21-3}
-在单侧非依从性（never taker 存在，但没有 always taker，且 $D_i(0)=0$ 对所有人成立）下，推导 CACE 的识别公式，并解释其含义。
-\end{Exercise}
 
-\begin{Exercise}{\ref{exr:21-4} 违反排除限制的后果}\label{exr:21-4}
-假设排除限制不成立，即存在 always taker 使得 $Y_i(1) \neq Y_i(0)$。证明此时 \cref{eq:21-cace-identification-formula} 估计量是有偏的，并讨论偏误的方向。
-\end{Exercise}
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Asymptotic variance of the Wald estimator and its estimation]\label{exr:21-2}
+
+
+Consider the large-sample regime with $n\rightarrow \infty$.
+First show that $\sqrt{n}(\hat{\tau}_\cp - \tau_\cp) \rightarrow \textsc{N}(0, V)$ in distribution and find $V$. Then show that $\hat{V}_{\hat{A}} /V \rightarrow 1$ in probability.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Proof of the main theorem of  \citet{imbens1994identification} and \citet{angrist1996identification}]\label{exr:21-3}
+
+ Prove Theorem \ref{thm::iv-double-index}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More on the FAR confidence set]\label{exr:21-4}
+
+The confidence set in Example \ref{eg::FAR-CI-noX} can be a close interval, two disconnected intervals, an empty set, or the whole real line. Find the precise condition for each case.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More simulation for the FAR confidence set]\label{exr:21-5}
+
+Figure \ref{fg::FAR-ci-simulation} shows the FAR confidence sets without using covariates. Conduct parallel simulation for
+ the FAR confidence sets adjusting for covariates in CRE.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Binary IV and ordinal treatment received]\label{exr:21-6}
+
+\citet{angrist1995two} discussed a more general setting with a binary IV $Z$, an ordinal treatment received $D \in \{0,1,\ldots, J\}$, and an outcome $Y$. The ordinal treatment received has potential outcomes $D(1)$ and $D(0)$ with respect to the binary IV, and the outcome has potential outcomes $Y(z,d)$ with respect to both the binary IV and the ordinal treatment received. Extend the discussion in Section \ref{eq::interpret-iv-double} and the corresponding IV assumptions as below.
+
+\begin{assumption}\label{assumption::iv-ordinal-treatment}
+We have
+(1) randomization that $Z\ind \{   D(z),  Y(z,d)  : z=0,1; d = 0,1,\ldots, J \}$;
+(2) monotonicity that $D(1) \geq D(0)$; and
+(3) exclusion restriction that $Y(z,d) = Y(d)$ for all $z=0,1$ and $ d = 0,1,\ldots, J $.
+\end{assumption}
+
+They proved Theorem \ref{thm::iv-ordinal-treatment} below.
+
+\begin{Theorem}\label{thm::iv-ordinal-treatment}
+Under Assumption \ref{assumption::iv-ordinal-treatment}, we have
+\[
+\frac{  E(Y\mid Z=1) - E(Y\mid Z=0) }{ E(D\mid Z=1) - E(D\mid Z=0)  }
+= \sum_{j=1}^J  w_j E\{  Y(j) - Y(j-1)  \mid D(1) \geq j > D(0) \}
+\]
+where
+\[
+w_j = \frac{   \pr\{  D(1) \geq j > D(0)   \}   }{   \sum_{j'=1}^J  \pr\{  D(1) \geq j' > D(0)   \}   }.
+\]
+\end{Theorem}
+
+
+
+Prove Theorem \ref{thm::iv-ordinal-treatment}.
+
+Remark:
+When $J=1$, Theorem \ref{thm::iv-ordinal-treatment} reduces to Theorem \ref{thm::iv-double-index}. With a general $J$, it states that the standard IV formula identifies a weighted average of some latent subgroup effects. The weights are proportional to the probability of the latent groups defined by $  D(1) \geq j > D(0) $, and the latent subgroup effect $E\{  Y(j) - Y(j-1)  \mid D(1) \geq j > D(0) \}$ compares the adjacent levels of the treatment received. However, this weighted average may not be easy to interpret because the latent groups overlap.
+
+
+
+The proof can be tedious.
+A trick is to write the treatment received and outcome under treatment assignment $z$ as
+\[
+D(z) = \sum_{j=0}^J j 1\{ D(z) = j\} ,\quad
+Y(D(z)) = \sum_{j=0}^J  Y(j)1\{ D(z) = j\}
+\]
+to obtain
+\[
+D(1) - D(0) = \sum_{j=0}^J j [ 1\{ D(1) = j\} -1\{ D(0) = j\} ]
+\]
+and
+\[
+ Y(D(1))  - Y(D(0))   =
+\sum_{j=0}^J Y(j)   [ 1\{ D(1) = j \}   - 1\{ D(0) = j \}  ].
+\]
+Then use the following {\it Abel's lemma}, also called {\it summation by parts}:
+\[
+\sum_{j=0}^J  f_j (g_{j+1} - g_j)
+=
+f_J g_{J+1} - f_0 g_0  - \sum_{j=1}^J g_j  (f_j - f_{j-1})
+\]
+for appropriately specified sequences $(f_j)$ and $(g_j)$.
+
+
+
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data analysis: a flu shot encouragement design \citep{mcdonald1992effects}]\label{exr:21-7}
+
+
+The dataset in \ri{fludata.txt} is from a randomized encouragement design of \citet{mcdonald1992effects}, which was also re-analyzed by \citet{hirano2000assessing}. It contains the following variables:
+
+\begin{tabular}{ll}
+\hline
+\texttt{assign} & binary encouragement to receive the flu shot\\
+\texttt{receive} & binary indicator for receiving the flu shot \\
+\texttt{outcome} & binary outcome for flu-related hospitalization\\
+\texttt{age} & age of the patient\\
+\texttt{sex} & sex of the patient\\
+\texttt{race} & race of the patient\\
+\texttt{copd} &  chronic obstructive pulmonary disease\\
+\texttt{dm} & diabetes\\
+\texttt{heartd} & heart  disease\\
+\texttt{renal} & renal  disease\\
+\texttt{liverd} & liver  disease\\
+\hline
+\end{tabular}
+
+
+Analyze the data with and without adjusting for the covariates.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[IV estimation conditional on covariates]\label{exr:21-8}
+
+Implement the estimators and corresponding variance estimators mentioned in Chapter \ref{section::unconfounded-IV} in \ri{R}.
+
+Remark: The problem is useful for Problem \ref{hw::analyze-karolinska-iv}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data analysis: the Karolinska data]\label{exr:21-9}
+
+Revisit Problem \ref{hw::Karolinska-dr}.
+\citet{rubin2008objective} used the Karolinska data as an example for the IV method. In \texttt{karolinska.txt}, whether a patient was diagnosed at a large volume hospital can be viewed as an IV for whether a patient was treated at a large volume hospital. This is plausible conditional on other observed covariates. See \citet{rubin2008objective}'s analysis for more details.
+
+
+Re-analyze the data assuming that the IV is randomly assigned conditional on observed covariates.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data analysis: a job training program]\label{exr:21-10}
+
+The file \texttt{jobtraining.rtf} contains the description of the data files \texttt{X.csv} and \texttt{Y.csv}.
+
+The dataset \texttt{X.csv} contains the pretreatment covariates. You can view the sampling weight variable \texttt{wgt} as a covariate too. Many previous analyses made this simplification although this is always a controversial issue in statistical analysis of survey data.
+Conduct analyses with and without covariates.
+
+The dataset \texttt{Y.csv} contains the sampling weight, treatment assigned, treatment received, and many post-treatment variables. Therefore, this dataset contains many outcomes depending on your questions of interest. The data also have many complications. First, some outcomes are missing. Second, unemployed individuals do not have wages. Third, the outcomes are repeatedly observed over time. When you analyze the data, please give details about your choice of the questions of interest and estimators.
+
+Remark:
+\citet{schochet2008does} analyzed the original data.
+\citet{frumento2012evaluating} provided a more sophisticated analysis based on the framework in Chapter \ref{chapter::principal-stratification} later.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:21-11}
+
+\citet{angrist1996identification} bridged the econometric IV perspective and statistical causal inference based on potential outcomes and demonstrated its usefulness with an application.
+
+Some other early references on IV are \citet{permutt1989simultaneous},  \citet{sommer1991estimating}, \citet{baker1994paired}, and \citet{cuzick1997adjusting}.
+
+
+
+\end{HomeworkProblem}

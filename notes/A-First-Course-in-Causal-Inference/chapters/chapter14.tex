@@ -222,47 +222,114 @@ Y_i \sim (1, Z_i, X_i, Z_i X_i)
 
 WLS 为因果推断提供了一个统一的框架——它既是 IPW 的另一种表述，又自然地融入了协变量调整和双重稳健性的思想。
 
-\section{习题}\label{sec:14-exercises}
+\section{习题}\label{sec:14-homework}
 
-\begin{Exercise}{\ref{ex:14.1} 命题 14.1 和 14.2 的证明}\label{ex:14.1}
-证明 \cref{prop:14.1} 和 \cref{prop:14.2}。
+\begin{HomeworkProblem}[Hajek estimators as WLS estimators]\label{exr:14-1}
 
-\noindent\textbf{提示}：这些是附录 B.3 中一元 WLS 问题的特例。利用 WLS 的正规方程即可证明。
-\end{Exercise}
+Prove Propositions \ref{prop::hajek-wls} and \ref{prop::hajek-att}.
 
-\begin{Exercise}{\ref{ex:14.2} 预测估计量与双重稳健估计量}\label{ex:14.2}
-另一种结局回归估计量是预测估计量
+Remark: These are special cases of Problem \ref{hw::wls-uni-binary} on the univariate WLS.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Predictive estimator and doubly robust estimator]\label{exr:14-2}
+
+Another outcome regression estimator is the predictive estimator
 \[
-\hat{\tau}^{\text{pred}} = \hat{\mu}_1^{\text{pred}} - \hat{\mu}_0^{\text{pred}}
+\hat{\tau}^\text{pred} =
+\hat{\mu}_1^\text{pred} - \hat{\mu}_0^\text{pred}
 \]
-其中
+where
 \[
-\hat{\mu}_1^{\text{pred}} = \frac{1}{n}\sum_{i=1}^n \{Z_i Y_i + (1-Z_i)\mu_1(X_i, \hat{\beta}_1)\},
-\quad
-\hat{\mu}_0^{\text{pred}} = \frac{1}{n}\sum_{i=1}^n \{Z_i\mu_0(X_i, \hat{\beta}_1) + (1-Z_i)Y_i\}.
+\hat{\mu}_1^\text{pred} =
+\frac{1}{n} \sumn \left\{  Z_i Y_i + (1-Z_i)  \mu_1(X_i, \hat{\beta}_1)   \right\}
 \]
-
-证明：当 $(\mu_1(X_i,\hat{\beta}_1), \mu_0(X_i,\hat{\beta}_1)) = (\hat{\beta}_{10} + \hat{\beta}_{1x}^\top X_i, \hat{\beta}_{00} + \hat{\beta}_{0x}^\top X_i)$ 来自基于权重
+and
 \[
-w_i = Z_i/\hat{o}(X_i) + (1-Z_i)\hat{o}(X_i)
+\hat{\mu}_0^\text{pred}  =
+\frac{1}{n} \sumn \left\{  Z_i \mu_0(X_i, \hat{\beta}_1) + (1-Z_i) Y_i  \right\} .
 \]
-对 $Y_i \sim (1, X_i)$ 的 WLS 拟合时，双重稳健估计量等于 $\hat{\tau}^{\text{pred}}$。
+It differs from the outcome regression estimator discussed before in that it only predicts the counterfactual outcomes but not the observed outcomes.
 
-\noindent\textbf{参考文献}：Cao et al. (2009) 和 Vermeulen and Vansteelandt (2015) 从其他理论角度 motivation 了上述权重。
-\end{Exercise}
+Show that the doubly robust estimator  equals $\hat{\tau}^\text{pred} $ if $(\mu_1(X_i, \hat{\beta}_1), \mu_0(X_i, \hat{\beta}_1) ) =
+( \hat \beta_{10} +   \hat \beta_{1x}\tran X_i, \hat \beta_{00} +   \hat\beta_{0x}\tran X_i)$ are from the WLS fits of $Y_i$ on $(1, X_i)$ based on the treated and control data, respectively, with weights
+\begin{eqnarray}
+w_i =  Z_i/\hat{o}(X_i) + (1-Z_i) \hat{o}(X_i)
+= \begin{cases}
+\frac{1}{\hat{o}(X_i)} = \frac{ 1-  \hat{e}(X_i) }{ \hat{e}(X_i) } & \text{ if } Z_i=1;\\
+ \hat{o}(X_i) = \frac{  \hat{e}(X_i)  }{ 1-\hat{e}(X_i)} & \text{ if } Z_i=0.
+\end{cases}
+\end{eqnarray}
 
-\begin{Exercise}{\ref{ex:14.3} WLS 的效率性质}\label{ex:14.3}
-讨论在何种情形下 WLS 估计量比 OLS 估计量更有效。在 Freedman and Berk (2008) 的模拟设置中，为什么 OLS 表现更好？这与本章讨论的异方差情形有何关联？
-\end{Exercise}
+Remark:
+\citet{cao2009improving} and  \citet{vermeulen2015bias} motivated the weights in \eqref{eq::odds-weight-predictive} from other more theoretical perspectives.
 
-\begin{Exercise}{\ref{ex:14.4} 推荐阅读}\label{ex:14.4}
-\begingroup
-\parskip=0pt
-\textbf{推荐阅读}：\cite{robins2007} 是关于因果推断中加权方法的权威综述。\cite{lin2013} 讨论了协变量调整在随机化实验中的应用。
 
-\textbf{历史注记}：WLS 与 IPW 的等价性最早由 Imbens (2004) 明确指出。双重稳健性的概念在 Robins et al. (2007) 中得到了系统阐述。
-\endgroup
-\end{Exercise}
 
-% === 用户问答记录 ===
-% (后续通过 interactive-qa 更新)
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Weighted logistic regression  with a binary outcome]\label{exr:14-3}
+With a binary outcome, we can replace linear outcome models with logistic outcome models. Show that with weights in the logistic regressions, the doubly robust estimators equal the outcome regression estimator. The result holds for both $\tau$ and $\tau_\textsc{T}$.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Causal inference with a misspecified linear regression]\label{exr:14-4}
+
+
+
+
+Define the population OLS of $Y$ on $ (1, Z, X) $ as
+\[
+(\beta_0, \beta_1, \beta_2) = \arg\min_{b_0, b_1, b_2}   E(Y - b_0 - b_1 Z - b_2\tran X)^2.
+\]
+Recall that $e(X) = \pr(Z=1\mid X)$ is the propensity score, and define $\tilde{e}(X) = \gamma_0+\gamma_1\tran X$ as the OLS projection of $Z$ on $X$ with% (see Chapter \ref{appendix::basic-linear-regression})
+\[
+(\gamma_0, \gamma_1) =  \arg\min_{c_0, c_1}   E(Z - c_0 -  c_1\tran X)^2.
+\]
+
+\begin{enumerate}
+\item
+Show that
+\[
+\beta_1 = \frac{    E [  \tilde{w}(X) \{ \mu_1(X) - \mu_0(X) \} ]  }{   E \{ \tilde{w}(X) \} }
++ \frac{  E [  \{  e(X) - \tilde{e}(X)  \}  \mu_0(X)  ] }{  E \{ \tilde{w}(X) \}  }
+\]
+where $\tilde{w}(X) = e(X)\{ 1 - \tilde{e}(X)  \}$.
+
+\item
+When $X$ contains the dummy variables for a discrete covariate, show that
+\[
+\beta_1 = \frac{    E [  w(X) \{ \mu_1(X) - \mu_0(X) \} ]  }{   E \{ w(X) \} }
+\]
+where $w(X) = e(X)\{ 1 - e(X)  \}$ is the overlap weight introduced in Chapter \ref{sec::other-estmand-overlap}.
+
+\end{enumerate}
+
+
+Remark: \citet{vansteelandt2021assumption} gave the formula in part 1 without a detailed proof. The result in part 2 was derived many times in the literature \citep[e.g.,][]{angrist1998estimating, ding2021frisch}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Analyzing a dataset from the Karolinska Institute]\label{exr:14-5}
+
+Revisit Problem \ref{hw::Karolinska-dr}. Estimate $\tau_\textsc{O}$ and $\tau$ based on the methods introduced in this Chapter.
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:14-6}
+\citet{kang2007demystifying} gave a critical review of the doubly robust estimator, using simulation to compare it with many other estimators. \citet{robins2007comment} gave a very insightful comment on \citet{kang2007demystifying}.
+
+
+
+
+
+\end{HomeworkProblem}

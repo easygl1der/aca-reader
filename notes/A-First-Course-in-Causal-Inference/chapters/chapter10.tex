@@ -228,84 +228,112 @@ Y(z) \bot Z \mid X \quad (z = 0, 1).
 
 不可识别性假设虽然提供了理论上的识别条件，但在实际研究中，其可塑性取决于我们是否观察到了所有重要的混杂因素。后续章节将介绍其他三种方法（逆概率加权、双稳健估计、匹配），它们从不同角度应对这一挑战。
 
-\section{练习}\label{sec:10-exercises}
+\section{习题}\label{sec:10-homework}
 
-\begin{Exercise}{简单恒等式}\label{exr:10-1}
-证明 $\tau = \Pr(Z = 1)\tau_{\mathrm{T}} + \Pr(Z = 0)\tau_{\mathrm{C}}$，其中
-\[
-\tau = \mathbb{E}\{Y(1) - Y(0)\}, \quad
-\tau_{\mathrm{T}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 1\}, \quad
-\tau_{\mathrm{C}} = \mathbb{E}\{Y(1) - Y(0) \mid Z = 0\}.
-\]
-\textit{提示：使用全概率公式和条件期望的定义。}
-\end{Exercise}
+\begin{HomeworkProblem}[A simple identity]\label{exr:10-1}
 
-\begin{Exercise}{非参数识别 DCE 和 QCE}\label{exr:10-2}
-在 \cref{ass:ignorability} 下，证明离散因果效应（DCE）和量子因果效应（QCE）的非参数识别公式：
-\[
-\mathrm{DCE}(x) = \mathbb{E}(Y \mid Z = 1, X = x) - \mathbb{E}(Y \mid Z = 0, X = x),
-\]
-\[
-\mathrm{QCE} = \mathbb{E}\{\mathrm{DCE}(X)\}.
-\]
-这些量与 \cref{eq:10-id-formula} 中的 $\tau$ 有何关系？
-\end{Exercise}
+Show that $\tau = \pr(Z=1) \tau_\textsc{T} + \pr(Z=0)\tau_\textsc{C}$.
 
-\begin{Exercise}{完全交互逻辑斯谛模型}\label{exr:10-3}
-假设二值结果 $Y$ 服从以下完全交互逻辑斯谛模型：
-\[
-\mathbb{E}(Y \mid Z, X) = \frac{e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{zx}^{\top} X Z}}{1 + e^{\beta_0 + \beta_z Z + \beta_x^{\top} X + \beta_{zx}^{\top} X Z}}.
-\]
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Nonparametric identification of other causal effects]\label{exr:10-2}
+
+Under ignorability, show that
 \begin{enumerate}
-  \item 推导给定 $X = x$ 时的条件因果效应 $\tau(x)$；
-  \item 推导总体平均因果效应 $\tau = \mathbb{E}\{\tau(X)\}$ 的估计量；
-  \item 当 $\beta_{zx} = 0$ 时，结果退化为 \cref{eq:10-logistic-model}，验证此时 $\tau$ 的估计量与 \cref{sec:10-binary-outcome} 中的公式一致。
-\end{enumerate}
-\end{Exercise}
-
-\begin{Exercise}{NHANES 同型半胱氨酸数据分析}\label{exr:10-4}\label{ex:10-nhanes}
-使用 NHANES 2005-2006 数据（见 \cref{sec:10-smoking}），研究每日吸烟对同型半胱氨酸（homocysteine）水平的因果效应。
-\begin{enumerate}
-  \item 拟合结果回归模型 $\mathbb{E}(Y \mid Z, X)$，协变量包括性别（female）、年龄类别（age3）、教育水平（ed3）、BMI 类别（bmi3）和收入水平（pov2）；
-  \item 使用线性模型和逻辑斯谛模型分别进行分析，比较结果；
-  \item 对模型设定进行敏感性分析：分别使用不同的协变量子集，讨论结果的变化；
-  \item 报告点估计和 95\% 置信区间，并解释结果的实质含义。
-\end{enumerate}
-数据来源：\url{https://www.cdc.gov/nchs/nhanes/}
-\end{Exercise}
-
-\begin{Exercise}{不可识别性与强不可识别性}\label{exr:10-5}
-考虑以下数据生成过程：
-\[
-Y(1) = g_1(X, V_1), \quad Y(0) = g_0(X, V_0), \quad Z = \mathbb{I}\{h(X, U) \geq 0\},
+\item
+ the distributional causal effect
+ \[
+\textsc{DCE}_y = \pr\{  Y(1) > y  \} - \pr\{ Y(0) > y \}
 \]
-其中 $(V_1, V_0) \independent U$，且 $U$ 与 $(V_1, V_0)$ 可能相关。
-\begin{enumerate}
-  \item 证明：在这种情况下，不可识别性假设 $Y(z) \bot Z \mid X$ 一般不成立；
-  \item 如果进一步假设 $U \independent (V_1, V_0)$，不可识别性假设是否成立？请给出严格证明；
-  \item 构造一个具体例子，说明当存在未观测混杂因素时，即使 $X$ 包含多个协变量，不可识别性假设也可能违背；
-  \item 讨论强不可识别性 $\{Y(1), Y(0)\} \bot Z \mid X$ 与不可识别性 $Y(z) \bot Z \mid X$ 的区别。
+is nonparametrically identifiable for all $y$;
+\item
+the quantile causal effect
+\[
+\textsc{QCE}_q = \text{quantile}_q\{ Y(1) \} - \text{quantile}_q\{ Y(0) \},
+\]
+is nonparametrically identifiable for all $q$, where $\text{quantile}_q\{ \cdot \} $ is the $q$th quantile of a random variable.
 \end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{推荐阅读}\label{exr:10-6}
-阅读以下文献，并撰写一页摘要（每篇约 200 字）：
+
+
+Remark:
+In probability theory, $\pr\{  Y(z) \leq y \}$ is the cumulative distribution function and $\pr\{  Y(z) > y \}$ is the survival function of the potential outcome $Y(z)$.
+The distributional causal effect compares the survival functions of the potential outcomes under treatment and control.
+
+The  quantile causal effect  compares the marginal quantiles of the potential outcomes, which is different from the quantile of the individual causal effect
+\[
+\tau_q =  \text{quantile}_q\{ Y(1)  - Y(0)\} .
+\]
+In fact,  $\tau_q$ is not identifiable in the sense that the marginal distributions $\pr\{  Y(1) \leq  y  \} $ and $ \pr\{ Y(0) \leq  y \} $ can not uniquely determine $\tau_q$.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Outcome imputation estimator in the fully interacted logistic model]\label{exr:10-3}
+
+This problem extends Example \ref{eg::reg-binary}.
+
+Assume that a binary outcome follows a logistic model
+\[
+E(Y\mid Z, X) = \pr(Y =1\mid Z, X) = \frac{   e^{\beta_0 + \beta_z Z + \beta_x \tran X + \beta_{xz}  \tran X Z }  }
+{ 1+ e^{\beta_0 + \beta_z Z + \beta_x \tran X + \beta_{xz}  \tran X Z} } .
+\]
+What is the corresponding outcome regression estimator for the average causal effect?
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data analysis: stratification and regression]\label{exr:10-4}
+
+Use the dataset \ri{homocyst} in the package \ri{senstrat}.
+The outcome is \ri{homocysteine}, the homocysteine level, and the treatment is \ri{z}, where $z=1$ for a daily smoker and $z=0$ for a never smoker. Covariates are \ri{female, age3, ed3, bmi3, pov2} with detailed explanations in the package, and \ri{st} is a stratum indicator, defined by all the combinations of the discrete covariates.
+
+
 \begin{enumerate}
-  \item \citet{Rubin:1978} — 不可识别性假设的奠基性论文；
-  \item \citet{Rosenbaum:1983} — 倾向得分理论的核心工作；
-  \item \citet{Leamer:1978} — 对实证研究中模型依赖性的经典批评；
-  \item \citet{Hernan:2020} — g-formula 的系统介绍与现代视角；
-  \item \citet{Lin:2013} — 随机实验中协变量调整的理论分析。
+[(1)]
+\item
+How many strata have only treated or control units? What is the proportion of the units in these strata? Drop these strata and perform a stratified analysis of the observational study. Report the point estimator, variance estimator, and 95\% confidence interval for the average causal effect.
+
+\item
+Run the OLS of the outcome on the treatment indicator and covariates without interactions. Report the coefficient of the treatment and the robust standard error.
+
+Drop the strata with only treated or control units. Re-run the OLS and report the result.
+
+
+\item
+Apply \citet{lin2013}'s estimator of the average causal effect. Report the coefficient of the treatment and the robust standard error.
+
+If you do not drop the strata with only treated or control units, what will happen?
+
+
+\item
+Compare the results in the above three analyses. Which one is more credible?
+
 \end{enumerate}
-在摘要中，特别关注每篇论文的核心贡献及其对后续研究的影响。
-\end{Exercise}
 
-\section{推荐阅读}\label{sec:10-reading}
 
-\begin{itemize}
-  \item \citet{Rubin:1978} — 不可识别性假设的奠基性论文。
-  \item \citet{Rosenbaum:1983} — 倾向得分理论的核心工作，阐述了不可识别性与倾向得分的关系。
-  \item \citet{Leamer:1978} — 对实证研究中模型依赖性的经典批评。
-  \item \citet{Hernan:2020} — g-formula 的系统介绍与现代视角。
-  \item \citet{Lin:2013} — 随机实验中协变量调整的理论分析。
-\end{itemize}
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Ignorability versus strong ignorability]\label{exr:10-5}
+
+
+Give an example such that the ignorability holds but the strong ignorability does not hold.
+
+
+Remark: This is related to a classic probability problem of finding three random variables $A,B,C$ such that
+\[
+A\ind C \text{ and } B\ind C \text{ but } (A,B) \nind C.
+\]
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:10-6}
+
+
+\citet{cochran1965planning} is a classic reference on observational studies. It contains many useful insights but does not use the formal potential outcomes framework.
+Dylan Small founded a new journal called {\it Observational Studies} in 2015 \citep{small2015introduction} and reprinted an old article ``Observational Studies'' by W. G. Cochran as  \citet{cochran2015}.  Many leading researchers also made insightful comments on  \citet{cochran2015}.
+
+
+\end{HomeworkProblem}

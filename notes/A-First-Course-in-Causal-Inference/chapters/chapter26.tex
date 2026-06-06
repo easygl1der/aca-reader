@@ -107,3 +107,153 @@ Z \rightarrow M \rightarrow Y,
 \begin{Remark}
 经典参考文献包括 \cite{RosenbaumRubin:1983b}，以及 \cite{AngristPischke:2009} 第 4 章关于 IV 和主分层的讨论。
 \end{Remark}
+
+\section{习题}\label{sec:26-homework}
+
+\begin{HomeworkProblem}[Complete the proof of Theorem \ref{thm::identification-PCEs-pscore}]\label{exr:26-1}
+
+Prove the result for $\tau(0,0) $ in Theorem \ref{thm::identification-PCEs-pscore}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Principal score method under monotonicity]\label{exr:26-2}
+
+
+
+This problem extends Theorem \ref{thm::identification-PCEs-pscore}, with Assumption \ref{assume::strong-monotonicity} replaced by Assumption \ref{assume::monotonicity-ps} and Assumption \ref{assume::principal-ignorability-SM} replaced by Assumption \ref{assume::principal-ignorability-M} below.
+
+\begin{assumption}
+[principal ignorability]\label{assume::principal-ignorability-M}
+We have
+\[
+E\{  Y(1) \mid M(1) = 1, M(0) =0, X \} = E\{  Y(1) \mid M(1) = 1, M(0) =1, X \}
+\]
+and
+\[
+E\{  Y(0) \mid M(1) = 1, M(0) =0, X \} = E\{  Y(0) \mid M(1) = 0, M(0) =0, X \}.
+\]
+\end{assumption}
+
+
+\begin{Theorem}
+\label{thm::identification-PCEs-pscore-general-ding-lu}
+Under Assumptions \ref{assume::complete-randomization-withM}, \ref{assume::monotonicity-ps} and \ref{assume::principal-ignorability-M},
+\begin{enumerate}
+[(a)]
+\item
+ the conditional and marginal principal scores can be identified by
+\begin{eqnarray*}
+\pi_{(0,0)}(X) &=& \pr(M=0\mid Z=1, X),\\
+\pi_{(1,1)}(X) &=& \pr(M=1\mid Z=0, X),\\
+\pi_{(1,0)}(X) &=& \pr(M=1\mid Z=1, X) - \pr(M=1\mid Z=0, X).
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\pi_{(0,0)} &=& \pr(M=0\mid Z=1),\\
+\pi_{(1,1)} &=& \pr(M=1\mid Z=0),\\
+\pi_{(1,0)} &=& \pr(M=1\mid Z=1) - \pr(M=1\mid Z=0)
+\end{eqnarray*}
+respectively;
+\item
+the principal  stratification average causal effects can be identified by
+\begin{eqnarray*}
+\tau(1,0) &=& E\left\{w_{1, (1,0)}(X) Y \mid Z=1, M=1\right\}  \\
+&& -E\left\{w_{0, (1,0)}(X) Y \mid Z=0, M=0\right\} , \\
+\tau(0,0) &=& E(Y \mid Z=1, M=0)-E\left\{w_{0, (0,0)}( X ) Y \mid Z=0, M=0\right\}, \\
+\tau(1,1) &=& E\left\{w_{1,  (1,1)}( X ) Y \mid Z=1, M=1\right\}-E(Y \mid Z=0, M=1)
+\end{eqnarray*}
+with
+\begin{eqnarray*}
+w_{1, (1,0)}(X) &=&\frac{\pi_{(1,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(1,1)}(X)} \Big / \frac{\pi_{(1,0)}}{\pi_{(1,0)}+\pi_{(1,1)}} , \\
+w_{0, (1,0)}(X) &=& \frac{\pi_{(1,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(0,0)}(X)} \Big / \frac{\pi_{(1,0)}}{\pi_{(1,0)}+\pi_{(0,0)}} ,  \\
+w_{0, (0,0)}(X) &=&\frac{\pi_{(0,0)}(X)}{\pi_{(1,0)}(X)+\pi_{(0,0)}(X)} \Big / \frac{\pi_{(0,0)}}{\pi_{(1,0)}+\pi_{(0,0)}} , \\
+w_{1, (1,1)}(X) &=&\frac{\pi_{(1,1)}(X)}{\pi_{(1,0)}(X)+\pi_{(1,1)}(X)} \Big / \frac{\pi_{(1,1)}}{\pi_{(1,0)}+\pi_{(1,1)}} .
+\end{eqnarray*}
+\end{enumerate}
+\end{Theorem}
+
+
+
+Remark:
+Based on Theorem \ref{thm::identification-PCEs-pscore-general-ding-lu}, we can construct weighting estimators. Theorem \ref{thm::identification-PCEs-pscore-general-ding-lu} is Proposition 2 in \citet{ding2017principal}, which also provided more details for the estimation.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Principal score method in observational studies]\label{exr:26-3}
+
+This problem extends Theorem \ref{thm::identification-PCEs-pscore}, with Assumption \ref{assume::complete-randomization-withM} replaced by the ignorability assumption below.
+
+
+\begin{assumption}
+\label{assume::ignorabilitywithM}
+$
+Z\ind \{ M(1), M(0), Y(1) , Y(0) \} \mid X.
+$
+\end{assumption}
+
+Recall the definition of the propensity score $e(X) = \pr(Z=1\mid X)$.
+We have the following identification result.
+
+
+\begin{Theorem}
+\label{thm::identification-PCEs-pscore-obs}
+Under Assumptions \ref{assume::ignorabilitywithM}, \ref{assume::strong-monotonicity} and \ref{assume::principal-ignorability-SM},
+\begin{enumerate}
+[(a)]
+\item
+the conditional and marginal probabilities of $M(1)$,
+$\pi(X) =  \pr\{ M(1)=1\mid X \}  $ and $\pi =  \pr\{ M(1)=1\} $, can be identified by
+\[
+\pi(X)   =  \pr(M=1\mid Z=1, X )
+\]
+and
+\[
+\pi  =  E\{\pr(M=1\mid Z=1, X ) \}
+\]
+respectively;
+\item
+the principal  stratification average causal effects can be identified by
+\[
+\tau(1,0) = E\left\{   \frac{M}{\pi}   \frac{Z}{e(X)} Y \right\}
+- E\left\{   \frac{ \pi(X)  }{\pi}   \frac{1-Z}{1-e(X)} Y    \right\}
+\]
+and
+\[
+\tau(0,0) = E\left\{   \frac{1-M}{1-\pi}   \frac{Z}{e(X)} Y \right\}
+- E\left\{   \frac{ 1- \pi(X)  }{1 - \pi}   \frac{1-Z}{1-e(X)} Y    \right\} .
+\]
+\end{enumerate}
+\end{Theorem}
+
+
+Prove Theorem \ref{thm::identification-PCEs-pscore-obs}.
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[General principal score method]\label{exr:26-4}
+
+Extend Theorems \ref{thm::identification-PCEs-pscore-general-ding-lu} and \ref{thm::identification-PCEs-pscore-obs} under Assumptions  \ref{assume::ignorabilitywithM}, \ref{assume::monotonicity-ps} and \ref{assume::principal-ignorability-M}.
+
+
+Remark: See \citet{jiang2020multiply}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:26-5}
+
+\citet{frangakis2002principal}  proposed the principal stratification framework.
+\citet{zhang2003estimation} derived large-sample bounds on the survivor average causal effect.
+\citet{jiang2020identification} reviewed various strategies to identify the causal effects within principal strata.
+\citet{jiang2020multiply} gave a unified discussion of this strategy for observational studies and proposed multiply robust estimators for causal effects within principal strata.
+
+
+\end{HomeworkProblem}

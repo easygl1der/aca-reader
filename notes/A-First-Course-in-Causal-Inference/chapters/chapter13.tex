@@ -225,3 +225,174 @@ Rosenbaum and Rubin（1983, 1984）基于 Cochran（1968）的启发性研究，
 \end{enumerate}
 
 倾向得分分层是因果推断工具箱中的基础工具之一。它不仅可以直接用于估计因果效应，还构成了逆概率加权、 doubly robust 估计等更高级方法的基础。
+
+\section{习题}\label{sec:13-homework}
+
+\begin{HomeworkProblem}[Comparing $\tau_\textsc{T},  \tau_\textsc{C}, $ and $\tau$]\label{exr:13-1}
+
+Assume $Z\ind \{Y(1), Y(0)\} \mid X$.  Recall $e(X) = \pr(Z=1\mid X)$ is the propensity score,  $e = \pr(Z=1)$ is the marginal probability of the treatment, and $\tau(X) = E\{  Y(1)-Y(0) \mid X \}$ is the CATE.
+Show that
+\[
+\tau_\textsc{T} - \tau = \frac{  \cov\{ e(X) ,  \tau(X)  \} }{e},\quad
+\tau_\textsc{C} - \tau = - \frac{  \cov\{ e(X) ,  \tau(X)  \} }{1-e}.
+\]
+
+
+Remark: The results above also imply that $ \tau_\textsc{T} -  \tau_\textsc{C} =  \cov\{ e(X) ,  \tau(X)  \} / \{  e(1-e) \}$.  So the differences among $ \tau_\textsc{T} ,   \tau_\textsc{C} , \tau$ depend on the covariance between the propensity score and CATE.
+When $e(X) $ and $  \tau(X) $ are uncorrelated, their differences are 0.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[An algebraic fact about a regression estimator for $\tau_\textsc{T}$]\label{exr:13-2}
+
+ This problem provides more details for Example \ref{eg::att-regression2}.
+
+Show that if we center the covariates by $X_i - \hat{\bar{X}}(1)$ for all units, then $\hat{\tau}_\textsc{T} $ equals the coefficient of $Z$ in the OLS fit of the outcome on the intercept, the treatment, covariates, and their interactions.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Simulation for the average causal effect on the treated units]\label{exr:13-3}
+
+Chapter \ref{chapter::doubly-robust} ran some simulation studies for $\tau$. Run similar simulation studies for $\tau_\textsc{T}$ with either correct or incorrect propensity score or outcome models.
+
+You can choose different model parameters, a larger number of simulation settings, and a larger number of bootstrap replicates. Report your findings, including at least the bias, variance, and variance estimator via the bootstrap. You can also report other properties of the estimators, for example, the asymptotic Normality and the coverage rates of the confidence intervals.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[An alternative form of the doubly robust estimator for $\tau_\textsc{T}$]\label{exr:13-4}
+
+Motivated by \eqref{eq::dr-att-mu0}, we have an alternative form of doubly robust estimator for $ E\{ Y(0) \mid Z=1 \}  $:
+\[
+\tilde{\mu}_{0\textsc{T}}^\text{dr2} =
+\frac{  E\left[ o(X,\alpha)   (1-Z) \{ Y - \mu_0(X, \beta_0) \}  \right] }{  E\left[ o(X,\alpha)   (1-Z) \right] }
+  + E\{  Z  \mu_0(X, \beta_0) \} /e.
+\]
+
+Show that under Assumption \ref{assume::ignorability-y0}, $\tilde{\mu}_{0\textsc{T}}^\text{dr2}= E\{ Y(0) \mid Z=1 \}$ if either $e(X,\alpha)  = e(X)$ or $\mu_0(X, \beta_0) =  \mu_0(X)$.  Give the sample analog of the doubly robust estimator for $\tau_\textsc{T}$.
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Average causal effect on the control units]\label{exr:13-5}
+
+Prove the identification formulas for $\tau_\textsc{C}$, analogous to \eqref{eq::att-identification} and \eqref{eq::att-ipw-formula}. Propose the doubly robust estimator for $\tau_\textsc{C}$.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Estimating individual effect and conditional average causal effect]\label{exr:13-6}
+
+Assume that $\{ Z_i, X_i, Y_i(1), Y_i(0) \}_{i=1}^n \iidsim \{ Z, X, Y(1), Y(0) \}$. The individual effect is $\tau_i = Y_i(1) - Y_i(0)$ and the conditional average causal effect is $\tau(X_i) = E\{ Y_i(1) - Y_i(0) \mid X_i  \}$. Since we will discuss the individual effect, we do not drop the subscript $i$ since $\tau$ means the average causal effect, not the population version of $Y(1) - Y(0)$.
+
+\begin{enumerate}
+\item
+Under randomization with $Z_i\ind \{ Y_i(1), Y_i(0)  \}$ and $e = \pr(Z_i = 1)$, show that
+\[
+\delta_i = \frac{Z_i Y_i}{e} - \frac{(1-Z_i)Y_i}{1-e}
+\]
+is an unbiased predictor of the individual effect in the sense that
+\[
+E( \delta_i  -  \tau_i ) = 0\quad (i=1,\ldots, n).
+\]
+Further show that $E( \delta_i ) = \tau $ for all $i=1,\ldots, n$.
+
+\item
+Under ignorability with $Z_i\ind \{ Y_i(1), Y_i(0)  \}\mid X_i$ and $e(X_i) = \pr(Z_i=1\mid X_i)$, show that
+\[
+\delta_i = \frac{Z_i Y_i}{ e(X_i) } - \frac{(1-Z_i)Y_i}{1-e(X_i)}
+\]
+is an unbiased predictor of the individual effect and the conditional average causal effect in the sense that
+\[
+E( \delta_i  -  \tau_i ) = 0, \quad
+E\{  \delta_i  -  \tau(X_i) \} = 0, \quad (i=1,\ldots, n).
+\]
+Further show that $E( \delta_i ) = \tau $ for all $i=1,\ldots, n$.
+\end{enumerate}
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[General estimand and $(\tau_\textsc{T}, \tau_\textsc{C})$]\label{exr:13-7}
+
+
+Assume unconfoundedness.
+Show that $\tau^h = \tau_\textsc{T}$ if $h(X) = e(X)$, and $\tau^h = \tau_\textsc{C}$ if $h(X) = 1-  e(X)$.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More on $\tau_\textsc{O}$]\label{exr:13-8}
+
+Show that
+\[
+\tau_\textsc{O}
+=  \frac{   E  [   \{1-e(X)\} \tau(X) \mid Z=1   ]      }{  E  \{ 1-e(X) \mid Z=1   \}   }
+=  \frac{   E  \{ e(X) \tau(X) \mid Z=0   \}      }{  E  \{ e(X) \mid Z=0   \}   }.
+\]
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[IPW for the general estimand]\label{exr:13-9}
+
+Prove Theorem \ref{thm::weighted-estimand-li}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Doubly robust estimation for general estimand]\label{exr:13-10}
+
+
+For a given $h(X)$, we have the following formulas for constructing the doubly robust estimator for $\tau^h$:
+\begin{eqnarray*}
+\tilde{\mu}_1^{h,\textup{dr}} &=& E\left[   \frac{Zh(X)  \{ Y-\mu_1(X,\beta_1)   \}}{  e(X,\alpha) }   + h(X) \mu_1(X, \beta_1)  \right] ,  \\
+\tilde{\mu}_0^{h, \textup{dr}} &=& E\left[   \frac{(1-Z) h(X)  \{ Y-\mu_0(X,\beta_0) \}}{  1-e(X,\alpha) }   + h(X) \mu_0(X, \beta_0)  \right]  .
+\end{eqnarray*}
+Show that under ignorability and overlap,
+\begin{enumerate}
+\item
+if either $e(X,\alpha) = e(X)$ or $\mu_1(X, \beta_1) = \mu_1(X)$, then $\tilde{\mu}_1^{h,\textup{dr}}= E\{  h(X)  Y(1) \}$;
+\item
+if either $e(X,\alpha) = e(X)$ or $\mu_0(X, \beta_0) = \mu_0(X)$, then $\tilde{\mu}_0^{h, \textup{dr}}= E\{ h(X)  Y(0) \}$;
+\item
+if either $e(X,\alpha) = e(X)$ or $\{\mu_1(X, \beta_1) = \mu_1(X),   \mu_0(X, \beta_0) = \mu_0(X)\}$, then
+\[
+\frac{\tilde{\mu}_1^{h,\textup{dr}}  -\tilde{\mu}_0^{h, \textup{dr}}  }{  E\{ h(X)  \}  }
+= \tau^h .
+\]
+\end{enumerate}
+
+Remark:
+\citet{tao2019doubly} proved the above results. However, they hold only for a  given $h(X)$. The most interesting cases of $\tau_\textsc{T}, \tau_\textsc{C}$ and $\tau_\textsc{O}$ all have weight depending on the propensity score $e(X)$, which must be estimated in the first place. The above formulas do not apply to constructing the doubly robust estimators for $\tau_\textsc{T}$ and $\tau_\textsc{C}$; there does not exist a doubly robust estimator for $\tau_\textsc{O}$.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Analyzing a dataset from the Karolinska Institute]\label{exr:13-11}
+
+Revisit Problem \ref{hw::Karolinska-dr}. Estimate $\tau_\textsc{T}$ based on the methods introduced in this Chapter.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:13-12}
+
+ \citet{shinozaki2015brief} focused on $\tau_\textsc{T}$, and \citet{li2018balancing} discussed general $\tau^h$.
+
+
+
+
+
+
+\end{HomeworkProblem}

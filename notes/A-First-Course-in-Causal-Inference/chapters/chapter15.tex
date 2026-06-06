@@ -158,36 +158,72 @@ ATT 的偏差校正匹配估计量满足
   \item \textbf{实践要点（\cref{sec:15-practice}）}：协变量平衡检验是确保匹配质量的关键步骤。
 \end{enumerate}
 
-\section{习题}\label{sec:chapter15-exercises}
+\section{习题}\label{sec:15-homework}
 
-\begin{Exercise}{匹配与倾向得分}\label{exr:15-1}
-证明：在精确匹配下，倾向得分对所有配对单元相同，即 $e(X_i) = e(X_{m(i)})$。这如何支持"精确匹配模拟随机实验"的论断？
-\end{Exercise}
+\begin{HomeworkProblem}[Linear expansions of the bias-corrected estimators]\label{exr:15-1}
 
-\begin{Exercise}{一对一与一对多匹配的偏差比较}\label{exr:15-2}
-考虑 $1-1$ 匹配和 $1-M$ 匹配。当 $M$ 增大时，匹配估计量的偏差如何变化？为什么？
-\end{Exercise}
 
-\begin{Exercise}{匹配估计量的偏差校正项}\label{exr:15-3}
-从 \cref{eq:15-bias-corrected} 出发，推导偏差校正项 $\hat\psi_i$ 的具体形式。\textit{提示：参考 \citet{AbadieImbens:2008} 的推导。}
-\end{Exercise}
+ Prove Propositions \ref{prop::matching-expansion-ate} and \ref{prop::linear-expansion-att}.
 
-\begin{Exercise}{ATT 匹配估计量的性质}\label{exr:15-4}
-证明 \cref{prop:15-dr-att}：ATT 的偏差校正匹配估计量等于 ATT 的双稳健估计量。
-\end{Exercise}
 
-\begin{Exercise}{协变量平衡}\label{exr:15-5}
-对 LaLonde 数据进行匹配分析，检验匹配前后协变量的平衡性。使用不同的 $M$ 值（一对一、一对二、一对四）比较结果。
-\end{Exercise}
 
-\begin{Exercise}{匹配与回归的比较}\label{exr:15-6}
-使用第 \ref{ch:10} 章 \ref{sec:10-job-training} 节的数据，分别用匹配估计量和结果回归估计量估计 ATT。比较两种方法的结果和效率。
-\end{Exercise}
+\end{HomeworkProblem}
 
-\begin{Exercise}{倾向得分匹配的理论性质}\label{exr:15-7}
-\citet{AbadieImbens:2016} 提供了基于倾向得分匹配的理论。阅读该论文，总结其主要结论及其与 \citet{RosenbaumRubin:1983b} 建议的关联。
-\end{Exercise}
+\begin{HomeworkProblem}[Doubly robust form of the bias-corrected matching estimator for $\tau$]\label{exr:15-2}
 
-\begin{Exercise}{高维协变量的挑战}\label{exr:15-8}
-当协变量维度很高时，直接匹配面临维数灾难。讨论三种可能的解决策略：降维、惩罚回归、机器学习方法。
-\end{Exercise}
+Prove Proposition \ref{prop::mbc-dr}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Doubly robust form of the bias-corrected matching estimator for $\tau_\textsc{t}$]\label{exr:15-3}
+
+Prove Proposition \ref{prop::mbc-dr-att}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Revisit Example \ref{eg::chan-bmi-ATE}]\label{exr:15-4}
+
+
+Analyze the dataset in Example \ref{eg::chan-bmi-ATE} using the matching estimator. Compare the results with previous results.
+You should check the covariate balance before and after matching. You can also choose a different number of matches for the matching estimator.  Moreover, you can even apply various estimators to the matched data.
+Are your results sensitive to your choices?
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Revisit Chapter \ref{sec::matching-application}]\label{exr:15-5}
+
+
+Chapter \ref{sec::matching-application} analyzed the LaLonde observational study using matching. Matching performs well because it gives an estimator that is close to the experimental gold standard. Reanalyze the data using the outcome regression, propensity score stratification, two IPW, and the doubly robust estimators. Compare the results to the matching estimator and to the estimator from the experimental gold standard.
+
+Note that you have many choices. For example, the number of strata for stratification and the threshold to trim to data based on the estimated propensity scores. You may consider fitting different propensity score and outcome models, e.g., including some quadratic terms of the basic covariates. You can even apply these estimators to the matched data.
+
+This is a classic dataset and hundreds of papers have used it. You can read some references \citep{dehejia1999causal, hainmueller2012entropy} and you can also be creative in your data analysis.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Data re-analyses]\label{exr:15-6}
+
+\citet{ho2007matching} is an influential paper in political science, based on which the authors have developed an \ri{R} package \ri{MatchIt} \citep{ho2011matchit}. \citet{ho2007matching} analyzed two datasets, both of which are available from the Harvard Dataverse.
+
+Re-analyze these two datasets using the methods discussed so far. You can also try other methods as long as you can justify them.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:15-7}
+
+The literature on matching estimators is massive, and three excellent review papers are \citet{sekhon2009opiates}, \citet{stuart2010matching}, and \citet{imbens2015matching}.
+
+
+
+
+
+
+\end{HomeworkProblem}

@@ -448,110 +448,392 @@ E[\{Z_1 - e(1, X_0)\} \{Y - (\beta_2 + \beta_3 Z_1) Z_2 - \beta_1 Z_1\}] & = 0
 
 \section{习题}\label{sec:29-homework}
 
-% 29.1 $g$-null 悖论
+\begin{HomeworkProblem}[g-null paradox]\label{exr:29-1}
 
-\subsection{$g$-null 悖论}\label{sec:hw-29.1}
 
-考虑图 \ref{fig:29-hw1} 中的简单因果图：没有基线协变量 $X_0$，也没有从 $(Z_1, Z_2)$ 到 $Y$ 的箭头。因此 $(Z_1, Z_2)$ 对 $Y$ 的因果效应为零。
+Consider the simple causal diagram in Figure \ref{fig::si-g-null-paradox} without pre-treatment covariates $X_0$ and without the arrows from $(Z_1, Z_2)$ to $Y$. So the effect of $(Z_1,Z_2)$ on $Y$ is zero.
 
-\begin{figure}[htbp]
-\centering
-% placeholder - in real compilation this would be the actual image
-\caption{习题29.1图：$X_1$ 与 $Y$ 之间存在未测量混淆 $U$ 的因果图。}
-\label{fig:29-hw1}
+\begin{figure}
+\bigskip
+\[
+ \xymatrix{
+ Z_1 \ar[r]   & X_1   \ar[r]  & Z_2  & Y \\
+                                             &                                             &U\ar[lu]\ar[ru]
+ }
+ \]
+ \caption{With unmeasured confounding between $X_1$ and $Y$. The causal diagram ignores the pre-treatment covariates $X_0$.}\label{fig::si-g-null-paradox}
 \end{figure}
 
-回顾例29.1。证明：如果
+
+Revisit Example \ref{example::linear-si}. Show that the expectation $E\{ Y(z_1, z_2) \} $ does not depend on $(z_1, z_2)$ if
 \[
-\beta_1 = \beta_2 = 0 \quad \text{且} \quad \beta_3 = 0
-\label{eq:29.35}
-\tag{29.35}
+\beta_1  = \beta_2 = 0  \text{ and }   \beta_3 = 0
 \]
-或者
+or
 \[
-\beta_1 = \beta_2 = 0 \quad \text{且} \quad E\{X_1(z_1)\} \ \text{不依赖于} \ z_1
-\tag{29.36}
+\beta_1 = \beta_2 = 0 \text{ and } E\{ X_1(z_1)\}  \text{ does not depend on } z_1.
 \]
-则期望 $E\{Y(z_1, z_2)\}$ 不依赖于 $(z_1, z_2)$。
+holds.
 
-\textbf{注}：然而，\ref{eq:29.35} 中的 $\beta_3 = 0$ 排除了 $Y$ 对 $X_1$ 的依赖，与 $X_1$ 和 $Y$ 之间存在未测量混淆 $U$ 矛盾；$E\{X_1(z_1)\}$ 对 $z_1$ 的独立性排除了 $X_1$ 对 $Z_1$ 的依赖，与 $Z_1$ 到 $X_1$ 的箭头矛盾。也就是说，如果 $X_1$ 和 $Y$ 之间存在未测量混淆 $U$，且 $Z_1$ 到 $X_1$ 存在箭头，那么例29.1中 $E\{Y(z_1, z_2)\}$ 的公式必定依赖于 $(z_1, z_2)$，这与 $(Z_1, Z_2)$ 对 $Y$ 无因果效应的假设矛盾——这就是 $g$-null 悖论。
 
-\subsection{零模型下的递推估计}\label{sec:hw-29.2}
+Remark:
+However, $\beta_3 = 0$ in the first condition rules out the dependence of $Y$ on $X_1$, contradicting the existence of unmeasured confounder $U$ between $X_1$ and $Y$; the independence of $E\{ X_1(z_1)\} $ on $z_1$ rules out the dependence of $X_1$ on $Z_1$, contradicting with the existence of the arrow from $Z_1$ on $X_1$. That is, if there is an unmeasured confounder $U$ between $X_1$ and $Y$ and there is an arrow from $Z_1$ on $X_1$, then the formula of $E\{ Y(z_1, z_2) \} $ in Example \ref{example::linear-si} must depend on $(z_1, z_2)$, which leads to a contradiction with the absence of arrows from $(Z_1, Z_2)$ to $Y$.
 
-考虑29.3.2节的递推估计方法在习题29.1的因果图下。基于线性模型，证明估计量收敛到0。
 
-\subsection{MSM 下的 IPW}\label{sec:hw-29.3}
+\end{HomeworkProblem}
 
-证明定理 \ref{thrm:29.3}。
+\begin{HomeworkProblem}[Recursive estimation under the null model]\label{exr:29-2}
 
-\subsection{定义29.2的非线性例子}\label{sec:hw-29.4}
 
-定义29.2的另一个典型例子是：
+Consider the recursive estimation method in \ref{section::recursive} under the causal diagram in Problem \ref{problem::g-null-paradox}.
+Show that based on linear models, the estimator converges to 0.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[IPW under MSM]\label{exr:29-3}
+
+
+Prove Theorem \ref{thm::si-msm-ipw}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[A nonlinear example of Definition \ref{def::si-msm-with-x0}]\label{exr:29-4}
+
+
+Another leading example of Definition \ref{def::si-msm-with-x0} is
+\begin{equation}\label{eq::logistic-msm}
+\text{logit} \left[ \pr\{  Y(z_1, z_2)  =1  \mid X_0\}  \right] = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3\tran X_0 .
+\end{equation}
+If we observe all potential outcomes, we can solve $\beta$ by minimizing the expectation of the negative log-likelihood function (see Chapter \ref{sec::mle-logistic} for a simpler version):
+\begin{equation}
+\beta = \arg\min_b   \sum_{z_2}\sum_{z_1}  E\left\{   \log (1 + e^{\ell })
+- Y(z_1, z_2)  \ell  \right\}
+\end{equation}
+where $\ell = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3\tran X_0.$
+Under sequential ignorability, we can solve $\beta$ from the following minimization problem that only involves observables.
+
+
+\begin{Theorem}
+[IPW under MSM]
+\label{thm::si-msm-ipw-logistic}
+Under Assumption \ref{assume::sr-time-varying} and Definition \ref{def::si-msm-with-x0}, the $\beta$ in \eqref{eq::beta-logistic} equals
 \[
-\operatorname{logit}[\Pr\{Y(z_1, z_2) = 1 \mid X_0\}] = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3^{\mathsf{T}} X_0
-\label{eq:29.37}
-\tag{29.37}
+\beta = \arg\min_b \sum_{z_2}\sum_{z_1}  E\left[   \frac{  1(Z_1=z_1) 1(Z_2=z_2)   }{   e(z_1, X_0) e(z_2, Z_1, X_1, X_0)     }
+\left\{   \log (1 + e^{\ell })
+- Y(z_1, z_2)  \ell  \right\} \right] .
 \]
+\end{Theorem}
 
-如果我们观测到所有潜在结局，可以通过最小化负对数似然函数来求解 $\beta$（见第B.6.2节的更简单版本）：
+Prove Theorem \ref{thm::si-msm-ipw-logistic}.
+
+Remark:
+Theorem \ref{thm::si-msm-ipw-logistic} implies a simple estimation strategy based on weighted regressions. For instance, under \eqref{eq::logistic-msm}, we can fit weighted logistic regression of $Y_i$ on $(1,Z_{1i}, Z_{2i}, X_{0i})$ with weights $\hat{e}_{1}^{-1}(Z_{1i}, X_{0i})  \hat{e}_{2i}^{-1}(Z_{2i}, Z_{i1}, X_{1i}, X_{0i})$.
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Structural nested model with a single time point]\label{exr:29-5}
+
+
+
+Recall the standard setting of observational studies with IID data drawn from $\{ X,Z, Y(1), Y(0)\}$. Define the propensity score as $e(X) = \pr(Z=1\mid X)$. Assume
 \[
-\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\{ \log(1 + e^{\ell}) - Y(z_1, z_2) \ell \}
-\label{eq:29.38}
-\tag{29.38}
+Z\ind Y(0)\mid X
 \]
-其中 $\ell = \beta_0 + \beta_1 z_1 + \beta_2 z_2 + \beta_3^{\mathsf{T}} X_0$。在序列可忽略性下，我们可以从以下仅涉及观测变量的最小化问题求解 $\beta$。
+and the following structural nested model.
 
-\textbf{定理29.5（MSM 下的 IPW）}。在 Assumption \ref{assum:29.1} 和 Definition \ref{def:29.2} 下，\ref{eq:29.38} 中的 $\beta$ 等于：
+
+\begin{definition}
+[structural nested model with a single time point]
+\label{definition::snm-single}
+The conditional mean of the individual effect is
 \[
-\beta = \arg\min_b \sum_{z_2} \sum_{z_1} E\left[ \frac{\mathbf{1}(Z_1 = z_1) \mathbf{1}(Z_2 = z_2)}{e(z_1, X_0) \, e(z_2, Z_1, X_1, X_0)} \{ \log(1 + e^{\ell}) - Y(z_1, z_2) \ell \} \right]
-\tag{29.39}
+E\{  Y(z) - Y(0)\mid Z=z, X \} = g(z,X;\beta).
 \]
+\end{definition}
 
-证明定理29.5。
+In Definition \ref{definition::snm-single}, a logical restriction is $g(0,X;\beta) = 0$. Prove the following results.
 
-\textbf{注}：定理29.5暗示了一种基于加权回归的简单估计策略。例如，在 \ref{eq:29.37} 下，我们可以拟合 $Y_i$ 对 $(1, Z_{1i}, Z_{2i}, X_{0i})$ 的加权 logistic 回归，权重为 $\hat{e}_1^{-1}(Z_{1i}, X_{0i}) \hat{e}_{2i}^{-1}(Z_{2i}, Z_{1i}, X_{1i}, X_{0i})$。
 
-\subsection{单时间点结构嵌套模型}\label{sec:hw-29.5}
-
-回顾观测研究的标准设置：IID 数据从 $\{X, Z, Y(1), Y(0)\}$ 中抽取。定义倾向得分为 $e(X) = \Pr(Z = 1 \mid X)$。假设：
+\begin{enumerate}
+\item
+We have
 \[
-Z \perp Y(0) \mid X
-\tag{29.40}
+E\{  Y - g(Z,X;\beta) \mid X, Z\} = E\{  Y - g(Z,X;\beta) \mid X\}  = E\{  Y(0) \mid X\}.
 \]
-及以下结构嵌套模型。
 
-\textbf{定义29.4（单时间点结构嵌套模型）}。个体效应的条件均值为：
+
+\item
+We have
+\begin{eqnarray}\label{eq::Estimating-equation-snm-1}
+E\Big [  h(X)  \{ Z-e(X) \}   \{  Y - g(Z,X;\beta) \}  \Big ] = 0
+\end{eqnarray}
+for any function $h$, provided that the moment exists.
+\end{enumerate}
+
+
+
+
+Remark:  Equation \eqref{eq::Estimating-equation-snm-1} is the basis for parameter estimation.
+Consider a special case of Definition \ref{definition::snm-single} with $g(z,X;\beta) = \beta z$. Choose $h(X) = 1$ to obtain
 \[
-E\{Y(z) - Y(0) \mid Z = z, X\} = g(z, X; \beta)
-\tag{29.41}
+E\{   (Z-e(X))   (Y-  \beta Z) \}  = 0.
 \]
-
-在定义29.4中，逻辑约束为 $g(0, X; \beta) = 0$。证明以下结果。
-
-\textbf{(1)} 我们有：
+Solve for $\beta$ to obtain
 \[
-E\{Y - g(Z, X; \beta) \mid X, Z\} = E\{Y - g(Z, X; \beta) \mid X\} = E\{Y(0) \mid X\}
-\tag{29.42}
+\beta = \frac{   E\{ (Z-e(X)) Y \}   }{   E\{ (Z-e(X))  Z\}   }.
 \]
-
-\textbf{(2)} 我们有：
+Therefore, $\beta$ equals the coefficient of $Z$ in the TSLS of $Y$ on $Z$ with $Z-e(X)$ being the IV for $Z$. With some basic calculations, we can also show that
 \[
-E[ h(X) \{Z - e(X)\} \{Y - g(Z, X; \beta)\} ] = 0
-\label{eq:29.43}
-\tag{29.43}
+\beta = \frac{   \cov\{ Z-e(X), Y\}   }{ \cov\{ Z-e(X) \}  }.
 \]
-对任何函数 $h$，只要矩存在。
+Therefore, $\beta$ equals the coefficient of $Z-e(X)$ in the OLS of $Y$ on $Z-e(X)$, which appeared in Chapter \ref{sec::regress-on-pscore} before.
 
-\textbf{注}：\ref{eq:29.43} 是参数估计的基础。考虑定义29.4的特殊情况 $g(z, X; \beta) = \beta z$。选择 $h(X) = 1$ 得到：
+Consider another special case of Definition \ref{definition::snm-single} with $g(z,X;\beta) = (\beta_0 + \beta_1\tran X) z$. Choose $h(X) = (1,X)$ to obtain
 \[
-E[\{Z - e(X)\} \{Y - \beta Z\}] = 0
-\tag{29.44}
+E\left\{   \begin{pmatrix}
+Z-e(X)\\
+(Z-e(X)) X
+\end{pmatrix}
+(Y-  \beta_0 Z - \beta_1\tran XZ) \right\}  = 0.
 \]
-这正是倾向得分加权的标准方程（见第11章）。
+That is, $(\beta_0,\beta_1)$ equal the coefficients in the TSLS of $Y$ on $(Z, XZ)$ with $(Z-e(X),  (Z-e(X)) X )$ being the IV for $(Z, XZ)$.
 
-\section{推荐阅读}\label{sec:29-reading}
 
-Robins 和他的合作者的一系列开创性论文奠定了本章材料的基础。Robins（1986）引入了 g-formula 和边际结构模型的基本思想；Robins（1998）系统阐述了结构嵌套模型；Robins 和 Hernán（2009）提供了 g-方法的综合综述。Robins 和 Waterman（1994）比较了 MSM 和 SNM 两种方法。关于 g-null 悖论的更多讨论，见 Robins 和 Wasserman（1997）和 McGrath et al.（2021）。
 
-在高维协变量背景下，Bloniarz et al.（2016）提出用 LASSO 调整实验中的处理效应估计；Wager et al.（2016）提出使用机器学习方法分析高维实验数据；Lei 和 Ding（2021）在不假设稀疏性的正则条件下证明 Lin（2013）估计量的渐近正态性。D'Amour et al.（2021）讨论了高维协变量观测研究中的重叠问题。
+\end{HomeworkProblem}
 
+\begin{HomeworkProblem}[Estimation under Example \ref{example::g-estimation-snm}]\label{exr:29-6}
+
+
+We can estimate the $\beta$'s by solving the empirical version of the estimating equations in Example \ref{example::g-estimation-snm}. We first estimate the two propensity scores and obtain the centered treatment
+\[
+\check{Z}_{1i} = Z_{1i} - \hat{e}(1,X_{0i})
+\]
+ at time point 1 and
+ \[
+ \check{Z}_{2i} = Z_{2i}  - \hat{e}(1, Z_{1i}, X_{1i}, X_{0i})
+ \]
+ at time point 2.
+
+
+Show that we can estimate $\beta_2$ and $\beta_3$ by running TSLS of $Y_i$ on $(Z_{2i}, Z_{1i} Z_{2i} )$ with $( \check{Z}_{2i} ,  Z_{1i}\check{Z}_{2i} )$ as the IV for $(Z_{2i}, Z_{1i} Z_{2i} )$, and then we can estimate $\beta_1$ by running TSLS of $Y_i - (\hat{\beta}_2+\hat{\beta}_3 Z_{1i}) Z_{2i}$ on $Z_{1i}$ with $\check{Z}_{1i} $ as the IV for $Z_{1i}$.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[g-formula with a treatment at multiple time points]\label{exr:29-7}
+
+
+
+Extend the discussion to the setting with $K$ time points. The temporal ordering (but not the causal diagram) of the variables is
+\[
+X_0 \rightarrow Z_1 \rightarrow X_1 \rightarrow Z_2 \rightarrow \cdots  \rightarrow  X_{K-1}  \rightarrow Z_K .
+\]
+Introduce the notation $\overline{Z}_k = (Z_1, \ldots, Z_k)$ and $\overline{X}_k = (X_0, X_1, \ldots, X_k)$ with lower case $\overline{z}_k $ and $\overline{x}_k$  denoting the corresponding  realized values. With $k=0$, we have $\overline{X}_0 = X_0$ and $\overline{Z}_0$ is empty.
+Each unit has $2^K$ potential outcomes:
+\[
+Y(\overline{z}_K) \text{ for all } z_1,\ldots, z_K = 0,1.
+\]
+Assume sequential ignorability below.
+
+\begin{assumption}
+[sequential ignorability at multiple time points]\label{assume::si-multiple}
+We have
+\[
+Z_k \ind Y(\overline{z}_K) \mid (\overline{Z}_{k-1}, \overline{X}_{k-1})
+\]
+for all $k=1,\ldots, K$ and all $z_1,\ldots, z_K = 0,1.$
+\end{assumption}
+
+
+Prove Theorem \ref{thm::g-formula-multiple} below.
+
+
+\begin{Theorem}
+[g-formula with multiple time points]
+\label{thm::g-formula-multiple}
+Under Assumption \ref{assume::si-multiple},
+\[
+E\{ Y(\overline{z}_K)  \} = E\left[ \cdots
+E\{   E(Y\mid \overline{z}_K, \overline{X}_{K-1}) \mid \overline{z}_{K-1}, \overline{X}_{K-2} \}
+\cdots \mid z_1,  X_0 \right] .
+\]
+\end{Theorem}
+
+
+Remark:
+In Theorem \ref{thm::g-formula-multiple}, I use the simplified notation ``$\overline{z}_k$'' for  ``$\overline{Z}_k = \overline{z}_k $.''
+With discrete $X$, Theorem \ref{thm::g-formula-multiple} reduces to
+\begin{eqnarray*}
+ E\{ Y(\overline{z}_K)  \}
+&=&
+\sum_{x_0} \sum_{x_1} \cdots   \sum_{x_{K-1}}
+ E(Y\mid \overline{z}_K, \overline{x}_{K-1})   \\
+ &&
+\qquad \qquad \cdot  \pr(x_{K-1}\mid \overline{z}_{K-1}, \overline{x}_{K-2})
+ \cdots
+ \pr(x_1\mid z_{1}, x_0)
+ \pr(x_0) ;
+\end{eqnarray*}
+with continuous $X$, Theorem \ref{thm::g-formula-multiple} reduces to
+\begin{eqnarray*}
+  E\{ Y(\overline{z}_K)  \}
+&=&
+\int
+ E(Y\mid \overline{z}_K, \overline{x}_{K-1})   \\
+ && \cdot
+ f(x_{K-1}\mid \overline{z}_{K-1}, \overline{x}_{K-2})
+ \cdots
+ f(x_1\mid z_{1}, x_0)
+ f(x_0)
+ \d \overline{x}_{K-1}   .
+\end{eqnarray*}
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[IPW with treatments at multiple time points]\label{exr:29-8}
+
+Inherit the setting of Problem \ref{problem::g-formula-multiple-time}. Define the propensity score at $K$ time points as
+\begin{eqnarray*}
+e(z_1, X_0) &=& \pr(Z_1 = z_1\mid X_0) ,\\
+\vdots \\
+e(z_k, \overline{Z}_{k-1},  \overline{X}_{k-1}) &=&  \pr(Z_k = z_k \mid \overline{Z}_{k-1},  \overline{X}_{k-1}) ,\\
+\vdots \\
+e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1}) &=&  \pr(Z_K = z_K \mid \overline{Z}_{K-1},  \overline{X}_{K-1}) .
+\end{eqnarray*}
+
+
+Prove Theorem \ref{thm::ipw-multiple} below assuming overlap implicitly.
+
+
+\begin{Theorem}[IPW with multiple time points]\label{thm::ipw-multiple}
+Under Assumption \ref{assume::si-multiple},
+\[
+  E\{ Y(\overline{z}_K)  \}   = E\left\{
+  \frac{1(Z_1 = z_1) \cdots  1( Z_K = z_K) Y}{    e(z_1, X_0)  \cdots  e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1})   }
+  \right\}.
+\]
+\end{Theorem}
+
+
+Based on Theorem \ref{thm::ipw-multiple}, construct the Horvitz--Thompson and Hajek estimators.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[MSM with treatments at multiple time points]\label{exr:29-9}
+
+
+The number of potential outcomes grows exponentially with $K$. The formulas in Problems \ref{problem::g-formula-multiple-time} and \ref{problem::ipw-multiple-time} are not directly applicable in finite samples. We can impose the following structural assumptions on the potential outcomes.
+
+
+\begin{definition}
+[MSM with multiple time points]\label{definition::msm-multiple}
+Assume
+\[
+  E\{ Y(\overline{z}_K)  \mid X_0\}  = f(\overline{z}_K, X_0 ; \beta  ).
+\]
+\end{definition}
+
+
+Two leading examples of Definition \ref{definition::msm-multiple} are
+\[
+  E\{ Y(\overline{z}_K)  \mid X_0\}   = \beta_0 + \beta_1 \sum_{k=1}^K z_k + \beta_2\tran X_0
+  \]
+and
+\[
+ E\{ Y(\overline{z}_K)  \mid X_0\}   = \beta_0 +  \sum_{k=1}^K \beta_k z_k + \beta_{K+1}\tran X_0 .
+ \]
+
+If we know all the potential outcomes, we can solve $\beta$ from the following minimization problem:
+\[
+\beta = \arg \min_b  \sum_{  \overline{z}_K  }  E\{   Y(\overline{z}_K) -  f(\overline{z}_K, X_0 ; \beta  )\}^2.
+\]
+Theorem \ref{thm::ipw-msm-multiple} below shows that under Assumption \ref{assume::si-multiple}, we can solve $\beta$ from a minimization problem that only involves observables.
+
+
+\begin{Theorem}[IPW for MSM with multiple time points]\label{thm::ipw-msm-multiple}
+Under Assumption \ref{assume::si-multiple},
+\[
+\beta = \arg \min_b  \sum_{  \overline{z}_K  }    E\left[
+  \frac{1(Z_1 = z_1) \cdots 1( Z_K = z_K) }{    e(z_1, X_0)  \cdots  e(z_K, \overline{Z}_{K-1},  \overline{X}_{K-1})    }
+  \{ Y -  f(\overline{z}_K, X_0 ; \beta  )\} ^2
+  \right] .
+\]
+\end{Theorem}
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Structural nested model with treatments at multiple time points]\label{exr:29-10}
+
+
+Inherit the setting from Problem \ref{problem::g-formula-multiple-time} and the notation from Problem \ref{problem::ipw-multiple-time}. This problem presents a general structural nested model.
+
+\begin{definition}
+[structural nested model with multiple time points]
+\label{def::snm-multiple}
+The conditional effect at time $k$ is
+\[
+E\{  Y(\overline{z}_k,0) - Y( \overline{z}_{k-1},0) \mid \overline{z}_k , \overline{X}_{k-1} \} = g_k( \overline{z}_k, \overline{X}_{k-1}; \beta)
+\]
+for all $\overline{z}_k$ and all $k=1,\ldots, K$.
+\end{definition}
+
+
+
+In Definition \ref{def::snm-multiple},  a logical restriction is
+\[
+g_k(0,  \overline{z}_{k-1}, \overline{X}_{k-1}; \beta)    = 0
+\]
+for all $\overline{z}_{k-1}$ and all $k=1,\ldots, K$.
+
+
+Define
+\[
+U_k(\beta) = Y - \sum_{s=1}^k  g_s( \overline{Z}_s, \overline{X}_{s-1}; \beta)
+\]
+for all $k=1,\ldots, K$. Theorem  \ref{thm::snm-estimating-equation-multiple} below extends Theorem \ref{thm::estimating-equation-snm}.
+
+
+
+\begin{Theorem}
+\label{thm::snm-estimating-equation-multiple}
+Under Assumption \ref{assume::si-multiple} and Definition \ref{def::snm-multiple},  we have
+\[
+E\left[    h_k( \overline{Z}_{k-1}, \overline{X}_{k-1} ) \{  Z_k - e(1, \overline{Z}_{k-1}, \overline{X}_{k-1}) \}  U_k(\beta)
+\right] = 0
+\]
+for any functions $h_k$ $(k=1,\ldots, K)$, provided that   the moment exists.
+\end{Theorem}
+
+
+
+Remark: Choosing appropriate $h_k$'s, we can estimate $\beta$ by solving the empirical version of Theorem \ref{thm::snm-estimating-equation-multiple}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:29-11}
+
+\citet{robins2000marginal} reviewed the MSM. \citet{naimi2017introduction} reviewed the g-methods.
+
+\end{HomeworkProblem}

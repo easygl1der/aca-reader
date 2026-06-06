@@ -253,47 +253,163 @@ $(0.10, 0.90)$ & $-5.1$ & $3.5$ \\
   \item \textbf{重叠条件}：$0 < e(X) < 1$ 是确保识别公式有意义的必要条件，截断是处理不稳定性的实用策略。
 \end{enumerate}
 
-\section{习题}\label{sec:chapter11-exercises}
+\section{习题}\label{sec:11-homework}
 
-\begin{Exercise}{倾向得分的降维性质}\label{exr:11-1}
-证明 \cref{th:11-dimension-reduction}：在强可忽略性假设下，如果 $\{Y(1), Y(0)\} \independent Z \mid X$，则 $\{Y(1), Y(0)\} \independent Z \mid e(X)$。
+\begin{HomeworkProblem}[Another version of Theorem \ref{thm::pscore-dimreduction}]\label{exr:11-1}
+ Prove that
+\begin{equation}
+ Z\ind \{  Y(1), Y(0) , X\}  \mid e(X, Y(1), Y(0)   ) .
+\end{equation}
 
-\textit{提示：利用概率论中的推论——如果 $A \independent B \mid C$，且 $D$ 是 $C$ 的函数，则 $A \independent B \mid D$。}
-\end{Exercise}
+ Remark:
+ This result holds without assuming strong ignorability. It implies that
+ \[
+  Z\ind \{  Y(1), Y(0) \}  \mid  \{ X,   e(X, Y(1), Y(0)  \} .
+ \]
+\citet{rosenbaum2020modern} and \citet{rosenbaum2023propensity} pointed out the result in \eqref{eq::principal-covariate-ind} and called $e(X, Y(1), Y(0)   ) $ the  {\it  principal unobserved covariate}.
 
-\begin{Exercise}{HT 估计量的期望}\label{exr:11-2}
-证明 HT 估计量 \cref{eq:11-ht-estimator} 是总体平均因果效应 $\tau$ 的无偏估计。
 
-\textit{提示：分别计算 $\mathbb{E}\left( \frac{Z Y(1)}{e(X)} \right)$ 和 $\mathbb{E}\left( \frac{(1-Z) Y(0)}{1-e(X)} \right)$，利用 $e(X) = \Pr(Z=1 \mid X)$。}
-\end{Exercise}
 
-\begin{Exercise}{标准化权重的性质}\label{exr:11-3}
-验证 \cref{eq:11-ipw-estimator} 中标准化权重的性质：$\hat{\mathbf{1}}_T$ 和 $\hat{\mathbf{1}}_C$ 在使用真实倾向得分时，其期望均为 $n$。
+\end{HomeworkProblem}
 
-\textit{注：这也是 \citet{PengDing:2016} 中使用特殊记号 $\hat{1}_T$ 和 $\hat{1}_C$ 的原因——这两个量的期望都是 1。}
-\end{Exercise}
+\begin{HomeworkProblem}[Another version of Theorem \ref{thm::pscore-dimreduction}]\label{exr:11-2}
 
-\begin{Exercise}{倾向得分的平衡性质证明}\label{exr:11-4}
-证明 \cref{th:11-balancing} 的第二个结论：对于任意协变量函数 $g(X)$，
+Theorem \ref{thm::pscore-dimreduction} states a result under strong ignorability. An analogous result also holds under ignorability.
+That is, if ignorability holds conditional on covariates $X$, then it also holds conditional on the scalar propensity score $e(X)$.
+
+\begin{Theorem}
+\label{thm::pscore-dimension-reduction-weak-ig}
+If $Z\ind Y(z)  \mid X$ for $z=0,1$, then
+$
+Z\ind Y(z)\mid e(X)
+$
+for $z=0,1$.
+\end{Theorem}
+
+
+Prove Theorem \ref{thm::pscore-dimension-reduction-weak-ig}.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More results on the IPW estimators]\label{exr:11-3}
+
+This is related to the discussion of the HT estimator in Section \ref{sec::ipw-estimators}. First, prove Proposition \ref{prop::no-invariance-HT}.
+Second, prove
+ \begin{eqnarray*}
+E\left\{ \frac{1}{n} \sumn \frac{Z_i }{e(X_i) } \right\} =1,\quad
+E\left\{  \frac{1}{n} \sumn \frac{ (1-Z_i) }{ 1 - e(X_i) }  \right\} = 1.
+\end{eqnarray*}
+Third, prove that if we add a constant $c$ to every observed outcome $Y_i$, the Hajek estimator
+$
+\hat{\tau}^\textup{hajek}
+$
+remains the same.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Re-analysis of \citet{Rosenbaum::1983JRSSB}]\label{exr:11-4}
+
+
+
+Table \ref{table::rr1983table1} is from \citet{Rosenbaum::1983JRSSB}, which concerned the causal effect of the coronary artery bypass surgery compared with the medical therapy on the functional improvement 6 months after cardiac catheterization.  They first estimated the propensity score based on 74 observed covariates and then formed 5 strata based on the discretized estimated propensity score. Because the treatment is binary and the outcome is also binary, they represented the data in a table.
+Based on Table \ref{table::rr1983table1} , estimate the average causal effect, and report the 95\% confidence interval of the average causal effect.
+
+
+
+\begin{table}
+\caption{Table 1 of \citet{Rosenbaum::1983JRSSB}}\label{table::rr1983table1}
+\begin{tabular}{clcc}
+\hline
+stratum by $\hat{e}(X)$ & treatment &  number of patients & proportion improved\\
+\hline 1 & Surgical & 26 & 0.54 \\
+& Medical & 277 & 0.35 \\
+2 & Surgical & 68 & 0.70 \\
+& Medical & 235 & 0.40 \\
+3 & Surgical & 98 & 0.70 \\
+& Medical & 205 & 0.35 \\
+4 & Surgical & 164 & 0.71 \\
+& Medical & 139 & 0.30 \\
+5 & Surgical & 234 & 0.70 \\
+& Medical & 69 & 0.39 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+Remark:   If you are interested, you can read the whole paper of \citet{Rosenbaum::1983JRSSB} after reading Part \ref{part::challenges-os} of the book. It is a canonical paper on sensitivity analysis in causal inference.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Balancing score and propensity score: more theoretical results]\label{exr:11-5}
+
+
+\citet{rosenbaum1983central} also introduced the notion of {\it balancing score}.
+
+\begin{definition}
+[balancing score]\label{def::balancing-score}
+  $b(X)$ is a balancing score if
+  \[
+  Z\ind X\mid b(X).
+  \]
+\end{definition}
+
+In Definition \ref{def::balancing-score},  $b(X)$ can be a scalar or a vector. An obvious balancing score is $b(X) = X$, but it is not a useful one without any simplification of the original covariates. By Theorem \ref{thm::pscoreASbscore}, the propensity score is a special balancing score. More interestingly, \citet{rosenbaum1983central} showed that the propensity score is the coarsest balancing score, as in Theorem \ref{thm::balancingscore} below which includes Theorem \ref{thm::pscoreASbscore} as a special case.
+
+
+\begin{Theorem}
+\label{thm::balancingscore}
+$b(X)$ is a balancing score if and only if $b(X)$ is finer than $e(X)$ in the sense that $e(X) = f(b(X))$ for some function $f(\cdot)$.
+\end{Theorem}
+
+
+Theorem \ref{thm::balancingscore} is relevant in subgroup analysis. In particular, we may be interested in not only the average causal effect $\tau$ but also the subgroup effects. For instance, we may want to estimate the average causal effects among boys and girls, respectively. Without loss of generality, assume the first component of $X$ is the indicator for girls, and we are interested in estimating
 \[
-\mathbb{E}\left\{ \frac{Z g(X)}{e(X)} \right\} = \mathbb{E}\{g(X)\} .
+\tau(x_1) = E\{ Y(1) - Y(0) \mid X_1 = x_1  \},\quad (x_1=1,0).
 \]
+Theorem \ref{thm::balancingscore} implies that under ignorability, we also have
+\begin{equation}
+Z\ind \{ Y(1) , Y(0) \} \mid e(X), X_1
+\end{equation}
+because $b(X) = \{e(X), X_1\}$ is finer than $e(X)$ and thus a balancing score. The conditional independence in \eqref{eq::subgroup-ignorability} ensures ignorability holds given the propensity score, within each level of $X_1$. Therefore, we can perform the same analysis based on the propensity score, within each level of $X_1$, yielding estimates for two subgroup effects.
 
-\textit{提示：使用 tower property 和条件概率的定义。}
-\end{Exercise}
 
-\begin{Exercise}{协变量平衡的数值检验}\label{exr:11-5}
-使用 \cref{ex:11-nhanes-ps} 中的 NHANES 数据，检验不同分层数量 $K$ 下的协变量平衡。报告治疗组和对照组在各层内关键协变量（如年龄、BMI）均值之差的绝对值。
-\end{Exercise}
+With the above motivation in mind, now prove Theorem \ref{thm::balancingscore}.
 
-\begin{Exercise}{截断水平的敏感性分析}\label{exr:11-6}
-对 \cref{tab:11-ipw-truncation} 中的结果进行敏感性分析：比较不同截断水平对点估计和标准误的影响，讨论截断水平选择的实际准则。
-\end{Exercise}
 
-\begin{Exercise}{IPW 与结果回归的比较}\label{exr:11-7}
-使用第 \ref{ch:10} 章中的模拟数据或真实数据，分别应用 IPW 估计量和结果回归估计量，比较两者的点估计和置信区间。
-\end{Exercise}
+\end{HomeworkProblem}
 
-\begin{Exercise}{极端反事实的影响}\label{exr:11-8}
-\citet{KingZeng:2006} 讨论了极端反事实问题。构造一个例子，其中某些单元的倾向得分接近 1，讨论这种情况下因果推断面临的挑战。
-\end{Exercise}
+\begin{HomeworkProblem}[Some basics of subgroup effects]\label{exr:11-6}
+
+This problem is related to Problem \ref{hw::balancingscore-rr1983}, but you can work on it independently.
+
+Consider a standard observational study with covariates $X = (X_1, X_2)$, where $X_1$ denotes a binary subgroup indicator (e.g., statistics major or not statistics major) and $X_2$ contains the rest of the covariates. The parameter of interest is the subgroup causal effect
+\[
+\tau(x_1) = E\{ Y(1) - Y(0) \mid X_1 = x_1  \},\quad (x_1=1,0).
+\]
+Show that
+\[
+\tau(x_1) =  E\left\{   \frac{  1(X_1 = x_1) ZY}{ e(X) }   - \frac{  1(X_1 = x_1) (1-Z)Y}{ 1 -  e(X) }    \right\} \Big /  \pr(X_1 = x_1)
+\]
+and give the corresponding HT and Hajek estimators for $\tau(x_1) $.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:11-7}
+
+
+The title of this chapter is the same as the title of the classic paper by \citet{rosenbaum1983central}. Most results in this chapter are directly drawn from their original paper.
+
+
+\citet{rubin2007design} and \citet{rubin2008objective} highlighted the importance of the design stage of observational studies for more objective causal inference
+
+
+\end{HomeworkProblem}

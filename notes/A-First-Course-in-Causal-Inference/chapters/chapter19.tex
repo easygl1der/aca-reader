@@ -216,37 +216,43 @@ gammastar = Gamma[which(Pvalue >= 0.05)[1]]
   \label{fig:19-rosenbaum-packages}
 \end{figure}
 
-\section{练习}\label{sec:19-exercises}
+\section{习题}\label{sec:19-homework}
 
-\begin{Exercise}{Rosenbaum 灵敏度模型的基本性质}\label{ex:19-gamma-properties}
-证明：当 $\Gamma \to \infty$ 时，\cref{as:19-rosenbaum} 中的约束变得无效，此时 $S_i$ 的最坏情况分布趋近于 Bernoulli$(1/2)$。这对应着什么实际含义？
-\end{Exercise}
+\begin{HomeworkProblem}[A model for Assumption \ref{assume::rosenbaum-sensitivity}]\label{exr:19-1}
 
-\begin{Exercise}{最坏情况 p 值的单调性}\label{ex:19-pvalue-monotone}
-设 $T^{\mathrm{obs}}$ 为观测到的检验统计量。证明：最坏情况 p 值 $\text{p}_{\Gamma}$ 是 $\Gamma$ 的单调递增函数。解释这在直觉上意味着什么。
-\end{Exercise}
+Assumption \ref{assume::rosenbaum-sensitivity} has the following equivalent form.
 
-\begin{Exercise}{Sign statistic 的灵敏度分析}\label{ex:19-sign-stat}
-对于 sign statistic $q_i = 1$（所有配对权重相等），推导 $T$ 在 \cref{eq:19-s_i-dist} 下的分布，并给出 p 值的显式计算公式。
-\end{Exercise}
 
-\begin{Exercise}{LaLonde 数据的计算}\label{ex:19-lalonde-compute}
-使用 LaLonde 数据集，计算在不同 $\Gamma$ 值（$1, 1.1, 1.2, 1.3, 1.5$）下的最坏情况 p 值，并绘制灵敏度曲线。
-\end{Exercise}
+\begin{assumption}
+\label{assume::rosenbaum-equivalent}
+The propensity score satisfies the following model
+\[
+\log \frac{  \pi_{ij} }{  1-\pi_{ij}  } = g(X_i) + \gamma U_{ij} ,\quad (i=1,\ldots, n; j=1,2)
+\]
+where $g(\cdot)$ is an unknown function and $U_{ij} \in [0, 1]$ is a a bounded unobserved covariate for unit $(i, j)$.
+\end{assumption}
 
-\section{本章小结}\label{sec:19-summary}
 
-本章介绍了 Rosenbaum 风格的灵敏度分析框架，这是处理匹配观测研究中未测量混杂的标准方法。
+Show that if Assumption \ref{assume::rosenbaum-equivalent} holds, then Assumption \ref{assume::rosenbaum-sensitivity} must hold with $\Gamma = e^\gamma$.
 
-\textbf{核心要点}：
 
-\begin{enumerate}
-  \item \cref{as:19-rosenbaum} 通过 odds ratio 上界 $\Gamma \geq 1$ 量化了未测量混杂的强度。
-  \item $\Gamma = 1$ 对应于标准匹配实验；当 $\Gamma > 1$ 时，处理分配概率在配对之间可能不相等。
-  \item \cref{th:19-worst-case} 给出了零假设下 $S_i$ 的最坏情况分布，这使得我们可以计算保守的 p 值。
-  \item 灵敏度分析不试图"证明"因果效应存在，而是量化结论在何种未测量混杂强度下仍然成立。
-\end{enumerate}
+Remark: \citet[][page 108]{rosenbaum2002design} also shows that if Assumption \ref{assume::rosenbaum-sensitivity} holds, then Assumption \ref{assume::rosenbaum-equivalent} must hold for some $U_{ij}$'s. Assumption \ref{assume::rosenbaum-equivalent} may be easier to interpret because $\gamma$ measures the log of the conditional odds ratio of $U$ on the treatment; see Chapter \ref{sec::logistic-regression} for the interpretation of the coefficients in the logistic regression.
 
-\textbf{历史注记}：Rosenbaum (1987b) 的工作是观测研究灵敏度分析的开创性文献。此后，这一框架被推广到更复杂的研究设计，包括分层分析、倾向得分匹配等。Rosenbaum 的专著 (2002, 2010) 系统地发展了这一理论。
 
-\textbf{与其他章节的联系}：本章的方法建立在第 11 章的匹配理论基础之上，并借鉴了第 3 章 Fisher randomization test 的思想。灵敏度分析的思想也与第 12 章双重稳健估计的"稳健性"概念相呼应——两者都关注因果结论在模型假设偏离时的稳健性。
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Application of Rosenbaum's approach]\label{exr:19-2}
+Re-analyze Example \ref{eg::chan-bmi-ATE} using Rosenbaum's approach based on matching.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:19-3}
+
+
+\citet{rosenbaum2015two} provides a tutorial for his two \ri{R} packages for sensitivity analysis with matched observational studies.
+
+
+\end{HomeworkProblem}

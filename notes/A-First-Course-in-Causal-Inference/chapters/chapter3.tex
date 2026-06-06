@@ -682,90 +682,142 @@ H_0(\boldsymbol{\tau}): Y_i(1) - Y_i(0) = \tau_i \quad \text{对所有 } i.
 
 下一章我们将学习 Neymanian 推断——另一种基于渐近理论的方法，它可以更方便地构建置信区间。
 
-\section{习题}
+\section{习题}\label{sec:3-homework}
 
-\begin{Exercise}{3.1 — $p_\frt$ 的精确性}
-\label{ex:3.1}
-证明在 sharp null 下，$p_\frt$ 满足：
+\begin{HomeworkProblem}[Exactness of $p_\frt$]\label{exr:3-1}
+
+Prove \eqref{eq::p-value-valid}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Monte Carlo error of $\hat p_\frt$ ]\label{exr:3-2}
+
+Given data, $p_\frt$ is a fixed number while its Monte Carlo estimator $\hat p_\frt$ in \eqref{eq::mcpvalue} is random.
+Show that
 \[
-\mathbb{P}(p_\frt \leq u) \leq u \quad \text{for all} \quad 0 \leq u \leq 1.
+E_{\text{mc}} (\hat p_\frt) =   p_\frt
 \]
-\end{Exercise}
-
-\begin{Exercise}{3.2 — Monte Carlo 误差}
-\label{ex:3.2}
-设 $p_\frt$ 是固定值，$\hat p_\frt$ 是其 Monte Carlo 估计（见 \cref{eq:mc-pvalue}）。证明：
+and
 \[
-\mathbb{E}_{\text{mc}} (\hat p_\frt) = p_\frt, \quad
-\operatorname{var}_{\text{mc}} (\hat p_\frt) \leq \frac{1}{4R},
+\var_{\text{mc}} (\hat p_\frt)  \leq \frac{1}{4R},
 \]
-其中下标 "mc" 表示由于 Monte Carlo 的随机性。
-\end{Exercise}
+where the subscript ``mc'' signifies the randomness due to Monte Carlo, that is, $\hat p_\frt$ is random because $\mathbf{z}^r$'s are $R$ independent random draws from all possible values of $\mathbf{Z}$.
 
-\begin{Exercise}{3.3 — 有限样本有效的 Monte Carlo 近似}
-\label{ex:3.3}
-证明修正的 Monte Carlo 近似
+
+Remark: $p_\frt$ is random because $\mathbf{Z}$ is random. But in this problem, we condition on data, so $p_\frt$ becomes a fixed number. $\hat p_\frt$ is random because the $\mathbf{z}^r$'s are random permutations of $\mathbf{Z}$.
+Problem \ref{para::monte-carlo-error-pfrt} shows that $\hat p_\frt$ is unbiased for $p_\frt$ over the Monte Carlo randomness and gives an upper bound on the variance of $\hat p_\frt$. \citet[][Theorem 2]{luo2021leveraging} gives a more delicate bound on the Monte Carlo error.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[A finite-sample valid Monte Carlo approximation of $p_\frt$ ]\label{exr:3-3}
+
+
+Although $\hat p_\frt$ is unbiased for $p_\frt$ by the result in Problem \ref{para::monte-carlo-error-pfrt}, it may not be a valid $p$-value in the sense that $\pr(\hat p_\frt \leq u) \leq u$ for all $u\in (0,1)$ due to Monte Carlo error with a finite $R$. The following modified Monte Carlo approximation is always a finite-sample valid $p$-value. \citet{phipson2010permutation} pointed out this trick in the permutation test.
+
+
+
+Define
 \[
-\tilde p_\frt = \frac{1 + \sum_{r=1}^R \mathbb{I}\{T(\mathbf{z}^r,\mathbf{Y}) \geq T(\mathbf{Z},\mathbf{Y})\}}{1+R}
+\tilde p_\frt  =  \frac{  1 + \sum_{r=1}^R   I\{ T(\mathbf{z}^r,\mathbf{Y})   \geq T(\mathbf{Z},\mathbf{Y})   \}  }{1+R}
 \]
-在任意有限的 $R$ 下都是有限样本有效的 p 值。
+where the $\mathbf{z}^r$'s the $R$ random permutations of $\mathbf{Z}$. Show that with an arbitrary $R$, the Monte Carlo approximation $\tilde p_\frt $ is always a finite-sample valid $p$-value in the sense that $\pr(\tilde p_\frt \leq u) \leq u$ for all $u\in (0,1)$.
 
-\textbf{提示}：可以利用以下两个基本概率结果：
-\begin{enumerate}
-  \item 对于两个二项分布 $X_1 \sim \text{Binomial}(R, p_1)$ 和 $X_2 \sim \text{Binomial}(R, p_2)$，若 $p_1 \geq p_2$，则 $\mathbb{P}(X_1 \leq x) \leq \mathbb{P}(X_2 \leq x)$。
-  \item 若 $p \sim \text{Uniform}(0,1)$ 且 $X \mid p \sim \text{Binomial}(R, p)$，则 $X$ 在 $\{0, 1,\ldots, R\}$ 上均匀分布。
-\end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{3.4 — Fisher 精确检验}
-\label{ex:3.4}
-考虑二元结局的 CRE，数据汇总为 $2 \times 2$ 列联表：
 
-\begin{center}
+Remark: You can use the following two basic probability results to prove the claim in Problem \ref{para::finite-sample-exact-monte-carlo-frt}.
+
+
+\begin{Lemma}
+\label{lemma::binomial-order}
+For two Binomial random variables $X_1\sim \text{Binomial}(R, p_1)$ and $X_2\sim \text{Binomial}(R, p_2)$ with $p_1\geq p_2$, we have  $\pr(X_1\leq x) \leq  \pr(X_2\leq x) $ for all $x.$
+\end{Lemma}
+
+\begin{Lemma}
+\label{lemma::uniform}
+If $p\sim \text{Uniform}(0,1)$ and $X\mid p \sim \text{Binomial}(R, p)$, then, marginally, $X$ is a uniform random variable over $\{ 0,1,\ldots, R  \}$.
+\end{Lemma}
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Fisher's exact test]\label{exr:3-4}
+
+Consider a CRE with a binary outcome, with data summarized in the following two-by-two table:
+ \begin{center}
 \begin{tabular}{lccc}
 \hline
-        & $Y =1$ & $Y =0$& 合计\\\hline
-$Z =1$ & $n_{11}$ & $n_{10}$ & $n_1$着\\
-$Z =0$ & $n_{01}$ & $n_{00}$ & $n_0$ \\
+        & $Y =1$ & $Y =0$& total\\\hline
+$Z =1$ & $n_{11}$ & $n_{10}$ & $n_1$\\
+$Z =0$ & $n_{01}$ & $n_{00}$ & $n_0$\\
 \hline
 \end{tabular}
 \end{center}
+Under $\HF$, show that any test statistic $T(n_{11}, n_{10}, n_{01}, n_{00})$ is a function of $n_{11}$ and other non-random fixed constants, and the exact distribution of $n_{11}$ is Hypergeometric. Specify the parameters for the Hypergeometric distribution.
 
-在 $H_{0F}$ 下，证明任何检验统计量 $T(n_{11}, n_{10}, n_{01}, n_{00})$ 是 $n_{11}$ 的函数，且 $n_{11}$ 的精确分布是超几何分布。请说明超几何分布的参数。
-\end{Exercise}
+Remark:
+\citet{barnard1947significance} and \citet{Ding:2015} pointed out the equivalence of Fisher's exact test (reviewed in Section \ref{sec::fisher-exact-test}) and the FRT under a CRE  with a binary outcome.
 
-\begin{Exercise}{3.5 — 女士品茶详细计算}
-\label{ex:3.5}
-回忆女士品茶实验（见 \cref{sec:tea-history}）。计算 $\mathbb{P}(X = k)$，其中 $X$ 是女士正确识别 $k$ 杯先加牛奶的茶的个数，$k = 0, 1, 2, 3, 4$。
-\end{Exercise}
 
-\begin{Exercise}{3.6 — 协变量调整的 FRT}
-\label{ex:3.6}
-使用 LaLonde 数据集（见 \cref{sec:lalonde-data}），添加协变量进行 FRT 分析。假设所有潜在结果和协变量都是固定数值。
 
-有两种策略：
-\begin{enumerate}
-  \item 运行结局对协变量的线性回归，得到残差（即"伪结局"）。基于残差定义四种检验统计量，进行 FRT 并报告 p 值。
-  \item 定义检验统计量为结局对治疗和协变量线性回归中治疗系数的 FRT。
-\end{enumerate}
 
-解释为什么上述两种策略的五个 p 值都是有限样本精确的。
-\end{Exercise}
 
-\begin{Exercise}{3.7 — FRT 与广义线性模型}
-\label{ex:3.7}
-使用与 \cref{ex:3.6} 相同的数据集，但将结局改为 \texttt{re78 > 0} 的二元指示变量。运行结局对治疗和协变量的 logistic 回归。治疗系数是否显著？FRT p 值是多少？
-\end{Exercise}
+\end{HomeworkProblem}
 
-\begin{Exercise}{3.8 — 代数细节}
-\label{ex:3.8}
-验证 \cref{eq:frt-algebra}。
-\end{Exercise}
+\begin{HomeworkProblem}[More details for lady tasting tea]\label{exr:3-5}
 
-\begin{Exercise}{3.9 — 推荐阅读}
-\label{ex:3.9}
-\citet{bind2020possible} 是一篇倡导在复杂实验中同时报告 p 值及其相应随机化分布的论文。
-\end{Exercise}
+Recall the example in Section \ref{section::lady-tasting-tea}. Calculate $\pr(X=k)$ for $k=0,1,2,3,4$.
 
-% === 用户问答记录 ===
-% (后续通过 interactive-qa 更新)
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Covariate-adjusted FRT]\label{exr:3-6}
+
+
+This problem gives more details for Section \ref{section::other-statistic}.
+
+
+Section \ref{sec::frt-lalonde-experiment} re-analyzed the LaLonde experimental data using the FRT with four test statistics. With additional covariates, the FRT can be more general with at least the following two additional strategies. Assume all potential outcomes and covariates are fixed numbers.
+
+First, we can use test statistics based on residuals from the linear regression. Run a linear regression of the outcomes on the covariates, and obtain the residuals (i.e., view the residuals as the ``pseudo outcomes''). Then define the four test statistics based on the residuals. Conduct the FRT using these four new test statistics. Report the corresponding $p$-values.
+
+
+Second, we can define the test statistic as the coefficient in the linear regression of the outcomes on the treatment and covariates. Conduct the FRT using this test statistic. Report the corresponding $p$-value.
+
+
+Why are the five $p$-values from the above two strategies finite-sample exact? Justify them.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[FRT with a generalized linear model]\label{exr:3-7}
+
+
+Use the same dataset as Problem \ref{hw::frt-covariates} but change the outcome to a binary indicator for whether \ri{re78} is positive or not. Run logistic regression of the outcome on the treatment and covariates. Is the coefficient of the treatment significant and what is the $p$-value? Calculate the $p$-value from the FRT using the coefficient of the treatment as the test statistic.
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[An algebraic detail]\label{exr:3-8}
+
+Verify \eqref{eq::frt-algebra-difference-in-means}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:3-9}
+
+\citet{bind2020possible} is a recent paper advocating the use of $p$-values as well as the display of the corresponding randomization distributions in analyzing complex experiments.
+
+
+\end{HomeworkProblem}

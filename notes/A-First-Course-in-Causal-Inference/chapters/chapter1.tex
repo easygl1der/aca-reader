@@ -173,45 +173,85 @@ Bertrand and Mullainathan (2004) 通过随机改变简历上的名字来研究�
 
 下一章我们将学习因果推断的基石——\textbf{潜在结果框架（Potential Outcomes Framework）}，这将为我们的因果分析提供坚实的数学基础。
 
-\section{习题}
+\section{习题}\label{sec:1-homework}
 
-\begin{Exercise}{\ref{ex:1.1} 独立性命题的证明}\label{ex:1.1}
-证明 Proposition \ref{prop:2x2-independence} 中的命题 (1) 和 (2)。
-\end{Exercise}
+\begin{HomeworkProblem}[Independence in two-by-two tables]\label{exr:1-1}
 
-\begin{Exercise}{\ref{ex:1.2} Yule-Simpson 悖论的更多例子}\label{ex:1.2}
-\begin{enumerate}
-  \item 给出一个 $2 \times 2 \times 2$ 列联表的数值例子，其中出现 Yule-Simpson 悖论。
-  \item 找一个现实生活中的 Yule-Simpson 悖论例子。
-\end{enumerate}
-\end{Exercise}
+Prove (1) and (2) in Proposition \ref{prop::2x2-independence}.
 
-\begin{Exercise}{\ref{ex:1.3} 相关与偏相关}\label{ex:1.3}
-考虑三维正态随机向量 $(X, Y, Z)^\top \sim N(\mathbf{0}, \Sigma)$。
 
-证明偏相关系数公式（见 Proposition \ref{prop:partial-correlation}）。
+\end{HomeworkProblem}
 
-给出一个 $\rho_{YZ} > 0$ 但 $\rho_{YZ|X} < 0$ 的数值例子。
+\begin{HomeworkProblem}[More examples of the Yule--Simpson Paradox]\label{exr:1-2}
 
-\textbf{注}：这是正态随机向量情形下的 Yule-Simpson 悖论。
-\end{Exercise}
 
-\begin{Exercise}{\ref{ex:1.4} 规格搜索}\label{ex:1.4}
-重做 Hainmueller (2012) 的数据分析。使用结局 \texttt{re78} 和治疗 \texttt{treat}。数据集还包含 10 个协变量，共有 $2^{10} = 1024$ 种可能的协变量子集组合。运行所有可能的线性回归子集，并报告 treatment 系数的分布：有多少是正显著、负显著、不显著的？
-\end{Exercise}
+Give a numeric example of a two-by-two-by-two table in which the Yule--Simpson Paradox arises.
 
-\begin{Exercise}{\ref{ex:1.5} 种族歧视的进一步分析}\label{ex:1.5}
-重做 Bertrand and Mullainathan (2004) 的简历数据分析。分别对男性和女性进行分析，讨论亚组分析的结果与总体结论的差异。
-\end{Exercise}
+Find a real-life example in which the Yule--Simpson Paradox arises.
 
-\begin{Exercise}{\ref{ex:1.6} 推荐阅读}\label{ex:1.6}
-\begingroup
-\parskip=0pt
-\textbf{推荐阅读}：\cite{bickel1975} 是关于 Berkeley 录取数据悖论的原始论文。\cite{pearl2018} 从因果推断角度重新审视了该研究。
 
-\textbf{历史注记}：\cite{holland1986} 是统计因果推断领域的经典综述文章，它推广了"Rubin 因果模型"这一名称。在 UC Berkeley，我们称之为"Neyman 模型"——原因显而易见。
-\endgroup
-\end{Exercise}
 
-% === 用户问答记录 ===
-% (后续通过 interactive-qa 更新)
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Correlation and partial correlation]\label{exr:1-3}
+
+Consider a three-dimensional Normal random vector:
+\[
+\begin{pmatrix}
+X\\
+Y\\
+Z
+\end{pmatrix}
+\sim
+\textsc{N}
+\left(
+\begin{pmatrix}
+0\\
+0\\
+0
+\end{pmatrix},
+\begin{pmatrix}
+1 & \rho_{XY} &\rho_{XZ} \\
+  \rho_{XY}  & 1 & \rho_{YZ} \\
+  \rho_{XZ} &  \rho_{YZ} & 1
+\end{pmatrix}
+\right) .
+\]
+The correlation coefficient between $Y$ and $Z$ is $\rho_{YZ}$.
+There are many equivalent definitions of the partial correlation coefficient.
+For a multivariate Normal vector, let $\rho_{YZ|X}$ denote the partial correlation coefficient between $Y$ and $Z$ given $X$, which is defined as their correlation coefficient in the conditional distribution $(Y, Z)\mid X$. Show that
+\[
+\rho_{YZ\mid X} = \frac{   \rho_{YZ} - \rho_{YX} \rho_{ZX}  }{  \sqrt{  1-\rho_{YX}^2 }  \sqrt{1- \rho_{ZX}^2  }  }  .
+\]
+
+Give a numerical example with $\rho_{YZ} > 0$ and $\rho_{YZ|X} < 0$.
+
+Remark: This is the Yule--Simpson Paradox for a Normal random vector.
+You can use the results in Chapter \ref{sec::multivariate-normal} to prove the formula for the partial correlation coefficient.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Specification searches]\label{exr:1-4}
+
+Section \ref{section:correlatioandregressionintro} re-analyzes the data used by \citet{hainmueller2012entropy}. We used the outcome named \ri{re78} and the treatment named \ri{treat} in the analysis. Moreover, the data also contain $10$ covariates and therefore $2^{10} = 1024$ possible subsets of covariates in the linear regression. Run $1024$ linear regressions with all possible subsets of covariates, and report the regression coefficients of the treatment. How many coefficients of the treatment are positively significant, how many are negatively significant, and how many are not significant? You can also report other interesting findings from these regressions.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More on racial discrimination]\label{exr:1-5}
+
+Section \ref{sec::twobytwotables-withresume} re-analyzes the data collected by \citet{bertrand2004emily}. Conduct analyses separately for males and females. What do you find from these subgroup analyses?
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:1-6}
+
+\citet{bickel1975sex} is the original paper for the paradox reported in Section \ref{sec::berkeleydata}.
+\citet{pearl2018book} recently revisited the study from the causal inference perspective.
+
+
+
+\end{HomeworkProblem}

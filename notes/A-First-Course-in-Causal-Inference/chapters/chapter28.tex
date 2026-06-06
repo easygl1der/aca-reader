@@ -201,42 +201,124 @@ which equals $\mu_k$ if either $e_k(X,\alpha)=e_k(X)$ or $\mu_k(X,\beta)=\mu_k(X
 \item 受控直接效应是多值处理识别理论的特殊情形。
 \end{enumerate}
 
-\section{习题}
-\label{sec::cde-exercises}
+\section{习题}\label{sec:28-homework}
 
-\begin{Exercise}
-\label{exercise::cde-and-nde}
-证明：在跨世界独立性 $Y(z,m)\perp M(z')\mid X$（对所有 $z,z',m$ 成立）下，条件受控直接效应 $\mathrm{CDE}(m\mid x)=E\{Y(1,m)-Y(0,m)\mid X=x\}$ 与条件自然直接效应 $\mathrm{NDE}(x)=E\{Y(1,M_0)-Y(0,M_0)\mid X=x\}$ 有如下关系：
+\begin{HomeworkProblem}[$\CDE$ and $\NDE$]\label{exr:28-1}
+
+Show that under cross-world independence
+$
+Y(z,m) \ind M(z') \mid X
+$
+for all $z,z'$ and $m$,  the conditional controlled direct effect $\CDE(m\mid x) = E\{  Y(1,m)  - Y(0,m)\mid X=x\}$ and the conditional natural direct effect $\NDE(x) = E\{   Y(1,M_0) - Y(0, M_0) \mid X=x  \}$ have the following relationship:
 \[
-\mathrm{NDE}(x) = \sum_m \mathrm{CDE}(m\mid x)\,\Pr(M_0=m\mid X=x),
+\NDE(x) = \sum_m \CDE(m\mid x) \pr(M_0 = m\mid X=x)
 \]
-其中 $M$ 离散。若无跨世界独立性，这个关系一般还成立吗？
-\end{Exercise}
+for a discrete $M$. Without the cross-world independence, does this relationship still hold in general?
 
-\begin{Exercise}
-\label{exercise::multi-valued-treatment}
-证明定理 \ref{thm::multi-valued-identification}。
-\end{Exercise}
 
-\begin{Exercise}
-\label{exercise::cde-linear-model}
-证明：在假设 \ref{assume::sequential-ignorability} 下，
-\begin{enumerate}
-\item 若 $E(Y\mid Z,M,X) = \theta_0+\theta_1 Z+\theta_2 M+\theta_4^{\mathrm{T}}X$，则 $\mathrm{CDE}(m)=\theta_1$（对所有 $m$）；
-\item 若 $E(Y\mid Z,M,X) = \theta_0+\theta_1 Z+\theta_2 M+\theta_3 ZM+\theta_4^{\top}X$，则 $\mathrm{CDE}(m)=\theta_1+\theta_3 m$。
-\end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}
-\label{exercise::cde-logistic}
-对于二元结果，在假设 \ref{assume::sequential-ignorability} 下，证明：
-若 $\mathrm{logit}\{\pr(Y=1\mid Z,M,X)\} = \theta_0+\theta_1 Z+\theta_2 M+\theta_4^{\mathrm{T}}X$，则
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Observational studies with a multi-valued treatment]\label{exr:28-2}
+
+Theorem \ref{thm::cde-identification} is a special case of the following theorem for unconfounded observational studies with multiple treatment levels \citep{imai2004causal, cattaneo2010efficient}. Below, I state the general problem and theorem.
+
+
+
+Consider an observational study with a multi-valued treatment $Z \in \{ 1, \ldots, K \}$, covariates $X$, and outcome $Y$. Unit $i$ has $K$ potential outcomes $Y_i(1), \ldots, Y_i(K)$ corresponding to the $K$ treatment levels. In general, we can define causal effect in terms of contrasts of the potential outcomes:
 \[
-\mathrm{CDE}(m) = E\Big\{\mathrm{expit}(\theta_0+\theta_1+\theta_2 m+\theta_4^{\top}X) - \mathrm{expit}(\theta_0+\theta_2 m+\theta_4^{\top}X)\Big\}.
+\tau_C  = \sum_{k=1}^K C_k   E\{  Y(k) \}
 \]
-若模型包含交互项 $ZM$，则 $\mathrm{CDE}(m)$ 形式如何变化？
-\end{Exercise}
+where $  \sum_{k=1}^K C_k  = 0$. The canonical choice of the pairwise comparison
+\[
+\tau_{k,k'} = E\{   Y(k) - Y(k') \}.
+\]
+Therefore, the key is to identify and estimate the means of the potential outcomes $\mu_k  =  E\{  Y(k) \}$ under the ignorability and overlap assumptions below based on IID data of $(Z_i,  X_i, Y_i)_{i=1}^n$.
 
-\section{推荐阅读}
 
-Nguyen et al. (2021) 对第 27 章和第 28 章的主题提供了友好的综述。
+
+\begin{assumption}
+\label{assume::ignorability-multi-valued-Z}
+$Z\ind \{ Y (1), \ldots, Y (K) \} \mid X$ and $\pr(Z = k \mid X) > 0$ for $k=1,\ldots, K.$
+\end{assumption}
+
+
+
+Define the generalized propensity score as
+\[
+e_k(X) = \pr(Z = k \mid X),
+\]
+and define the conditional outcome mean as
+\[
+\mu_k(X) = E(   Y \mid Z=k,  X )
+\]
+for $k=1, \ldots, K.$ We have the following theorem.
+
+\begin{Theorem}
+\label{thm::treatment-multi-valued-Z}
+Under Assumption \ref{assume::ignorability-multi-valued-Z}, we have
+\[
+\mu_{k} = E\{  \mu_{k}(X) \}
+= E \left\{   \frac{I(Z = k) Y}{  e_{k}(X)  }  \right\} .
+\]
+Moreover, based on the working models $e_{k}(X, \alpha) $ and $\mu_{k}(X, \beta) $ for $e_{k}(X) $ and $\mu_{k}(X) $, respectively, we have the doubly robust  formula
+\[
+\mu_{k}^{\textup{dr}}  = E\{  \mu_{k}(X, \beta) \} + E \left[   \frac{I(Z=k) \{ Y - \mu_{k}(X, \beta)  \}}{  e_{k}(X, \alpha)  }  \right],
+\]
+which equals $\mu_{k} $ if either $e_{k}(X, \alpha) = e_{k}(X)$ or $\mu_{k}(X, \beta)  = \mu_{k}(X)$.
+\end{Theorem}
+
+
+Prove Theorem \ref{thm::treatment-multi-valued-Z}.
+
+
+Remark: Theorem \ref{thm::cde-identification} is a special case of Theorem \ref{thm::treatment-multi-valued-Z} if we view the $(Z,M)$ in Theorem \ref{thm::cde-identification} as a treatment with four levels. The $  \CDE (m) $ is a special case of $\tau_C $.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[$\CDE$ in the linear outcome model]\label{exr:28-3}
+
+  Show that under Assumption \ref{assume::si-cde}, if $E(Y\mid Z, M, X ) = \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X$, then
+  \[
+  \CDE (m) = \theta_1
+  \]
+  for all $m$;
+  if $E(Y\mid Z, M, X ) = \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM +    \theta_4\tran X$, then
+  \[
+\CDE(m) =   \theta_1 + \theta_3 m.
+  \]
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[$\CDE$ in the logistic outcome model]\label{exr:28-4}
+
+  Show that for a binary outcome, under Assumption \ref{assume::si-cde}, if
+  \[
+  \logit \{ \pr(Y = 1\mid Z, M, X ) \} = \theta_0 + \theta_1 Z + \theta_2 M +   \theta_4\tran X ,
+  \]
+  then
+  \[
+  \CDE (m) = E\{ \expit( \theta_0 + \theta_1  + \theta_2 m +   \theta_4\tran X ) - \expit( \theta_0    + \theta_2 m +   \theta_4\tran X ) \} ;
+  \]
+  if
+  \[
+  \logit \{ \pr(Y = 1\mid Z, M, X ) \} = \theta_0 + \theta_1 Z + \theta_2 M + \theta_3 ZM +    \theta_4\tran X,
+  \]
+  then
+  \[
+\CDE(m) =  E\{ \expit( \theta_0 + \theta_1  + \theta_2 m  +\theta_3 m +   \theta_4\tran X ) - \expit( \theta_0    + \theta_2 m +   \theta_4\tran X ) \}.
+  \]
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:28-5}
+
+\citet{nguyen2020clarifying} provided a friendly review of of the topics in Chapters \ref{chapter::mediation} and \ref{chapter::cde}.
+
+
+\end{HomeworkProblem}

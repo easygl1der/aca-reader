@@ -304,72 +304,195 @@ CRE 下差值均值估计量的方差分解为：\footnote{完整推导见附录
   \item \textbf{后分层}：CRE 中给定分层数量条件后，分析方法与 SRE 相同——这是使用协变量的对偶方法。
 \end{enumerate}
 
-\section{习题}\label{sec:chapter5-exercises}
+\section{习题}\label{sec:5-homework}
 
-\begin{Exercise}{CRE 中的协变量平衡}\label{exr:5-1}
-证明 \cref{eq:5-cre-balance}：在 CRE 下，
-\[
-\mathbb{E}\left( \frac{n_{[k]1}}{n_1} - \frac{n_{[k]0}}{n_0} \right) = 0 .
-\]
-\end{Exercise}
+\begin{HomeworkProblem}[Covariate balance in the CRE]\label{exr:5-1}
 
-\begin{Exercise}{常数层别倾向得分的结果}\label{exr:5-2}
-证明 \cref{eq:5-equal-propensity}：当所有层的层别倾向得分相等 $e_{[k]} = e$（对所有 $k$）时，
-\[
-\hat\tau = \hat\tau_\SRE .
-\]
-\end{Exercise}
+ Under the CRE, prove \eqref{eq::balance-discrete-CRE}.
 
-\begin{Exercise}{常数个体因果效应的后果}\label{exr:5-3}
-假设个体因果效应是常数 $\tau_i = \tau$（对所有 $i = 1, \ldots, n$）。考虑以下 $\tau$ 的加权估计量类：
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Consequence of the constant propensity score]\label{exr:5-2}
+
+Prove \eqref{eq::dim=stratified}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Consquence of constant individual causal effects]\label{exr:5-3}
+
+Assume that the individual causal effects are constant $\tau_i = \tau$ for all $i=1,\ldots, n$.
+Consider the following class of weighted estimator for $\tau$:
 \[
-\hat\tau_w = \sum_{k=1}^K w_{[k]} \hat\tau_{[k]} ,
+\hat{\tau}_w = \sum_{k=1}^K  w_{[k]}  \hat{\tau}_{[k]} ,
 \]
-其中权重 $w_{[k]}$ 对所有 $k$ 非负。
+where the weights $w_{[k]}  $'s are non-negative for all $k$.
+
+Find the condition on the $w_{[k]}$'s such that $\hat{\tau}_w $ is unbiased for $\tau$. Among all unbiased estimators, find the weights that give the $\hat{\tau}_w$ with the minimum variance.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Compare the CRE and SRE]\label{exr:5-4}
+
+Prove \eqref{eq::difference}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[From the CRE to the SRE]\label{exr:5-5}
+
+
+Prove \eqref{eq::condition-to-SRE}.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[More FRTs for Section \ref{sec::frt-pennbonus}]\label{exr:5-6}
+
+ Extend the analysis in Section \ref{sec::frt-pennbonus} using FRTs with other test statistics.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[FRT for an SRE in \citet{imbens2015causal}]\label{exr:5-7}
+
+
+\citet{imbens2015causal} discussed an SRE from the Student/Teacher Achievement Ratio experiment conducted in 1985--1986 in Tennessee.
+The kindergarten data are below:
+ \begin{lstlisting}
+treatment = list(c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0),
+                 c(1,1,0,0))
+outcome = list(c(0.165,0.321,-0.197,0.236),
+               c(0.918,-0.202,1.19,0.117),
+               c(0.341,0.561,-0.059,-0.496,0.225),
+               c(-0.024,-0.450,-1.104,-0.956),
+               c(-0.258,-0.083,-0.126,0.106),
+               c(1.151,0.707,0.597,-0.495),
+               c(0.077,0.371,0.685,0.270),
+               c(-0.870,-0.496,-0.444,0.392,-0.934,-0.633),
+               c(-0.568,-1.189,-0.891,-0.856),
+               c(-0.727,-0.580,-0.473,-0.807),
+               c(-0.533,0.458,-0.383,0.313),
+               c(1.001,0.102,0.484,0.474,0.140),
+               c(0.855,0.509,0.205,0.296),
+               c(0.618,0.978,0.742,0.175),
+               c(-0.545,0.234,-0.434,-0.293),
+               c(-0.240,-0.150,0.355,-0.130))
+\end{lstlisting}
+The strata correspond to schools, and the unit of analysis is the teacher or class. The treatment equals $1$ for small classes (13--17 students per teacher) and $0$ for regular classes (22--25 students per teacher). The outcome is the standardized average mathematics score.
+
+
+Reanalyze the Project STAR data below using the FRT.  Use $\hat{\tau}_\textsc{S}$, $W_\textsc{S}$ and $\tilde W$ in the FRT. Compare the $p$-values.
+
+Remark: This book uses $Z$ for the treatment indicator but \citet{imbens2015causal} use $W.$
+
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[A multi-center trial]\label{exr:5-8}
+
+\citet[][Table 1]{gould1998multi} reported the following data from a multi-center trial:
+
+\begin{lstlisting}
+> multicenter = read.csv("multicenter.csv")
+> multicenter
+   center n0 mean0  sd0 n1 mean1  sd1 n5 mean5  sd5
+1       1  7  0.43 4.58  7 -5.43 5.53  8 -2.63 3.38
+2       2 11  0.10 4.21 11 -2.59 3.95 12 -2.21 4.14
+3       3  6  2.58 4.80  6 -3.94 4.25  7  1.29 7.39
+4       4 10 -2.30 3.86 10 -1.23 5.17 10 -1.40 2.27
+5       5 10  2.08 6.46 10 -6.70 7.45 10 -5.13 3.91
+6       6  6  1.13 3.24  5  3.40 8.17  5 -1.59 3.19
+7       7  5  1.20 7.85  6 -3.67 4.89  5 -1.40 2.61
+8       8 12 -1.21 2.66 13  0.18 3.81 12 -4.08 6.32
+9       9  8  1.13 5.28  8 -2.19 5.17  9 -1.96 5.84
+10     10  9 -0.11 3.62 10 -2.00 5.35 10  0.60 3.53
+11     11 15 -4.37 6.12 14 -2.68 5.34 15 -2.14 4.27
+12     12  8 -1.06 5.27  9  0.44 4.39  9 -2.03 5.76
+13     13 12 -0.08 3.32 12 -4.60 6.16 11 -6.22 5.33
+14     14  9  0.00 5.20  9 -0.25 8.23  7 -3.29 5.12
+15     15  6  1.83 5.85  7 -1.23 4.33  6 -1.00 2.61
+16     16 14 -4.21 7.53 14 -2.10 5.78 12 -5.75 5.63
+17     17 13  0.76 3.82 13  0.55 2.53 13 -0.63 5.41
+18     18 15 -1.05 4.54 13  2.54 4.16 14 -2.80 2.89
+19     19 15  2.07 4.88 15 -1.67 4.95 15 -3.43 4.71
+20     20 11 -1.46 5.48 10 -1.99 5.63 10 -6.77 5.19
+21     21  5  0.80 4.21  5 -3.35 4.73  5 -0.23 4.14
+22     22 11 -2.92 5.42 10 -1.22 5.95 11 -4.45 6.65
+23     23  9 -3.37 4.73  9 -1.38 4.17  7  0.57 2.70
+24     24 12 -1.92 2.91 12 -0.66 3.55 12 -2.39 2.27
+25     25  9 -3.89 4.76  9 -3.22 5.54  8 -1.23 4.91
+26     26 15 -3.48 5.98 15 -2.13 3.25 14 -3.71 5.30
+27     27 11 -1.91 6.49 12 -1.33 4.40 11 -1.52 4.68
+28     28 10 -2.66 3.80 10 -1.29 3.18 10 -4.70 3.43
+29     29 13 -0.77 4.73 13 -2.31 3.88 13 -0.47 4.95
+\end{lstlisting}
+
+
+This is a SRE with centers being the strata.
+The trial was conducted to study the efficacy and tolerability of finasteride, a drug for treating benign prostatic hyperplasia.
+Within each of the $29$ centers, patients were randomized into three arms: control, finasteride 1mg, and finasteride 5mg. The above dataset
+provides summary statistics for the outcome, which is the change from baseline in total symptom score. The total symptom score is the sum of the responses to nine questions (score $0$ to $4$) about symptoms of various aspects of impaired urinary ability. The meanings of the columns are:
 
 \begin{enumerate}
-  \item 找出使 $\hat\tau_w$ 对 $\tau$ 无偏的 $w_{[k]}$ 条件。
-  \item 在所有无偏估计量中，找出使 $\hat\tau_w$ 方差最小的权重。
+\item
+\texttt{center}: ID of the centers;
+\item
+\texttt{n0, n1, n5}: sample sizes under the three arms;
+\item
+\texttt{mean0, mean1, mean5}: means of the outcomes under the three arms;
+\item
+\texttt{sd0, sd1, sd5}: standard deviations of the outcomes under the three arms.
 \end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{比较 CRE 和 SRE}\label{exr:5-4}
-证明 \cref{eq:5-variance-gain}：当层样本量较大时，$\text{var}_{\CRE}(\hat\tau)$ 与 $\text{var}_{\SRE}(\hat\tau_\SRE)$ 之差约为
-\[
-\sum_{k=1}^K \frac{\pi_{[k]}}{n} \left\{ \sqrt{\frac{n_0}{n_1}} \{\bar Y_{[k]}(1) - \bar Y(1)\} + \sqrt{\frac{n_1}{n_0}} \{\bar Y_{[k]}(0) - \bar Y(0)\} \right\}^2 \geq 0 .
-\]
-\end{Exercise}
+The individual-level outcomes are not reported so we cannot implement the FRT. However, the Neymanian inference only requires the summary statistics. Report the point estimators and variance estimators for comparing ``finasteride 1mg'' and ``finasteride 5mg'' to ``control'', separately.
 
-\begin{Exercise}{从 CRE 到 SRE}\label{exr:5-5}
-证明 \cref{eq:5-condition-dist}：数学上，如果 $\mathbf{n}$ 的所有分量都不为零，那么
-\[
-\Pr_{\CRE}(\mathbf{Z} = \mathbf{z} \mid \mathbf{n}) = \frac{1}{\prod_{k=1}^K \binom{n_{[k]}}{n_{[k]1}}} .
-\]
-即，$\mathbf{Z}$ 在给定 $\mathbf{n}$ 条件下从 CRE 得到的条件分布与从 SRE 得到的分布相同。
-\end{Exercise}
 
-\begin{Exercise}{更多 FRT 统计量}\label{exr:5-6}
-在 \cref{sec:5-sre-test-statistics} 中，我们介绍了多种检验统计量。选择另一种统计量（如 Wilcoxon 秩和统计量或 Hodges--Lehmann 对齐秩统计量），重新进行 FRT 分析。
-\end{Exercise}
+\end{HomeworkProblem}
 
-\begin{Exercise}{Imbens and Rubin (2015) 中的 SRE 的 FRT}\label{exr:5-7}
-Imbens and Rubin (2015) 讨论了 1985-1986 年在田纳西州进行的 SRE（Student/Teacher Achievement Ratio 实验）。 kindergarten 数据如下：
+\begin{HomeworkProblem}[Data re-analyses]\label{exr:5-9}
 
-层对应于学校，分析单元是教师或班级。treatment 等于 1 表示小班（每教师 13-17 名学生），等于 0 表示普通班（22-25 名学生）。outcome 是标准化的平均数学成绩。
 
-使用 FRT 重新分析 Project STAR 数据。使用 $\hat\tau_\SRE$、$W_\SRE$ 和 $\tilde W$ 作为 FRT 的检验统计量。比较 p 值。
+Re-analyze the LaLonde data used in Chapter \ref{sec::example-neyman-formula}. Conduct both Fisherian and Neymanian inferences.
 
-\textit{注：本书使用 $Z$ 表示治疗指示变量，但 Imbens and Rubin (2015) 使用 $W$。}
-\end{Exercise}
+The original experiment is a CRE. Now we pretend that the original experiment is an SRE.
+First, re-analyze the data pretending that the experiment is stratified on the race (black, Hispanic, or other). Second, re-analyze the data pretending that the experiment is stratified on marital status. Third, re-analyze the data pretending that the experiment is stratified on the indicator of a high school diploma.
 
-\begin{Exercise}{多中心试验}\label{exr:5-8}
-Gould (1998, Table 1) 报告了以下来自多中心试验的数据：
+Compare with the results obtained under a CRE.
 
-这是一个以中心为层的 SRE。该试验旨在研究非那雄胺（用于治疗良性前列腺增生的药物）的疗效和耐受性。在每个中心的 29 个中心内，患者被随机分配到三个组：对照组、非那雄胺 1mg 和非那雄胺 5mg。
 
-由于没有报告个体水平的数据，我们无法实施 FRT。然而，Neymanian 推断只需要汇总统计。分别报告非那雄胺 1mg 和非那雄胺 5mg 与对照组比较的点估计量和方差估计。
-\end{Exercise}
 
-\begin{Exercise}{数据分析重新分析}\label{exr:5-9}
-重新分析第 \ref{ch:10} 章 \ref{sec:10-job-training} 节中使用的 LaLonde 数据。同时进行 Fisherian 和 Neymanian 推断。
-\end{Exercise}
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:5-10}
+
+\citet{miratrix:2013} provided a solid theory for post-stratification and compared it with stratification. A main theoretical result is that their difference is small asymptotically although they can differ in finite samples.
+
+
+
+
+\end{HomeworkProblem}

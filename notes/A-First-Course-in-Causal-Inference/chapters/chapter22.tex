@@ -403,55 +403,333 @@ Bootstrap & 0.109 & 0.083 & -0.054 & 0.271 \\
   \item \textbf{协变量调整}：可以提高效率和稳健性。
 \end{enumerate}
 
-\section{习题}\label{sec:chapter22-exercises}
+\section{习题}\label{sec:22-homework}
 
-\begin{Exercise}{ITT 与 CACE 的关系}\label{exr:22-1}
-证明在 \cref{asm:22-monotonicity} 下，$\tau_Y = \tau_c \cdot \pi_c$，其中 $\pi_c = \Pr(U = \text{c})$。
-\end{Exercise}
+\begin{HomeworkProblem}[More detailed data analysis]\label{exr:22-1}
 
-\begin{Exercise}{单调性的可检验含义}\label{exr:22-2}
-证明在完全随机化下，\cref{asm:22-monotonicity} 蕴含 \cref{eq:22-monotonicity-inequality}。
-\end{Exercise}
+Examples \ref{eg::1-iv-inequalities} and \ref{eg::2-iv-inequalities} ignored the uncertainty in the estimates. Calculate the confidence intervals for the true parameters.
 
-\begin{Exercise}{Wald 估计量的方差}\label{exr:22-3}
-证明当 $\tau_D = 0$ 时，$\text{var}(\hat{\tau}_c) = \infty$。
-\end{Exercise}
 
-\begin{Exercise}{单侧依从性}\label{exr:22-4}
-考虑单侧依从性情形：对照组被试无法获得治疗，即 $D_i(0) = 0$ 对所有 $i$ 成立。
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Risk ratio for compliers]\label{exr:22-2}
+
+
+With a binary outcome, we can define the risk ratio for compliers as
+\[
+\textsc{rr}_\cp = \frac{  \pr\{  Y(1) = 1\mid U = \cp \}  }{ \pr\{  Y(0) = 1\mid U = \cp \}   } .
+\]
+
+Show that under Assumptions \ref{assume::random}--\ref{assume::ER}, we can identify it by
+\[
+\textsc{rr}_\cp =  \frac{  E(DY\mid Z=1)  - E(DY\mid Z=0)  }{  E\{  (D-1)Y\mid Z=1 \}   - E\{ (D-1)Y\mid Z=0 \} }.
+\]
+
+
+
+Remark: Using Theorem \ref{thm::cace-mixture-components}, we can identify any comparisons between $E\{  Y(1) \mid U = \cp \} $ and $E\{  Y(0) \mid U = \cp \} $.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Disentangle the mixtures: distributional results]\label{exr:22-3}
+
+
+This problem extends Theorem \ref{thm::cace-mixture-components}. Define
+\[
+f_{zu}(y) = \pr\{  Y(z) = y  \mid U=u \},  \quad  (z=0,1;u=\at, \nt, \cp)
+\]
+as the density of $Y(z)$ for latent stratum $U=u$, and define
+\[
+g_{zd}(y) = \pr(Y = y\mid Z=z, D=d)
+\]
+as the density of the outcome within the observed group $(Z=z, D=d)$.
+Exclusion restriction implies that $f_{1\nt}(y) = f_{0\nt} (y) $ and $f_{1\at}(y) = f_{0\at}(y) $. Let $f_{\nt}(y)$ and $ f_{\at} (y) $ denote them, respectively.
+
+
+
+Prove  Theorem \ref{thm::cace-mixture-components-distribution} below.
+
+
+
+\begin{Theorem}
+\label{thm::cace-mixture-components-distribution}
+Under Assumptions \ref{assume::random}--\ref{assume::ER}, we can identify the type-specific densities of the potential outcomes by
+\begin{eqnarray*}
+  f_{\nt}(y) &=& g_{10}(y) ,\\
+  f_{\at} (y) &=& g_{01}(y),\\
+f_{1\cp}(y) &=& \pi_\cp^{-1} \{   \pr(D=1\mid Z=1 )g_{11}(y)  -  \pr(D=1\mid Z=0) g_{01}(y)   \} , \\
+f_{0\cp} (y) &=& \pi_\cp^{-1} \{  \pr(D=0\mid Z=0)  g_{00}(y)  -  \pr(D=0\mid Z=1)  g_{10}(y)    \} .
+\end{eqnarray*}
+\end{Theorem}
+
+
+
+
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Alternative form of Theorem \ref{thm::iv-inequality}]\label{exr:22-4}
+
+The inequalities in \eqref{eq::iv-inequalities} can be re-written as
+\begin{eqnarray*}
+\pr(D=1, Y=y\mid Z=1) &\geq & \pr(D=1, Y=y\mid Z=0), \\
+\pr(D=0, Y=y\mid Z=0) &\geq & \pr(D=0, Y=y\mid Z=1)
+\end{eqnarray*}
+for both $y=0,1$.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[IV inequalities for a general outcome]\label{exr:22-5}
+
+For a general outcome $Y$, show that Assumptions \ref{assume::random}--\ref{assume::ER} imply
+\begin{eqnarray*}
+\pr(D=1, Y\geq y\mid Z=1) &\geq & \pr(D=1, Y\geq y\mid Z=0), \\
+\pr(D=1, Y <  y\mid Z=1) &\geq & \pr(D=1, Y <  y\mid Z=0), \\
+\pr(D=0, Y\geq y\mid Z=0) &\geq & \pr(D=0, Y\geq y\mid Z=1),\\
+\pr(D=0, Y <  y\mid Z=0) &\geq & \pr(D=0, Y <  y\mid Z=1)
+\end{eqnarray*}
+for all $y$.
+
+Remark:  \citet{imbens1997estimating} and \citet{kitagawa2015test} discussed similar results.  We can test the first inequality based on an analog of the Kolmogorov--Smirnov statistic:
+\[
+\text{KS}_1 = \max_{y} \Big |
+\frac{  \sumn Z_i D_i  1(Y_i \leq y)  }{ \sumn Z_i D_i  } - \frac{  \sumn (1-Z_i) D_i  1(Y_i \leq y)  }{ \sumn (1-Z_i) D_i  }
+\Big |.
+\]
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Example for the IV inequalities]\label{exr:22-6}
+
+Give an example in which all the IV inequalities hold and another example in which not all the IV inequalities hold. You need to specify the joint distribution of $(Z,D,Y)$ with binary variables.
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Violations of the key assumptions]\label{exr:22-7}
+
+Theorem \ref{thm::CACE-identification} relies on randomization, monotonicity, and exclusion restriction. The latter two are not testable even in randomized experiments. When they are violated, the IV estimator no longer identifies the CACE. This problem gives two cases below, which are restatements of  Propositions 2 and 3 in \citet{angrist1996identification}. Recall $\pi_u = \pr(U=u)$ and $\tau_u = E\{  Y(1) - Y(0) \mid U=u \}$ for $u=\at, \nt, \cp, \df$.
+
+
+\begin{Theorem}
+\label{theorem::wald-violation-assumptions}
+(a)
+Under Assumptions  \ref{assume::random} and \ref{assume::Mono} without the exclusion restriction, we have
+\[
+\frac{ E(Y\mid Z=1) - E(Y\mid Z=0) }{ E(D\mid Z=1) - E(D \mid Z=0) } - \tau_\cp
+= \frac{  \pi_\at \tau_\at + \pi_\nt \tau_\nt  }{  \pi_\cp } .
+\]
+
+
+(b)
+Under Assumptions  \ref{assume::random} and \ref{assume::ER} without the monotonicity, we have
+\[
+\frac{ E(Y\mid Z=1) - E(Y\mid Z=0) }{ E(D\mid Z=1) - E(D \mid Z=0) } - \tau_\cp
+= \frac{  \pi_\df (\tau_\cp + \tau_\df )  }{   \pi_\cp - \pi_\df   }.
+\]
+\end{Theorem}
+
+Prove Theorem \ref{theorem::wald-violation-assumptions}.
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Problems of other analyses]\label{exr:22-8}
+
+In the process of deriving the IV inequalities in Section \ref{sec::disentangle-mixtures}, we disentangled the mixture distributions by identifying the proportions of the latent strata as well as the conditional means of their potential outcomes. These results help to understand the drawbacks of other seemingly reasonable analyses. I review three estimators below and suppose Assumptions \ref{assume::random}--\ref{assume::ER} hold.
+
+
 \begin{enumerate}
-  \item 证明此时 \cref{asm:22-monotonicity} 自动成立。
-  \item 在这种情况下，CACE 如何简化为 ITT 的函数？
+\item
+The {\it as-treated analysis} compares the means of the outcomes among units receiving the treatment and control, yielding
+\[
+\tau_\textsc{at} = E(Y\mid D=1) - E(Y\mid D=0).
+\]
+Show that
+\[
+\tau_\textsc{at} = \frac{  \pi_\at \mu_\at + \pr(Z=1)\pi_\cp \mu_{1\cp}   }{   \pr(D=1) }
+- \frac{  \pi_\nt \mu_\nt + \pr(Z=0) \pi_\cp \mu_{0\cp}   }{   \pr(D=0) } .
+\]
+
+
+\item
+The {\it per-protocol analysis} compares the units that comply with the treatment assigned in treatment and control groups, yielding
+\[
+\tau_\textsc{pp} = E(Y\mid Z=1, D=1) - E(Y\mid Z=0, D=0).
+\]
+Show that
+\[
+\tau_\textsc{pp} =\frac{  \pi_\at \mu_\at + \pi_\cp \mu_{1\cp} }{  \pi_\at   + \pi_\cp }
+- \frac{  \pi_\nt \mu_\nt + \pi_\cp \mu_{0\cp} }{  \pi_\nt   + \pi_\cp }.
+\]
+
+
+\item
+We may also want to compare the outcomes among units receiving the treatment and control, conditioning on their treatment assignment, yielding
+\begin{eqnarray*}
+\tau_{Z=1} &=& E(Y\mid Z=1, D=1) - E(Y\mid Z=1, D=0),\\
+\tau_{Z=0} &=& E(Y\mid Z=0, D=1) - E(Y\mid Z=0, D=0).
+\end{eqnarray*}
+Show that they reduce to
+\[
+\tau_{Z=1}  = \frac{  \pi_\at \mu_\at + \pi_\cp \mu_{1\cp} }{  \pi_\at   + \pi_\cp } - \mu_\nt,\quad
+\tau_{Z=0} = \mu_\at - \frac{  \pi_\nt \mu_\nt + \pi_\cp \mu_{0\cp} }{  \pi_\nt   + \pi_\cp }.
+\]
 \end{enumerate}
-\end{Exercise}
 
-\begin{Exercise}{FAR 置信区间的形状}\label{exr:22-5}
-在 \cref{eq:22-far-set} 中，FAR 置信集可能是单个闭区间、两个不相连的区间、空集或整个实数线。找出每种情况对应的精确条件。
-\end{Exercise}
 
-\begin{Exercise}{协变量调整的 CACE}\label{exr:22-6}
-使用 JOBS II 数据进行以下分析：
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Bounds on the average causal effect on the whole population]\label{exr:22-9}
+
+
+Extend the discussion in Section \ref{sec::disentangle-mixtures} based on the notation in Section \ref{eq::interpret-iv-double}. With the potential outcome $Y(d)$, define the average causal effect of the treatment received on the outcome as
+\[
+\delta = E\{  Y(d=1) - Y(d=0) \},
+\]
+and modify the definition of $\mu_{zu} $ as
+\[
+m_{du} = E\{  Y(d) \mid U = u\},\quad  (z=0,1;u=\at, \nt, \cp)
+\]
+due to the change of the notation.
+They satisfy
+\[
+\delta = \sum_{u = \at, \nt, \cp}  \pi_u  (m_{1u} - m_{0u}).
+\]
+
+Section \ref{sec::disentangle-mixtures} identifies $\pi_\at$, $\pi_\nt$, $\pi_\cp$, $m_{1\at} = \mu_{1 \at}$, $m_{0\nt} = \mu_{0\nt }$, $m_{1\cp} = \mu_{1\cp}$ and $m_{0\cp} = \mu_{0\cp}$. But the data do not contain any information about $m_{0 \at}$ and $m_{1\nt }$. Therefore, we cannot identify $\delta$. With a bounded outcome, we can bound $\delta$.
+
+\begin{Theorem}
+\label{thm::bound-on-ACE}
+Under Assumptions \ref{assume::Mono}--\ref{assume::ER-double-index} with a bounded outcome in $[\underline{y}, \overline{y}]$, we have $\underline{\delta} \leq  \delta  \leq \overline{\delta}$, where
+\[
+\underline{\delta} =  \delta'  - \overline{y} \pr(D=1\mid Z=0) + \underline{y} \pr(D=0\mid Z=1)
+\]
+and
+\[
+\overline{\delta} = \delta'  -   \underline{y} \pr(D=1\mid Z=0) +  \overline{y}  \pr(D=0\mid Z=1)
+\]
+with $\delta' = E(DY\mid Z=1) - E(Y-DY\mid Z=0) .$
+\end{Theorem}
+
+Prove Theorem  \ref{thm::bound-on-ACE}.
+
+
+Remark: In the special case with a binary outcome, the bounds simplify to
+ \[
+\underline{\delta} =   E(DY\mid Z=1) - E( D+Y-DY\mid Z=0)
+\]
+and
+\[
+\overline{\delta} =  E(DY+1-D\mid Z=1) - E(Y-DY\mid Z=0) .
+ \]
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[One-sided noncompliance and statistical inference]\label{exr:22-10}
+
+Consider a randomized encouragement design where the units assigned to the control have no access to the treatment. For unit $i$, let $Z_i$ be the binary treatment assigned, $D_i$ be the binary treatment received, and $Y_i$ be the outcome of interest. One-sided noncompliance happens when
+\[
+Z_i=0 \Longrightarrow  D_i = 0 \quad (i=1,\ldots, n).
+\]
+Suppose that Assumption \ref{assume::random} holds.
+
+
 \begin{enumerate}
-  \item 计算原始 Wald 估计量及其标准误。
-  \item 加入协变量（sex, age, marital, nonwhite, educ, income）后重新估计。
-  \item 比较两种方法的估计量和标准误。
-\end{enumerate}
-\end{Exercise}
+[(1)]
+\item
+Does monotonicity Assumption \ref{assume::Mono} hold in this case?
+How many latent strata defined by $\{ D_i(1), D_i(0)  \}$ are there in this problem? How do we identify their proportions by the observed data distribution?
 
-\begin{Exercise}{Always takers 与 Never takers}\label{exr:22-7}
-假设我们想估计 always takers 的平均因果效应。
-\begin{enumerate}
-  \item 在当前框架下，这个量能否被识别？为什么？
-  \item 如果加入额外假设"always takers 和 never takers 的潜在结果分布相同"，结果会如何改变？
-\end{enumerate}
-\end{Exercise}
+\item
+State the assumption of exclusion restriction. Under exclusion restriction, show that $E\{  Y(z) \mid U = u \}$ can be identified by the observed data distributions.
+Give the formulas for all possible values of $z$ and $u$. How do we identify the CACE in this case?
 
-\begin{Exercise}{模拟研究}\label{exr:22-8}
-进行模拟研究，比较以下三种情况：
-\begin{enumerate}
-  \item 强工具变量（$\pi_c = 0.5$）
-  \item 中等强度工具变量（$\pi_c = 0.2$）
-  \item 弱工具变量（$\pi_c = 0.05$）
-\end{enumerate}
-对每种情况，报告 Wald 估计量的偏差、均方误差和置信区间的覆盖概率。
-\end{Exercise}
+
+
+\item
+If we observe pretreatment covariates $X_i$ for all units $i$, how do we use the covariate information to improve the estimation efficiency of the CACE?
+
+
+ \item
+ Under Assumption \ref{assume::random}, the exclusion restriction Assumption \ref{assume::ER} has testable implications, which are the IV inequalities for one-sided noncompliance. State the IV inequalities.
+
+\item
+\citet{sommer1991estimating} provided the following dataset:
+
+ \begin{center}
+\begin{tabular}{cccccc}
+\hline
+      &   \multicolumn{2}{c}{$Z=1$}  &  &  \multicolumn{2}{c}{$Z=0$}  \\  \cline{2-3} \cline{5-6}
+      & $D=1$  &  $D=0$           &       &  $D=1$  &  $D=0$\\
+ $Y=1$ &   9663    &     2385         &      &     0       &    11514       \\
+ $Y=0$ &   12   &     34            &      &     0         &    74           \\
+ \hline
+\end{tabular}
+ \end{center}
+
+The treatment assigned $Z$ is whether or not the child was assigned to the vitamin A supplement, the treatment received indicator $D$ is whether or not the child received the vitamin A supplement, and the binary outcome $Y$ is the survival indicator. The original RCT was conducted in Indonesia.
+Re-analyze the data.
+ \end{enumerate}
+
+
+Remark: \citet{bloom1984accounting} first discussed one-sided noncompliance and proposed the estimator $\hat\tau_\cp = \hat\tau_Y / \hat\tau_D$, which is sometimes called the Bloom estimator.  \citet{bloom1984accounting}'s notation is different from this chapter.
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[One-sided noncompliance with partial adherence]\label{exr:22-11}
+
+\citet[][Table 3]{sanders2021incorporating} reported the following data from an RCT aiming to estimate the efficacy of smoking cessation interventions among individuals with psychotic disorders.
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline
+group assigned& treatment received &group size& \# positive outcomes \\
+\hline
+Control & None& 151 &25 \\
+Treatment& None& 35 & 7 \\
+Treatment& Partial& 42& 17 \\
+Treatment& Full& 70& 40\\
+\hline
+\end{tabular}
+\end{center}
+
+Three tiers of treatment received are defined as follows: ``full'' treatment corresponds to attending all $8$ treatment sessions, ``partial'' corresponds to attending $5$ to $7$ sessions, and ``none'' corresponds to $<5$ sessions. The outcome is
+defined as the binary indicator of smoking reduction of $50\%$ or greater relative to baseline, measured at three months.
+
+
+In this problem, the treatment assignment $Z$ is binary but the treatment received $D$ takes three values $0, 0.5, 1$ for ``none'', ``partial'', and ``full.''  The three-leveled $D$ causes complications, but it can only be 0 under the control assignment. How many latent strata $U = \{ D(1), D(0) \} $ do we have in this problem? Can we identify their proportions?
+
+How do we extend the exclusion restriction to this problem? What can be the causal effects of interest? Can we identify them?
+
+Analyze the data based on the questions above.
+
+
+
+
+
+\end{HomeworkProblem}
+
+\begin{HomeworkProblem}[Recommended reading]\label{exr:22-12}
+
+\citet{balke1997bounds} derived more general IV inequalities.
+
+
+\end{HomeworkProblem}
